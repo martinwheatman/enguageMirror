@@ -1,0 +1,15 @@
+On "I        have to have PHRASE-OBJECT", _user needs OBJECT.
+On "SUBJECT  has  to have PHRASE-OBJECT", SUBJECT needs OBJECT.
+
+On "I        have to      PHRASE-OBJECT", _user needs to OBJECT.
+On "I do not have to      PHRASE-OBJECT", _user does not need to OBJECT.
+On "I        have to get  PHRASE-OBJECT", _user needs OBJECT.
+On "I do not have to get  PHRASE-OBJECT", _user does not need OBJECT.
+
+On "I        have got     PHRASE-OBJECT", _user does not need OBJECT.
+On "I        have         PHRASE-OBJECT", _user does not need OBJECT.
+
+On "I        have got        everything", _user has everything.
+On "I        have            everything", _user has everything.
+
+On "What do I have", reply "I do not remember what you have".

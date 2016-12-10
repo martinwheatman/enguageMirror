@@ -1,0 +1,132 @@
+####################################################
+### Concept: X needs Y
+####################################################
+On "SUBJECT needs PHRASE-OBJECTS":
+	set output format to "QUANTITY,UNIT of,,from FROM";
+	OBJECTS exists in SUBJECT needs list;
+	reply "I know";
+	if not, add / OBJECTS / to SUBJECT needs list;
+	then, reply "ok, SUBJECT needs ...".
+	
+On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":
+	set output format to "QUANTITY,UNIT of,,from FROM";
+	QUANTITY OBJECT exists in SUBJECT needs list;
+	reply "I know";
+	if not, add QUANTITY OBJECT to SUBJECT needs list;
+	then, reply "ok, SUBJECT needs ... ".
+On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
+	set output format to "QUANTITY,UNIT of,,from FROM";
+	QUANTITY UNIT of OBJECT exists in SUBJECT needs list;
+	reply "I know";
+	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
+	then, reply "ok, SUBJECT needs ...".
+
+
+On "SUBJECT has PHRASE-OBJECT", SUBJECT does not need OBJECT.
+
+On "SUBJECT has everything":
+	delete SUBJECT needs list;
+	then, reply "ok, SUBJECT does not need anything".
+
+On "SUBJECT does not need PHRASE-OBJECTS":
+	OBJECTS exists in SUBJECT needs list;
+	if not, reply "I know";
+	remove OBJECTS from SUBJECT needs list;
+	if not, reply "ok, SUBJECT does not need OBJECTS";
+	then, reply "ok, SUBJECT does not need ...".
+	
+On "SUBJECT does not need NUMERIC-QUANTITY PHRASE-OBJECT":
+	OBJECT exists in SUBJECT needs list;
+	if not, reply "I know";
+	remove QUANTITY OBJECT from SUBJECT needs list;
+	if not, reply "sorry, SUBJECT does not need QUANTITY OBJECT";
+	then, reply "ok, SUBJECT does not need ...".
+On "SUBJECT does not need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
+	OBJECT exists in SUBJECT needs list;
+	if not, reply "I know";
+	remove QUANTITY UNIT of OBJECT from SUBJECT needs list;
+	if not, reply "sorry, SUBJECT does not need QUANTITY UNIT of OBJECT";
+	then, reply "ok, SUBJECT does not need ...".
+On "SUBJECT does not need any PHRASE-OBJECT":
+	OBJECT exists in SUBJECT needs list;
+	if not, reply "I know";
+	remove any OBJECT from SUBJECT needs list;
+	if not, reply "sorry, SUBJECT does not need any OBJECT";
+	then, reply "ok, SUBJECT does not need any OBJECT".
+
+
+On "what does SUBJECT need":
+	set output format to "QUANTITY,UNIT of,,from FROM";
+	get SUBJECT needs list;
+	if not, reply "SUBJECT does not need anything";
+	then, reply "SUBJECT needs ...".
+
+On "does SUBJECT need PHRASE-OBJECT":
+	perform "list exists SUBJECT needs OBJECT";
+	if not, reply "no, SUBJECT does not need OBJECT";
+	then, reply "yes, SUBJECT needs OBJECT".
+On "does SUBJECT need NUMERIC-QUANTITY PHRASE-OBJECT":
+	perform "list exists SUBJECT needs OBJECT QUANTITY";
+	if not, reply "no, SUBJECT does not need QUANTITY OBJECT";
+	then, reply "yes, SUBJECT needs QUANTITY OBJECT".
+On "does SUBJECT need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
+	perform "list exists SUBJECT needs OBJECT QUANTITY UNIT";
+	if not, reply "no, SUBJECT does not need QUANTITY UNIT of OBJECT";
+	then, reply "yes, SUBJECT needs QUANTITY UNIT of OBJECT".
+
+On "how many UNIT of PHRASE-OBJECT does SUBJECT need":
+	perform "list exists SUBJECT needs OBJECT";
+	if not, reply "SUBJECT does not need OBJECT";
+	how many UNIT of OBJECT in SUBJECT needs list;
+	then, reply "..., SUBJECT needs ... UNIT of OBJECT".
+On "how many PHRASE-OBJECT does SUBJECT need":
+	perform "list exists SUBJECT needs OBJECT";
+	if not, reply "SUBJECT does not need OBJECT";
+	how many OBJECT in SUBJECT needs list;
+	then, reply "..., SUBJECT needs ... OBJECT".
+
+On "and NUMERIC-QUANTITY":
+	set output format to "QUANTITY,UNIT of,,from FROM";
+	SUBJECT needs QUANTITY OBJECT;
+	then, reply "ok, SUBJECT needs ...".
+On "and NUMERIC-QUANTITY OBJECT":
+	set output format to "QUANTITY,UNIT of,,from FROM";
+	SUBJECT needs another QUANTITY OBJECT;
+	then, reply "ok, SUBJECT needs ...".
+On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
+	set output format to "QUANTITY,UNIT of,,from FROM";
+	SUBJECT needs another QUANTITY OBJECT;
+	then, reply "ok, SUBJECT needs ...".
+
+######################################
+# First person utterances
+######################################
+On "_user    needs       NUMERIC-QUANTITY", _user needs QUANTITY OBJECT.
+#On "I        need        NUMERIC-QUANTITY", _user needs QUANTITY OBJECT.
+
+On "I        need        PHRASE-OBJECTS", _user needs OBJECTS.
+On "help", reply "to add items to the list".
+
+On "I        need        help", help.
+
+#On "get                   PHRASE-OBJECT", _user needs OBJECT.
+#On "get          SUBJECT  PHRASE-OBJECT", SUBJECT needs OBJECT.
+
+On "I        need to      PHRASE-OBJECT", _user needs to OBJECT.
+On "I        need to get  PHRASE-OBJECT", _user needs OBJECT.
+On "I do not need to get  PHRASE-OBJECT", _user does not need OBJECT.
+
+On "I do not need         PHRASE-OBJECT", _user does not need OBJECT.
+On "I do not need any     PHRASE-OBJECT", _user does not need any OBJECT.
+On "I do not need              anything", _user has everything.
+On "help", reply "to clear the list".
+
+On                   "?", what does _user need.
+On "what  do   I   need", what does _user need.
+On "help", reply "to find out what is on the list".
+
+On "do I need PHRASE-OBJECT", does _user need OBJECT.
+On "how many PHRASE-OBJECT do I need", how many OBJECT does _user need.
+On "help", reply "to find out if something specific is on the list".
+
+On "We need PHRASE-OBJECT", I need OBJECT. # a fix for now

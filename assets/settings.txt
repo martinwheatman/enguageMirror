@@ -1,0 +1,43 @@
+     On "verbose",         perform "preferences get verbose".
+Then on "verbose",         perform "preferences set verbose false".
+Then on "verbose", if not, perform "preferences set verbose true".
+
+On "verbose on",                  perform "preferences set verbose true".
+On "help",                        reply   "to be more verbose".
+On "verbose off",                 perform "preferences set verbose false".
+On "help",                        reply   "to be less verbose".
+
+On "visual",                      perform "preferences set visual true".
+On "help",                        reply   "to be more verbose".
+
+     On "non visual",             perform "preferences set visual false".
+Then on "non visual",             reply   "Ok, initiating non visual features".
+     On "help",                   reply   "to be less verbose".
+
+# how to switch between preview and discourse mode
+# valid values for oBMode are discourse and preview -- this utterance should be implemented!
+     On " discourse",       perform "preferences set preview false".
+Then on " discourse",       reply   "ok, discourse mode is now on".
+     On "help",             reply   "to turn on the discourse mode".
+     On "preview",          perform "preferences set preview true".
+Then on "preview",          reply   "ok, preview mode is now on".
+     On "help",             reply   "to turn on the preview mode".
+     On "discourse on",     discourse.
+     On "discourse off",    preview.
+     On "preview mode",     preview.
+     On "discourse mode",   discourse.
+     On "discourse mode on", discourse.
+     On "discourse mode off", preview.
+     On "preview off",      discourse.
+     On "preview on",       preview.
+     On "preview mode off", discourse.
+     On "preview mode on",  preview.
+
+     On "bigger text", perform "numeric increase device textSize 4".
+Then on "bigger text", reply "ok, text should now be bigger".
+     On "help", reply "to increase the size of the text".
+     On "larger text", bigger text.
+
+     On "smaller text", perform "numeric decrease device textSize 4".
+Then on "smaller text", reply "ok, text should now be smaller".
+     On "help", reply "to reduce the size of the text".

@@ -1,0 +1,3 @@
+On "hello SUBJECT": perform "variable set $SUBJECT fred"; then, reply "hello there SUBJECT".
+
+On "goodbye", reply "goodbye SUBJECT".

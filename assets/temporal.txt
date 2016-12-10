@@ -1,0 +1,1 @@
+On "X is temporal", perform "temporal add X".

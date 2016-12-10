@@ -1,0 +1,11 @@
+# these are part of the engine, really.
+On        "repeat", say again.
+On "please repeat", say again.
+On "say it again",  say again.
+
+On "no",          undo.
+On "Forget that", undo.
+
+On "so     PHRASE-X", X.
+On "ok     PHRASE-X", X.
+On "please PHRASE-X", X.

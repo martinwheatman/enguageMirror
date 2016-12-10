@@ -1,0 +1,30 @@
+<xml>
+	<config DNU="I do not understand"
+			DNK="I do not know"
+			SUCCESS="ok"
+			FAILURE="sorry"
+			IK="I know"
+			TTL="5"
+			TERMS=". ? !"
+			VALUESEP="+"
+			REPEATFORMAT="I said, ... ."
+			ANDCONJUNCTIONS="and"
+			 ORCONJUNCTIONS="or"
+			REFERENCERS="the any"
+			LISTFORMATSEP=":"
+			ANDLISTFORMAT=", :, and "
+			ORLISTFORMAT=", :, or " >
+			
+		<concepts>
+			<concept id="colloquia"      op="load"/>
+			<concept id="engine"         op="load"/>
+			<concept id="plural"         op="load"/>
+			<concept id="temporal"       op="load"/>
+			<concept id="spatial"        op="load"/>
+			<concept id="settings"       op="load"/>
+			<concept id="arithmetic"     op="load"/>
+			<concept id="day"            op="load"/>
+			<concept id="meeting"        op="prime"/>
+		</concepts>
+	</config>
+</xml>

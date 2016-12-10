@@ -1,0 +1,1 @@
+On "X is spatial", perform "spatial add X".
