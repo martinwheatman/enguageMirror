@@ -2,8 +2,6 @@ package com.yagadi.enguage.util;
 
 import java.util.GregorianCalendar;
 
-import com.yagadi.enguage.Enguage;
-
 public class Audit {
 	private              String     name = "";
 	static private       Strings   stack = new Strings();
@@ -103,6 +101,14 @@ public class Audit {
 	public long    out( long  l ) { out( Long.toString(  l )); return l;}
 	public Object  out( Object o ) { out( o==null?"null":o.toString()); return o;}
 	
+	public void title( String title ) {
+		String underline = "";
+		log( "\n" );
+		log( title );
+		for (int i = 0; i < title.length(); i++) underline += "=";
+		log( underline );
+	}
+
 	// -- test code...
 	public static void main( String[] agrs ) {
 		Audit audit = new Audit( "Audit" ); // <= needs setting as $DEBUG to test
