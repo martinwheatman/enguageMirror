@@ -37,10 +37,10 @@ public class Allopoiesis extends Intention {
 		new Sign().content( new Tag( "what can i say", "" )).concept( NAME   )
 															 .attribute( NAME, "repertoire"  )
 															 .help( ""            ),
-		new Sign().content( new Tag(   "load ", "NAME" )).attribute( NAME,   "load NAME" ),
+/*		new Sign().content( new Tag(   "load ", "NAME" )).attribute( NAME,   "load NAME" ),
 		new Sign().content( new Tag( "unload ", "NAME" )).attribute( NAME, "unload NAME" ),
 		new Sign().content( new Tag( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
-		//new Sign().attribute( NAME, "save"    ).content( new Tag( "save", "", "" ) ),
+// */	//new Sign().attribute( NAME, "save"    ).content( new Tag( "save", "", "" ) ),
 		//new Sign().attribute( NAME, "saveas $NAME" ).content( new Tag("saveas ", "NAME", ".")),
 		new Sign().content( new Tag(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
 		new Sign().content( new Tag(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
@@ -207,7 +207,7 @@ public class Allopoiesis extends Intention {
 		} else if (cmd.equals( DISAMBIGUATE )) {
 			disambOn( cmds.copyAfter( 0 ));
 
-		} else if (cmd.equals( "load" )) {
+/*		} else if (cmd.equals( "load" )) {
 			Strings files = cmds.copyAfter( 0 );
 			audit.debug( "loading "+ files.toString( Strings.CSV ));
 			for(int i=0; i<files.size(); i++)

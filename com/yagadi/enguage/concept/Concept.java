@@ -1,14 +1,14 @@
 package com.yagadi.enguage.concept;
 
-import com.yagadi.enguage.Enguage;
-import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Strings;
-
 import java.io.File;
 import java.util.TreeSet;
 
+import com.yagadi.enguage.Enguage;
+import com.yagadi.enguage.util.Audit;
+
 /**
  * Created by martin on 27/09/16.
+ * Lists runtime loaded concepts, as opposed to Autoload.autoloaded()
  */
 
 public class Concept {
@@ -30,7 +30,7 @@ public class Concept {
 	static public  TreeSet<String> loaded() { return loaded; }
 
 	// backwards compatibility... STATICally load a repertoire file
-	static public void load(String name ) {
+	static private void load(String name ) {
 		audit.in( "load", "name="+ name );
 
 		// as with autoloading, make sure it is singular..
@@ -51,7 +51,7 @@ public class Concept {
 		audit.out();
 	}
 
-	static public void unload(String name ) {
+	static private void unload(String name ) {
 		audit.in( "unload", "name="+ name );
 		if (loaded.contains( name )) {
 			loaded.remove( name );
