@@ -40,14 +40,14 @@ public class Autoload {
 				{
 					sz = cand.size();
 					rc = candidate;
-				}	}	}
+		}	}	}
 		return rc;
 	}
-	private static void test( String utterance, TreeSet<String> repertoires ) {
+	/* private static void test( String utterance, TreeSet<String> repertoires ) {
 		String s;
 		if (null != ( s = match( new Strings( utterance ), repertoires ))) {
 			System.out.println( utterance+" loads "+ s );
-		}	}
+		}	} //  -- */
 	// =====================================================================
 	// =====================================================================
 	static public  void load( Strings utterance ) {

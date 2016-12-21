@@ -209,7 +209,7 @@ public class Enguage extends Shell {
 			testInterpret( "times 2 all squared",
 					       "times 2 all squared makes 36.");
 			
-			testInterpret( "what is 36 + 4 all divided by 2", // plus 4 all / 2
+			testInterpret( "what is 36 + 4 all divided by 2",
 					       "36 plus 4 all divided by 2 is 20." ); 
 		}
 

@@ -184,8 +184,7 @@ static private int   total = 0;
 				+ "'"+ u.toString( Strings.SPACED ) +"'"
 		 		+ (ignore.size()==0?"":("avoiding "+ignore)));
 		// -- */
-		int    i = -1,
-		    here = interpretation(); // an ID for this interpretation
+		int here = interpretation(); // an ID for this interpretation
 		
 		Reply       r = new Reply();
 		String answer = new String();
@@ -194,7 +193,6 @@ static private int   total = 0;
 		Set<Map.Entry<Integer,Sign>> entries = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> ei = entries.iterator();
 		while( ei.hasNext() && !done) {
-			i++;
 			Map.Entry<Integer,Sign> e = (Map.Entry<Integer,Sign>)ei.next();
 			int complexity = e.getKey();
 
