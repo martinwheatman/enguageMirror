@@ -38,7 +38,6 @@ public class Where {
 	public  Strings location() { return location; }
 	public  Where   location( Strings l ) { location = l; return this; }
 	public  boolean location( ListIterator<String> si ) {
-		int start = si.nextIndex();
 		if (si.hasNext()) {
 			String t = si.next();
 			if (new Sofa( null ).interpret( new Strings( "entity exists "+ t )).equals( Shell.SUCCESS ))
