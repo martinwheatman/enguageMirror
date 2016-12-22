@@ -106,61 +106,6 @@ public class Reply { // a reply is basically a formatted answer
 	static public  void   listSep( String s ) { listSep = s; }
 	static public  String listSep() { return listSep; }
 
-	private int type = DNU;
-	// todo: needs to be split out into answerType() and formatType()
-	// needs to be split out into class Answer and class Format: think!
-	private int calculateType() {
-		if (answer().equals( "" ) && format.size() == 0) {
-			return DNU;
-		} else if (answer().equals( no ) && format.equals( new Strings( ik ))) {
-			return CHS;
-		} else if (answer().equals( "" ) && format.contains( "..." )) {
-			return NK;
-		} else if (answer().equals( "" ) && !format.contains( "..." )) {
-				 if (format.equals( new Strings(   yes ))) return YES;
-			else if (format.equals( new Strings(success))) return YES;
-			else if (format.equals( new Strings(    no ))) return NO;
-			else if (format.equals( new Strings(failure))) return NO;
-			else if (format.equals( new Strings(    ik ))) return IK;
-			else if (format.equals( new Strings(   dnk ))) return NK;
-			else if (format.equals( new Strings(   dnu ))) return DNU;
-			else return CHS;
-		} else {
-			     if (answer().equalsIgnoreCase(   yes )) return YES;
-			else if (answer().equalsIgnoreCase(success)) return YES;
-			else if (answer().equalsIgnoreCase(    no )) return NO;
-			else if (answer().equalsIgnoreCase(failure)) return NO;
-			else if (answer().equalsIgnoreCase(    ik )) return IK;
-			else if (answer().equalsIgnoreCase(   dnk )) return NK;
-			else if (answer().equalsIgnoreCase(   dnu )) return DNU;
-			else return CHS;
-	}	}
-	public int      getType() { return type; }
-	public boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
-	public boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
-
-
-	private Strings  answer = new Strings();
-	public  String  answer() { return answer.toString( andListFormat ); }
-	public  Reply   answerAdd( String ans ) { answer.add( ans ); return this; }
-	public  Reply   answer( String ans ) {
-		if (null == ans) {
-			answer = new Strings();
-			cache = null;
-			type = DNU;
-		} else if (!ans.equals( Shell.IGNORE )) {
-			if (!isAppendingAnswer()) answer = new Strings();
-			answer.add( ans );
-			// type is dependent on answer
-			cache = null;
-			type = calculateType();
-		}
-		return this;
-	}
-	private boolean appendingAnswer = false;
-	public  boolean isAppendingAnswer() { return appendingAnswer; }
-	public  Reply   appendingAnswerIs( boolean b ) { appendingAnswer = b; return this; }
-
 	/* This is used to retrieve the reply from the previous thought. This is
 	 * used in implementing imagination.  If the imagination session goes ok,
 	 * we need the reply from that session. Was implemented with equiv 
@@ -169,34 +114,98 @@ public class Reply { // a reply is basically a formatted answer
 	static private String previous = "";
 	static public  String previous( String rep ) { return previous = rep; }
 	static public  String previous() { return previous; }
+
+	private int type = DNU;
+	// todo: needs to be split out into answerType() and formatType()
+	// needs to be split out into class Answer and class Format: think!
+	private int calculateType() {
+		if (a.nswer.toString( andListFormat ).equals( "" ) && f.ormat.size() == 0) {
+			return DNU;
+		} else if (a.nswer.toString( andListFormat ).equals( no ) && f.ormat.equals( new Strings( ik ))) {
+			return CHS;
+		} else if (a.nswer.toString( andListFormat ).equals( "" ) && f.ormat.contains( "..." )) {
+			return NK;
+		} else if (a.nswer.toString( andListFormat ).equals( "" ) && !f.ormat.contains( "..." )) {
+				 if (f.ormat.equals( new Strings(   yes ))) return YES;
+			else if (f.ormat.equals( new Strings(success))) return YES;
+			else if (f.ormat.equals( new Strings(    no ))) return NO;
+			else if (f.ormat.equals( new Strings(failure))) return NO;
+			else if (f.ormat.equals( new Strings(    ik ))) return IK;
+			else if (f.ormat.equals( new Strings(   dnk ))) return NK;
+			else if (f.ormat.equals( new Strings(   dnu ))) return DNU;
+			else return CHS;
+		} else {
+			     if (a.nswer.toString( andListFormat ).equalsIgnoreCase(   yes )) return YES;
+			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(success)) return YES;
+			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(    no )) return NO;
+			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(failure)) return NO;
+			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(    ik )) return IK;
+			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(   dnk )) return NK;
+			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(   dnu )) return DNU;
+			else return CHS;
+	}	}
+	public int      getType() { return type; }
+	public boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
+	public boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
+
+	/** Answer:
+	 * Multiple answers should be implemented in Replies class!
+	 *                                     or in List class, below.
+	 * e.g. You need tea and biscuits and you are meeting your brother at 7pm.
+	 */
+	public Ans a = new Ans();
 	
-	private Strings format = new Strings(); // format is empty!
+	//private Strings  answer = new Strings();
+	//public  String  xanswerToString() { return a.nswer.toString( andListFormat ); }
+	//public  Reply   xanswerAdd( String ans ) { a.nswer.add( ans ); return this; }
+	public  Reply   answer( String ans ) {
+		if (null == ans) {
+			a.nswer = new Strings();
+			cache = null;
+			type = DNU;
+		} else if (!ans.equals( Shell.IGNORE )) {
+			if (!a.isAppending())
+				a.nswer = new Strings();
+			a.nswer.add( ans );
+			// type is dependent on answer
+			cache = null;
+			type = calculateType();
+		}
+		return this;
+	}
+	
+	/** Format
+	 * 
+	 */
+	public Fmt f = new Fmt();
+	
+	//private Strings format = new Strings(); // format is empty!
 	public  Reply   format( String s ) { format( new Strings( s )); return this; }
 	public  Reply   format( Strings sa ) {
 		cache = null; //de-cache any previous reply
-		format = sa;
-		if (!format.contains( "..." )) answer( "" );
+		f.ormat = sa;
+		if (!f.ormat.contains( "..." )) answer( "" );
 		type = calculateType(); // type is dependent on format -- should it be???
 		return this;
 	}
 	public Strings format() {
 		//audit.traceIn("format", format.toString(0));
 		if (!verbose()) {
-			if (format.size() > 1 && format.get( 1 ).equals( "," ))
-				if (format.get( 0 ).equalsIgnoreCase( yes ) || // yes is set to "OK", when yes is "yes", this fails...
-					format.get( 0 ).equalsIgnoreCase(  no ) ||
-					format.get( 0 ).equalsIgnoreCase( success )) {
+			if (f.ormat.size() > 1 && f.ormat.get( 1 ).equals( "," ))
+				if (f.ormat.get( 0 ).equalsIgnoreCase( yes ) || // yes is set to "OK", when yes is "yes", this fails...
+					f.ormat.get( 0 ).equalsIgnoreCase(  no ) ||
+					f.ormat.get( 0 ).equalsIgnoreCase( success )) {
 					//audit.traceOut("returning only 1st");
-					return new Strings( say() + " " +format.get( 0 )); // return only first
-				} else if (format.get( 0 ).equalsIgnoreCase( failure )) {
+					return new Strings( say() + " " +f.ormat.get( 0 )); // return only first
+				} else if (f.ormat.get( 0 ).equalsIgnoreCase( failure )) {
 					//audit.traceOut("returning rest");
-					return new Strings( say()).append( format.copyAfter( 1 ).filter()); // forget 1st & 2nd
+					return new Strings( say()).append( f.ormat.copyAfter( 1 ).filter()); // forget 1st & 2nd
 				}
 			//audit.traceOut("returning filtered format");
-			return new Strings( say()).append( format.filter( ));
+			return new Strings( say()).append( f.ormat.filter( ));
 		}
 		//audit.traceOut("returning full format");
-		return new Strings( say()).append( format );
+		return new Strings( say()).append( f.ormat );
 	}
 	
 	private boolean repeated = false;
@@ -220,7 +229,7 @@ public class Reply { // a reply is basically a formatted answer
 			Strings utterance = format();
 			if (0 == utterance.size())
 				// todo: is answer ever null??? 
-				utterance = answer == null ? new Strings( dnu() ) : new Strings( answer );
+				utterance = a.nswer == null ? new Strings( dnu() ) : new Strings( a.nswer );
 
 			// ... then post-process:
 			// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
@@ -230,17 +239,17 @@ public class Reply { // a reply is basically a formatted answer
 
 			// ...finally, if required put in answer (verbatim!)
 			if (utterance.size() == 0)
-				if ( answer().equals( "" ))
+				if ( a.nswer.toString( andListFormat ).equals( "" ))
 					utterance = new Strings( dnu() );
 				else
-					utterance = answer; // use the raw answer???
+					utterance = a.nswer; // use the raw answer???
 			else if (utterance.contains( Strings.ELLIPSIS )) {
 //				audit.ERROR( "replyToString() used to look for ellipsis - now done in Intention" );
-				if ( answer().equals( "" ))
+				if ( a.nswer.toString( andListFormat ).equals( "" ))
 					utterance = new Strings( dnk() ); // need an answer, but we don't have one
 				else
 					// ok replace "..." with answer -- where reply maybe "martin/mother/computer"
-					utterance.replace( Strings.ellipsis, new Strings( answer() ));
+					utterance.replace( Strings.ellipsis, new Strings( a.nswer.toString( andListFormat ) ));
 			}
 			
 			// outbound and general colloquials
@@ -316,7 +325,7 @@ public class Reply { // a reply is basically a formatted answer
 		Attributes attrs = new Attributes();
 		attrs.add( new Attribute( "x", "life the universe and everything" ));
 		Context.push( attrs );
-		audit.log( "Context is "+ Context.valueOf());
+		audit.log( "Context is: "+ Context.valueOf());
 		
 		audit.log( "Finally:"+ r.toString());
 }	}
