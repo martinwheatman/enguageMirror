@@ -3,6 +3,7 @@ package com.yagadi.enguage.sofa;
 import java.io.File;
 import java.io.IOException;
 
+import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Filesystem;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -25,7 +26,7 @@ class LinkShell extends Shell {
 // Sooooo..... the number of parents "../" is dependent on the number of "levels/" in entity string!!!
 // this has so far only been 1! e.g. entity="martin", attribute="attr" => link="../attr"
 public class Link {
-	//static private Audit audit = new Audit( "Link" );
+	static private Audit audit = new Audit( "Link" );
 	
 	public static String get( String entity, String attribute ) {
 		//audit.traceIn( "get", "entity='"+ entity +"', attribute='"+ attribute +"'" );
@@ -236,9 +237,8 @@ public class Link {
 		return rc; // audit.traceOut( rc );	
 	}
 	public static void main( String args[] ) {
-		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
-			System.out.println( "Ouch! " );
+			audit.ERROR( "Ouch!" );
 		//else
 		//	new LinkShell( ).run();
 }	}

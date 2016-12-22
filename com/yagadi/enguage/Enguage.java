@@ -32,7 +32,7 @@ public class Enguage extends Shell {
 	 */
 	static public Enguage e = null; // can't remove this: interpret()
 	// overrides the method in Shell
-// TODO: enguage need to CONTAIN a Shell
+	// TODO: enguage need to CONTAIN a Shell
 	static public Overlay o = null; // TODO: ditto
 
 	static public void log( String s ) { audit.log( s ); }

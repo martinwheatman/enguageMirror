@@ -128,9 +128,8 @@ public class Entity {
 	}
 	
 	public static void main (String args []) {
-		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
-			System.out.println( "Ouch!" );
+			audit.ERROR( "Ouch!" );
 		//else
 		//	new EntityShell( args ).run();
 }	}
