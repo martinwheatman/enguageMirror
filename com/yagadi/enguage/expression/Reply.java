@@ -118,7 +118,19 @@ public class Reply { // a reply is basically a formatted answer
 	private int type = DNU;
 	// todo: needs to be split out into answerType() and formatType()
 	// needs to be split out into class Answer and class Format: think!
+	private int calculateType(Strings ss) {
+		String s = ss.toString();
+		     if (s.equalsIgnoreCase(   yes )) return YES;
+		else if (s.equalsIgnoreCase(success)) return YES;
+		else if (s.equalsIgnoreCase(    no )) return NO;
+		else if (s.equalsIgnoreCase(failure)) return NO;
+		else if (s.equalsIgnoreCase(    ik )) return IK;
+		else if (s.equalsIgnoreCase(   dnk )) return NK;
+		else if (s.equalsIgnoreCase(   dnu )) return DNU;
+		else return CHS;
+	}
 	private int calculateType() {
+		//audit.LOG("a:"+a.nswer.toString()+", f:"+f.ormat.toString());
 		if (a.nswer.toString( andListFormat ).equals( "" ) && f.ormat.size() == 0) {
 			return DNU;
 		} else if (a.nswer.toString( andListFormat ).equals( no ) && f.ormat.equals( new Strings( ik ))) {
@@ -126,23 +138,25 @@ public class Reply { // a reply is basically a formatted answer
 		} else if (a.nswer.toString( andListFormat ).equals( "" ) && f.ormat.contains( "..." )) {
 			return NK;
 		} else if (a.nswer.toString( andListFormat ).equals( "" ) && !f.ormat.contains( "..." )) {
-				 if (f.ormat.equals( new Strings(   yes ))) return YES;
-			else if (f.ormat.equals( new Strings(success))) return YES;
-			else if (f.ormat.equals( new Strings(    no ))) return NO;
-			else if (f.ormat.equals( new Strings(failure))) return NO;
-			else if (f.ormat.equals( new Strings(    ik ))) return IK;
-			else if (f.ormat.equals( new Strings(   dnk ))) return NK;
-			else if (f.ormat.equals( new Strings(   dnu ))) return DNU;
-			else return CHS;
+			/*	 if (f.ormat.toString().equalsIgnoreCase(   yes )) return YES;
+			else if (f.ormat.toString().equalsIgnoreCase( success)) return YES;
+			else if (f.ormat.toString().equalsIgnoreCase(     no )) return NO;
+			else if (f.ormat.toString().equalsIgnoreCase( failure)) return NO;
+			else if (f.ormat.toString().equalsIgnoreCase(     ik )) return IK;
+			else if (f.ormat.toString().equalsIgnoreCase(    dnk )) return NK;
+			else if (f.ormat.toString().equalsIgnoreCase(    dnu )) return DNU;
+			else return CHS; // */
+			return calculateType( f.ormat );
 		} else {
-			     if (a.nswer.toString( andListFormat ).equalsIgnoreCase(   yes )) return YES;
-			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(success)) return YES;
-			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(    no )) return NO;
-			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(failure)) return NO;
-			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(    ik )) return IK;
-			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(   dnk )) return NK;
-			else if (a.nswer.toString( andListFormat ).equalsIgnoreCase(   dnu )) return DNU;
-			else return CHS;
+			/*     if (a.nswer.toString(  ).equalsIgnoreCase(   yes )) return YES;
+			else if (a.nswer.toString(  ).equalsIgnoreCase(success)) return YES;
+			else if (a.nswer.toString(  ).equalsIgnoreCase(    no )) return NO;
+			else if (a.nswer.toString(  ).equalsIgnoreCase(failure)) return NO;
+			else if (a.nswer.toString(  ).equalsIgnoreCase(    ik )) return IK;
+			else if (a.nswer.toString(  ).equalsIgnoreCase(   dnk )) return NK;
+			else if (a.nswer.toString(  ).equalsIgnoreCase(   dnu )) return DNU;
+			else return CHS; // */
+			return calculateType( a.nswer );
 	}	}
 	public int      getType() { return type; }
 	public boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
