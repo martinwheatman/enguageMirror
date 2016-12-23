@@ -27,14 +27,6 @@ public class Reply { // a reply is basically a formatted answer
 	static public final int   IK = 4; // I know, silly!
 	static public final int  CHS = 5; // use stored expression
 	
-	public final static String  verbose     = "verbose"; // this is also defined in iNeed/MainActivity.java 
-	public final static boolean initVerbose = false;
-	public boolean verbose() {
-		//Preferences p = Preferences.getPreferences();
-		//if (p==null) return true; // default to a verbose state
-		return true; //p.get( verbose, initVerbose );
-	}
-	
 	static private boolean verbatim = false; // set to true in handleDNU()
 	static public  boolean isVerbatim() { return verbatim; }
 	static public  void    verbatimIs( boolean val ) { verbatim = val; }
@@ -121,6 +113,10 @@ public class Reply { // a reply is basically a formatted answer
 	public  void    repeated( boolean s ) { repeated = s; }
 	public  boolean repeated() { return repeated; }
 	
+	static private String lastOutput = null;
+	static public  String lastOutput() { return lastOutput; }
+	static public  String lastOutput( String l ) { return lastOutput = l; }
+
 	private boolean done = false;
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
@@ -191,19 +187,17 @@ public class Reply { // a reply is basically a formatted answer
 	 */
 	public Fmt f = new Fmt();
 	
+	public  boolean verbose() { return !f.shrt(); }
+	public  void    verbose( boolean v ) { f.shrt( v );}
+
 	public  Reply   format( String s ) {
 		cache = null; //de-cache any previous reply
-		f.ormat(
-			Colloquial.applyOutgoing(
-				Context.deref(
-						Variable.deref(
-							new Strings( s )
-			)	)	)	);
+		f.ormat( s );
 		if (!f.variable()) answer( "" ); // really needed?
 		type = calculateType(); // type is dependent on format -- should it be???
 		return this;
 	}
-	public Strings format() {
+	private Strings format() {
 		//audit.traceIn("format", format.toString(0));
 		if (!verbose()) {
 			if (f.ormat().size() > 1 && f.ormat().get( 1 ).equals( "," ))
@@ -223,7 +217,6 @@ public class Reply { // a reply is basically a formatted answer
 		return new Strings( say()).append( f.ormat() );
 	}
 	
-	public static String lastOutput = null;
 	private String encache() {
 		//audit.in( "encache", format().toString() +", type="+ type );
 		if (null == cache) {
@@ -303,8 +296,6 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public String toString() { return encache(); }
 		
-	static public  String lastOutput() { return lastOutput; }  //
-	static public  String lastOutput( String l ) { return lastOutput = l; }
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Variable.encache( Overlay.Get() );
