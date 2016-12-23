@@ -1,6 +1,5 @@
 package com.yagadi.enguage.concept;
 
-import com.yagadi.enguage.expression.Colloquial;
 import com.yagadi.enguage.expression.Context;
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.expression.Utterance;
@@ -134,18 +133,9 @@ public class Intention extends Attribute {
 		return (Reply) audit.out( r.answer( rc ) );
 	}
 	private Reply reply( Reply r ) {
-		audit.in(  "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		// value="X needs Y"; X="_user", Y="beer+crisps" -- ?"fuller/beer+crisps"?
-		// we're on the way out - treat each value as an answer!
-		// now Y="beer and crisps" -- ?"fuller/beer+crisps"?
-		r.format(
-			Colloquial.applyOutgoing(
-				Context.deref(
-					Variable.deref(
-						new Strings( value )
-		)	)	)	)
-		.doneIs( true );
-		audit.out( r.toString() +"::"+ r.format().toString() + "-- we're now DONE!" );
+		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		r.format( value ).doneIs( true );
+		audit.out( "a="+ r.a.toString() + " (we're now DONE!)" );
 		return r;
 	}
 	

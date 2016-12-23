@@ -4,7 +4,15 @@ import com.yagadi.enguage.util.Strings;
 
 public class Fmt {
 	/** Fmt:
-	 * e.g. ["Ok", "you", "need", "..."]
+	 * e.g. ["Ok", ",", "you", "need", "..."]
 	 */
-	public Strings ormat = new Strings();
+	private boolean v = false;
+	public  boolean variable() {return v;}
+	
+	private Strings ormat = new Strings();
+	public  Strings ormat() {return ormat;}
+	public  void    ormat(Strings s) {
+		ormat = s;
+		if (ormat.contains("...")) v = true;
+	}
 }

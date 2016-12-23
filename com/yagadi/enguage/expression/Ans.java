@@ -14,6 +14,7 @@ public class Ans {
 	
 	public  Strings valueOf() {return nswer;}
 	public  void    add( String s ) { nswer.add( s );}
+	public  boolean none() { return nswer.size() == 0; }
 
 	@Override
 	public  String  toString() { return nswer.toString( Reply.andListFormat() ); }

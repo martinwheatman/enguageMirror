@@ -10,6 +10,8 @@ import java.util.Locale;
 import com.yagadi.enguage.sofa.Attribute;
 import com.yagadi.enguage.sofa.Attributes;
 import com.yagadi.enguage.sofa.Numeric;
+import com.yagadi.enguage.sofa.Overlay;
+import com.yagadi.enguage.sofa.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -106,16 +108,34 @@ public class Reply { // a reply is basically a formatted answer
 	static public  void   listSep( String s ) { listSep = s; }
 	static public  String listSep() { return listSep; }
 
-	/* This is used to retrieve the reply from the previous thought. This is
+	/* previous() is used to retrieve the reply from the previous thought. It is
 	 * used in implementing imagination.  If the imagination session goes ok,
-	 * we need the reply from that session. Was implemented with equiv 
+	 * we need the reply from that session. Was implemented with the equiv 
 	 * intention in previous C incarnation.
 	 */
 	static private String previous = "";
 	static public  String previous( String rep ) { return previous = rep; }
 	static public  String previous() { return previous; }
 
-	private int type = DNU;
+	private boolean repeated = false;
+	public  void    repeated( boolean s ) { repeated = s; }
+	public  boolean repeated() { return repeated; }
+	
+	private boolean done = false;
+	public  Reply   doneIs( boolean b ) { done = b; return this; }
+	public  boolean isDone() { return done; }
+	
+	public  Strings say = new Strings();
+	public  String  say() { return say.toString( Strings.SPACED ); }
+	public  void    say( Strings sa ) { say.addAll( Shell.addTerminator( sa )); }
+	
+	private String cache = null;
+	
+	private int     type = DNU;
+	public  int     getType() { return type; }
+	public  boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
+	public  boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
+
 	// todo: needs to be split out into answerType() and formatType()
 	// needs to be split out into class Answer and class Format: think!
 	private int calculateType(Strings ss) {
@@ -131,20 +151,17 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	private int calculateType() {
 		String ans = a.valueOf().toString();
-		if (ans.equals( "" ) && f.ormat.size() == 0)
+		if (ans.equals( "" ) && f.ormat().size() == 0)
 			return DNU;
-		else if (ans.equals( no ) && f.ormat.equals( new Strings( ik )))
+		else if (ans.equals( no ) && f.ormat().equals( new Strings( ik )))
 			return CHS;
-		else if (ans.equals( "" ) && f.ormat.contains( "..." ))
+		else if (ans.equals( "" ) && f.variable())
 			return NK;
-		else if (ans.toString().equals( "" ) && !f.ormat.contains( "..." ))
-			return calculateType( f.ormat );
+		else if (ans.toString().equals( "" ) && !f.variable())
+			return calculateType( f.ormat() );
 		else
 			return calculateType( a.valueOf() );
 	}
-	public int      getType() { return type; }
-	public boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
-	public boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
 
 	/** Answer:
 	 * Multiple answers should now be implemented in a Replies class!
@@ -174,96 +191,84 @@ public class Reply { // a reply is basically a formatted answer
 	 */
 	public Fmt f = new Fmt();
 	
-	//private Strings format = new Strings(); // format is empty!
-	public  Reply   format( String s ) { format( new Strings( s )); return this; }
-	public  Reply   format( Strings sa ) {
+	public  Reply   format( String s ) {
 		cache = null; //de-cache any previous reply
-		f.ormat = sa;
-		if (!f.ormat.contains( "..." )) answer( "" );
+		f.ormat(
+			Colloquial.applyOutgoing(
+				Context.deref(
+						Variable.deref(
+							new Strings( s )
+			)	)	)	);
+		if (!f.variable()) answer( "" ); // really needed?
 		type = calculateType(); // type is dependent on format -- should it be???
 		return this;
 	}
 	public Strings format() {
 		//audit.traceIn("format", format.toString(0));
 		if (!verbose()) {
-			if (f.ormat.size() > 1 && f.ormat.get( 1 ).equals( "," ))
-				if (f.ormat.get( 0 ).equalsIgnoreCase( yes ) || // yes is set to "OK", when yes is "yes", this fails...
-					f.ormat.get( 0 ).equalsIgnoreCase(  no ) ||
-					f.ormat.get( 0 ).equalsIgnoreCase( success )) {
+			if (f.ormat().size() > 1 && f.ormat().get( 1 ).equals( "," ))
+				if (f.ormat().get( 0 ).equalsIgnoreCase( yes ) || // yes is set to "OK", when yes is "yes", this fails...
+					f.ormat().get( 0 ).equalsIgnoreCase(  no ) ||
+					f.ormat().get( 0 ).equalsIgnoreCase( success )) {
 					//audit.traceOut("returning only 1st");
-					return new Strings( say() + " " +f.ormat.get( 0 )); // return only first
-				} else if (f.ormat.get( 0 ).equalsIgnoreCase( failure )) {
+					return new Strings( say() + " " +f.ormat().get( 0 )); // return only first
+				} else if (f.ormat().get( 0 ).equalsIgnoreCase( failure )) {
 					//audit.traceOut("returning rest");
-					return new Strings( say()).append( f.ormat.copyAfter( 1 ).filter()); // forget 1st & 2nd
+					return new Strings( say()).append( f.ormat().copyAfter( 1 ).filter()); // forget 1st & 2nd
 				}
 			//audit.traceOut("returning filtered format");
-			return new Strings( say()).append( f.ormat.filter( ));
+			return new Strings( say()).append( f.ormat().filter( ));
 		}
 		//audit.traceOut("returning full format");
-		return new Strings( say()).append( f.ormat );
+		return new Strings( say()).append( f.ormat() );
 	}
 	
-	private boolean repeated = false;
-	public  void    repeated( boolean s ) { repeated = s; }
-	public  boolean repeated() { return repeated; }
-
-	private boolean done = false;
-	public  Reply   doneIs( boolean b ) { done = b; return this; }
-	public  boolean isDone() { return done; }
-
-	public  Strings say = new Strings();
-	public  String  say() { return say.toString( Strings.SPACED ); }
-	public  void    say( Strings sa ) { say.addAll( Shell.addTerminator( sa )); }
-	
-	private String cache = null;
-
 	public static String lastOutput = null;
 	private String encache() {
 		//audit.in( "encache", format().toString() +", type="+ type );
 		if (null == cache) {
-			Strings utterance = format();
-			if (0 == utterance.size())
-				// todo: is answer ever null??? 
-				utterance = a.valueOf() == null ? new Strings( dnu() ) : new Strings( a.valueOf() );
+			Strings reply = format();
+			if (0 == reply.size())
+				reply = new Strings( a.valueOf() );
 
 			// ... then post-process:
 			// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
-			if (utterance.size() > 0 && !Shell.isTerminator( utterance.get( utterance.size() -1)) &&
-				!((utterance.size() > 1) && Shell.isTerminator( utterance.get( utterance.size() -2)) && Language.isQuote( utterance.get( utterance.size() -1))))
-				utterance.add( Shell.terminators().get( 0 ));
+			if (reply.size() > 0 && !Shell.isTerminator( reply.get( reply.size() -1)) &&
+				!((reply.size() > 1) && Shell.isTerminator( reply.get( reply.size() -2)) && Language.isQuote( reply.get( reply.size() -1))))
+				reply.add( Shell.terminators().get( 0 ));
 
 			// ...finally, if required put in answer (verbatim!)
-			if (utterance.size() == 0)
+			if (reply.size() == 0)
 				if ( a.toString().equals( "" ))
-					utterance = new Strings( dnu() );
+					reply = new Strings( dnu() );
 				else
-					utterance = a.valueOf(); // use the raw answer???
-			else if (utterance.contains( Strings.ELLIPSIS )) {
+					reply = a.valueOf(); // use the raw answer???
+			else if (reply.contains( Strings.ELLIPSIS )) {
 //				audit.ERROR( "replyToString() used to look for ellipsis - now done in Intention" );
 				if ( a.toString().equals( "" ))
-					utterance = new Strings( dnk() ); // need an answer, but we don't have one
+					reply = new Strings( dnk() ); // need an answer, but we don't have one
 				else
 					// ok replace "..." with answer -- where reply maybe "martin/mother/computer"
-					utterance.replace( Strings.ellipsis, new Strings( a.toString() ));
+					reply.replace( Strings.ellipsis, new Strings( a.toString() ));
 			}
 			
 			// outbound and general colloquials
 			if (!isVerbatim())
-				utterance = Colloquial.applyOutgoing( utterance );
+				reply = Colloquial.applyOutgoing( reply );
 				
 			// ...deref any context...
 			
 			// set it to lowercase - removing emphasis on AND
-			ListIterator<String> ui = utterance.listIterator();
+			ListIterator<String> ui = reply.listIterator();
 			while (ui.hasNext())
 				ui.set( ui.next().toLowerCase( Locale.getDefault() ));
 			
 			// English-dependent processing...
-			utterance = Language.indefiniteArticleVowelSwap(
+			reply = Language.indefiniteArticleVowelSwap(
 							Language.sentenceCapitalisation( 
-								Language.pronunciation( utterance )));
+								Language.pronunciation( reply )));
 			
-			cache = Language.asString( Numeric.deref( /*Variable.deref(*/ utterance /*)*/));
+			cache = Language.asString( Numeric.deref( /*Variable.deref(*/ reply /*)*/));
 			// ...deref any envvars...  ...any numerics...
 		}
 		//audit.out( cache );
@@ -276,7 +281,7 @@ public class Reply { // a reply is basically a formatted answer
 			utterance = Shell.stripTerminator( utterance );
 		
 		// Construct the DNU format
-		format( new Strings( Reply.dnu() ).append( "," ).append( "..." ));
+		format( Reply.dnu() + ", ..." );
 		answer( utterance.toString( Strings.SPACED ));
 		
 		/* Take this out for the moment... ...needs more thought:
@@ -302,7 +307,8 @@ public class Reply { // a reply is basically a formatted answer
 	static public  String lastOutput( String l ) { return lastOutput = l; }
 	public static void main( String args[] ) {
 		Audit.allOn();
-		
+		Variable.encache( Overlay.Get() );
+
 		Reply.dnu( "Pardon?" );
 		Reply.dnk( "Dunno" );
 		Reply.no(  "No" );
