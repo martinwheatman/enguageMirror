@@ -6,6 +6,10 @@ public class Fmt {
 	/** Fmt:
 	 * e.g. ["Ok", ",", "you", "need", "..."]
 	 */
+	private boolean shrt = false;
+	public  boolean shrt() { return shrt; }
+	public  void    shrt( boolean b ) { shrt = b; }
+	
 	private boolean v = false;
 	public  boolean variable() {return v;}
 	
