@@ -91,9 +91,9 @@ public class Variable {
 	// for backward compatibility, keeping these statics 
 	static public void set( String name, String val ) { new Variable( name ).set( val );}
 	static public void unset( String name ) { new Variable( name ).unset(); }
-	static public String get( String name ) { return cache.get( name ); }
+	static public String get( String name ) { return cache==null ? "" : cache.get( name ); }
 	static public String get( String name, String def ) {
-		String value = cache.get( name );
+		String value = cache==null? null : cache.get( name );
 		return value==null || value.equals("") ? def : value;
 	}
 	static public boolean isSet( String name ) {
