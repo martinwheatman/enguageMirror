@@ -36,7 +36,7 @@ public class Intention extends Attribute {
 	
 	// processes: think="... is a thought".
 	private Reply think( Reply r /*String answer*/ ) {
-		audit.in( "think", "value='"+ value +"', previous='"+ r.a.nswer.toString( Reply.andListFormat() ) +"', ctx =>"+ Context.valueOf());
+		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
 
 		// pre-process value to get an utterance...
 		// we don't know the state of the intentional value
@@ -45,7 +45,7 @@ public class Intention extends Attribute {
 				Context.deref( // X => "coffee", singular-x="80s" -> "80"
 					new Strings( value ).replace( // replace "..." with answer
 							Strings.ellipsis,
-							new Strings( r.a.nswer.toString( Reply.andListFormat() ).toString() )) // was answer
+							new Strings( r.a.toString() )) // was answer
 					//false - is default don't expand, UNIT => cup NOT unit='cup'
 			)	);
 		
@@ -54,7 +54,7 @@ public class Intention extends Attribute {
 		// This is mediation...
 		Reply tmpr = Repertoire.interpret( new Utterance( u )); // just recycle existing reply
 		if (r.a.isAppending())
-			r.a.nswer.add( tmpr.a.nswer.toString( Reply.andListFormat() ) );
+			r.a.add( tmpr.a.toString() );
 		else
 			r = tmpr;
 		// pass out was done value was!
@@ -76,7 +76,7 @@ public class Intention extends Attribute {
 			}
 			r.doneIs( true );
 		
-		} else if ( Reply.NO == r.getType() && r.a.nswer.toString( Reply.andListFormat() ).equalsIgnoreCase( Reply.ik()))
+		} else if ( Reply.NO == r.getType() && r.a.toString().equalsIgnoreCase( Reply.ik()))
 			r.answer( Reply.yes());
 
 		return (Reply) audit.out( r );
@@ -84,7 +84,7 @@ public class Intention extends Attribute {
 	private Reply conceptualise( Reply r ) {
 		audit.in( "conceputalise", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		
-		String answer = r.a.nswer.toString( Reply.andListFormat() );
+		String answer = r.a.toString();
 		
 		// SofA CLI in C returned 0, 1, or "xxx" - translate these values into Reply values
 		Strings cmd = // Don't Strings.normalise() coz sofa requires "1" parameter

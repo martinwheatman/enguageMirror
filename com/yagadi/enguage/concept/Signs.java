@@ -274,7 +274,7 @@ static private int   total = 0;
 
 								//if (Audit.detailedDebug) audit.debug("understood resetting "+ i );
 								s.interpretation = noInterpretation; // tidy as we go
-								answer = r.a.nswer.toString( Reply.andListFormat() );
+								answer = r.a.toString();
 								done = true;
 							}
 						} // AND combo: I need milk and I need cheese.

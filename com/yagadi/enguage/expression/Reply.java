@@ -130,57 +130,38 @@ public class Reply { // a reply is basically a formatted answer
 		else return CHS;
 	}
 	private int calculateType() {
-		//audit.LOG("a:"+a.nswer.toString()+", f:"+f.ormat.toString());
-		if (a.nswer.toString( andListFormat ).equals( "" ) && f.ormat.size() == 0) {
+		String ans = a.valueOf().toString();
+		if (ans.equals( "" ) && f.ormat.size() == 0)
 			return DNU;
-		} else if (a.nswer.toString( andListFormat ).equals( no ) && f.ormat.equals( new Strings( ik ))) {
+		else if (ans.equals( no ) && f.ormat.equals( new Strings( ik )))
 			return CHS;
-		} else if (a.nswer.toString( andListFormat ).equals( "" ) && f.ormat.contains( "..." )) {
+		else if (ans.equals( "" ) && f.ormat.contains( "..." ))
 			return NK;
-		} else if (a.nswer.toString( andListFormat ).equals( "" ) && !f.ormat.contains( "..." )) {
-			/*	 if (f.ormat.toString().equalsIgnoreCase(   yes )) return YES;
-			else if (f.ormat.toString().equalsIgnoreCase( success)) return YES;
-			else if (f.ormat.toString().equalsIgnoreCase(     no )) return NO;
-			else if (f.ormat.toString().equalsIgnoreCase( failure)) return NO;
-			else if (f.ormat.toString().equalsIgnoreCase(     ik )) return IK;
-			else if (f.ormat.toString().equalsIgnoreCase(    dnk )) return NK;
-			else if (f.ormat.toString().equalsIgnoreCase(    dnu )) return DNU;
-			else return CHS; // */
+		else if (ans.toString().equals( "" ) && !f.ormat.contains( "..." ))
 			return calculateType( f.ormat );
-		} else {
-			/*     if (a.nswer.toString(  ).equalsIgnoreCase(   yes )) return YES;
-			else if (a.nswer.toString(  ).equalsIgnoreCase(success)) return YES;
-			else if (a.nswer.toString(  ).equalsIgnoreCase(    no )) return NO;
-			else if (a.nswer.toString(  ).equalsIgnoreCase(failure)) return NO;
-			else if (a.nswer.toString(  ).equalsIgnoreCase(    ik )) return IK;
-			else if (a.nswer.toString(  ).equalsIgnoreCase(   dnk )) return NK;
-			else if (a.nswer.toString(  ).equalsIgnoreCase(   dnu )) return DNU;
-			else return CHS; // */
-			return calculateType( a.nswer );
-	}	}
+		else
+			return calculateType( a.valueOf() );
+	}
 	public int      getType() { return type; }
 	public boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
 	public boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
 
 	/** Answer:
-	 * Multiple answers should be implemented in Replies class!
+	 * Multiple answers should now be implemented in a Replies class!
 	 *                                     or in List class, below.
 	 * e.g. You need tea and biscuits and you are meeting your brother at 7pm.
 	 */
 	public Ans a = new Ans();
 	
-	//private Strings  answer = new Strings();
-	//public  String  xanswerToString() { return a.nswer.toString( andListFormat ); }
-	//public  Reply   xanswerAdd( String ans ) { a.nswer.add( ans ); return this; }
 	public  Reply   answer( String ans ) {
 		if (null == ans) {
-			a.nswer = new Strings();
+			a = new Ans(); // a.nswer = new Strings();
 			cache = null;
 			type = DNU;
 		} else if (!ans.equals( Shell.IGNORE )) {
 			if (!a.isAppending())
-				a.nswer = new Strings();
-			a.nswer.add( ans );
+				a = new Ans(); // a.nswer = new Strings();
+			a.add( ans );
 			// type is dependent on answer
 			cache = null;
 			type = calculateType();
@@ -243,7 +224,7 @@ public class Reply { // a reply is basically a formatted answer
 			Strings utterance = format();
 			if (0 == utterance.size())
 				// todo: is answer ever null??? 
-				utterance = a.nswer == null ? new Strings( dnu() ) : new Strings( a.nswer );
+				utterance = a.valueOf() == null ? new Strings( dnu() ) : new Strings( a.valueOf() );
 
 			// ... then post-process:
 			// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
@@ -253,17 +234,17 @@ public class Reply { // a reply is basically a formatted answer
 
 			// ...finally, if required put in answer (verbatim!)
 			if (utterance.size() == 0)
-				if ( a.nswer.toString( andListFormat ).equals( "" ))
+				if ( a.toString().equals( "" ))
 					utterance = new Strings( dnu() );
 				else
-					utterance = a.nswer; // use the raw answer???
+					utterance = a.valueOf(); // use the raw answer???
 			else if (utterance.contains( Strings.ELLIPSIS )) {
 //				audit.ERROR( "replyToString() used to look for ellipsis - now done in Intention" );
-				if ( a.nswer.toString( andListFormat ).equals( "" ))
+				if ( a.toString().equals( "" ))
 					utterance = new Strings( dnk() ); // need an answer, but we don't have one
 				else
 					// ok replace "..." with answer -- where reply maybe "martin/mother/computer"
-					utterance.replace( Strings.ellipsis, new Strings( a.nswer.toString( andListFormat ) ));
+					utterance.replace( Strings.ellipsis, new Strings( a.toString() ));
 			}
 			
 			// outbound and general colloquials
