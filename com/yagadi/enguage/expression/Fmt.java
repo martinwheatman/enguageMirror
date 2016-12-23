@@ -19,11 +19,21 @@ public class Fmt {
 	public  boolean variable() {return v;}
 	
 	private Strings ormat = new Strings();
+	/*private Strings format() {
+		if (!verbose()) {
+			if (f.ormat().size() > 1 && f.ormat().get( 1 ).equals( "," ))
+				if (f.ormat().get( 0 ).equalsIgnoreCase( yes ) || // yes is set to "OK", when yes is "yes", this fails...
+					f.ormat().get( 0 ).equalsIgnoreCase(  no ) ||
+					f.ormat().get( 0 ).equalsIgnoreCase( success )) {
+					return new Strings( say() + " " +f.ormat().get( 0 ));
+				} else if (f.ormat().get( 0 ).equalsIgnoreCase( failure )) {
+					return new Strings( say()).append( f.ormat().copyAfter( 1 ).filter()); // forget 1st & 2nd
+				}
+			return new Strings( say()).append( f.ormat().filter( ));
+		}
+		return f.ormat( );
+	}*/
 	public  Strings ormat() {return ormat;}
-	public  void    ormat(Strings s) {
-		ormat = s;
-		if (ormat.contains("...")) v = true;
-	}
 	public  void    ormat(String s) {
 		ormat = Colloquial.applyOutgoing(
 					Context.deref(

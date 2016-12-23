@@ -197,30 +197,11 @@ public class Reply { // a reply is basically a formatted answer
 		type = calculateType(); // type is dependent on format -- should it be???
 		return this;
 	}
-	private Strings format() {
-		//audit.traceIn("format", format.toString(0));
-		if (!verbose()) {
-			if (f.ormat().size() > 1 && f.ormat().get( 1 ).equals( "," ))
-				if (f.ormat().get( 0 ).equalsIgnoreCase( yes ) || // yes is set to "OK", when yes is "yes", this fails...
-					f.ormat().get( 0 ).equalsIgnoreCase(  no ) ||
-					f.ormat().get( 0 ).equalsIgnoreCase( success )) {
-					//audit.traceOut("returning only 1st");
-					return new Strings( say() + " " +f.ormat().get( 0 )); // return only first
-				} else if (f.ormat().get( 0 ).equalsIgnoreCase( failure )) {
-					//audit.traceOut("returning rest");
-					return new Strings( say()).append( f.ormat().copyAfter( 1 ).filter()); // forget 1st & 2nd
-				}
-			//audit.traceOut("returning filtered format");
-			return new Strings( say()).append( f.ormat().filter( ));
-		}
-		//audit.traceOut("returning full format");
-		return new Strings( say()).append( f.ormat() );
-	}
 	
 	private String encache() {
 		//audit.in( "encache", format().toString() +", type="+ type );
 		if (null == cache) {
-			Strings reply = format();
+			Strings reply = new Strings( say() ).append( f.ormat());
 			if (0 == reply.size())
 				reply = new Strings( a.valueOf() );
 
