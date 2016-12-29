@@ -38,7 +38,8 @@ public class Fmt {
 					Context.deref(
 						Variable.deref(
 							new Strings( s )
-				)	)	);		
+				)	)	)
+				;		
 		if (ormat.contains("...")) v = true;
 	}
 	static public void main( String args[] ) {
