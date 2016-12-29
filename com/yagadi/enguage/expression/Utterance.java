@@ -112,7 +112,7 @@ public class Utterance {
 			//* Spatial test:
 			Where.doLocators();
 			audit.log("Creating a pub:" +
-							new Sofa(null).interpret(new Strings("entity create pub"))
+							new Sofa().interpret(new Strings("entity create pub"))
 			);
 
 			// create a new Utterance...

@@ -109,7 +109,7 @@ public class Intention extends Attribute {
 		}	}	}
 		
 		audit.debug( "conceptualising: "+ cmd.toString( Strings.SPACED ));
-		String rc = new Sofa( null ).interpret( cmd );
+		String rc = new Sofa().interpret( cmd );
 		audit.debug(  "raw rc is: '"+ rc +"'" ); // "" will be passed back but ignored by r.answer()
 		if (cmd.get( 1 ).equals( "get" ) && (null == rc || rc.equals( "" ))) {
 			audit.debug("conceptualise: get returned null -- should return something");

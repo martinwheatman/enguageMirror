@@ -9,7 +9,7 @@ import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 
 class LinkShell extends Shell {
-	LinkShell( Strings args ) { super("LinkShell", args ); }
+	LinkShell() { super( "LinkShell" );}
 	public String interpret( Strings a ) { return Link.interpret( a ); }
 }
 
@@ -239,6 +239,6 @@ public class Link {
 	public static void main( String args[] ) {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
-		//else
-		//	new LinkShell( ).run();
+		else
+			new LinkShell().run();
 }	}

@@ -40,13 +40,13 @@ public class Where {
 	public  boolean location( ListIterator<String> si ) {
 		if (si.hasNext()) {
 			String t = si.next();
-			if (new Sofa( null ).interpret( new Strings( "entity exists "+ t )).equals( Shell.SUCCESS ))
+			if (new Sofa().interpret( new Strings( "entity exists "+ t )).equals( Shell.SUCCESS ))
 			{	location.add( t );
 				si.remove();
 				return true;
 			} else if (t.equals( "the" )) {
 				String p = si.next();
-				if (new Sofa( null ).interpret( new Strings( "entity exists "+ p ))
+				if (new Sofa().interpret( new Strings( "entity exists "+ p ))
 						.equals( Shell.SUCCESS )) {
 					location.add( "the" );
 					location.add( p );
@@ -156,10 +156,10 @@ public class Where {
 			// ok, let's do some testing...
 			audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
 			
-			audit.log( "Creating paris:"+ new Sofa( null ).interpret( new Strings( "entity create paris" )));
+			audit.log( "Creating paris:"+ new Sofa().interpret( new Strings( "entity create paris" )));
 			testGet( "i am meeting my brother in paris at 10", "i am meeting my brother at 10" );
 			
-			audit.log( "Creating a pub:"+ new Sofa( null ).interpret( new Strings( "entity create pub" )));
+			audit.log( "Creating a pub:"+ new Sofa().interpret( new Strings( "entity create pub" )));
 			testGet( "i am meeting my brother at the pub at 10", "i am meeting my brother at 10" );
 			
 			testGet( "underneath" );
