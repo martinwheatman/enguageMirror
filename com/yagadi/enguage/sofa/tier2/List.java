@@ -343,7 +343,11 @@ public class List extends Value {
 	}
 	static public void test( String cmd, String result ) {
 		String s = List.interpret( params( cmd ));
-		audit.log( cmd +", returns:\t"+ s + "("+(s.equals( result )?"PASS":"FAIL, should be '"+ result +"'") +")" );
+		audit.log( cmd
+				+", returns:\n\t"+ s
+				+ "("+(new Strings( s ).equals( new Strings( result ))?
+						"PASS)" :
+						"FAIL),\n  should be '"+ result +"'") +"\n");
 	}
 	
 	public static void main( String[] argv ) { // sanity check...

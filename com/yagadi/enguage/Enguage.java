@@ -277,6 +277,10 @@ public class Enguage extends Shell {
 					"You're meeting your brother at the pub." );
 			testInterpret( "Am I meeting my brother",
 					"Yes , you're meeting your brother." );
+			
+			testInterpret( "I'm meeting my sister at the pub" );
+			testInterpret( "When am I meeting my sister" );
+			testInterpret( "When am I meeting my dad" );
 		}
 
 		if ( level == 0 ) {
