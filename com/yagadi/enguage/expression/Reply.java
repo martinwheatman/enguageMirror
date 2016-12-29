@@ -1,12 +1,5 @@
 package com.yagadi.enguage.expression;
 
-/* changes - removing preferences - kept in until implemented in app
- * or reinstated here...
- */
-
-import java.util.ListIterator;
-import java.util.Locale;
-
 import com.yagadi.enguage.sofa.Attribute;
 import com.yagadi.enguage.sofa.Attributes;
 import com.yagadi.enguage.sofa.Numeric;
@@ -199,7 +192,6 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	
 	private String encache() {
-		//audit.in( "encache", format().toString() +", type="+ type );
 		if (null == cache) {
 			Strings reply = new Strings( say() ).append( f.ormat());
 			if (0 == reply.size())
@@ -218,11 +210,9 @@ public class Reply { // a reply is basically a formatted answer
 				else
 					reply = a.valueOf(); // use the raw answer???
 			else if (reply.contains( Strings.ELLIPSIS )) {
-//				audit.ERROR( "replyToString() used to look for ellipsis - now done in Intention" );
 				if ( a.toString().equals( "" ))
 					reply = new Strings( dnk() ); // need an answer, but we don't have one
 				else
-					// ok replace "..." with answer -- where reply maybe "martin/mother/computer"
 					reply.replace( Strings.ellipsis, new Strings( a.toString() ));
 			}
 			
@@ -233,19 +223,19 @@ public class Reply { // a reply is basically a formatted answer
 			// ...deref any context...
 			
 			// set it to lowercase - removing emphasis on AND
+			/*
 			ListIterator<String> ui = reply.listIterator();
 			while (ui.hasNext())
 				ui.set( ui.next().toLowerCase( Locale.getDefault() ));
-			
+			*/
 			// English-dependent processing...
 			reply = Language.indefiniteArticleVowelSwap(
 							Language.sentenceCapitalisation( 
 								Language.pronunciation( reply )));
 			
-			cache = Language.asString( Numeric.deref( /*Variable.deref(*/ reply /*)*/));
+			cache = Language.asString( Numeric.deref( Context.deref( reply ) ));
 			// ...deref any envvars...  ...any numerics...
 		}
-		//audit.out( cache );
 		return cache;
 	}
 	private void handleDNU( Strings utterance ) {
@@ -256,7 +246,7 @@ public class Reply { // a reply is basically a formatted answer
 		
 		// Construct the DNU format
 		format( Reply.dnu() + ", ..." );
-		answer( utterance.toString( Strings.SPACED ));
+		answer( utterance.toString());
 		
 		/* Take this out for the moment... ...needs more thought:
 		 * if (!strangeThought.equals( "" ))
