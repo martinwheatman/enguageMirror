@@ -44,7 +44,7 @@ public class Intention extends Attribute {
 				Context.deref( // X => "coffee", singular-x="80s" -> "80"
 					new Strings( value ).replace( // replace "..." with answer
 							Strings.ellipsis,
-							new Strings( r.a.toString() )) // was answer
+							r.a.toString() ) // was answer
 					//false - is default don't expand, UNIT => cup NOT unit='cup'
 			)	);
 		
@@ -89,9 +89,7 @@ public class Intention extends Attribute {
 		Strings cmd = // Don't Strings.normalise() coz sofa requires "1" parameter
 				Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref(
-						new Strings( value ).replace( // replace "..." with answer
-							Strings.ellipsis,
-							new Strings( answer )),
+						new Strings( value ).replace( Strings.ellipsis, answer ),
 						true // DO expand, UNIT => unit='non-null value'
 				)	);
 		
@@ -111,7 +109,6 @@ public class Intention extends Attribute {
 		}	}	}
 		
 		audit.debug( "conceptualising: "+ cmd.toString( Strings.SPACED ));
-		String rc = new Sofa( null ).interpret( cmd );
 		audit.debug(  "raw rc is: '"+ rc +"'" ); // "" will be passed back but ignored by r.answer()
 		if (cmd.get( 1 ).equals( "get" ) && (null == rc || rc.equals( "" ))) {
 			audit.debug("conceptualise: get returned null -- should return something");
