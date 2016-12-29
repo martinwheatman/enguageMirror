@@ -433,6 +433,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		//audit.traceOut( toString());
 		return this;
 	}
+	public Strings replace( Strings a, String b ) { return replace( a, new Strings( b ));}
 	public boolean contains( Strings a ) {
 		int len = size(), alen = a.size();
 		for (int i=0; i <= len - alen; i++) {
