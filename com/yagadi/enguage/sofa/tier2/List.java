@@ -221,6 +221,7 @@ public class List extends Value {
 		 */
 		String lastParam = params.get( params.size() - 1 );
 		audit.debug( "last param is:"+ lastParam );
+		// also need when='any' !
 		return position( item,
 				!(lastParam.equals( "quantity='some'" )
 				||lastParam.equals( "quantity='any'" ))) != -1;
@@ -341,46 +342,53 @@ public class List extends Value {
 	static public Strings params( String s ) {
 		return new Strings( s ).contract( "+=" ).contract( "-=" ).contract( "=" );
 	}
-	static public void test( String cmd, String result ) {
+	static public void test( int id, String cmd, String result ) {
 		String s = List.interpret( params( cmd ));
-		audit.log( cmd +", returns:\t"+ s + "("+(s.equals( result )?"PASS":"FAIL, should be '"+ result +"'") +")" );
+		if (!result.equals( "" ) && !new Strings( s ).equals( new Strings( result )))
+			audit.FATAL(
+					(id != -1 ? id +": " : "")+
+					cmd +", returns:\n"
+					+ "\t'"+ s +"'\n"
+					+ "but should return:\n"
+					+ "\t'"+ result +"'"
+			);
 	}
+	static public void test( int id, String cmd ) { test( id, cmd, "" );}
+	static public void test( String cmd ) { test( -1, cmd, "" );}
+	static public void test( String cmd, String result ) {test( -1, cmd, result );}
 	
 	public static void main( String[] argv ) { // sanity check...
+		// Audit.turnOn();
+		// Audit.runtimeDebug = true;
+		// Audit.tracing = true;
+		// localDebug = true;
+		
+		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
-		/*
-		Audit.turnOn();
-		Audit.runtimeDebug = true;
-		Audit.tracing = true;
-		localDebug = true;
-		// -- */
-		
-		// SHOPPING LIST TESTS.. 
-		// start withan empty list
-		test( "delete martin needs", "TRUE" );
-		
-		// this first test adds 10 coffees and 6 milks,
-		test( "add martin needs coffee quantity='1'", "a coffee" );
-		test( "add martin needs coffee quantity='1 more'", "1 more coffee" );
-		/*test( "add martin needs milk quantity='6' unit='pint'",   "6 pints of milk" );
-		test( "get martin needs", "10 coffees, and 6 pints of milk" );
-		
-		// remove more milk than we've got, and not all coffees
-		test( "remove martin needs milk quantity='10' unit='pint'", "6 pints of milk" ); 
-		test( "remove martin needs coffees quantity='6'", "6 coffees" );
-		test( "get martin needs", "4 coffees");
+		test( 1, "delete martin needs", "TRUE" );
+		test( 2, "add martin needs coffee quantity='1'", "a coffee" );
+		test( 3, "add martin needs coffee quantity='8 more'", "8 more coffees" );
+		test( 4, "add martin needs milk quantity='6' unit='pint'",   "6 pints of milk" );
+		test( 5, "get martin needs", "9 coffees, and 6 pints of milk" );
 
-		test( "removeAny martin needs coffee", "TRUE" );
-		test( "get martin needs", "");
-		// SHOPPING LIST TEST
-		*/
-		//Calendar list tests
+		// remove more milk than we've got, and not all coffees
+		test( 6, "remove martin needs milk quantity='10' unit='pint'", "6 pints of milk" ); 
+		test( 7, "remove martin needs coffees quantity='6'", "6 coffees" );
+		test( 8, "get martin needs", "3 coffees");
+
+		test( 9, "exists martin needs coffees quantity='any'", "TRUE" );
+		
+		test( 10, "removeAny martin needs coffee", "TRUE" );
+		test( 11, "get martin needs", "");
+		// END SHOPPING LIST TEST.
+		
+		// BEGIN Calendar list tests...
 		Item.format( ",LOCATOR LOCATION,WHEN" );
-		test( "add _user meeting fred where='the pub' when='20151225190000'",
-				"fred at the pub at 7 pm on the 25th December , 2015" );
-		test( "add _user meeting fred where='the pub' when='20151225193000'",
-				"fred at the pub at 7 30 pm on the 25th December , 2015" );
-		//Calendar list tests
-		/* 
-		 */
+		test( 20, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
+				  "fred at the pub at 7 pm on the 25th of December , 2015" );
+		test( 21, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",
+				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
+		// END Calendar list tests.
+
+		audit.log( "all tests pass!" );
 }	}
