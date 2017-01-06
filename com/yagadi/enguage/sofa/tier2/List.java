@@ -357,7 +357,7 @@ public class List extends Value {
 	static public void test( String cmd ) { test( -1, cmd, "" );}
 	static public void test( String cmd, String result ) {test( -1, cmd, result );}
 	
-	public static void main( String[] argv ) { // sanity check...
+	public static void main( String[] argv ) {
 		// Audit.turnOn();
 		// Audit.runtimeDebug = true;
 		// Audit.tracing = true;
@@ -365,30 +365,32 @@ public class List extends Value {
 		
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
-		test( 1, "delete martin needs", "TRUE" );
-		test( 2, "add martin needs coffee quantity='1'", "a coffee" );
-		test( 3, "add martin needs coffee quantity='8 more'", "8 more coffees" );
-		test( 4, "add martin needs milk quantity='6' unit='pint'",   "6 pints of milk" );
-		test( 5, "get martin needs", "9 coffees, and 6 pints of milk" );
+		test( 101, "delete martin needs", "TRUE" );
+		test( 102, "add martin needs coffee quantity='1'", "a coffee" );
+		test( 103, "add martin needs coffee quantity='8 more'", "8 more coffees" );
+		test( 104, "add martin needs milk quantity='6' unit='pint'",   "6 pints of milk" );
+		test( 105, "get martin needs", "9 coffees, and 6 pints of milk" );
 
 		// remove more milk than we've got, and not all coffees
-		test( 6, "remove martin needs milk quantity='10' unit='pint'", "6 pints of milk" ); 
-		test( 7, "remove martin needs coffees quantity='6'", "6 coffees" );
-		test( 8, "get martin needs", "3 coffees");
+		test( 106, "remove martin needs milk quantity='10' unit='pint'", "6 pints of milk" ); 
+		test( 107, "remove martin needs coffees quantity='6'", "6 coffees" );
+		test( 108, "get martin needs", "3 coffees");
 
-		test( 9, "exists martin needs coffees quantity='any'", "TRUE" );
+		test( 109, "exists martin needs coffees quantity='3'",   "TRUE" );
+		test( 110, "exists martin needs coffees quantity='any'", "TRUE" );
+		test( 111, "exists martin needs coffees quantity='1'",  "FALSE" );
 		
-		test( 10, "removeAny martin needs coffee", "TRUE" );
-		test( 11, "get martin needs", "");
+		test( 112, "removeAny martin needs coffee", "TRUE" );
+		test( 113, "get martin needs", "");
 		// END SHOPPING LIST TEST.
 		
 		// BEGIN Calendar list tests...
 		Item.format( ",LOCATOR LOCATION,WHEN" );
-		test( 20, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
+		test( 201, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
 				  "fred at the pub at 7 pm on the 25th of December , 2015" );
-		test( 21, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",
+		test( 202, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
 		// END Calendar list tests.
 
-		audit.log( "all tests pass!" );
+		audit.log( "All tests pass!" );
 }	}
