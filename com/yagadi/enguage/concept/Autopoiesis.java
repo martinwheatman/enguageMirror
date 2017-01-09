@@ -140,7 +140,7 @@ public class Autopoiesis extends Intention {
 					// then add it into the list of signs
 					Repertoire.signs.insert( s );
 		}	}	}
-		r.answer( Reply.yes());
+		r.answer( Reply.yes().toString() );
 		if (Audit.startupDebug) audit.out( "result="+ r.toString() );
 		return r;
 }	}

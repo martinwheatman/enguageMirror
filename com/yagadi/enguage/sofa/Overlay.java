@@ -204,13 +204,10 @@ public class Overlay {
 		String absName = null;
 		try {
 			if (null == dname) {
-				//audit.audit("def");
 				absName =  ".";
 			} else if (dname.charAt( 0 ) == '/') {
-				//audit.audit("abs");
 				absName = new File( dname ).getCanonicalPath();
 			} else {
-				//audit.audit("full:"+ p.pwd() + ":" + dname);
 				absName = new File( p.pwd() + File.separator + dname ).getCanonicalPath();
 			}
 		} catch( Exception e ) {
@@ -218,22 +215,14 @@ public class Overlay {
 		}
 		
 		p.insertDir( absName, "" );
-		
-		//audit.debug( "isOverlaid?="+ Boolean.valueOf( isOverlaid( p.pwd() )) );
 		if (p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
-			//audit.debug( "is overlaid" );
 			int			n = -1,
 			        count = count();
-			//audit.debug( "absFilename="+ absName +", pwd="+ p.pwd() );
-			String  prefix = Ospace.root + File.separator + Series.name() +".";
-			//audit.debug( "prefix is "+ prefix );
+			String prefix = Ospace.root + File.separator + Series.name() +".";
 			String suffix = absName.substring( p.pwd().length());
-			//audit.debug( "suffix is "+ suffix );
-			while (++n < count) {
-				//audit.debug( "insertingDir:"+ prefix + n + suffix );
+			while (++n < count)
 				p.insertDir( prefix + n + suffix, "" );
-			}
-		} //audit.debug( "is NOT overlaid"+ p.pwd());
+		}
 		Iterator<Pent> pi = p.iterator(); 
 		while ( pi.hasNext() )
 			rc.add( pi.next().name() );
@@ -275,7 +264,6 @@ public class Overlay {
 		Strings values = argv.copyAfter( 0 );
 		String  value  = values.toString( Strings.PATH ),
 				cmd    = argv.get( 0 );
-		
 		
 		if (cmd.equals("attach") && (2 >= argc)) {
 			audit.debug( "enguage series existing="+ Boolean.valueOf( Series.existing( "enguage" )));

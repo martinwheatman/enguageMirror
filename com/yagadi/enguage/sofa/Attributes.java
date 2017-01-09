@@ -250,10 +250,10 @@ public class Attributes extends ArrayList<Attribute> {
 	public static void main( String argv[]) {
 		Audit.allOn();
 		Attributes a = new Attributes();
-		a.add( new Attribute( "martin", "hero" ));
+		a.add( new Attribute( "martin", "heroic" ));
 		a.add( new Attribute( "ruth", "fab" ));
 		audit.log( "Initial test: "+ a.toString());
-		audit.log( "\tmartin is "+  a.get( "martin" ) +"ic");
+		audit.log( "\tmartin is "+  a.get( "martin" ));
 		audit.log( "\truth is "+   a.get( "ruth" ));
 		audit.log( "\tjames is "+  a.get( "james" ));
 		audit.log( "\tderef martin is "+  a.deref( "what is MARTIN" ));

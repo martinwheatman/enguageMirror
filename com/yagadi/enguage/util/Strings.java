@@ -222,7 +222,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			return toString( "", seps.get( 0 ), "" );
 		else if (seps.size() == 2) { // oxford comma: ", ", ", and "
 			String rc = "";
-			ListIterator li = listIterator();
+			ListIterator<String> li = listIterator();
 			if (li.hasNext()) {
 				rc = (String) li.next();
 				String first = seps.get( 0 ),
@@ -433,6 +433,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		//audit.traceOut( toString());
 		return this;
 	}
+	public Strings replace( Strings a, String b ) { return replace( a, new Strings( b ));}
 	public boolean contains( Strings a ) {
 		int len = size(), alen = a.size();
 		for (int i=0; i <= len - alen; i++) {

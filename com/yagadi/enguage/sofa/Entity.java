@@ -9,7 +9,7 @@ import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 
 class EntityShell extends Shell {
-	EntityShell( Strings args ) { super( "Entity", args );}
+	EntityShell() { super( "Entity" );}
 	public String interpret( Strings argv ) { return Entity.interpret( argv ); }
 }
 
@@ -128,9 +128,8 @@ public class Entity {
 	}
 	
 	public static void main (String args []) {
-		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
-			System.out.println( "Ouch!" );
-		//else
-		//	new EntityShell( args ).run();
+			audit.ERROR( "Ouch!" );
+		else
+			new EntityShell().run();
 }	}

@@ -11,8 +11,7 @@ import com.yagadi.enguage.util.Strings;
 public class Sofa extends Shell {
 	static private Audit audit = new Audit( "Sofa", true );
 
-	public Sofa(){ this( null );}
-	public Sofa( Strings args ){ super( "Sofa", args );}
+	public Sofa(){ super( "Sofa" );}
 	private static final String True  = SUCCESS;
 	private static final String False = FAIL;
 
@@ -179,6 +178,6 @@ public class Sofa extends Shell {
 			args = a.deref( /* Variable.deref( */ args /*)*/, true );			
 			System.out.println( "Cmds are: "+ args.toString( Strings.SPACED ));
 			
-			Sofa cmd = new Sofa( args );
+			Sofa cmd = new Sofa();
 			cmd.run();
 }	}	}

@@ -1,6 +1,5 @@
 package com.yagadi.enguage.concept;
 
-import com.yagadi.enguage.expression.Colloquial;
 import com.yagadi.enguage.expression.Context;
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.expression.Utterance;
@@ -36,7 +35,7 @@ public class Intention extends Attribute {
 	
 	// processes: think="... is a thought".
 	private Reply think( Reply r /*String answer*/ ) {
-		audit.in( "think", "value='"+ value +"', previous='"+ r.answer() +"', ctx =>"+ Context.valueOf());
+		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
 
 		// pre-process value to get an utterance...
 		// we don't know the state of the intentional value
@@ -45,7 +44,7 @@ public class Intention extends Attribute {
 				Context.deref( // X => "coffee", singular-x="80s" -> "80"
 					new Strings( value ).replace( // replace "..." with answer
 							Strings.ellipsis,
-							new Strings( r.answer().toString() )) // was answer
+							r.a.toString() ) // was answer
 					//false - is default don't expand, UNIT => cup NOT unit='cup'
 			)	);
 		
@@ -53,8 +52,8 @@ public class Intention extends Attribute {
 
 		// This is mediation...
 		Reply tmpr = Repertoire.interpret( new Utterance( u )); // just recycle existing reply
-		if (r.isAppendingAnswer())
-			r.answerAdd( tmpr.answer() );
+		if (r.a.isAppending())
+			r.a.add( tmpr.a.toString() );
 		else
 			r = tmpr;
 		// pass out was done value was!
@@ -76,7 +75,7 @@ public class Intention extends Attribute {
 			}
 			r.doneIs( true );
 		
-		} else if ( Reply.NO == r.getType() && r.answer().equalsIgnoreCase( Reply.ik()))
+		} else if ( Reply.NO == r.getType() && r.a.toString().equalsIgnoreCase( Reply.ik()))
 			r.answer( Reply.yes());
 
 		return (Reply) audit.out( r );
@@ -84,15 +83,13 @@ public class Intention extends Attribute {
 	private Reply conceptualise( Reply r ) {
 		audit.in( "conceputalise", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		
-		String answer = r.answer();
+		String answer = r.a.toString();
 		
 		// SofA CLI in C returned 0, 1, or "xxx" - translate these values into Reply values
 		Strings cmd = // Don't Strings.normalise() coz sofa requires "1" parameter
 				Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref(
-						new Strings( value ).replace( // replace "..." with answer
-							Strings.ellipsis,
-							new Strings( answer )),
+						new Strings( value ).replace( Strings.ellipsis, answer ),
 						true // DO expand, UNIT => unit='non-null value'
 				)	);
 		
@@ -112,7 +109,7 @@ public class Intention extends Attribute {
 		}	}	}
 		
 		audit.debug( "conceptualising: "+ cmd.toString( Strings.SPACED ));
-		String rc = new Sofa( null ).interpret( cmd );
+		String rc = new Sofa().interpret( cmd );
 		audit.debug(  "raw rc is: '"+ rc +"'" ); // "" will be passed back but ignored by r.answer()
 		if (cmd.get( 1 ).equals( "get" ) && (null == rc || rc.equals( "" ))) {
 			audit.debug("conceptualise: get returned null -- should return something");
@@ -134,18 +131,9 @@ public class Intention extends Attribute {
 		return (Reply) audit.out( r.answer( rc ) );
 	}
 	private Reply reply( Reply r ) {
-		audit.in(  "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		// value="X needs Y"; X="_user", Y="beer+crisps" -- ?"fuller/beer+crisps"?
-		// we're on the way out - treat each value as an answer!
-		// now Y="beer and crisps" -- ?"fuller/beer+crisps"?
-		r.format(
-			Colloquial.applyOutgoing(
-				Context.deref(
-					Variable.deref(
-						new Strings( value )
-		)	)	)	)
-		.doneIs( true );
-		audit.out( r.toString() +"::"+ r.format().toString() + "-- we're now DONE!" );
+		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		r.format( value ).doneIs( true );
+		audit.out( "a="+ r.a.toString() + " (we're now DONE!)" );
 		return r;
 	}
 	

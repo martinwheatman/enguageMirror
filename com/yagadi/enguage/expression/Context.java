@@ -5,17 +5,15 @@ import java.util.ArrayList;
 import com.yagadi.enguage.sofa.Attributes;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
-/*  A difficult concept? With:
+/** Context: a list of attributes, so a list of list of attribute
  *  [ [ one=>123, two=>456,  thr=>789  ],
  *    [ thr=>123, four=>456, five=>789 ]
  *  ]
- *  We may request one and get 123, five and get 456, or thr and get 789.
- *  
- *  Can this be done in a single Attributes list - returning the first value? What about
- *  removing a layer of context?
+ *  We request one and get 123, five and get 789, or thr and get 789.
  */
 public class Context {
 	static Audit audit = new Audit( "Context" );
+	
 	static private ArrayList<Attributes> contexts = new ArrayList<Attributes>();
 	static public void  push( Attributes ctx ){ contexts.add( 0, ctx ); }
 	static public void  pop() { contexts.remove( 0 );}
@@ -23,6 +21,8 @@ public class Context {
 		if (contexts.size() == 0) push( new Attributes() );
 		return contexts.get( 0 );
 	}
+	
+	// these need to be words? [ "hello", "there" ] -> ["hi", "martin"]
 	static public Strings deref( Strings words ) { return deref( words, false ); }
 	static public Strings deref( Strings words, boolean expand ) {
 		for (Attributes context : contexts)
@@ -43,4 +43,10 @@ public class Context {
 			s += context.toString();
 		return s;
 	}
-}
+	public static void main( String args[]) {
+		audit.log( "hello there, "+ get( "martin" ) );
+		push( new Attributes().add( "martin", "world" ));
+		audit.log( "hello there, "+ get( "martin" ) );
+		push( new Attributes().add( "hello", "there" ));
+		audit.log( "ctx>>>"+ valueOf() );
+}	}
