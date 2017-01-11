@@ -1,4 +1,4 @@
 On "set output format to PHRASE-FORMAT":
 	perform "item set format FORMAT" ;
-	then, reply "ok, SUBJECT needs ...".
+	then, reply "ok". # todo: 'reply' on its own picks up "far" reply
 	

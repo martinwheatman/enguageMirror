@@ -121,7 +121,7 @@ public class Reply { // a reply is basically a formatted answer
 	private String cache = null;
 	
 	private int     type = DNU;
-	public  int     getType() { return type; }
+	public  int     type() { return type; }
 	public  boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
 	public  boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
 
@@ -258,7 +258,7 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public String toString( Strings utterance ) {
 		String reply = encache();
-		if (Reply.understood( Reply.DNU != getType() )) {
+		if (Reply.understood( Reply.DNU != type() )) {
 			if (!repeated())
 				Reply.lastOutput( reply );
 		} else
