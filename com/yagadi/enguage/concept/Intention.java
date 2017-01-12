@@ -3,6 +3,8 @@ package com.yagadi.enguage.concept;
 import com.yagadi.enguage.expression.Context;
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.expression.Utterance;
+import com.yagadi.enguage.expression.when.Moment;
+import com.yagadi.enguage.expression.when.When;
 import com.yagadi.enguage.sofa.Attribute;
 import com.yagadi.enguage.sofa.Overlay;
 import com.yagadi.enguage.sofa.Sofa;
@@ -111,6 +113,8 @@ public class Intention extends Attribute {
 		audit.debug( "conceptualising: "+ cmd.toString( Strings.SPACED ));
 		String rc = new Sofa().interpret( cmd );
 		audit.debug(  "raw rc is: '"+ rc +"'" ); // "" will be passed back but ignored by r.answer()
+		if (Moment.valid( rc ))
+			rc = new When( rc ).toString();
 		if ((cmd.get( 1 ).equals( "get" ) || cmd.get( 1 ).equals( "attributeValue" ))
 			&& (null == rc || rc.equals( "" ))) {
 			audit.debug("conceptualise: get => nowt, so return: "+ Reply.dnk());

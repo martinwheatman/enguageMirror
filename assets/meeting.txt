@@ -25,7 +25,7 @@ On "when is SUBJECT meeting PHRASE-WHOM":
 	if not, reply "SUBJECT is not meeting anybody";
 	get attribute when of WHOM from SUBJECT meeting list;
 	if not, reply "i don't know";
-	then, reply "SUBJECT is meeting WHOM at ...".
+	then, reply "SUBJECT is meeting WHOM ...".
 On "when am i meeting PHRASE-WHOM", when is _user meeting WHOM.
 On "what time PHRASE-X", when X.
 

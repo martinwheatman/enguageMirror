@@ -16,7 +16,7 @@ public class Moment {
 	public Moment( long n ) { moment = n; }
 	public Moment() {}
 	public Moment( Moment m ) { this( m.moment ); }
-	public Moment( String s ) { if (!s.equals("")) moment = Long.valueOf( s ); }
+	public Moment( String s ) { if (valid( s )) moment = Long.valueOf( s ); }
 	static public Moment getNow() {
 		return new Moment(
 				Long.valueOf(
@@ -24,6 +24,17 @@ public class Moment {
 					)	);
 	}
 
+	public static boolean valid( String s ) {
+		if (s != null && s.length() == 14) {
+			char[] buffer = s.toCharArray();
+			for (Character ch : buffer )
+				if (!Character.isDigit( ch ))
+					return false;
+			return true;
+		}
+		return false;
+	}
+	
 	private long   moment = Absolute.unassignedDate * Time.DAY + Time.unassignedTime;
 	public	long   moment() { return moment; }
 	public	Moment moment( long l ) { moment = l; return this; }
