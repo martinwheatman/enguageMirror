@@ -138,7 +138,7 @@ public class Intention extends Attribute {
 	
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		r.format( value ); // TODO: NOT previous(), inner()!
+		r.format( value.equals( "" ) ? "ok" : value ); // TODO: NOT previous(), inner()!
 		if (r.type() != Reply.NK &&	r.type() != Reply.DNU)
 			r.doneIs( true );
 		audit.out( "a="+ r.a.toString() + (r.isDone()?" (we're DONE!)" : "(keep looking...)" ));

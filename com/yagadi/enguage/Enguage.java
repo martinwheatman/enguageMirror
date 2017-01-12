@@ -133,7 +133,9 @@ public class Enguage extends Shell {
 		String answer = e.interpret( new Strings( cmd ));
 		if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
 			audit.log( "Hint is:" + Repertoire.prompt() );
-		else if ( !expected.equals( "" ) && !new Strings( answer ).equalsIgnoreCase( new Strings( expected )))
+		else if (   !expected.equals( "" )
+		         && !new Strings( answer )
+				.equalsIgnoreCase( new Strings( expected )))
 			audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
 		else
 			audit.log( answer );
@@ -157,7 +159,7 @@ public class Enguage extends Shell {
 			//testInterpret( "detail on" );
 			//testInterpret( "tracing on" );
 	
-			int level = 9;
+			int level = 0;
 	
 			if ( level == 0 || level == 1 ) {
 				audit.title( "The Non-Computable concept of NEED" );
@@ -277,7 +279,6 @@ public class Enguage extends Shell {
 						"Ok , you're not meeting anybody." );
 				testInterpret( "At 7 I'm meeting my brother at the pub",
 						"Ok , you're meeting your brother at 7 at the pub." );
-				testInterpret( "tracing on" );
 				testInterpret( "When  am I meeting my brother",
 						"You're meeting your brother at 7." );
 				testInterpret( "Where am I meeting my brother",
@@ -285,11 +286,12 @@ public class Enguage extends Shell {
 				testInterpret( "Am I meeting my brother",
 						"Yes , you're meeting your brother." );
 				
-				//testInterpret( "I'm meeting my sister at the pub" );
-				//testInterpret( "When am I meeting my sister" );
+				testInterpret( "I'm meeting my sister at the pub" );
+				testInterpret( "When am I meeting my sister",
+						"I don't know." );
 				
 				//testInterpret( "tracing on" );
-				//testInterpret( "When am I meeting my dad" );
+				testInterpret( "When am I meeting my dad" );
 			}
 			
 			//testInterpret( "i don't need anything" );
