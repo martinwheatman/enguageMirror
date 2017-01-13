@@ -11,7 +11,11 @@ import com.yagadi.enguage.util.Strings;
 public class Sofa extends Shell {
 	static private Audit audit = new Audit( "Sofa", true );
 
-	public Sofa(){ super( "Sofa" );}
+	public Sofa(){
+		super( "Sofa" );
+		if (!Overlay.autoAttach())
+			audit.ERROR( "Ouch! in sofa" );
+	}
 	private static final String True  = SUCCESS;
 	private static final String False = FAIL;
 
