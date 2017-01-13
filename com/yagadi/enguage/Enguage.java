@@ -138,7 +138,7 @@ public class Enguage extends Shell {
 				.equalsIgnoreCase( new Strings( expected )))
 			audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
 		else
-			audit.log( answer );
+			audit.log( answer +"\n" );
 	}
 	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
 	
@@ -179,8 +179,6 @@ public class Enguage extends Shell {
 	
 			if ( level == 0 || level == 2 ) {
 				audit.title( "Semantic Thrust" );
-				testInterpret( "i don't need anything",
-						       "ok, you don't need anything." );
 				testInterpret( "i need a cup of coffee",
 						       "ok, you need a cup of coffee." );
 				testInterpret( "i need to go to town",
