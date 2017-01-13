@@ -3,6 +3,8 @@ package com.yagadi.enguage.concept;
 import com.yagadi.enguage.expression.Context;
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.expression.Utterance;
+import com.yagadi.enguage.expression.when.Moment;
+import com.yagadi.enguage.expression.when.When;
 import com.yagadi.enguage.sofa.Attribute;
 import com.yagadi.enguage.sofa.Overlay;
 import com.yagadi.enguage.sofa.Sofa;
@@ -60,7 +62,7 @@ public class Intention extends Attribute {
 		r.doneIs( false );
 
 		Reply.strangeThought(""); // ??? will this clear it on subsequent thoughts?
-		if ( Reply.DNU == r.getType()) {
+		if ( Reply.DNU == r.type()) {
 			/* TODO: At this point do I want to cancel all skipped signs? 
 			 * Or just check if we've skipped any signs and thus report 
 			 * this as simply a warning not an ERROR?
@@ -75,7 +77,7 @@ public class Intention extends Attribute {
 			}
 			r.doneIs( true );
 		
-		} else if ( Reply.NO == r.getType() && r.a.toString().equalsIgnoreCase( Reply.ik()))
+		} else if ( Reply.NO == r.type() && r.a.toString().equalsIgnoreCase( Reply.ik()))
 			r.answer( Reply.yes());
 
 		return (Reply) audit.out( r );
@@ -111,8 +113,11 @@ public class Intention extends Attribute {
 		audit.debug( "conceptualising: "+ cmd.toString( Strings.SPACED ));
 		String rc = new Sofa().interpret( cmd );
 		audit.debug(  "raw rc is: '"+ rc +"'" ); // "" will be passed back but ignored by r.answer()
-		if (cmd.get( 1 ).equals( "get" ) && (null == rc || rc.equals( "" ))) {
-			audit.debug("conceptualise: get returned null -- should return something");
+		if (Moment.valid( rc ))
+			rc = new When( rc ).toString();
+		if ((cmd.get( 1 ).equals( "get" ) || cmd.get( 1 ).equals( "attributeValue" ))
+			&& (null == rc || rc.equals( "" ))) {
+			audit.debug("conceptualise: get => nowt, so return: "+ Reply.dnk());
 			rc = Reply.dnk();
 		} else if (rc.equals( Shell.FAIL )) {
 			audit.debug("conceptualise: get returned FALSE --> no");
@@ -130,10 +135,13 @@ public class Intention extends Attribute {
 		}	}
 		return (Reply) audit.out( r.answer( rc ) );
 	}
+	
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		r.format( value ).doneIs( true );
-		audit.out( "a="+ r.a.toString() + " (we're now DONE!)" );
+		r.format( value.equals( "" ) ? "ok" : value ); // TODO: NOT previous(), inner()!
+		if (r.type() != Reply.NK &&	r.type() != Reply.DNU)
+			r.doneIs( true );
+		audit.out( "a="+ r.a.toString() + (r.isDone()?" (we're DONE!)" : "(keep looking...)" ));
 		return r;
 	}
 	

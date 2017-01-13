@@ -254,7 +254,7 @@ static private int   total = 0;
 							 */
 							
 							// if reply is DNU, this meaning is not appropriate!
-							if (r.getType() == Reply.DNU) {
+							if (r.type() == Reply.DNU) {
 								audit.debug( "Signs.interpretation() returned DNU" );
 								/* Comodification error?
 								 * If, during interpretation, we've modified the repertoire

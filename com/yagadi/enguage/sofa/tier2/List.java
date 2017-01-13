@@ -1,5 +1,7 @@
 package com.yagadi.enguage.sofa.tier2;
 
+import java.util.Locale;
+
 import com.yagadi.enguage.concept.Tag;
 import com.yagadi.enguage.concept.Tags;
 import com.yagadi.enguage.expression.Reply;
@@ -125,18 +127,19 @@ public class List extends Value {
 			audit.ERROR("not found "+ item.toXml());
 		return audit.out( rc );
 	}
-	private Strings attributeValue( Item item, String name ) { // adjusts attributes, e.g. quantity
-		Strings rc = new Strings();
-		audit.in( "attributeValue", "item:"+ item.toXml() +", name="+ name );
-		for (Tag t : list.content()) 
-			if (item == null || t.matches( item.tag())) {
-				if (t.attributes().has( name )) {
-					audit.debug( "getting: "+ name +"='"+ t.attributes().get( name ) +"'");
-					rc.add( t.attributes().get( name ));
-			}	}
+	private Strings attributeValue( Item item, String name ) {
+		Strings   rc = new Strings();
+		String upper = name.toUpperCase( Locale.getDefault() );
+		audit.in( "attributeValue", "item='"+ item.toXml() +"', name="+ upper );
+		for (Tag t : list.content())  {
+			if (item == null || t.matchesContent( item.tag())) {
+				if (t.attributes().has( upper )) {
+					audit.debug( "found: "+ upper +"='"+ t.attributes().get( upper ) +"'");
+					rc.add( t.attributes().get( upper ));
+		}	}	}
 		return audit.out( rc );
 	}
-	private Strings namedValues( String name, String value ) { // adjusts attributes, e.g. quantity
+	private Strings namedValues( String name, String value ) {
 		Strings rc = new Strings();
 		audit.in( "namedValues", "attribute="+ name +", name="+ value );
 		for (Tag t : list.content()) {

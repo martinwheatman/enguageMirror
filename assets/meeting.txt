@@ -1,6 +1,7 @@
 ####################################################
 ### Concept: meeting
 ####################################################
+
 meeting is temporal.
 meeting is spatial.
 
@@ -23,7 +24,11 @@ On "when is SUBJECT meeting PHRASE-WHOM":
 	set output format to ",WHEN";
 	get SUBJECT meeting list;
 	if not, reply "SUBJECT is not meeting anybody";
-	then, reply "SUBJECT is meeting ...".
+	assert SUBJECT is meeting WHOM;
+	if not, reply "SUBJECT is not meeting WHOM";
+	get attribute when of WHOM from SUBJECT meeting list;
+	if not, reply "i don't know";
+	then, reply "SUBJECT is meeting WHOM ...".
 On "when am i meeting PHRASE-WHOM", when is _user meeting WHOM.
 On "what time PHRASE-X", when X.
 

@@ -122,9 +122,9 @@ public class Repertoire {
 			if (isInitialising() || Autoload.ing()) {
 				// check through autop first, at startup
 				r = autop.interpret( u );
-				if (Reply.DNU == r.getType()) {
+				if (Reply.DNU == r.type()) {
 					r = signs.interpret( u );
-					if (Reply.DNU == r.getType())
+					if (Reply.DNU == r.type())
 						r = allop.interpret( u );
 				}
 			} else {
@@ -132,9 +132,9 @@ public class Repertoire {
 				// unloaded up in enguage.interpret()
 				Autoload.load( u.expanded() );// ...autoload from expanded utterance...
 				r = signs.interpret( u );
-				if (Reply.DNU == r.getType()) {
+				if (Reply.DNU == r.type()) {
 					r = allop.interpret( u ); // ...then e signs
-					if (Reply.DNU == r.getType())
+					if (Reply.DNU == r.type())
 						r = autop.interpret( u ); // ...just in case
 			}	}
 			audit.out( r.toString() );
