@@ -163,8 +163,9 @@ public class Enguage extends Shell {
 	
 			if ( level == 0 || level == 1 ) {
 				audit.title( "The Non-Computable concept of NEED" );
-				testInterpret( "i don't need anything",
-						       "ok, you don't need anything." );
+				//testInterpret( "i don't need anything" );
+				testInterpret( "what do i need",
+						       "you don't need anything." );
 				testInterpret( "i need a cup of coffee and a biscuit",
 						       "ok, you need a cup of coffee, and a biscuit.");
 				testInterpret( "what do i need",
@@ -209,6 +210,8 @@ public class Enguage extends Shell {
 				audit.title( "Numerical Context" );
 				testInterpret( "i need a coffee",
 						       "ok, you need a coffee." );
+				testInterpret( "how many coffees do i need" );
+
 				testInterpret( "and another",
 						       "ok, you need 1 more coffee." );
 				testInterpret( "i need a cup of tea",
@@ -217,20 +220,16 @@ public class Enguage extends Shell {
 					           "ok, you need 1 more coffee." );
 				testInterpret( "what do i need",
 						       "You need 3 coffees , and a cup of tea." );
-				testInterpret( "i don't need anything",
-						       "ok, you don't need anything." ); // ok??
 			}
 	
 			if ( level == 0 || level == 5 ) {
 				audit.title( "Correction" );
-				testInterpret( "i need a coffee",
-						       "ok, you need a coffee.");
-				testInterpret( "and another",
+				testInterpret( "i need another coffee",
 						       "ok, you need 1 more coffee.");
 				testInterpret( "no i need another 3",
 						       "ok, you need 3 more coffees.");
 				testInterpret( "what do i need",
-						       "you need 4 coffees.");
+						       "you need 6 coffees, and a cup of tea.");
 				testInterpret( "i don't need anything",
 					           "ok, you don't need anything." );
 			}
