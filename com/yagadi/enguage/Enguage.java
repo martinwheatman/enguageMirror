@@ -166,28 +166,24 @@ public class Enguage extends Shell {
 				//testInterpret( "i don't need anything" );
 				testInterpret( "what do i need",
 						       "you don't need anything." );
-				testInterpret( "i need a cup of coffee and a biscuit",
-						       "ok, you need a cup of coffee, and a biscuit.");
+				testInterpret( "i need 2 cups of coffee and a biscuit",
+						       "ok, you need 2 cups of coffee, and a biscuit.");
 				testInterpret( "what do i need",
-						       "you need a cup of coffee, and a biscuit.");
+						       "you need 2 cups of coffee, and a biscuit.");
+				testInterpret( "how many coffees do i need",
+				               "2, you need 2 coffees." );
 				testInterpret( "i don't need any coffee",
 						       "ok, you don't need any coffee." );
 				testInterpret( "what do i need",
 						       "you need a biscuit." );
-				testInterpret( "i don't need anything",
-						       "ok, you don't need anything."  );
-			}
 	
-			if ( level == 0 || level == 2 ) {
 				audit.title( "Semantic Thrust" );
-				testInterpret( "i need a cup of coffee",
-						       "ok, you need a cup of coffee." );
 				testInterpret( "i need to go to town",
 							   "ok, you need to go to town." );
 				testInterpret( "what do i need",
-							   "you need a cup of coffee, and to go to town." );
-				testInterpret( "i have a coffee",
-						       "ok, you don't need a coffee." );
+							   "you need a biscuit, and to go to town." );
+				testInterpret( "i have a biscuit",
+						       "ok, you don't need a biscuit." );
 				testInterpret( "i have to go to town",
 						       "I know." );
 				testInterpret( "i don't need to go to town",
@@ -210,10 +206,10 @@ public class Enguage extends Shell {
 				audit.title( "Numerical Context" );
 				testInterpret( "i need a coffee",
 						       "ok, you need a coffee." );
-				testInterpret( "how many coffees do i need" );
-
 				testInterpret( "and another",
 						       "ok, you need 1 more coffee." );
+				testInterpret( "how many coffees do i need",
+						       "2, you need 2 coffees." );
 				testInterpret( "i need a cup of tea",
 						       "ok, you need a cup of tea." );
 				testInterpret( "and another coffee",
@@ -283,6 +279,7 @@ public class Enguage extends Shell {
 				testInterpret( "Am I meeting my brother",
 						"Yes , you're meeting your brother." );
 				
+				//testInterpret( "tracing on" );
 				testInterpret( "I'm meeting my sister at the pub" );
 				testInterpret( "When am I meeting my sister",
 						"I don't know." );

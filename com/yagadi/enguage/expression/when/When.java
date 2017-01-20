@@ -2,6 +2,7 @@ package com.yagadi.enguage.expression.when;
 
 import java.util.ListIterator;
 
+import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.sofa.Attributes;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
@@ -258,12 +259,19 @@ public class When {
 	 *	 in ten minutes
 	 */
 	
-	// period
-	public String toString() { return (isMoment() ? from.toString( "" ) : toString( "from", "until" )); }
+	private String rep = "";
+	public  String rep() { return rep; }
+	public  When   rep( String s ) { rep = s; return this;}
+	
+	public String toString() {
+		String rc = isMoment() ? from.toString( "" ) : toString( "from", "until" );
+		return rc.equals( "" ) ? rep() : rc;
+	}
 	public String toString( String fromPrefix, String toPrefix ) {
-		return (  from.isUnassigned() ? "": from.toString( fromPrefix )) // from
-				//+(from.isUnassigned() || to.isUnassigned() ? "":" ")          // sep
-				+(  to.isUnassigned() ? "": to.toString( toPrefix ));   // to
+		String rc = "";
+		if (!from.isUnassigned()) rc += from.toString( fromPrefix );
+		if (  !to.isUnassigned()) rc +=   to.toString(   toPrefix );
+		return rc.equals( "" ) ? rep() : rc;
 	}
 	public String valueOf() {
 		String rc = from.valueOf();
@@ -426,6 +434,7 @@ public class When {
 			testGet( "i am meeting my brother on Thursday", "i am meeting my brother" );
 			audit.log( "test 6 passes!" );
 		}
+		audit.log( ">>>:"+ new When().rep( "idk" ).toString() +":" );
 /*
 		testGet( "i am meeting my brother now", null, "a moment in time" ); // don't check time - it changes!
 		testGet( "i am meeting my brother today", "today", "a day" );

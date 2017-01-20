@@ -82,65 +82,56 @@ public class Intention extends Attribute {
 
 		return (Reply) audit.out( r );
 	}
-	private Reply conceptualise( Reply r ) {
-		audit.in( "conceputalise", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		
-		String answer = r.a.toString();
-		
-		// SofA CLI in C returned 0, 1, or "xxx" - translate these values into Reply values
-		Strings cmd = // Don't Strings.normalise() coz sofa requires "1" parameter
-				Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
-					Context.deref(
-						new Strings( value ).replace( Strings.ellipsis, answer ),
-						true // DO expand, UNIT => unit='non-null value'
-				)	);
-		
-		if (isTemporal()) {
-			String when = Context.get( "when" );
-			if (!when.equals(""))
-				cmd.append( "WHEN='"+ when +"'" );
+	// ---
+		private Strings conceptualise( String answer ) {
+			Strings cmd = // Don't Strings.normalise() coz sofa requires "1" parameter
+					Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
+						Context.deref(
+							new Strings( value ).replace( Strings.ellipsis, answer ),
+							true // DO expand, UNIT => unit='non-null value'
+					)	);
+			if (isTemporal()) {
+				String when = Context.get( "when" );
+				if (!when.equals(""))
+					cmd.append( "WHEN='"+ when +"'" );
+			}		
+			if (isSpatial()) {
+				String locator = Context.get( "locator" );
+				if (!locator.equals("")) {
+					String location = Context.get( "location" );
+					if (!location.equals("")) {
+						cmd.append( "LOCATOR='"+  locator  +"'" );
+						cmd.append( "LOCATION='"+ location +"'" );
+			}	}	}
+			return cmd;
 		}
-		
-		if (isSpatial()) {
-			String locator = Context.get( "locator" );
-			if (!locator.equals("")) {
-				String location = Context.get( "location" );
-				if (!location.equals("")) {
-					cmd.append( "LOCATOR='"+  locator  +"'" );
-					cmd.append( "LOCATION='"+ location +"'" );
-		}	}	}
-		
-		audit.debug( "conceptualising: "+ cmd.toString( Strings.SPACED ));
+		private String deconceptualise( String rc, String cmd, String answer ) {
+			return Moment.valid( rc ) ?
+				new When( rc ).rep( Reply.dnk() ).toString()
+				: (cmd.equals( "get" ) || cmd.equals( "attributeValue" )) && (null == rc || rc.equals( "" )) ?
+					Reply.dnk()
+					: rc.equals( Shell.FAIL ) ?
+						Reply.no()
+						:	rc.equals( Shell.SUCCESS ) ?
+								(   answer.equals( "" )
+								 || answer.equals( Reply.no() )) ?
+								Reply.success()
+								: answer
+							: rc;
+		}
+	private Reply perform( Reply r ) {
+		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		String answer = r.a.toString();
+		Strings cmd = conceptualise( answer );
 		String rc = new Sofa().interpret( cmd );
-		audit.debug(  "raw rc is: '"+ rc +"'" ); // "" will be passed back but ignored by r.answer()
-		if (Moment.valid( rc ))
-			rc = new When( rc ).toString();
-		if ((cmd.get( 1 ).equals( "get" ) || cmd.get( 1 ).equals( "attributeValue" ))
-			&& (null == rc || rc.equals( "" ))) {
-			audit.debug("conceptualise: get => nowt, so return: "+ Reply.dnk());
-			rc = Reply.dnk();
-		} else if (rc.equals( Shell.FAIL )) {
-			audit.debug("conceptualise: get returned FALSE --> no");
-			rc = Reply.no();
-		} else if (rc.equals( Shell.SUCCESS )) {
-			// was rc = Reply.yes(); -- need to perpetuate answer
-			// if no ans or -ve ans - set to No, otherwise set to existing ans
-			if (   answer.equals( "" )
-				|| answer.equals( Reply.no() )) {
-				audit.debug( "rc=="+ Shell.SUCCESS +":with no/-ve answer: setting answer to "+ Reply.success() +" (TRUE=>Ok)");
-				rc =  Reply.success();
-			} else {
-				audit.debug( "rc=="+ Shell.SUCCESS +":perpetuating a narative answer:"+ answer );
-				rc = answer;
-		}	}
-		return (Reply) audit.out( r.answer( rc ) );
+		rc = deconceptualise( rc, cmd.get( 1 ), answer );
+		return (Reply) audit.out( r.answer( rc ));
 	}
 	
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		r.format( value.equals( "" ) ? "ok" : value ); // TODO: NOT previous(), inner()!
-		if (r.type() != Reply.NK &&	r.type() != Reply.DNU)
-			r.doneIs( true );
+		r.doneIs( r.type() != Reply.NK && r.type() != Reply.DNU );
 		audit.out( "a="+ r.a.toString() + (r.isDone()?" (we're DONE!)" : "(keep looking...)" ));
 		return r;
 	}
@@ -152,7 +143,7 @@ public class Intention extends Attribute {
 			audit.debug( "skipping "+ name() +": reply already found" );
 		
 		} else if (name.equals( "finally" )) {
-			conceptualise( r ); // ignore result of finally
+			perform( r ); // ignore result of finally
 
 		} else {
 			
@@ -160,7 +151,7 @@ public class Intention extends Attribute {
 				if (name.equals( ELSE_THINK ))
 					r = think( r );
 				else if (name.equals( ELSE_DO ))
-					r = conceptualise( r );
+					r = perform( r );
 				else if (name.equals( ELSE_REPLY ))
 					r = reply( r );
  					
@@ -168,7 +159,7 @@ public class Intention extends Attribute {
 				if (name.equals( THINK ))
 					r = think( r );
 				else if (name.equals( DO ))
-					r = conceptualise( r );
+					r = perform( r );
 				else if (name.equals( REPLY )) // if Reply.NO -- deal with -ve replies!
 					r = reply( r );
 		}	}
@@ -179,7 +170,5 @@ public class Intention extends Attribute {
 	public static void main( String argv[]) {
 		Reply r = new Reply().answer( "world" );
 		Variable.encache( Overlay.Get() );
-		Intention intent = new Intention( REPLY, "hello ..." );
-		r = intent.mediate( r );
-		System.out.println( r.toString() );
+		audit.log( new Intention( REPLY, "hello ..." ).mediate( r ).toString() );
 }	}
