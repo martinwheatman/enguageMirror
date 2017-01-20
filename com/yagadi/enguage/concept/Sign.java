@@ -5,9 +5,8 @@ import java.util.Random;
 
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.sofa.Attribute;
-import com.yagadi.enguage.sofa.Attributes;
-import com.yagadi.enguage.sofa.Temporal;
 import com.yagadi.enguage.sofa.Spatial;
+import com.yagadi.enguage.sofa.Temporal;
 import com.yagadi.enguage.util.Audit;
 
 public class Sign extends Tag {
@@ -150,8 +149,7 @@ public class Sign extends Tag {
 	
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", toXml() );
-		Attributes a = attributes();
-		Iterator<Attribute> ai = a.iterator();
+		Iterator<Attribute> ai = attributes().iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Attribute an = ai.next();
 			String name  = an.name(),
@@ -166,8 +164,7 @@ public class Sign extends Tag {
 				: // finally, perform, think, say...
 					new Intention(   name, value ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r );
 		}
-		audit.out( r.toString() );
-		return r;
+		return (Reply) audit.out( r );
 	}
 	// ---
 	public static void complexityTest( Tags t ) {
