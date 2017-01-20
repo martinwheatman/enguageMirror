@@ -35,20 +35,44 @@ public class Intention extends Attribute {
 
 	public Intention( String name, String value ) { super( name, value ); }	
 	
-	// processes: think="... is a thought".
-	private Reply think( Reply r /*String answer*/ ) {
+		private Strings thinking( Reply r ) {
+			// pre-process value to get an utterance...
+			// we don't know the state of the intentional value
+			return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
+						Context.deref( // X => "coffee", singular-x="80s" -> "80"
+							new Strings( value ).replace(
+									Strings.ellipsis,
+									r.a.toString() )
+							//false - is default not to expand, UNIT => cup NOT unit='cup'
+					)	);
+		}
+		private void thought( Reply r, Strings u ) {
+			r.doneIs( false );
+			Reply.strangeThought(""); // ??? will this clear it on subsequent thoughts?
+			if ( Reply.DNU == r.type()) {
+				/* TODO: At this point do I want to cancel all skipped signs? 
+				 * Or just check if we've skipped any signs and thus report 
+				 * this as simply a warning not an ERROR?
+				 */
+				// put this into reply via Reply.strangeThought()
+				audit.ERROR( "Strange thought: I don't understand: '"+ u.toString() +"'" );
+				Reply.strangeThought( u.toString() );
+				// remove strange thought from Reply - just say DNU
+				if (Allopoiesis.disambFound()) {
+					audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
+					Reply.strangeThought("");
+				}
+				r.doneIs( true );
+			
+			} else if ( Reply.NO == r.type() && r.a.toString().equalsIgnoreCase( Reply.ik()))
+				r.answer( Reply.yes());
+		}
+	private Reply think( Reply r ) {
 		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
 
 		// pre-process value to get an utterance...
 		// we don't know the state of the intentional value
-		Strings u =
-			Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
-				Context.deref( // X => "coffee", singular-x="80s" -> "80"
-					new Strings( value ).replace( // replace "..." with answer
-							Strings.ellipsis,
-							r.a.toString() ) // was answer
-					//false - is default don't expand, UNIT => cup NOT unit='cup'
-			)	);
+		Strings u = thinking( r );
 		
 		audit.debug( "Thinking: "+ u.toString( Strings.CSV ));
 
@@ -58,28 +82,9 @@ public class Intention extends Attribute {
 			r.a.add( tmpr.a.toString() );
 		else
 			r = tmpr;
-		// pass out was done value was!
-		r.doneIs( false );
-
-		Reply.strangeThought(""); // ??? will this clear it on subsequent thoughts?
-		if ( Reply.DNU == r.type()) {
-			/* TODO: At this point do I want to cancel all skipped signs? 
-			 * Or just check if we've skipped any signs and thus report 
-			 * this as simply a warning not an ERROR?
-			 */
-			// put this into reply via Reply.strangeThought()
-			audit.ERROR( "Strange thought: I don't understand: '"+ u.toString( Strings.SPACED ) +"'" );
-			Reply.strangeThought( u.toString( Strings.SPACED ));
-			// remove strange thought from Reply - just say DNU
-			if (Allopoiesis.disambFound()) {
-				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
-				Reply.strangeThought("");
-			}
-			r.doneIs( true );
 		
-		} else if ( Reply.NO == r.type() && r.a.toString().equalsIgnoreCase( Reply.ik()))
-			r.answer( Reply.yes());
-
+		thought( r, u );
+		
 		return (Reply) audit.out( r );
 	}
 	// ---
