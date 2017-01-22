@@ -152,7 +152,7 @@ public class Sign extends Tag {
 		Iterator<Attribute> ai = attributes().iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Attribute an = ai.next();
-			String name  = an.name(),
+			String  name = an.name(),
 			       value = an.value();
 			//audit.debug( name +"='"+ value +"'" );
 			r = name.equals( Allopoiesis.NAME ) ?
