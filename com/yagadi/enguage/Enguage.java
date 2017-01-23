@@ -233,13 +233,13 @@ public class Enguage extends Shell {
 			if ( level == 0 || level == 6 ) {
 				audit.title( "Disambiguation" );
 				testInterpret( "the eagle has landed" //,
-						       //"Are you an ornitholgist."
+						       //"Are you an ornithologist."
 						);
 				testInterpret( "no the eagle has landed" //,
 						       //"So , you're talking about the novel."
 						);
 				testInterpret( "no the eagle has landed" //, 
-						       //"So you're talking about apollo 11."
+						       //"So you're talking about Apollo 11."
 						);
 				testInterpret( "no the eagle has landed" //,
 						       //"I don't understand"
