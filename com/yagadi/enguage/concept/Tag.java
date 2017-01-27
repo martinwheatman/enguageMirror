@@ -328,15 +328,14 @@ public class Tag {
 		return this;
 	}
 	private Tag doAttrs() {
-		int i = 0;
-		while (i < postfix().length() && -1 == "/>".indexOf( postfix().charAt( i ))) i++;
-		attributes( new Attributes( postfix().substring( 0, i ) ));
+		attributes( new Attributes( postfix() ));
+		int i = attributes().nchars();
 		if (i < postfix().length()) {
 			type( '/' == postfix().charAt( i ) ? ATOMIC : START );
 			while (i < postfix().length() && '>' != postfix().charAt( i )) i++; // read to tag end
 			if (i < postfix().length()) i++; // should be at '>' -- read over it
-			postfix( postfix().substring( i )); // save rest for later
 		}
+		postfix( postfix().substring( i )); // save rest for later
 		return this;
 	}
 	private Tag doChildren() {
@@ -464,7 +463,7 @@ public class Tag {
 		orig.content( new Tag().prefix(" show ").name("sub"));
 		orig.content( new Tag().prefix( " fred " ));
 		Tag t = new Tag( orig );
-		audit.log( "orig was:"+ orig.toString());
+		//audit.log( "orig was:"+ orig.toString());
 		//audit.audit( "copy: "+ t.toString());
 		//t = new Tag( orig.toString());
 		//audit.audit( "copy2: "+ t.toString());
@@ -472,9 +471,12 @@ public class Tag {
 		//audit.audit( "patt: "+ pattern.toString());
 		//audit.audit( "orig "+ (orig.matchesContent( pattern )?"DOES":"does NOT") +" (and should) match pattern" );
 		
-		t = new Tag("<test id='123' quantity='5 * 3 more'/>");
-		orig.update( t.attributes() );
-		audit.log( "orig is now:"+ orig.toString());
+		//t = new Tag("<test id='123' quantity='5 * 3 more'/>");
+		//orig.update( t.attributes() );
+		//audit.log( "orig is now:"+ orig.toString());
+		
+		t = new Tag( "<tag id=\"1/23\"nm=\"678\">hello</tag>" );
+		audit.log( "tag:"+ t.toString());
 		
 		if (argc > 0) {
 			audit.log( "Comparing "+ t.toString() +", with ["+ a.toString( Strings.DQCSV ) +"]");

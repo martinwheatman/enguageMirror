@@ -44,7 +44,14 @@ public class Attributes extends ArrayList<Attribute> {
 				add( new Attribute( name, value )); // was append( NAME, value );
 			}
 			while (i<sz && Character.isWhitespace( s.charAt( i ) )) i++; // read over spaces
-	}	}
+		}
+		nchars = i;
+	}
+	
+	// save the number of chars read in creating attributes...
+	private int nchars = 0;
+	public int nchars() { return nchars;}
+	
 	public boolean matches( Attributes pattern ) {
 		// Sanity check: pattern will have less content than target.
 		if (pattern.size() > size()) return false;
