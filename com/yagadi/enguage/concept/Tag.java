@@ -103,6 +103,8 @@ public class Tag {
 	public  Tag        attributes( Attributes as ) {
 		for( Attribute a : as)
 			attributes( a ); // add each individually
+		// Propagate num chars read on creation...
+		attrs.nchars( as.nchars());
 		return this;
 	}
 	public  String     attribute( String name ) { return attrs.get( name ); }
@@ -125,10 +127,11 @@ public class Tag {
 	}
 	
 	public Attribute matchedAttr( String val ) {
-		return new Attribute(	name,
-										Attribute.expandValues( // prevents X="x='val'"
-											name.equals("unit") ? Plural.singular( val ) : val
-										).toString( Strings.SPACED ) );
+		return new Attribute(
+				name,
+				Attribute.expandValues( // prevents X="x='val'"
+					name.equals("unit") ? Plural.singular( val ) : val
+				).toString( Strings.SPACED ) );
 	}
 
 	
@@ -330,7 +333,10 @@ public class Tag {
 	private Tag doAttrs() {
 		attributes( new Attributes( postfix() ));
 		int i = attributes().nchars();
+		//audit.log( "read "+ i +"chars in "+ attributes().toString() );
+		//if (i>0) i++;
 		if (i < postfix().length()) {
+			//audit.log( "char at i="+ postfix().charAt( i ) );
 			type( '/' == postfix().charAt( i ) ? ATOMIC : START );
 			while (i < postfix().length() && '>' != postfix().charAt( i )) i++; // read to tag end
 			if (i < postfix().length()) i++; // should be at '>' -- read over it
@@ -475,8 +481,17 @@ public class Tag {
 		//orig.update( t.attributes() );
 		//audit.log( "orig is now:"+ orig.toString());
 		
-		t = new Tag( "<tag id=\"1/23\"nm=\"678\">hello</tag>" );
-		audit.log( "tag:"+ t.toString());
+		t = new Tag( "<xml>\n"+
+			" <config \n"+
+			"   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
+			"   DNU=\"I do not understand\" >\n" +	
+            "   <concepts>\n"+
+			"     <concept id=\"colloquia\"      op=\"load\"/>\n"+
+			"     <concept id=\"engine\"         op=\"load\"/>\n"+
+			"   </concepts>\n"+
+	        "   </config>\n"+
+	        "   </xml>"        );
+		audit.log( "tag:"+ t.toXml());
 		
 		if (argc > 0) {
 			audit.log( "Comparing "+ t.toString() +", with ["+ a.toString( Strings.DQCSV ) +"]");

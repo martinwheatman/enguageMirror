@@ -49,8 +49,9 @@ public class Attributes extends ArrayList<Attribute> {
 	}
 	
 	// save the number of chars read in creating attributes...
-	private int nchars = 0;
-	public int nchars() { return nchars;}
+	private int  nchars = 0;
+	public  int  nchars() { return nchars;}
+	public  void nchars( int n ) { nchars = n;}
 	
 	public boolean matches( Attributes pattern ) {
 		// Sanity check: pattern will have less content than target.
