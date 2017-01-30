@@ -1,20 +1,26 @@
 package com.yagadi.enguage;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.ListIterator;
 
+import com.yagadi.enguage.concept.Allopoiesis;
 import com.yagadi.enguage.concept.Autoload;
+import com.yagadi.enguage.concept.Concept;
+import com.yagadi.enguage.concept.Intention;
+import com.yagadi.enguage.concept.Repertoire;
+import com.yagadi.enguage.concept.Signs;
+import com.yagadi.enguage.concept.Tag;
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.sofa.Attribute;
+import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Filesystem;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 
 public class Config {
-	/*
-	 * This class brings together several features used in the iNeed app, anda are useful
-	 * for making the engine more transparent to the app...
-	 */
+	static private Audit audit= new Audit( "Config" );
+	
 	static public String welcome = "welcome";
 	static public String welcome() { return welcome; }
 	static public String welcome( String w ) { return welcome = w; }
@@ -52,19 +58,51 @@ public class Config {
 				if (name.equals("LISTFORMATSEP")) Reply.listSep(       value); else
 				if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunctions(  new Strings( value )); else
 				if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value )); else
-				if (name.equals("REFERENCERS"  )) Reply.referencers(   new Strings( value )); else
 				if (name.equals("ANDLISTFORMAT")) Reply.andListFormat( value); else
 				if (name.equals("ORLISTFORMAT" )) Reply.orListFormat(  value ); else
 				if (name.equals("REPEATFORMAT" )) Reply.repeatFormat(  value ); else
+				if (name.equals("REFERENCERS"  )) Reply.referencers(   new Strings( value )); else
+				if (name.equals("CLASSPATH" )) Intention.classpath( value ); else
 				if (name.equals("LOCATION"  )) Filesystem.location( value ); else
 				if (name.equals("HPREFIX")) Reply.helpPrefix( value ); else
 				if (name.equals("SUCCESS")) Reply.success( value ); else
 				if (name.equals("FAILURE")) Reply.failure( value ); else
+				if (name.equals("SHELL")) Intention.shell( value ); else
 				if (name.equals("TERMS")) Shell.terminators( new Strings( value )); else
+				if (name.equals("SOFA" )) Intention.sofa( value );
 				if (name.equals( "TTL" )) Autoload.ttl( value ); else
 				if (name.equals( "DNU" )) Reply.dnu( value ); else
 				if (name.equals( "DNK" )) Reply.dnk( value ); else
 				if (name.equals( "YES" )) Reply.yes( value ); else
 				if (name.equals(  "NO" )) Reply.no(  value ); else
 				if (name.equals(  "IK" )) Reply.ik(  value );
-}	}	}	}
+	}	}	}
+
+	static final private String           NAME = "config";
+	static final private String         format = "xml";
+	static final private String configFilename = NAME+"."+format;
+	
+	static public void load() {
+		audit.in( "load" );
+		Audit.allOff();
+		if (Audit.startupDebug) Audit.allOn();
+		
+		long then = new GregorianCalendar().getTimeInMillis();
+		Allopoiesis.undoEnabledIs( false );
+		
+		Tag t = Tag.fromFile( Repertoire.location() + configFilename );
+		if (t != null && (t = t.findByName( NAME )) != null) {
+			setContext( t.attributes() );
+			Concept.load( t.findByName( "concepts" ) );
+		}
+
+		Allopoiesis.undoEnabledIs( true );
+		long now = new GregorianCalendar().getTimeInMillis();
+		
+		audit.log( "Initialisation in: " + (now - then) + "ms" );
+		audit.log( Signs.stats() );
+
+		Audit.allOff();
+		if (Audit.runtimeDebug) Audit.allOn();
+		audit.out();
+}	}

@@ -1,13 +1,9 @@
 package com.yagadi.enguage;
 
-import java.util.GregorianCalendar;
-
 import com.yagadi.enguage.concept.Allopoiesis;
 import com.yagadi.enguage.concept.Autoload;
 import com.yagadi.enguage.concept.Concept;
 import com.yagadi.enguage.concept.Repertoire;
-import com.yagadi.enguage.concept.Signs;
-import com.yagadi.enguage.concept.Tag;
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.expression.Utterance;
 import com.yagadi.enguage.expression.where.Where;
@@ -22,7 +18,7 @@ import com.yagadi.enguage.util.Strings;
 public class Enguage extends Shell {
 	static private Audit audit = new Audit( "Enguage" );
 	static final public String name = "enguage";
-	static final public String configFilename = "config.xml";
+	//static final public String configFilename = Config.configFilename;
 
 	static public boolean silentStartup() { return !Audit.startupDebug; }
 
@@ -52,35 +48,6 @@ public class Enguage extends Shell {
 			Repertoire.primeUsedInit();
 		}
 		Concept.names( location );
-		audit.out();
-	}
-
-	/*
-	* This is separate from the c'tor as it uses itself to 
-	* read the config file's txt files.
-	*/
-	static public void loadConfig( String fname ) {
-		audit.in( "loadConfig", fname );
-		Audit.allOff();
-		if (Audit.startupDebug) Audit.allOn();
-		
-		long then = new GregorianCalendar().getTimeInMillis();
-		Allopoiesis.undoEnabledIs( false );
-		
-		Tag t = Tag.fromFile( Repertoire.location() + fname );
-		if (t != null && (t = t.findByName( "config" )) != null) {
-			Config.setContext( t.attributes() );
-			Concept.load( t.findByName( "concepts" ) );
-		}
-
-		Allopoiesis.undoEnabledIs( true );
-		long now = new GregorianCalendar().getTimeInMillis();
-		
-		audit.log( "Initialisation in: " + (now - then) + "ms" );
-		audit.log( Signs.stats() );
-
-		Audit.allOff();
-		if (Audit.runtimeDebug) Audit.allOn();
 		audit.out();
 	}
 
@@ -146,7 +113,7 @@ public class Enguage extends Shell {
 		
 		e = new Enguage( "./src/assets" );
 		
-		loadConfig( configFilename );
+		Config.load();
 		TestInit();
 
 		if ( args.length == 1 && args[ 0 ].equals( "run" )) {

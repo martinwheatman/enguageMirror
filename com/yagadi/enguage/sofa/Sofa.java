@@ -165,23 +165,12 @@ public class Sofa extends Shell {
 	}
 	
 	public static void main( String[] argv ) { // sanity check...
-		Audit.allOn();
-		Audit.traceAll( true );
-		
-		Strings args = new Strings( argv );
-		Overlay.Set( Overlay.Get());
-		if (!Overlay.autoAttach())
-			System.out.println( "Ouch!" );
-		else {
-			System.out.println( "Sofa: Ovl is: "+ Overlay.Get().toString());
-			
-			Attributes a = new Attributes();
-			a.add( new Attribute( "m", "martin" ));
-			a.add( new Attribute( "r", "ruth" ));
-			
-			args = a.deref( /* Variable.deref( */ args /*)*/, true );			
-			System.out.println( "Cmds are: "+ args.toString( Strings.SPACED ));
-			
-			Sofa cmd = new Sofa();
+		Sofa cmd = new Sofa();
+		if (argv.length > 0) {
+			cmd.interpret( new Strings( argv ));
+		} else {
+			Audit.allOn();
+			Audit.traceAll( true );
+			audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
 			cmd.run();
 }	}	}

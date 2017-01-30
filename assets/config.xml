@@ -1,5 +1,8 @@
 <xml>
-	<config DNU="I do not understand"
+	<config
+			CLASSPATH="/home/martin/ws/Enguage/bin"
+			SOFA="java com.yagadi.enguage.sofa.Sofa"
+			DNU="I do not understand"
 			DNK="I do not know"
 			SUCCESS="ok"
 			FAILURE="sorry"

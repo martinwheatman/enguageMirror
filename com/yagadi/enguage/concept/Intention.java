@@ -1,5 +1,8 @@
 package com.yagadi.enguage.concept;
 
+import java.io.InputStream;
+import java.io.PrintWriter;
+
 import com.yagadi.enguage.expression.Context;
 import com.yagadi.enguage.expression.Reply;
 import com.yagadi.enguage.expression.Utterance;
@@ -22,6 +25,8 @@ public class Intention extends Attribute {
 	public static final String ELSE_THINK = "T";
 	public static final String      DO    = "d";
 	public static final String ELSE_DO    = "D";
+	public static final String      RUN   = "n";
+	public static final String ELSE_RUN   = "N";
 	public static final String FINALLY    = "f";
 
 	public boolean   temporal = false;
@@ -125,6 +130,74 @@ public class Intention extends Attribute {
 		return (Reply) audit.out( r.answer( rc ));
 	}
 	
+	static private String classpath = "";
+	static public  String classpath() { return classpath; }
+	static public  void   classpath(String cp) { classpath = cp; }
+	
+	static private String sofa = "";
+	static public  String sofa() { return sofa; }
+	static public  void   sofa(String cp) { sofa = cp; }
+	
+	static private String shell = "/bin/bash";
+	static public  void   shell( String sh ) { shell = sh; }
+	static public  String shell() { return shell; }
+	
+	private Reply run( Reply r ) {
+		audit.in( "run", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		String ans = "";
+		String cmd = Variable.deref( Strings.getStrings( value ))
+			.replace( new Strings( sofa ), Strings.getStrings( Variable.get( "SOFA" )))
+			.replace( Strings.ellipsis, r.a.toString())
+			.toString();
+		int rc = 0;
+		try {
+			Process p = Runtime.getRuntime().exec( shell() );
+			
+			PrintWriter stdin = new PrintWriter(p.getOutputStream());
+			if (!classpath.equals( "" ))
+				stdin.println( "export CLASSPATH="+ classpath );
+			audit.log( "cmd is: "+ cmd );
+			stdin.println( cmd );
+			stdin.close();
+			
+			// ...reading the output directly, from this thread!
+			byte[] buffer = new byte[1024]; // final?
+			InputStream in = p.getInputStream();
+			while (in.read(buffer) != -1)
+				ans += new String( buffer );
+			
+			// ...reading stderr too and logging to ERROR, if anything found!
+			String log = "";
+			in = p.getErrorStream();
+			while (in.read(buffer) != -1)
+				log += new String( buffer );
+			if (!log.equals( "" )) audit.ERROR( log );
+			
+			
+			rc = p.waitFor();
+			audit.debug("Return code = " + rc);
+			
+		} catch (Exception e) {
+			audit.ERROR( "exception: "+ e.toString());
+			e.printStackTrace();
+			rc = -1;
+		}
+		
+		if (rc == 0)
+			ans = Moment.valid( ans ) ?                 // 88888888198888 -> 7pm
+				new When( ans ).rep( Reply.dnk() ).toString()
+				: ans.equals( "" ) ?
+					Reply.success() // Reply.dnk() ?
+					: ans.equals( Shell.FAIL ) ?        // FALSE
+						Reply.no()                      //   --> no
+						: ans.equals( Shell.SUCCESS ) ? // TRUE
+							Reply.success()             //   --> ok
+							: ans;                      // chs
+		else
+			ans = Reply.failure() +" , "+ cmd +" , has failed with return code "+ rc;
+
+		return (Reply) audit.out( r.answer( ans ));
+	}
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		r.format( value.equals( "" ) ? "ok" : value ); // TODO: NOT previous(), inner()!
@@ -149,6 +222,8 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( ELSE_DO ))
 					r = perform( r );
+				else if (name.equals( ELSE_RUN ))
+					r = run( r );
 				else if (name.equals( ELSE_REPLY ))
 					r = reply( r );
  					
@@ -157,6 +232,8 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( DO ))
 					r = perform( r );
+				else if (name.equals( RUN ))
+					r = run( r );
 				else if (name.equals( REPLY )) // if Reply.NO -- deal with -ve replies!
 					r = reply( r );
 		}	}
