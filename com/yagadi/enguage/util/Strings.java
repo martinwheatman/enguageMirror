@@ -88,15 +88,20 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 					if (Character.isLetter( buffer[ i ])
 						|| (   ('_' == buffer[ i ] || '$' == buffer[ i ])
 							&& 1+i<sz && Character.isLetter( buffer[ 1+i ])))
-					{	//audit.audit("reading AlphaNumeric including embedded apostrophes");
+					{	//audit.audit("reading AlphaNumeric including embedded: '.-_");
 						word.append( buffer[ i++ ]);
 						while (i<sz && (
-							   Character.isLetter( buffer[ i ])
+							Character.isLetter( buffer[ i ])
 							|| Character.isDigit(  buffer[ i ])
-							||	( '-'  == buffer[ i ])
-							||	( '\'' == buffer[ i ])
-							||	( '_'  == buffer[ i ])
-						))
+							||	(( '-'  == buffer[ i ]
+								||	'\'' == buffer[ i ]
+								||	'_'  == buffer[ i ]
+								||  '.'  == buffer[ i ])
+									&& 1+i < sz && 
+									(Character.isLetter( buffer[ 1+i ])
+									|| Character.isDigit( buffer[ 1+i ]))
+								)
+							))
 							word.append( buffer[ i++ ]);
 						
 					} else if (Character.isDigit( buffer[ i ])

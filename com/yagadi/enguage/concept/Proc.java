@@ -33,7 +33,7 @@ public class Proc {
 	
 	private String conceptualise( String runningAns ) {
 		return Variable.deref( Strings.getStrings( cmd ))
-				.replace( new Strings( "SOFA" ), Strings.getStrings( java() ))
+				.replace( new Strings( "SOFA" ), new Strings( java() ))
 				.replace( Strings.ellipsis, runningAns )
 				.toString();
 	}
@@ -79,7 +79,7 @@ public class Proc {
 			ans = readStream( p.getInputStream());
 			log = readStream( p.getErrorStream());
 			if (!log.equals( "" ))
-				audit.ERROR( log );
+				audit.ERROR( "Proc.run(): "+ log );
 			rc = p.waitFor();
 		} catch (Exception e) {
 			audit.ERROR( "exception: "+ e.toString());
@@ -93,10 +93,15 @@ public class Proc {
 		return (Reply) audit.out( r.answer( ans ));
 	}
 	public static void main( String args []) {
-		String cp = "/home/martin/ws/Enguage/bin";
-		Proc.classpath( cp );
+		Reply.failure( "sorry" );
+		Proc.classpath( "/home/martin/ws/Enguage/bin" );
 		Proc.java( "java com.yagadi.enguage.Enguage" );
+
 		Reply r = new Reply();
-		r = new Proc( "SOFA" ).run( r );
+
+		r = new Proc( "pwd" ).run( r );
+		audit.log( r.toString());
+
+		r = new Proc( "SOFA run" ).run( r );
 		audit.log( r.toString());
 }	}
