@@ -7,8 +7,8 @@ import java.util.ListIterator;
 import com.yagadi.enguage.concept.Allopoiesis;
 import com.yagadi.enguage.concept.Autoload;
 import com.yagadi.enguage.concept.Concept;
-import com.yagadi.enguage.concept.Intention;
 import com.yagadi.enguage.concept.Repertoire;
+import com.yagadi.enguage.concept.Proc;
 import com.yagadi.enguage.concept.Signs;
 import com.yagadi.enguage.concept.Tag;
 import com.yagadi.enguage.expression.Reply;
@@ -62,14 +62,14 @@ public class Config {
 				if (name.equals("ORLISTFORMAT" )) Reply.orListFormat(  value ); else
 				if (name.equals("REPEATFORMAT" )) Reply.repeatFormat(  value ); else
 				if (name.equals("REFERENCERS"  )) Reply.referencers(   new Strings( value )); else
-				if (name.equals("CLASSPATH" )) Intention.classpath( value ); else
+				if (name.equals("CLASSPATH" )) Proc.classpath( value ); else
 				if (name.equals("LOCATION"  )) Filesystem.location( value ); else
 				if (name.equals("HPREFIX")) Reply.helpPrefix( value ); else
 				if (name.equals("SUCCESS")) Reply.success( value ); else
 				if (name.equals("FAILURE")) Reply.failure( value ); else
-				if (name.equals("SHELL")) Intention.shell( value ); else
+				if (name.equals("SHELL")) Proc.shell( value ); else
 				if (name.equals("TERMS")) Shell.terminators( new Strings( value )); else
-				if (name.equals("SOFA" )) Intention.sofa( value );
+				if (name.equals("SOFA" )) Proc.java( value );
 				if (name.equals( "TTL" )) Autoload.ttl( value ); else
 				if (name.equals( "DNU" )) Reply.dnu( value ); else
 				if (name.equals( "DNK" )) Reply.dnk( value ); else
