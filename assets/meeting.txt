@@ -21,21 +21,29 @@ On "I am meeting PHRASE-WHOM", _user is meeting WHOM.
 On "help", reply "to say who you are meeting".
 
 On "when is SUBJECT meeting PHRASE-WHOM":
+	get SUBJECT meeting list;       # General I don't know
+	if not, reply "i do not know "; # 
+	assert SUBJECT is meeting WHOM; # 
+	if not, reply "i do not know if SUBJECT is meeting WHOM"; #
 	set output format to ",WHEN";
-	get SUBJECT meeting list;
-	if not, reply "SUBJECT is not meeting anybody";
-	assert SUBJECT is meeting WHOM;
-	if not, reply "SUBJECT is not meeting WHOM";
+	# check if and when...
 	get attribute when of WHOM from SUBJECT meeting list;
-	if not, reply "i don't know";
+	if not, reply "i don't know when SUBJECT is meeting WHOM";
 	then, reply "SUBJECT is meeting WHOM ...".
 On "when am i meeting PHRASE-WHOM", when is _user meeting WHOM.
 On "what time PHRASE-X", when X.
 
 On "where is SUBJECT meeting PHRASE-WHOM":
+	get SUBJECT meeting list;       # General I don't know
+	if not, reply "I do not know";  # 
+	assert SUBJECT is meeting WHOM; # 
+	if not, reply "i do not know if SUBJECT is meeting WHOM"; #
 	set output format to ",LOCATOR LOCATION";
+	# check if by checking location...
+	get attribute location of WHOM from SUBJECT meeting list;
+	if not, reply "i do not know where SUBJECT is meeting WHOM";
+	# ok, get the whole caboose...
 	get SUBJECT meeting list;
-	if not, reply "SUBJECT is not meeting anybody";
 	then, reply "SUBJECT is meeting ...".
 On "where am i meeting PHRASE-WHOM", where is _user meeting WHOM.
 On "help", reply "to find out where you are meeting the person".
