@@ -152,9 +152,9 @@ public class Path {
 						String value = "";
 						if (opts.equals( OPT_X )) {
 							if (flist.isFile()) // TTD: move this to String - newCharsFromFilePreview()
-								value = filter( Filesystem.stringFromFile( flist.getPath()));
-							else if (Filesystem.isLink( name ))
-								value = filter( Filesystem.stringFromLink( name));
+								value = filter( Fs.stringFromFile( flist.getPath()));
+							else if (Fs.isLink( name ))
+								value = filter( Fs.stringFromLink( name));
 							else if (flist.isDirectory())
 								value = "<"+ filter(name) +"/>";
 						}

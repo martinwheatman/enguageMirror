@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.ListIterator;
 
-import com.yagadi.enguage.concept.Allopoiesis;
-import com.yagadi.enguage.concept.Autoload;
-import com.yagadi.enguage.concept.Concept;
-import com.yagadi.enguage.concept.Repertoire;
-import com.yagadi.enguage.concept.Proc;
-import com.yagadi.enguage.concept.Signs;
-import com.yagadi.enguage.concept.Tag;
-import com.yagadi.enguage.expression.Reply;
-import com.yagadi.enguage.sofa.Attribute;
+import com.yagadi.enguage.intp.Allopoiesis;
+import com.yagadi.enguage.intp.Autoload;
+import com.yagadi.enguage.intp.Concept;
+import com.yagadi.enguage.intp.Proc;
+import com.yagadi.enguage.intp.Repertoire;
+import com.yagadi.enguage.intp.Signs;
+import com.yagadi.enguage.intp.Tag;
+import com.yagadi.enguage.obj.Attribute;
 import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Filesystem;
+import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.veh.Reply;
 
 public class Config {
 	static private Audit audit= new Audit( "Config" );
@@ -63,7 +63,7 @@ public class Config {
 				if (name.equals("REPEATFORMAT" )) Reply.repeatFormat(  value ); else
 				if (name.equals("REFERENCERS"  )) Reply.referencers(   new Strings( value )); else
 				if (name.equals("CLASSPATH" )) Proc.classpath( value ); else
-				if (name.equals("LOCATION"  )) Filesystem.location( value ); else
+				if (name.equals("LOCATION"  )) Fs.location( value ); else
 				if (name.equals("HPREFIX")) Reply.helpPrefix( value ); else
 				if (name.equals("SUCCESS")) Reply.success( value ); else
 				if (name.equals("FAILURE")) Reply.failure( value ); else

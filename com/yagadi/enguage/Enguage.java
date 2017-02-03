@@ -1,19 +1,19 @@
 package com.yagadi.enguage;
 
-import com.yagadi.enguage.concept.Allopoiesis;
-import com.yagadi.enguage.concept.Autoload;
-import com.yagadi.enguage.concept.Concept;
-import com.yagadi.enguage.concept.Repertoire;
-import com.yagadi.enguage.expression.Reply;
-import com.yagadi.enguage.expression.Utterance;
-import com.yagadi.enguage.expression.where.Where;
-import com.yagadi.enguage.sofa.Overlay;
-import com.yagadi.enguage.sofa.Sofa;
-import com.yagadi.enguage.sofa.Variable;
+import com.yagadi.enguage.intp.Allopoiesis;
+import com.yagadi.enguage.intp.Autoload;
+import com.yagadi.enguage.intp.Concept;
+import com.yagadi.enguage.intp.Repertoire;
+import com.yagadi.enguage.obj.Overlay;
+import com.yagadi.enguage.obj.Sofa;
+import com.yagadi.enguage.obj.Variable;
 import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Filesystem;
+import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.veh.Reply;
+import com.yagadi.enguage.veh.Utterance;
+import com.yagadi.enguage.veh.where.Where;
 
 public class Enguage extends Shell {
 	static private Audit audit = new Audit( "Enguage" );
@@ -37,7 +37,7 @@ public class Enguage extends Shell {
 		super( "Enguage" );
 		audit.in( "Engauge", "location=" + location );
 
-		if (!Filesystem.location( location ))
+		if (!Fs.location( location ))
 			audit.FATAL( location + ": not found" );
 
 		if (!Overlay.autoAttach())

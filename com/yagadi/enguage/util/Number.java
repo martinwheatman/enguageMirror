@@ -2,7 +2,7 @@ package com.yagadi.enguage.util;
 
 import java.util.ListIterator;
 
-import com.yagadi.enguage.expression.Language;
+import com.yagadi.enguage.veh.Language;
 
 public class Number {
 	/*
