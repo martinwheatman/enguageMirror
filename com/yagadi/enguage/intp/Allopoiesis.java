@@ -11,11 +11,11 @@ import com.yagadi.enguage.veh.Reply;
 import com.yagadi.enguage.veh.Utterance;
 
 /*
- * TODO: Engine should be split into the NAME/value pair and the generic repertoire. Discuss. 
+ * TODO: Allop should be split into the NAME/value pair and the generic repertoire. Discuss. 
  *       Start by introducing Repertoire.class => Signs (Signs ArrayList of Sign!)
  */
 public class Allopoiesis extends Intention {
-	private static Audit audit = new Audit( "Engine" );
+	private static Audit audit = new Audit( "Allop" );
 
 	public  static final String NAME = "engine";
 	public  static final String HELP = "help";
@@ -90,7 +90,7 @@ public class Allopoiesis extends Intention {
 	// are we taking the hit of creating / deleting overlays
 	//private boolean undoEnabled = false;
 	//private boolean undoIsEnabled() { return undoEnabled; }
-	//public  Engine undoEnabledIs( boolean enabled ) { undoEnabled = enabled; return this; }
+	//public  Allop undoEnabledIs( boolean enabled ) { undoEnabled = enabled; return this; }
 	
 
 	
@@ -121,7 +121,7 @@ public class Allopoiesis extends Intention {
 	static public        void    spoken( boolean spk ) {
 		//audit.traceIn( "spoken", spk ? Shell.SUCCESS : Shell.FAIL );
 		if (!Repertoire.isInitialising() && !Autoload.ing() && spk != spoken) {
-			//audit.audit( "Engine.spoken(): remembering "+ spk );
+			//audit.audit( "Allop.spoken(): remembering "+ spk );
 			Variable.set( spokenVar, spk ? Shell.SUCCESS : Shell.FAIL );
 			spoken = spk;
 		}
@@ -139,14 +139,14 @@ public class Allopoiesis extends Intention {
 	
 	static private void disambOn( Strings cmd ) {
 		//simply turn disambiguation on if this thought is same as last...
-		audit.debug( "Engine:disambFound():REDOING:"+(disambFound()?"ON":"OFF")+":"+ Utterance.previous() +" =? "+ cmd +")" );
+		audit.debug( "Allop:disambFound():REDOING:"+(disambFound()?"ON":"OFF")+":"+ Utterance.previous() +" =? "+ cmd +")" );
 		if (	( Utterance.previous()                  .equals( cmd  )) //    X == (redo) X     -- case 1
 		    ||	(    Utterance.previous().copyAfter( 0 ).equals( cmd  )  // no X == (redo) X...  -- case 2
 		    	  && Utterance.previous().get(    0    ).equals( "no" )  // ..&& last[ 0 ] = "no"
 		)	)	{
 			if (Repertoire.signs.lastFoundAt() != -1) { // just in case!
 				Repertoire.signs.ignore( Repertoire.signs.lastFoundAt() );
-				audit.debug("Engine:disambOn():REDOING: Signs to avoid now: "+ Repertoire.signs.ignore().toString() );
+				audit.debug("Allop:disambOn():REDOING: Signs to avoid now: "+ Repertoire.signs.ignore().toString() );
 				disambFound( true );
 	}	}	}
 	/* now, we have disamb found (ignore list has increased) so we are still adjusting
@@ -155,11 +155,11 @@ public class Allopoiesis extends Intention {
 	static public void disambOff() {
 		//audit.traceIn( "disambOff", "avoids="+ Repertoires.signs.ignore().toString());
 		if (disambFound()) { //still adjusting the list!
-			//audit.debug( "Engine:disambOff():COOKED!" );
+			//audit.debug( "Allop:disambOff():COOKED!" );
 			disambFound( false );
 			Repertoire.signs.reorder();
 		} else {
-			//audit.debug( "Engine:disambOff():RAW, forget ignores: "+ Enguage.e.signs.ignore().toString());
+			//audit.debug( "Allop:disambOff():RAW, forget ignores: "+ Enguage.e.signs.ignore().toString());
 			Repertoire.signs.ignoreNone();
 		}
 		//audit.traceOut();
@@ -180,10 +180,10 @@ public class Allopoiesis extends Intention {
 		cmds = cmds.normalise();
 		String cmd = cmds.get( 0 );
 
-/*		audit.debug( "in Engine.mediate, ctx="+ Reply.context().toString());
-		audit.debug( "in Engine.mediate, val=[ "+ value +" ]");
-		audit.debug( "in Engine.mediate, cmd=[ "+ Strings.toString( cmd, Strings.CSV ) +" ]");
-		audit.debug( "in Engine.mediate, NAME='"+ NAME +"', value='"+ value +"'");
+/*		audit.debug( "in Allop.mediate, ctx="+ Reply.context().toString());
+		audit.debug( "in Allop.mediate, val=[ "+ value +" ]");
+		audit.debug( "in Allop.mediate, cmd=[ "+ Strings.toString( cmd, Strings.CSV ) +" ]");
+		audit.debug( "in Allop.mediate, NAME='"+ NAME +"', value='"+ value +"'");
 // */
 		if ( cmd.equals( "undo" )) {
 			r.format( Reply.success() );
@@ -337,10 +337,10 @@ public class Allopoiesis extends Intention {
 
 		} else if ( value.equals( "repeat" )) {
 			if (Reply.previous() == null) {
-				audit.log("Engine:repeating dnu");
+				audit.log("Allop:repeating dnu");
 				r.format( Reply.dnu());
 			} else {
-				audit.log("Engine:repeating: "+ Reply.previous());
+				audit.log("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
 				r.format( Reply.repeatFormat());
 				r.answer( Reply.previous());
