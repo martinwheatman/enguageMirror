@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.ListIterator;
 
-import com.yagadi.enguage.intp.Allopoiesis;
-import com.yagadi.enguage.intp.Autoload;
-import com.yagadi.enguage.intp.Concept;
-import com.yagadi.enguage.intp.Proc;
-import com.yagadi.enguage.intp.Repertoire;
-import com.yagadi.enguage.intp.Signs;
-import com.yagadi.enguage.intp.Tag;
-import com.yagadi.enguage.obj.Attribute;
+import com.yagadi.enguage.interpretant.Allopoiesis;
+import com.yagadi.enguage.interpretant.Autoload;
+import com.yagadi.enguage.interpretant.Concept;
+import com.yagadi.enguage.interpretant.Proc;
+import com.yagadi.enguage.interpretant.Repertoire;
+import com.yagadi.enguage.interpretant.Signs;
+import com.yagadi.enguage.interpretant.Tag;
+import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
-import com.yagadi.enguage.veh.Reply;
+import com.yagadi.enguage.vehicle.Reply;
 
 public class Config {
 	static private Audit audit= new Audit( "Config" );

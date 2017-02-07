@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import com.yagadi.enguage.obj.Attribute;
-import com.yagadi.enguage.obj.Attributes;
+import com.yagadi.enguage.object.Attribute;
+import com.yagadi.enguage.object.Attributes;
 
 public class Join {
 	private static       Audit           audit = new Audit( "Join" );

@@ -1,19 +1,19 @@
 package com.yagadi.enguage;
 
-import com.yagadi.enguage.intp.Allopoiesis;
-import com.yagadi.enguage.intp.Autoload;
-import com.yagadi.enguage.intp.Concept;
-import com.yagadi.enguage.intp.Repertoire;
-import com.yagadi.enguage.obj.Overlay;
-import com.yagadi.enguage.obj.Sofa;
-import com.yagadi.enguage.obj.Variable;
+import com.yagadi.enguage.interpretant.Allopoiesis;
+import com.yagadi.enguage.interpretant.Autoload;
+import com.yagadi.enguage.interpretant.Concept;
+import com.yagadi.enguage.interpretant.Repertoire;
+import com.yagadi.enguage.object.Overlay;
+import com.yagadi.enguage.object.Sofa;
+import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
-import com.yagadi.enguage.veh.Reply;
-import com.yagadi.enguage.veh.Utterance;
-import com.yagadi.enguage.veh.where.Where;
+import com.yagadi.enguage.vehicle.Reply;
+import com.yagadi.enguage.vehicle.Utterance;
+import com.yagadi.enguage.vehicle.where.Where;
 
 public class Enguage extends Shell {
 	static private Audit audit = new Audit( "Enguage" );

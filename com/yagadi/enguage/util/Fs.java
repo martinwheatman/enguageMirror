@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
-import com.yagadi.enguage.obj.Entity;
+import com.yagadi.enguage.object.Entity;
 
 public class Fs {
 	static Audit audit = new Audit( "Fs" );
