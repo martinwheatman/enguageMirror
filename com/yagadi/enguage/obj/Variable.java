@@ -29,24 +29,26 @@ public class Variable {
 	static public  char extPrefix( ) { return extPrefix; }
 
 	private static TreeMap<String,String> cache = null;
+	public  static void encache() { encache( Overlay.Get() );}
 	public  static void encache( Overlay o ) {
 		audit.in( "encache", Repertoire.location());
 		cache = new TreeMap<String,String>();
-		for( String fname : o.list( "." )) {
-			if (Audit.detailedDebug) audit.debug( "examining "+ fname );
-			if (fname.equals( externalise( fname ) )) {
-				if (Audit.detailedDebug) audit.debug( "Variable.encaching(): "+ fname +"='"+ new Value(fname, null).getAsString() +"'" );
-				cache.put( fname, new Value(fname, null).getAsString());
-		}	}
+		for( String name : o.list( NAME ))
+			if (name.equals( externalise( name ) )) // if valid variable name
+				cache.put( name, new Value( NAME, name ).getAsString());
 		audit.out();
 	}
 	static private void printCache() {
+		audit.title( "Printing cache" );
 		Set<Map.Entry<String,String>> entries = cache.entrySet();
 		Iterator<Map.Entry<String,String>> ei = entries.iterator();
+		Audit.incr();
 		while (ei.hasNext()) {
 			Map.Entry<String,String> e = ei.next();
-			audit.log( e.getKey() +"='"+ e.getValue() +"'" );
-	}	}
+			audit.log( e.getKey()  +"='"+  e.getValue()  +"'" );
+		}
+		Audit.decr();
+	}
 
 	static private String externalise( String name ) {
 		/* Variable should only attempt to set UPPERCASE values
@@ -60,7 +62,7 @@ public class Variable {
 		 *  	name = extPrefix + name;                  //  NAME -> _NAME
 		 * to uppercase will do
 		 */
-		// to prevent $SUBECT being created
+		// to prevent $SUBJECT being created
 		if (name.charAt( 0 ) == intPrefix) name = name.substring( 1 );
 		return name.toUpperCase( Locale.getDefault());
 	}
@@ -70,22 +72,22 @@ public class Variable {
 	
 	public Variable( String nm ) {
 		name = externalise( nm );
-		value = new Value( name, null );
+		value = new Value( NAME, name );
 		cache.put( name, value.getAsString());
 	}
-	public String get() {
-		String val = cache.get( name );
-		if (Audit.detailedDebug) audit.debug( "variable.get( "+ name +"='"+ val +"' )" );
-		return val;
+	public Variable( String nm, String val ) {
+		name = externalise( nm );
+		value = new Value( NAME, name );
+		set( val );
 	}
+	public String get() { return cache.get( name ); }
 	public void   set( String val ) {
-		if (Audit.detailedDebug) audit.debug( "variable.set( "+ name +"='"+ val +"' )" );
 		cache.put( name, val );
 		value.set( val );
 	}
 	public void   unset() {
 		cache.remove( name );
-		new Value( name, null ).ignore();
+		new Value( NAME, name ).ignore();
 	}
 	
 	// for backward compatibility, keeping these statics 
@@ -141,26 +143,29 @@ public class Variable {
 		return rc;
 	}
 	public static void main( String args[] ) {
-		Overlay o = Overlay.Get();
-		Overlay.Set( o );
-		Overlay.autoAttach();
-		Audit.allOn();
-		
-		Variable.encache( o );
-		printCache();
-		Variable spk = new Variable( "SPOKEN" );
-		String tmp = spk.get();
-		audit.log( "was="+ (tmp==null?"<null>":tmp));
-		spk.set( Shell.SUCCESS );
-		tmp = spk.get();
-		audit.log( "now="+ (tmp==null?"<null>":tmp));
-		
-		Variable.set( "HELLO", "there" );
-		printCache();
-		audit.log( "hello is "+ Variable.get( "HELLO" ) +" (there=>pass)" );
-		printCache();
-		Variable.unset( "HELLO" );
-		audit.log( "hello is "+ Variable.get( "HELLO" ) +" (null=>pass)" );
-		audit.log( "there is "+ Variable.get( "THERE" ) +" (null=>pass)" );
-		printCache();
-}	}
+		if (!Overlay.autoAttach()) {
+			audit.ERROR( "ouch: in Variable.java" );
+		} else {
+			Audit.allOn();
+			Audit.detailedDebug = true;
+			
+			Variable.encache();
+			printCache();
+			Variable spk = new Variable( "SPOKEN" );
+			String tmp = spk.get();
+			audit.log( "was="+ (tmp==null?"<null>":tmp));
+			spk.set( "fred" );
+			tmp = spk.get();
+			audit.log( "now="+ (tmp==null?"<null>":tmp));
+			printCache();
+			//*			
+			Variable.set( "HELLO", "there" );
+			//printCache();
+			audit.log( "hello is "+ Variable.get( "HELLO" ) +" (there=>pass)" );
+			//printCache();
+			Variable.unset( "HELLO" );
+			audit.log( "hello is "+ Variable.get( "HELLO" ) +" (null=>pass)" );
+			//audit.log( "there is "+ Variable.get( "THERE" ) +" (null=>pass)" );
+			//printCache();
+			// */
+}	}	}
