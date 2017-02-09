@@ -1,13 +1,7 @@
 package com.yagadi.enguage.interpretant;
 
-import java.io.File;
-
-import com.yagadi.enguage.interpretant.Allopoiesis;
-import com.yagadi.enguage.interpretant.Autopoiesis;
-import com.yagadi.enguage.interpretant.Signs;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Reply;
@@ -63,14 +57,6 @@ public class Repertoire {
 	static private boolean loadedDefaultConcept = false;
 	static public  boolean defaultConceptIsLoaded() { return loadedDefaultConcept; }
 	static public  void    defaultConceptLoadedIs(boolean c ) { loadedDefaultConcept = c; }
-
-	static public String location() {
-		return (
-			Fs.location().equals("") ?
- 				Fs.root + File.separator+ "yagadi.com" :
- 				Fs.location()
- 			) + File.separator;
-	}
 
 	//
 	// Repertoire Management -- above

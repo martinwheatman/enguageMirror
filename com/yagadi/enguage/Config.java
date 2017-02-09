@@ -8,10 +8,10 @@ import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.interpretant.Autoload;
 import com.yagadi.enguage.interpretant.Concepts;
 import com.yagadi.enguage.interpretant.Proc;
-import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.interpretant.Signs;
 import com.yagadi.enguage.interpretant.Tag;
 import com.yagadi.enguage.object.Attribute;
+import com.yagadi.enguage.object.Ospace;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
@@ -81,15 +81,16 @@ public class Config {
 	}	}	}
 
 	
-	public void load() {
-		audit.in( "load" );
+	public void load() { load( "" );}
+	public void load( String name ) {
+		audit.in( "load", name = name.equals("") ? NAME : name );
 		Audit.allOff();
 		if (Audit.startupDebug) Audit.allOn();
 		
 		long then = new GregorianCalendar().getTimeInMillis();
 		Allopoiesis.undoEnabledIs( false );
 		
-		Tag t = Tag.fromFile( Repertoire.location() + NAME +".xml" );
+		Tag t = Tag.fromFile( Ospace.location() + name +".xml" );
 		if (t != null && (t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
 			Concepts.load( t.findByName( "concepts" ) );

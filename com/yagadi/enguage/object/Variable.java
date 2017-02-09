@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -31,7 +30,7 @@ public class Variable {
 	private static TreeMap<String,String> cache = null;
 	public  static void encache() { encache( Overlay.Get() );}
 	public  static void encache( Overlay o ) {
-		audit.in( "encache", Repertoire.location());
+		audit.in( "encache", Ospace.location());
 		cache = new TreeMap<String,String>();
 		for( String name : o.list( NAME ))
 			if (name.equals( externalise( name ) )) // if valid variable name

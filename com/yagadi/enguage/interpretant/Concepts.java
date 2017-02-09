@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.TreeSet;
 
 import com.yagadi.enguage.Enguage;
+import com.yagadi.enguage.object.Ospace;
 import com.yagadi.enguage.util.Audit;
 
 public class Concepts {
@@ -45,7 +46,7 @@ public class Concepts {
 		
 		// ...add content from file...
 		try {
-			FileInputStream fis = new FileInputStream( Repertoire.location() + name +".txt" );
+			FileInputStream fis = new FileInputStream( Ospace.location() + name +".txt" );
 			e.interpret( fis );
 			fis.close();
 			wasLoaded = true; 
