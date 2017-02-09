@@ -6,7 +6,7 @@ import java.util.ListIterator;
 
 import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.interpretant.Autoload;
-import com.yagadi.enguage.interpretant.Concept;
+import com.yagadi.enguage.interpretant.Concepts;
 import com.yagadi.enguage.interpretant.Proc;
 import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.interpretant.Signs;
@@ -19,7 +19,8 @@ import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Reply;
 
 public class Config {
-	static private Audit audit= new Audit( "Config" );
+	static       private Audit audit = new Audit( "Config" );
+	static final private String NAME = "config";
 	
 	static public String welcome = "welcome";
 	static public String welcome() { return welcome; }
@@ -29,6 +30,7 @@ public class Config {
 	static public boolean firstRun() { return firstRun; }
 	static public void    firstRun( boolean b ) { firstRun = b; }
 	
+	/*
 	static public boolean visualMode = true;
 	static public boolean visualMode() { return visualMode; }
 	static public boolean visualMode( boolean b ) { return visualMode = b; }
@@ -48,7 +50,7 @@ public class Config {
 	static public String helpOnHelp = "help on help";
 	static public String helpOnHelp() { return helpOnHelp; }
 	static public String helpOnHelp( String s ) { return  helpOnHelp= s; }
-	
+	// */
 	public static void setContext( ArrayList<Attribute> aa ) {
 		if (null != aa) {
 			ListIterator<Attribute> pi = aa.listIterator();
@@ -78,11 +80,8 @@ public class Config {
 				if (name.equals(  "IK" )) Reply.ik(  value );
 	}	}	}
 
-	static final private String           NAME = "config";
-	static final private String         format = "xml";
-	static final private String configFilename = NAME+"."+format;
 	
-	static public void load() {
+	public void load() {
 		audit.in( "load" );
 		Audit.allOff();
 		if (Audit.startupDebug) Audit.allOn();
@@ -90,10 +89,10 @@ public class Config {
 		long then = new GregorianCalendar().getTimeInMillis();
 		Allopoiesis.undoEnabledIs( false );
 		
-		Tag t = Tag.fromFile( Repertoire.location() + configFilename );
+		Tag t = Tag.fromFile( Repertoire.location() + NAME +".xml" );
 		if (t != null && (t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
-			Concept.load( t.findByName( "concepts" ) );
+			Concepts.load( t.findByName( "concepts" ) );
 		}
 
 		Allopoiesis.undoEnabledIs( true );
@@ -105,4 +104,10 @@ public class Config {
 		Audit.allOff();
 		if (Audit.runtimeDebug) Audit.allOn();
 		audit.out();
+	}
+	
+	public static void main( String args[]) {
+		Enguage.set( "./src/assets" );
+		Config c = new Config();
+		c.load();
 }	}

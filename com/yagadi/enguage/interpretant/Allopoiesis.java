@@ -186,18 +186,19 @@ public class Allopoiesis extends Intention {
 		audit.debug( "in Allop.mediate, NAME='"+ NAME +"', value='"+ value +"'");
 // */
 		if ( cmd.equals( "undo" )) {
+			Enguage e = Enguage.get();
 			r.format( Reply.success() );
 			if (cmds.size() == 2 && cmds.get( 1 ).equals( "enable" )) 
 				undoEnabledIs( true );
 			else if (cmds.size() == 2 && cmds.get( 1 ).equals( "disable" )) 
 				undoEnabledIs( false );
 			else if (cmds.size() == 1 && undoIsEnabled()) {
-				if (Enguage.o.count() < 2) { // if there isn't an overlay to be removed
-					audit.debug( "overlay count( "+ Enguage.o.count() +" ) < 2" ); // audit
+				if (e.o.count() < 2) { // if there isn't an overlay to be removed
+					audit.debug( "overlay count( "+ e.o.count() +" ) < 2" ); // audit
 					r.answer( Reply.no() );
 				} else {
 					audit.debug("ok - restarting transaction");
-					Enguage.o.reStartTxn();
+					e.o.reStartTxn();
 				}
 			} else if (!undoIsEnabled())
 				r.format( Reply.dnu() );
@@ -363,7 +364,7 @@ public class Allopoiesis extends Intention {
 			 * Don't want to list all repertoires once the repertoire base begins to grow?
 			 * May want to ask "is there a repertoire for needs" ?
 			 */
-			r.format( "loaded repertoires include "+ new Strings( Concept.loaded()).toString( Reply.andListFormat() ));
+			r.format( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() ));
 			
 		} else if ( cmd.equals( "describe" ) && cmds.size() >= 2) {
 			String name = cmds.copyAfter( 0 ).toString( Strings.CONCAT );

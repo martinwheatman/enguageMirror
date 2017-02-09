@@ -61,7 +61,7 @@ public class Autoload {
 			
 			//for (String candidate : utterance ) {
 			String candidate;
-			if (null != ( candidate = match( new Strings( utterance ), Concept.names() ))) {
+			if (null != ( candidate = match( new Strings( utterance ), Concepts.names() ))) {
 
 				if (!Language.isQuoted( candidate )// don't try to load: anything that is quoted, ...
 					&&	!candidate.equals(",")             // ...punctuation, ...
@@ -70,10 +70,10 @@ public class Autoload {
 					// let's just singularise it: needs -> need
 					if (Plural.isPlural( candidate ))
 						candidate = Plural.singular( candidate );
-					if (Concept.loaded().contains( candidate )) {// don't load...
+					if (Concepts.loaded().contains( candidate )) {// don't load...
 						audit.debug( "already loaded on init: "+ candidate );
 					} else if (null==autoloaded.get( candidate )) { //...stuff already loaded.
-						if (Repertoire.loadSigns( candidate )) {
+						if (Concepts.loadConcept( candidate )) {
 							if (Audit.detailedDebug) audit.debug( "autoloaded: "+ candidate );
 							autoloaded.put( candidate, 0 ); // just loaded so set new entry to age=0
 						} // ignore, if no repertoire!

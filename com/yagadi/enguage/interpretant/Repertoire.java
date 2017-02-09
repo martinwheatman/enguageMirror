@@ -1,10 +1,7 @@
 package com.yagadi.enguage.interpretant;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-import com.yagadi.enguage.Enguage;
 import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.interpretant.Autopoiesis;
 import com.yagadi.enguage.interpretant.Signs;
@@ -24,7 +21,7 @@ public class Repertoire {
 	public  static final String PLURALISATION = "repper-to-wahs"; // better than ~ares
 	public  static final String          NAME = "repertoire";
 
-	/* This class maintains three repertoire groups - signs, autop and engine
+	/* This class maintains three repertoire groups - signs, autop and allopoetic
 	 * Each, well signs, contains signs from all runtime loaded repertoires and
 	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 
 	 * in engine?
@@ -65,7 +62,7 @@ public class Repertoire {
 	
 	static private boolean loadedDefaultConcept = false;
 	static public  boolean defaultConceptIsLoaded() { return loadedDefaultConcept; }
-	static private void defaultConceptLoadedIs(boolean c ) { loadedDefaultConcept = c; }
+	static public  void    defaultConceptLoadedIs(boolean c ) { loadedDefaultConcept = c; }
 
 	static public String location() {
 		return (
@@ -73,41 +70,6 @@ public class Repertoire {
  				Fs.root + File.separator+ "yagadi.com" :
  				Fs.location()
  			) + File.separator;
-	}
-	
-	static public boolean loadSigns( String name ) { // to Repertoires
-		boolean wasLoaded = false;
-		
-		Autopoiesis.concept( name );
-		if (name.equals( DEFAULT_PRIME ))
-			defaultConceptLoadedIs( true );
-		
-		//...silence on inner thought
-		boolean wasSilenced = false;
-		boolean wasAloud = Enguage.e.isAloud();
-		if (!Audit.startupDebug && Enguage.silentStartup()) {
-			wasSilenced = true;
-			Audit.suspend(); // <<<<<<<<< miss this out for debugging
-			Enguage.e.aloudIs( false );
-		}
-		
-		// ...add content from file
-		String aname = name +".txt",
-		       fname = location() + aname;
-		try {
-			FileInputStream fis = new FileInputStream( fname );
-			Enguage.e.interpret( fis );
-			fis.close();
-			wasLoaded = true; 
-		} catch (IOException e1) {}
-		
-		//...un-silence after inner thought
-		if (!Audit.startupDebug && wasSilenced) {
-			Audit.resume();
-			Enguage.e.aloudIs( wasAloud );
-		}
-		
-		return wasLoaded;
 	}
 
 	//
@@ -129,7 +91,7 @@ public class Repertoire {
 				}
 			} else {
 				// during runtime, do user signs first
-				// unloaded up in enguage.interpret()
+				// unloaded up in Enguage.interpret()
 				Autoload.load( u.expanded() );// ...autoload from expanded utterance...
 				r = signs.interpret( u );
 				if (Reply.DNU == r.type()) {

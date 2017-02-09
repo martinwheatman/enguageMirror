@@ -2,7 +2,7 @@ package com.yagadi.enguage;
 
 import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.interpretant.Autoload;
-import com.yagadi.enguage.interpretant.Concept;
+import com.yagadi.enguage.interpretant.Concepts;
 import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Sofa;
@@ -16,50 +16,47 @@ import com.yagadi.enguage.vehicle.Utterance;
 import com.yagadi.enguage.vehicle.where.Where;
 
 public class Enguage extends Shell {
-	static private Audit audit = new Audit( "Enguage" );
-	static final public String name = "enguage";
-	//static final public String configFilename = Config.configFilename;
+	
+	public Enguage() { super( "Enguage" ); }
 
-	static public boolean silentStartup() { return !Audit.startupDebug; }
-
-	/* This singleton is managed here because the Engine code needs to know about
-	 * the state that the e is in, but won't have access to it unless the
-	 * calling code sets up that access.
+	static private  Audit audit = new Audit( "Enguage" );
+	
+	/* Enguage has to be a singleton, so that its internals can refer to the outer instance.
 	 */
-	static public Enguage e = null; // can't remove this: interpret()
-	// overrides the method in Shell
-	// TODO: enguage need to CONTAIN a Shell
-	static public Overlay o = null; // TODO: ditto
-
-	static public void log( String s ) { audit.log( s ); }
-
-	public Enguage( String location ) {
-		super( "Enguage" );
+	static private Enguage e = new Enguage();
+	static public  Enguage get() { return e; }
+	static public  void    set( String location ) {
 		audit.in( "Engauge", "location=" + location );
 
 		if (!Fs.location( location ))
 			audit.FATAL( location + ": not found" );
-
-		if (!Overlay.autoAttach())
+		else if (!Overlay.autoAttach())
 			audit.FATAL( "Ouch! Cannot autoAttach() to object space" );
 		else {
-			Variable.encache( o = Overlay.Get() );
+			Concepts.names( location );
+			Variable.encache();
 			Allopoiesis.spokenInit();
 			Repertoire.primeUsedInit();
 		}
-		Concept.names( location );
 		audit.out();
 	}
+
+	public Overlay o = Overlay.Get();
+	
+	public void  log( String s ) { audit.log( s ); }
+	
+	private Config      config = new Config();
+	public  Enguage loadConfig() { config.load(); return this; }
 
 	@Override
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
-		if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ) );
+		if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ));
 
 		if (Reply.understood()) // from previous interpretation!
 			o.startTxn( Allopoiesis.undoIsEnabled() ); // all work in this new overlay
 
-		Reply r = Repertoire.interpret( new Utterance( utterance ) );
+		Reply r = Repertoire.interpret( new Utterance( utterance ));
 
 		// once processed, keep a copy
 		Utterance.previous( utterance );
@@ -84,7 +81,7 @@ public class Enguage extends Shell {
 
 	// ==== test code =====
 	private static void TestInit() {
-		if (Config.firstRun() || !Config.visualMode()) {
+		if (Config.firstRun()) { // || !Config.visualMode()
 			Config.firstRun( false );
 			audit.log(
 				Config.welcome(
@@ -92,8 +89,8 @@ public class Enguage extends Shell {
 						"\nEnguage main(): overlay is: " + Overlay.Get().toString()
 			)	);
 		}
-		Config.directionToSpeak( "press the button and speak" );
-		Config.helpOnHelp( "just say help" );
+		//Config.directionToSpeak( "press the button and speak" );
+		//Config.helpOnHelp( "just say help" );
 	}
 
 	private static void testInterpret( String cmd, String expected ) {
@@ -111,15 +108,15 @@ public class Enguage extends Shell {
 	
 	public static void main( String args[] ) {
 		
-		e = new Enguage( "./src/assets" );
+		set( "./src/assets" );
+		e = get().loadConfig();
 		
-		Config.load();
 		TestInit();
 
 		if ( args.length == 1 && args[ 0 ].equals( "run" )) {
 			audit.title( "Over to you..." );
-			e.aloudIs( true );
-			e.run();
+			e.aloudIs( true ).run();
+			
 		} else {
 
 			//Repertoire.signs.show();
