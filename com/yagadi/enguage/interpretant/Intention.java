@@ -46,28 +46,6 @@ public class Intention extends Attribute {
 						//false - is default not to expand, UNIT => cup NOT unit='cup'
 				)	);
 	}
-	private Reply conclude( Reply r, Strings u ) {
-		r.doneIs( false );
-		Reply.strangeThought("");
-		if ( Reply.DNU == r.type()) {
-			/* TODO: At this point do I want to cancel all skipped signs? 
-			 * Or just check if we've skipped any signs and thus report 
-			 * this as simply a warning not an ERROR?
-			 */
-			// put this into reply via Reply.strangeThought()
-			audit.ERROR( "Strange thought: I don't understand: '"+ u.toString() +"'" );
-			Reply.strangeThought( u.toString() );
-			// remove strange thought from Reply - just say DNU
-			if (Allopoiesis.disambFound()) {
-				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
-				Reply.strangeThought("");
-			}
-			r.doneIs( true );
-		
-		} else if ( Reply.NO == r.type() && r.a.toString().equalsIgnoreCase( Reply.ik()))
-			r.answer( Reply.yes());
-		return r;
-	}
 	private Reply think( Reply r ) {
 		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
 		Strings u = formulate( r.a.toString() );
@@ -78,7 +56,7 @@ public class Intention extends Attribute {
 			r.a.add( tmpr.a.toString() );
 		else
 			r = tmpr;
-		r = conclude( r, u );
+		r.conclude( u );
 		return (Reply) audit.out( r );
 	}
 	// ---

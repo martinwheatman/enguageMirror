@@ -1,5 +1,6 @@
 package com.yagadi.enguage.vehicle;
 
+import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Numeric;
@@ -267,6 +268,27 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public String toString() { return encache(); }
 		
+	public void conclude(  Strings u ) {
+		doneIs( false );
+		strangeThought("");
+		if ( DNU == type()) {
+			/* TODO: At this point do I want to cancel all skipped signs? 
+			 * Or just check if we've skipped any signs and thus report 
+			 * this as simply a warning not an ERROR?
+			 */
+			// put this into reply via Reply.strangeThought()
+			audit.ERROR( "Strange thought: I don't understand: '"+ u.toString() +"'" );
+			strangeThought( u.toString() );
+			// remove strange thought from Reply - just say DNU
+			if (Allopoiesis.disambFound()) {
+				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
+				strangeThought("");
+			}
+			doneIs( true );
+		
+		} else if ( NO == type() && a.toString().equalsIgnoreCase( ik()))
+			answer( yes());
+	}
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Variable.encache( Overlay.Get() );
