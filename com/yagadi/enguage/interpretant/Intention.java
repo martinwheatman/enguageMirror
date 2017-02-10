@@ -37,18 +37,18 @@ public class Intention extends Attribute {
 
 	public Intention( String name, String value ) { super( name, value ); }	
 	
-	private Strings formulate( String ans ) {
+	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"
 						new Strings( value ).replace(
 								Strings.ellipsis,
-								ans )
-						//false - is default not to expand, UNIT => cup NOT unit='cup'
+								answer ),
+						expand
 				)	);
 	}
 	private Reply think( Reply r ) {
 		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
-		Strings u = formulate( r.a.toString() );
+		Strings u = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 		audit.debug( "Thinking: "+ u.toString( Strings.CSV ));
 		// This is mediation...
 		Reply tmpr = Repertoire.interpret( new Utterance( u )); // just recycle existing reply
@@ -61,12 +61,10 @@ public class Intention extends Attribute {
 	}
 	// ---
 		private Strings conceptualise( String answer ) {
-			Strings cmd = // Don't Strings.normalise() coz sofa requires "1" parameter
-					Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
-						Context.deref(
-							new Strings( value ).replace( Strings.ellipsis, answer ),
-							true // DO expand, UNIT => unit='non-null value'
-					)	);
+			
+			// Don't Strings.normalise() coz sofa requires "1" parameter
+			Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
+			
 			if (isTemporal()) {
 				String when = Context.get( "when" );
 				if (!when.equals(""))
