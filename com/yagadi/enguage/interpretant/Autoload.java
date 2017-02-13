@@ -73,7 +73,7 @@ public class Autoload {
 					if (Concepts.loaded().contains( candidate )) {// don't load...
 						audit.debug( "already loaded on init: "+ candidate );
 					} else if (null==autoloaded.get( candidate )) { //...stuff already loaded.
-						if (Concepts.loadConcept( candidate )) {
+						if (Concept.load( candidate )) {
 							if (Audit.detailedDebug) audit.debug( "autoloaded: "+ candidate );
 							autoloaded.put( candidate, 0 ); // just loaded so set new entry to age=0
 						} // ignore, if no repertoire!

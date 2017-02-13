@@ -1,0 +1,21 @@
+On "create entity NAME":
+	assert that entity NAME exists;
+	reply "sorry, NAME already exists";
+	if not, perform "entity create NAME" ;
+	then, reply "ok".
+
+On "delete entity NAME":
+	perform "entity delete NAME";
+	then, reply "ok".
+	
+On "ignore entity NAME":
+	perform "entity ignore NAME";
+	then, reply "ok".
+On "restore entity NAME":
+	perform "entity restore NAME";
+	then, reply "ok".	
+	
+On "entity NAME exists":
+	perform "entity exists NAME";
+	if not, reply "no, entity NAME does not exist";
+	then, reply "yes, entity NAME exists".

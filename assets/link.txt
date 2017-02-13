@@ -1,0 +1,7 @@
+# link create X LINK Y
+# link delete X LINK Y
+# link exists X [LINK] [Y]
+# ...bi-directional links???
+
+# link X LINK Y
+# unlink X LINK [Y]

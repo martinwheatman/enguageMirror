@@ -1,0 +1,4 @@
+On "what is ENT ATTR":
+	load attribute;
+	attribute get ENT ATTR;
+	then, reply "ENT ATTR is ...".

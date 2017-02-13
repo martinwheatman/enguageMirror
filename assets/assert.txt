@@ -1,1 +1,6 @@
 On "assert X is PHRASE-Y", is X Y.
+
+On "assert that PHRASE-X":
+	X;
+	if not, reply "sorry, the assertion, X, failed";
+	then, reply "ok".

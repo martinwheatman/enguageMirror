@@ -1,0 +1,13 @@
+On "attribute set ENT ATTR PHRASE-X":
+	perform "value set ENT ATTR X";
+	then, reply "ok".
+	
+On "attribute get martin name":
+	perform "value get ENT ATTR X";
+	then, reply "ok, the ATTR of ENT is ...".
+
+# attribute unset martin name X
+# attribute isset martin name X
+# martin name is PHRASE-X
+# is martin name PHRASE-X
+# static qualifier ENTITY/ATTR ENITY/LINK???
