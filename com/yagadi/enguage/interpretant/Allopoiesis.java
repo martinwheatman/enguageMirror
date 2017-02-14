@@ -242,16 +242,6 @@ public class Allopoiesis extends Intention {
 		} else if (cmd.equals( "spell" )) {
 			r.format( Language.spell( cmds.get( 1 ), true ));
 			
-/*		} else if (cmd.equals( "temporal" )) {
-			audit.LOG( "ENGINE>>>>adding "+ cmds.get( 1 ) +" as temporal" );
-			Temporal.conceptIs( cmds.get( 1 ));
-			r.format( Reply.success() );
-			
-		} else if (cmd.equals( "spatial" )) {
-			audit.LOG( "ENGINE>>>>adding "+ cmds.get( 1 ) +" as spatial" );
-			Spatial.conceptIs( cmds.get( 1 ));
-			r.format( Reply.success() );
-	*/		
 		} else if (cmd.equals( "timing" )) {
 			audit.log( cmds.toString());
 			if (cmds.get( 1 ).equals("off")) {
