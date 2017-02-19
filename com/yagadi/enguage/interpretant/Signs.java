@@ -219,7 +219,7 @@ static private int   total = 0;
 						//audit.debug( "Found@ "+ i +":"+ get( complexity ).content().toLine() +":"+ match.toString() +")");
 
 						//save the context here, for future use... before interp
-						if (!Autoload.ing() && !Repertoire.isInitialising())
+						if (!Autoload.ing() && !Repertoire.isInducting())
 							for ( Attribute m : match )
 								Variable.set( m.name(), m.value());
 						// TODO: No need for context, now? read from (cached) variables?

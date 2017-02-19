@@ -98,7 +98,7 @@ public class Concepts {
 	static public void load( Tag concepts ) {
 		audit.in( "load", "" );
 		if (null != concepts) {
-			Repertoire.initialisingIs( true );
+			Repertoire.inductingIs( true );
 			audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
 			for (int j=0; j<concepts.content().size(); j++) {
 				String name = concepts.content().get( j ).name();
@@ -124,7 +124,7 @@ public class Concepts {
 
 					if (!Audit.startupDebug) Audit.resume();
 			}	}
-			Repertoire.initialisingIs( false );
+			Repertoire.inductingIs( false );
 		} else
 			audit.ERROR( "Concepts tag not found!" );
 		audit.out();

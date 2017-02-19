@@ -25,9 +25,17 @@ public class Repertoire {
 	static public Signs allop = new Signs( "engin", Allopoiesis.commands );
 	
 	// ----- read concepts used in main e
-	static private boolean initialising = false;
-	static public  boolean isInitialising() { return initialising; }
-	static public  boolean initialisingIs( boolean b ) { return initialising = b; }
+	//static private boolean initialising = false;
+	private final static String FALSE = Boolean.toString( false );
+	private final static String  TRUE = Boolean.toString( true  );
+	static Variable induction = new Variable( "induction", FALSE );
+	static public  boolean isInducting() {
+		return induction.get().equalsIgnoreCase( TRUE );
+	}
+	static public  boolean inductingIs( boolean b ) {
+		induction.set( b ? TRUE : FALSE );
+		return b;
+	}
 
 	static public  final String  DEFAULT_PRIME = "need";
 	static public  final String       NO_PRIME = "";
@@ -46,7 +54,7 @@ public class Repertoire {
 	static private       boolean primeUsed    = false;
 	static public        boolean primeUsed() { return primeUsed; }
 	static public        void    primeUsed( boolean spk ) {
-		if (!Repertoire.isInitialising() && !Autoload.ing() && spk != primeUsed) {
+		if (!Repertoire.isInducting() && !Autoload.ing() && spk != primeUsed) {
 			Variable.set( primeUsedVar, spk ? Shell.SUCCESS : Shell.FAIL );
 			primeUsed = spk;
 	}	}
@@ -67,7 +75,7 @@ public class Repertoire {
 		Reply r = new Reply();
 		if (Utterance.sane( u )) {
 			audit.in( "interpret", u.toString( Strings.SPACED ));
-			if (isInitialising() || Autoload.ing()) {
+			if (isInducting() || Autoload.ing()) {
 				// check through autop first, at startup
 				r = autop.interpret( u );
 				if (Reply.DNU == r.type()) {

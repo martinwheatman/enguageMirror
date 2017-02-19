@@ -1,5 +1,9 @@
 package com.yagadi.enguage.interpretant;
 
+import java.util.Iterator;
+
+import com.yagadi.enguage.object.Attribute;
+import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Context;
@@ -109,52 +113,60 @@ public class Autopoiesis extends Intention {
 	// app  "pattern" "action"
 	// prep "pattern" "action"
 	public Reply mediate( Reply r ) {
-		if (Audit.startupDebug) audit.in( "mediate", "NAME="+ NAME +", value="+ value +", "+ Context.valueOf());
-
-		// NAME="add", VALUE='"help" "add item to list"'
-		Strings sa = Context.deref(
-				//Variable.deref(
-					new Strings( value )
-				//)
-			);
-		
-		// sa.get( 0 )='reply', sa.get( 1 )='"help"', sa.get( 2 )='"aural help is not yet implemented"'
-		
+		audit.in( "mediate", "NAME="+ NAME +", value="+ value +", "+ Context.valueOf());
+		Strings sa = Context.deref( new Strings( value ));
 		if (3 != sa.size())
 			audit.ERROR( name +": wrong number ("+ sa.size() +") of params ["+ sa.toString( Strings.CSV ) +"]");
 		else {
-			String val = Strings.trim( sa.get( 2 ), '"' );
-			if (name.equals( "app" ) || name.equals( "prep" )) {
+			String attr = sa.get( 0 ),
+			       pattern = sa.get( 1 ),
+			       val = Strings.trim( sa.get( 2 ), '"' );
+			if (name.equals( APPEND ) || name.equals( PREPEND )) {
 				if (null == s)
 					// this should return DNU...
 					audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
 				else {
-					if (name.equals( "app" )) {
-						if (Audit.startupDebug) audit.debug( "Appending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
-						s.append(  sa.get( 0 ), val );
-					} else {
-						if (Audit.startupDebug) audit.debug( "Prepending to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
-						s.prepend( sa.get( 0 ), val );              // prepend NAME="val"
-				}	}
-			} else if (name.equals( "add" )) { // autopoeisis?
+					audit.debug( name +"ending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
+					if (name.equals( APPEND ))
+						s.append(  attr, val );
+					else
+						s.prepend( attr, val );
+				}
+			} else if (name.equals( NEW )) { // autopoeisis?
 				/* TODO: need to differentiate between
 				 * "X is X" and "X is Y" -- same shape, different usage.
 				 * At least need to avoid this (spot when "X is X" happens)
 				 */
-				if ( sa.get( 1 ).equals( "help" )) {
-					if (Audit.startupDebug) audit.debug( "Adding HELP: ["+ sa.toString( Strings.CSV )+"]");
+				audit.debug( "Adding "+ name +": ["+ sa.toString( Strings.CSV )+"]");
+				if ( sa.get( 1 ).equals( "help" ))
 					s.help( val ); // add: help="text" to cached sign
-				} else { // create a new cached sign
-					if (Audit.startupDebug) audit.debug( "Adding NEW rule: ["+ sa.toString( Strings.CSV )+"]");
-					Tags tmp = new Tags( Strings.trim( sa.get( 1 ), '"' ));
-					s = new Sign()
-							.content( tmp )
+				else // create then add a new cached sign into the list of signs
+					Repertoire.signs.insert(
+						s = new Sign()
+							.content( new Tags( Strings.trim( pattern, '"' )) )
 							.concept( concept() )
-							.attribute( sa.get( 0 ), val );
-					// then add it into the list of signs
-					Repertoire.signs.insert( s );
-		}	}	}
-		r.answer( Reply.yes().toString() );
-		if (Audit.startupDebug) audit.out( "result="+ r.toString() );
-		return r;
+							.attribute( attr, val ));
+		}	}
+		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
+	}
+	public static void main( String args[]) {
+		
+		Reply r = new Reply();
+		Attributes a = new Attributes();
+		
+		a.add( new Attribute( Autopoiesis.NEW,    "1 \"a PATTERN z\" \"one two three four\""   ));
+		a.add( new Attribute( Autopoiesis.APPEND, "2 \"a PATTERN z\" \"two three four\""   ));
+		a.add( new Attribute( Autopoiesis.APPEND, "3 \"a PATTERN z\" \"three four\"" ));
+		a.add( new Attribute( Autopoiesis.APPEND, "4 \"a PATTERN z\" \"four five six\""  ));
+		
+		Iterator<Attribute> ai = a.iterator();
+		while (!r.isDone() && ai.hasNext()) {
+			Attribute an = ai.next();
+			String  name = an.name(),
+			       value = an.value();
+			audit.log( name +"='"+ value +"'" );
+			r = new Autopoiesis( name, value ).mediate( r );
+		}
+		audit.log( Repertoire.signs.toString() );
+		audit.log( r.toString());
 }	}
