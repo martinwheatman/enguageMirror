@@ -6,7 +6,6 @@ import com.yagadi.enguage.interpretant.Concepts;
 import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Sofa;
-import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
@@ -34,7 +33,6 @@ public class Enguage extends Shell {
 			audit.FATAL( "Ouch! Cannot autoAttach() to object space" );
 		else {
 			Concepts.names( location );
-			Variable.encache();
 			Allopoiesis.spokenInit();
 			Repertoire.primeUsedInit();
 		}
@@ -74,7 +72,7 @@ public class Enguage extends Shell {
 		}
 
 		// autoload() in Repertoire.interpret() -- there is a reason for this asymmetry
-		if (!Repertoire.isInitialising() && !Autoload.ing()) Autoload.unload();
+		if (!Repertoire.isInducting() && !Autoload.ing()) Autoload.unload();
 
 		return audit.out( reply );
 	}

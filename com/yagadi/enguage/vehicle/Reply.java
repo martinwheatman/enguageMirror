@@ -4,8 +4,6 @@ import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Numeric;
-import com.yagadi.enguage.object.Overlay;
-import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -291,7 +289,6 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public static void main( String args[] ) {
 		Audit.allOn();
-		Variable.encache( Overlay.Get() );
 
 		Reply.dnu( "Pardon?" );
 		Reply.dnk( "Dunno" );

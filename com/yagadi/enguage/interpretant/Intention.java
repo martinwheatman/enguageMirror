@@ -1,7 +1,6 @@
 package com.yagadi.enguage.interpretant;
 
 import com.yagadi.enguage.object.Attribute;
-import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
@@ -150,6 +149,5 @@ public class Intention extends Attribute {
 	}
 	public static void main( String argv[]) {
 		Reply r = new Reply().answer( "world" );
-		Variable.encache( Overlay.Get() );
 		audit.log( new Intention( REPLY, "hello ..." ).mediate( r ).toString() );
 }	}

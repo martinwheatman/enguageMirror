@@ -42,6 +42,7 @@ public class Allopoiesis extends Intention {
 		new Sign().content( new Tag( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
 // */	//new Sign().attribute( NAME, "save"    ).content( new Tag( "save", "", "" ) ),
 		//new Sign().attribute( NAME, "saveas $NAME" ).content( new Tag("saveas ", "NAME", ".")),
+															 		
 		new Sign().content( new Tag(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
 		new Sign().content( new Tag(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
 		new Sign().content( new Tag(           "undo",  "" )).attribute( NAME, "undo"         ),
@@ -120,7 +121,7 @@ public class Allopoiesis extends Intention {
 	static public        boolean spoken() { return spoken; }
 	static public        void    spoken( boolean spk ) {
 		//audit.traceIn( "spoken", spk ? Shell.SUCCESS : Shell.FAIL );
-		if (!Repertoire.isInitialising() && !Autoload.ing() && spk != spoken) {
+		if (!Repertoire.isInducting() && !Autoload.ing() && spk != spoken) {
 			//audit.audit( "Allop.spoken(): remembering "+ spk );
 			Variable.set( spokenVar, spk ? Shell.SUCCESS : Shell.FAIL );
 			spoken = spk;
@@ -179,6 +180,7 @@ public class Allopoiesis extends Intention {
 				);
 		cmds = cmds.normalise();
 		String cmd = cmds.get( 0 );
+		int sz = cmds.size();
 
 /*		audit.debug( "in Allop.mediate, ctx="+ Reply.context().toString());
 		audit.debug( "in Allop.mediate, val=[ "+ value +" ]");
@@ -204,6 +206,9 @@ public class Allopoiesis extends Intention {
 				r.format( Reply.dnu() );
 			else
 				r = unknownCommand( r, cmds );
+			
+		} else if (sz == 2 && cmds.get( 1 ).equals( "learning" )) {
+			Repertoire.inductingIs( cmd.equalsIgnoreCase( "start" ));
 			
 		} else if (cmd.equals( DISAMBIGUATE )) {
 			disambOn( cmds.copyAfter( 0 ));
