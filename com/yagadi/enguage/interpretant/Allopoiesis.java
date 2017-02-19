@@ -42,10 +42,7 @@ public class Allopoiesis extends Intention {
 		new Sign().content( new Tag( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
 // */	//new Sign().attribute( NAME, "save"    ).content( new Tag( "save", "", "" ) ),
 		//new Sign().attribute( NAME, "saveas $NAME" ).content( new Tag("saveas ", "NAME", ".")),
-															 
-		new Sign().content( new Tag( "start learning",  "" )).attribute( NAME, "start learning"  ),
-		new Sign().content( new Tag( "stop  learning",  "" )).attribute( NAME, "stop  learning"  ),
-		
+															 		
 		new Sign().content( new Tag(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
 		new Sign().content( new Tag(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
 		new Sign().content( new Tag(           "undo",  "" )).attribute( NAME, "undo"         ),
