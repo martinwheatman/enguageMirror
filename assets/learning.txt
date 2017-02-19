@@ -1,0 +1,6 @@
+#
+# Learning
+#
+On "start learning", perform "variable set induction  true". # '^set' induction to  true.
+	
+On "stop  learning", perform "variable set induction false". # '^set' induction to false.
