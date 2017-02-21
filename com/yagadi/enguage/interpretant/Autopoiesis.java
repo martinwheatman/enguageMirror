@@ -14,9 +14,12 @@ public class Autopoiesis extends Intention {
 
 	public static final String NAME    = "autopoiesis";
 	
+	public static final String UNDEF   = "und";
 	public static final String NEW     = "add";
 	public static final String APPEND  = "app";
 	public static final String PREPEND = "prep";
+	public static final String CREATE  = "cre";
+	public static final String ADD     = "add";
 	
 	public static final Sign[] autopoiesis = {
 		// PATTERN PRE-CHECK cases (4)
@@ -98,6 +101,10 @@ public class Autopoiesis extends Intention {
 	};
 
 	public Autopoiesis( String name, String value ) { super( name, value ); }	
+	public Autopoiesis( String name, String intnt, String value ) { super( name, value ); intent = intnt;}	
+	
+	private String intent = UNDEF;
+	public  String intent() { return intent;}
 	
 	static private Sign s = null;
 	
@@ -105,16 +112,24 @@ public class Autopoiesis extends Intention {
 	static public    void concept( String name ) { concept = name; }
 	static public  String concept() { return concept; }
 	
-	
-	// this supports the meta="" autopoeisis rule
-	// TODO: needs "concepts //delete "...". -- to remove a tag, to support '"X" is meaningless.'
-	// Supports:
-	// add  "pattern" "action"
-	// app  "pattern" "action"
-	// prep "pattern" "action"
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", "NAME="+ NAME +", value="+ value +", "+ Context.valueOf());
 		Strings sa = Context.deref( new Strings( value ));
+		if (intent.equals( CREATE )) {
+			audit.log( "creating new sign: ["+ value +"]");
+			Repertoire.signs.insert(
+				s = new Sign()
+					.content( new Tags( value ))
+					.concept( concept() )
+			);
+		} else if (!intent.equals( UNDEF )) {
+			if (null != s) {
+				audit.debug( "Adding to EXISTING sign: '"+ value +"'");
+				s.append( intent, value );
+			}
+			
+		} else
+		
 		if (3 != sa.size())
 			audit.ERROR( name +": wrong number ("+ sa.size() +") of params ["+ sa.toString( Strings.CSV ) +"]");
 		else {
@@ -149,16 +164,8 @@ public class Autopoiesis extends Intention {
 		}	}
 		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
 	}
-	public static void main( String args[]) {
-		
+	public static void test(Attributes a) {
 		Reply r = new Reply();
-		Attributes a = new Attributes();
-		
-		a.add( new Attribute( Autopoiesis.NEW,    "1 \"a PATTERN z\" \"one two three four\""   ));
-		a.add( new Attribute( Autopoiesis.APPEND, "2 \"a PATTERN z\" \"two three four\""   ));
-		a.add( new Attribute( Autopoiesis.APPEND, "3 \"a PATTERN z\" \"three four\"" ));
-		a.add( new Attribute( Autopoiesis.APPEND, "4 \"a PATTERN z\" \"four five six\""  ));
-		
 		Iterator<Attribute> ai = a.iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Attribute an = ai.next();
@@ -167,6 +174,26 @@ public class Autopoiesis extends Intention {
 			audit.log( name +"='"+ value +"'" );
 			r = new Autopoiesis( name, value ).mediate( r );
 		}
+		audit.log( Repertoire.signs.toString() );
+		audit.log( r.toString());
+	}
+	public static void main( String args[]) {
+		//Audit.allOn();
+		//audit.trace( true );
+		
+		Attributes a = new Attributes();
+		
+		a.add( new Attribute( Autopoiesis.NEW,    THINK +" \"a PATTERN z\" \"one two three four\""   ));
+		a.add( new Attribute( Autopoiesis.APPEND, DO    +" \"a PATTERN z\" \"two three four\""   ));
+		a.add( new Attribute( Autopoiesis.APPEND, REPLY +" \"a PATTERN z\" \"three four\"" ));
+		test( a );
+		
+		Reply r = new Reply();
+		r = new Autopoiesis( CREATE, CREATE, "a PATTERN z"        ).mediate( r );
+		r = new Autopoiesis( ADD,    THINK,  "one two three four" ).mediate( r );
+		r = new Autopoiesis( ADD,    DO,     "two three four"     ).mediate( r );
+		r = new Autopoiesis( ADD,    REPLY,  "three four"         ).mediate( r );
+
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
 }	}

@@ -215,11 +215,17 @@ public class Enguage extends Shell {
 			}
 	
 			if ( level == 0 || level == 8 ) {
-				audit.title( "Langauge Learning (non-autopoietic)" );
-				testInterpret( "I want a Ferrari", "I don't understand" );
-				testInterpret( "want means need", "ok." );
-				testInterpret( "I want a Ferrari", "ok, you want a ferrari.");
-				testInterpret( "I don't need anything", "Ok , you don't want anything." );
+				//testInterpret( "I want a Ferrari", "I don't understand" );
+				//testInterpret( "want means need", "ok." );
+				//testInterpret( "I want a Ferrari", "ok, you want a ferrari.");
+				//testInterpret( "I don't need anything", "Ok , you don't want anything." );
+				
+				audit.title( "On-the-fly Langauge Learning" );
+				testInterpret( "interpret you are a wally thus" );
+				testInterpret( "first reply well fancy that" );
+				testInterpret( "ok" );
+				testInterpret( "you are a wally" );
+				
 				//audit.title( "Misunderstanding" );
 				//testInterpret( "i don't understand" );
 			}
