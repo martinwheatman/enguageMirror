@@ -1,65 +1,29 @@
 package com.yagadi.enguage.interpretant;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.TreeSet;
 
-import com.yagadi.enguage.Enguage;
-import com.yagadi.enguage.object.Ospace;
 import com.yagadi.enguage.util.Audit;
 
 public class Concepts {
-	static private Audit audit = new Audit( "Concept" );
+	static private Audit audit = new Audit( "Concepts" );
 
-    static private      TreeSet<String> names = null;
+    static private      TreeSet<String> names = new TreeSet<String>();
     static public final TreeSet<String> names() { return names; }
-	static public                  void names(String location ) {
-		names = new TreeSet<String>();
-		File dir = new File( location );
-		for ( String fname : dir.list() ) {
+	static public                  void names( String location ) {
+		audit.in( "names", location );
+		for ( String fname : new File( location ).list() ) {
 			String[] components = fname.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt")) {
-				//audit.LOG( "adding concept: "+ components[ 0 ]);
+				audit.debug( "adding concept: "+ components[ 0 ]);
 				names.add( components[ 0 ]);
-	}	}	}
+		}	}
+		audit.out();
+	}
 
 	static private TreeSet<String> loaded = new TreeSet<String>();
 	static public  TreeSet<String> loaded() { return loaded; }
 
-	static public boolean loadConcept( String name ) { // to Repertoires
-		Enguage e = Enguage.get();
-		boolean wasLoaded = false,
-		        wasSilenced = false,
-		        wasAloud = e.isAloud();
-	
-		// silence on inner thought...
-		if (!Audit.startupDebug) {
-			wasSilenced = true;
-			Audit.suspend(); // <<<<<<<<< miss this out for debugging
-			e.aloudIs( false );
-		}
-		
-		Autopoiesis.concept( name );
-		if (name.equals( Repertoire.DEFAULT_PRIME ))
-			Repertoire.defaultConceptLoadedIs( true );
-		
-		// ...add content from file...
-		try {
-			FileInputStream fis = new FileInputStream( Ospace.location() + name +".txt" );
-			e.interpret( fis );
-			fis.close();
-			wasLoaded = true; 
-		} catch (IOException e1) {}
-		
-		
-		//...un-silence after inner thought
-		if (wasSilenced) {
-			Audit.resume();
-			e.aloudIs( wasAloud );
-		}
-		return wasLoaded;
-	}
 	// backwards compatibility... STATICally load a repertoire file
 	static private void load( String name ) {
 		audit.in( "load", "name="+ name );
@@ -72,7 +36,7 @@ public class Concepts {
 		if (!loaded.contains( name )) {
 			// loading repertoires won't use undo - disable
 			Allopoiesis.undoEnabledIs( false );
-			if ( loadConcept( name )) {
+			if ( Concept.load( name )) {
 				loaded.add( name );
 				audit.debug( "LOADED>>>>>>>>>>>>:"+ name );
 			} else
@@ -128,6 +92,4 @@ public class Concepts {
 		} else
 			audit.ERROR( "Concepts tag not found!" );
 		audit.out();
-	}
-	
-}
+}	}
