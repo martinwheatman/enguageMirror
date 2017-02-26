@@ -6,19 +6,20 @@ import java.util.TreeSet;
 import com.yagadi.enguage.util.Audit;
 
 public class Concepts {
-	static private Audit audit = new Audit( "Concept" );
+	static private Audit audit = new Audit( "Concepts" );
 
-    static private      TreeSet<String> names = null;
+    static private      TreeSet<String> names = new TreeSet<String>();
     static public final TreeSet<String> names() { return names; }
-	static public                  void names(String location ) {
-		names = new TreeSet<String>();
-		File dir = new File( location );
-		for ( String fname : dir.list() ) {
+	static public                  void names( String location ) {
+		audit.in( "names", location );
+		for ( String fname : new File( location ).list() ) {
 			String[] components = fname.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt")) {
-				//audit.LOG( "adding concept: "+ components[ 0 ]);
+				audit.debug( "adding concept: "+ components[ 0 ]);
 				names.add( components[ 0 ]);
-	}	}	}
+		}	}
+		audit.out();
+	}
 
 	static private TreeSet<String> loaded = new TreeSet<String>();
 	static public  TreeSet<String> loaded() { return loaded; }
@@ -91,6 +92,4 @@ public class Concepts {
 		} else
 			audit.ERROR( "Concepts tag not found!" );
 		audit.out();
-	}
-	
-}
+}	}

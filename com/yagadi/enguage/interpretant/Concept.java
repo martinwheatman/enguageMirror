@@ -8,17 +8,19 @@ import com.yagadi.enguage.object.Ospace;
 import com.yagadi.enguage.util.Audit;
 
 public class Concept {
+	static private Audit audit = new Audit( "Concept" );
 
 	static public boolean load( String name ) {
+		audit.in( "load", name );
 		Enguage e = Enguage.get();
 		boolean wasLoaded = false,
 		        wasSilenced = false,
 		        wasAloud = e.isAloud();
-	
+		
 		// silence on inner thought...
 		if (!Audit.startupDebug) {
 			wasSilenced = true;
-			Audit.suspend(); // <<<<<<<<< miss this out for debugging
+			Audit.suspend(); // <<<<<<<<< comment this out for debugging
 			e.aloudIs( false );
 		}
 		
@@ -27,6 +29,8 @@ public class Concept {
 			Repertoire.defaultConceptLoadedIs( true );
 		
 		// ...add content from file...
+		//String fname = Ospace.location() + name +".txt";
+		//audit.log( "fname is "+ fname );
 		try {
 			FileInputStream fis = new FileInputStream( Ospace.location() + name +".txt" );
 			e.interpret( fis );
@@ -34,11 +38,10 @@ public class Concept {
 			wasLoaded = true; 
 		} catch (IOException e1) {}
 		
-		
 		//...un-silence after inner thought
 		if (wasSilenced) {
 			Audit.resume();
 			e.aloudIs( wasAloud );
 		}
-		return wasLoaded;
+		return audit.out( wasLoaded );
 }	}
