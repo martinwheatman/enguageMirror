@@ -5,3 +5,8 @@
 
 # link X LINK Y
 # unlink X LINK [Y]
+On "create a LINK link from A to B":
+	create A;
+	create B;
+	perform "link set A LINK B";
+	then, reply "ok".
