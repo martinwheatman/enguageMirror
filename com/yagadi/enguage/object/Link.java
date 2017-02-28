@@ -156,7 +156,7 @@ public class Link {
 								} catch(IOException e) {
 									found = false;
 					}	}	}	}
-				if (a == null) break;
+				if (a == null || a.size() == 0) break;
 
 				// swap next array value onto candidate - whether or not we've found a link...
 				candidate += ( "/" + a.get( 0 ));

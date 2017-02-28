@@ -13,7 +13,7 @@ On "ignore entity NAME":
 	then, reply "ok".
 On "restore entity NAME":
 	perform "entity restore NAME";
-	then, reply "ok".	
+	then, reply "ok".
 	
 On "entity NAME exists":
 	perform "entity exists NAME";

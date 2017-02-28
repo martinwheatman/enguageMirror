@@ -1,5 +1,0 @@
-On "a X is a Y":
-	assert that a Y is not a X;
-	
-On "a X is not a Y":
-	assert that an isa link does not exist 
