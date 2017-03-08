@@ -77,6 +77,14 @@ public class Enguage extends Shell {
 		return audit.out( reply );
 	}
 
+	public static String interpret( String utterance ) {
+		return Enguage.get().interpret( new Strings( utterance ));
+	}
+	public static void loadConfig( String location ) {
+		set( location );
+		Enguage.get().loadConfig();
+	}
+	
 	// ==== test code =====
 	private static void TestInit() {
 		if (Config.firstRun()) { // || !Config.visualMode()
@@ -86,13 +94,12 @@ public class Enguage extends Shell {
 					e.copyright() +
 						"\nEnguage main(): overlay is: " + Overlay.Get().toString()
 			)	);
-		}
 		//Config.directionToSpeak( "press the button and speak" );
 		//Config.helpOnHelp( "just say help" );
-	}
+	}	}
 
 	private static void testInterpret( String cmd, String expected ) {
-		String answer = e.interpret( new Strings( cmd ));
+		String answer = Enguage.interpret( cmd );
 		if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
 			audit.log( "Hint is:" + Repertoire.prompt() );
 		else if (   !expected.equals( "" )
@@ -106,8 +113,9 @@ public class Enguage extends Shell {
 	
 	public static void main( String args[] ) {
 		
-		set( "./src/assets" );
-		e = get().loadConfig();
+		// set( "./src/assets" );
+		// e = get().loadConfig();
+		Enguage.loadConfig( "./src/assets" );
 		
 		TestInit();
 

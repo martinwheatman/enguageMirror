@@ -1,6 +1,20 @@
 # is: class model
+On "X is an entity":
+	assert X is a class;
+	reply "no, X is a class";
+	if not, create entity X;
+	then, reply "ok, X is an entity".
+
+On "is X an entity":
+	assert X is a class;
+	reply "no, X is a class";
+	if not, entity X exists;
+	if not, reply "no, X does not exist";
+	then, reply "yes, X is an entity".
+
 On "X is a class":
-	create an isa link from X to class;
+	assert that an instanceof link exists from X to Y;
+	if not, create an isa link from X to class;
 	then, reply "ok, X is a class".
 	
 On "a X is a Y":
@@ -10,7 +24,7 @@ On "a X is a Y":
 	then, reply "ok, X is a Y".
 
 On "X is a Y":
-	create entity X;
+	X is an entity;
 	Y is a class;
 	create an instanceof link from X to Y;
 	then, reply "ok, X is a Y".
@@ -27,4 +41,15 @@ On "is OBJECT a CLASS":
 	reply "no, OBJECT is not a CLASS";
 	then, reply "yes, OBJECT is a CLASS".
 	
+On "is CLASS a class":
+	entity CLASS exists;
+	if not, reply "CLASS does not exist";
+	perform "link exists CLASS isa";
+	reply "yes, CLASS is a class";
+	then, reply "no, CLASS is not a class".
+	
+#	perform "link get CLASS isa";
+#	perform "link transExists ... isa class";
+#	reply "no, CLASS is not a class";
+#	then, reply "yes, CLASS is a class".
 	
