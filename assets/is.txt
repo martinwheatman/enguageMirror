@@ -13,15 +13,16 @@ On "is X an entity":
 	then, reply "yes, X is an entity".
 
 On "X is a class":
-	assert that an instanceof link exists from X to Y;
+	assert that a instanceof link from X exists;
+	reply "no, X is an entity";
 	if not, create an isa link from X to class;
 	then, reply "ok, X is a class".
 	
-On "a X is a Y":
-	X is a class;
-	Y is a class;
-	create an isa link from X to Y;
-	then, reply "ok, X is a Y".
+On "a DERIVED is a BASE":
+	DERIVED is a class;
+	BASE is a class;
+	create an isa link from DERIVED to BASE;
+	then, reply "ok, a DERIVED is a BASE".
 
 On "X is a Y":
 	X is an entity;
