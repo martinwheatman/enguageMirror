@@ -12,6 +12,8 @@ import com.yagadi.enguage.vehicle.Utterance;
 import com.yagadi.enguage.vehicle.when.Moment;
 import com.yagadi.enguage.vehicle.when.When;
 
+import com.unity3d.player.UnityPlayer;
+
 public class Intention extends Attribute {
 	private static Audit audit = new Audit( "Intention" );
 	
@@ -23,6 +25,8 @@ public class Intention extends Attribute {
 	public static final String ELSE_DO    = "D";
 	public static final String      RUN   = "n";
 	public static final String ELSE_RUN   = "N";
+	public static final String      CALL  = "c";
+	public static final String ELSE_CALL  = "C";
 	public static final String FINALLY    = "f";
 
 	public boolean   temporal = false;
@@ -103,6 +107,19 @@ public class Intention extends Attribute {
 		return (Reply) audit.out( r.answer( rc ));
 	}
 	
+	private Reply call( Reply r ) {
+		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		String  answer = r.a.toString();
+		Strings values = conceptualise( answer );
+		String  object = Strings.trim( values.get( 0 ), '\'' );
+		String  method = Strings.trim( values.get( 1 ), '\'');
+		values = values.copyAfter( 1 );
+		audit.log( "sending to unity: "+ object +", "+ method +", "+ values.toString());
+		UnityPlayer.UnitySendMessage( object, method, values.toString() );
+		//rc = deconceptualise( rc, cmd.get( 1 ), answer );
+		return (Reply) audit.out( r.answer( Reply.success() )); // assuming it is void, pass something back...
+	}
+		
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		// TODO: NOT previous(), inner()!
@@ -128,6 +145,8 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( ELSE_DO ))
 					r = perform( r );
+				else if (name.equals( ELSE_CALL ))
+					r = call( r );
 				else if (name.equals( ELSE_RUN ))
 					r = new Proc( value ).run( r );
 				else if (name.equals( ELSE_REPLY ))
@@ -138,6 +157,8 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( DO ))
 					r = perform( r );
+				else if (name.equals( CALL ))
+					r = call( r );
 				else if (name.equals( RUN ))
 					r = new Proc( value ).run( r );
 				else if (name.equals( REPLY )) // if Reply.NO -- deal with -ve replies!

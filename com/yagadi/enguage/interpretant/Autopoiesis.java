@@ -76,12 +76,12 @@ public class Autopoiesis extends Intention {
 		new Sign().attribute( APPEND, Intention.ELSE_DO +" X Y" )
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
-			
-/*		Added new signs for the running of applications external to enguage...
- */
+					
+		/*	Added new signs for the running of applications external to enguage...
+		 */
 		new Sign().attribute( NEW, Intention.RUN +" X Y")
-		.content( new Tag( "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-		.content( new Tag( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.content( new Tag( "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
+			.content( new Tag( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 		
 		new Sign().attribute( APPEND, Intention.RUN +" X Y" )
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
@@ -91,7 +91,22 @@ public class Autopoiesis extends Intention {
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 
-		// c1: Finally on X perform Y. -- dont need think or reply?
+		/*	Added new signs for invoking Unity methods.
+		 */
+		new Sign().attribute( NEW, Intention.CALL +" X Y")
+			.content( new Tag( "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
+			.content( new Tag( ", call ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+		
+		new Sign().attribute( APPEND, Intention.CALL +" X Y" )
+			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
+			.content( new Tag( ", call ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+
+		new Sign().attribute( APPEND, Intention.ELSE_CALL +" X Y" )
+			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
+			.content( new Tag( ", if not, call ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+
+		/* c1: Finally on X perform Y. -- dont need think or reply?
+		 */
 		new Sign().attribute( APPEND, Intention.FINALLY+" X Y")
 			.content( new Tag( " Finally on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ",   perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted ))
