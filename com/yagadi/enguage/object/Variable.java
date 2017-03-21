@@ -129,7 +129,7 @@ public class Variable {
 	}
 	
 	static public String interpret( Strings args ) {
-		//audit.traceIn( "interpret", args.toString() );
+		audit.in( "interpret", args.toString() );
 		String rc = Shell.IGNORE;
 		if (args.get( 0 ).equals( "set" ) && args.size() > 2)
 			set( args.get( 1 ), args.copyAfter( 1 ).toString( Strings.SPACED ));
@@ -139,10 +139,14 @@ public class Variable {
 			isSet( args.get( 1 ));
 		else if (args.get( 0 ).equals( "get" ) && args.size() > 1)
 			rc = get( args.copyAfter( 1 ).toString( Strings.SPACED ));
-		else
+		else if (args.get( 0 ).equals( "show" )) {
+			audit.log( "printing cache" );
+			printCache();
+			audit.log( "printed" );
+			rc = Shell.SUCCESS;
+		} else
 			rc = Shell.FAIL;
-		//audit.traceOut( rc );
-		return rc;
+		return audit.out( rc );
 	}
 	public static void main( String args[] ) {
 		if (!Overlay.autoAttach()) {

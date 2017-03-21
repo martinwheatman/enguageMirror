@@ -1,5 +1,12 @@
 package com.yagadi.enguage;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.interpretant.Autoload;
 import com.yagadi.enguage.interpretant.Concepts;
@@ -76,7 +83,16 @@ public class Enguage extends Shell {
 
 		return audit.out( reply );
 	}
-
+	
+	// === public static calls ===
+	public static String interpret( String utterance ) {
+		return Enguage.get().interpret( new Strings( utterance ));
+	}
+	public static void loadConfig( String location ) {
+		set( location );
+		Enguage.get().loadConfig();
+	}
+	
 	// ==== test code =====
 	private static void TestInit() {
 		if (Config.firstRun()) { // || !Config.visualMode()
@@ -86,13 +102,12 @@ public class Enguage extends Shell {
 					e.copyright() +
 						"\nEnguage main(): overlay is: " + Overlay.Get().toString()
 			)	);
-		}
 		//Config.directionToSpeak( "press the button and speak" );
 		//Config.helpOnHelp( "just say help" );
-	}
+	}	}
 
 	private static void testInterpret( String cmd, String expected ) {
-		String answer = e.interpret( new Strings( cmd ));
+		String answer = Enguage.interpret( cmd );
 		if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
 			audit.log( "Hint is:" + Repertoire.prompt() );
 		else if (   !expected.equals( "" )
@@ -106,17 +121,45 @@ public class Enguage extends Shell {
 	
 	public static void main( String args[] ) {
 		
-		set( "./src/assets" );
-		e = get().loadConfig();
+		// set( "./src/assets" );
+		// e = get().loadConfig();
+		int argc = 0;
+		if (args.length > 1 && args[ argc ].equals( "-c" )) {
+			argc++;
+			Enguage.loadConfig( args[ argc++ ]);
+		} else
+			Enguage.loadConfig( "./src/assets" );
 		
 		TestInit();
 
-		if ( args.length == 1 && args[ 0 ].equals( "run" )) {
+		if ( args.length == argc + 1 && args[ argc ].equals( "run" )) {
 			audit.title( "Over to you..." );
 			e.aloudIs( true ).run();
 			
+		} else if (args.length == argc + 2 && args[ argc ].equals( "-p" )) {
+			ServerSocket server = null;
+			try {
+				server = new ServerSocket( Integer.valueOf( args[ ++argc ]));
+				while (true) {
+					Socket connection = server.accept();
+					BufferedReader in =
+					   new BufferedReader( new InputStreamReader( connection.getInputStream()));
+					DataOutputStream out = new DataOutputStream( connection.getOutputStream());
+					
+					out.writeBytes( Enguage.interpret( in.readLine() ));
+				}
+			} catch (IOException e) {
+				audit.ERROR( "Engauge.main():IO error in TCP sooket operation" );
+			} finally {
+				try {
+					server.close();
+				} catch (IOException e) {
+					audit.ERROR( "Engauge.main():IO error in closing TCP socket" );
+			}	}
+
 		} else {
 
+			// useful ephemera
 			//Repertoire.signs.show();
 			//testInterpret( "detail on" );
 			//testInterpret( "tracing on" );
@@ -127,17 +170,17 @@ public class Enguage extends Shell {
 				audit.title( "The Non-Computable concept of NEED" );
 				//testInterpret( "i don't need anything" );
 				testInterpret( "what do i need",
-						       "you don't need anything." );
+							   "you don't need anything." );
 				testInterpret( "i need 2 cups of coffee and a biscuit",
-						       "ok, you need 2 cups of coffee, and a biscuit.");
+							   "ok, you need 2 cups of coffee, and a biscuit.");
 				testInterpret( "what do i need",
-						       "you need 2 cups of coffee, and a biscuit.");
+							   "you need 2 cups of coffee, and a biscuit.");
 				testInterpret( "how many coffees do i need",
-				               "2, you need 2 coffees." );
+							   "2, you need 2 coffees." );
 				testInterpret( "i don't need any coffee",
-						       "ok, you don't need any coffee." );
+							   "ok, you don't need any coffee." );
 				testInterpret( "what do i need",
-						       "you need a biscuit." );
+							   "you need a biscuit." );
 	
 				audit.title( "Semantic Thrust" );
 				testInterpret( "i need to go to town",
@@ -145,66 +188,66 @@ public class Enguage extends Shell {
 				testInterpret( "what do i need",
 							   "you need a biscuit, and to go to town." );
 				testInterpret( "i have a biscuit",
-						       "ok, you don't need a biscuit." );
+							   "ok, you don't need a biscuit." );
 				testInterpret( "i have to go to town",
-						       "I know." );
+							   "I know." );
 				testInterpret( "i don't need to go to town",
-						       "ok, you don't need to go to town." );
+							   "ok, you don't need to go to town." );
 				testInterpret( "what do i need",
-						       "you don't need anything." );
+							   "you don't need anything." );
 			}
 	
 			if ( level == 0 || level == 3 ) {
 				audit.title( "Verbal Arithmetical" );
 				testInterpret( "what is 1 + 2",
-						       "1 plus 2 is 3.");
+							   "1 plus 2 is 3.");
 				testInterpret( "times 2 all squared",
-						       "times 2 all squared makes 36.");
+							   "times 2 all squared makes 36.");
 				testInterpret( "what is 36 + 4 all divided by 2",
-						       "36 plus 4 all divided by 2 is 20." ); 
+							   "36 plus 4 all divided by 2 is 20." ); 
 			}
 	
 			if ( level == 0 || level == 4 ) {
 				audit.title( "Numerical Context" );
 				testInterpret( "i need a coffee",
-						       "ok, you need a coffee." );
+							   "ok, you need a coffee." );
 				testInterpret( "and another",
-						       "ok, you need 1 more coffee." );
+							   "ok, you need 1 more coffee." );
 				testInterpret( "how many coffees do i need",
-						       "2, you need 2 coffees." );
+							   "2, you need 2 coffees." );
 				testInterpret( "i need a cup of tea",
-						       "ok, you need a cup of tea." );
+							   "ok, you need a cup of tea." );
 				testInterpret( "and another coffee",
-					           "ok, you need 1 more coffee." );
+							   "ok, you need 1 more coffee." );
 				testInterpret( "what do i need",
-						       "You need 3 coffees , and a cup of tea." );
+							   "You need 3 coffees , and a cup of tea." );
 			}
 	
 			if ( level == 0 || level == 5 ) {
 				audit.title( "Correction" );
 				testInterpret( "i need another coffee",
-						       "ok, you need 1 more coffee.");
+							   "ok, you need 1 more coffee.");
 				testInterpret( "no i need another 3",
-						       "ok, you need 3 more coffees.");
+							   "ok, you need 3 more coffees.");
 				testInterpret( "what do i need",
-						       "you need 6 coffees, and a cup of tea.");
+							   "you need 6 coffees, and a cup of tea.");
 				testInterpret( "i don't need anything",
-					           "ok, you don't need anything." );
+							   "ok, you don't need anything." );
 			}
 	
 			if ( level == 0 || level == 6 ) {
 				audit.title( "Disambiguation" );
 				testInterpret( "the eagle has landed" //,
-						       //"Are you an ornithologist."
+							   //"Are you an ornithologist."
 						);
 				testInterpret( "no the eagle has landed" //,
-						       //"So , you're talking about the novel."
+							   //"So , you're talking about the novel."
 						);
 				testInterpret( "no the eagle has landed" //, 
-						       //"So you're talking about Apollo 11."
+							   //"So you're talking about Apollo 11."
 						);
 				testInterpret( "no the eagle has landed" //,
-						       //"I don't understand"
+							   //"I don't understand"
 						);
 			}
 	

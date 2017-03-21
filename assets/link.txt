@@ -5,3 +5,16 @@
 
 # link X LINK Y
 # unlink X LINK [Y]
+On "create a LINK link from A to B":
+	perform "link set A LINK B";
+	then, reply "ok".
+
+On "a LINK link from CLASS exists":
+	perform "link exists CLASS LINK";
+	if not, reply "no, a LINK link from CLASS does not exist";
+	then, reply "yes, a LINK link from CLASS exists".
+	
+	On "link transExists A LINK B":
+		perform "link transExists A LINK B";
+		if not, reply "no, there is no transitive LINK link between A and B";
+		then, reply "yes, they are transitively connected".

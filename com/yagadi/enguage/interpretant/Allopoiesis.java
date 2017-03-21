@@ -326,6 +326,9 @@ public class Allopoiesis extends Intention {
 					Repertoire.allop.show();
 					Repertoire.signs.show();
 					r.format( Reply.success() );
+				} else if (option.equals( "vari" )) {
+					Variable.interpret( new Strings( "show" ));
+					r.format( Reply.success());
 				} else
 					audit.ERROR( "option: "+ option +" doesn't match anything" );
 			} else {
