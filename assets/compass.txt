@@ -1,0 +1,26 @@
+On "compass on":
+	perform "variable set compass on";
+	#http localhost:5678 "</>"
+	then, reply "ok, compass is on".
+	
+On "compass off":
+	perform "variable set compass off";
+	#http
+	then, reply "ok, compass is off".
+	
+On "turn on compass", compass on.
+On "turn the compass on", compass on.
+On "where is the compass", compass on.
+
+On "turn off compass", compass off.
+On "turn the compass off", compass off.
+
+On "compass":
+	assert compass is on;
+	if not, turn compass on;
+	turn compass off.
+	
+On "is compass on":
+	perform "variable exists compass on";
+	if not, reply "no";
+	then, reply "yes".
