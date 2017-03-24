@@ -1,11 +1,11 @@
 On "compass on":
 	perform "variable set compass on";
-	#http localhost:5678 "</>"
+	http localhost:6578 '<asset id="comapass" op="off"/>';
 	then, reply "ok, compass is on".
 	
 On "compass off":
 	perform "variable set compass off";
-	#http
+	http localhost:6578 '<asset id="comapass" op="on"/>';
 	then, reply "ok, compass is off".
 	
 On "turn on compass", compass on.

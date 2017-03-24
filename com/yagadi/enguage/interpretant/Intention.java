@@ -1,5 +1,10 @@
 package com.yagadi.enguage.interpretant;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+
+import com.unity3d.player.UnityPlayer;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
@@ -12,8 +17,6 @@ import com.yagadi.enguage.vehicle.Utterance;
 import com.yagadi.enguage.vehicle.when.Moment;
 import com.yagadi.enguage.vehicle.when.When;
 
-import com.unity3d.player.UnityPlayer;
-
 public class Intention extends Attribute {
 	private static Audit audit = new Audit( "Intention" );
 	
@@ -25,8 +28,8 @@ public class Intention extends Attribute {
 	public static final String ELSE_DO    = "D";
 	public static final String      RUN   = "n";
 	public static final String ELSE_RUN   = "N";
-	public static final String      CALL  = "c";
-	public static final String ELSE_CALL  = "C";
+	public static final String      HTTP  = "h";
+	public static final String ELSE_HTTP  = "H";
 	public static final String FINALLY    = "f";
 
 	public boolean   temporal = false;
@@ -107,16 +110,37 @@ public class Intention extends Attribute {
 		return (Reply) audit.out( r.answer( rc ));
 	}
 	
-	private Reply call( Reply r ) {
-		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		String  answer = r.a.toString();
+	private Reply http( Reply r ) {
+		audit.in( "http", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		int port = 6789; // default?
+		String  pre = "<SOAP>",
+				post = "</SOAP>",
+		        answer = r.a.toString(),
+		        address = "localhost";
 		Strings values = conceptualise( answer );
-		String  object = Strings.trim( values.get( 0 ), '\'' );
-		String  method = Strings.trim( values.get( 1 ), '\'');
+		{	String[]  fqdn = Strings.trim( values.get( 0 ), '\'' ).split( ":" );
+			if (fqdn.length == 1) address = fqdn[ 1 ];
+			if (fqdn.length == 2) port = Integer.valueOf( fqdn[ 1 ]);
+		}
+		String  xml = Strings.trim( values.get( 1 ), '\'');
 		values = values.copyAfter( 1 );
-		audit.log( "sending to unity: "+ object +", "+ method +", "+ values.toString());
-		UnityPlayer.UnitySendMessage( object, method, values.toString() );
-		//rc = deconceptualise( rc, cmd.get( 1 ), answer );
+		
+		audit.log( "soaping to unity: "+ address +", "+ xml +", "+ values.toString());
+		
+		Socket connection = null;
+		try {
+			connection = new Socket( address, port );
+			DataOutputStream out = new DataOutputStream( connection.getOutputStream());
+			out.writeBytes( pre + xml + post );
+		} catch (IOException e) {
+			audit.ERROR( "Intentional error: "+ e.toString());
+		} finally {
+			try {
+				if (null != connection) connection.close();
+			} catch (IOException e){
+				audit.ERROR("closing connection:"+ e.toString());
+		}	}
+		
 		return (Reply) audit.out( r.answer( Reply.success() )); // assuming it is void, pass something back...
 	}
 		
@@ -145,8 +169,8 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( ELSE_DO ))
 					r = perform( r );
-				else if (name.equals( ELSE_CALL ))
-					r = call( r );
+				else if (name.equals( ELSE_HTTP ))
+					r = http( r );
 				else if (name.equals( ELSE_RUN ))
 					r = new Proc( value ).run( r );
 				else if (name.equals( ELSE_REPLY ))
@@ -157,8 +181,8 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( DO ))
 					r = perform( r );
-				else if (name.equals( CALL ))
-					r = call( r );
+				else if (name.equals( HTTP ))
+					r = http( r );
 				else if (name.equals( RUN ))
 					r = new Proc( value ).run( r );
 				else if (name.equals( REPLY )) // if Reply.NO -- deal with -ve replies!
