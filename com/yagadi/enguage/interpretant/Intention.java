@@ -112,8 +112,8 @@ public class Intention extends Attribute {
 	private Reply http( Reply r ) {
 		audit.in( "http", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		int port = 6789; // default?
-		String  pre = "<SOAP>",
-				post = "</SOAP>",
+		String  pre = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"xmlns:example=\"http://ws.cdyne.com/\"><SOAP-ENV:Header/><SOAP-ENV:Body>",
+				post = "</SOAP-ENV:Body></SOAP-ENV:Envelope>",
 		        answer = r.a.toString(),
 		        address = "localhost";
 		Strings values = conceptualise( answer );
