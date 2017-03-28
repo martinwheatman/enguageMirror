@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import com.unity3d.player.UnityPlayer;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
