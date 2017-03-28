@@ -139,9 +139,9 @@ public class Variable {
 			unset( args.get( 1 ));
 		else if (args.get( 0 ).equals( "exists" ) && args.size() > 1)
 			if (args.size() == 2)
-				isSet( args.get( 1 ), null);
+				rc = isSet( args.get( 1 ), null) ? Shell.SUCCESS : Shell.FAIL;
 			else
-				isSet( args.get( 1 ), args.get( 2 ));
+				rc = isSet( args.get( 1 ), args.copyAfter( 1 ).toString()) ? Shell.SUCCESS : Shell.FAIL;
 		else if (args.get( 0 ).equals( "get" ) && args.size() > 1)
 			rc = get( args.copyAfter( 1 ).toString( Strings.SPACED ));
 		else if (args.get( 0 ).equals( "show" )) {
@@ -165,7 +165,7 @@ public class Variable {
 			String tmp = spk.get();
 			audit.log( "was="+ (tmp==null?"<null>":tmp));
 			if ( tmp.equals( "fred" ))
-				spk.set( "bill" );
+				interpret( new Strings( "set SPOKEN billy boy" ));
 			else
 				spk.set( "fred" );
 			tmp = spk.get();
