@@ -80,8 +80,8 @@ public class Variable {
 		value = new Value( NAME, name );
 		set( val );
 	}
-	public String get() { return cache.get( name ); }
-	public boolean isSet( String value ) { return cache.get( name ).equals( value );}
+	public String     get() { return cache.get( name ); }
+	public boolean  isSet( String value ) { return cache.get( name ).equals( value );}
 	public Variable   set( String val ) {
 		cache.put( name, val );
 		value.set( val );
@@ -96,15 +96,16 @@ public class Variable {
 	// for backward compatibility, keeping these statics 
 	static public void   set( String name, String val ) { new Variable( name ).set( val );}
 	static public void unset( String name ) { new Variable( name ).unset(); }
-	static public String get( String name ) { return cache==null ? "" : cache.get( name ); }
+	static public String get( String name ) { return cache.get( name ); } // raw name
 	static public String get( String name, String def ) {
-		String value = cache==null? null : cache.get( name );
+		String value = cache.get( name );   // raw name, so "compass" not set, but "COMPASS" is
 		return value==null || value.equals("") ? def : value;
 	}
 	static public boolean isSet( String name, String value ) {
-		String val = get( name );
-		return  (value == null && val != null && !val.equals( "" )) ||
-				(value != null && val.equals( value ));
+		String val = new Variable( name ).get();
+		return  val != null &&
+				((value == null && !val.equals( "" )  ) ||
+				 (value != null && val.equals( value ))   );
 	}
 	
 	static public Strings deref( String name ) {
@@ -138,12 +139,12 @@ public class Variable {
 		else if (args.get( 0 ).equals( "unset" ) && args.size() > 1)
 			unset( args.get( 1 ));
 		else if (args.get( 0 ).equals( "exists" ) && args.size() > 1)
-			if (args.size() == 2)
-				rc = isSet( args.get( 1 ), null) ? Shell.SUCCESS : Shell.FAIL;
-			else
-				rc = isSet( args.get( 1 ), args.copyAfter( 1 ).toString()) ? Shell.SUCCESS : Shell.FAIL;
+			rc = isSet( args.get( 1 ), 
+					    args.size() == 2 ?
+							null : args.copyAfter( 1 ).toString()
+					) ? Shell.SUCCESS : Shell.FAIL;
 		else if (args.get( 0 ).equals( "get" ) && args.size() > 1)
-			rc = get( args.copyAfter( 1 ).toString( Strings.SPACED ));
+			rc = get( args.copyAfter( 0 ).toString( Strings.SPACED ));
 		else if (args.get( 0 ).equals( "show" )) {
 			audit.log( "printing cache" );
 			printCache();
@@ -151,7 +152,18 @@ public class Variable {
 			rc = Shell.SUCCESS;
 		} else
 			rc = Shell.FAIL;
-		return audit.out( rc );
+		return audit.out( rc = rc==null?"":rc );
+	}
+	
+	public static void test( String cmd, String expected ) {
+		String actual = interpret( new Strings( cmd ));
+		if (actual.equals( expected ))
+			if ( actual.equals( "" ))
+				audit.log(   "PASS: "+ cmd );
+			else
+				audit.log(   "PASS: "+ cmd +" = '"+ actual +"'" );
+		else
+			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
 	public static void main( String args[] ) {
 		if (!Overlay.autoAttach()) {
@@ -176,13 +188,11 @@ public class Variable {
 				audit.log( "spk is set to Bill" );
 			printCache();
 			
-			//*		Static test, backwards compat...	
-			Variable.set( "HELLO", "there" );
-			audit.log( "hello is "+ Variable.get( "HELLO" ) +" (there=>pass)" );
-			if (Variable.isSet( "HELLO",  "there" ))
-				audit.log( "hello is set to There" );
-			else
-				audit.log( "hello is NOT set to There" );
-			Variable.unset( "HELLO" );
-			audit.log( "hello is "+ Variable.get( "HELLO" ) +" (null=>pass)" );
+			//*		Static test, backwards compat...
+			test( "set hello there", "" );
+			test( "get HELLO", "there" );
+			test( "exists HELLO there", Shell.SUCCESS );
+			audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
+			test( "unset HELLO", "" );
+			test( "get HELLO", "" );
 }	}	}
