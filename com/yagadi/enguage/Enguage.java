@@ -56,7 +56,7 @@ public class Enguage extends Shell {
 	@Override
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
-		if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ));
+		//if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ));
 
 		if (Reply.understood()) // from previous interpretation!
 			o.startTxn( Allopoiesis.undoIsEnabled() ); // all work in this new overlay
