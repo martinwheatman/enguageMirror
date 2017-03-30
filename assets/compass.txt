@@ -2,45 +2,28 @@
 # Compass - managing the on/off state of a Unity3d asset
 #
 
-# We want to turn on the compass:
-On "compass on":
-	perform "variable set compass on";
-	#http localhost:6578 '<asset id="compass" op="on"/>';
-	then, reply "ok, compass is on".
-On "turn on the compass", compass on.
-On "turn on     compass", compass on.
-On "turn the compass on", compass on.
-On "turn     compass on", compass on.
-On "where is the compass", compass on.
+# We want to turn the compass on, or turn it off...:
+On "compass ONOROFF":
+	#http localhost:6578 "<asset id='compass' op='ONOROFF'/>";
+	perform "variable set compass ONOROFF";
+	then, reply "ok, compass is ONOROFF".	
+On "turn ONOROFF     compass", compass ONOROFF.
+On "turn ONOROFF the compass", compass ONOROFF.
+On "turn     compass ONOROFF", compass ONOROFF.
+On "turn the compass ONOROFF", compass ONOROFF.
 
-#..or, turn it off:
-On "compass off":
-	perform "variable set compass off";
-	#http localhost:6578 '<asset id="compass" op="off"/>';
-	then, reply "ok, compass is off".	
-On "turn off     compass", compass off.
-On "turn off the compass", compass off.
-On "turn     compass off", compass off.
-On "turn the compass off", compass off.
+On "the compass is ONOROFF":
+	perform "variable exists compass ONOROFF";
+	if not, reply "no, the compass is not ONOROFF";
+	then, reply "yes, the compass is ONOROFF".
+On "is the compass ONOROFF", the compass is ONOROFF.	
+On "is     compass ONOROFF", the compass is ONOROFF.	
 
 #..or, toggle its state:
 On "toggle compass":
-	assert that the compass is on;
+	the compass is on;
 	turn compass off;
-	reply "the compass is off";
-	then, turn compass on.
+	if not, turn compass on;
+	then, reply "ok".
 On "toggle the compass", toggle compass.
 On "compass",            toggle compass.
-	
-On "the compass is on":
-	perform "variable exists compass on";
-	if not, reply "no";
-	then, reply "yes".
-On "is the compass on", the compass is on.
-	
-On "the compass is off":
-	perform "variable exists compass off";
-	if not, reply "no";
-	then, reply "yes".
-On "is the compass off", the compass is off.
-	
