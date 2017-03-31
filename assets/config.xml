@@ -16,7 +16,10 @@
 			REFERENCERS="the any"
 			LISTFORMATSEP=":"
 			ANDLISTFORMAT=", :, and "
-			ORLISTFORMAT=", :, or " >
+			ORLISTFORMAT=", :, or "
+			SERVER="localhost" PORT="5678"
+			XML_PRE='<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:example="http://ws.cdyne.com/"><SOAP-ENV:Header/><SOAP-ENV:Body>'
+			XML_POST='</SOAP-ENV:Body></SOAP-ENV:Envelope>'>
 			
 		<concepts>
 			<concept id="colloquia"      op="load"/>

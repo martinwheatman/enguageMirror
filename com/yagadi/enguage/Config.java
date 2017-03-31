@@ -12,6 +12,7 @@ import com.yagadi.enguage.interpretant.Signs;
 import com.yagadi.enguage.interpretant.Tag;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Ospace;
+import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
@@ -77,7 +78,8 @@ public class Config {
 				if (name.equals( "DNK" )) Reply.dnk( value ); else
 				if (name.equals( "YES" )) Reply.yes( value ); else
 				if (name.equals(  "NO" )) Reply.no(  value ); else
-				if (name.equals(  "IK" )) Reply.ik(  value );
+				if (name.equals(  "IK" )) Reply.ik(  value ); else
+					Variable.set( name,  value );
 	}	}	}
 
 	
