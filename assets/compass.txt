@@ -4,8 +4,8 @@
 
 # We want to turn the compass on, or turn it off...:
 On "compass ONOROFF":
-	#tcpip localhost 5678 "<asset id='compass' op='ONOROFF'/>"; # invalid port!
-	#if not, reply "sorry, I cannot speak to the server";
+	tcpip localhost 5678 "<asset id='compass' op='ONOROFF'/>";
+	if not, reply "sorry, I cannot speak to the server";
 	perform "variable set compass ONOROFF";
 	then, reply "ok, compass is ONOROFF".
 #On "help", reply "to turn the compass on or off".
