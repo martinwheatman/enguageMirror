@@ -91,23 +91,6 @@ public class Autopoiesis extends Intention {
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 
-		/*	Added new signs for invoking Unity methods through HTTP.
-		 */
-		new Sign().attribute( NEW, Intention.HTTP +" X Y")
-			.content( new Tag( "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( ", http ", "address", "" ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( " ", "xml", "" ).attribute( Tag.quoted, Tag.quoted )),
-		
-		new Sign().attribute( APPEND, Intention.HTTP +" X Y" )
-			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( ", http ", "address", "" ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( " ", "xml", "" ).attribute( Tag.quoted, Tag.quoted )),
-
-		new Sign().attribute( APPEND, Intention.ELSE_HTTP +" X Y" )
-			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( ", if not, http ", "address", "" ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( " ", "xml", "" ).attribute( Tag.quoted, Tag.quoted )),
-
 		/* c1: Finally on X perform Y. -- dont need think or reply?
 		 */
 		new Sign().attribute( APPEND, Intention.FINALLY+" X Y")

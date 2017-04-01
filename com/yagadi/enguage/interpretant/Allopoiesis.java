@@ -57,6 +57,10 @@ public class Allopoiesis extends Intention {
 		new Sign().content( new Tag(        "tracing off",  "" )).attribute( NAME, "tracing off" ),
 		new Sign().content( new Tag(         "detail  on",  "" )).attribute( NAME, "detailed on" ),
 		new Sign().content( new Tag(         "detail off",  "" )).attribute( NAME, "detailed off" ),
+		new Sign().content( new Tag(         "tcpip ",  "address" ))
+				.content( new Tag(         " ",  "port" ))
+				.content( new Tag(         " ",  "data" ).attribute( Tag.quoted, Tag.quoted ))
+					.attribute( NAME, "tcpip ADDRESS PORT DATA" ),
 		new Sign().content( new Tag(              "show ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 				.attribute( NAME, "show X" ),
 		new Sign().content( new Tag(         "debug ", "x" ).attribute( Tag.phrase, Tag.phrase ))
@@ -246,6 +250,18 @@ public class Allopoiesis extends Intention {
 */
 		} else if (cmd.equals( "spell" )) {
 			r.format( Language.spell( cmds.get( 1 ), true ));
+			
+		} else if (cmd.equals( "tcpip" )) {
+			String prefix = Variable.get( "XMLPRE" ),
+					suffix = Variable.get( "XMLPOST" );
+			r = Net.client(
+					r,
+					cmds.get( 1 ),
+					Integer.valueOf( cmds.get( 2 )),
+					(null==prefix ? "" : prefix) +
+						Strings.trim( cmds.get( 3 ), '"' ) +
+						(null==suffix ? "" : suffix)
+				);
 			
 		} else if (cmd.equals( "timing" )) {
 			audit.log( cmds.toString());

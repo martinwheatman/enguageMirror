@@ -1,9 +1,5 @@
 package com.yagadi.enguage.interpretant;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
@@ -27,8 +23,6 @@ public class Intention extends Attribute {
 	public static final String ELSE_DO    = "D";
 	public static final String      RUN   = "n";
 	public static final String ELSE_RUN   = "N";
-	public static final String      HTTP  = "h";
-	public static final String ELSE_HTTP  = "H";
 	public static final String FINALLY    = "f";
 
 	public boolean   temporal = false;
@@ -108,41 +102,6 @@ public class Intention extends Attribute {
 		rc = deconceptualise( rc, cmd.get( 1 ), answer );
 		return (Reply) audit.out( r.answer( rc ));
 	}
-	
-	private Reply http( Reply r ) {
-		audit.in( "http", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		int port = 6789; // default?
-		String  pre = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"xmlns:example=\"http://ws.cdyne.com/\"><SOAP-ENV:Header/><SOAP-ENV:Body>",
-				post = "</SOAP-ENV:Body></SOAP-ENV:Envelope>",
-		        answer = r.a.toString(),
-		        address = "localhost";
-		Strings values = conceptualise( answer );
-		{	String[]  fqdn = Strings.trim( values.get( 0 ), '\'' ).split( ":" );
-			if (fqdn.length == 1) address = fqdn[ 1 ];
-			if (fqdn.length == 2) port = Integer.valueOf( fqdn[ 1 ]);
-		}
-		String  xml = Strings.trim( values.get( 1 ), '\'');
-		values = values.copyAfter( 1 );
-		
-		audit.log( "soaping to unity: "+ address +", "+ xml +", "+ values.toString());
-		
-		Socket connection = null;
-		try {
-			connection = new Socket( address, port );
-			DataOutputStream out = new DataOutputStream( connection.getOutputStream());
-			out.writeBytes( pre + xml + post );
-		} catch (IOException e) {
-			audit.ERROR( "Intentional error: "+ e.toString());
-		} finally {
-			try {
-				if (null != connection) connection.close();
-			} catch (IOException e){
-				audit.ERROR("closing connection:"+ e.toString());
-		}	}
-		
-		return (Reply) audit.out( r.answer( Reply.success() )); // assuming it is void, pass something back...
-	}
-		
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		// TODO: NOT previous(), inner()!
@@ -168,8 +127,6 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( ELSE_DO ))
 					r = perform( r );
-				else if (name.equals( ELSE_HTTP ))
-					r = http( r );
 				else if (name.equals( ELSE_RUN ))
 					r = new Proc( value ).run( r );
 				else if (name.equals( ELSE_REPLY ))
@@ -180,8 +137,6 @@ public class Intention extends Attribute {
 					r = think( r );
 				else if (name.equals( DO ))
 					r = perform( r );
-				else if (name.equals( HTTP ))
-					r = http( r );
 				else if (name.equals( RUN ))
 					r = new Proc( value ).run( r );
 				else if (name.equals( REPLY )) // if Reply.NO -- deal with -ve replies!
