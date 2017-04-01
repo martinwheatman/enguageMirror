@@ -1,15 +1,9 @@
 package com.yagadi.enguage;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.interpretant.Autoload;
 import com.yagadi.enguage.interpretant.Concepts;
+import com.yagadi.enguage.interpretant.Net;
 import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Sofa;
@@ -137,25 +131,7 @@ public class Enguage extends Shell {
 			e.aloudIs( true ).run();
 			
 		} else if (args.length == argc + 2 && args[ argc ].equals( "-p" )) {
-			ServerSocket server = null;
-			try {
-				server = new ServerSocket( Integer.valueOf( args[ ++argc ]));
-				while (true) {
-					Socket connection = server.accept();
-					BufferedReader in =
-					   new BufferedReader( new InputStreamReader( connection.getInputStream()));
-					DataOutputStream out = new DataOutputStream( connection.getOutputStream());
-					
-					out.writeBytes( Enguage.interpret( in.readLine() ));
-				}
-			} catch (IOException e) {
-				audit.ERROR( "Engauge.main():IO error in TCP sooket operation" );
-			} finally {
-				try {
-					server.close();
-				} catch (IOException e) {
-					audit.ERROR( "Engauge.main():IO error in closing TCP socket" );
-			}	}
+			Net.server( args[ ++argc ]);
 
 		} else {
 
