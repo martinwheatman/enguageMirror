@@ -107,13 +107,28 @@ public class Variable {
 				((value == null && !val.equals( "" )  ) ||
 				 (value != null && val.equals( value ))   );
 	}
-	
+	public static String derefUc( String in ) {
+		String out = "", word = "";
+		char[] buffer = in.toCharArray();
+		for (char ch : buffer) {
+			if (Character.isUpperCase( ch ))
+				word += ch;
+			else {
+				if (!word.equals( "" )) {
+					word = Variable.get( word );
+					if (word == null) word = "";
+					out += word;
+					word = "";
+				}
+				out += ch;
+		}	}
+		return out;
+	}
+
 	static public Strings deref( String name ) {
 		// must return strings for case where variable value is 'hello world'
 		// must contract( "=" ) for case where 'name' is "SUBJECT='fred'"
 		// this should ignore $SUBJECT
-		/* TODO need to deref values: x='$VAR' to return x='val' ?
-		 */
 		Strings rc = ( (null != name
 				&& !name.equals("")
 				&& name.charAt( 0 ) != intPrefix) ?

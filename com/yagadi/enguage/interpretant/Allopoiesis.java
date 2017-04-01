@@ -252,14 +252,26 @@ public class Allopoiesis extends Intention {
 			r.format( Language.spell( cmds.get( 1 ), true ));
 			
 		} else if (cmd.equals( "tcpip" )) {
+			
 			String prefix = Variable.get( "XMLPRE" ),
 					suffix = Variable.get( "XMLPOST" );
+			
+			int port = -1;
+			try {
+				port = Integer.valueOf( cmds.get( 2 ));
+			} catch (Exception e1) {
+				try {
+					port = Integer.valueOf( Variable.get( "PORT" ));
+				} catch (Exception e2) {
+					port = 0;
+			}	}
+			
 			r = Net.client(
 					r,
 					cmds.get( 1 ),
-					Integer.valueOf( cmds.get( 2 )),
+					port,
 					(null==prefix ? "" : prefix) +
-						Strings.trim( cmds.get( 3 ), '"' ) +
+						Variable.derefUc( Strings.trim( cmds.get( 3 ), '"' )) +
 						(null==suffix ? "" : suffix)
 				);
 			
