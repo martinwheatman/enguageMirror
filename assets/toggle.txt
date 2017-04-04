@@ -1,0 +1,13 @@
+# toggle.txt - turn an asset on or off...
+#(c) Martin Wheatman
+# toggle (turn on or off) an asset's state:
+# relies on on+off.txt!
+
+On "toggle ASSET":
+	the ASSET is on;
+	turn the ASSET off;
+	reply "ok, the ASSET is now off";
+	if not, turn the ASSET on;
+	then, reply "ok, the ASSET is now on".
+#On "help", reply "to toggle the ASSET".
+On "toggle the ASSET", toggle ASSET.

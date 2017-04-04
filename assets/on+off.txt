@@ -1,0 +1,29 @@
+# on or off
+# (c) Martin Wheatman
+On "turn the ASSET ONOROFF":
+	can the ASSET be on or off;
+	if not, reply "the ASSET is not a switchable asset";
+	tcpip localhost 999 "<asset id='compass' op='ONOROFF'/>";
+	if not, reply "sorry, I cannot speak to the server";
+	perform "variable set ASSET ONOROFF";
+	then, reply "ok, the ASSET is ONOROFF".
+#On "help", reply "to turn the compass on or off".
+
+
+# We want to turn the compass on, or turn it off...:
+On "turn ONOROFF     compass", turn the compass ONOROFF.
+On "turn ONOROFF the compass", turn the compass ONOROFF.
+On "turn     compass ONOROFF", turn the compass ONOROFF.
+On "compass          ONOROFF", turn the compass ONOROFF.
+
+On "can the ASSET be on or off", reply "no".
+
+On "the ASSET is ONOROFF":
+	perform "variable exists ASSET ONOROFF";
+	if not, reply "no, the ASSET is not ONOROFF";
+	then, reply "yes, the ASSET is ONOROFF".
+On "is the ASSET on",  the ASSET is on.	
+On "is     ASSET on",  the ASSET is on.	
+On "is the ASSET off", the ASSET is off.	
+On "is     ASSET off", the ASSET is off.	
+

@@ -1,35 +1,8 @@
-#
 # Compass - managing the on/off state of a Unity3d asset
 # (c) Martin Wheatman, 2017
 
-# We want to turn the compass on, or turn it off...:
-On "compass ONOROFF":
-	tcpip localhost 5678 "<asset id='compass' op='ONOROFF'/>";
-	if not, reply "sorry, I cannot speak to the server";
-	perform "variable set compass ONOROFF";
-	then, reply "ok, compass is ONOROFF".
-#On "help", reply "to turn the compass on or off".
-On "turn ONOROFF     compass", compass ONOROFF.
-On "turn ONOROFF the compass", compass ONOROFF.
-On "turn     compass ONOROFF", compass ONOROFF.
-On "turn the compass ONOROFF", compass ONOROFF.
+On "can the compass be on or off", reply "yes".
 
-On "where is the compass", compass on.
+On "where is the compass", turn the compass on.
 
-On "the compass is ONOROFF":
-	perform "variable exists compass ONOROFF";
-	if not, reply "no, the compass is not ONOROFF";
-	then, reply "yes, the compass is ONOROFF".
-On "is the compass ONOROFF", the compass is ONOROFF.	
-On "is     compass ONOROFF", the compass is ONOROFF.	
-
-#..or, toggle its state:
-On "toggle compass":
-	the compass is on;
-	turn the compass off;
-	reply "ok, the compass is now off";
-	if not, turn the compass on;
-	then, reply "ok, the compass is now on".
-#On "help", reply "to toggle the compass".
-On "toggle the compass", toggle compass.
 On "compass",            toggle compass.
