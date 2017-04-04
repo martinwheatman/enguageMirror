@@ -12,6 +12,7 @@ import com.yagadi.enguage.interpretant.Signs;
 import com.yagadi.enguage.interpretant.Tag;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Ospace;
+import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
@@ -57,27 +58,31 @@ public class Config {
 			while (pi.hasNext()) {
 				Attribute a = pi.next();
 				String name = a.name(), value=a.value();
-				if (name.equals("LISTFORMATSEP")) Reply.listSep(       value); else
-				if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunctions(  new Strings( value )); else
-				if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value )); else
-				if (name.equals("ANDLISTFORMAT")) Reply.andListFormat( value); else
-				if (name.equals("ORLISTFORMAT" )) Reply.orListFormat(  value ); else
-				if (name.equals("REPEATFORMAT" )) Reply.repeatFormat(  value ); else
-				if (name.equals("REFERENCERS"  )) Reply.referencers(   new Strings( value )); else
-				if (name.equals("CLASSPATH" )) Proc.classpath( value ); else
-				if (name.equals("LOCATION"  )) Fs.location( value ); else
-				if (name.equals("HPREFIX")) Reply.helpPrefix( value ); else
-				if (name.equals("SUCCESS")) Reply.success( value ); else
-				if (name.equals("FAILURE")) Reply.failure( value ); else
-				if (name.equals("SHELL")) Proc.shell( value ); else
-				if (name.equals("TERMS")) Shell.terminators( new Strings( value )); else
-				if (name.equals("SOFA" )) Proc.java( value );
-				if (name.equals( "TTL" )) Autoload.ttl( value ); else
-				if (name.equals( "DNU" )) Reply.dnu( value ); else
-				if (name.equals( "DNK" )) Reply.dnk( value ); else
-				if (name.equals( "YES" )) Reply.yes( value ); else
-				if (name.equals(  "NO" )) Reply.no(  value ); else
-				if (name.equals(  "IK" )) Reply.ik(  value );
+				     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
+				else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunctions(  new Strings( value ));
+				else if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value ));
+				else if (name.equals("ANDLISTFORMAT" )) Reply.andListFormat( value);
+				else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
+				else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
+				else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));
+				else if (name.equals( "CLASSPATH" )) Proc.classpath( value );
+				else if (name.equals( "LOCATION"  )) Fs.location( value );
+				else if (name.equals( "HPREFIX" )) Reply.helpPrefix( value );
+				else if (name.equals( "SUCCESS" )) Reply.success( value );
+				else if (name.equals( "FAILURE" )) Reply.failure( value );
+				else if (name.equals(   "SHELL" )) Proc.shell( value );
+				else if (name.equals(    "TERMS")) Shell.terminators( new Strings( value ));
+				else if (name.equals(    "SOFA" )) Proc.java( value );
+				else if (name.equals(     "TTL" )) Autoload.ttl( value );
+				else if (name.equals(     "DNU" )) Reply.dnu( value );
+				else if (name.equals(     "DNK" )) Reply.dnk( value );
+				else if (name.equals(     "YES" )) Reply.yes( value );
+				else if (name.equals(      "NO" )) Reply.no(  value );
+				else if (name.equals(      "IK" )) Reply.ik(  value );
+				else {
+					audit.LOG( "Saving name='"+ name +"', value='"+ value +"'");
+					Variable.set( name,  value );
+				}
 	}	}	}
 
 	

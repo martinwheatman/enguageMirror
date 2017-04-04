@@ -102,7 +102,6 @@ public class Intention extends Attribute {
 		rc = deconceptualise( rc, cmd.get( 1 ), answer );
 		return (Reply) audit.out( r.answer( rc ));
 	}
-	
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		// TODO: NOT previous(), inner()!

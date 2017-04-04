@@ -56,7 +56,7 @@ public class Enguage extends Shell {
 	@Override
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
-		if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ));
+		//if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ));
 
 		if (Reply.understood()) // from previous interpretation!
 			o.startTxn( Allopoiesis.undoIsEnabled() ); // all work in this new overlay
@@ -94,7 +94,7 @@ public class Enguage extends Shell {
 	}
 	
 	// ==== test code =====
-	private static void TestInit() {
+	private static void testInit() {
 		if (Config.firstRun()) { // || !Config.visualMode()
 			Config.firstRun( false );
 			audit.log(
@@ -118,190 +118,172 @@ public class Enguage extends Shell {
 			audit.log( answer +"\n" );
 	}
 	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
-	
+	private static void sanityCheck() {
+		// useful ephemera
+		//Repertoire.signs.show();
+		//testInterpret( "detail on" );
+		//testInterpret( "tracing on" );
+
+		int level = 0;
+
+		if ( level == 0 || level == 1 ) {
+			audit.title( "The Non-Computable concept of NEED" );
+			//testInterpret( "i don't need anything" );
+			testInterpret( "what do i need",
+						   "you don't need anything." );
+			testInterpret( "i need 2 cups of coffee and a biscuit",
+						   "ok, you need 2 cups of coffee, and a biscuit.");
+			testInterpret( "what do i need",
+						   "you need 2 cups of coffee, and a biscuit.");
+			testInterpret( "how many coffees do i need",
+						   "2, you need 2 coffees." );
+			testInterpret( "i don't need any coffee",
+						   "ok, you don't need any coffee." );
+			testInterpret( "what do i need",
+						   "you need a biscuit." );
+
+			audit.title( "Semantic Thrust" );
+			testInterpret( "i need to go to town",
+						   "ok, you need to go to town." );
+			testInterpret( "what do i need",
+						   "you need a biscuit, and to go to town." );
+			testInterpret( "i have a biscuit",
+						   "ok, you don't need a biscuit." );
+			testInterpret( "i have to go to town",
+						   "I know." );
+			testInterpret( "i don't need to go to town",
+						   "ok, you don't need to go to town." );
+			testInterpret( "what do i need",
+						   "you don't need anything." );
+		}
+
+		if ( level == 0 || level == 3 ) {
+			audit.title( "Verbal Arithmetical" );
+			testInterpret( "what is 1 + 2",
+						   "1 plus 2 is 3.");
+			testInterpret( "times 2 all squared",
+						   "times 2 all squared makes 36.");
+			testInterpret( "what is 36 + 4 all divided by 2",
+						   "36 plus 4 all divided by 2 is 20." ); 
+		}
+
+		if ( level == 0 || level == 4 ) {
+			audit.title( "Numerical Context" );
+			testInterpret( "i need a coffee",
+						   "ok, you need a coffee." );
+			testInterpret( "and another",
+						   "ok, you need 1 more coffee." );
+			testInterpret( "how many coffees do i need",
+						   "2, you need 2 coffees." );
+			testInterpret( "i need a cup of tea",
+						   "ok, you need a cup of tea." );
+			testInterpret( "and another coffee",
+						   "ok, you need 1 more coffee." );
+			testInterpret( "what do i need",
+						   "You need 3 coffees , and a cup of tea." );
+		}
+
+		if ( level == 0 || level == 5 ) {
+			audit.title( "Correction" );
+			testInterpret( "i need another coffee",
+						   "ok, you need 1 more coffee.");
+			testInterpret( "no i need another 3",
+						   "ok, you need 3 more coffees.");
+			testInterpret( "what do i need",
+						   "you need 6 coffees, and a cup of tea.");
+			testInterpret( "i don't need anything",
+						   "ok, you don't need anything." );
+		}
+
+		if ( level == 0 || level == 6 ) {
+			audit.title( "Disambiguation" );
+			testInterpret( "the eagle has landed" //,
+						   //"Are you an ornithologist."
+					);
+			testInterpret( "no the eagle has landed" //,
+						   //"So , you're talking about the novel."
+					);
+			testInterpret( "no the eagle has landed" //, 
+						   //"So you're talking about Apollo 11."
+					);
+			testInterpret( "no the eagle has landed" //,
+						   //"I don't understand"
+					);
+		}
+
+		if ( level == 0 || level == 7 ) {
+			audit.title( "Temporal interpret" );
+			testInterpret( "what day is christmas day" );
+			testInterpret( "what day is it today" );
+		}
+
+		if ( level == 0 || level == 8 ) {
+			audit.title( "Langauge Learning (non-autopoietic)" );
+			testInterpret( "I want a Ferrari", "I don't understand" );
+			testInterpret( "want means need", "ok." );
+			testInterpret( "I want a Ferrari", "ok, you want a ferrari.");
+			testInterpret( "I don't need anything", "Ok , you don't want anything." );
+			//audit.title( "Misunderstanding" );
+			//testInterpret( "i don't understand" );
+		}
+
+		if ( level == 0 || level == 9 ) {
+			audit.title( "Temporospatial concept MEETING" );
+
+			Where.doLocators();
+			new Sofa().interpret( new Strings( "entity create pub" ));
+
+			testInterpret( "I'm not meeting anybody",
+					"Ok , you're not meeting anybody." );
+			testInterpret( "At 7 I'm meeting my brother at the pub",
+					"Ok , you're meeting your brother at 7 at the pub." );
+			testInterpret( "When  am I meeting my brother",
+					"You're meeting your brother at 7." );
+			testInterpret( "Where am I meeting my brother",
+					"You're meeting your brother at the pub." );
+			testInterpret( "Am I meeting my brother",
+					"Yes , you're meeting your brother." );
+			
+			//testInterpret( "tracing on" );
+			testInterpret( "I'm meeting my sister at the pub" );
+			testInterpret( "When am I meeting my sister",
+					"I don't know when you're meeting your sister." );
+			
+			//testInterpret( "tracing on" );
+			testInterpret( "When am I meeting my dad",
+					"i don't know if you're meeting your dad." );
+			testInterpret( "Where am I meeting my dad" ,
+					"i don't know if you're meeting your dad." );
+		}
+		
+		//testInterpret( "i don't need anything" );
+		audit.log( "PASSED" );
+	}
+	private static void usage() {
+		audit.LOG( "Usage: java -jar enguage.jar [-c <configDir>] [-p <port>]|[-s]|-t]" );
+	}
 	public static void main( String args[] ) {
 		
-		// set( "./src/assets" );
-		// e = get().loadConfig();
-		int argc = 0;
-		if (args.length > 1 && args[ argc ].equals( "-c" )) {
-			argc++;
-			Enguage.loadConfig( args[ argc++ ]);
-		} else
-			Enguage.loadConfig( "./src/assets" );
-		
-		TestInit();
-
-		if ( args.length == argc + 1 && args[ argc ].equals( "run" )) {
-			audit.title( "Over to you..." );
-			e.aloudIs( true ).run();
-			
-		} else if (args.length == argc + 2 && args[ argc ].equals( "-p" )) {
-			ServerSocket server = null;
-			try {
-				server = new ServerSocket( Integer.valueOf( args[ ++argc ]));
-				while (true) {
-					Socket connection = server.accept();
-					BufferedReader in =
-					   new BufferedReader( new InputStreamReader( connection.getInputStream()));
-					DataOutputStream out = new DataOutputStream( connection.getOutputStream());
-					
-					out.writeBytes( Enguage.interpret( in.readLine() ));
-				}
-			} catch (IOException e) {
-				audit.ERROR( "Engauge.main():IO error in TCP sooket operation" );
-			} finally {
-				try {
-					server.close();
-				} catch (IOException e) {
-					audit.ERROR( "Engauge.main():IO error in closing TCP socket" );
-			}	}
-
+		if (args.length == 0) {
+			usage();
 		} else {
-
-			// useful ephemera
-			//Repertoire.signs.show();
-			//testInterpret( "detail on" );
-			//testInterpret( "tracing on" );
-	
-			int level = 0;
-	
-			if ( level == 0 || level == 1 ) {
-				audit.title( "The Non-Computable concept of NEED" );
-				//testInterpret( "i don't need anything" );
-				testInterpret( "what do i need",
-							   "you don't need anything." );
-				testInterpret( "i need 2 cups of coffee and a biscuit",
-							   "ok, you need 2 cups of coffee, and a biscuit.");
-				testInterpret( "what do i need",
-							   "you need 2 cups of coffee, and a biscuit.");
-				testInterpret( "how many coffees do i need",
-							   "2, you need 2 coffees." );
-				testInterpret( "i don't need any coffee",
-							   "ok, you don't need any coffee." );
-				testInterpret( "what do i need",
-							   "you need a biscuit." );
-	
-				audit.title( "Semantic Thrust" );
-				testInterpret( "i need to go to town",
-							   "ok, you need to go to town." );
-				testInterpret( "what do i need",
-							   "you need a biscuit, and to go to town." );
-				testInterpret( "i have a biscuit",
-							   "ok, you don't need a biscuit." );
-				testInterpret( "i have to go to town",
-							   "I know." );
-				testInterpret( "i don't need to go to town",
-							   "ok, you don't need to go to town." );
-				testInterpret( "what do i need",
-							   "you don't need anything." );
-			}
-	
-			if ( level == 0 || level == 3 ) {
-				audit.title( "Verbal Arithmetical" );
-				testInterpret( "what is 1 + 2",
-							   "1 plus 2 is 3.");
-				testInterpret( "times 2 all squared",
-							   "times 2 all squared makes 36.");
-				testInterpret( "what is 36 + 4 all divided by 2",
-							   "36 plus 4 all divided by 2 is 20." ); 
-			}
-	
-			if ( level == 0 || level == 4 ) {
-				audit.title( "Numerical Context" );
-				testInterpret( "i need a coffee",
-							   "ok, you need a coffee." );
-				testInterpret( "and another",
-							   "ok, you need 1 more coffee." );
-				testInterpret( "how many coffees do i need",
-							   "2, you need 2 coffees." );
-				testInterpret( "i need a cup of tea",
-							   "ok, you need a cup of tea." );
-				testInterpret( "and another coffee",
-							   "ok, you need 1 more coffee." );
-				testInterpret( "what do i need",
-							   "You need 3 coffees , and a cup of tea." );
-			}
-	
-			if ( level == 0 || level == 5 ) {
-				audit.title( "Correction" );
-				testInterpret( "i need another coffee",
-							   "ok, you need 1 more coffee.");
-				testInterpret( "no i need another 3",
-							   "ok, you need 3 more coffees.");
-				testInterpret( "what do i need",
-							   "you need 6 coffees, and a cup of tea.");
-				testInterpret( "i don't need anything",
-							   "ok, you don't need anything." );
-			}
-	
-			if ( level == 0 || level == 6 ) {
-				audit.title( "Disambiguation" );
-				testInterpret( "the eagle has landed" //,
-							   //"Are you an ornithologist."
-						);
-				testInterpret( "no the eagle has landed" //,
-							   //"So , you're talking about the novel."
-						);
-				testInterpret( "no the eagle has landed" //, 
-							   //"So you're talking about Apollo 11."
-						);
-				testInterpret( "no the eagle has landed" //,
-							   //"I don't understand"
-						);
-			}
-	
-			if ( level == 0 || level == 7 ) {
-				audit.title( "Temporal interpret" );
-				testInterpret( "what day is christmas day" );
-				testInterpret( "what day is it today" );
-			}
-	
-			if ( level == 0 || level == 8 ) {
-				//testInterpret( "I want a Ferrari", "I don't understand" );
-				//testInterpret( "want means need", "ok." );
-				//testInterpret( "I want a Ferrari", "ok, you want a ferrari.");
-				//testInterpret( "I don't need anything", "Ok , you don't want anything." );
-				
-				audit.title( "On-the-fly Langauge Learning" );
-				testInterpret( "interpret you are a wally thus" );
-				testInterpret( "first reply well fancy that" );
-				testInterpret( "ok" );
-				testInterpret( "you are a wally" );
-				
-				//audit.title( "Misunderstanding" );
-				//testInterpret( "i don't understand" );
-			}
-	
-			if ( level == 0 || level == 9 ) {
-				audit.title( "Temporospatial concept MEETING" );
-	
-				Where.doLocators();
-				new Sofa().interpret( new Strings( "entity create pub" ));
-	
-				testInterpret( "I'm not meeting anybody",
-						"Ok , you're not meeting anybody." );
-				testInterpret( "At 7 I'm meeting my brother at the pub",
-						"Ok , you're meeting your brother at 7 at the pub." );
-				testInterpret( "When  am I meeting my brother",
-						"You're meeting your brother at 7." );
-				testInterpret( "Where am I meeting my brother",
-						"You're meeting your brother at the pub." );
-				testInterpret( "Am I meeting my brother",
-						"Yes , you're meeting your brother." );
-				
-				//testInterpret( "tracing on" );
-				testInterpret( "I'm meeting my sister at the pub" );
-				testInterpret( "When am I meeting my sister",
-						"I don't know when you're meeting your sister." );
-				
-				//testInterpret( "tracing on" );
-				testInterpret( "When am I meeting my dad",
-						"i don't know if you're meeting your dad." );
-				testInterpret( "Where am I meeting my dad" ,
-						"i don't know if you're meeting your dad." );
-			}
 			
-			//testInterpret( "i don't need anything" );
-			audit.log( "PASSED" );
-}	}	}
+			int argc = 0;
+			
+			if (args.length > 1 && args[ argc ].equals( "-c" )) {
+				argc++;
+				Enguage.loadConfig( args[ argc++ ]);
+			} else
+				Enguage.loadConfig( "./src/assets" );
+			
+			testInit();
+	
+			if ( args.length == argc + 1 && args[ argc ].equals( "-s" )) {
+				e.aloudIs( true ).run();				
+			} else if (args.length == argc + 2 && args[ argc ].equals( "-p" )) {
+				Net.server( args[ ++argc ]);
+			} else if (args.length == argc + 1 && args[ argc ].equals( "-t" )) {
+				sanityCheck();
+			} else {
+				usage();
+}	}	}	}
