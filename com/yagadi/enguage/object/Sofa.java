@@ -55,6 +55,7 @@ public class Sofa extends Shell {
 						type.equals(    Item.NAME ) ?        Item.interpret( a.copyAfter( 0 ) ) :
 						type.equals( Spatial.NAME ) ?     Spatial.interpret( a.copyAfter( 0 ) ) :
 						type.equals(Temporal.NAME ) ?    Temporal.interpret( a.copyAfter( 0 ) ) :
+						type.equals(    Sign.NAME ) ?        Sign.interpret( a.copyAfter( 0 ) ) :
 						//type.equals( Concept.NAME ) ?     Concept.interpret( a.copyAfter( 0 ) ) :
 									  FAIL; // );
 		}

@@ -1,0 +1,65 @@
+#
+# Vocal autopoiesis
+#
+On "start induction":
+	perform "variable set induction  true";
+	then, reply "ok".
+# '^set' induction to  true.
+On "stop  induction":
+	perform "variable set induction false";
+	then, reply "ok".
+# '^set' induction to false.
+
+###############################
+#                             #
+	On "interpret PHRASE-X thus":
+		start induction;
+		perform "sign create X";
+		then, reply "go on".
+
+	On "ok":
+		stop induction;
+		then, reply "ok".
+	
+	On "finally PHRASE-X":
+		perform "sign finally X";
+		then, reply "ok".
+#                             #
+###############################
+
+###############################
+#                             #
+	On "first PHRASE-X":
+		perform "sign think X";
+		then, reply "go on".
+	
+	On "then PHRASE-X":
+		perform "sign think X";
+		then, reply "go on".
+#                             #
+###############################
+
+###############################
+#                             #
+	On "first perform PHRASE-X":
+		perform "sign perform X";
+		then, reply "go on".
+	
+	On "then perform PHRASE-X":
+		perform "sign perform X";
+		then, reply "go on".
+#                             #
+###############################
+
+###############################
+# Reply                       #
+	On "first reply PHRASE-X":
+		perform "sign reply X";
+		then, reply "go on".
+	
+	On "then reply PHRASE-X":
+		perform "sign reply X";
+		then, reply "go on".
+#                             #
+###############################
+
