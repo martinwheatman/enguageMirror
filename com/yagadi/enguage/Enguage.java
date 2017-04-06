@@ -101,12 +101,15 @@ public class Enguage extends Shell {
 	}	}
 
 	private static void testInterpret( String cmd, String expected ) {
+		
+		audit.log( "enguage> "+ cmd );
 		String answer = Enguage.interpret( cmd );
+		
 		if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
 			audit.log( "Hint is:" + Repertoire.prompt() );
 		else if (   !expected.equals( "" )
 		         && !new Strings( answer )
-				.equalsIgnoreCase( new Strings( expected )))
+		         		.equalsIgnoreCase( new Strings( expected )))
 			audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
 		else
 			audit.log( answer +"\n" );
@@ -212,11 +215,18 @@ public class Enguage extends Shell {
 		}
 
 		if ( level == 0 || level == 8 ) {
-			audit.title( "Langauge Learning (non-autopoietic)" );
-			testInterpret( "I want a Ferrari", "I don't understand" );
-			testInterpret( "want means need", "ok." );
-			testInterpret( "I want a Ferrari", "ok, you want a ferrari.");
-			testInterpret( "I don't need anything", "Ok , you don't want anything." );
+			//audit.title( "Langauge Learning (non-autopoietic)" );
+			//testInterpret( "I want a Ferrari", "I don't understand" );
+			//testInterpret( "want means need", "ok." );
+			//testInterpret( "I want a Ferrari", "ok, you want a ferrari.");
+			//testInterpret( "I don't need anything", "Ok , you don't want anything." );
+			
+			audit.title( "On-the-fly Langauge Learning" );
+			testInterpret( "interpret you are a wally thus" );
+			testInterpret( "first reply well fancy that" );
+			testInterpret( "ok" );
+			testInterpret( "you are a wally" );
+			
 			//audit.title( "Misunderstanding" );
 			//testInterpret( "i don't understand" );
 		}
