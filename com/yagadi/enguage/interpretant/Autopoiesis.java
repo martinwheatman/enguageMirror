@@ -116,6 +116,8 @@ public class Autopoiesis extends Intention {
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", "NAME="+ NAME +", value="+ value +", "+ Context.valueOf());
 		Strings sa = Context.deref( new Strings( value ));
+		
+		// needs to switch on type (intent)
 		if (intent.equals( CREATE )) {
 			audit.log( "creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
@@ -123,7 +125,7 @@ public class Autopoiesis extends Intention {
 					.content( new Tags( value ))
 					.concept( concept() )
 			);
-		} else if (!intent.equals( UNDEF )) {
+		} else if (!intent.equals( UNDEF )) { //intent == UNDEF for all except ctor( 3-param ) 
 			if (null != s) {
 				audit.debug( "Adding to EXISTING sign: '"+ value +"'");
 				s.append( intent, value );
@@ -165,6 +167,7 @@ public class Autopoiesis extends Intention {
 		}	}
 		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
 	}
+	// ---
 	public static void test(Attributes a) {
 		Reply r = new Reply();
 		Iterator<Attribute> ai = a.iterator();
