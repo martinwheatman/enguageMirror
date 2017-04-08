@@ -24,11 +24,11 @@ public class Autopoiesis extends Intention {
 	public static final Sign[] autopoiesis = {
 		// PATTERN PRE-CHECK cases (4)
 		// 1: A implies B.
-		new Sign().attribute( PREPEND, Intention.THINK +" A B" )
+		new Sign().attribute( PREPEND, Intention.THINK +" B" )
 			.content( new Tag( "", "a"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( " implies ", "b", "." ).attribute( Tag.quoted, Tag.quoted )),
 		// 2: A implies B, if not, say C.
-		new Sign().attribute( PREPEND, Intention.ELSE_REPLY+" A C").attribute( PREPEND, Intention.THINK +" A B")
+		new Sign().attribute( PREPEND, Intention.ELSE_REPLY+" C").attribute( PREPEND, Intention.THINK +" A B")
 			.content( new Tag(          "", "a" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( " implies ", "b" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( " ; if not, reply ", "c", "." ).attribute( Tag.quoted, Tag.quoted )),
@@ -50,33 +50,33 @@ public class Autopoiesis extends Intention {
 			.content( new Tag( ", perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 			
 		// b1: Then on X think Y.
-		new Sign().attribute( APPEND, Intention.THINK +" X Y")
+		new Sign().attribute( APPEND, Intention.THINK +" Y")
 			.content( new Tag( "Then on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
 			
 		// b2: Then on X reply Y.
-		new Sign().attribute( APPEND, Intention.REPLY+" X Y")
+		new Sign().attribute( APPEND, Intention.REPLY+" Y")
 			.content( new Tag( "Then  on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", reply   ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 			
 		// b3: Then on X perform Y.
-		new Sign().attribute( APPEND, Intention.DO +" X Y")
+		new Sign().attribute( APPEND, Intention.DO +" Y")
 			.content( new Tag( "Then  on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 		
 		// At some point this could be improved to say "On X, perform Y; if not, reply Z." -- ??? think!
 		// !b1: Else on X think Y.
-		new Sign().attribute( APPEND, Intention.ELSE_THINK +" X Y")
+		new Sign().attribute( APPEND, Intention.ELSE_THINK +" Y")
 			.content( new Tag( "Then on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
 			
 		// !b2: Else on X reply Y.
-		new Sign().attribute( APPEND, Intention.ELSE_REPLY +" X Y")
+		new Sign().attribute( APPEND, Intention.ELSE_REPLY +" Y")
 			.content( new Tag(  "Then on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, reply ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 			
 		// !b3: Else on X perform Y.
-		new Sign().attribute( APPEND, Intention.ELSE_DO +" X Y" )
+		new Sign().attribute( APPEND, Intention.ELSE_DO +" Y" )
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 					
@@ -86,17 +86,17 @@ public class Autopoiesis extends Intention {
 			.content( new Tag( "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 		
-		new Sign().attribute( APPEND, Intention.RUN +" X Y" )
+		new Sign().attribute( APPEND, Intention.RUN +" Y" )
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 
-		new Sign().attribute( APPEND, Intention.ELSE_RUN +" X Y" )
+		new Sign().attribute( APPEND, Intention.ELSE_RUN +" Y" )
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 
 		/* c1: Finally on X perform Y. -- dont need think or reply?
 		 */
-		new Sign().attribute( APPEND, Intention.FINALLY+" X Y")
+		new Sign().attribute( APPEND, Intention.FINALLY+" Y")
 			.content( new Tag( " Finally on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ",   perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted ))
 	};
@@ -131,40 +131,38 @@ public class Autopoiesis extends Intention {
 				s.append( intent, value );
 			}
 			
-		} else
-		
-		if (3 != sa.size())
-			audit.ERROR( name +": wrong number ("+ sa.size() +") of params ["+ sa.toString( Strings.CSV ) +"]");
-		else {
+		} else if (name.equals( APPEND ) || name.equals( PREPEND )) {
+			if (null == s)
+				// this should return DNU...
+				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
+			else {
+				String attr = sa.get( 0 ),
+					       val = Strings.trim( sa.get( 1 ), '"' );
+				audit.debug( name +"ending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
+				if (name.equals( APPEND ))
+					s.append(  attr, val );
+				else
+					s.prepend( attr, val );
+			}
+			
+		} else if (name.equals( NEW )) { // autopoeisis?
 			String attr = sa.get( 0 ),
-			       pattern = sa.get( 1 ),
-			       val = Strings.trim( sa.get( 2 ), '"' );
-			if (name.equals( APPEND ) || name.equals( PREPEND )) {
-				if (null == s)
-					// this should return DNU...
-					audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
-				else {
-					audit.debug( name +"ending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
-					if (name.equals( APPEND ))
-						s.append(  attr, val );
-					else
-						s.prepend( attr, val );
-				}
-			} else if (name.equals( NEW )) { // autopoeisis?
-				/* TODO: need to differentiate between
-				 * "X is X" and "X is Y" -- same shape, different usage.
-				 * At least need to avoid this (spot when "X is X" happens)
-				 */
-				audit.debug( "Adding "+ name +": ["+ sa.toString( Strings.CSV )+"]");
-				if ( sa.get( 1 ).equals( "help" ))
-					s.help( val ); // add: help="text" to cached sign
-				else // create then add a new cached sign into the list of signs
-					Repertoire.signs.insert(
-						s = new Sign()
-							.content( new Tags( Strings.trim( pattern, '"' )) )
-							.concept( concept() )
-							.attribute( attr, val ));
-		}	}
+				       pattern = sa.get( 1 ),
+				       val = Strings.trim( sa.get( 2 ), '"' );
+			/* TODO: need to differentiate between
+			 * "X is X" and "X is Y" -- same shape, different usage.
+			 * At least need to avoid this (spot when "X is X" happens)
+			 */
+			audit.debug( "Adding "+ name +": ["+ sa.toString( Strings.CSV )+"]");
+			if ( pattern.equals( "help" ))
+				s.help( val ); // add: help="text" to cached sign
+			else // create then add a new cached sign into the list of signs
+				Repertoire.signs.insert(
+					s = new Sign()
+						.content( new Tags( Strings.trim( pattern, '"' )) )
+						.concept( concept() )
+						.attribute( attr, val ));
+		}
 		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
 	}
 	// ---
@@ -187,8 +185,8 @@ public class Autopoiesis extends Intention {
 		Reply r = new Reply();
 		Attributes a = new Attributes();
 		a.add( new Attribute( Autopoiesis.NEW,    THINK +" \"a PATTERN z\" \"one two three four\""   ));
-		a.add( new Attribute( Autopoiesis.APPEND, DO    +" \"a PATTERN z\" \"two three four\""   ));
-		a.add( new Attribute( Autopoiesis.APPEND, REPLY +" \"a PATTERN z\" \"three four\"" ));
+		a.add( new Attribute( Autopoiesis.APPEND, DO    +" \"two three four\""   ));
+		a.add( new Attribute( Autopoiesis.APPEND, REPLY +" \"three four\"" ));
 		test( r, a );
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
