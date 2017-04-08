@@ -145,6 +145,7 @@ static private int   total = 0;
 		while( i.hasNext()) {
 			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
 			str += me.getValue().toString();
+			if (i.hasNext()) str += "\n";
 		}
 		return str;
 	}

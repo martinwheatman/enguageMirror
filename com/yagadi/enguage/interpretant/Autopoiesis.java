@@ -168,8 +168,7 @@ public class Autopoiesis extends Intention {
 		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
 	}
 	// ---
-	public static void test(Attributes a) {
-		Reply r = new Reply();
+	public static Reply test(Reply r, Attributes a) {
 		Iterator<Attribute> ai = a.iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Attribute an = ai.next();
@@ -178,26 +177,28 @@ public class Autopoiesis extends Intention {
 			audit.log( name +"='"+ value +"'" );
 			r = new Autopoiesis( name, value ).mediate( r );
 		}
-		audit.log( Repertoire.signs.toString() );
-		audit.log( r.toString());
+		return r;
 	}
 	public static void main( String args[]) {
 		//Audit.allOn();
 		//audit.trace( true );
 		
+		audit.title( "trad autopoiesis..." );
+		Reply r = new Reply();
 		Attributes a = new Attributes();
-		
 		a.add( new Attribute( Autopoiesis.NEW,    THINK +" \"a PATTERN z\" \"one two three four\""   ));
 		a.add( new Attribute( Autopoiesis.APPEND, DO    +" \"a PATTERN z\" \"two three four\""   ));
 		a.add( new Attribute( Autopoiesis.APPEND, REPLY +" \"a PATTERN z\" \"three four\"" ));
-		test( a );
+		test( r, a );
+		audit.log( Repertoire.signs.toString() );
+		audit.log( r.toString());
 		
-		Reply r = new Reply();
+		audit.title( "manual sign creation..." );
+		r = new Reply();
 		r = new Autopoiesis( CREATE, CREATE, "a PATTERN z"        ).mediate( r );
 		r = new Autopoiesis( ADD,    THINK,  "one two three four" ).mediate( r );
 		r = new Autopoiesis( ADD,    DO,     "two three four"     ).mediate( r );
 		r = new Autopoiesis( ADD,    REPLY,  "three four"         ).mediate( r );
-
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
 }	}
