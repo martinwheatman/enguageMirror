@@ -140,7 +140,7 @@ public class Sign extends Tag {
 	public Sign content( Tag  t )  { content.add( t ); return this; }
 	
 	public String toString( int n, long c ) {
-		return prefix + (name().equals( "" ) ? "" :
+		return prefix() + (name().equals( "" ) ? "" :
 			(indent +"<"+ name() +" n='"+ n +"' complexity='"+ c +"' repertoire='"+ concept() +"'"
 			+ attributes().toString( "\n      " )
 			+(null == content() ? "/>" : ( ">\n"+ indent + indent + content().toString() + "</"+ name() +">" ))))

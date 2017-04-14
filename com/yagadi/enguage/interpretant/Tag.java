@@ -45,20 +45,20 @@ public class Tag {
 	
 	public Strings prefixAsStrings = new Strings();
 	public Strings prefixAsStrings() { return prefixAsStrings; }
-	public String  prefix = emptyPrefix;
-	public String  prefix(  ) { return prefix; }
+	//private String  prefix = emptyPrefix;
+	public String  prefix(  ) { return prefixAsStrings.toString(); }
 	public Tag     prefix( String str ) {
 		// set this shortcut..
 		prefixAsStrings = new Strings( str );
 		
 		// replace any leading whitespace with a single space
-		boolean whitespaceNeeded = str.length() > 0
+	/*	boolean whitespaceNeeded = str.length() > 0
 				&& Character.isWhitespace( str.charAt( 0 ));
 		if (whitespaceNeeded)
 			while ( str.length() > 0 && Character.isWhitespace( str.charAt( 0 ))) 
 				str = str.substring( 1 );
 		
-		prefix = (whitespaceNeeded ? " " : "") + str;
+		prefix = (whitespaceNeeded ? " " : "") + str;*/
 		return this;
 	}
 
@@ -135,7 +135,7 @@ public class Tag {
 	}
 
 	
-	public boolean isNull() { return name.equals("") && prefix.equals( emptyPrefix ); }
+	public boolean isNull() { return name.equals("") && prefixAsStrings().size() == 0; }
 
 	public boolean invalid( ListIterator<String> ui  ) {
 		boolean rc = false;
@@ -302,7 +302,7 @@ public class Tag {
 	// -- tag from string ctor
 	private Tag doPreamble() {
 		int i = 0;
-		String preamble = emptyPrefix;
+		String preamble = "";
 		while (i < postfix().length() && '<' != postfix().charAt( i )) 
 			preamble += postfix().charAt( i++ );
 		prefix( preamble );
@@ -396,7 +396,7 @@ public class Tag {
 	public String toXml() { return toXml( 0 );}
 	public String toXml( int level ) {
 		indent.incr();
-		String s = prefix + (name.equals( "" ) ? "" :
+		String s = prefix() + (name.equals( "" ) ? "" :
 			("<"+ name + attrs.toString()+ // attributes has preceding space
 			(0 == content().size() ? "/>" : ( ">"+ content.toXml( level==0 ? 0 : level-1 ) + "</"+ name +">" ) )))
 			+ postfix;
@@ -404,21 +404,21 @@ public class Tag {
 		return s;
 	}
 	public String toString() {
-		return prefix + (name.equals( "" ) ? "" :
+		return prefix() + (name.equals( "" ) ? "" :
 			("<"+ name + attrs.toString()+ // attributes has preceding space
 			(0 == content().size() ? "/>" : ( ">"+ content.toString() + "</"+ name +">" ))))
 			+ postfix;
 	}
 	public String toText() {
-		return prefix
-			+ (prefix==null||prefix.equals("") ? "":" ")
+		return prefix()
+			+ (prefix()==null||prefix().equals("") ? "":" ")
 			+ (name.equals( "" ) ? "" :
 				( name.toUpperCase( Locale.getDefault() ) +" "+  // attributes has preceding space
 					(0 == content().size() ? "" : content.toText() )))
 			+ postfix;
 	}
 	public String toLine() {
-		return prefix
+		return prefix()
 				+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
