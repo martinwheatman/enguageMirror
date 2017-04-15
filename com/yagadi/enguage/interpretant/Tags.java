@@ -89,7 +89,7 @@ public class Tags extends ArrayList<Tag> {
 				t.name( word.toLowerCase( Locale.getDefault())).prefix( prefix );
 				add( t );
 				t = new Tag();
-				prefix = new String( Tag.emptyPrefix );
+				prefix = "";
 			} else if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
 				Strings arr = new Strings( word, '-' ); // should at least be array of 1 element!
 				if (null != arr) {
@@ -106,7 +106,7 @@ public class Tags extends ArrayList<Tag> {
 				t.prefix( prefix );
 				add( t );
 				t = new Tag();
-				prefix =  new String( Tag.emptyPrefix );
+				prefix = "";
 			} else
 				prefix += (word + " ");
 		}
