@@ -50,7 +50,7 @@ public class Tags extends ArrayList<Tag> {
 		Iterator<Tag> ti = iterator();
 		while (ti.hasNext()) {
 			Tag t = ti.next();
-			str += ( " "+t.prefix()+" <"+t.name() +" "+ t.attributes().toString() +"/> "+t.postfix());
+			str += ( " "+t.prefixAsStrings().toString()+" <"+t.name() +" "+ t.attributes().toString() +"/> "+t.postfix());
 		}
 		return str;
 	}
@@ -86,7 +86,7 @@ public class Tags extends ArrayList<Tag> {
 		while ( wi.hasNext() ) {
 			String word = wi.next();
 			if ((1 == word.length()) && Strings.isUpperCase( word ) && !word.equals("I")) {
-				t.name( word.toLowerCase( Locale.getDefault())).prefix( prefix );
+				t.name( word.toLowerCase( Locale.getDefault())).prefixAsStrings( prefix );
 				add( t );
 				t = new Tag();
 				prefix = "";
@@ -103,14 +103,14 @@ public class Tags extends ArrayList<Tag> {
 						else
 							t.name( subWord ); // last word in array
 				}	}
-				t.prefix( prefix );
+				t.prefixAsStrings( prefix );
 				add( t );
 				t = new Tag();
 				prefix = "";
 			} else
 				prefix += (word + " ");
 		}
-		t.prefix( prefix );
+		t.prefixAsStrings( prefix );
 		if (!t.isNull()) add( t );
 	}
 	/* *************************************************************************
@@ -145,7 +145,7 @@ public class Tags extends ArrayList<Tag> {
 		String u = "unseta";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
-		if (t.phrased() || (ui.hasNext() &&  Reply.andConjunctions().contains( u ))) {
+		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunctions().contains( u ))) {
 			String term = getPhraseTerm( t, ti );
 			//audit.audit( "phrased, looking for terminator "+ term );
 			// here: "... one AND two AND three" => "one+two+three"

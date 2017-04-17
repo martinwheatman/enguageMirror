@@ -45,20 +45,8 @@ public class Tag {
 	
 	public Strings prefixAsStrings = new Strings();
 	public Strings prefixAsStrings() { return prefixAsStrings; }
-	//private String  prefix = emptyPrefix;
-	public String  prefix(  ) { return prefixAsStrings.toString(); }
-	public Tag     prefix( String str ) {
-		// set this shortcut..
+	public Tag     prefixAsStrings( String str ) {
 		prefixAsStrings = new Strings( str );
-		
-		// replace any leading whitespace with a single space
-	/*	boolean whitespaceNeeded = str.length() > 0
-				&& Character.isWhitespace( str.charAt( 0 ));
-		if (whitespaceNeeded)
-			while ( str.length() > 0 && Character.isWhitespace( str.charAt( 0 ))) 
-				str = str.substring( 1 );
-		
-		prefix = (whitespaceNeeded ? " " : "") + str;*/
 		return this;
 	}
 
@@ -82,14 +70,14 @@ public class Tag {
 	private boolean isPlural = false;
 	public  boolean pluraled() { return isPlural; }
 	
-	private boolean phrased = false;
-	public  boolean phrased() { return phrased; }
+	private boolean isPhrased = false;
+	public  boolean isPhrased() { return isPhrased; }
 	
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Tag        attributes( Attribute a ) {
 		if (a.name().equals( phrase ))
-			phrased = true;
+			isPhrased = true;
 		else if (a.name().equals( plural ))
 			isPlural = true;
 		else if (a.name().equals( quoted ))
@@ -113,7 +101,7 @@ public class Tag {
 	public  Tag        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
 	public  Tag        prepend( String name, String value ) {
 		if (name.equals( phrase ))
-			phrased = true;
+			isPhrased = true;
 		else
 			attrs.add( 0, new Attribute( name, value ));
 		return this;
@@ -246,7 +234,7 @@ public class Tag {
 		} else {
 			//audit.audit( " T:Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() +":" );
 			//audit.audit( " T:Checking also prefx:"+ prefix() +":with:"+ pattern.prefix() +":" );
-			rc =   Plural.singular(  prefix()).equals( Plural.singular( pattern.prefix()))
+			rc =   Plural.singular(  prefixAsStrings.toString()).equals( Plural.singular( pattern.prefixAsStrings().toString()))
 				&& Plural.singular( postfix()).equals( Plural.singular( pattern.postfix()))
 				&& attributes().matches( pattern.attributes()) // not exact!!!
 				&& content().equals( pattern.content());
@@ -272,7 +260,7 @@ public class Tag {
 			rc =  false;
 		} else {
 			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
-			rc =   Plural.singular( prefix()).contains( Plural.singular( pattern.prefix()))
+			rc =   Plural.singular( prefixAsStrings().toString()).contains( Plural.singular( pattern.prefixAsStrings().toString()))
 				&& postfix().equals( pattern.postfix())
 				&& attributes().matches( pattern.attributes())
 				&&    content().matches( pattern.content());
@@ -290,7 +278,7 @@ public class Tag {
 			rc =  false;
 		} else {
 			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
-			rc =   Plural.singular( prefix()).contains( Plural.singular( pattern.prefix()))
+			rc =   Plural.singular( prefixAsStrings().toString()).contains( Plural.singular( pattern.prefixAsStrings().toString()))
 					&& postfix().equals( pattern.postfix())
 					&& content().matches( pattern.content());
 			//audit.debug("full check returns: "+ rc );
@@ -305,7 +293,7 @@ public class Tag {
 		String preamble = "";
 		while (i < postfix().length() && '<' != postfix().charAt( i )) 
 			preamble += postfix().charAt( i++ );
-		prefix( preamble );
+		prefixAsStrings( preamble );
 		if (i < postfix().length()) {
 			i++; // read over terminator
 			postfix( postfix().substring( i )); // ...save rest for later!
@@ -380,14 +368,14 @@ public class Tag {
 	// -- tag from string: DONE
 	public Tag( String pre, String nm ) {
 		this();
-		prefix( pre ).name( nm );
+		prefixAsStrings( pre ).name( nm );
 	}
 	public Tag( String pre, String nm, String post ) {
 		this( pre, nm );
 		postfix( post );
 	}
 	public Tag( Tag orig ) {
-		this( orig.prefix(), orig.name(), orig.postfix());
+		this( orig.prefixAsStrings().toString(), orig.name(), orig.postfix());
 		attributes( new Attributes( orig.attributes()));
 		content( orig.content());
 	}
@@ -396,7 +384,7 @@ public class Tag {
 	public String toXml() { return toXml( 0 );}
 	public String toXml( int level ) {
 		indent.incr();
-		String s = prefix() + (name.equals( "" ) ? "" :
+		String s = prefixAsStrings().toString() + (name.equals( "" ) ? "" :
 			("<"+ name + attrs.toString()+ // attributes has preceding space
 			(0 == content().size() ? "/>" : ( ">"+ content.toXml( level==0 ? 0 : level-1 ) + "</"+ name +">" ) )))
 			+ postfix;
@@ -404,21 +392,21 @@ public class Tag {
 		return s;
 	}
 	public String toString() {
-		return prefix() + (name.equals( "" ) ? "" :
+		return prefixAsStrings().toString() + (name.equals( "" ) ? "" :
 			("<"+ name + attrs.toString()+ // attributes has preceding space
 			(0 == content().size() ? "/>" : ( ">"+ content.toString() + "</"+ name +">" ))))
 			+ postfix;
 	}
 	public String toText() {
-		return prefix()
-			+ (prefix()==null||prefix().equals("") ? "":" ")
+		return prefixAsStrings().toString()
+			+ (prefixAsStrings().toString()==null||prefixAsStrings().toString().equals("") ? "":" ")
 			+ (name.equals( "" ) ? "" :
 				( name.toUpperCase( Locale.getDefault() ) +" "+  // attributes has preceding space
 					(0 == content().size() ? "" : content.toText() )))
 			+ postfix;
 	}
 	public String toLine() {
-		return prefix()
+		return prefixAsStrings().toString()
 				+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
@@ -466,8 +454,8 @@ public class Tag {
 		Strings a = new Strings( argv );
 		int argc = argv.length;
 		Tag orig = new Tag("prefix ", "util", "posstfix").append("sofa", "show").append("attr","one");
-		orig.content( new Tag().prefix(" show ").name("sub"));
-		orig.content( new Tag().prefix( " fred " ));
+		orig.content( new Tag().prefixAsStrings(" show ").name("sub"));
+		orig.content( new Tag().prefixAsStrings( " fred " ));
 		Tag t = new Tag( orig );
 		//audit.log( "orig was:"+ orig.toString());
 		//audit.audit( "copy: "+ t.toString());

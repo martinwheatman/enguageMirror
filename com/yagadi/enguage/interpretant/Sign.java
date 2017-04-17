@@ -118,7 +118,7 @@ public class Sign extends Tag {
 		
 		for (Tag t : content()) {
 			boilerplate += t.prefixAsStrings().size();
-			if (t.phrased()) //attributes().get( phrase ).equals( phrase ))
+			if (t.isPhrased()) //attributes().get( phrase ).equals( phrase ))
 				infinite = true;
 			else if (!t.name().equals( "" ))
 				namedTags ++; // count named tags
@@ -140,7 +140,7 @@ public class Sign extends Tag {
 	public Sign content( Tag  t )  { content.add( t ); return this; }
 	
 	public String toString( int n, long c ) {
-		return prefix() + (name().equals( "" ) ? "" :
+		return prefixAsStrings().toString() + (name().equals( "" ) ? "" :
 			(indent +"<"+ name() +" n='"+ n +"' complexity='"+ c +"' repertoire='"+ concept() +"'"
 			+ attributes().toString( "\n      " )
 			+(null == content() ? "/>" : ( ">\n"+ indent + indent + content().toString() + "</"+ name() +">" ))))
@@ -175,7 +175,7 @@ public class Sign extends Tag {
 	public static void main( String argv[]) {
 		Sign p = new Sign();
 		p.attribute("reply", "hello world");
-		p.content( new Tag().prefix( "hello" ));
+		p.content( new Tag().prefixAsStrings( "hello" ));
 		Reply r = new Reply();
 		Intention intent = new Intention( "say", "hello world" );
 		r = intent.mediate( r );
