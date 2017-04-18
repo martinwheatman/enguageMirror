@@ -193,10 +193,10 @@ public class Autopoiesis extends Intention {
 		
 		audit.title( "manual sign creation..." );
 		r = new Reply();
-		r = new Autopoiesis( CREATE, CREATE, "a PATTERN z"        ).mediate( r );
-		r = new Autopoiesis( ADD,    THINK,  "one two three four" ).mediate( r );
-		r = new Autopoiesis( ADD,    DO,     "two three four"     ).mediate( r );
-		r = new Autopoiesis( ADD,    REPLY,  "three four"         ).mediate( r );
+		r = new Autopoiesis( CREATE, CREATE, "a variable pattern z" ).mediate( r );
+		r = new Autopoiesis( ADD,    THINK,  "one two three four"   ).mediate( r );
+		r = new Autopoiesis( ADD,    DO,     "two three four"       ).mediate( r );
+		r = new Autopoiesis( ADD,    REPLY,  "three four"           ).mediate( r );
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
 }	}
