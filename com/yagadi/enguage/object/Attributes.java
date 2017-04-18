@@ -257,7 +257,7 @@ public class Attributes extends ArrayList<Attribute> {
 	}
 	public static void main( String argv[]) {
 		Audit.allOn();
-		Attributes a = new Attributes();
+		Attributes b, a = new Attributes();
 		a.add( new Attribute( "martin", "heroic" ));
 		a.add( new Attribute( "ruth", "fab" ));
 		audit.log( "Initial test: "+ a.toString());
@@ -270,4 +270,12 @@ public class Attributes extends ArrayList<Attribute> {
 		audit.log( "\ta is now:"+ a.toString());
 		audit.log( "\tshould be just ruth='fab'" );
 		
+		a = new Attributes();
+		a.add( new Attribute( "X", "3" ));
+		b = new Attributes();
+		a.add( new Attribute( "X", "3" ));
+		if (a.matches( b ))
+			audit.log( "matched" );
+		else
+			audit.log( "not mathing" );
 }	}
