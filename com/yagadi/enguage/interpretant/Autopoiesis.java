@@ -118,26 +118,32 @@ public class Autopoiesis extends Intention {
 		Strings sa = Context.deref( new Strings( value ));
 		
 		// needs to switch on type (intent)
-		if (intent.equals( CREATE )) {
+		if (intent.equals( CREATE )) { // manually adding a sign
+			
+			// need to manually identify pattern...
+			// interpret i need >phrase hyphen variable< needs thus
+			
 			audit.log( "creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
 				s = new Sign()
-					.content( new Tags( value ))
+					.content( new Tags( new Strings( value ))) // manual new Tags
 					.concept( concept() )
 			);
-		} else if (!intent.equals( UNDEF )) { //intent == UNDEF for all except ctor( 3-param ) 
-			if (null != s) {
+			
+		} else if (!intent.equals( UNDEF )) { // manually adding a sign  
+			if (null != s) { 
 				audit.debug( "Adding to EXISTING sign: '"+ value +"'");
 				s.append( intent, value );
 			}
-			
+		
+		// following these are trad. autopoiesis
 		} else if (name.equals( APPEND ) || name.equals( PREPEND )) {
 			if (null == s)
 				// this should return DNU...
 				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
 			else {
 				String attr = sa.get( 0 ),
-					       val = Strings.trim( sa.get( 1 ), '"' );
+					    val  = Strings.trim( sa.get( 1 ), '"' );
 				audit.debug( name +"ending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
 				if (name.equals( APPEND ))
 					s.append(  attr, val );
