@@ -29,20 +29,28 @@ public class Tags extends ArrayList<Tag> {
 	public String toXml( int level ) {
 		String str="";
 		Iterator<Tag> ti = iterator();
-		while (ti.hasNext())
+		while (ti.hasNext()) {
 			str += ti.next().toXml( level );
+			if (ti.hasNext()) str += " ";
+		}
 		return str;
 	}
 	public String toString() {
 		String str="";
 		Iterator<Tag> ti = iterator();
-		while (ti.hasNext()) str += ti.next().toString();
+		while (ti.hasNext()) {
+			str += ti.next().toString();
+			if (ti.hasNext()) str += " ";
+		}
 		return str;
 	}
 	public String toText() {
 		String str="";
 		Iterator<Tag> ti = iterator();
-		while (ti.hasNext()) str += ti.next().toText();
+		while (ti.hasNext()) {
+			str += ti.next().toText();
+			if (ti.hasNext()) str += " ";
+		}
 		return str;
 	}
 	public String toLine() {
