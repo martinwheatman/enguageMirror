@@ -222,10 +222,10 @@ public class Enguage extends Shell {
 			//testInterpret( "I don't need anything", "Ok , you don't want anything." );
 			
 			audit.title( "On-the-fly Langauge Learning" );
-			testInterpret( "interpret you are a wally thus" );
-			testInterpret( "first reply well fancy that" );
-			testInterpret( "ok" );
-			testInterpret( "you are a wally" );
+			testInterpret( "interpret you are a variable insult thus", "go on." );
+			testInterpret( "first reply well fancy that", "go on." );
+			testInterpret( "ok", "ok." );
+			testInterpret( "you are a wally", "well fancy that." );
 			
 			//audit.title( "Misunderstanding" );
 			//testInterpret( "i don't understand" );

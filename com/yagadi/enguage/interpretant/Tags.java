@@ -115,7 +115,8 @@ public class Tags extends ArrayList<Tag> {
 			} else
 				prefix+= word +" ";
 		}
-		if (!t.isNull()) add( t.prefixAsStrings( prefix ));
+		if (!t.isNull() || !prefix.equals( "" ))
+			add( t.prefixAsStrings( prefix ));
 	}
 	
 	static private       boolean debug = false;
