@@ -126,7 +126,7 @@ public class Autopoiesis extends Intention {
 			audit.log( "creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
 				s = new Sign()
-					.content( new Tags( value )) // manual new Tags
+					.content( new Tags( new Strings( value ))) // manual new Tags
 					.concept( concept() )
 			);
 			

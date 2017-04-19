@@ -121,6 +121,68 @@ public class Tags extends ArrayList<Tag> {
 		t.prefixAsStrings( prefix );
 		if (!t.isNull()) add( t );
 	}
+	
+	// Manual Autopoiesis... needs to deal with:
+	// if variable x do phrase variable y.
+	// i need numeric variable quantity variable units of phrase variable needs.
+	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
+	
+	public Tags( Strings words ) {
+		String prefix = "";
+		Tag t = new Tag();
+		Iterator<String> wi = words.iterator();
+		while ( wi.hasNext() ) {
+			String word = wi.next();
+			if (word.equals( "variable" )) {
+				if (wi.hasNext() &&
+					null != (word = wi.next()) &&
+					!word.equals( "variable" ))
+				{
+					add( t.name( word.toUpperCase( Locale.getDefault()) ).prefixAsStrings( prefix ));
+					prefix = "";
+					t = new Tag();
+				} else
+					prefix += word + " ";
+				
+			} else if (word.equals( Tag.numeric )) {
+				if (wi.hasNext()) {
+					word = wi.next();
+					if (word.equals( "variable" )  &&
+						wi.hasNext()               &&
+						null != (word = wi.next()) &&
+						!word.equals( "variable" ))
+					{
+						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefixAsStrings( prefix ).attribute( Tag.numeric, Tag.numeric));
+						prefix = "";
+						t = new Tag();
+					} else { // was  "numeric <word>" OR "numeric variable variable" => "numeric" + word
+						prefix += Tag.numeric +" "+ word +" ";
+					}
+				} else // "numeric" was last word...
+					prefix += Tag.numeric +" ";
+				
+			} else if (word.equals( Tag.phrase )) {
+				if (wi.hasNext()) {
+					word = wi.next();
+					if (word.equals( "variable" )  &&
+						wi.hasNext()               &&
+						null != (word = wi.next()) &&
+						!word.equals( "variable" ))
+					{
+						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefixAsStrings( prefix ).attribute( Tag.phrase, Tag.phrase));
+						prefix = "";
+						t = new Tag();
+					} else {
+						prefix += Tag.phrase +" "+ word +" ";
+					}
+				} else
+					prefix += Tag.phrase +" ";
+				
+			} else
+				prefix+= word +" ";
+		}
+		if (!t.isNull()) add( t.prefixAsStrings( prefix ));
+	}
 	/* *************************************************************************
 	 * matchValues() coming soon...
 	 */
@@ -189,6 +251,8 @@ public class Tags extends ArrayList<Tag> {
 	public Attributes matchValues( Strings utterance ) {
 		
 		// First, a sanity check
+		if (size() == 0) return null; // manual/vocal Tags creation can produce null Tags objects
+		                              // see "first reply well fancy that" in Enguage sanity test.
 		Strings  prefix = get( 0 ).prefixAsStrings();
 		if ( prefix.size() > 0 &&
 		    !prefix.get( 0 ).equalsIgnoreCase( utterance.get( 0 ) ))
@@ -262,61 +326,70 @@ public class Tags extends ArrayList<Tag> {
 
 	
 	// --- test code...
-	static String
-			prefix = "what is",
-			prefix2 = "wh is",
-            postfix = "?",
-	       	testPhrase = prefix + " " + "1 + 2" + postfix, //+" "+ prefix +" "+ "3+4"+ postfix;
-	       	testPhrase2 = prefix + " " + "1 + 2" + postfix +" "+ prefix2 +" "+ "5 + 4"+ postfix;
-	
-	private static void printTagsAndValues( Tags ta, String phrase ) {
-		//audit.audit( "Matching phrase: "+ phrase +"\n      with:"+ ta.toLine());
-		Attributes values = ta.matchValues( new Strings( phrase ));
-		if ( null == values )
-			audit.log( "values => null\n" );
-		else {
-			String vals = "", tmp;
-			for( Attribute a : values ) {
-				ListIterator<String> li = new Strings( a.value()).listIterator();
-				Number n = Number.getNumber( li );
-				tmp = n.valueOf();
-				vals += " " + (Number.NotANumber == tmp ? a.value() : tmp);
-			}
-			audit.log( "values => ["+ vals +" ]\n" );
-	}	}
+	private static void printTagsAndValues( Tags interpretant, String phrase ) {
+		printTagsAndValues( interpretant, phrase, null );
+	}
+	public static void printTagsAndValues( Tags interpretant, String phrase, Attributes expected ) {
+		
+		audit.in( "printTagsAndValues", "ta="+ interpretant.toString() +", phr="+ phrase +", expected="+ 
+				(expected == null ? "":expected.toString()) );
+		Attributes values = interpretant.matchValues( new Strings( phrase ));
+		
+		// de-reference values...
+		audit.log( "-->matched values=>"+ (values==null?"null":values.toString()) +"<" );
+		String vals = "";
+		if (null != values)
+			for( Attribute a : values )
+				//if (a.numeric()) {
+				//	if (!vals.equals( "" )) vals += " ";
+				//	String tmp = Number.getNumber( new Strings( a.value()).listIterator() ).valueOf();
+				//	vals += (a.name() +"='"+ (Number.NotANumber == tmp ? a.value() : tmp) +"'");
+				//} else
+					vals += (vals.equals( "" ) ? "" : " ")+(a.name() +"='"+ a.value() +"'");
+		audit.log( "-->matched vals    => ["+ vals +"]" );
+
+		if (null == expected)
+			audit.log( "values => ["+ vals +"]" );
+		else if (values != null && values.matches( expected ))
+			audit.log( "PASSED => ["+ vals +"]" );
+		else 
+			audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
+		audit.out();
+	}
 
 	public static void main(String args[]) {
+		
 		Audit.allOn();
 		audit.tracing = true;
 		debug( true );
 		
+		String	prefix = "what is",
+				prefix2 = "wh is",
+		        postfix = "?",
+		       	testPhrase = prefix + " " + "1 + 2" + postfix, //+" "+ prefix +" "+ "3+4"+ postfix;
+		       	testPhrase2 = prefix + " " + "1 + 2" + postfix +" "+ prefix2 +" "+ "5 + 4"+ postfix;
+		
 		Tags ta = new Tags();
-		Tag t = new Tag( prefix + " ", "X", postfix ).attribute( Tag.numeric, Tag.numeric );
+		Tag t;
+		//*
+		t = new Tag( prefix + " ", "X" ).attribute( Tag.numeric, Tag.numeric );
+		audit.log( "t='"+ t.toString() +"'" );
 		ta.add( t );
-		printTagsAndValues( ta, testPhrase );
-		
-		// ok, add a PHRASE- attribute and repeat this test...
-		ta = new Tags();
-		t = new Tag( prefix + " ", "X", postfix ).attribute( Tag.numeric, Tag.numeric );
-		t.attribute( Tag.phrase, Tag.phrase );
-		ta.add( t );
-		printTagsAndValues( ta, testPhrase );
-		// */
-		
-		// ok, add a PHRASE- attribute and repeat this test...
+		printTagsAndValues( ta, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
+/*
 		ta = new Tags();
 		t = new Tag( prefix + " ", "X", postfix ).attribute( Tag.numeric, Tag.numeric );
 		ta.add( t );
 		t = new Tag( prefix2 + " ", "Y", postfix ).attribute( Tag.numeric, Tag.numeric );
 		ta.add( t );
-		printTagsAndValues( ta, testPhrase2 );
-		// */
+		printTagsAndValues( ta, testPhrase2, new Attributes().add( "X", "3" ).add( "Y", "9" ));
+// * /
 		
 		ta = new Tags();
 		t = new Tag( "I've seen ", "X", "" ).attribute( Tag.phrase, Tag.phrase );
 		ta.add( t );
-		printTagsAndValues( ta, "I've seen all good people" );
-
+		printTagsAndValues( ta, "I've seen all good people", new Attributes().add( "X", "all good people" ));
+//*
 		ta = new Tags();
 		t = new Tag( "I've seen ", "X", " people" ).attribute( Tag.phrase, Tag.phrase );
 		ta.add( t );
@@ -333,21 +406,21 @@ public class Tags extends ArrayList<Tag> {
 		t = new Tag( "I've seen ", "X", "" ).attribute( Tag.quoted, Tag.quoted );
 		ta.add( t );
 		printTagsAndValues( ta, "I've seen \"all good people\"" );
-
+// * /
 		ta = new Tags();
 		t = new Tag( "I've seen ", "X", "" ).attribute( Tag.numeric, Tag.numeric );
 		ta.add( t );
 		t = new Tag( " ", "Y", " people " ).attribute( Tag.phrase, Tag.phrase );
 		ta.add( t );
 		printTagsAndValues( ta, "I've seen a damn good people" );
-
+// * /
 		ta = new Tags();
 		t = new Tag( "I've seen ", "X", "" ).attribute( Tag.numeric, Tag.numeric ).attribute( Tag.phrase, Tag.phrase );
 		ta.add( t );
 		t = new Tag( " ", "Y", " people " ).attribute( Tag.phrase, Tag.phrase );
 		ta.add( t );
 		printTagsAndValues( ta, "I've seen 2 * 3 good people" );
-// */
+// * /
 		ta = new Tags();
 		t = new Tag( "add / ", "X" ).attribute( Tag.phrase, Tag.phrase );
 		ta.add( t );
@@ -361,5 +434,17 @@ public class Tags extends ArrayList<Tag> {
 		t = new Tag( "what is ", "X", "" ).attribute( Tag.numeric, Tag.numeric ).attribute( Tag.phrase, Tag.phrase );
 		ta.add( t );
 		printTagsAndValues( ta, "what is 1 * 2 * 3" );
+// */
+		// interpret i need >phrase hyphen variable< needs thus -- numeric variable quantity variable unit of
+		ta = new Tags( new Strings( "i need numeric variable quantity variable unit of phrase variable need" ));
+		//sort of like: 'interpret i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS thus.'
+		audit.log( "ta='"+ ta.toString() +"'" );
+		printTagsAndValues( ta,
+				"I need a cup of coffee", 
+				new Attributes()
+					.add( "QUANTITY", "1" )
+					.add( "UNIT",     "cup" )
+					.add( "NEED",    "coffee" )
+		);
 //*/
 }	}
