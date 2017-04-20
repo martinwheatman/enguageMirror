@@ -124,7 +124,7 @@ public class Autopoiesis extends Intention {
 			// need to manually identify pattern...
 			// interpret i need >phrase hyphen variable< needs thus
 			
-			audit.log( "creating new sign: ["+ value +"]");
+			audit.debug( "autop: creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
 				s = new Sign()
 					.content( new Tags( new Strings( value ))) // manual new Tags
@@ -133,7 +133,7 @@ public class Autopoiesis extends Intention {
 			
 		} else if (!intent.equals( UNDEF )) { // manually adding a sign  
 			if (null != s) { 
-				audit.debug( "Adding to EXISTING sign: '"+ value +"'");
+				audit.debug( "autop: Adding to EXISTING sign: '"+ value +"'");
 				s.append( intent, Utterance.toPattern( value ).toString());
 			}
 		

@@ -34,7 +34,7 @@ public class Sign {
 				rc = new Autopoiesis( Autopoiesis.ADD,    Intention.REPLY,  argv.toString() ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
-				audit.log( "adding a final clause? "+ argv.toString() );
+				audit.debug( "adding a final clause? "+ argv.toString() );
 				if (argv.get( 0 ).equals( "perform" )) {
 					argv.remove( 0 ); // remove perform
 					rc = new Autopoiesis( Autopoiesis.ADD,    Intention.DO,     argv.toString() ).mediate( r ).toString();
@@ -45,7 +45,7 @@ public class Sign {
 					rc = new Autopoiesis( Autopoiesis.ADD,    Intention.THINK,  argv.toString() ).mediate( r ).toString();
 				}
 			} else {
-				audit.log( "adding a thought "+ argv.toString() );
+				audit.debug( "adding a thought "+ argv.toString() );
 				rc = new Autopoiesis( Autopoiesis.ADD,    Intention.THINK,  argv.toString() ).mediate( r ).toString();
 		}	}
 		return audit.out( rc );
