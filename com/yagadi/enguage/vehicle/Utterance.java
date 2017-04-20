@@ -88,6 +88,11 @@ public class Utterance {
 		// if no qualified match, attempt an expanded match
 		return match == null ? s.content().matchValues( expanded ) : match;
 	}
+	static private final String variable = "variable";
+	static private final String   quotes = "\"";
+	static private final String   hyphen = "-";
+	static private final String    quote = "'";
+	static private final String      end = "end";
 	static public Strings toPattern( String u ) {
 		// my name is variable name => my name is NAME
 		Strings in  = new Strings( u ),
@@ -95,39 +100,37 @@ public class Utterance {
 		Iterator<String> wi = in.iterator();
 		while ( wi.hasNext() ) {
 			String word = wi.next();
-			if (word.equals( "variable" )) {
+			if (word.equals( variable )) {
 				if (wi.hasNext()
 						&& null != (word = wi.next())
-						&& !word.equals( "variable" ))
+						&& !word.equals( variable )) // so we can't have VARIABLE, ok...
 					out.append( word.toUpperCase( Locale.getDefault()) );
 				else
-					out.append( word );
+					out.append( variable );
 				
 			} else if (word.equals( Tag.numeric )) {
 				if (wi.hasNext()) {
 					word = wi.next();
-					if (word.equals( "variable" )
+					if (word.equals( variable )
 							&& wi.hasNext()
 							&& null != (word = wi.next())
-							&& !word.equals( "variable" ))
+							&& !word.equals( variable ))
 						out.append( word.toUpperCase( Locale.getDefault()) );
-					else // was  "numeric <word>" OR "numeric variable variable" => "numeric" + word
-						out.append( Tag.numeric ).append( word );
-					
+					else // was "numeric <word>" OR "numeric variable variable" => "numeric" + word
+						out.append( Tag.numeric + hyphen + word );
 				} else // "numeric" was last word...
 					out.append( Tag.numeric );
 				
 			} else if (word.equals( Tag.phrase )) {
 				if (wi.hasNext()) {
 					word = wi.next();
-					if (word.equals( "variable" )  &&
-						wi.hasNext()               &&
-						null != (word = wi.next()) &&
-						!word.equals( "variable" ))
+					if (word.equals( variable )
+							&& wi.hasNext()
+							&& null != (word = wi.next())
+							&& !word.equals( variable ))
 						out.append( word.toUpperCase( Locale.getDefault()) );
 					else
-						out.append( Tag.phrase ).append( word );
-					
+						out.append( Tag.phrase + hyphen + word );
 				} else
 					out.append( Tag.phrase );
 				

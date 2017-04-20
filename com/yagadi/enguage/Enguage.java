@@ -215,16 +215,10 @@ public class Enguage extends Shell {
 		}
 
 		if ( level == 0 || level == 8 ) {
-			//audit.title( "Langauge Learning (non-autopoietic)" );
-			//testInterpret( "I want a Ferrari", "I don't understand" );
-			//testInterpret( "want means need", "ok." );
-			//testInterpret( "I want a Ferrari", "ok, you want a ferrari.");
-			//testInterpret( "I don't need anything", "Ok , you don't want anything." );
-			
 			audit.title( "On-the-fly Langauge Learning" );
-			testInterpret( "interpret my name is variable name thus", "go on." );
+			testInterpret( "interpret my name is phrase variable name thus", "go on." );
 			testInterpret( "first reply hello variable name", "go on." );
-			testInterpret( "ok", "ok." );
+			testInterpret( "that is it", "ok." );
 			//Repertoire.signs.show();
 			testInterpret( "my name is martin", "hello martin." );
 			

@@ -20,6 +20,8 @@ On "stop  induction":
 	On "ok":
 		stop induction;
 		then, reply "ok".
+	On "that is it", ok.
+	On "that is all", ok.
 	
 	On "finally PHRASE-X":
 		perform "sign finally X";

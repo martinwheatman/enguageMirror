@@ -12,7 +12,7 @@ import com.yagadi.enguage.vehicle.Reply;
 
 public class Sign {
 	static public  String  NAME = "sign";
-	static private Audit  audit = new Audit( "Sign", true );
+	static private Audit  audit = new Audit( "Sign" );
 	
 	static public String interpret( Strings argv ) {
 		audit.in( "interpret", argv.toString());
@@ -21,16 +21,16 @@ public class Sign {
 			Reply r = new Reply();
 			String cmd = argv.remove( 0 );
 			if (cmd.equals( "create" )) {
-				audit.log( "creating sign with:" + argv.toString());
+				audit.debug( "creating sign with:" + argv.toString());
 				rc = new Autopoiesis( Autopoiesis.CREATE, Autopoiesis.CREATE, argv.toString() ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "perform" )) {
-				audit.log( "adding a conceptualisation "+ argv.toString() );
+				audit.debug( "adding a conceptualisation "+ argv.toString() );
 				argv.remove( 0 ); // remove perform
 				rc = new Autopoiesis( Autopoiesis.ADD,    Intention.DO,     argv.toString() ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
-				audit.log( "adding a reply "+ argv.toString() );
+				audit.debug( "adding a reply "+ argv.toString() );
 				rc = new Autopoiesis( Autopoiesis.ADD,    Intention.REPLY,  argv.toString() ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
@@ -49,5 +49,4 @@ public class Sign {
 				rc = new Autopoiesis( Autopoiesis.ADD,    Intention.THINK,  argv.toString() ).mediate( r ).toString();
 		}	}
 		return audit.out( rc );
-	}
-}
+}	}
