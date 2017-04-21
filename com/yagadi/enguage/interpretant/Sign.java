@@ -7,6 +7,7 @@ import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
 import com.yagadi.enguage.util.Audit;
+import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Reply;
 
 public class Sign extends Tag {
@@ -175,7 +176,7 @@ public class Sign extends Tag {
 	public static void main( String argv[]) {
 		Sign p = new Sign();
 		p.attribute("reply", "hello world");
-		p.content( new Tag().prefix( "hello" ));
+		p.content( new Tag().prefix( new Strings( "hello" )));
 		Reply r = new Reply();
 		Intention intent = new Intention( "say", "hello world" );
 		r = intent.mediate( r );

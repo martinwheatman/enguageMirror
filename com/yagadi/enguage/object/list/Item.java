@@ -39,7 +39,7 @@ public class Item {
 			else if (!s.equals("-"))
 				content.add( s );
 
-		tag.content( new Tag().prefix( content.toString( Strings.SPACED )))
+		tag.content( new Tag().prefix( content ))
 		   .attributes( a );
 	}
 	public Item( Strings ss, Attributes as ) { // [ "black", "coffee", "quantity='1'"], [unit='cup']

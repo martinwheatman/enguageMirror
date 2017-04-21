@@ -28,7 +28,7 @@ public class Tags extends ArrayList<Tag> {
 		while ( wi.hasNext() ) {
 			String word = wi.next();
 			if ((1 == word.length()) && Strings.isUpperCase( word ) && !word.equals("I")) {
-				t.name( word.toLowerCase( Locale.getDefault())).prefix( prefix );
+				t.name( word.toLowerCase( Locale.getDefault())).prefix( new Strings( prefix ));
 				add( t );
 				t = new Tag();
 				prefix = "";
@@ -45,14 +45,14 @@ public class Tags extends ArrayList<Tag> {
 						else
 							t.name( subWord ); // last word in array
 				}	}
-				t.prefix( prefix );
+				t.prefix( new Strings( prefix ));
 				add( t );
 				t = new Tag();
 				prefix = "";
 			} else
 				prefix += (word + " ");
 		}
-		t.prefix( prefix );
+		t.prefix( new Strings( prefix ));
 		if (!t.isNull()) add( t );
 	}
 	
@@ -62,7 +62,7 @@ public class Tags extends ArrayList<Tag> {
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
 	
 	public Tags( Strings words ) {
-		String prefix = "";
+		//String prefix = "";
 		Tag t = new Tag();
 		Iterator<String> wi = words.iterator();
 		while ( wi.hasNext() ) {
@@ -72,11 +72,10 @@ public class Tags extends ArrayList<Tag> {
 					null != (word = wi.next()) &&
 					!word.equals( "variable" ))
 				{
-					add( t.name( word.toUpperCase( Locale.getDefault()) ).prefix( prefix ));
-					prefix = "";
+					add( t.name( word.toUpperCase( Locale.getDefault()) ));
 					t = new Tag();
 				} else
-					prefix += word + " ";
+					t.prefix( word );
 				
 			} else if (word.equals( Tag.numeric )) {
 				if (wi.hasNext()) {
@@ -86,14 +85,13 @@ public class Tags extends ArrayList<Tag> {
 						null != (word = wi.next()) &&
 						!word.equals( "variable" ))
 					{
-						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefix( prefix ).attribute( Tag.numeric, Tag.numeric));
-						prefix = "";
+						add( t.name( word.toUpperCase( Locale.getDefault()) ).attribute( Tag.numeric, Tag.numeric));
 						t = new Tag();
-					} else { // was  "numeric <word>" OR "numeric variable variable" => "numeric" + word
-						prefix += Tag.numeric +" "+ word +" ";
-					}
+					} else // was  "numeric <word>" OR "numeric variable variable" => "numeric" + word
+						t.prefix( Tag.numeric ).prefix( word );
+					
 				} else // "numeric" was last word...
-					prefix += Tag.numeric +" ";
+					t.prefix( Tag.numeric );
 				
 			} else if (word.equals( Tag.phrase )) {
 				if (wi.hasNext()) {
@@ -103,20 +101,19 @@ public class Tags extends ArrayList<Tag> {
 						null != (word = wi.next()) &&
 						!word.equals( "variable" ))
 					{
-						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefix( prefix ).attribute( Tag.phrase, Tag.phrase));
-						prefix = "";
+						add( t.name( word.toUpperCase( Locale.getDefault()) ).attribute( Tag.phrase, Tag.phrase));
 						t = new Tag();
-					} else {
-						prefix += Tag.phrase +" "+ word +" ";
-					}
+					} else
+						t.prefix( Tag.phrase ).prefix( word );
+				
 				} else
-					prefix += Tag.phrase +" ";
+					t.prefix( Tag.phrase );
 				
 			} else
-				prefix+= word +" ";
+				t.prefix( word );
 		}
-		if (!t.isNull() || !prefix.equals( "" ))
-			add( t.prefix( prefix ));
+		if (!t.isNull())
+			add( t );
 	}
 	
 	static private       boolean debug = false;

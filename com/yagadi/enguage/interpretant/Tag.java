@@ -44,12 +44,9 @@ public class Tag {
 	
 	
 	private Strings prefix = new Strings();
-	public Strings prefix() { return prefix; }
-	public Tag     prefix( Strings s ) { prefix = s; return this; }
-	public Tag     prefix( String str ) {
-		prefix = new Strings( str );
-		return this;
-	}
+	public  Strings prefix() { return prefix; }
+	public  Tag     prefix( Strings s ) { prefix = s; return this; }
+	public  Tag     prefix( String str ) { prefix.append( str ); return this; }
 
 	public Strings postfixAsStrings;
 	public Strings postfixAsStrings() { return new Strings( postfix ); }
@@ -294,7 +291,7 @@ public class Tag {
 		String preamble = "";
 		while (i < postfix().length() && '<' != postfix().charAt( i )) 
 			preamble += postfix().charAt( i++ );
-		prefix( preamble );
+		prefix( new Strings( preamble ));
 		if (i < postfix().length()) {
 			i++; // read over terminator
 			postfix( postfix().substring( i )); // ...save rest for later!
@@ -369,7 +366,7 @@ public class Tag {
 	// -- tag from string: DONE
 	public Tag( String pre, String nm ) {
 		this();
-		prefix( pre ).name( nm );
+		prefix( new Strings( pre )).name( nm );
 	}
 	public Tag( String pre, String nm, String post ) {
 		this( pre, nm );
@@ -455,8 +452,8 @@ public class Tag {
 		Strings a = new Strings( argv );
 		int argc = argv.length;
 		Tag orig = new Tag("prefix ", "util", "posstfix").append("sofa", "show").append("attr","one");
-		orig.content( new Tag().prefix(" show ").name("sub"));
-		orig.content( new Tag().prefix( " fred " ));
+		orig.content( new Tag().prefix( new Strings( "show" )).name("sub"));
+		orig.content( new Tag().prefix( new Strings( "fred") ));
 		Tag t = new Tag( orig );
 		//audit.log( "orig was:"+ orig.toString());
 		//audit.audit( "copy: "+ t.toString());
