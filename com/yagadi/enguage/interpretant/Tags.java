@@ -28,7 +28,7 @@ public class Tags extends ArrayList<Tag> {
 		while ( wi.hasNext() ) {
 			String word = wi.next();
 			if ((1 == word.length()) && Strings.isUpperCase( word ) && !word.equals("I")) {
-				t.name( word.toLowerCase( Locale.getDefault())).prefixAsStrings( prefix );
+				t.name( word.toLowerCase( Locale.getDefault())).prefix( prefix );
 				add( t );
 				t = new Tag();
 				prefix = "";
@@ -45,14 +45,14 @@ public class Tags extends ArrayList<Tag> {
 						else
 							t.name( subWord ); // last word in array
 				}	}
-				t.prefixAsStrings( prefix );
+				t.prefix( prefix );
 				add( t );
 				t = new Tag();
 				prefix = "";
 			} else
 				prefix += (word + " ");
 		}
-		t.prefixAsStrings( prefix );
+		t.prefix( prefix );
 		if (!t.isNull()) add( t );
 	}
 	
@@ -72,7 +72,7 @@ public class Tags extends ArrayList<Tag> {
 					null != (word = wi.next()) &&
 					!word.equals( "variable" ))
 				{
-					add( t.name( word.toUpperCase( Locale.getDefault()) ).prefixAsStrings( prefix ));
+					add( t.name( word.toUpperCase( Locale.getDefault()) ).prefix( prefix ));
 					prefix = "";
 					t = new Tag();
 				} else
@@ -86,7 +86,7 @@ public class Tags extends ArrayList<Tag> {
 						null != (word = wi.next()) &&
 						!word.equals( "variable" ))
 					{
-						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefixAsStrings( prefix ).attribute( Tag.numeric, Tag.numeric));
+						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefix( prefix ).attribute( Tag.numeric, Tag.numeric));
 						prefix = "";
 						t = new Tag();
 					} else { // was  "numeric <word>" OR "numeric variable variable" => "numeric" + word
@@ -103,7 +103,7 @@ public class Tags extends ArrayList<Tag> {
 						null != (word = wi.next()) &&
 						!word.equals( "variable" ))
 					{
-						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefixAsStrings( prefix ).attribute( Tag.phrase, Tag.phrase));
+						add( t.name( word.toUpperCase( Locale.getDefault()) ).prefix( prefix ).attribute( Tag.phrase, Tag.phrase));
 						prefix = "";
 						t = new Tag();
 					} else {
@@ -116,7 +116,7 @@ public class Tags extends ArrayList<Tag> {
 				prefix+= word +" ";
 		}
 		if (!t.isNull() || !prefix.equals( "" ))
-			add( t.prefixAsStrings( prefix ));
+			add( t.prefix( prefix ));
 	}
 	
 	static private       boolean debug = false;
@@ -166,7 +166,7 @@ public class Tags extends ArrayList<Tag> {
 			term = t.postfixAsStrings().get( 0 );
 		else if (ti.hasNext()) {
 			// next prefix as array is...
-			Strings arr = ti.next().prefixAsStrings();
+			Strings arr = ti.next().prefix();
 			// ...first token of which is the terminator
 			term = (arr == null || arr.size() == 0) ? null : arr.get( 0 );
 			ti.previous();
@@ -215,7 +215,7 @@ public class Tags extends ArrayList<Tag> {
 		// First, a sanity check
 		if (size() == 0) return null; // manual/vocal Tags creation can produce null Tags objects
 		                              // see "first reply well fancy that" in Enguage sanity test.
-		Strings  prefix = get( 0 ).prefixAsStrings();
+		Strings  prefix = get( 0 ).prefix();
 		if ( prefix.size() > 0 &&
 		    !prefix.get( 0 ).equalsIgnoreCase( utterance.get( 0 ) ))
 		{
@@ -239,7 +239,7 @@ public class Tags extends ArrayList<Tag> {
 		while ( ti.hasNext() && ui.hasNext() ) {
 			Tag t = (readAhead != null) ? readAhead : ti.next();
 			readAhead = null;
-			if (null == (ui = matchBoilerplate( t.prefixAsStrings(), ui ))) { // ...match prefix
+			if (null == (ui = matchBoilerplate( t.prefix(), ui ))) { // ...match prefix
 				//if (debug) audit.traceOut("prefix mismatch:"+ (!ti.hasNext() ? "LENGTH" : null == t ? "NULL" : t.prefix()));
 				return null;
 				
@@ -321,7 +321,7 @@ public class Tags extends ArrayList<Tag> {
 		Iterator<Tag> ti = iterator();
 		while (ti.hasNext()) {
 			Tag t = ti.next();
-			str += ( " "+t.prefixAsStrings().toString()+" <"+t.name() +" "+ t.attributes().toString() +"/> "+t.postfix());
+			str += ( " "+t.prefix().toString()+" <"+t.name() +" "+ t.attributes().toString() +"/> "+t.postfix());
 		}
 		return str;
 	}

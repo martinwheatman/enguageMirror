@@ -117,7 +117,7 @@ public class Sign extends Tag {
 		             rnd = rn.nextInt( RANGE/10 ); // word count component
 		
 		for (Tag t : content()) {
-			boilerplate += t.prefixAsStrings().size();
+			boilerplate += t.prefix().size();
 			if (t.isPhrased()) //attributes().get( phrase ).equals( phrase ))
 				infinite = true;
 			else if (!t.name().equals( "" ))
@@ -140,7 +140,7 @@ public class Sign extends Tag {
 	public Sign content( Tag  t )  { content.add( t ); return this; }
 	
 	public String toString( int n, long c ) {
-		return prefixAsStrings().toString() + (name().equals( "" ) ? "" :
+		return prefix().toString() + (name().equals( "" ) ? "" :
 			(indent +"<"+ name() +" n='"+ n +"' complexity='"+ c +"' repertoire='"+ concept() +"'"
 			+ attributes().toString( "\n      " )
 			+(null == content() ? "/>" : ( ">\n"+ indent + indent + content().toString() + "</"+ name() +">" ))))
@@ -175,7 +175,7 @@ public class Sign extends Tag {
 	public static void main( String argv[]) {
 		Sign p = new Sign();
 		p.attribute("reply", "hello world");
-		p.content( new Tag().prefixAsStrings( "hello" ));
+		p.content( new Tag().prefix( "hello" ));
 		Reply r = new Reply();
 		Intention intent = new Intention( "say", "hello world" );
 		r = intent.mediate( r );

@@ -39,7 +39,7 @@ public class Item {
 			else if (!s.equals("-"))
 				content.add( s );
 
-		tag.content( new Tag().prefixAsStrings( content.toString( Strings.SPACED )))
+		tag.content( new Tag().prefix( content.toString( Strings.SPACED )))
 		   .attributes( a );
 	}
 	public Item( Strings ss, Attributes as ) { // [ "black", "coffee", "quantity='1'"], [unit='cup']
@@ -48,7 +48,7 @@ public class Item {
 	}
 	public Item( String s ) { this( new Strings( s ).contract( "=" )); } // "black coffee quantity='1' unit='cup'
 	public Item( Item item ) { // copy c'tor
-		this( item.content().size()>0 ? item.content().get( 0 ).prefixAsStrings().toString() : "" );
+		this( item.content().size()>0 ? item.content().get( 0 ).prefix().toString() : "" );
 		tag.attributes( new Attributes( item.attributes()) );
 	}
 	
@@ -69,7 +69,7 @@ public class Item {
 		Strings rc = new Strings();
 		Strings formatting = format();
 		if (formatting == null || formatting.size() == 0) {
-			if (tag.content().size()>0) rc.add( tag.content().get(0).prefixAsStrings().toString());
+			if (tag.content().size()>0) rc.add( tag.content().get(0).prefix().toString());
 		} else {
 			Float prevNum = Float.NaN;    // pluralise to the last number... NaN means no number found yet
 			/* Read through the format string:
@@ -80,7 +80,7 @@ public class Item {
 			for (String format : formatting)
 				if (format.equals("")) { // main item: "black coffee"
 					if (tag.content().size()>0)
-						rc.add( Plural.ise( prevNum, tag.content().get(0).prefixAsStrings().toString() ));
+						rc.add( Plural.ise( prevNum, tag.content().get(0).prefix().toString() ));
 				} else { // formatted attributes: "UNIT of" + unit='cup' => "cups of"
 					Strings subrc = new Strings();
 					boolean found = true;

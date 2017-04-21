@@ -43,10 +43,11 @@ public class Tag {
 	public static final String abstr  = "abstract";
 	
 	
-	public Strings prefixAsStrings = new Strings();
-	public Strings prefixAsStrings() { return prefixAsStrings; }
-	public Tag     prefixAsStrings( String str ) {
-		prefixAsStrings = new Strings( str );
+	private Strings prefix = new Strings();
+	public Strings prefix() { return prefix; }
+	public Tag     prefix( Strings s ) { prefix = s; return this; }
+	public Tag     prefix( String str ) {
+		prefix = new Strings( str );
 		return this;
 	}
 
@@ -123,7 +124,7 @@ public class Tag {
 	}
 
 	
-	public boolean isNull() { return name.equals("") && prefixAsStrings().size() == 0; }
+	public boolean isNull() { return name.equals("") && prefix().size() == 0; }
 
 	public boolean invalid( ListIterator<String> ui  ) {
 		boolean rc = false;
@@ -234,7 +235,7 @@ public class Tag {
 		} else {
 			//audit.audit( " T:Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() +":" );
 			//audit.audit( " T:Checking also prefx:"+ prefix() +":with:"+ pattern.prefix() +":" );
-			rc =   Plural.singular(  prefixAsStrings.toString()).equals( Plural.singular( pattern.prefixAsStrings().toString()))
+			rc =   Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
 				&& Plural.singular( postfix()).equals( Plural.singular( pattern.postfix()))
 				&& attributes().matches( pattern.attributes()) // not exact!!!
 				&& content().equals( pattern.content());
@@ -260,7 +261,7 @@ public class Tag {
 			rc =  false;
 		} else {
 			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
-			rc =   Plural.singular( prefixAsStrings().toString()).contains( Plural.singular( pattern.prefixAsStrings().toString()))
+			rc =   Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
 				&& postfix().equals( pattern.postfix())
 				&& attributes().matches( pattern.attributes())
 				&&    content().matches( pattern.content());
@@ -278,7 +279,7 @@ public class Tag {
 			rc =  false;
 		} else {
 			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
-			rc =   Plural.singular( prefixAsStrings().toString()).contains( Plural.singular( pattern.prefixAsStrings().toString()))
+			rc =   Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
 					&& postfix().equals( pattern.postfix())
 					&& content().matches( pattern.content());
 			//audit.debug("full check returns: "+ rc );
@@ -293,7 +294,7 @@ public class Tag {
 		String preamble = "";
 		while (i < postfix().length() && '<' != postfix().charAt( i )) 
 			preamble += postfix().charAt( i++ );
-		prefixAsStrings( preamble );
+		prefix( preamble );
 		if (i < postfix().length()) {
 			i++; // read over terminator
 			postfix( postfix().substring( i )); // ...save rest for later!
@@ -368,14 +369,14 @@ public class Tag {
 	// -- tag from string: DONE
 	public Tag( String pre, String nm ) {
 		this();
-		prefixAsStrings( pre ).name( nm );
+		prefix( pre ).name( nm );
 	}
 	public Tag( String pre, String nm, String post ) {
 		this( pre, nm );
 		postfix( post );
 	}
 	public Tag( Tag orig ) {
-		this( orig.prefixAsStrings().toString(), orig.name(), orig.postfix());
+		this( orig.prefix().toString(), orig.name(), orig.postfix());
 		attributes( new Attributes( orig.attributes()));
 		content( orig.content());
 	}
@@ -384,7 +385,7 @@ public class Tag {
 	public String toXml() { return toXml( 0 );}
 	public String toXml( int level ) {
 		indent.incr();
-		String s = prefixAsStrings().toString() + (name.equals( "" ) ? "" :
+		String s = prefix().toString() + (name.equals( "" ) ? "" :
 			("<"+ name + attrs.toString()+ // attributes has preceding space
 			(0 == content().size() ? "/>" : ( ">"+ content.toXml( level==0 ? 0 : level-1 ) + "</"+ name +">" ) )))
 			+ postfix;
@@ -392,21 +393,21 @@ public class Tag {
 		return s;
 	}
 	public String toString() {
-		return prefixAsStrings().toString() + (name.equals( "" ) ? "" :
+		return prefix().toString() + (name.equals( "" ) ? "" :
 			("<"+ name + attrs.toString()+ // attributes has preceding space
 			(0 == content().size() ? "/>" : ( ">"+ content.toString() + "</"+ name +">" ))))
 			+ postfix;
 	}
 	public String toText() {
-		return prefixAsStrings().toString()
-			+ (prefixAsStrings().toString()==null||prefixAsStrings().toString().equals("") ? "":" ")
+		return prefix().toString()
+			+ (prefix().toString()==null||prefix().toString().equals("") ? "":" ")
 			+ (name.equals( "" ) ? "" :
 				( name.toUpperCase( Locale.getDefault() ) +" "+  // attributes has preceding space
 					(0 == content().size() ? "" : content.toText() )))
 			+ postfix;
 	}
 	public String toLine() {
-		return prefixAsStrings().toString()
+		return prefix().toString()
 				+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
@@ -454,8 +455,8 @@ public class Tag {
 		Strings a = new Strings( argv );
 		int argc = argv.length;
 		Tag orig = new Tag("prefix ", "util", "posstfix").append("sofa", "show").append("attr","one");
-		orig.content( new Tag().prefixAsStrings(" show ").name("sub"));
-		orig.content( new Tag().prefixAsStrings( " fred " ));
+		orig.content( new Tag().prefix(" show ").name("sub"));
+		orig.content( new Tag().prefix( " fred " ));
 		Tag t = new Tag( orig );
 		//audit.log( "orig was:"+ orig.toString());
 		//audit.audit( "copy: "+ t.toString());
