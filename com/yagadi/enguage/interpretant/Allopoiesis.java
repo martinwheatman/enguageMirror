@@ -78,6 +78,10 @@ public class Allopoiesis extends Intention {
 		// fix to allow better reading of autopoietic  
 		new Sign().content( new Tag( "if so, ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 					.attribute( THINK, "X" ),
+
+		// for vocal description of concepts... autopoiesis!		
+		new Sign().content( new Tag( "perform ", "args" ).attribute( Tag.phrase, Tag.phrase ))
+						.attribute( DO, "ARGS" ),
 		/* 
 		 * REDO: undo and do again, or disambiguate
 		 */

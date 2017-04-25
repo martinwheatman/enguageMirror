@@ -215,19 +215,6 @@ public class Enguage extends Shell {
 		}
 
 		if ( level == 0 || level == 8 ) {
-			audit.title( "On-the-fly Langauge Learning" );
-			testInterpret( "my name is martin", "I don't understand" );
-			testInterpret( "interpret my name is phrase variable name thus", "go on." );
-			testInterpret( "first reply hello variable name", "go on." );
-			testInterpret( "that is it", "ok." );
-			//Repertoire.signs.show();
-			testInterpret( "my name is martin", "hello martin." );
-			
-			//audit.title( "Misunderstanding" );
-			//testInterpret( "i don't understand" );
-		}
-
-		if ( level == 0 || level == 9 ) {
 			audit.title( "Temporospatial concept MEETING" );
 
 			Where.doLocators();
@@ -256,6 +243,26 @@ public class Enguage extends Shell {
 					"i don't know if you're meeting your dad." );
 		}
 		
+		if (level == 0 || level == 9) {
+			testInterpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok." );
+			testInterpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry." );
+		}
+		
+		if (level == 0 || level == 10) {
+			audit.title( "On-the-fly Langauge Learning" );
+			testInterpret( "my name is martin", "I don't understand" );
+			testInterpret( "interpret my name is phrase variable name thus", "go on." );
+			testInterpret( "first reply hello variable name", "go on." );
+			testInterpret( "that is it", "ok." );
+			//Repertoire.signs.show();
+			testInterpret( "my name is martin", "hello martin." );
+			
+			testInterpret( "perform variable set name martin", "Ok." );
+			testInterpret( "perform variable get name", "martin." );
+			//audit.title( "Misunderstanding" );
+			//testInterpret( "i don't understand" );
+		}
+
 		//testInterpret( "i don't need anything" );
 		audit.log( "PASSED" );
 	}

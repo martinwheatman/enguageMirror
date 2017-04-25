@@ -159,7 +159,7 @@ public class Variable {
 							null : args.copyAfter( 1 ).toString()
 					) ? Shell.SUCCESS : Shell.FAIL;
 		else if (args.get( 0 ).equals( "get" ) && args.size() > 1)
-			rc = get( args.copyAfter( 0 ).toString( Strings.SPACED ));
+			rc = get( args.copyAfter( 0 ).toString( Strings.SPACED ).toUpperCase( Locale.getDefault() ));
 		else if (args.get( 0 ).equals( "show" )) {
 			audit.log( "printing cache" );
 			printCache();
@@ -204,10 +204,11 @@ public class Variable {
 			printCache();
 			
 			//*		Static test, backwards compat...
-			test( "set hello there", "" );
+			test( "set hello there", Shell.SUCCESS );
 			test( "get HELLO", "there" );
 			test( "exists HELLO there", Shell.SUCCESS );
 			audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
 			test( "unset HELLO", "" );
 			test( "get HELLO", "" );
+			audit.log( "PASSED" );
 }	}	}

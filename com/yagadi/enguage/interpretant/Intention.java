@@ -1,6 +1,7 @@
 package com.yagadi.enguage.interpretant;
 
 import com.yagadi.enguage.object.Attribute;
+import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
@@ -98,6 +99,11 @@ public class Intention extends Attribute {
 		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		String answer = r.a.toString();
 		Strings cmd = conceptualise( answer );
+		
+		// In the case of vocal perform, value="args='<commands>'" - expand!
+		if (cmd.size()== 1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
+			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
+	
 		String rc = new Sofa().interpret( cmd );
 		rc = deconceptualise( rc, cmd.get( 1 ), answer );
 		return (Reply) audit.out( r.answer( rc ));
