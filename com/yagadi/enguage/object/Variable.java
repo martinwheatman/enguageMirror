@@ -148,27 +148,34 @@ public class Variable {
 	
 	static public String interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
-		String rc = Shell.IGNORE;
-		String cmd = args.remove( 0 );
-		if (cmd.equals( "set" ) && args.size() > 1) {
+		String  rc = Shell.SUCCESS,
+		       cmd = args.remove( 0 );
+		int sz = args.size();
+		if (sz > 0) {
 			String name = args.remove( 0 );
-			set( name, args.toString( Strings.SPACED ));
-			rc = Shell.SUCCESS;
-		} else if (cmd.equals( "unset" ) && args.size() > 0)
-			unset( args.get( 0 ));
-		else if (cmd.equals( "exists" ) && args.size() > 0) {
-			String name = args.remove( 0 );
-			rc = isSet( name, 
-					    args.size() == 0 ?
-							null : args.toString()
-					) ? Shell.SUCCESS : Shell.FAIL;
-		} else if (cmd.equals( "get" ) && args.size() > 0)
-			rc = get( args.toString( Strings.SPACED ).toUpperCase( Locale.getDefault() ));
+			if (sz > 1)
+				if (cmd.equals( "set" ))
+					set( name, args.toString() );
+				else if (cmd.equals( "exists" ))
+					rc = isSet( name, args.toString()) ? Shell.SUCCESS : Shell.FAIL;
+				else
+					rc = Shell.FAIL;
+				
+			else { // name and no params
+				rc = Shell.IGNORE;
+				if (cmd.equals( "exists" ))
+					rc = isSet( name, null ) ? Shell.SUCCESS : Shell.FAIL;
+				else if (cmd.equals( "unset" ))
+					unset( name );
+				else if (cmd.equals( "get" ))
+					rc = get( name.toUpperCase( Locale.getDefault() ));
+				else
+					rc = Shell.FAIL;
+		}	}
 		else if (cmd.equals( "show" )) {
 			audit.log( "printing cache" );
 			printCache();
 			audit.log( "printed" );
-			rc = Shell.SUCCESS;
 		} else
 			rc = Shell.FAIL;
 		return audit.out( rc = rc==null?"":rc );

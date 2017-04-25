@@ -102,19 +102,48 @@ public class Enguage extends Shell {
 
 	private static void testInterpret( String cmd, String expected ) {
 		
-		audit.log( "enguage> "+ cmd );
+		if (expected != null) audit.log( "enguage> "+ cmd );
 		String answer = Enguage.interpret( cmd );
 		
-		if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
-			audit.log( "Hint is:" + Repertoire.prompt() );
-		else if (   !expected.equals( "" )
-		         && !new Strings( answer )
-		         		.equalsIgnoreCase( new Strings( expected )))
-			audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
-		else
-			audit.log( answer +"\n" );
+		if (expected != null)
+			if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
+				audit.log( "Hint is:" + Repertoire.prompt() );
+			else if (   !expected.equals( "" )
+			         && !new Strings( answer )
+			         		.equalsIgnoreCase( new Strings( expected )))
+				audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
+			else
+				audit.log( answer +"\n" );
 	}
 	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
+	private static void usage() {
+		audit.LOG( "Usage: java -jar enguage.jar [-c <configDir>] [-p <port>]|[-s]|-t]" );
+	}
+	public static void main( String args[] ) {
+		
+		if (args.length == 0) {
+			usage();
+		} else {
+			
+			int argc = 0;
+			
+			if (args.length > 1 && args[ argc ].equals( "-c" )) {
+				argc++;
+				Enguage.loadConfig( args[ argc++ ]);
+			} else
+				Enguage.loadConfig( "./src/assets" );
+			
+			testInit();
+	
+			if ( args.length == argc + 1 && args[ argc ].equals( "-s" ))
+				e.aloudIs( true ).run();				
+			else if (args.length == argc + 2 && args[ argc ].equals( "-p" ))
+				Net.server( args[ ++argc ]);
+			else if (args.length == argc + 1 && args[ argc ].equals( "-t" ))
+				sanityCheck();
+			else
+				usage();
+	}	}
 	private static void sanityCheck() {
 		// useful ephemera
 		//Repertoire.signs.show();
@@ -125,7 +154,10 @@ public class Enguage extends Shell {
 
 		if ( level == 0 || level == 1 ) {
 			audit.title( "The Non-Computable concept of NEED" );
-			//testInterpret( "i don't need anything" );
+			
+			// silently clear the decks
+			testInterpret( "i don't need anything", null );
+
 			testInterpret( "what do i need",
 						   "you don't need anything." );
 			testInterpret( "i need 2 cups of coffee and a biscuit",
@@ -262,35 +294,5 @@ public class Enguage extends Shell {
 			//audit.title( "Misunderstanding" );
 			//testInterpret( "i don't understand" );
 		}
-
-		//testInterpret( "i don't need anything" );
 		audit.log( "PASSED" );
-	}
-	private static void usage() {
-		audit.LOG( "Usage: java -jar enguage.jar [-c <configDir>] [-p <port>]|[-s]|-t]" );
-	}
-	public static void main( String args[] ) {
-		
-		if (args.length == 0) {
-			usage();
-		} else {
-			
-			int argc = 0;
-			
-			if (args.length > 1 && args[ argc ].equals( "-c" )) {
-				argc++;
-				Enguage.loadConfig( args[ argc++ ]);
-			} else
-				Enguage.loadConfig( "./src/assets" );
-			
-			testInit();
-	
-			if ( args.length == argc + 1 && args[ argc ].equals( "-s" )) {
-				e.aloudIs( true ).run();				
-			} else if (args.length == argc + 2 && args[ argc ].equals( "-p" )) {
-				Net.server( args[ ++argc ]);
-			} else if (args.length == argc + 1 && args[ argc ].equals( "-t" )) {
-				sanityCheck();
-			} else {
-				usage();
-}	}	}	}
+}	}
