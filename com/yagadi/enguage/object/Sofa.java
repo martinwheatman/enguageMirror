@@ -9,7 +9,7 @@ import com.yagadi.enguage.vehicle.Colloquial;
 import com.yagadi.enguage.vehicle.Plural;
 
 public class Sofa extends Shell {
-	static private Audit audit = new Audit( "Sofa", true );
+	static private Audit audit = new Audit( "Sofa" );
 
 	public Sofa(){
 		super( "Sofa" );
@@ -38,25 +38,25 @@ public class Sofa extends Shell {
 			//a = a.normalise().contract( "=" );// rejig:"list","get","one two","three four"] => "list","get","one","two","three","four"]
 			//audit.debug("Sofa.doCall() => "+ a.toString());
 			
-			String  type = a.get( 0 );
+			String  type = a.remove( 0 );
 			return //audit.traceOut(
-			    a.size() == 1 && type.equals(         True ) ? True :
-				 a.size() == 1 && type.equals(        False ) ? False :
-						type.equals(     "entity" ) ?      Entity.interpret( a.copyAfter( 0 ) ) :
-						type.equals(       "link" ) ?        Link.interpret( a.copyAfter( 0 ) ) :
-						type.equals(   Value.NAME ) ?       Value.interpret( a.copyAfter( 0 ) ) :
-						type.equals(    List.NAME ) ?        List.interpret( a.copyAfter( 0 ) ) :
-						type.equals( "preferences") ? Preferences.interpret( a.copyAfter( 0 ) ) :
-						type.equals( Numeric.NAME ) ?     Numeric.interpret( a.copyAfter( 0 ) ) :
-						type.equals( Variable.NAME) ?    Variable.interpret( a.copyAfter( 0 ) ) :
-						type.equals(    "overlay" ) ?     Overlay.interpret( a.copyAfter( 0 ) ) :
-						type.equals( "colloquial" ) ?  Colloquial.interpret( a.copyAfter( 0 ) ) :
-						type.equals(  Plural.NAME ) ?      Plural.interpret( a.copyAfter( 0 ) ) :
-						type.equals(    Item.NAME ) ?        Item.interpret( a.copyAfter( 0 ) ) :
-						type.equals( Spatial.NAME ) ?     Spatial.interpret( a.copyAfter( 0 ) ) :
-						type.equals(Temporal.NAME ) ?    Temporal.interpret( a.copyAfter( 0 ) ) :
-						type.equals(    Sign.NAME ) ?        Sign.interpret( a.copyAfter( 0 ) ) :
-						//type.equals( Concept.NAME ) ?     Concept.interpret( a.copyAfter( 0 ) ) :
+			    a.size() == 0 && type.equals(         True ) ? True :
+				 a.size() == 0 && type.equals(        False ) ? False :
+						type.equals(     "entity" ) ?      Entity.interpret( a ) :
+						type.equals(       "link" ) ?        Link.interpret( a ) :
+						type.equals(   Value.NAME ) ?       Value.interpret( a ) :
+						type.equals(    List.NAME ) ?        List.interpret( a ) :
+						type.equals( "preferences") ? Preferences.interpret( a ) :
+						type.equals( Numeric.NAME ) ?     Numeric.interpret( a ) :
+						type.equals( Variable.NAME) ?    Variable.interpret( a ) :
+						type.equals(    "overlay" ) ?     Overlay.interpret( a ) :
+						type.equals( "colloquial" ) ?  Colloquial.interpret( a ) :
+						type.equals(  Plural.NAME ) ?      Plural.interpret( a ) :
+						type.equals(    Item.NAME ) ?        Item.interpret( a ) :
+						type.equals( Spatial.NAME ) ?     Spatial.interpret( a ) :
+						type.equals(Temporal.NAME ) ?    Temporal.interpret( a ) :
+						type.equals(    Sign.NAME ) ?        Sign.interpret( a ) :
+						//type.equals( Concept.NAME ) ?     Concept.interpret( a ) :
 									  FAIL; // );
 		}
 		audit.ERROR("doCall() fails - "+ (a==null?"no params":"not enough params: "+ a.toString()));

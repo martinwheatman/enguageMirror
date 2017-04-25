@@ -149,18 +149,22 @@ public class Variable {
 	static public String interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String rc = Shell.IGNORE;
-		if (args.get( 0 ).equals( "set" ) && args.size() > 2)
-			set( args.get( 1 ), args.copyAfter( 1 ).toString( Strings.SPACED ));
-		else if (args.get( 0 ).equals( "unset" ) && args.size() > 1)
-			unset( args.get( 1 ));
-		else if (args.get( 0 ).equals( "exists" ) && args.size() > 1)
-			rc = isSet( args.get( 1 ), 
-					    args.size() == 2 ?
-							null : args.copyAfter( 1 ).toString()
+		String cmd = args.remove( 0 );
+		if (cmd.equals( "set" ) && args.size() > 1) {
+			String name = args.remove( 0 );
+			set( name, args.toString( Strings.SPACED ));
+			rc = Shell.SUCCESS;
+		} else if (cmd.equals( "unset" ) && args.size() > 0)
+			unset( args.get( 0 ));
+		else if (cmd.equals( "exists" ) && args.size() > 0) {
+			String name = args.remove( 0 );
+			rc = isSet( name, 
+					    args.size() == 0 ?
+							null : args.toString()
 					) ? Shell.SUCCESS : Shell.FAIL;
-		else if (args.get( 0 ).equals( "get" ) && args.size() > 1)
-			rc = get( args.copyAfter( 0 ).toString( Strings.SPACED ).toUpperCase( Locale.getDefault() ));
-		else if (args.get( 0 ).equals( "show" )) {
+		} else if (cmd.equals( "get" ) && args.size() > 0)
+			rc = get( args.toString( Strings.SPACED ).toUpperCase( Locale.getDefault() ));
+		else if (cmd.equals( "show" )) {
 			audit.log( "printing cache" );
 			printCache();
 			audit.log( "printed" );
@@ -170,6 +174,7 @@ public class Variable {
 		return audit.out( rc = rc==null?"":rc );
 	}
 	
+	// --
 	public static void test( String cmd, String expected ) {
 		String actual = interpret( new Strings( cmd ));
 		if (actual.equals( expected ))
