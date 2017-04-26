@@ -288,11 +288,8 @@ public class Enguage extends Shell {
 			testInterpret( "then perform variable variable get name", "go on." );
 			testInterpret( "then reply hello whatever", "go on." );
 			testInterpret( "that is it", "ok." );
-			//Repertoire.signs.show();
-			testInterpret( "my name is martin", "hello whatever." );
 			
-			//audit.title( "Misunderstanding" );
-			//testInterpret( "i don't understand" );
+			testInterpret( "my name is martin", "hello martin." );
 		}
 		audit.log( "PASSED" );
 }	}

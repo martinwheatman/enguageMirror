@@ -203,17 +203,14 @@ public class Reply { // a reply is basically a formatted answer
 				reply.add( Shell.terminators().get( 0 ));
 
 			// ...finally, if required put in answer (verbatim!)
-			if (reply.size() == 0)
-				if ( a.toString().equals( "" ))
-					reply = new Strings( dnu() );
-				else
-					reply = a.valueOf(); // use the raw answer???
-			else if (reply.contains( Strings.ELLIPSIS )) {
-				if ( a.toString().equals( "" ))
-					reply = new Strings( dnk() ); // need an answer, but we don't have one
-				else
-					reply.replace( Strings.ellipsis, new Strings( a.toString() ));
-			}
+			if ( a.toString().equals( "" ))
+				reply = new Strings( dnu() );
+			else if (reply.size() == 0)
+				reply = a.valueOf(); // use the raw answer???
+			else if (reply.contains( Strings.ELLIPSIS ))
+				reply.replace( Strings.ellipsis, new Strings( a.toString() ));
+			else if (reply.contains( "whatever" ))
+				reply.replace( new Strings( "whatever" ), new Strings( a.toString() ));
 			
 			// outbound and general colloquials
 			if (!isVerbatim())
