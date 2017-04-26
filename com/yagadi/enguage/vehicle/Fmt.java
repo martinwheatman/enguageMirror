@@ -6,7 +6,7 @@ import com.yagadi.enguage.util.Strings;
 
 public class Fmt {
 	/** Fmt:
-	 * e.g. ["Ok", ",", "you", "need", "..."]
+	 * e.g. ["Ok", ",", "you", "need", Strings.ELLIPSIS"]
 	 */
 	
 	static private Audit audit = new Audit( "Fmt" );
@@ -15,8 +15,8 @@ public class Fmt {
 	public  boolean shrt() { return shrt; }
 	public  void    shrt( boolean b ) { shrt = b; }
 	
-	private boolean v = false;
-	public  boolean variable() {return v;}
+	private boolean variable = false;
+	public  boolean variable() {return variable;}
 	
 	private Strings ormat = new Strings();
 	public  Strings ormat() {
@@ -38,12 +38,11 @@ public class Fmt {
 					Context.deref(
 						Variable.deref(
 							new Strings( s )
-				)	)	)
-				;		
-		if (ormat.contains("...")) v = true;
+				)	)	);
+		if (ormat.contains( Strings.ELLIPSIS )) variable = true;
 	}
 	static public void main( String args[] ) {
 		Fmt f = new Fmt();
-		f.ormat( "SUBJECT needs ..." );
+		f.ormat( "SUBJECT needs "+ Strings.ELLIPSIS );
 		audit.log( "fmt: "+ f.ormat());
 }	}
