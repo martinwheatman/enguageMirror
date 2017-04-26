@@ -104,6 +104,7 @@ public class Intention extends Attribute {
 		if (cmd.size()== 1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
 	
+		audit.debug( "performing: "+ cmd.toString());
 		String rc = new Sofa().interpret( cmd );
 		rc = deconceptualise( rc, cmd.get( 1 ), answer );
 		return (Reply) audit.out( r.answer( rc ));

@@ -284,13 +284,13 @@ public class Enguage extends Shell {
 			audit.title( "On-the-fly Langauge Learning" );
 			testInterpret( "my name is martin", "I don't understand" );
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
-			testInterpret( "first reply hello variable name", "go on." );
+			testInterpret( "first perform variable set name martin", "go on." );
+			testInterpret( "then perform variable get name", "go on." );
+			testInterpret( "then reply hello whatever", "go on." );
 			testInterpret( "that is it", "ok." );
 			//Repertoire.signs.show();
-			testInterpret( "my name is martin", "hello martin." );
+			testInterpret( "my name is martin", "hello whatever." );
 			
-			testInterpret( "perform variable set name martin", "Ok." );
-			testInterpret( "perform variable get name", "martin." );
 			//audit.title( "Misunderstanding" );
 			//testInterpret( "i don't understand" );
 		}

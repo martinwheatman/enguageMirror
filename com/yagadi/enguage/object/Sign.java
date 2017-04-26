@@ -26,7 +26,6 @@ public class Sign {
 				
 			} else if (cmd.equals( "perform" )) {
 				audit.debug( "adding a conceptualisation "+ argv.toString() );
-				argv.remove( 0 ); // remove perform
 				rc = new Autopoiesis( Autopoiesis.ADD,    Intention.DO,     argv.toString() ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
