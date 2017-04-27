@@ -32,14 +32,15 @@ public class Tag {
 	private void type( int t ) { if (t>=NULL && t<=END) type = t; }
 
 	public static final String quoted = "quoted";
-	public static final String quotedPrefix = quoted.toUpperCase( Locale.ENGLISH ) + "-";
+	public static final String quotedPrefix = quoted.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String plural = Plural.NAME; // "plural";
-	public static final String pluralPrefix = plural.toUpperCase(Locale.ENGLISH) + "-";
+	public static final String pluralPrefix = plural.toUpperCase( Locale.getDefault()) + "-";
 	public static final String numeric = "numeric";
-	public static final String numericPrefix = numeric.toUpperCase( Locale.ENGLISH ) + "-";
+	public static final String numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String singular = "singular";
-	public static final String singularPrefix = singular.toUpperCase( Locale.ENGLISH ) + "-";
+	public static final String singularPrefix = singular.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String phrase = "phrase";
+	public static final String phrasePrefix = phrase.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String abstr  = "abstract";
 	
 	
