@@ -115,9 +115,9 @@ public class Utterance {
 							&& wi.hasNext()
 							&& null != (word = wi.next())
 							&& !word.equals( variable ))
-						out.append( word.toUpperCase( Locale.getDefault()) );
+						out.append( Tag.numericPrefix + word.toUpperCase( Locale.getDefault()) );
 					else // was "numeric <word>" OR "numeric variable variable" => "numeric" + word
-						out.append( Tag.numeric + hyphen + word );
+						out.append( Tag.numeric ).append( word );
 				} else // "numeric" was last word...
 					out.append( Tag.numeric );
 				
@@ -128,9 +128,9 @@ public class Utterance {
 							&& wi.hasNext()
 							&& null != (word = wi.next())
 							&& !word.equals( variable ))
-						out.append( word.toUpperCase( Locale.getDefault()) );
+						out.append( Tag.phrasePrefix + word.toUpperCase( Locale.getDefault()) );
 					else
-						out.append( Tag.phrase + hyphen + word );
+						out.append( Tag.phrase ).append( word );
 				} else
 					out.append( Tag.phrase );
 				
@@ -170,6 +170,6 @@ public class Utterance {
 		test( s, "i am meeting my brother at the pub at 7" );
 		test( s, "i am meeting my sister  at the pub" );
 		
-		String utt = "my name is variable name";
+		String utt = "my name is phrase variable name";
 		audit.log( ">"+ utt +"< to pattern is >"+ toPattern( utt ) +"<" );
 }	}
