@@ -282,13 +282,13 @@ public class Enguage extends Shell {
 		
 		if (level == 0 || level == 10) {
 			audit.title( "On-the-fly Langauge Learning" );
-			testInterpret( "my name is martin", "I don't understand" );
+			testInterpret( "my name is martin", "I don't understand." );
 			
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
 			testInterpret( "first perform variable variable set name variable name", "go on." );
 			testInterpret( "then perform variable variable get name", "go on." );
 			testInterpret( "then reply hello whatever", "go on." );
-			testInterpret( "that is it", "ok." );
+			testInterpret( "and that is it", "ok." );
 			
 			testInterpret( "my name is martin", "hello martin." );
 			testInterpret( "my name is ruth",   "hello ruth." );

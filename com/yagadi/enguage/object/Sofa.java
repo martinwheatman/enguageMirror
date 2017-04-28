@@ -48,6 +48,10 @@ public class Sofa extends Shell {
 						type.equals(    List.NAME ) ?        List.interpret( a ) :
 						type.equals( "preferences") ? Preferences.interpret( a ) :
 						type.equals( Numeric.NAME ) ?     Numeric.interpret( a ) :
+						// TODO:
+						// in prep. for removing 'variable' from perform utterance: default class!
+						//type.equals(        "set" ) ?    Variable.interpret( a.prepend( "get" ) ) :
+						//type.equals(        "get" ) ?    Variable.interpret( a.prepend( "set" ) ) :
 						type.equals( Variable.NAME) ?    Variable.interpret( a ) :
 						type.equals(    "overlay" ) ?     Overlay.interpret( a ) :
 						type.equals( "colloquial" ) ?  Colloquial.interpret( a ) :
