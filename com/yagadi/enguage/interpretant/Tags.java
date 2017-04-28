@@ -53,7 +53,7 @@ public class Tags extends ArrayList<Tag> {
 				prefix += (word + " ");
 		}
 		t.prefix( new Strings( prefix ));
-		if (!t.isNull()) add( t );
+		if (!t.isEmpty()) add( t );
 	}
 	
 	// Manual Autopoiesis... needs to deal with:
@@ -113,7 +113,7 @@ public class Tags extends ArrayList<Tag> {
 			} else
 				t.prefix( word );
 		}
-		if (!t.isNull())
+		if (!t.isEmpty())
 			add( t );
 	}
 	

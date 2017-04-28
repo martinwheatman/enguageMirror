@@ -122,7 +122,7 @@ public class Tag {
 	}
 
 	
-	public boolean isNull() { return name.equals("") && prefix().size() == 0; }
+	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }
 
 	public boolean invalid( ListIterator<String> ui  ) {
 		boolean rc = false;
@@ -145,7 +145,7 @@ public class Tag {
 	public  Tag  removeContent( int n ) { return content.remove( n ); }
 	public  Tag  content( int n, Tag t ) { content.add( n, t ); return this; }
 	public  Tag  content( Tag child ) {
-		if (null != child && !child.isNull()) {
+		if (null != child && !child.isEmpty()) {
 			type = START;
 			content.add( child );
 		}
