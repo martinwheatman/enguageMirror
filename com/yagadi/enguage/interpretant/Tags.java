@@ -12,6 +12,7 @@ import com.yagadi.enguage.util.Number;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
 import com.yagadi.enguage.vehicle.Reply;
+import com.yagadi.enguage.vehicle.Utterance;
 
 public class Tags extends ArrayList<Tag> {
 	static final         long serialVersionUID = 0;
@@ -61,7 +62,7 @@ public class Tags extends ArrayList<Tag> {
 	// i need numeric variable quantity variable units of phrase variable needs.
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
 	
-	public Tags( String str ) {
+	public Tags( String str ) { this( Utterance.toPattern( str )); }/*
 		Strings words = new Strings( str );
 		//String prefix = "";
 		Tag t = new Tag();
@@ -116,6 +117,7 @@ public class Tags extends ArrayList<Tag> {
 		if (!t.isEmpty())
 			add( t );
 	}
+	// */
 	
 	static private       boolean debug = false;
 	static public        boolean debug() { return debug; }
@@ -363,11 +365,12 @@ public class Tags extends ArrayList<Tag> {
 		audit.tracing = true;
 		debug( true );
 		
-		String	prefix = "what is",
-				prefix2 = "wh is",
+		String	prefix = "what is"; //,
+			/*	prefix2 = "wh is",
 		        postfix = "?",
 		       	testPhrase = prefix + " " + "1 + 2" + postfix, //+" "+ prefix +" "+ "3+4"+ postfix;
 		       	testPhrase2 = prefix + " " + "1 + 2" + postfix +" "+ prefix2 +" "+ "5 + 4"+ postfix;
+		       	*/
 		
 		Tags ta = new Tags();
 		Tag t;
@@ -436,15 +439,23 @@ public class Tags extends ArrayList<Tag> {
 		printTagsAndValues( ta, "what is 1 * 2 * 3" );
 // */
 		// interpret i need >phrase hyphen variable< needs thus -- numeric variable quantity variable unit of
-		ta = new Tags( new Strings( "i need numeric variable quantity variable unit of phrase variable need" ));
+		ta = new Tags( "i need phrase variable need" );
+		//sort of like: 'interpret i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS thus.'
+		audit.log( "ta='"+ ta.toString() +"'" );
+		printTagsAndValues( ta,
+				"I need coffee", 
+				new Attributes()
+					.add( "need",    "coffee" )
+		);
+		ta = new Tags( "i need numeric variable quantity variable unit of phrase variable need" );
 		//sort of like: 'interpret i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS thus.'
 		audit.log( "ta='"+ ta.toString() +"'" );
 		printTagsAndValues( ta,
 				"I need a cup of coffee", 
 				new Attributes()
-					.add( "QUANTITY", "1" )
-					.add( "UNIT",     "cup" )
-					.add( "NEED",    "coffee" )
+					.add( "quantity", "1" )
+					.add( "unit",     "cup" )
+					.add( "need",    "coffee" )
 		);
 //*/
 }	}
