@@ -127,7 +127,7 @@ public class Autopoiesis extends Intention {
 			audit.debug( "autop: creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
 				s = new Sign()
-					.content( new Tags( new Strings( value ))) // manual new Tags
+					.content( new Tags( value )) // manual new Tags
 					.concept( concept() )
 			);
 			
@@ -166,7 +166,7 @@ public class Autopoiesis extends Intention {
 			else // create then add a new cached sign into the list of signs
 				Repertoire.signs.insert(
 					s = new Sign()
-						.content( new Tags( Strings.trim( pattern, '"' )) )
+						.content( new Tags( new Strings( Strings.trim( pattern, '"' ))) )
 						.concept( concept() )
 						.attribute( attr, val ));
 		}

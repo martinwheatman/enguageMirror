@@ -20,8 +20,8 @@ public class Tags extends ArrayList<Tag> {
 	public Tags() { super(); }
 	
 	// "if X do Y" -> [ <x pref="if "/>, <y pref="do "/>, <pref="."> ]
-	public Tags( String str ) {
-		Strings words = new Strings( str ); // correct? ...FromChars? ...NonWS?
+	public Tags( Strings words ) {
+		//Strings words = new Strings( str ); // correct? ...FromChars? ...NonWS?
 		String prefix = "";
 		Tag t = new Tag();
 		Iterator<String> wi = words.iterator();
@@ -61,7 +61,8 @@ public class Tags extends ArrayList<Tag> {
 	// i need numeric variable quantity variable units of phrase variable needs.
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
 	
-	public Tags( Strings words ) {
+	public Tags( String str ) {
+		Strings words = new Strings( str );
 		//String prefix = "";
 		Tag t = new Tag();
 		Iterator<String> wi = words.iterator();
