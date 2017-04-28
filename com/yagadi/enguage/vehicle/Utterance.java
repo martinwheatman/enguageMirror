@@ -7,10 +7,12 @@ import com.yagadi.enguage.interpretant.Sign;
 import com.yagadi.enguage.interpretant.Tag;
 import com.yagadi.enguage.interpretant.Tags;
 import com.yagadi.enguage.object.Attributes;
+import com.yagadi.enguage.object.Numeric;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
 import com.yagadi.enguage.util.Audit;
+import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.when.When;
 import com.yagadi.enguage.vehicle.where.Where;
@@ -89,10 +91,9 @@ public class Utterance {
 		return match == null ? s.content().matchValues( expanded ) : match;
 	}
 	static private final String variable = "variable";
-	static private final String   quotes = "\"";
-	static private final String   hyphen = "-";
-	static private final String    quote = "'";
-	static private final String      end = "end";
+	//static private final String   quotes = "\"";
+	//static private final String    quote = "'";
+	//static private final String      end = "end";
 	static public Strings toPattern( String u ) {
 		// my name is variable name => my name is NAME
 		Strings in  = new Strings( u ),
@@ -144,7 +145,27 @@ public class Utterance {
 	
 	// helpers
 	static public boolean sane( Utterance u ) {return u != null && u.representamen.size() > 0;	}
-	
+	static public String  externalise( Strings reply, boolean verbatim ) {
+		// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
+		if (!Shell.isTerminator( reply.get( reply.size() -1))
+		 && !((reply.size() > 1) && Shell.isTerminator( reply.get( reply.size() -2))
+		 && Language.isQuote( reply.get( reply.size() -1))))
+			reply.add( Shell.terminators().get( 0 ));
+		
+		// outbound and general colloquials
+		if (!verbatim)
+			reply = Colloquial.applyOutgoing( reply );
+			
+		// ...deref any context...
+		
+		// English-dependent processing...
+		reply = Language.indefiniteArticleVowelSwap(
+						Language.sentenceCapitalisation( 
+							Language.pronunciation( reply )));
+		
+		return Language.asString( Numeric.deref( Context.deref( reply ) ));
+	}
+
 	// test code...
 	public static void test( Sign s, String utterance ) {
 		Attributes a = new Utterance( new Strings( utterance )).match(s);

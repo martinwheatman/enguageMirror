@@ -3,7 +3,6 @@ package com.yagadi.enguage.vehicle;
 import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
-import com.yagadi.enguage.object.Numeric;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -189,48 +188,21 @@ public class Reply { // a reply is basically a formatted answer
 		type = calculateType(); // type is dependent on format -- should it be???
 		return this;
 	}
-	
 	private String encache() {
 		if (null == cache) {
 			Strings reply = new Strings( say() ).append( f.ormat());
 			if (0 == reply.size())
-				reply = new Strings( a.valueOf() );
+				reply = new Strings( a.valueOf() ); // use the raw answer
 
-			// ... then post-process:
-			// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
-			if (reply.size() > 0 && !Shell.isTerminator( reply.get( reply.size() -1)) &&
-				!((reply.size() > 1) && Shell.isTerminator( reply.get( reply.size() -2)) && Language.isQuote( reply.get( reply.size() -1))))
-				reply.add( Shell.terminators().get( 0 ));
-
-			// ...finally, if required put in answer (verbatim!)
-			if ( a.toString().equals( "" ))
+			if (reply.size() == 0) // was: a.toString().equals( "" )
 				reply = new Strings( dnu() );
-			else if (reply.size() == 0)
-				reply = a.valueOf(); // use the raw answer???
-			else if (reply.contains( Strings.ELLIPSIS ))
+			else if (reply.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 				reply.replace( Strings.ellipsis, new Strings( a.toString() ));
 			else if (reply.contains( "whatever" ))
 				reply.replace( new Strings( "whatever" ), new Strings( a.toString() ));
-			
-			// outbound and general colloquials
-			if (!isVerbatim())
-				reply = Colloquial.applyOutgoing( reply );
-				
-			// ...deref any context...
-			
-			// set it to lowercase - removing emphasis on AND
-			/*
-			ListIterator<String> ui = reply.listIterator();
-			while (ui.hasNext())
-				ui.set( ui.next().toLowerCase( Locale.getDefault() ));
-			*/
-			// English-dependent processing...
-			reply = Language.indefiniteArticleVowelSwap(
-							Language.sentenceCapitalisation( 
-								Language.pronunciation( reply )));
-			
-			cache = Language.asString( Numeric.deref( Context.deref( reply ) ));
-			// ...deref any envvars...  ...any numerics...
+
+			// ... then post-process:
+			cache = Utterance.externalise( reply, isVerbatim() );
 		}
 		return cache;
 	}
@@ -294,6 +266,8 @@ public class Reply { // a reply is basically a formatted answer
 		
 		Reply r = new Reply();
 		audit.log( "Initially: "+ r.toString());
+		r.format( "ok" );
+		audit.log( "Initially2: "+ r.toString());
 		r.answer( "42" );
 		audit.log( "THEN: "+ r.toString());
 		r.answer( "53" );
