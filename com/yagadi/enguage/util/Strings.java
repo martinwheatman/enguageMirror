@@ -567,9 +567,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return true;
 	}
 	public static boolean isUpperCaseWithHyphens( String a ) {
-		for (int i=0; i<a.length(); i++)
-			if (!Character.isUpperCase( a.charAt( i )) && a.charAt( i ) != '-' )
+		for (int i=0; i<a.length(); i++) {
+			char ch = a.charAt( i );
+			if (!Character.isUpperCase( ch ) && ch != '-' )
 				return false;
+		}
 		return true;
 	}
 	public Strings trimAll( char ch ) {

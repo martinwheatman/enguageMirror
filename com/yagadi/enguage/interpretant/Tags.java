@@ -19,22 +19,15 @@ public class Tags extends ArrayList<Tag> {
 	
 	public Tags() { super(); }
 	
-	// "if X do Y" -> [ <x pref="if "/>, <y pref="do "/>, <pref="."> ]
+	// "if X do Y" -> [ <x prefix=["if"]/>, <y prefix=["do"] postfix="."/> ]
 	public Tags( Strings words ) {
-		//String prefix = "";
 		Tag t = new Tag();
 		for ( String word : words ) {
-			if ((1 == word.length()) && Strings.isUpperCase( word ) && !word.equals("I")) {
-				t.name( word.toLowerCase( Locale.getDefault())); //.prefix( new Strings( prefix ));
-				add( t );
-				t = new Tag();
-				//prefix = "";
-			} else if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
+			if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
 				Strings arr = new Strings( word, '-' ); // should at least be array of 1 element!
 				if (null != arr) {
-					int asz = arr.size();
-					int j = 0;
-					//Iterator<String> ai = arr.iterator();
+					int asz = arr.size(),
+					      j = 0;
 					for (String subWord : arr) {
 						subWord = subWord.toLowerCase( Locale.getDefault());
 						if ( asz > ++j ) // 
@@ -42,16 +35,12 @@ public class Tags extends ArrayList<Tag> {
 						else
 							t.name( subWord ); // last word in array
 				}	}
-				//t.prefix( new Strings( prefix ));
 				add( t );
 				t = new Tag();
-				//prefix = "";
 			} else
 				t.prefix( word );
 		}
-		//t.prefix( new Strings( prefix ));
 		if (!t.isEmpty()) add( t );
-		//else audit.log( ">>>>>>>>>>>empty tag found");
 	}
 	
 	// Manual Autopoiesis... needs to deal with:

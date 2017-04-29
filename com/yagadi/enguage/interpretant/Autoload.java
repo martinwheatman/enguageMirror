@@ -45,7 +45,7 @@ public class Autoload {
 		audit.in( "load", utterance.toString());
 		// should not be called if initialising or if autoloading
 		if (ing()) {
-			audit.ERROR("Autoload.load() called while already autoloading" );
+			;//audit.ERROR("Autoload.load() called while already autoloading" );
 		} else {
 			Autoload.ing( true );
 			Allopoiesis.undoEnabledIs( false ); // disable undo while loading repertoires
@@ -56,25 +56,25 @@ public class Autoload {
 					&&	!candidate.equals(",")             // ...punctuation, ...
 					&&	!Strings.isUpperCase( candidate )) // ...hotspots, ...
 				{
-					audit.debug( "candidate is "+ candidate );
+					//audit.debug( "candidate is "+ candidate );
 					// let's just singularise it: needs -> need
 					//if (Plural.isPlural( candidate )) candidate = Plural.singular( candidate );
 					
 					if (Concepts.loaded().contains( candidate )) {// don't load...
-						audit.debug( "already loaded on init: "+ candidate );
+						;//audit.debug( "already loaded on init: "+ candidate );
 					} else if (null==autoloaded.get( candidate )) { //...stuff already loaded.
 						if (Concept.load( candidate )) {
-							audit.debug( "autoloaded: "+ candidate );
+							//audit.debug( "autoloaded: "+ candidate );
 							autoloaded.put( candidate, 0 ); // just loaded so set new entry to age=0
 							tmp.add( candidate );
 						} else // ignore, if no repertoire!
 							audit.ERROR( "not loaded" );
 					} else { // already exists, so reset age to 0
-						audit.debug("resetting age: " + candidate);
+						//udit.debug("resetting age: " + candidate);
 						autoloaded.put(candidate, 0);
 			}	}	}
 			
-			audit.debug( "Autoload.load(): "+ utterance +" => ["+ tmp.toString( Strings.CSV ) +"]");
+			//audit.debug( "Autoload.load(): "+ utterance +" => ["+ tmp.toString( Strings.CSV ) +"]");
 			Allopoiesis.undoEnabledIs( true );
 			Autoload.ing( false );
 			audit.out();
@@ -91,7 +91,7 @@ public class Autoload {
 				if (nextVal > ttl) {
 					repsToRemove.add( repertoire );
 				} else {
-					audit.debug( "ageing "+ repertoire +" (now="+ nextVal +"): " );
+					//audit.debug( "ageing "+ repertoire +" (now="+ nextVal +"): " );
 					autoloaded.put( repertoire, nextVal );
 			}	}
 			
@@ -99,11 +99,11 @@ public class Autoload {
 			Iterator<String> ri = repsToRemove.iterator();
 			while (ri.hasNext()) {
 				String repertoire = ri.next();
-				if (Audit.detailedDebug) audit.debug( "unloaded: "+ repertoire );
+				//if (Audit.detailedDebug) audit.debug( "unloaded: "+ repertoire );
 				Repertoire.signs.remove( repertoire );
 				autoloaded.remove( repertoire );
 			}
-			audit.debug( "unloanding => ["+ repsToRemove.toString( Strings.CSV ) +"]" );
+			//audit.debug( "unloanding => ["+ repsToRemove.toString( Strings.CSV ) +"]" );
 	}	}
 	public static void main( String args[] ) {
 		Audit.allOn();
