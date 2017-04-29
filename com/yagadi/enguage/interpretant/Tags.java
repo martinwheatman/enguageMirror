@@ -25,16 +25,15 @@ public class Tags extends ArrayList<Tag> {
 		for ( String word : words ) {
 			if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
 				Strings arr = new Strings( word, '-' ); // should at least be array of 1 element!
-				if (null != arr) {
-					int asz = arr.size(),
-					      j = 0;
-					for (String subWord : arr) {
-						subWord = subWord.toLowerCase( Locale.getDefault());
-						if ( asz > ++j ) // 
-							t.attribute( subWord, subWord ); // non-last words in array
-						else
-							t.name( subWord ); // last word in array
-				}	}
+				int asz = arr.size(),
+				      j = 0;
+				for (String subWord : arr) {
+					subWord = subWord.toLowerCase( Locale.getDefault());
+					if ( asz > ++j ) // 
+						t.attribute( subWord, subWord ); // non-last words in array
+					else
+						t.name( subWord ); // last word in array
+				}
 				add( t );
 				t = new Tag();
 			} else
