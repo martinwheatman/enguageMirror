@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Number;
@@ -22,36 +21,37 @@ public class Tags extends ArrayList<Tag> {
 	
 	// "if X do Y" -> [ <x pref="if "/>, <y pref="do "/>, <pref="."> ]
 	public Tags( Strings words ) {
-		String prefix = "";
+		//String prefix = "";
 		Tag t = new Tag();
 		for ( String word : words ) {
 			if ((1 == word.length()) && Strings.isUpperCase( word ) && !word.equals("I")) {
-				t.name( word.toLowerCase( Locale.getDefault())).prefix( new Strings( prefix ));
+				t.name( word.toLowerCase( Locale.getDefault())); //.prefix( new Strings( prefix ));
 				add( t );
 				t = new Tag();
-				prefix = "";
+				//prefix = "";
 			} else if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
 				Strings arr = new Strings( word, '-' ); // should at least be array of 1 element!
 				if (null != arr) {
 					int asz = arr.size();
 					int j = 0;
-					Iterator<String> ai = arr.iterator();
-					 while (ai.hasNext()) {
-						String subWord = ai.next().toLowerCase( Locale.getDefault());
+					//Iterator<String> ai = arr.iterator();
+					for (String subWord : arr) {
+						subWord = subWord.toLowerCase( Locale.getDefault());
 						if ( asz > ++j ) // 
 							t.attribute( subWord, subWord ); // non-last words in array
 						else
 							t.name( subWord ); // last word in array
 				}	}
-				t.prefix( new Strings( prefix ));
+				//t.prefix( new Strings( prefix ));
 				add( t );
 				t = new Tag();
-				prefix = "";
+				//prefix = "";
 			} else
-				prefix += (word + " ");
+				t.prefix( word );
 		}
-		t.prefix( new Strings( prefix ));
+		//t.prefix( new Strings( prefix ));
 		if (!t.isEmpty()) add( t );
+		//else audit.log( ">>>>>>>>>>>empty tag found");
 	}
 	
 	// Manual Autopoiesis... needs to deal with:
@@ -215,16 +215,8 @@ public class Tags extends ArrayList<Tag> {
 					return null;
 		}	}	}
 		
-		if (ti.hasNext()) {
-			//if (debug) audit.traceOut( "tags still contains:"+ ti.next().toText() );
-			return null;
-		}
-		if (ui.hasNext()) {
-			//if (debug) audit.traceOut( "utterance still contains:"+ ui.next());
-			return null;
-		}
+		if (ti.hasNext() || ui.hasNext()) return null;
 		
-		//if (debug) audit.traceOut( "matched => "+ (matched==null ? "no values" : matched.toString()));
 		return null == matched ? new Attributes() : matched;
 	}
 	// with postfix boilerplate:
@@ -267,31 +259,18 @@ public class Tags extends ArrayList<Tag> {
 		}
 		return str;
 	}
-
 	
 	// --- test code...
 	//private static void printTagsAndValues( Tags interpretant, String phrase ) {
 	//	printTagsAndValues( interpretant, phrase, null );
 	//}
 	public static void printTagsAndValues( Tags interpretant, String phrase, Attributes expected ) {
-		
 		audit.in( "printTagsAndValues", "ta="+ interpretant.toString() +", phr="+ phrase +", expected="+ 
 				(expected == null ? "":expected.toString()) );
 		Attributes values = interpretant.matchValues( new Strings( phrase ));
 		
 		// de-reference values...
-		audit.log( "-->matched values=>"+ (values==null?"null":values.toString()) +"<" );
-		String vals = "";
-		if (null != values)
-			for( Attribute a : values )
-				//if (a.numeric()) {
-				//	if (!vals.equals( "" )) vals += " ";
-				//	String tmp = Number.getNumber( new Strings( a.value()).listIterator() ).valueOf();
-				//	vals += (a.name() +"='"+ (Number.NotANumber == tmp ? a.value() : tmp) +"'");
-				//} else
-					vals += (vals.equals( "" ) ? "" : " ")+(a.name() +"='"+ a.value() +"'");
-		//audit.log( "-->matched vals    => ["+ vals +"]" );
-
+		String vals = values.toString();
 		if (null == expected)
 			audit.log( "values => ["+ vals +"]" );
 		else if (values != null && values.matches( expected ))
@@ -302,38 +281,24 @@ public class Tags extends ArrayList<Tag> {
 	}
 
 	public static void main(String args[]) {
-		
 		Audit.allOn();
 		audit.tracing = true;
 		debug( true );
 		
-		Tags ta = new Tags();
-		Tag t;
+		Tags t = new Tags();
+		t.add( new Tag( "what is ", "X" ).attribute( Tag.numeric, Tag.numeric ) );
+		printTagsAndValues( t, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
 
-		t = new Tag( "what is ", "X" ).attribute( Tag.numeric, Tag.numeric );
-		audit.log( "t='"+ t.toString() +"'" );
-		ta.add( t );
-		printTagsAndValues( ta, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
-
-	
-		// interpret i need >phrase hyphen variable< needs thus -- numeric variable quantity variable unit of
-		ta = new Tags( "i need phrase variable need" );
-		//sort of like: 'interpret i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS thus.'
-		audit.log( "ta='"+ ta.toString() +"'" );
-		printTagsAndValues( ta,
+		printTagsAndValues( new Tags( "i need phrase variable need" ),
 				"I need coffee", 
 				new Attributes()
-					.add( "need",    "coffee" )
+					.add( "need",     "coffee" )
 		);
-		ta = new Tags( "i need numeric variable quantity variable unit of phrase variable need" );
-		//sort of like: 'interpret i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS thus.'
-		audit.log( "ta='"+ ta.toString() +"'" );
-		printTagsAndValues( ta,
+		printTagsAndValues( new Tags( "i need numeric variable quantity variable unit of phrase variable need" ),
 				"I need a cup of coffee", 
 				new Attributes()
 					.add( "quantity", "1" )
 					.add( "unit",     "cup" )
-					.add( "need",    "coffee" )
+					.add( "need",     "coffee" )
 		);
-//*/
 }	}
