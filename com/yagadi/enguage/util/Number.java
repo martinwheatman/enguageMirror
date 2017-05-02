@@ -611,6 +611,7 @@ public class Number {
 		anotherTest("another 6");
 		// */
 		Audit.decr();
+		audit.log( "PASSED?" );
 		/*
 		anotherTest("36 + 4 all divided by 2");
 		// -- * /
