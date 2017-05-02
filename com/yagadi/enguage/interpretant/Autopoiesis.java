@@ -8,7 +8,6 @@ import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Context;
 import com.yagadi.enguage.vehicle.Reply;
-import com.yagadi.enguage.vehicle.Utterance;
 
 public class Autopoiesis extends Intention {
 	private static       Audit   audit = new Audit( "Autopoiesis" );
@@ -134,7 +133,7 @@ public class Autopoiesis extends Intention {
 		} else if (!intent.equals( UNDEF )) { // manually adding a sign  
 			if (null != s) { 
 				audit.debug( "autop: Adding to EXISTING sign: '"+ value +"'");
-				s.append( intent, Utterance.toPattern( value ).toString());
+				s.append( intent, Tags.toPattern( value ).toString());
 			}
 		
 		// following these are trad. autopoiesis
