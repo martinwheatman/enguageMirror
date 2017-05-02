@@ -38,6 +38,8 @@ On "stop  induction":
 	On "then PHRASE-X":
 		perform "sign think X";
 		then, reply "go on".
+		
+	On "next PHRASE-X", then X.
 #                             #
 ###############################
 

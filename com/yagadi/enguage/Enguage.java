@@ -285,9 +285,9 @@ public class Enguage extends Shell {
 			testInterpret( "my name is martin", "I don't understand." );
 			
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
-			testInterpret( "first perform variable variable set name variable name", "go on." );
+			testInterpret( "first set name to variable name", "go on." );
 			testInterpret( "then perform variable variable get name", "go on." );
-			testInterpret( "then reply hello whatever", "go on." );
+			testInterpret( "next reply hello whatever", "go on." );
 			testInterpret( "and that is it", "ok." );
 			
 			testInterpret( "my name is martin", "hello martin." );
