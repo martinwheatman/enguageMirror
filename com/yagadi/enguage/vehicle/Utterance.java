@@ -1,8 +1,5 @@
 package com.yagadi.enguage.vehicle;
 
-import java.util.Iterator;
-import java.util.Locale;
-
 import com.yagadi.enguage.interpretant.Sign;
 import com.yagadi.enguage.interpretant.Tag;
 import com.yagadi.enguage.interpretant.Tags;
@@ -90,56 +87,6 @@ public class Utterance {
 		// if no qualified match, attempt an expanded match
 		return match == null ? s.content().matchValues( expanded ) : match;
 	}
-	static private final String variable = "variable";
-	//static private final String   quotes = "\"";
-	//static private final String    quote = "'";
-	//static private final String      end = "end";
-	static public Strings toPattern( String u ) {
-		// my name is variable name => my name is NAME
-		Strings in  = new Strings( u ),
-		        out = new Strings();
-		Iterator<String> wi = in.iterator();
-		while ( wi.hasNext() ) {
-			String word = wi.next();
-			if (word.equals( variable )) {
-				if (wi.hasNext()
-						&& null != (word = wi.next())
-						&& !word.equals( variable )) // so we can't have VARIABLE, ok...
-					out.append( word.toUpperCase( Locale.getDefault()) );
-				else
-					out.append( variable );
-				
-			} else if (word.equals( Tag.numeric )) {
-				if (wi.hasNext()) {
-					word = wi.next();
-					if (word.equals( variable )
-							&& wi.hasNext()
-							&& null != (word = wi.next())
-							&& !word.equals( variable ))
-						out.append( Tag.numericPrefix + word.toUpperCase( Locale.getDefault()) );
-					else // was "numeric <word>" OR "numeric variable variable" => "numeric" + word
-						out.append( Tag.numeric ).append( word );
-				} else // "numeric" was last word...
-					out.append( Tag.numeric );
-				
-			} else if (word.equals( Tag.phrase )) {
-				if (wi.hasNext()) {
-					word = wi.next();
-					if (word.equals( variable )
-							&& wi.hasNext()
-							&& null != (word = wi.next())
-							&& !word.equals( variable ))
-						out.append( Tag.phrasePrefix + word.toUpperCase( Locale.getDefault()) );
-					else
-						out.append( Tag.phrase ).append( word );
-				} else
-					out.append( Tag.phrase );
-				
-			} else
-				out.append( word );
-		}
-		return out;
-	}
 		
 	public String toString( int layout ) { return representamen.toString( layout );}
 	
@@ -190,7 +137,4 @@ public class Utterance {
 		
 		test( s, "i am meeting my brother at the pub at 7" );
 		test( s, "i am meeting my sister  at the pub" );
-		
-		String utt = "my name is phrase variable name";
-		audit.log( ">"+ utt +"< to pattern is >"+ toPattern( utt ) +"<" );
 }	}
