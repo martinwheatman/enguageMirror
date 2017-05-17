@@ -68,7 +68,7 @@ public class Overlay {
 		 * This will make it incompatible with version 1 ( as its series is iNeed ) 
 		Series.create( new File( System.getProperty("user.dir")).getName(), p.toString() );
 		 */
-		Series.create( Series.DEFAULT, p.toString() );
+		//Series.create( Series.DEFAULT, p.toString() );
 	}
 
 	public int    count() { return Series.number(); }

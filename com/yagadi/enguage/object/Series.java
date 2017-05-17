@@ -12,7 +12,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 
 	static public  final String DETACHED="";
 	static private final String basePointer = File.separator + "reuse";
-	static public  final String DEFAULT = "iNeed"; //"sofa";
+	static public  final String DEFAULT = "Enguage"; //"sofa";
 	
 	// return "enguage.0/.reuse";
 	static private String baseName( String nm ) { return name( nm, 0 ) + basePointer; }
