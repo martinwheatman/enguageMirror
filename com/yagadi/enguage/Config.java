@@ -3,6 +3,7 @@ package com.yagadi.enguage;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.interpretant.Autoload;
@@ -17,6 +18,7 @@ import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.vehicle.Ans;
 import com.yagadi.enguage.vehicle.Reply;
 
 public class Config {
@@ -57,7 +59,7 @@ public class Config {
 			ListIterator<Attribute> pi = aa.listIterator();
 			while (pi.hasNext()) {
 				Attribute a = pi.next();
-				String name = a.name(), value=a.value();
+				String name = a.name().toUpperCase( Locale.getDefault()), value=a.value();
 				     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
 				else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunctions(  new Strings( value ));
 				else if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value ));
@@ -70,6 +72,7 @@ public class Config {
 				else if (name.equals( "HPREFIX" )) Reply.helpPrefix( value );
 				else if (name.equals( "SUCCESS" )) Reply.success( value );
 				else if (name.equals( "FAILURE" )) Reply.failure( value );
+				else if (name.equals(  "ANSWER" )) Ans.placeholder( value );
 				else if (name.equals(   "SHELL" )) Proc.shell( value );
 				else if (name.equals(    "TERMS")) Shell.terminators( new Strings( value ));
 				else if (name.equals(    "SOFA" )) Proc.java( value );

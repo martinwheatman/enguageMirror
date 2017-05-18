@@ -198,8 +198,8 @@ public class Reply { // a reply is basically a formatted answer
 				reply = new Strings( dnu() );
 			else if (reply.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 				reply.replace( Strings.ellipsis, new Strings( a.toString() ));
-			else if (reply.contains( "whatever" ))
-				reply.replace( new Strings( "whatever" ), new Strings( a.toString() ));
+			else if (reply.contains( Ans.placeholder() ))
+				reply.replace( Ans.placeholderAsStrings(), new Strings( a.toString() ));
 
 			// ... then post-process:
 			cache = Utterance.externalise( reply, isVerbatim() );

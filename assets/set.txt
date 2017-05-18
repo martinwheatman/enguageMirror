@@ -1,5 +1,0 @@
-# E.g set name to martin
-# set output_format to 
-On "set NAME to PHRASE-VALUE", perform "variable set NAME VALUE".
-
-On "set NAME to QUOTED_VALUE", perform "variable set NAME VALUE".

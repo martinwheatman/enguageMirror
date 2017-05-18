@@ -6,6 +6,7 @@
 			DNK="I do not know"
 			SUCCESS="ok"
 			FAILURE="sorry"
+			ANSWER="whatever"
 			IK="I know"
 			TTL="5"
 			TERMS=". ? !"
