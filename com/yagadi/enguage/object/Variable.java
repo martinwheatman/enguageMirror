@@ -94,7 +94,7 @@ public class Variable {
 	}
 	
 	// for backward compatibility, keeping these statics 
-	static public void   set( String name, String val ) { new Variable( name ).set( val );}
+	static public String set( String name, String val ) { new Variable( name ).set( val ); return val;}
 	static public void unset( String name ) { new Variable( name ).unset(); }
 	static public String get( String name ) { return cache.get( name ); } // raw name
 	static public String get( String name, String def ) {
@@ -155,7 +155,7 @@ public class Variable {
 			String name = args.remove( 0 );
 			if (sz > 1)
 				if (cmd.equals( "set" ))
-					set( name, args.toString() );
+					rc = set( name, args.toString() );
 				else if (cmd.equals( "exists" ))
 					rc = isSet( name, args.toString()) ? Shell.SUCCESS : Shell.FAIL;
 				else
