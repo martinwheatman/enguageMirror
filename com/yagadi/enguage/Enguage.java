@@ -286,10 +286,13 @@ public class Enguage extends Shell {
 			
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
 			testInterpret( "first set name to variable name", "go on." );
-			testInterpret( "then perform variable variable get name", "go on." );
-			testInterpret( "next reply hello whatever", "go on." );
+			testInterpret( "then get the value of name", "go on." );
+			testInterpret( "then reply hello whatever", "go on." );
 			testInterpret( "and that is it", "ok." );
 			
+			//Repertoire.signs.show();
+
+			//testInterpret( "tracing on" );
 			testInterpret( "my name is martin", "hello martin." );
 			testInterpret( "my name is ruth",   "hello ruth." );
 		}

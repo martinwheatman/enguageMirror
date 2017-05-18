@@ -1,0 +1,7 @@
+# E.g set name to martin
+# set output_format to 
+
+On "set ATTRIBUTE to PHRASE-VALUE", perform "variable set ATTRIBUTE VALUE".
+On "set ATTRIBUTE to QUOTED_VALUE", perform "variable set ATTRIBUTE VALUE".
+
+On "get the value of ATTRIBUTE", perform "variable get ATTRIBUTE".
