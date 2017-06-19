@@ -13,6 +13,7 @@ import com.yagadi.enguage.interpretant.Signs;
 import com.yagadi.enguage.interpretant.Tag;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Ospace;
+import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
@@ -33,7 +34,7 @@ public class Config {
 	static public boolean firstRun() { return firstRun; }
 	static public void    firstRun( boolean b ) { firstRun = b; }
 	
-	/*
+	/* this needs to go into the app...
 	static public boolean visualMode = true;
 	static public boolean visualMode() { return visualMode; }
 	static public boolean visualMode( boolean b ) { return visualMode = b; }
@@ -45,14 +46,14 @@ public class Config {
 	static public boolean previewMode = true;
 	static public boolean previewMode() { return previewMode; }
 	static public boolean previewMode( boolean b ) { return previewMode = b; }
-	
+	// as does this...
 	static public String directionToSpeak = "direction To Speak";
 	static public String directionToSpeak() { return directionToSpeak; }
-	static public String directionToSpeak( String s ) { return  directionToSpeak= s; }
+	static public String directionToSpeak( String s ) { return  directionToSpeak = s; }
 
 	static public String helpOnHelp = "help on help";
 	static public String helpOnHelp() { return helpOnHelp; }
-	static public String helpOnHelp( String s ) { return  helpOnHelp= s; }
+	static public String helpOnHelp( String s ) { return  helpOnHelp = s; }
 	// */
 	public static void setContext( ArrayList<Attribute> aa ) {
 		if (null != aa) {
@@ -98,10 +99,18 @@ public class Config {
 		long then = new GregorianCalendar().getTimeInMillis();
 		Allopoiesis.undoEnabledIs( false );
 		
+		audit.log(
+				welcome(
+					Enguage.get().copyright() +
+					"\nEnguage main(): overlay is: " + Overlay.Get().toString()
+			)	);
+		//directionToSpeak( "press the button and speak" );
+		//helpOnHelp( "just say help" );
+
 		Tag t = Tag.fromFile( Ospace.location() + name +".xml" );
 		if (t != null && (t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
-			Concepts.load( t.findByName( "concepts" ) );
+			Concepts.load( t.findByName( "concepts" ));
 		}
 
 		Allopoiesis.undoEnabledIs( true );

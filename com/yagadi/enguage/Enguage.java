@@ -21,7 +21,7 @@ public class Enguage extends Shell {
 
 	static private  Audit audit = new Audit( "Enguage" );
 	
-	/* Enguage has to be a singleton, so that its internals can refer to the outer instance.
+	/* Enguage is a singleton, so that its internals can refer to the outer instance.
 	 */
 	static private Enguage e = new Enguage();
 	static public  Enguage get() { return e; }
@@ -88,18 +88,6 @@ public class Enguage extends Shell {
 	}
 	
 	// ==== test code =====
-	private static void testInit() {
-		if (Config.firstRun()) { // || !Config.visualMode()
-			Config.firstRun( false );
-			audit.log(
-				Config.welcome(
-					e.copyright() +
-						"\nEnguage main(): overlay is: " + Overlay.Get().toString()
-			)	);
-		//Config.directionToSpeak( "press the button and speak" );
-		//Config.helpOnHelp( "just say help" );
-	}	}
-
 	private static void testInterpret( String cmd, String expected ) {
 		
 		if (expected != null) audit.log( "enguage> "+ cmd );
@@ -121,9 +109,9 @@ public class Enguage extends Shell {
 	}
 	public static void main( String args[] ) {
 		
-		if (args.length == 0) {
+		if (args.length == 0)
 			usage();
-		} else {
+		else {
 			
 			int argc = 0;
 			
@@ -133,8 +121,6 @@ public class Enguage extends Shell {
 			} else
 				Enguage.loadConfig( "./src/assets" );
 			
-			testInit();
-	
 			if ( args.length == argc + 1 && args[ argc ].equals( "-s" ))
 				e.aloudIs( true ).run();				
 			else if (args.length == argc + 2 && args[ argc ].equals( "-p" ))
