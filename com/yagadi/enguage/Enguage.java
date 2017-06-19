@@ -105,7 +105,11 @@ public class Enguage extends Shell {
 	}
 	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
 	private static void usage() {
-		audit.LOG( "Usage: java -jar enguage.jar [-c <configDir>] [-p <port>]|[-s]|-t]" );
+		audit.LOG( "Usage: java -jar enguage.jar [-c <configDir>] [-p <port> | -s | -t ]" );
+		audit.LOG( "where: default config dir=\".src/assets\"" );
+		audit.LOG( "     : -p <port> listens on a TCP/IP port" );
+		audit.LOG( "     : -s runs Engauge as a shell" );
+		audit.LOG( "     : -t runs a test sanity check" );
 	}
 	public static void main( String args[] ) {
 		
