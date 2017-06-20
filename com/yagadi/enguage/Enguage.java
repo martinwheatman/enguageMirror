@@ -233,7 +233,7 @@ public class Enguage extends Shell {
 		if ( level == 0 || level == 7 ) {
 			audit.title( "Temporal interpret" );
 			testInterpret( "what day is christmas day" );
-			testInterpret( "what day is it today" );
+			//testInterpret( "what day is it today" );
 		}
 
 		if ( level == 0 || level == 8 ) {
