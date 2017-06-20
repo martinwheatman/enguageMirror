@@ -127,7 +127,7 @@ public class Autopoiesis extends Intention {
 			Repertoire.signs.insert(
 				s = new Sign()
 					.content( new Tags( value )) // manual new Tags
-					.concept( concept() )
+					.concept( Repertoire.AUTOPOIETIC )
 			);
 			
 		} else if (!intent.equals( UNDEF )) { // manually adding a sign  

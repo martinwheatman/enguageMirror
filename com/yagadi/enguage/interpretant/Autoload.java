@@ -82,20 +82,22 @@ public class Autoload {
 	static public void unload() {
 		if (!ing()) {
 			Strings repsToRemove = new Strings();
+			
+			// create a list of repertoire to remove...
 			Set<Map.Entry<String,Integer>> set = autoloaded.entrySet();
 			Iterator<Map.Entry<String,Integer>> i = set.iterator();
 			while(i.hasNext()) {
 				Map.Entry<String,Integer> me = (Map.Entry<String,Integer>)i.next();
 				String repertoire = me.getKey();
 				Integer nextVal = me.getValue() + 1;
-				if (nextVal > ttl) {
+				if (nextVal > ttl)
 					repsToRemove.add( repertoire );
-				} else {
-					//audit.debug( "ageing "+ repertoire +" (now="+ nextVal +"): " );
+				else {
+					//audit.debug( "Aging "+ repertoire +" (now="+ nextVal +"): " );
 					autoloaded.put( repertoire, nextVal );
 			}	}
 			
-			// now do the removals...
+			// ...now do the removals...
 			Iterator<String> ri = repsToRemove.iterator();
 			while (ri.hasNext()) {
 				String repertoire = ri.next();

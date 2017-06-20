@@ -15,6 +15,14 @@ public class Repertoire {
 	public  static final String PLURALISATION = "repper-to-wahs"; // better than ~ares
 	public  static final String          NAME = "repertoire";
 
+	public  static final String   AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
+	// TODO: create a method to comb users for signs created on-the-fly, 
+	//       and to save them under (append them to) a concept file
+	// with the name of the value of the pattern?  Autoload() needs to load
+	// these pattern files. Theses need to be sought first(?):
+	// i_need_X.txt is searched before need+needs.txt, because is it the users /will/
+	// n.B. X_means_X.txt - X is just a placeholder.
+	
 	/* This class maintains three repertoire groups - signs, autop and allopoetic
 	 * Each, well signs, contains signs from all runtime loaded repertoires and
 	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 

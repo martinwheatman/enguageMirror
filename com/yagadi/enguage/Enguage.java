@@ -276,9 +276,15 @@ public class Enguage extends Shell {
 			
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
 			testInterpret( "first set name to variable name", "go on." );
-			testInterpret( "then get the value of name", "go on." );
+			testInterpret( "then get the value of name", "go on." ); // not strictly necessary!
 			testInterpret( "then reply hello whatever", "go on." );
 			testInterpret( "and that is it", "ok." );
+			
+			// can this be built thus?
+			// testInterpret( "my name is phrase variable name means set name to variable name" );
+			// testInterpret( "then reply hello whatever" );
+			
+			// testInterpret( "" );
 			
 			//Repertoire.signs.show();
 
