@@ -4,4 +4,6 @@
 On "set ATTRIBUTE to PHRASE-VALUE", perform "variable set ATTRIBUTE VALUE".
 On "set ATTRIBUTE to QUOTED_VALUE", perform "variable set ATTRIBUTE VALUE".
 
+On "ATTRIBTUE is set to PHRASE-VALUE", set ATTRIBUTE to VALUE.
+
 On "get the value of ATTRIBUTE", perform "variable get ATTRIBUTE".

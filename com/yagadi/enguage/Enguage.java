@@ -274,10 +274,12 @@ public class Enguage extends Shell {
 			audit.title( "On-the-fly Langauge Learning" );
 			testInterpret( "my name is martin", "I don't understand." );
 			
+			// TO my name is variable name REPLY hello whatever.
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
-			testInterpret( "first set name to variable name", "go on." );
-			testInterpret( "then get the value of name", "go on." ); // not strictly necessary!
-			testInterpret( "then reply hello whatever", "go on." );
+			//testInterpret( "first set name to variable name", "go on." );
+			//testInterpret( "then get the value of name", "go on." ); // not strictly necessary!
+			testInterpret( "first reply hello whatever", "go on." );
+			testInterpret( "this implies name is set to variable name", "go on." ); // is this right?
 			testInterpret( "and that is it", "ok." );
 			
 			// can this be built thus?
@@ -285,8 +287,8 @@ public class Enguage extends Shell {
 			// testInterpret( "then reply hello whatever" );
 			
 			// testInterpret( "" );
+			Repertoire.signs.show();
 			
-			//Repertoire.signs.show();
 
 			//testInterpret( "tracing on" );
 			testInterpret( "my name is martin", "hello martin." );

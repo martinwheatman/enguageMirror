@@ -66,4 +66,22 @@ On "stop  induction":
 		then, reply "go on".
 #                             #
 ###############################
+#/*	new Sign().attribute( PREPEND, Intention.THINK +" B" )
+#			.content( new Tag( "", "a"      ).attribute( Tag.quoted, Tag.quoted ))
+#			.content( new Tag( " implies ", "b", "." ).attribute( Tag.quoted, Tag.quoted )),
+
+#	On "PHRASE-A implies PHRASE-B":
+#		perform "sign imply A / B ";
+#		then, reply "go on".
+	
+	On "this implies PHRASE-B":
+		perform "sign imply B ";
+		then, reply "go on".
+	
+#		// 2: A implies B, if not, say C.
+#		new Sign().attribute( PREPEND, Intention.ELSE_REPLY+" C").attribute( PREPEND, Intention.THINK +" A B")
+#			.content( new Tag(          "", "a" ).attribute( Tag.quoted, Tag.quoted ))
+#			.content( new Tag( " implies ", "b" ).attribute( Tag.quoted, Tag.quoted ))
+#			.content( new Tag( " ; if not, reply ", "c", "." ).attribute( Tag.quoted, Tag.quoted )),
+#*/
 

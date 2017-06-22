@@ -15,7 +15,7 @@ public class Autopoiesis extends Intention {
 	public static final String NAME    = "autopoiesis";
 	
 	public static final String UNDEF   = "und";
-	public static final String NEW     = "add";
+	public static final String NEW     = "new";
 	public static final String APPEND  = "app";
 	public static final String PREPEND = "prep";
 	public static final String CREATE  = "cre";
@@ -24,7 +24,7 @@ public class Autopoiesis extends Intention {
 	public static final Sign[] autopoiesis = {
 		// PATTERN PRE-CHECK cases (4)
 		// 1: A implies B.
-		new Sign().attribute( PREPEND, Intention.THINK +" B" )
+/*		new Sign().attribute( PREPEND, Intention.THINK +" B" )
 			.content( new Tag( "", "a"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( " implies ", "b", "." ).attribute( Tag.quoted, Tag.quoted )),
 		// 2: A implies B, if not, say C.
@@ -32,7 +32,7 @@ public class Autopoiesis extends Intention {
 			.content( new Tag(          "", "a" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( " implies ", "b" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( " ; if not, reply ", "c", "." ).attribute( Tag.quoted, Tag.quoted )),
-			
+*/
 		// PATTERN CREATION cases (7).
 		// a1: On X, think Y.
 		new Sign().attribute( NEW, Intention.THINK +" X Y")
@@ -102,7 +102,7 @@ public class Autopoiesis extends Intention {
 	};
 
 	public Autopoiesis( String name, String value ) { super( name, value ); }	
-	public Autopoiesis( String name, String intnt, String value ) { super( name, value ); intent = intnt;}	
+	public Autopoiesis( String name, String value, String intnt ) { super( name, value ); intent = intnt;}	
 	
 	private String intent = UNDEF;
 	public  String intent() { return intent;}
@@ -120,9 +120,6 @@ public class Autopoiesis extends Intention {
 		// needs to switch on type (intent)
 		if (intent.equals( CREATE )) { // manually adding a sign
 			
-			// need to manually identify pattern...
-			// interpret i need >phrase hyphen variable< needs thus
-			
 			audit.debug( "autop: creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
 				s = new Sign()
@@ -130,11 +127,12 @@ public class Autopoiesis extends Intention {
 					.concept( Repertoire.AUTOPOIETIC )
 			);
 			
-		} else if (!intent.equals( UNDEF )) { // manually adding a sign  
-			if (null != s) { 
-				audit.debug( "autop: Adding to EXISTING sign: '"+ value +"'");
-				s.append( intent, Tags.toPattern( value ).toString());
-			}
+		} else if (intent.equals( ADD )) { // manually adding a sign  
+			if (null != s) s.append( name, Tags.toPattern( value ).toString());
+			
+		} else if (intent.equals( PREPEND )) { // manually adding a sign  
+			audit.LOG( "auto.mediate(): prepending "+ value );
+			if (null != s) s.prepend( name, Tags.toPattern( value ).toString() );
 		
 		// following these are trad. autopoiesis
 		} else if (name.equals( APPEND ) || name.equals( PREPEND )) {

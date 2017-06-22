@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.TreeSet;
 
 import com.yagadi.enguage.util.Audit;
+import com.yagadi.enguage.util.Strings;
 
 public class Concepts {
 	static private Audit audit = new Audit( "Concepts" );
@@ -23,6 +24,23 @@ public class Concepts {
 
 	static private TreeSet<String> loaded = new TreeSet<String>();
 	static public  TreeSet<String> loaded() { return loaded; }
+
+	public static Strings matches( Strings utterance ) {
+		audit.in( "matches", utterance.toString() );
+		// matches: utt=[martin is a wally], candiates=[ "is_a+has_a" ] => add( is_a+has_a )
+		// TODO: also match to_the_phrase-reply_with
+		Strings matches = new Strings();
+		for (String candidate : names() ) { // e.g. "is_a+has_a" OR "to_the_phrase-reply_with"
+			Strings candid = new Strings( candidate, '+' );
+			// matching: "to the phrase my name is martin reply hello martin" with "to_the_phrase-reply"
+			for (String c : candid) { // e.g. c="is_a"
+				
+				Strings d = new Strings( c, '_' );
+				if (utterance.contains( d ))
+					matches.add( candidate );
+		}	}
+		return audit.out( matches );
+	}
 
 	// backwards compatibility... STATICally load a repertoire file
 	static public void load( String name ) {

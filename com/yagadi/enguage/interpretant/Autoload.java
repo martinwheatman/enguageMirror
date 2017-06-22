@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.util.Audit;
@@ -27,20 +26,6 @@ public class Autoload {
 
 	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
 
-	private static Strings matches( Strings utterance, TreeSet<String> candidates ) {
-		audit.in( "matches", utterance.toString() );
-		// matches: utt=[martin is a wally], candiates=[ "is_a+has_a" ] => add( is_a+has_a )
-		Strings matches = new Strings();
-		for (String candidate : candidates ) { // e.g. "is_a+has_a" OR need
-			Strings cand = new Strings( candidate, '+' );
-			// matching: "martin is a wally" + is_a
-			for (String c : cand) { // e.g. "is_a"
-				Strings d = new Strings( c, '_' );
-				if (utterance.contains( d ))
-					matches.add( candidate );
-		}	}
-		return audit.out( matches );
-	}
 	static public void load( Strings utterance ) {
 		audit.in( "load", utterance.toString());
 		// should not be called if initialising or if autoloading
@@ -51,7 +36,7 @@ public class Autoload {
 			Allopoiesis.undoEnabledIs( false ); // disable undo while loading repertoires
 			
 			Strings tmp = new Strings();
-			for (String candidate : matches( new Strings( utterance ), Concepts.names() )) {
+			for (String candidate : Concepts.matches( new Strings( utterance ) )) {
 				if (!Language.isQuoted( candidate )// don't try to load: anything that is quoted, ...
 					&&	!candidate.equals(",")             // ...punctuation, ...
 					&&	!Strings.isUpperCase( candidate )) // ...hotspots, ...
