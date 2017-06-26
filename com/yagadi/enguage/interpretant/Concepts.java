@@ -1,6 +1,7 @@
 package com.yagadi.enguage.interpretant;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import com.yagadi.enguage.util.Audit;
@@ -24,19 +25,55 @@ public class Concepts {
 
 	static private TreeSet<String> loaded = new TreeSet<String>();
 	static public  TreeSet<String> loaded() { return loaded; }
+	
+	static private boolean matchesHyphenatedPattern( Strings s, String pattern ) {
+		// where pattern may be "to_the_phrase-reply_with"
+		Strings pcomp = new Strings( pattern, '-' );
+		Iterator<String> ui  = s.iterator();
+		Iterator<String> phi = pcomp.iterator();
+		if (pcomp.size()>1) { // hyphens found...
+			boolean first = true;
+			while (ui.hasNext() && phi.hasNext()) { // read through the utterance & pattern
+				Iterator<String> pwi = new Strings( phi.next(), '_' ).iterator();
+				if (pwi.hasNext()) {
+					String pw = pwi.next(),
+					       ut = ui.next();
+					// find the first matching token
+					if (!first)
+						while (!ut.equals(pw) && ui.hasNext())
+							ut = ui.next();
+					//now go thru' matching tokens
+					while (ut.equals(pw) && ui.hasNext() && pwi.hasNext()) {
+						ut = ui.next();
+						pw = pwi.next();
+					}
+					// return if we have a mismatch
+					if (!pw.equals(ut)) return false;
+					// hyphen represents at least 1 utterance string, just read over it
+					if (phi.hasNext())
+						if (ui.hasNext())
+							ui.next();
+						else
+							return false; // hyphen but no text...
+					else
+						return !ui.hasNext();
+					first = false;
+			}	}
+		} else if(pcomp.size() == 1) // no hyphens found - simple match
+			return s.contains( new Strings( phi.next(), '_' ));
+		
+		return true;
+	}
 
 	public static Strings matches( Strings utterance ) {
 		audit.in( "matches", utterance.toString() );
 		// matches: utt=[martin is a wally], candiates=[ "is_a+has_a" ] => add( is_a+has_a )
-		// TODO: also match to_the_phrase-reply_with
 		Strings matches = new Strings();
 		for (String candidate : names() ) { // e.g. "is_a+has_a" OR "to_the_phrase-reply_with"
 			Strings candid = new Strings( candidate, '+' );
 			// matching: "to the phrase my name is martin reply hello martin" with "to_the_phrase-reply"
-			for (String c : candid) { // e.g. c="is_a"
-				
-				Strings d = new Strings( c, '_' );
-				if (utterance.contains( d ))
+			for (String c : candid) { // e.g. c="to_the_phrase-reply-"
+				if (matchesHyphenatedPattern(utterance, c))
 					matches.add( candidate );
 		}	}
 		return audit.out( matches );
@@ -69,7 +106,7 @@ public class Concepts {
 		if (loaded.contains( name )) {
 			loaded.remove( name );
 			Repertoire.signs.remove( name );
-			audit.debug( "UNLOADED<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<:"+ name );
+			audit.debug( "UNLOADED<<<<<<<<<<<<<:"+ name );
 		}
 		audit.out();
 	}
@@ -110,4 +147,16 @@ public class Concepts {
 		} else
 			audit.ERROR( "Concepts tag not found!" );
 		audit.out();
+	}
+	private static void test( String s, boolean matchesToReply ) {
+		Strings sa = matches( new Strings( s ));
+		audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
+	}
+	public static void main( String args[]) {
+		names("./src/assets" );
+		test( "i need a coffee",false );
+		test( "to the phrase my name is variable name reply hello variable name", true );
+		test( "to reply hello variable name", false );
+		test( "to hello reply", false );
+		test( "hello to fred reply way", false );
 }	}

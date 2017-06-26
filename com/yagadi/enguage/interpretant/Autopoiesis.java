@@ -18,8 +18,11 @@ public class Autopoiesis extends Intention {
 	public static final String NEW     = "new";
 	public static final String APPEND  = "app";
 	public static final String PREPEND = "prep";
-	public static final String CREATE  = "cre";
-	public static final String ADD     = "add";
+	
+	public static final int    undef   = -1;
+	public static final int    create  =  0;
+	public static final int    prepend =  1;
+	public static final int    append  =  2;
 	
 	public static final Sign[] autopoiesis = {
 		// PATTERN PRE-CHECK cases (4)
@@ -102,10 +105,10 @@ public class Autopoiesis extends Intention {
 	};
 
 	public Autopoiesis( String name, String value ) { super( name, value ); }	
-	public Autopoiesis( String name, String value, String intnt ) { super( name, value ); intent = intnt;}	
+	public Autopoiesis( String name, String value, int intnt ) { super( name, value ); intent = intnt;}	
 	
-	private String intent = UNDEF;
-	public  String intent() { return intent;}
+	private int intent = undef;
+	public  int intent() { return intent;}
 	
 	static private Sign s = null;
 	
@@ -118,7 +121,7 @@ public class Autopoiesis extends Intention {
 		Strings sa = Context.deref( new Strings( value ));
 		
 		// needs to switch on type (intent)
-		if (intent.equals( CREATE )) { // manually adding a sign
+		if (intent == create ) { // manually adding a sign
 			
 			audit.debug( "autop: creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
@@ -127,14 +130,14 @@ public class Autopoiesis extends Intention {
 					.concept( Repertoire.AUTOPOIETIC )
 			);
 			
-		} else if (intent.equals( ADD )) { // manually adding a sign  
+		} else if (intent == append ) { // manually adding a sign  
 			if (null != s) s.append( name, Tags.toPattern( value ).toString());
 			
-		} else if (intent.equals( PREPEND )) { // manually adding a sign  
-			audit.LOG( "auto.mediate(): prepending "+ value );
+		} else if (intent == prepend ) { // manually adding a sign  
+			audit.debug( "auto.mediate(): prepending "+ value );
 			if (null != s) s.prepend( name, Tags.toPattern( value ).toString() );
 		
-		// following these are trad. autopoiesis
+		// following these are trad. autopoiesis...this need updating as above!!!
 		} else if (name.equals( APPEND ) || name.equals( PREPEND )) {
 			if (null == s)
 				// this should return DNU...
@@ -197,10 +200,10 @@ public class Autopoiesis extends Intention {
 		
 		audit.title( "manual sign creation..." );
 		r = new Reply();
-		r = new Autopoiesis( CREATE, CREATE, "a variable pattern z" ).mediate( r );
-		r = new Autopoiesis( ADD,    THINK,  "one two three four"   ).mediate( r );
-		r = new Autopoiesis( ADD,    DO,     "two three four"       ).mediate( r );
-		r = new Autopoiesis( ADD,    REPLY,  "three four"           ).mediate( r );
+		r = new Autopoiesis( NEW,    "a variable pattern z", create ).mediate( r );
+		r = new Autopoiesis( THINK,  "one two three four"  , append ).mediate( r );
+		r = new Autopoiesis( DO,     "two three four"      , append ).mediate( r );
+		r = new Autopoiesis( REPLY,  "three four"          , append ).mediate( r );
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
 }	}

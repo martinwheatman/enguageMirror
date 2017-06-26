@@ -24,35 +24,35 @@ public class Sign {
 			Reply r = new Reply();
 			String cmd = argv.remove( 0 );
 			if (cmd.equals( "create" )) {
-				audit.debug( "creating sign with: " +     argv.toString());
-				rc = new Autopoiesis( Autopoiesis.CREATE, argv.toString(),  Autopoiesis.CREATE ).mediate( r ).toString();
+				audit.debug( "creating sign with: " +   argv.toString());
+				rc = new Autopoiesis( Autopoiesis.NEW,  argv.toString(),    Autopoiesis.create ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "perform" )) {
 				audit.debug( "adding a conceptual "+    argv.toString() );
-				rc = new Autopoiesis( Intention.DO,     argv.toString(),    Autopoiesis.ADD ).mediate( r ).toString();
+				rc = new Autopoiesis( Intention.DO,     argv.toString(),    Autopoiesis.append ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
 				audit.debug( "adding a reply "+         argv.toString() );
-				rc = new Autopoiesis( Intention.REPLY,  argv.toString(),    Autopoiesis.ADD ).mediate( r ).toString();
+				rc = new Autopoiesis( Intention.REPLY,  argv.toString(),    Autopoiesis.append ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "imply" )) {
 				audit.LOG( "Sign: prepending an implication '"+ argv.toString() +"'");
-				rc = new Autopoiesis( Intention.THINK,  argv.toString(),    Autopoiesis.PREPEND ).mediate( r ).toString();
+				rc = new Autopoiesis( Intention.THINK,  argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
 				audit.debug( "adding a final clause? "+ argv.toString() );
 				if (argv.get( 0 ).equals( "perform" )) {
 					argv.remove( 0 ); // remove perform
-					rc = new Autopoiesis( Intention.DO,     argv.toString(), Autopoiesis.ADD ).mediate( r ).toString();
+					rc = new Autopoiesis( Intention.DO,    argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 				} else if (argv.get( 0 ).equals( "reply" )) {
 					argv.remove( 0 ); // remove reply
-					rc = new Autopoiesis( Intention.REPLY,  argv.toString(), Autopoiesis.ADD ).mediate( r ).toString();
+					rc = new Autopoiesis( Intention.REPLY, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 				} else {
-					rc = new Autopoiesis( Intention.THINK,  argv.toString(), Autopoiesis.ADD ).mediate( r ).toString();
+					rc = new Autopoiesis( Intention.THINK, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 				}
 			} else {
 				audit.debug( "adding a thought "+ argv.toString() );
-				rc = new Autopoiesis(     Intention.THINK,  argv.toString(), Autopoiesis.ADD ).mediate( r ).toString();
+				rc = new Autopoiesis(     Intention.THINK, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 		}	}
 		return audit.out( rc );
 }	}

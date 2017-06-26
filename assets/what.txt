@@ -1,4 +1,9 @@
 On "what is ENT ATTR":
-	load attribute;
+#	load attribute; # not needed as next thought will load it
 	attribute get ENT ATTR;
 	then, reply "ENT ATTR is ...".
+
+On "what is ENT ATTR", reply "ENT ATTR is a string".
+#	load attribute; # not needed as next thought will load it
+#	attribute type ENT ATTR;
+	
