@@ -101,16 +101,6 @@ public class Concepts {
 		audit.out();
 	}
 
-	static private void unload( String name ) {
-		audit.in( "unload", "name="+ name );
-		if (loaded.contains( name )) {
-			loaded.remove( name );
-			Repertoire.signs.remove( name );
-			audit.debug( "UNLOADED<<<<<<<<<<<<<:"+ name );
-		}
-		audit.out();
-	}
-
 	/* This is the STATIC loading of concepts at app startup -- read
 	 * from the config.xml file.
 	 */
@@ -136,8 +126,6 @@ public class Concepts {
 
 					if (op.equals( "load" ) || op.equals( "prime" ))
 						load( id ); // using itself!!
-					else if (op.equals( "unload" ))
-						unload( id ); // using itself!!
 					else if (!op.equals( "ignore" ))
 						audit.ERROR( "unknown op "+ op +" on reading concept "+ name );
 
