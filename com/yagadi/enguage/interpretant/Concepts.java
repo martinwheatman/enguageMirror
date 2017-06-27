@@ -10,9 +10,9 @@ import com.yagadi.enguage.util.Strings;
 public class Concepts {
 	static private Audit audit = new Audit( "Concepts" );
 
-    static private      TreeSet<String> names = new TreeSet<String>();
-    static public final TreeSet<String> names() { return names; }
-	static public                  void names( String location ) {
+	static private       TreeSet<String> names = new TreeSet<String>();
+	static private final TreeSet<String> names() { return names; }
+	static public                   void names( String location ) {
 		audit.in( "names", location );
 		for ( String fname : new File( location ).list() ) {
 			String[] components = fname.split( "\\." );
@@ -71,7 +71,7 @@ public class Concepts {
 		Strings matches = new Strings();
 		for (String candidate : names() ) { // e.g. "is_a+has_a" OR "to_the_phrase-reply_with"
 			Strings candid = new Strings( candidate, '+' );
-			// matching: "to the phrase my name is martin reply hello martin" with "to_the_phrase-reply"
+			// matching: "to my name is martin reply hello martin" with "to-reply-"
 			for (String c : candid) { // e.g. c="to_the_phrase-reply-"
 				if (matchesHyphenatedPattern(utterance, c))
 					matches.add( candidate );
