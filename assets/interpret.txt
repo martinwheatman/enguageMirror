@@ -31,39 +31,34 @@ On "stop  induction":
 
 ###############################
 #                             #
-	On "first PHRASE-X":
-		perform "sign think X";
-		then, reply "go on".
-	
 	On "then PHRASE-X":
 		perform "sign think X";
 		then, reply "go on".
 		
-	On "next PHRASE-X", then X.
+	On "first PHRASE-X", then X.
+	On "next  PHRASE-X", then X.
 #                             #
 ###############################
 
 ###############################
 #                             #
-	On "first perform PHRASE-X":
-		perform "sign perform X";
-		then, reply "go on".
-	
 	On "then perform PHRASE-X":
 		perform "sign perform X";
 		then, reply "go on".
+	
+	On "first perform PHRASE-X", then perform X.
+	On "next  perform PHRASE-X", then perform X.
 #                             #
 ###############################
 
 ###############################
 # Reply                       #
-	On "first reply PHRASE-X":
-		perform "sign reply X";
-		then, reply "go on".
-	
 	On "then reply PHRASE-X":
 		perform "sign reply X";
 		then, reply "go on".
+	
+	On "first reply PHRASE-X", then reply X.
+	On "next  reply PHRASE-X", then reply X.
 #                             #
 ###############################
 #/*	new Sign().attribute( PREPEND, Intention.THINK +" B" )

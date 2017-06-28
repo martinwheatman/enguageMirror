@@ -287,7 +287,7 @@ public class Enguage extends Shell {
 			// testInterpret( "then reply hello whatever" );
 			
 			// testInterpret( "" );
-			Repertoire.signs.show();
+			//Repertoire.signs.show();
 			
 
 			//testInterpret( "tracing on" );

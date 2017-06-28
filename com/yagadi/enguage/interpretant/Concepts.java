@@ -8,6 +8,10 @@ import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 
 public class Concepts {
+	/* Concepts is a list of names, TODO: pre-processed into a list of Concept(pattern+name)
+	 * and the list of concepts currently loaded
+	 * and a name-to-concept function.
+	 */
 	static private Audit audit = new Audit( "Concepts" );
 
 	static private       TreeSet<String> names = new TreeSet<String>();
