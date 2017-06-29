@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.util.Audit;
+import com.yagadi.enguage.util.Indent;
 import com.yagadi.enguage.util.Number;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
@@ -238,13 +239,15 @@ public class Tags extends ArrayList<Tag> {
 	// with postfix boilerplate:
 	// typically { [ ">>>", "name1" ], [ "/", "name2" ], [ "/", "name3" ], [ "<<<", "" ] }.
 	// could be  { [ ">>>", "name1", "" ], [ "/", "name2", "" ], [ "/", "name3", "<<<" ] }.
-	public String toXml() { return toXml( 0 );}
-	public String toXml( int level ) {
-		String str="";
+	public String toXml() { return toXml( new Indent( "   " )); }
+	public String toXml( Indent indent ) {
+		String oldName = "";
+		String str  = "\n"+indent.toString();
 		Iterator<Tag> ti = iterator();
 		while (ti.hasNext()) {
-			str += ti.next().toXml( level );
-			if (ti.hasNext()) str += " ";
+			Tag t = ti.next();
+			str += (t.name().equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent );
+			oldName = t.name();
 		}
 		return str;
 	}

@@ -380,13 +380,25 @@ public class Tag {
 	}
 
 	private static Indent indent = new Indent( "  " );
-	public String toXml() { return toXml( 0 );}
-	public String toXml( int level ) {
+	public String toXml() { return toXml( indent );}
+	public String toXml( Indent indent ) {
+		int sz = content.size();
+		String contentSep = sz > 0? ("\n" + indent.toString()) : sz == 1 ? " " : "";
 		indent.incr();
-		String s = prefix().toString() + (name.equals( "" ) ? "" :
-			("<"+ name + attrs.toString()+ // attributes has preceding space
-			(0 == content().size() ? "/>" : ( ">"+ content.toXml( level==0 ? 0 : level-1 ) + "</"+ name +">" ) )))
-			+ postfix;
+		String    attrSep = sz > 0  ? "\n  "+indent.toString() : " " ;
+		String s = prefix().toString( Strings.TRAIL )
+				+ (name.equals( "" ) ? "" :
+					("<"+ name
+							+ (attrs.size()>0 ? attrSep : "")
+							+ attrs.toString( attrSep )
+							+ (0 == content().size() ? 
+									"/>" :
+									( ">"
+									+ content.toXml( indent )
+									+ contentSep
+									+ "</"+ name +">"
+				  )	)		  )		)
+				+ postfix;
 		indent.decr();
 		return s;
 	}
@@ -474,6 +486,7 @@ public class Tag {
 			"   DNU=\"I do not understand\" >\n" +	
             "   <concepts>\n"+
 			"     <concept id=\"colloquia\"      op=\"load\"/>\n"+
+			"     <concept id=\"needs\"          op=\"load\"/>\n"+
 			"     <concept id=\"engine\"         op=\"load\"/>\n"+
 			"   </concepts>\n"+
 	        "   </config>\n"+

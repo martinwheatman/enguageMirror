@@ -19,6 +19,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public final static int   LINES = 5;
 	public final static int  CONCAT = 6;
 	public final static int ABSPATH = 7;
+	public final static int   OUTERSP = 8;
 	
 	public final static String      lineTerm = "\n";
 	public final static String           AND = "&&";
@@ -207,6 +208,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	public String toString( int n ) {
 		return
+			( n == OUTERSP ) ? toString(  " ",      " ",  " " ) :
 			( n ==  SPACED ) ? toString(   "",      " ",   "" ) :
 			( n ==  CONCAT ) ? toString(   "",       "",   "" ) :
 			( n ==   DQCSV ) ? toString( "\"", "\", \"", "\"" ) :
