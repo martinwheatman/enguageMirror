@@ -138,7 +138,9 @@ public class Attributes extends ArrayList<Attribute> {
 	public String toString( String sep ) {
 		if (null == sep) sep = "";
 		String s = "";
-		for (int i=0, sz=size(); i<sz; ++i ) s += ((i>0?sep:"") + get( i ).toString());
+		Iterator<Attribute> ai = iterator();
+		while (ai.hasNext())
+			s += sep + ai.next().toString();
 		return s;
 	}
 	public String toString() { return toString( " " ); }

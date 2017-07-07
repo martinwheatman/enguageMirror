@@ -386,10 +386,9 @@ public class Tag {
 		String contentSep = sz > 0? ("\n" + indent.toString()) : sz == 1 ? " " : "";
 		indent.incr();
 		String    attrSep = sz > 0  ? "\n  "+indent.toString() : " " ;
-		String s = prefix().toString( Strings.TRAIL )
+		String s = prefix().toString( Strings.OUTERSP )
 				+ (name.equals( "" ) ? "" :
 					("<"+ name
-							+ (attrs.size()>0 ? attrSep : "")
 							+ attrs.toString( attrSep )
 							+ (0 == content().size() ? 
 									"/>" :
@@ -404,7 +403,7 @@ public class Tag {
 	}
 	public String toString() {
 		return prefix().toString() + (name.equals( "" ) ? "" :
-			("<"+ name + attrs.toString()+ // attributes has preceding space
+			("<"+ name +" "+ attrs.toString()+  // attributes doesn't have preceding space
 			(0 == content().size() ? "/>" : ( ">"+ content.toString() + "</"+ name +">" ))))
 			+ postfix;
 	}

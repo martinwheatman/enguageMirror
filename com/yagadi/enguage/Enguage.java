@@ -274,25 +274,28 @@ public class Enguage extends Shell {
 			audit.title( "On-the-fly Langauge Learning" );
 			testInterpret( "my name is martin", "I don't understand." );
 			
-			// TO my name is variable name REPLY hello whatever.
-			testInterpret( "interpret my name is phrase variable name thus", "go on." );
-			//testInterpret( "first set name to variable name", "go on." );
-			//testInterpret( "then get the value of name", "go on." ); // not strictly necessary!
-			testInterpret( "first reply hello whatever", "go on." );
-			testInterpret( "this implies name is set to variable name", "go on." ); // is this right?
-			testInterpret( "and that is it", "ok." );
+			testInterpret( "to i am called phrase variable name reply hi whatever" );
+			// TODO: testInterpret( "this implies name is not set to variable name if not reply i know" );
+			testInterpret( "this implies set name to variable name" );
+			testInterpret( "ok" );
 			
-			// can this be built thus?
-			// testInterpret( "my name is phrase variable name means set name to variable name" );
-			// testInterpret( "then reply hello whatever" );
+			
+			testInterpret( "interpret my name is phrase variable name thus", "go on." );
+			testInterpret( "first set name to variable name", "go on." );
+			testInterpret( "then get the value of name", "go on." ); // not strictly necessary!
+			testInterpret( "then reply hello whatever" );
+			testInterpret( "and that is it", "ok." );
+
+			// could this be built thus?
+			//testInterpret( "just call me phrase variable name means i am called variable name" );
 			
 			// testInterpret( "" );
-			//Repertoire.signs.show();
+			Repertoire.signs.show( "OTF" );
 			
-
 			//testInterpret( "tracing on" );
-			testInterpret( "my name is martin", "hello martin." );
-			testInterpret( "my name is ruth",   "hello ruth." );
+			testInterpret( "my name is martin",  "hello martin." );
+			testInterpret( "my name is ruth",    "hello ruth." );
+			testInterpret( "i am called martin", "hi    martin." );
 		}
 		audit.log( "PASSED" );
 }	}

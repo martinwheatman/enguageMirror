@@ -301,6 +301,8 @@ public class Tags extends ArrayList<Tag> {
 		audit.tracing = true;
 		debug( true );
 		
+		audit.LOG( "pattern: "+ toPattern( "variable name needs numeric variable quantity units of phrase variable object" ));
+
 		Tags t = new Tags();
 		t.add( new Tag( "what is ", "X" ).attribute( Tag.numeric, Tag.numeric ) );
 		printTagsAndValues( t, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));

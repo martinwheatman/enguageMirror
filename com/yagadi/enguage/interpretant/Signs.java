@@ -112,6 +112,16 @@ static private int   total = 0;
 			Sign s = me.getValue();
 			System.out.println( s.toString( n++, me.getKey() ));
 	}	}
+	public void show( String simpleFilter ) {
+		int n=0;
+		Set<Map.Entry<Integer,Sign>> set = entrySet();
+		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
+		while( i.hasNext()) {
+			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
+			Sign s = me.getValue();
+			if (s.concept().equals(simpleFilter))
+				System.out.println( s.toString( n++, me.getKey() ));
+	}	}
 	/*
 	 * remember which sign we interpreted last
 	 */

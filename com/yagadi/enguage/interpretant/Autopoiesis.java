@@ -111,6 +111,7 @@ public class Autopoiesis extends Intention {
 	public  int intent() { return intent;}
 	
 	static private Sign s = null;
+	static public  void printSign() { audit.LOG( "Sign is:\n"+ s.toXml()); }
 	
 	static private String concept = "";
 	static public    void concept( String name ) { concept = name; }

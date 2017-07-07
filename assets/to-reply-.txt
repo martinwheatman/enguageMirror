@@ -1,4 +1,27 @@
-On "to            PHRASE-X reply      PHRASE-Y", reply "ok, on X reply Y".
+load interpret.
+
 On "to the phrase PHRASE-X reply      PHRASE-Y", to X reply Y".
 On "to            PHRASE-X reply with PHRASE-Y", to X reply Y.
 On "to the phrase PHRASE-X reply with PHRASE-Y", to X reply Y.
+On "to            PHRASE-X reply      PHRASE-Y":
+	set induction to true;
+	perform "sign create X";
+	perform "sign reply  Y";
+	then, reply "go on".
+	
+On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
+	perform "sign imply IMPLICATION";
+	perform "sign else reply REPLY";
+	then, reply "go on".
+
+On "this implies PHRASE-X":
+	perform "sign imply X";
+	then, reply "go on".	
+
+On "ok":
+	set induction to false;
+	then, reply "ok".
+On "that is it", ok.
+On "that is all", ok.
+	
+	

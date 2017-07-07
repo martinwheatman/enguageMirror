@@ -1,24 +1,16 @@
 #
 # Vocal autopoiesis
 #
-On "start induction":
-	perform "variable set induction  true";
-	then, reply "ok".
-# '^set' induction to  true.
-On "stop  induction":
-	perform "variable set induction false";
-	then, reply "ok".
-# '^set' induction to false.
 
 ###############################
 #                             #
 	On "interpret PHRASE-X thus":
-		start induction;
+		set induction to true;
 		perform "sign create X";
 		then, reply "go on".
 
 	On "ok":
-		stop induction;
+		set induction to false;
 		then, reply "ok".
 	On "that is it", ok.
 	On "that is all", ok.
