@@ -106,7 +106,7 @@ public class Sign extends Tag {
 	 *  the count element 
 	 */
 	static Random rn = new Random();
-	static final int RANGE = 1000; // means full range will be up to 1 billion
+	static final int      RANGE = 1000; // means full range will be up to 1 billion
 	static final int FULL_RANGE = RANGE*RANGE*RANGE;
 	static final int  MID_RANGE = RANGE*RANGE;
 	static final int  LOW_RANGE = RANGE;

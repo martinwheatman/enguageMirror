@@ -106,12 +106,35 @@ public class Autopoiesis extends Intention {
 
 	public Autopoiesis( String name, String value ) { super( name, value ); }	
 	public Autopoiesis( String name, String value, int intnt ) { super( name, value ); intent = intnt;}	
+	/*
+	public Autopoiesis( int intnt, String one, String two ) {
+		super( NEW, one );
+		intent = intnt;
+		Reply r = new Reply();
+		r = mediate( r );
+		name( REPLY );
+		value( two );
+		intent = append;
+		r = new Reply();
+		r = mediate( r );
+	}
+	public Autopoiesis( Intention one, Intention two ) {
+		super( two.name(), two.value() );
+		intent = prepend; // constuct them backwards!!!
+		Reply r = new Reply();
+		r = mediate( r );
+		name( one.name());
+		value( one.value());
+		r = new Reply();
+		r = mediate( r );
+	}
+	*/
 	
 	private int intent = undef;
 	public  int intent() { return intent;}
 	
 	static private Sign s = null;
-	static public  void printSign() { audit.LOG( "Sign is:\n"+ s.toXml()); }
+	static public  void printSign() { audit.LOG( "Autop().printSign:\n"+ s.toXml()); }
 	
 	static private String concept = "";
 	static public    void concept( String name ) { concept = name; }
@@ -154,9 +177,9 @@ public class Autopoiesis extends Intention {
 			}
 			
 		} else if (name.equals( NEW )) { // autopoeisis?
-			String attr = sa.get( 0 ),
-				       pattern = sa.get( 1 ),
-				       val = Strings.trim( sa.get( 2 ), '"' );
+			String attr    = sa.get( 0 ),
+			       pattern = sa.get( 1 ),
+			       val     = Strings.trim( sa.get( 2 ), '"' );
 			/* TODO: need to differentiate between
 			 * "X is X" and "X is Y" -- same shape, different usage.
 			 * At least need to avoid this (spot when "X is X" happens)
@@ -189,22 +212,33 @@ public class Autopoiesis extends Intention {
 		//Audit.allOn();
 		//audit.trace( true );
 		
-		audit.title( "trad autopoiesis..." );
+		audit.title( "trad autopoiesis... add to a list and then add that list" );
 		Reply r = new Reply();
 		Attributes a = new Attributes();
-		a.add( new Attribute( Autopoiesis.NEW,    THINK +" \"a PATTERN z\" \"one two three four\""   ));
-		a.add( new Attribute( Autopoiesis.APPEND, DO    +" \"two three four\""   ));
-		a.add( new Attribute( Autopoiesis.APPEND, REPLY +" \"three four\"" ));
+		a.add( new Attribute( NEW,    THINK      +" \"a PATTERN z\" \"one two three four\""   ));
+		a.add( new Attribute( APPEND, ELSE_REPLY +" \"two three four\""   ));
+		a.add( new Attribute( APPEND, REPLY      +" \"three four\"" ));
 		test( r, a );
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
 		
-		audit.title( "manual sign creation..." );
+		audit.title( "manual sign creation... add each attribute individually" );
 		r = new Reply();
-		r = new Autopoiesis( NEW,    "a variable pattern z", create ).mediate( r );
-		r = new Autopoiesis( THINK,  "one two three four"  , append ).mediate( r );
-		r = new Autopoiesis( DO,     "two three four"      , append ).mediate( r );
-		r = new Autopoiesis( REPLY,  "three four"          , append ).mediate( r );
+		r = new Autopoiesis( NEW,        "b variable pattern z", create ).mediate( r );
+		r = new Autopoiesis( THINK,      "one two three four"  , append ).mediate( r );
+		r = new Autopoiesis( ELSE_REPLY, "two three four"      , append ).mediate( r );
+		r = new Autopoiesis( REPLY,      "three four"          , append ).mediate( r );
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
+		
+		/*
+		audit.title( "manual sign creation II... add pairs of attributes" );
+		r = new Reply();
+		r = new Autopoiesis( create, "c variable pattern z", "three four" ).mediate( r );
+		r = new Autopoiesis(
+				new Intention( THINK, "one two three four"),
+				new Intention( ELSE_REPLY, "two three four" )).mediate( r );
+		audit.log( Repertoire.signs.toString() );
+		audit.log( r.toString());
+		*/
 }	}
