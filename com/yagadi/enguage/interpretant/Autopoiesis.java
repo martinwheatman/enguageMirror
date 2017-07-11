@@ -231,14 +231,24 @@ public class Autopoiesis extends Intention {
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
 		
-		/*
-		audit.title( "manual sign creation II... add pairs of attributes" );
+		
+		audit.title( "sign self-build II... add pairs of attributes" );
+		// ...To PATTERN reply TYPICAL REPLY
 		r = new Reply();
-		r = new Autopoiesis( create, "c variable pattern z", "three four" ).mediate( r );
-		r = new Autopoiesis(
-				new Intention( THINK, "one two three four"),
-				new Intention( ELSE_REPLY, "two three four" )).mediate( r );
+		s = new Sign()
+				.content( new Tags( "c variable pattern z" ))
+				.concept( concept() );
+		// ...This implies COND if not reply EXECP REPLY
+		String reply = "three four";
+		// ...this implies -- add a pair of intentions
+		s.append( THINK, "one two three four" );
+		s.append( ELSE_REPLY, "two three four" );
+		// and thats it...
+		s.append( REPLY, reply );
+		Repertoire.signs.insert( s );
+		r.answer( Reply.yes().toString() );
+
+		
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
-		*/
 }	}

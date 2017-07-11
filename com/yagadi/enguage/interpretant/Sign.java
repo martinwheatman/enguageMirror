@@ -19,13 +19,6 @@ public class Sign extends Tag {
 		super();
 		name( NAME );
 	}
-	public Sign( String a, String b, String c ) {
-		super( a, b, c );
-		name( NAME );
-		if (attribute( Tag.numeric ).equals( Tag.numeric )) {
-			numericIs( true );
-			attributes().remove( Tag.numeric );
-	}	}
 	
 	/* To protect against being interpreted twice on resetting the iterator
 	 * after a DNU is returned on co-modification of the iterator by
