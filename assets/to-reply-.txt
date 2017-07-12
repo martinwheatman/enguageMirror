@@ -6,7 +6,7 @@ On "to the phrase PHRASE-X reply with PHRASE-Y", to X reply Y.
 On "to            PHRASE-X reply      PHRASE-Y":
 	set induction to true;
 	perform "sign create X";
-	perform "sign reply  Y";
+	set finalReply to Y;
 	then, reply "go on".
 	
 On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
@@ -19,6 +19,8 @@ On "this implies PHRASE-X":
 	then, reply "go on".	
 
 On "ok":
+	get the value of finalReply;
+	perform "sign reply ...";
 	set induction to false;
 	then, reply "ok".
 On "that is it", ok.
