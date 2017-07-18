@@ -20,6 +20,9 @@ public class Sign {
 	static public String interpret( Strings argv ) {
 		audit.in( "interpret", argv.toString());
 		String rc = Shell.FAIL;
+		String str = Variable.get( "prepending" );
+		//audit.LOG( "Variable:interp( str="+ str +" )");
+		boolean prepending = str != null && str.equals( "true" );
 		if (argv.size() > 0) {
 			boolean isElse = false;
 			Reply r = new Reply();
@@ -37,8 +40,10 @@ public class Sign {
 				rc = new Autopoiesis( isElse ? Intention.ELSE_DO : Intention.DO,       argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
-				audit.debug( "adding a reply "+         argv.toString() );
-				rc = new Autopoiesis( isElse? Intention.ELSE_REPLY : Intention.REPLY,  argv.toString(),    Autopoiesis.append ).mediate( r ).toString();
+				//audit.LOG( (prepending?"pre":"app")+"ing a reply "+  (isElse? Intention.ELSE_REPLY : Intention.REPLY) +" "+ argv.toString() );
+				rc = new Autopoiesis( isElse? Intention.ELSE_REPLY : Intention.REPLY,  argv.toString(),    prepending ?
+																											Autopoiesis.prepend :
+																											Autopoiesis.append ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "imply" )) {
 				audit.LOG( "Sign: prepending an implication '"+ argv.toString() +"'");
