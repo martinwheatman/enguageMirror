@@ -93,10 +93,13 @@ public class Variable {
 		return this;
 	}
 	
+	// TODO: need to have lowercase variables too - so concept scripts can set them
+	// 		 Can't be UPPERCASE, unless TAGs passes through u/c unmatches vars.
+	// 		 May match - then difficult bugs to find!
 	// for backward compatibility, keeping these statics 
 	static public String set( String name, String val ) { new Variable( name ).set( val ); return val;}
 	static public void unset( String name ) { new Variable( name ).unset(); }
-	static public String get( String name ) { return cache.get( name ); } // raw name
+	static public String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
 	static public String get( String name, String def ) {
 		String value = cache.get( name );   // raw name, so "compass" not set, but "COMPASS" is
 		return value==null || value.equals("") ? def : value;
@@ -156,13 +159,12 @@ public class Variable {
 			if (sz > 1)
 				if (cmd.equals( "set" ))
 					rc = set( name, args.toString() );
-				else if (cmd.equals( "exists" ))
+				else if (cmd.equals( "equals" ))
 					rc = isSet( name, args.toString()) ? Shell.SUCCESS : Shell.FAIL;
 				else
 					rc = Shell.FAIL;
 				
-			else { // name and no params
-				rc = Shell.IGNORE;
+			else { // sz == 1, name and no params
 				if (cmd.equals( "exists" ))
 					rc = isSet( name, null ) ? Shell.SUCCESS : Shell.FAIL;
 				else if (cmd.equals( "unset" ))
@@ -171,8 +173,8 @@ public class Variable {
 					rc = get( name.toUpperCase( Locale.getDefault() ));
 				else
 					rc = Shell.FAIL;
-		}	}
-		else if (cmd.equals( "show" )) {
+			}
+		} else if (cmd.equals( "show" )) {
 			audit.log( "printing cache" );
 			printCache();
 			audit.log( "printed" );
