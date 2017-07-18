@@ -10,20 +10,26 @@ On "to            PHRASE-X reply      PHRASE-Y":
 	then, reply "go on".
 	
 On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
-	perform "sign imply IMPLICATION";
+	set prepending to true;
 	perform "sign else reply REPLY";
+	perform "sign imply IMPLICATION";
+	unset the value of prepending;
 	then, reply "go on".
 
-On "this implies PHRASE-X":
-	perform "sign imply X";
-	then, reply "go on".	
-
-On "ok":
-	get the value of finalReply;
-	perform "sign reply ...";
-	set induction to false;
-	then, reply "ok".
-On "that is it", ok.
-On "that is all", ok.
+On "this implies PHRASE-IMPLICATION":
+	perform "sign imply IMPLICATION";
+	then, reply "go on".
 	
+	# see to-reply-.txt
+	On "ok":
+		set induction to false;
+		get the value of finalReply;
+		if not, reply "ok";
+		perform "sign reply ...";
+		unset the value of finalReply;
+		then, reply "ok".
+	On "that is it", ok.
+	On "that is all", ok.
+	
+
 	

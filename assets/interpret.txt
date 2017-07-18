@@ -8,9 +8,14 @@
 		set induction to true;
 		perform "sign create X";
 		then, reply "go on".
-
+	
+	# see to-reply-.txt
 	On "ok":
 		set induction to false;
+		get the value of finalReply;
+		if not, reply "ok";
+		perform "sign reply ...";
+		unset the value of finalReply;
 		then, reply "ok".
 	On "that is it", ok.
 	On "that is all", ok.
