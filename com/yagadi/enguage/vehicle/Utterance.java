@@ -8,6 +8,7 @@ import com.yagadi.enguage.object.Numeric;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
+import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -98,6 +99,8 @@ public class Utterance {
 		 && !((reply.size() > 1) && Shell.isTerminator( reply.get( reply.size() -2))
 		 && Language.isQuote( reply.get( reply.size() -1))))
 			reply.add( Shell.terminators().get( 0 ));
+		
+		reply = Variable.deref(reply);
 		
 		// outbound and general colloquials
 		if (!verbatim)
