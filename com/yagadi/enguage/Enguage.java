@@ -274,10 +274,10 @@ public class Enguage extends Shell {
 			audit.title( "On-the-fly Langauge Learning" );
 			testInterpret( "my name is martin", "I don't understand." );
 			
-			testInterpret( "to i am called phrase variable name reply hi whatever" );
-			// TODO: testInterpret( "this implies name is not set to variable name if not reply i know" );
-			testInterpret( "this implies set name to variable name" );
-			testInterpret( "ok" );
+			testInterpret( "to i am called phrase variable name reply hi whatever", "go on." );
+			testInterpret( "this implies name gets set to variable name", "go on." );
+			testInterpret( "this implies name is not set to variable name if not reply i know" );
+			testInterpret( "ok", "ok." );
 			
 			
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
