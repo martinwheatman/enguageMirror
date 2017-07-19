@@ -142,7 +142,7 @@ public class Sign extends Tag {
 	}
 	
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", toXml() );
+		audit.in( "mediate", "\n"+ toXml() );
 		Iterator<Attribute> ai = attributes().iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Attribute an = ai.next();
