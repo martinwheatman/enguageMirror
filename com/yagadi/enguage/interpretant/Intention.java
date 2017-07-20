@@ -56,7 +56,7 @@ public class Intention extends Attribute {
 			r.a.add( tmpr.a.toString() );
 		else
 			r = tmpr;
-		r.conclude( u );
+		r.conclude( u, new Strings( r.toString()) );
 		return (Reply) audit.out( r );
 	}
 	// ---

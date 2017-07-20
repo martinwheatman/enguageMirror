@@ -235,17 +235,31 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public String toString() { return encache(); }
 		
-	public void conclude(  Strings u ) {
+	public void conclude( Strings thought, Strings response ) {
 		doneIs( false );
 		strangeThought("");
+		
+		// set type again...?
+		//audit.log( "in conclusion: '"+ response +"', type was:"+ type);
+			 if (response.beginsIgnoreCase( new Strings(   yes ))) type = YES;
+		else if (response.beginsIgnoreCase( new Strings(success))) type =  YES;
+		else if (response.beginsIgnoreCase( new Strings(    no ))) type =  NO;
+		else if (response.beginsIgnoreCase( new Strings(failure))) type =  NO;
+		else if (response.beginsIgnoreCase( new Strings(    ik ))) type =  IK;
+		else if (response.beginsIgnoreCase( new Strings(   dnk ))) type =  NK;
+		else if (response.beginsIgnoreCase( new Strings( "I don't know" ))) type =  NK;
+		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type =  DNU;
+		else type = CHS;
+		//audit.log( "in conclusion, type now:"+ type);
+
 		if ( DNU == type()) {
 			/* TODO: At this point do I want to cancel all skipped signs? 
 			 * Or just check if we've skipped any signs and thus report 
 			 * this as simply a warning not an ERROR?
 			 */
 			// put this into reply via Reply.strangeThought()
-			audit.ERROR( "Strange thought: I don't understand: '"+ u.toString() +"'" );
-			strangeThought( u.toString() );
+			audit.ERROR( "Strange thought: I don't understand: '"+ thought.toString() +"'" );
+			strangeThought( thought.toString() );
 			// remove strange thought from Reply - just say DNU
 			if (Allopoiesis.disambFound()) {
 				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );

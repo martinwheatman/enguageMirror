@@ -7,6 +7,7 @@ import com.yagadi.enguage.interpretant.Net;
 import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Sofa;
+import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
@@ -273,6 +274,7 @@ public class Enguage extends Shell {
 		if (level == 0 || level == 10) {
 			audit.title( "On-the-fly Langauge Learning" );
 			testInterpret( "my name is martin", "I don't understand." );
+			Variable.unset( "NAME" );
 			
 			testInterpret( "to i am called phrase variable name reply hi whatever", "go on." );
 			testInterpret( "this implies name gets set to variable name", "go on." );
@@ -292,10 +294,9 @@ public class Enguage extends Shell {
 			// testInterpret( "" );
 			Repertoire.signs.show( "OTF" );
 			
-			//testInterpret( "tracing on" );
-			testInterpret( "my name is martin",  "hello martin." );
 			testInterpret( "my name is ruth",    "hello ruth." );
-			testInterpret( "i am called martin", "hi    martin." );
+			testInterpret( "my name is martin",  "hello martin." );
+			testInterpret( "i am called martin", "i know." );
 		}
 		audit.log( "PASSED" );
 }	}
