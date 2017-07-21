@@ -293,11 +293,8 @@ static private int   total = 0;
 					} // matched
 				}	
 			}	
-		} // while more signs and not done
-		
-		r.answer( answer );
-		audit.out( r.toString());
-		return r;
+		} // while more signs and not done		
+		return (Reply) audit.out( r.answer( answer ));
 	}	
 	// help...
 	static public String help = "to get help, just say help";

@@ -113,7 +113,7 @@ public class Intention extends Attribute {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		// TODO: NOT previous(), inner()!
 		r.format( value.equals( "" ) ? Reply.success() : value );
-		r.doneIs( r.type() != Reply.NK && r.type() != Reply.DNU );
+		r.doneIs( true /*r.type() != Reply.NK && r.type() != Reply.DNU*/ );
 		audit.out( "a="+ r.a.toString() + (r.isDone()?" (we're DONE!)" : "(keep looking...)" ));
 		return r;
 	}
@@ -139,7 +139,7 @@ public class Intention extends Attribute {
 				else if (name.equals( ELSE_REPLY ))
 					r = reply( r );
  					
-			} else { // train of thought is positive
+			} else { // train of thought is neutral/positive
 				if (name.equals( THINK ))
 					r = think( r );
 				else if (name.equals( DO ))
