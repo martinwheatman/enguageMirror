@@ -48,65 +48,62 @@ public class Intention extends Attribute {
 	}
 	private Reply think( Reply r ) {
 		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
-		Strings u = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
-		audit.debug( "Thinking: "+ u.toString( Strings.CSV ));
+		Strings thought = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
+		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		// This is mediation...
-		Reply tmpr = Repertoire.interpret( new Utterance( u )); // just recycle existing reply
+		Reply tmpr = Repertoire.interpret( new Utterance( thought )); // just recycle existing reply
 		if (r.a.isAppending())
 			r.a.add( tmpr.a.toString() );
 		else
 			r = tmpr;
-		r.conclude( u, new Strings( r.toString()) );
+		
+		r.setType( new Strings( r.toString()) )
+		 .conclude( thought );
 		return (Reply) audit.out( r );
 	}
-	// ---
-		private Strings conceptualise( String answer ) {
-			
-			// Don't Strings.normalise() coz sofa requires "1" parameter
-			Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
-			
-			if (isTemporal()) {
-				String when = Context.get( "when" );
-				if (!when.equals(""))
-					cmd.append( "WHEN='"+ when +"'" );
-			}		
-			if (isSpatial()) {
-				String locator = Context.get( "locator" );
-				if (!locator.equals("")) {
-					String location = Context.get( "location" );
-					if (!location.equals("")) {
-						cmd.append( "LOCATOR='"+  locator  +"'" );
-						cmd.append( "LOCATION='"+ location +"'" );
-			}	}	}
-			return cmd;
-		}
-		private String deconceptualise( String rc, String cmd, String answer ) {
-			return Moment.valid( rc ) ?                 // 88888888198888 -> 7pm
-				new When( rc ).rep( Reply.dnk() ).toString()
-				: (cmd.equals( "get" ) || cmd.equals( "attributeValue" ))
-				  && (rc.equals( "" )) ?
-					Reply.dnk()
-					: rc.equals( Shell.FAIL ) ?
-						Reply.no()
-						:	rc.equals( Shell.SUCCESS ) ?
-								(   answer.equals( "" )
-								 || answer.equals( Reply.no() )) ?
-								Reply.success()
-								: answer
-							: rc;
-		}
+	
 	private Reply perform( Reply r ) {
 		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		String answer = r.a.toString();
-		Strings cmd = conceptualise( answer );
+		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
 		
+		if (isTemporal()) {
+			String when = Context.get( "when" );
+			if (!when.equals(""))
+				cmd.append( "WHEN='"+ when +"'" );
+		}		
+		if (isSpatial()) {
+			String locator = Context.get( "locator" );
+			if (!locator.equals("")) {
+				String location = Context.get( "location" );
+				if (!location.equals("")) {
+					cmd.append( "LOCATOR='"+  locator  +"'" );
+					cmd.append( "LOCATION='"+ location +"'" );
+		}	}	}
+
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()== 1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
 	
 		audit.debug( "performing: "+ cmd.toString());
 		String rc = new Sofa().interpret( cmd );
-		rc = deconceptualise( rc, cmd.get( 1 ), answer );
+		
+		// de-conceptualise raw answer
+		String method = cmd.get( 1 );
+		rc =  Moment.valid( rc ) ?                 // 88888888198888 -> 7pm
+			new When( rc ).rep( Reply.dnk() ).toString()
+			: (method.equals( "get" ) || method.equals( "attributeValue" ))
+			  && (rc.equals( "" )) ?
+				Reply.dnk()
+				: rc.equals( Shell.FAIL ) ?
+					Reply.no()
+					:	rc.equals( Shell.SUCCESS ) ?
+							(   answer.equals( "" )
+							 || answer.equals( Reply.no() )) ?
+							Reply.success()
+							: answer
+						: rc;
+	
 		return (Reply) audit.out( r.answer( rc ));
 	}
 	private Reply reply( Reply r ) {

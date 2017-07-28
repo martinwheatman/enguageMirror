@@ -104,9 +104,9 @@ public class Reply { // a reply is basically a formatted answer
 	public  void    repeated( boolean s ) { repeated = s; }
 	public  boolean repeated() { return repeated; }
 	
-	static private String lastOutput = null;
-	static public  String lastOutput() { return lastOutput; }
-	static public  String lastOutput( String l ) { return lastOutput = l; }
+	//static private String lastOutput = null;
+	//static public  String lastOutput() { return lastOutput; }
+	//static public  String lastOutput( String l ) { return lastOutput = l; }
 
 	private boolean done = false;
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
@@ -120,8 +120,21 @@ public class Reply { // a reply is basically a formatted answer
 	
 	private int     type = DNU;
 	public  int     type() { return type; }
+	private void    type( int t ) {type = t;}
 	public  boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
 	public  boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
+	public  Reply setType( Strings response ) {
+			 if (response.beginsIgnoreCase( new Strings(   yes ))) type( YES );
+		else if (response.beginsIgnoreCase( new Strings(success))) type( YES );
+		else if (response.beginsIgnoreCase( new Strings(    no ))) type(  NO );
+		else if (response.beginsIgnoreCase( new Strings(failure))) type(  NO );
+		else if (response.beginsIgnoreCase( new Strings(    ik ))) type(  IK );
+		else if (response.beginsIgnoreCase( new Strings(   dnk ))) type(  NK );
+		else if (response.beginsIgnoreCase( new Strings( "I don't know" ))) type( NK );
+		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type(  DNU );
+		else type( CHS );
+		return this;
+	}
 
 	// todo: needs to be split out into answerType() and formatType()
 	// needs to be split out into class Answer and class Format: think!
@@ -161,14 +174,14 @@ public class Reply { // a reply is basically a formatted answer
 		if (null == ans) {
 			a = new Ans(); // a.nswer = new Strings();
 			cache = null;
-			type = DNU;
+			type(  DNU );
 		} else if (!ans.equals( Shell.IGNORE )) {
 			if (!a.isAppending())
 				a = new Ans(); // a.nswer = new Strings();
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			type = calculateType();
+			type( calculateType() );
 		}
 		return this;
 	}
@@ -184,8 +197,6 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   format( String s ) {
 		cache = null; //de-cache any previous reply
 		f.ormat( s );
-		if (!f.variable()) answer( "" ); // really needed?
-		type = calculateType(); // type is dependent on format -- should it be???
 		return this;
 	}
 	private String encache() {
@@ -226,31 +237,19 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public String toString( Strings utterance ) {
 		String reply = encache();
-		if (Reply.understood( Reply.DNU != type() )) {
+		if (understood( Reply.DNU != type() )) {
 			if (!repeated())
-				Reply.lastOutput( reply );
+				previous( reply ); // never used
+			;
 		} else
 			handleDNU( Utterance.previous() );
 		return reply;
 	}
 	public String toString() { return encache(); }
-		
-	public void conclude( Strings thought, Strings response ) {
+	
+	public void conclude( Strings thought ) {
 		doneIs( false );
 		strangeThought("");
-		
-		// set type again...?
-		//audit.log( "in conclusion: '"+ response +"', type was:"+ type);
-			 if (response.beginsIgnoreCase( new Strings(   yes ))) type = YES;
-		else if (response.beginsIgnoreCase( new Strings(success))) type =  YES;
-		else if (response.beginsIgnoreCase( new Strings(    no ))) type =  NO;
-		else if (response.beginsIgnoreCase( new Strings(failure))) type =  NO;
-		else if (response.beginsIgnoreCase( new Strings(    ik ))) type =  IK;
-		else if (response.beginsIgnoreCase( new Strings(   dnk ))) type =  NK;
-		else if (response.beginsIgnoreCase( new Strings( "I don't know" ))) type =  NK;
-		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type =  DNU;
-		else type = CHS;
-		//audit.log( "in conclusion, type now:"+ type);
 
 		if ( DNU == type()) {
 			/* TODO: At this point do I want to cancel all skipped signs? 
