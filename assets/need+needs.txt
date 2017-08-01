@@ -25,6 +25,7 @@ On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 On "SUBJECT has PHRASE-OBJECT", SUBJECT does not need OBJECT.
 
 On "SUBJECT has everything":
+	ok;
 	delete SUBJECT needs list;
 	then, reply "ok, SUBJECT does not need anything".
 

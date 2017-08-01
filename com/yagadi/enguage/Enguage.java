@@ -173,6 +173,8 @@ public class Enguage extends Shell {
 						   "I know." );
 			testInterpret( "i don't need to go to town",
 						   "ok, you don't need to go to town." );
+			testInterpret( "I have everything",
+					       "ok, you don't need anything." );
 			testInterpret( "what do i need",
 						   "you don't need anything." );
 		}
