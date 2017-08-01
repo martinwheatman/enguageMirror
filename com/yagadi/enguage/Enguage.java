@@ -89,20 +89,31 @@ public class Enguage extends Shell {
 	}
 	
 	// ==== test code =====
-	private static void testInterpret( String cmd, String expected ) {
+	private static void testInterpret( String cmds, String expects ) {
 		
-		if (expected != null) audit.log( "enguage> "+ cmd );
-		String answer = Enguage.interpret( cmd );
+		Strings cmdlist = new Strings( cmds, '/' );
+		Strings explist = new Strings( expects, '/' );
 		
-		if (expected != null)
-			if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
-				audit.log( "Hint is:" + Repertoire.prompt() );
-			else if (   !expected.equals( "" )
-			         && !new Strings( answer )
-			         		.equalsIgnoreCase( new Strings( expected )))
-				audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
-			else
-				audit.log( answer +"\n" );
+		while (cmdlist.size() > 0) {
+			// assume 1 expected OR cmds >= expecteds...
+			String expected = cmdlist.size() == explist.size() ? explist.remove( 0 ) : "";
+			String cmd = cmdlist.remove( 0 );
+			
+			if (expected != null)
+				audit.log( "enguage> "+ cmd );
+				
+			String answer = Enguage.interpret( cmd );
+			
+			if (expected != null)
+				if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
+					audit.log( "Hint is:" + Repertoire.prompt() );
+				else if (   !expected.equals( "" )
+				         && !new Strings( answer )
+				         		.equalsIgnoreCase( new Strings( expected )))
+					audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
+				else
+					audit.log( answer +"\n" );
+		}
 	}
 	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
 	private static void usage() {
@@ -149,10 +160,10 @@ public class Enguage extends Shell {
 			// silently clear the decks
 			testInterpret( "i don't need anything", null );
 
-			testInterpret( "what do i need",
-						   "you don't need anything." );
-			testInterpret( "i need 2 cups of coffee and a biscuit",
-						   "ok, you need 2 cups of coffee, and a biscuit.");
+			testInterpret( "what do i need/i need 2 cups of coffee and a biscuit",
+						   "you don't need anything./ok, you need 2 cups of coffee, and a biscuit." );
+			//testInterpret( "i need 2 cups of coffee and a biscuit",
+			//			   "ok, you need 2 cups of coffee, and a biscuit.");
 			testInterpret( "what do i need",
 						   "you need 2 cups of coffee, and a biscuit.");
 			testInterpret( "how many coffees do i need",
