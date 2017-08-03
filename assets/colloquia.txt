@@ -1,7 +1,8 @@
 # N.b. Colloquia are not PAS aware so, "X is great" doesn't match onto "martin is great" :(
 # Colloquialism: set it up...
 On "QUOTED-EX means QUOTED-IN", perform "colloquial both IN EX".
-On "PHRASE-EX means PHRASE-IN", perform "colloquial both IN = EX".
+# replace vvv this vvv with means.txt
+#On "EX        means PHRASE-IN", perform "colloquial both IN = EX".
 
 # ...and use it:
 "doesn't" means "does not".

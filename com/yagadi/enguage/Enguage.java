@@ -301,12 +301,17 @@ public class Enguage extends Shell {
 			testInterpret( "then reply hello whatever" );
 			testInterpret( "and that is it", "ok." );
 
+			//testInterpret( "tracing on" );
+			//testInterpret( "do we have the means to become rich", "I really don't understand." );
+
 			// could this be built thus?
 			//testInterpret( "just call me phrase variable name means i am called variable name" );
 			
 			// testInterpret( "" );
 			Repertoire.signs.show( "OTF" );
 			
+			//testInterpret( "just call me martin", "i know." );
+
 			testInterpret( "my name is ruth",    "hello ruth." );
 			testInterpret( "my name is martin",  "hello martin." );
 			testInterpret( "i am called martin", "i know." );
