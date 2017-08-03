@@ -1,0 +1,4 @@
+On "PHRASE-X the means to PHRASE-Y", reply "I really do not understand".
+
+On "PHRASE-X means PHRASE-Y", to X reply Y.
+

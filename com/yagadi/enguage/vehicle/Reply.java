@@ -197,6 +197,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   format( String s ) {
 		cache = null; //de-cache any previous reply
 		f.ormat( s );
+		//type( calculateType() ); -- add this in at some point!!!
 		return this;
 	}
 	private String encache() {
