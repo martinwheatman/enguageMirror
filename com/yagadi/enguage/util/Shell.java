@@ -174,12 +174,8 @@ abstract public class Shell {
 			while (line == null || line.equals( "\n" ))
 				line = br.readLine();
 		} catch (java.io.IOException e ) {
-			audit.ERROR( "IO exception in Ask::ask( question );" );
-		} finally {
-			try {
-				br.close();
-			} catch (java.io.IOException e ) { //ignore
-		}	}
+			audit.ERROR( "IO exception in Shell::getLine( default );" );
+		}
 		return line != null ? line : defaultLine;
 	}
 	private static void test( String string ) {

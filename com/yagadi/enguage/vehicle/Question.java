@@ -25,4 +25,9 @@ public class Question {
 	public static void main( String args[] ){
 		Question q = new Question( "why do birds suddenly appear" );
 		audit.log( q.ask( "they long to be close to you!" ));
+		q = new Question( "is it safe" );
+		audit.log( q.ask( "yes, it is"));
+		audit.log( q.ask( "no, it isn't"));
+		audit.log( q.ask() );
+		audit.log( q.ask() );
 }	}
