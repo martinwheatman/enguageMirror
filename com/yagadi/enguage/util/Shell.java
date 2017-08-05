@@ -66,7 +66,7 @@ abstract public class Shell {
 	}
 	
 	public Shell( String name ) {
-		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-16" );
+		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-17" );
 	}
 	public Shell( String name, Strings args ) { this( name ); }
 	public void interpret( InputStream fp ) { // reads file stream and "interpret()"s it
@@ -167,6 +167,21 @@ abstract public class Shell {
 		}	}
 		return rc;
 	}
+	static public String getLine( String defaultLine ) {
+		String line = null;
+		BufferedReader br = new BufferedReader( new InputStreamReader( System.in ));
+		try {
+			while (line == null || line.equals( "\n" ))
+				line = br.readLine();
+		} catch (java.io.IOException e ) {
+			audit.ERROR( "IO exception in Ask::ask( question );" );
+		} finally {
+			try {
+				br.close();
+			} catch (java.io.IOException e ) { //ignore
+		}	}
+		return line != null ? line : defaultLine;
+	}
 	private static void test( String string ) {
 		Strings list = new Strings( string );
 		ArrayList<Strings> listOfLists = expandSemicolonList( list );
@@ -181,5 +196,5 @@ abstract public class Shell {
 		test( "On \"X needs PHRASE-Y\":"
 				+"	if Y exists in X needs list, reply \"I know\";"
 				+"	if not, add Y to X needs list;"
-				+"	then, reply \"ok, X needs Y\"." ); 
+				+"	then, reply \"ok, X needs Y\"." );
 }	}

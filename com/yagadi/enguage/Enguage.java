@@ -242,16 +242,16 @@ public class Enguage extends Shell {
 			testInterpret( "no the eagle has landed" //,
 						   //"I don't understand"
 					);
+			// Issue here: on DNU, we need to advance this on "the eagle has landed"
+			// i.e. w/o "no ..."
 		}
 
 		if ( level == 0 || level == 7 ) {
+			audit.title( "Temporospatial concept MEETING" );
+
 			audit.title( "Temporal interpret" );
 			testInterpret( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
-		}
-
-		if ( level == 0 || level == 8 ) {
-			audit.title( "Temporospatial concept MEETING" );
 
 			Where.doLocators();
 			new Sofa().interpret( new Strings( "entity create pub" ));
@@ -279,12 +279,12 @@ public class Enguage extends Shell {
 					"i don't know if you're meeting your dad." );
 		}
 		
-		if (level == 0 || level == 9) {
+		if (level == 0 || level == 8) {
 			testInterpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok." );
 			testInterpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry." );
 		}
 		
-		if (level == 0 || level == 10) {
+		if (level == 0 || level == 9) {
 			audit.title( "On-the-fly Langauge Learning" );
 			testInterpret( "my name is martin", "I don't understand." );
 			Variable.unset( "NAME" );
@@ -301,20 +301,28 @@ public class Enguage extends Shell {
 			testInterpret( "then reply hello whatever" );
 			testInterpret( "and that is it", "ok." );
 
-			//testInterpret( "tracing on" );
-			//testInterpret( "do we have the means to become rich", "I really don't understand." );
-
-			// could this be built thus?
-			//testInterpret( "just call me phrase variable name means i am called variable name" );
-			
-			// testInterpret( "" );
-			Repertoire.signs.show( "OTF" );
-			
-			//testInterpret( "just call me martin", "i know." );
-
 			testInterpret( "my name is ruth",    "hello ruth." );
 			testInterpret( "my name is martin",  "hello martin." );
 			testInterpret( "i am called martin", "i know." );
+			
+			// ...means..., ...the means...
+			// 1.
+			//testInterpret( "tracing on" );
+			//testInterpret( "do we have the means to become rich", "I really don't understand." );
+
+			// 2. could this be built thus?
+			//testInterpret( "just call me phrase variable name means i am called variable name" );
+			//Repertoire.signs.show( "OTF" );
+			//testInterpret( "just call me martin", "i know." );
+
 		}
+		
+		if ( level == 0 || level == 10 ) {
+			// ask:
+			//testInterpret( "tracing on" );
+			testInterpret( "i have everything", "ok, you don't need anything." );			
+		}
+
+
 		audit.log( "PASSED" );
 }	}

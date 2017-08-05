@@ -13,3 +13,10 @@ On "I        have got        everything", _user has everything.
 On "I        have            everything", _user has everything.
 
 On "What do I have", reply "I do not remember what you have".
+
+On "SUBJECT has everything":
+	answering yes or no ask is this ok;
+	if not, reply "ok, let us leave things as they are";
+	delete SUBJECT needs list;
+	then, reply "ok, SUBJECT does not need anything".
+

@@ -7,6 +7,7 @@ import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Context;
 import com.yagadi.enguage.vehicle.Language;
+import com.yagadi.enguage.vehicle.Question;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.Utterance;
 
@@ -25,6 +26,11 @@ public class Allopoiesis extends Intention {
 		/* These could be accompanied in a repertoire, but they have special 
 		 * interpretations and so are built here alongside those interpretations.
 		 */
+		new Sign().content( new Tag( "answering", "concept" ).attribute( Tag.phrase, Tag.phrase ))
+		          .content( new Tag( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
+		          	.attribute( NAME, "ask CONCEPT , QUESTION" )
+		          	.concept( NAME ),
+		          	
 		new Sign().content( new Tag(  "describe ", "x" )).concept( NAME   )
 															 .attribute( NAME, "describe X" )
 															 .help( "where x is a repertoire" ),
@@ -195,7 +201,14 @@ public class Allopoiesis extends Intention {
 		audit.debug( "in Allop.mediate, cmd=[ "+ Strings.toString( cmd, Strings.CSV ) +" ]");
 		audit.debug( "in Allop.mediate, NAME='"+ NAME +"', value='"+ value +"'");
 // */
-		if ( cmd.equals( "undo" )) {
+		if ( cmd.equals( "ask" )) {
+			
+			String question = cmds.copyAfter( 0 ).toString();
+			audit.LOG( "Question is: "+ question );
+			Question q = new Question( "answering " + question );
+			r.format( q.ask() );
+			
+		} else if ( cmd.equals( "undo" )) {
 			Enguage e = Enguage.get();
 			r.format( Reply.success() );
 			if (cmds.size() == 2 && cmds.get( 1 ).equals( "enable" )) 
