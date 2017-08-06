@@ -19,6 +19,10 @@ public class Sign extends Tag {
 		super();
 		name( NAME );
 	}
+	public Sign( String concept ) {
+		this();
+		concept( concept );
+	}
 	
 	/* To protect against being interpreted twice on resetting the iterator
 	 * after a DNU is returned on co-modification of the iterator by

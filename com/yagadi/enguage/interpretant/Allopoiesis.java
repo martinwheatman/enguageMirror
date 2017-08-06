@@ -26,50 +26,52 @@ public class Allopoiesis extends Intention {
 		/* These could be accompanied in a repertoire, but they have special 
 		 * interpretations and so are built here alongside those interpretations.
 		 */
-		new Sign().content( new Tag( "answering", "concept" ).attribute( Tag.phrase, Tag.phrase ))
-		          .content( new Tag( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
-		          	.attribute( NAME, "ask CONCEPT , QUESTION" )
-		          	.concept( NAME ),
+		new Sign( NAME )
+				.content( new Tag( "answering", "concept" ).attribute( Tag.phrase, Tag.phrase ))
+				.content( new Tag( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
+		          	.attribute( NAME, "ask answering CONCEPT , QUESTION" ),
 		          	
-		new Sign().content( new Tag(  "describe ", "x" )).concept( NAME   )
-															 .attribute( NAME, "describe X" )
-															 .help( "where x is a repertoire" ),
-		new Sign().content( new Tag("list repertoires","" )).concept( NAME   )
-															 .attribute( NAME, "list" )
-															 .help( ""     ),
-		new Sign().content( new Tag(           "help", "" )).attribute( NAME, "help" ),
-		new Sign().content( new Tag(          "hello", "" )).attribute( NAME, "hello"),
-		new Sign().content( new Tag(        "welcome", "" )).attribute( NAME, "welcome"),
-		new Sign().content( new Tag( "what can i say", "" )).concept( NAME   )
-															 .attribute( NAME, "repertoire"  )
-															 .help( ""            ),
-		new Sign().content( new Tag(   "load ", "NAME" )).attribute( NAME,   "load NAME" ),
-/*		new Sign().content( new Tag( "unload ", "NAME" )).attribute( NAME, "unload NAME" ),
-		new Sign().content( new Tag( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
-// */	//new Sign().attribute( NAME, "save"    ).content( new Tag( "save", "", "" ) ),
-		//new Sign().attribute( NAME, "saveas $NAME" ).content( new Tag("saveas ", "NAME", ".")),
+		new Sign( NAME ).content( new Tag(  "describe ", "x" ))
+				 .attribute( NAME, "describe X" )
+				 .help( "where x is a repertoire" ),
+				 
+		new Sign( NAME ).content( new Tag( "list repertoires","" ))
+				 .attribute( NAME, "list" )
+				 .help( ""     ),
+		new Sign( NAME ).content( new Tag(           "help", "" )).attribute( NAME, "help" ),
+		new Sign( NAME ).content( new Tag(          "hello", "" )).attribute( NAME, "hello"),
+		new Sign( NAME ).content( new Tag(        "welcome", "" )).attribute( NAME, "welcome"),
+		new Sign( NAME ).content( new Tag( "what can i say", "" ))
+				 .attribute( NAME, "repertoire"  )
+				 .help( ""            ),
+		new Sign( NAME ).content( new Tag(   "load ", "NAME" )).attribute( NAME,   "load NAME" ),
+/*		new Sign( NAME ).content( new Tag( "unload ", "NAME" )).attribute( NAME, "unload NAME" ),
+		new Sign( NAME ).content( new Tag( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
+// */	//new Sign( NAME ).attribute( NAME, "save"    ).content( new Tag( "save", "", "" ) ),
+		//new Sign( NAME ).attribute( NAME, "saveas $NAME" ).content( new Tag("saveas ", "NAME", ".")),
 															 		
-		new Sign().content( new Tag(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
-		new Sign().content( new Tag(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
-		new Sign().content( new Tag(           "undo",  "" )).attribute( NAME, "undo"         ),
-		new Sign().content( new Tag(      "say again",  "" )).attribute( NAME, "repeat"       ),
-		new Sign().content( new Tag(         "spell ", "x" )).attribute( NAME, "spell X"      ),
+		new Sign( NAME ).content( new Tag(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
+		new Sign( NAME ).content( new Tag(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
+		new Sign( NAME ).content( new Tag(           "undo",  "" )).attribute( NAME, "undo"         ),
+		new Sign( NAME ).content( new Tag(      "say again",  "" )).attribute( NAME, "repeat"       ),
+		new Sign( NAME ).content( new Tag(         "spell ", "x" )).attribute( NAME, "spell X"      ),
 		
-//		new Sign().content( new Tag("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
+//		new Sign( NAME ).content( new Tag("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
 		
-		new Sign().content( new Tag(         "timing  on",  "" )).attribute( NAME, "tracing on" ),
-		new Sign().content( new Tag(         "timing off",  "" )).attribute( NAME, "tracing off" ),
-		new Sign().content( new Tag(        "tracing  on",  "" )).attribute( NAME, "tracing on" ),
-		new Sign().content( new Tag(        "tracing off",  "" )).attribute( NAME, "tracing off" ),
-		new Sign().content( new Tag(         "detail  on",  "" )).attribute( NAME, "detailed on" ),
-		new Sign().content( new Tag(         "detail off",  "" )).attribute( NAME, "detailed off" ),
-		new Sign().content( new Tag(         "tcpip ",  "address" ))
-				.content( new Tag(         " ",  "port" ))
-				.content( new Tag(         " ",  "data" ).attribute( Tag.quoted, Tag.quoted ))
+		new Sign( NAME ).content( new Tag(         "timing  on",  "" )).attribute( NAME, "tracing on" ),
+		new Sign( NAME ).content( new Tag(         "timing off",  "" )).attribute( NAME, "tracing off" ),
+		new Sign( NAME ).content( new Tag(        "tracing  on",  "" )).attribute( NAME, "tracing on" ),
+		new Sign( NAME ).content( new Tag(        "tracing off",  "" )).attribute( NAME, "tracing off" ),
+		new Sign( NAME ).content( new Tag(         "detail  on",  "" )).attribute( NAME, "detailed on" ),
+		new Sign( NAME ).content( new Tag(         "detail off",  "" )).attribute( NAME, "detailed off" ),
+		new Sign( NAME )
+				.content( new Tag( "tcpip ",  "address" ))
+				.content( new Tag(      " ",  "port" ))
+				.content( new Tag(      " ",  "data" ).attribute( Tag.quoted, Tag.quoted ))
 					.attribute( NAME, "tcpip ADDRESS PORT DATA" ),
-		new Sign().content( new Tag(              "show ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).content( new Tag(              "show ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 				.attribute( NAME, "show X" ),
-		new Sign().content( new Tag(         "debug ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).content( new Tag(         "debug ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 				.attribute( NAME, "debug X" ),
 		/* 
 		 * it is possible to arrive at the following construct:   think="reply 'I know'"
@@ -78,20 +80,20 @@ public class Allopoiesis extends Intention {
 		 * representamen: "if X, reply Y", then Y is just the quoted string.
 		 * However, the following should deal with this situation.
 		 */
-		new Sign().content( new Tag( REPLY +" ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-					.attribute( REPLY, "X" ),
+		new Sign( NAME ).content( new Tag( REPLY +" ", "x" ).attribute( Tag.quoted, Tag.quoted ))
+				.attribute( REPLY, "X" ),
 		
 		// fix to allow better reading of autopoietic  
-		new Sign().content( new Tag( "if so, ", "x" ).attribute( Tag.phrase, Tag.phrase ))
-					.attribute( THINK, "X" ),
+		new Sign( NAME ).content( new Tag( "if so, ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+				.attribute( THINK, "X" ),
 
 		// for vocal description of concepts... autopoiesis!		
-		new Sign().content( new Tag( "perform ", "args" ).attribute( Tag.phrase, Tag.phrase ))
-						.attribute( DO, "ARGS" ),
+		new Sign( NAME ).content( new Tag( "perform ", "args" ).attribute( Tag.phrase, Tag.phrase ))
+				.attribute( DO, "ARGS" ),
 		/* 
 		 * REDO: undo and do again, or disambiguate
 		 */
-		new Sign().content( new Tag( "No ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).content( new Tag( "No ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 					.attribute( NAME, "undo" )
 					.attribute( ELSE_REPLY, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,
@@ -113,10 +115,14 @@ public class Allopoiesis extends Intention {
 	
 	// this supports the command="" attribute loaded in the creation of command data structure
 	// needs "command //delete "...". -- to remove a tag, to support '"X" is meaningless.'
-	private Reply unknownCommand( Reply r, Strings cmd ) {
-		audit.ERROR( "Unknown command "+ cmd.toString( Strings.CSV ));
+	private Reply unknownCommand( Reply r, String cmd, Strings args ) {
+		audit.ERROR( "Unknown command "+ cmd +" "+ args.toString( Strings.CSV ));
 		return r.format( Reply.dnu() );
 	}
+	static private String answer = null;
+	static public  String answer() { return answer;}
+	static public  void   answer( String a ) {answer = a;}
+	static public  void   peek() { if (answer != null) audit.LOG( ">> "+ answer );}
 	
 	// are we taking the hit of creating / deleting overlays
 	static private boolean undoEnabled = false;
@@ -184,7 +190,7 @@ public class Allopoiesis extends Intention {
 	//
 
 	public Reply mediate( Reply r ) {
-		r.answer( Reply.yes()); // just to stop debug output look worrying
+		r.answer( Reply.yes()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds =
 				Context.deref(
@@ -203,19 +209,23 @@ public class Allopoiesis extends Intention {
 // */
 		if ( cmd.equals( "ask" )) {
 			
-			String question = cmds.copyAfter( 0 ).toString();
-			audit.LOG( "Question is: "+ question );
-			Question q = new Question( "answering " + question );
-			r.format( q.ask() );
+			cmds.remove( 0 );
+			String question = cmds.toString();
+			audit.debug( "Question is: "+ question );
+			Question q = new Question( question );
+			r.format( q.ask( answer() ) );
+			peek();
+			answer( null ); // tidy up any primed answer...
 			
 		} else if ( cmd.equals( "undo" )) {
+			cmds.remove( 0 );
 			Enguage e = Enguage.get();
 			r.format( Reply.success() );
-			if (cmds.size() == 2 && cmds.get( 1 ).equals( "enable" )) 
+			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
 				undoEnabledIs( true );
-			else if (cmds.size() == 2 && cmds.get( 1 ).equals( "disable" )) 
+			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
 				undoEnabledIs( false );
-			else if (cmds.size() == 1 && undoIsEnabled()) {
+			else if (cmds.size() == 0 && undoIsEnabled()) {
 				if (e.o.count() < 2) { // if there isn't an overlay to be removed
 					audit.debug( "overlay count( "+ e.o.count() +" ) < 2" ); // audit
 					r.answer( Reply.no() );
@@ -226,19 +236,21 @@ public class Allopoiesis extends Intention {
 			} else if (!undoIsEnabled())
 				r.format( Reply.dnu() );
 			else
-				r = unknownCommand( r, cmds );
+				r = unknownCommand( r, cmd, cmds );
 			
 		} else if (sz == 2 && cmds.get( 1 ).equals( "learning" )) {
 			Repertoire.inductingIs( cmd.equalsIgnoreCase( "start" ));
 			
 		} else if (cmd.equals( DISAMBIGUATE )) {
-			disambOn( cmds.copyAfter( 0 ));
+			cmds.remove( 0 );
+			disambOn( cmds );
 		
 		} else if (cmd.equals( "load" )) {
 			/* load is used by create, delete, ignore and restore to
 			 * support their interpretation
 			 */
-			Strings files = cmds.copyAfter( 0 );
+			cmds.remove( 0 );
+			Strings files = cmds;
 			audit.debug( "loading "+ files.toString( Strings.CSV ));
 			for(int i=0; i<files.size(); i++)
 				Concepts.load( files.get( i ));
@@ -266,16 +278,18 @@ public class Allopoiesis extends Intention {
 			}
 */
 		} else if (cmd.equals( "spell" )) {
-			r.format( Language.spell( cmds.get( 1 ), true ));
+			cmds.remove( 0 );
+			r.format( Language.spell( cmds.get( 0 ), true ));
 			
 		} else if (cmd.equals( "tcpip" )) {
 			
+			cmds.remove( 0 );
 			String prefix = Variable.get( "XMLPRE" ),
 					suffix = Variable.get( "XMLPOST" );
 			
 			int port = -1;
 			try {
-				port = Integer.valueOf( cmds.get( 2 ));
+				port = Integer.valueOf( cmds.get( 1 ));
 			} catch (Exception e1) {
 				try {
 					port = Integer.valueOf( Variable.get( "PORT" ));
@@ -285,16 +299,17 @@ public class Allopoiesis extends Intention {
 			
 			r = Net.client(
 					r,
-					cmds.get( 1 ),
+					cmds.get( 0 ),
 					port,
 					(null==prefix ? "" : prefix) +
-						Variable.derefUc( Strings.trim( cmds.get( 3 ), '"' )) +
+						Variable.derefUc( Strings.trim( cmds.get( 2 ), '"' )) +
 						(null==suffix ? "" : suffix)
 				);
 			
 		} else if (cmd.equals( "timing" )) {
-			audit.log( cmds.toString());
-			if (cmds.get( 1 ).equals("off")) {
+			cmds.remove( 0 );
+			audit.log( cmd +" "+ cmds.toString());
+			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
 				Audit.timings = false;
 			} else {
@@ -307,8 +322,9 @@ public class Allopoiesis extends Intention {
 			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "tracing" )) {
-			audit.log( cmds.toString());
-			if (cmds.get( 1 ).equals("off")) {
+			cmds.remove( 0 );
+			audit.log( cmd +" "+ cmds.toString());
+			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
 				Audit.timings = false;
 				Audit.allTracing = false;
@@ -321,8 +337,9 @@ public class Allopoiesis extends Intention {
 			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "detailed" )) {
+			cmds.remove( 0 );
 			audit.log( cmds.toString());
-			if (cmds.get( 1 ).equals("off")) {
+			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
 				Audit.timings = false;
 				Audit.detailedDebug = false;
@@ -335,7 +352,8 @@ public class Allopoiesis extends Intention {
 			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "debug" )) {
-			if (cmds.get( 1 ).equals( "off" )) {
+			cmds.remove( 0 );
+			if (cmds.get( 0 ).equals( "off" )) {
 				Audit.allOff();
 				Audit.allTracing = false;
 				Audit.timings = false;
@@ -353,9 +371,10 @@ public class Allopoiesis extends Intention {
 			
 			
 		} else if (cmd.equals( "show" )) {
+			cmds.remove( 0 );
 			//audit.audit( "cmds:"+ cmds +":sz="+ cmds.size() );
-			if (2==cmds.size() && cmds.get( 1 ).length()>=4) {
-				String option = cmds.get( 1 ).substring(0,4);
+			if (1==cmds.size() && cmds.get( 0 ).length()>=4) {
+				String option = cmds.get( 0 ).substring(0,4);
 				if (option.equals( "auto" )) {
 					Repertoire.autop.show();
 					r.format( Reply.success() );
@@ -413,14 +432,17 @@ public class Allopoiesis extends Intention {
 			r.format( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() ));
 			
 		} else if ( cmd.equals( "describe" ) && cmds.size() >= 2) {
-			String name = cmds.copyAfter( 0 ).toString( Strings.CONCAT );
+			cmds.remove( 0 );
+			String name = cmds.toString( Strings.CONCAT );
 			r.format( Repertoire.signs.helpedToString( name ));
 			
 		} else if ( cmd.equals( "repertoire" )) {
 			r.format( Repertoire.signs.helpedToString());
 			
-		} else
-			r = unknownCommand( r, cmds );
+		} else {
+			cmds.remove( 0 );
+			r = unknownCommand( r, cmd, cmds );
+		}
 		return r;
 	}
 	public static void main( String args[]) {
@@ -429,7 +451,7 @@ public class Allopoiesis extends Intention {
 		//Enguage eng = new Enguage( null );
 		Reply r = new Reply();
 		// TODO: this fails, cose Enguage.e is not initialised!!!
-		Allopoiesis e = new Allopoiesis( "engine", "temporal meeting" );
+		Allopoiesis e = new Allopoiesis( "engine", "ask answering yes or no , is it safe" );
 		//Repertoire.load( "need" );
 		e.mediate( r );
 }	}

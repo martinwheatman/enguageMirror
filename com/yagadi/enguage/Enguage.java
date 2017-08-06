@@ -184,8 +184,11 @@ public class Enguage extends Shell {
 						   "I know." );
 			testInterpret( "i don't need to go to town",
 						   "ok, you don't need to go to town." );
+			
+			Allopoiesis.answer( "yes" );
 			testInterpret( "I have everything",
 					       "ok, you don't need anything." );
+			
 			testInterpret( "what do i need",
 						   "you don't need anything." );
 		}
@@ -320,7 +323,8 @@ public class Enguage extends Shell {
 		if ( level == 0 || level == 10 ) {
 			// ask:
 			//testInterpret( "tracing on" );
-			testInterpret( "i have everything", "ok, you don't need anything." );			
+			Allopoiesis.answer( "no" );
+			testInterpret( "i have everything", "ok , let us leave things as they are." );			
 		}
 
 
