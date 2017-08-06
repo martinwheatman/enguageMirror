@@ -22,12 +22,6 @@ On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	then, reply "ok, SUBJECT needs ...".
 
 
-On "SUBJECT has PHRASE-OBJECT", SUBJECT does not need OBJECT.
-
-On "SUBJECT has everything":
-	ok;
-	delete SUBJECT needs list;
-	then, reply "ok, SUBJECT does not need anything".
 
 On "SUBJECT does not need PHRASE-OBJECTS":
 	OBJECTS exists in SUBJECT needs list;
@@ -99,6 +93,12 @@ On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 	SUBJECT needs another QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
+On "SUBJECT does not need anything":
+	answering yes or no ask is this ok;
+	if not, reply "ok, let us leave things as they are";
+	delete SUBJECT needs list;
+	then, reply "ok, SUBJECT does not need anything".
+
 ######################################
 # First person utterances
 ######################################
@@ -119,7 +119,7 @@ On "I do not need to get  PHRASE-OBJECT", _user does not need OBJECT.
 
 On "I do not need         PHRASE-OBJECT", _user does not need OBJECT.
 On "I do not need any     PHRASE-OBJECT", _user does not need any OBJECT.
-On "I do not need              anything", _user has everything.
+On "I do not need              anything", _user does not need anything.
 On "help", reply "to clear the list".
 
 On                   "?", what does _user need.

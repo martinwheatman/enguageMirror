@@ -158,6 +158,7 @@ public class Enguage extends Shell {
 			audit.title( "The Non-Computable concept of NEED" );
 			
 			// silently clear the decks
+			Allopoiesis.answer( "yes" );
 			testInterpret( "i don't need anything", null );
 
 			testInterpret( "what do i need/i need 2 cups of coffee and a biscuit",
@@ -227,6 +228,7 @@ public class Enguage extends Shell {
 						   "ok, you need 3 more coffees.");
 			testInterpret( "what do i need",
 						   "you need 6 coffees, and a cup of tea.");
+			Allopoiesis.answer( "yes" );
 			testInterpret( "i don't need anything",
 						   "ok, you don't need anything." );
 		}
