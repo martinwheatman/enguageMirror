@@ -167,17 +167,6 @@ abstract public class Shell {
 		}	}
 		return rc;
 	}
-	static public String getLine( String defaultLine ) {
-		String line = null;
-		BufferedReader br = new BufferedReader( new InputStreamReader( System.in ));
-		try {
-			while (line == null || line.equals( "\n" ))
-				line = br.readLine();
-		} catch (java.io.IOException e ) {
-			audit.ERROR( "IO exception in Shell::getLine( default );" );
-		}
-		return line != null ? line : defaultLine;
-	}
 	private static void test( String string ) {
 		Strings list = new Strings( string );
 		ArrayList<Strings> listOfLists = expandSemicolonList( list );

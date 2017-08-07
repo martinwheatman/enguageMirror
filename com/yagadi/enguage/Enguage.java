@@ -12,6 +12,7 @@ import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.vehicle.Question;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.Utterance;
 import com.yagadi.enguage.vehicle.where.Where;
@@ -158,7 +159,7 @@ public class Enguage extends Shell {
 			audit.title( "The Non-Computable concept of NEED" );
 			
 			// silently clear the decks
-			Allopoiesis.answer( "yes" );
+			Question.primedAnswer( "yes" );
 			testInterpret( "i don't need anything", null );
 
 			testInterpret( "what do i need/i need 2 cups of coffee and a biscuit",
@@ -186,7 +187,7 @@ public class Enguage extends Shell {
 			testInterpret( "i don't need to go to town",
 						   "ok, you don't need to go to town." );
 			
-			Allopoiesis.answer( "yes" );
+			Question.primedAnswer( "yes" );
 			testInterpret( "I have everything",
 					       "ok, you don't need anything." );
 			
@@ -228,7 +229,7 @@ public class Enguage extends Shell {
 						   "ok, you need 3 more coffees.");
 			testInterpret( "what do i need",
 						   "you need 6 coffees, and a cup of tea.");
-			Allopoiesis.answer( "yes" );
+			Question.primedAnswer( "yes" );
 			testInterpret( "i don't need anything",
 						   "ok, you don't need anything." );
 		}
@@ -325,7 +326,9 @@ public class Enguage extends Shell {
 		if ( level == 0 || level == 10 ) {
 			// ask:
 			//testInterpret( "tracing on" );
-			Allopoiesis.answer( "no" );
+			Question.primedAnswer( "yes" );
+			testInterpret( "i have everything", "ok , you don't need anything." );			
+			Question.primedAnswer( "no" );
 			testInterpret( "i have everything", "ok , let us leave things as they are." );			
 		}
 

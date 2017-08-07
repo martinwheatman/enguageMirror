@@ -119,10 +119,6 @@ public class Allopoiesis extends Intention {
 		audit.ERROR( "Unknown command "+ cmd +" "+ args.toString( Strings.CSV ));
 		return r.format( Reply.dnu() );
 	}
-	static private String answer = null;
-	static public  String answer() { return answer;}
-	static public  void   answer( String a ) {answer = a;}
-	static public  void   peek() { if (answer != null) audit.LOG( ">> "+ answer );}
 	
 	// are we taking the hit of creating / deleting overlays
 	static private boolean undoEnabled = false;
@@ -213,9 +209,9 @@ public class Allopoiesis extends Intention {
 			String question = cmds.toString();
 			audit.debug( "Question is: "+ question );
 			Question q = new Question( question );
-			r.format( q.ask( answer() ) );
-			peek();
-			answer( null ); // tidy up any primed answer...
+			r.format( q.ask( Question.primedAnswer() ) );
+			Question.logPrimedAns();
+			Question.primedAnswer( null ); // tidy up any primed answer...
 			
 		} else if ( cmd.equals( "undo" )) {
 			cmds.remove( 0 );
