@@ -329,7 +329,12 @@ public class Enguage extends Shell {
 			Question.primedAnswer( "yes" );
 			testInterpret( "i have everything", "ok , you don't need anything." );			
 			Question.primedAnswer( "no" );
-			testInterpret( "i have everything", "ok , let us leave things as they are." );			
+			testInterpret( "i have everything", "ok , let us leave things as they are." );
+
+			//testInterpret( "tracing on" );
+			Question.primedAnswer( "i do not understand" );
+			//should be "ok, lets leave this as it is"
+			testInterpret( "i have everything", "Ok, you don't undertand." );
 		}
 
 

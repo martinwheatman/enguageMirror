@@ -59,6 +59,12 @@ public class Intention extends Attribute {
 		
 		r.setType( new Strings( r.toString()) )
 		 .conclude( thought );
+
+		// TODO: should this be here - down to Allop.ask()		
+		if (r.type() == Reply.UDU) {
+			r.doneIs( true );
+			r.format( "Ok, you do not undertand" );
+		}
 		return (Reply) audit.out( r );
 	}
 	

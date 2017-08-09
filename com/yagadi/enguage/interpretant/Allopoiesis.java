@@ -27,10 +27,18 @@ public class Allopoiesis extends Intention {
 		 * interpretations and so are built here alongside those interpretations.
 		 */
 		new Sign( NAME )
-				.content( new Tag( "answering", "concept" ).attribute( Tag.phrase, Tag.phrase ))
-				.content( new Tag( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
-		          	.attribute( NAME, "ask answering CONCEPT , QUESTION" ),
-		          	
+			.content( new Tag( "remove primed answer ", "" ))
+          		.attribute( NAME, "removePrimedAnswer" ),
+	          	
+    	new Sign( NAME )
+			.content( new Tag( "prime answer ", "answer" ).attribute( Tag.phrase, Tag.phrase ))
+	          	.attribute( NAME, "primeAnswer ANSWER" ),
+			          	
+		new Sign( NAME )
+			.content( new Tag( "answering", "answers" ).attribute( Tag.phrase, Tag.phrase ))
+			.content( new Tag( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
+	          	.attribute( NAME, "ask answering ANSWERS , QUESTION" ),
+	          	
 		new Sign( NAME ).content( new Tag(  "describe ", "x" ))
 				 .attribute( NAME, "describe X" )
 				 .help( "where x is a repertoire" ),
@@ -203,15 +211,38 @@ public class Allopoiesis extends Intention {
 		audit.debug( "in Allop.mediate, cmd=[ "+ Strings.toString( cmd, Strings.CSV ) +" ]");
 		audit.debug( "in Allop.mediate, NAME='"+ NAME +"', value='"+ value +"'");
 // */
-		if ( cmd.equals( "ask" )) {
+		if ( cmd.equals( "primeAnswer" )) {
+			
+			cmds.remove( 0 );
+			Question.primedAnswer( cmds.toString() ); // needs to be tidied up...
+			
+			
+		} else if ( cmd.equals( "removePrimedAnswer" )) {
+			
+			//cmds.remove( 0 );
+			Question.primedAnswer( null ); // tidy up any primed answer...
+			
+			
+		} else if ( cmd.equals( "ask" )) {
 			
 			cmds.remove( 0 );
 			String question = cmds.toString();
 			audit.debug( "Question is: "+ question );
-			Question q = new Question( question );
-			r.format( q.ask( Question.primedAnswer() ) );
-			Question.logPrimedAns();
+			// question => concept
+			
+			Strings answers = Question.extractPotentialAnswers( cmds );
+			audit.debug( "potential ANSWERs are ["+ answers.toString( Strings.DQCSV ) +"]");
+
+			// question => answer
+			String answer = new Question( question ).ask();
 			Question.primedAnswer( null ); // tidy up any primed answer...
+			
+			r.format( answer );
+			// TODO: weed out negative answers here
+			if (!answers.contains( answer )
+					||	answer.equals( Reply.dnu() )
+					||	answer.equalsIgnoreCase( "i do not understand" ))
+				r.userDNU();
 			
 		} else if ( cmd.equals( "undo" )) {
 			cmds.remove( 0 );

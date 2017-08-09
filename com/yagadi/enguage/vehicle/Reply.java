@@ -17,6 +17,7 @@ public class Reply { // a reply is basically a formatted answer
 	static public final int   NK = 3; // NOT KNOWN -- init
 	static public final int   IK = 4; // I know, silly!
 	static public final int  CHS = 5; // use stored expression
+	static public final int  UDU = 6; // user does not understand
 	
 	static private boolean verbatim = false; // set to true in handleDNU()
 	static public  boolean isVerbatim() { return verbatim; }
@@ -124,6 +125,9 @@ public class Reply { // a reply is basically a formatted answer
 	public  boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
 	public  boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
 	public  Reply setType( Strings response ) {
+		
+		if (type == UDU) return this;
+
 			 if (response.beginsIgnoreCase( new Strings(   yes ))) type( YES );
 		else if (response.beginsIgnoreCase( new Strings(success))) type( YES );
 		else if (response.beginsIgnoreCase( new Strings(    no ))) type(  NO );
@@ -134,6 +138,9 @@ public class Reply { // a reply is basically a formatted answer
 		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type(  DNU );
 		else type( CHS );
 		return this;
+	}
+	public void userDNU() {
+		type( UDU ); // forces us out to I don't know?
 	}
 
 	// todo: needs to be split out into answerType() and formatType()
@@ -150,6 +157,9 @@ public class Reply { // a reply is basically a formatted answer
 		else return CHS;
 	}
 	private int calculateType() {
+		
+		if (type == UDU) return UDU;
+		
 		String ans = a.valueOf().toString();
 		if (ans.equals( "" ) && f.ormat().size() == 0)
 			return DNU;
