@@ -123,7 +123,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  int     type() { return type; }
 	private void    type( int t ) {type = t;}
 	public  boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
-	public  boolean negative() {return  NO == type ||  NK == type; } // != !positive() !!!!!
+	public  boolean negative() {return  NO == type ||  NK == type || type == UDU; } // != !positive() !!!!!
 	public  Reply setType( Strings response ) {
 		
 		if (type == UDU) return this;
