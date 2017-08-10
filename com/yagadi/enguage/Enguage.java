@@ -295,9 +295,9 @@ public class Enguage extends Shell {
 			testInterpret( "my name is martin", "I don't understand." );
 			Variable.unset( "NAME" );
 			
-			testInterpret( "to i am called phrase variable name reply hi whatever", "go on." );
+			testInterpret( "to the phrase i am called phrase variable name reply hi whatever", "go on." );
 			testInterpret( "this implies name gets set to variable name", "go on." );
-			testInterpret( "this implies name is not set to variable name if not reply i know" );
+			testInterpret( "this implies name is not set to variable name if not reply i know", "go on." );
 			testInterpret( "ok", "ok." );
 			
 			
