@@ -292,25 +292,24 @@ public class Enguage extends Shell {
 			
 			
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
-			testInterpret( "first set name to variable name", "go on." );
-			testInterpret( "then get the value of name", "go on." ); // not strictly necessary!
-			testInterpret( "then reply hello whatever" );
-			testInterpret( "and that is it", "ok." );
+			testInterpret( "first set name to variable name",                "go on." );
+			testInterpret( "then get the value of name",                     "go on." ); // not strictly necessary!
+			testInterpret( "then reply hello whatever",                      "go on." );
+			testInterpret( "and that is it",                                 "ok."    );
 
 			testInterpret( "my name is ruth",    "hello ruth." );
 			testInterpret( "my name is martin",  "hello martin." );
 			testInterpret( "i am called martin", "i know." );
 			
-			// ...means..., ...the means...
+			// ...means.../...the means...
 			// 1.
 			//testInterpret( "tracing on" );
-			//testInterpret( "do we have the means to become rich", "I really don't understand." );
+			testInterpret( "do we have the means to become rich", "I really don't understand." );
 
 			// 2. could this be built thus?
 			//testInterpret( "just call me phrase variable name means i am called variable name" );
 			//Repertoire.signs.show( "OTF" );
 			//testInterpret( "just call me martin", "i know." );
-
 		}
 		
 		if ( level == 0 || level == 10 ) {

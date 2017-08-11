@@ -109,11 +109,13 @@ public class Intention extends Attribute {
 	}
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		// TODO: NOT previous(), inner()!
+		/* TODO: 
+		 * if reply on its own, return reply from previous/inner reply -- imagination!
+		 */
 		r.format( value.equals( "" ) ? Reply.success() : value );
-		r.doneIs( true /*r.type() != Reply.NK && r.type() != Reply.DNU*/ );
-		audit.out( "a="+ r.a.toString() + (r.isDone()?" (we're DONE!)" : "(keep looking...)" ));
-		return r;
+		r.setType( new Strings( value ));
+		r.doneIs( r.type() != Reply.DNU );
+		return (Reply) audit.out( r );
 	}
 	
 	public Reply mediate( Reply r ) {
