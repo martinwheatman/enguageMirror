@@ -314,7 +314,7 @@ public class Enguage extends Shell {
 		}
 		
 		if ( level == 0 || level == 10 ) {
-			// ask:
+			// ask: Confirmation
 			//testInterpret( "tracing on" );
 			Question.primedAnswer( "yes" );
 			testInterpret( "i have everything", "ok , you don't need anything." );			

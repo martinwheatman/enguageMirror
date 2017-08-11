@@ -112,13 +112,6 @@ public class Allopoiesis extends Intention {
 					.attribute( THINK,  "X"    )
 	 };
 	
-	// are we taking the hit of creating / deleting overlays
-	//private boolean undoEnabled = false;
-	//private boolean undoIsEnabled() { return undoEnabled; }
-	//public  Allop undoEnabledIs( boolean enabled ) { undoEnabled = enabled; return this; }
-	
-
-	
 	public Allopoiesis( String name, String value ) { super( name, value ); }
 	
 	// this supports the command="" attribute loaded in the creation of command data structure
@@ -203,7 +196,7 @@ public class Allopoiesis extends Intention {
 					/*)*/
 				);
 		cmds = cmds.normalise();
-		String cmd = cmds.get( 0 );
+		String cmd = cmds.remove( 0 );
 		int sz = cmds.size();
 
 /*		audit.debug( "in Allop.mediate, ctx="+ Reply.context().toString());
@@ -213,19 +206,16 @@ public class Allopoiesis extends Intention {
 // */
 		if ( cmd.equals( "primeAnswer" )) {
 			
-			cmds.remove( 0 );
 			Question.primedAnswer( cmds.toString() ); // needs to be tidied up...
 			
 			
 		} else if ( cmd.equals( "removePrimedAnswer" )) {
 			
-			//cmds.remove( 0 );
 			Question.primedAnswer( null ); // tidy up any primed answer...
 			
 			
 		} else if ( cmd.equals( "ask" )) {
 			
-			cmds.remove( 0 );
 			String question = cmds.toString();
 			audit.debug( "Question is: "+ question );
 			// question => concept
@@ -238,14 +228,10 @@ public class Allopoiesis extends Intention {
 			Question.primedAnswer( null ); // tidy up any primed answer...
 			
 			r.format( answer );
-			// TODO: weed out negative answers here
-			if (!answers.contains( answer )
-					||	answer.equals( Reply.dnu() )
-					||	answer.equalsIgnoreCase( "i do not understand" ))
+			if (!answers.contains( answer ))
 				r.userDNU();
 			
 		} else if ( cmd.equals( "undo" )) {
-			cmds.remove( 0 );
 			Enguage e = Enguage.get();
 			r.format( Reply.success() );
 			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
@@ -265,18 +251,16 @@ public class Allopoiesis extends Intention {
 			else
 				r = unknownCommand( r, cmd, cmds );
 			
-		} else if (sz == 2 && cmds.get( 1 ).equals( "learning" )) {
+		} else if (sz == 1 && cmds.get( 0 ).equals( "learning" )) { // <<<<<
 			Repertoire.inductingIs( cmd.equalsIgnoreCase( "start" ));
 			
 		} else if (cmd.equals( DISAMBIGUATE )) {
-			cmds.remove( 0 );
 			disambOn( cmds );
 		
 		} else if (cmd.equals( "load" )) {
 			/* load is used by create, delete, ignore and restore to
 			 * support their interpretation
 			 */
-			cmds.remove( 0 );
 			Strings files = cmds;
 			audit.debug( "loading "+ files.toString( Strings.CSV ));
 			for(int i=0; i<files.size(); i++)
@@ -305,12 +289,10 @@ public class Allopoiesis extends Intention {
 			}
 */
 		} else if (cmd.equals( "spell" )) {
-			cmds.remove( 0 );
 			r.format( Language.spell( cmds.get( 0 ), true ));
 			
 		} else if (cmd.equals( "tcpip" )) {
 			
-			cmds.remove( 0 );
 			String prefix = Variable.get( "XMLPRE" ),
 					suffix = Variable.get( "XMLPOST" );
 			
@@ -334,7 +316,6 @@ public class Allopoiesis extends Intention {
 				);
 			
 		} else if (cmd.equals( "timing" )) {
-			cmds.remove( 0 );
 			audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
@@ -349,7 +330,6 @@ public class Allopoiesis extends Intention {
 			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "tracing" )) {
-			cmds.remove( 0 );
 			audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
@@ -364,7 +344,7 @@ public class Allopoiesis extends Intention {
 			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "detailed" )) {
-			cmds.remove( 0 );
+			
 			audit.log( cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
@@ -379,7 +359,7 @@ public class Allopoiesis extends Intention {
 			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "debug" )) {
-			cmds.remove( 0 );
+			
 			if (cmds.get( 0 ).equals( "off" )) {
 				Audit.allOff();
 				Audit.allTracing = false;
@@ -398,7 +378,7 @@ public class Allopoiesis extends Intention {
 			
 			
 		} else if (cmd.equals( "show" )) {
-			cmds.remove( 0 );
+			
 			//audit.audit( "cmds:"+ cmds +":sz="+ cmds.size() );
 			if (1==cmds.size() && cmds.get( 0 ).length()>=4) {
 				String option = cmds.get( 0 ).substring(0,4);
@@ -439,15 +419,13 @@ public class Allopoiesis extends Intention {
 				r.answer( Reply.previous());
 			}
 			
-		} else if (   cmd.equals( "help"    )) {
+		} else if (cmd.equals( "help"    )) {
 			helped( true );
 			r.format( Repertoire.allop.helpedToString( NAME ));
 
-		} else if (cmd.equals( "hello"   ) ||
-				   cmd.equals( "welcome" )    ) {
+		} else if (cmd.equals( "welcome" )    ) {
 			helped( true );
-			if (cmd.equals(  "hello"  )) r.say( new Strings( "hello" ));
-			if (cmd.equals( "welcome" )) r.say( new Strings( "welcome" ));
+			r.say( new Strings( "welcome" ));
 			r.format( Signs.help());
 
 		} else if ( cmd.equals( "list" )) {
@@ -459,7 +437,7 @@ public class Allopoiesis extends Intention {
 			r.format( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() ));
 			
 		} else if ( cmd.equals( "describe" ) && cmds.size() >= 2) {
-			cmds.remove( 0 );
+			
 			String name = cmds.toString( Strings.CONCAT );
 			r.format( Repertoire.signs.helpedToString( name ));
 			
@@ -467,7 +445,7 @@ public class Allopoiesis extends Intention {
 			r.format( Repertoire.signs.helpedToString());
 			
 		} else {
-			cmds.remove( 0 );
+			
 			r = unknownCommand( r, cmd, cmds );
 		}
 		return r;
