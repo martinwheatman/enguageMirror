@@ -199,7 +199,7 @@ public class Reply { // a reply is basically a formatted answer
 	/** Format
 	 * 
 	 */
-	public Fmt f = new Fmt();
+	private Fmt f = new Fmt();
 	
 	public  boolean verbose() { return !f.shrt(); }
 	public  void    verbose( boolean v ) { f.shrt( v );}
