@@ -307,9 +307,9 @@ public class Enguage extends Shell {
 			testInterpret( "do we have the means to become rich", "I really don't understand." );
 
 			// 2. could this be built thus?
-			//testInterpret( "just call me phrase variable name means i am called variable name" );
+			testInterpret( "just call me phrase variable name means i am called variable name" );
 			//Repertoire.signs.show( "OTF" );
-			//testInterpret( "just call me martin", "i know." );
+			testInterpret( "just call me martin", "i know." );
 		}
 		
 		if ( level == 0 || level == 10 ) {

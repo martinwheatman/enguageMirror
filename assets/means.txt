@@ -1,4 +1,7 @@
 On "PHRASE-X the means to PHRASE-Y", reply "I really do not understand".
 
-On "PHRASE-X means PHRASE-Y", to X reply Y.
-
+On "PHRASE-X means PHRASE-Y":
+	# don't need to set induction
+	perform "sign create X";
+	perform "sign think Y";
+	then,	reply "ok".
