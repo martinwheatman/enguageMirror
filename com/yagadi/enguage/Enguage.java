@@ -307,6 +307,10 @@ public class Enguage extends Shell {
 			testInterpret( "do we have the means to become rich", "I really don't understand." );
 
 			// 2. could this be built thus?
+			testInterpret( "to phrase variable this means phrase variable that reply ok", "go on." );
+			testInterpret( "this implies perform sign think variable that",          "go on." );
+			testInterpret( "this implies perform sign create variable this",         "go on." );
+			testInterpret( "ok", "ok." );
 			testInterpret( "just call me phrase variable name means i am called variable name" );
 			//Repertoire.signs.show( "OTF" );
 			testInterpret( "just call me martin", "i know." );
@@ -324,7 +328,5 @@ public class Enguage extends Shell {
 			Question.primedAnswer( "i do not understand" );
 			testInterpret( "i have everything", "Ok , let us leave things as they are." );
 		}
-
-
 		audit.log( "PASSED" );
 }	}
