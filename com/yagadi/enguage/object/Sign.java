@@ -46,7 +46,7 @@ public class Sign {
 																											Autopoiesis.append ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "imply" )) {
-				audit.LOG( "Sign: prepending an implication '"+ argv.toString() +"'");
+				audit.debug( "Sign: prepending an implication '"+ argv.toString() +"'");
 				rc = new Autopoiesis( isElse? Intention.ELSE_THINK : Intention.THINK,  argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
