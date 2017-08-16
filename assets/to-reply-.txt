@@ -1,4 +1,4 @@
-On "to the phrase PHRASE-X reply      PHRASE-Y", to X reply Y".
+On "to the phrase PHRASE-X reply      PHRASE-Y", to X reply Y.
 On "to            PHRASE-X reply with PHRASE-Y", to X reply Y.
 On "to the phrase PHRASE-X reply with PHRASE-Y", to X reply Y.
 On "to            PHRASE-X reply      PHRASE-Y":
