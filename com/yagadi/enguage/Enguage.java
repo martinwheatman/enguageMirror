@@ -298,13 +298,16 @@ public class Enguage extends Shell {
 			//...or to put it another way
 			testInterpret( "to the phrase i am called phrase variable name reply hi whatever", "go on." );
 			testInterpret( "this implies name gets set to variable name", "go on." );
-			testInterpret( "this implies name is not set to variable name if not reply i know", "go on." );
+			testInterpret( "this implies name is not set to variable name if not reply i already know this", "go on." );
 			testInterpret( "ok", "ok." );
 			
-			testInterpret( "i am called martin", "i know." );
+			testInterpret( "i am called martin", "i already know this." );
 			
 			// ...means.../...the means to...
 			// 1. from the-means-to repertoire
+			testInterpret( "to the phrase phrase variable x the means to phrase variable y reply i really do not understand", "go on." );
+			testInterpret( "that is it", "ok." );
+
 			testInterpret( "do we have the means to become rich", "I really don't understand." );
 
 			// 2. could this be built thus?
@@ -314,20 +317,22 @@ public class Enguage extends Shell {
 			testInterpret( "ok", "ok." );
 			
 			testInterpret( "just call me phrase variable name means i am called variable name", "ok." );
+
+			//Repertoire.signs.show( "OTF" );
 			
-			testInterpret( "just call me martin", "i know." );
+			testInterpret( "just call me martin", "i already know this." );
 		}
 		
 		if ( level == 0 || level == 10 ) {
 			// ask: Confirmation
 			//testInterpret( "tracing on" );
-			//Repertoire.signs.show( "OTF" );
+			
 			Question.primedAnswer( "yes" );
-			testInterpret( "i have everything", "ok , you don't need anything." );			
+			testInterpret( "i have everything", "ok , you don't need anything." );
+			
 			Question.primedAnswer( "no" );
 			testInterpret( "i have everything", "ok , let us leave things as they are." );
 
-			//testInterpret( "tracing on" );
 			Question.primedAnswer( "i do not understand" );
 			testInterpret( "i have everything", "Ok , let us leave things as they are." );
 		}
