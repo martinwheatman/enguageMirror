@@ -285,12 +285,7 @@ public class Enguage extends Shell {
 			testInterpret( "my name is martin", "I don't understand." );
 			Variable.unset( "NAME" );
 			
-			testInterpret( "to the phrase i am called phrase variable name reply hi whatever", "go on." );
-			testInterpret( "this implies name gets set to variable name", "go on." );
-			testInterpret( "this implies name is not set to variable name if not reply i know", "go on." );
-			testInterpret( "ok", "ok." );
-			
-			
+			// build-a-program...
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );
 			testInterpret( "first set name to variable name",                "go on." );
 			testInterpret( "then get the value of name",                     "go on." ); // not strictly necessary!
@@ -299,26 +294,34 @@ public class Enguage extends Shell {
 
 			testInterpret( "my name is ruth",    "hello ruth." );
 			testInterpret( "my name is martin",  "hello martin." );
+			
+			//...or to put it another way
+			testInterpret( "to the phrase i am called phrase variable name reply hi whatever", "go on." );
+			testInterpret( "this implies name gets set to variable name", "go on." );
+			testInterpret( "this implies name is not set to variable name if not reply i know", "go on." );
+			testInterpret( "ok", "ok." );
+			
 			testInterpret( "i am called martin", "i know." );
 			
-			// ...means.../...the means...
-			// 1.
-			//testInterpret( "tracing on" );
+			// ...means.../...the means to...
+			// 1. from the-means-to repertoire
 			testInterpret( "do we have the means to become rich", "I really don't understand." );
 
 			// 2. could this be built thus?
 			testInterpret( "to phrase variable this means phrase variable that reply ok", "go on." );
-			testInterpret( "this implies perform sign think variable that",          "go on." );
-			testInterpret( "this implies perform sign create variable this",         "go on." );
+			testInterpret( "this implies perform sign think variable that",               "go on." );
+			testInterpret( "this implies perform sign create variable this",              "go on." );
 			testInterpret( "ok", "ok." );
-			testInterpret( "just call me phrase variable name means i am called variable name" );
-			//Repertoire.signs.show( "OTF" );
+			
+			testInterpret( "just call me phrase variable name means i am called variable name", "ok." );
+			
 			testInterpret( "just call me martin", "i know." );
 		}
 		
 		if ( level == 0 || level == 10 ) {
 			// ask: Confirmation
 			//testInterpret( "tracing on" );
+			//Repertoire.signs.show( "OTF" );
 			Question.primedAnswer( "yes" );
 			testInterpret( "i have everything", "ok , you don't need anything." );			
 			Question.primedAnswer( "no" );
