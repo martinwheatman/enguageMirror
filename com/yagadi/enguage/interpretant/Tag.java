@@ -98,13 +98,14 @@ public class Tag {
 	public  Tag        attribute( String name, String value ) {attributes( new Attribute( name, value )); return this; }
 	// ordering of attributes relevant to Autopoiesis
 	public  Tag        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
-	public  Tag        prepend( String name, String value ) {
+	public  Tag        prepend( String name, String value ) { return add( name, value, 0 );}  // 0 == add at 0th index!
+	public  Tag        add( String name, String value, int posn ) {
 		if (name.equals( phrase ))
 			isPhrased = true;
 		else
-			attrs.add( 0, new Attribute( name, value ));
+			attrs.add( posn, new Attribute( name, value ));
 		return this;
-	} // 0 == add at 0th index!
+	}
 	public  Tag        remove( int nth ) { attrs.remove( nth ); return this; }
 	public  Tag        remove( String name ) { attrs.remove( name ); return this; }
 	public  Tag        replace( String name, String value ) {

@@ -19,10 +19,11 @@ public class Autopoiesis extends Intention {
 	public static final String APPEND  = "app";
 	public static final String PREPEND = "prep";
 	
-	public static final int    undef   = -1;
-	public static final int    create  =  0;
-	public static final int    prepend =  1;
-	public static final int    append  =  2;
+	public static final int    undef      = -1;
+	public static final int    create     =  0;
+	public static final int    prepend    =  1;
+	public static final int    append     =  2;
+	public static final int    headAppend =  3;
 	
 	public static final Sign[] autopoiesis = {
 		// PATTERN PRE-CHECK cases (4)
@@ -106,29 +107,6 @@ public class Autopoiesis extends Intention {
 
 	public Autopoiesis( String name, String value ) { super( name, value ); }	
 	public Autopoiesis( String name, String value, int intnt ) { super( name, value ); intent = intnt;}	
-	/*
-	public Autopoiesis( int intnt, String one, String two ) {
-		super( NEW, one );
-		intent = intnt;
-		Reply r = new Reply();
-		r = mediate( r );
-		name( REPLY );
-		value( two );
-		intent = append;
-		r = new Reply();
-		r = mediate( r );
-	}
-	public Autopoiesis( Intention one, Intention two ) {
-		super( two.name(), two.value() );
-		intent = prepend; // constuct them backwards!!!
-		Reply r = new Reply();
-		r = mediate( r );
-		name( one.name());
-		value( one.value());
-		r = new Reply();
-		r = mediate( r );
-	}
-	*/
 	
 	private int intent = undef;
 	public  int intent() { return intent;}
@@ -154,13 +132,17 @@ public class Autopoiesis extends Intention {
 					.concept( Repertoire.AUTOPOIETIC )
 			);
 			
-		} else if (intent == append ) { // manually adding a sign  
+		} else if (intent == append ) { // add intent to end of interpretant
 			if (null != s) s.append( name, Tags.toPattern( value ).toString());
 			
-		} else if (intent == prepend ) { // manually adding a sign  
+		} else if (intent == prepend ) { // add intent to start of interpretant
 			audit.debug( "auto.mediate(): prepending "+ value );
 			if (null != s) s.prepend( name, Tags.toPattern( value ).toString() );
-		
+			
+		} else if (intent == headAppend ) { // add intent to first but one...  
+			audit.debug( "auto.mediate(): headAppending "+ value );
+			if (null != s) s.add( name, Tags.toPattern( value ).toString(), 1 );
+			
 		// following these are trad. autopoiesis...this need updating as above!!!
 		} else if (name.equals( APPEND ) || name.equals( PREPEND )) {
 			if (null == s)

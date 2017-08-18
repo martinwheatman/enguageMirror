@@ -14,6 +14,15 @@ On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
 	unset the value of prepending;
 	then, reply "go on".
 
+On "if not reply PHRASE-REPLY":
+	get the value of induction;
+	if not, reply "i do not understand";
+	set headappending to true;
+	perform "sign else reply REPLY";
+	#perform "sign imply IMPLICATION";
+	unset the value of headappending;
+	then, reply "go on".
+
 On "this implies PHRASE-IMPLICATION":
 	perform "sign imply IMPLICATION";
 	then, reply "go on".
