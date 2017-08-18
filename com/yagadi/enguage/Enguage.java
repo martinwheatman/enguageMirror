@@ -282,7 +282,9 @@ public class Enguage extends Shell {
 		
 		if (level == 0 || level == 9) {
 			audit.title( "On-the-fly Langauge Learning" );
-			testInterpret( "my name is martin", "I don't understand." );
+			// First, what we can't say yet...
+			testInterpret( "my name is martin",                "I don't understand." );
+			testInterpret( "if not  reply i already know this", "I don't understand." );
 			Variable.unset( "NAME" );
 			
 			// build-a-program...
