@@ -243,12 +243,13 @@ public class Enguage extends Shell {
 		}
 
 		if ( level == 0 || level == 7 ) {
-			audit.title( "Temporospatial concept MEETING" );
-
+			
 			audit.title( "Temporal interpret" );
 			testInterpret( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
 
+			audit.title( "Temporospatial concept MEETING" );
+			
 			Where.doLocators();
 			new Sofa().interpret( new Strings( "entity create pub" ));
 
@@ -281,7 +282,9 @@ public class Enguage extends Shell {
 		}
 		
 		if (level == 0 || level == 9) {
+			
 			audit.title( "On-the-fly Langauge Learning" );
+			
 			// First, what we can't say yet...
 			testInterpret( "my name is martin",                "I don't understand." );
 			testInterpret( "if not  reply i already know this", "I don't understand." );
@@ -327,7 +330,8 @@ public class Enguage extends Shell {
 		}
 		
 		if ( level == 0 || level == 10 ) {
-			// ask: Confirmation
+			
+			audit.title( "Ask: Confirmation" );
 			//testInterpret( "tracing on" );
 			
 			Question.primedAnswer( "yes" );
