@@ -1,3 +1,3 @@
 # Enguage(TM) - (c) Martin Wheatman
-A context-dependent langauge mediator - finding the most appropriate interpretation for an utterance.
+A pragmatic langauge mediator - finding a context-dependent interpretation for an utterance.
 # Enguage
