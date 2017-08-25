@@ -26,17 +26,6 @@ public class Autopoiesis extends Intention {
 	public static final int    headAppend =  3;
 	
 	public static final Sign[] autopoiesis = {
-		// PATTERN PRE-CHECK cases (4)
-		// 1: A implies B.
-/*		new Sign().attribute( PREPEND, Intention.THINK +" B" )
-			.content( new Tag( "", "a"      ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( " implies ", "b", "." ).attribute( Tag.quoted, Tag.quoted )),
-		// 2: A implies B, if not, say C.
-		new Sign().attribute( PREPEND, Intention.ELSE_REPLY+" C").attribute( PREPEND, Intention.THINK +" A B")
-			.content( new Tag(          "", "a" ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( " implies ", "b" ).attribute( Tag.quoted, Tag.quoted ))
-			.content( new Tag( " ; if not, reply ", "c", "." ).attribute( Tag.quoted, Tag.quoted )),
-*/
 		// PATTERN CREATION cases (7).
 		// a1: On X, think Y.
 		new Sign().attribute( NEW, Intention.THINK +" X Y")
@@ -141,7 +130,7 @@ public class Autopoiesis extends Intention {
 			
 		} else if (intent == headAppend ) { // add intent to first but one...  
 			audit.debug( "auto.mediate(): headAppending "+ value );
-			if (null != s) s.add( name, Tags.toPattern( value ).toString(), 1 );
+			if (null != s) s.add( 1, name, Tags.toPattern( value ).toString() );
 			
 		// following these are trad. autopoiesis...this need updating as above!!!
 		} else if (name.equals( APPEND ) || name.equals( PREPEND )) {
@@ -215,18 +204,19 @@ public class Autopoiesis extends Intention {
 		
 		
 		audit.title( "sign self-build II... add pairs of attributes" );
-		// ...To PATTERN reply TYPICAL REPLY
+		// now built like this...
+		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();
 		s = new Sign()
 				.content( new Tags( "c variable pattern z" ))
 				.concept( concept() );
-		// ...This implies COND if not reply EXECP REPLY
 		String reply = "three four";
-		// ...this implies -- add a pair of intentions
-		s.append( THINK, "one two three four" );
-		s.append( ELSE_REPLY, "two three four" );
-		// and thats it...
 		s.append( REPLY, reply );
+		// ...This implies COND
+		s.prepend( THINK, "one two three four" );
+		// ...if not reply EXECP REPLY
+		s.add( 1, ELSE_REPLY, "two three four" );
+		
 		Repertoire.signs.insert( s );
 		r.answer( Reply.yes().toString() );
 

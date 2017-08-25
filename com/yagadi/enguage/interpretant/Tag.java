@@ -98,8 +98,8 @@ public class Tag {
 	public  Tag        attribute( String name, String value ) {attributes( new Attribute( name, value )); return this; }
 	// ordering of attributes relevant to Autopoiesis
 	public  Tag        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
-	public  Tag        prepend( String name, String value ) { return add( name, value, 0 );}  // 0 == add at 0th index!
-	public  Tag        add( String name, String value, int posn ) {
+	public  Tag        prepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
+	public  Tag        add( int posn, String name, String value ) {
 		if (name.equals( phrase ))
 			isPhrased = true;
 		else

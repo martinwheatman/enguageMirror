@@ -29,7 +29,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			insert( sign );
 	}
 
-static private int   total = 0;
+	static private int   total = 0;
 	static private int clashes = 0;
 	
 	public Signs insert( Sign insertMe ) {
