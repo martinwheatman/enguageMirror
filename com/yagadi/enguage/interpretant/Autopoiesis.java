@@ -122,32 +122,32 @@ public class Autopoiesis extends Intention {
 			);
 			
 		} else if (intent == append ) { // add intent to end of interpretant
-			if (null != s) s.append( name, Tags.toPattern( value ).toString());
+			if (null != s) s.append( type, Tags.toPattern( value ).toString());
 			
 		} else if (intent == prepend ) { // add intent to start of interpretant
 			audit.debug( "auto.mediate(): prepending "+ value );
-			if (null != s) s.prepend( name, Tags.toPattern( value ).toString() );
+			if (null != s) s.prepend( type, Tags.toPattern( value ).toString() );
 			
 		} else if (intent == headAppend ) { // add intent to first but one...  
 			audit.debug( "auto.mediate(): headAppending "+ value );
-			if (null != s) s.add( 1, name, Tags.toPattern( value ).toString() );
+			if (null != s) s.add( 1, type, Tags.toPattern( value ).toString() );
 			
 		// following these are trad. autopoiesis...this need updating as above!!!
-		} else if (name.equals( APPEND ) || name.equals( PREPEND )) {
+		} else if (type.equals( APPEND ) || type.equals( PREPEND )) {
 			if (null == s)
 				// this should return DNU...
 				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
 			else {
 				String attr = sa.get( 0 ),
 					    val  = Strings.trim( sa.get( 1 ), '"' );
-				audit.debug( name +"ending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
-				if (name.equals( APPEND ))
+				audit.debug( type +"ending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
+				if (type.equals( APPEND ))
 					s.append(  attr, val );
 				else
 					s.prepend( attr, val );
 			}
 			
-		} else if (name.equals( NEW )) { // autopoeisis?
+		} else if (type.equals( NEW )) { // autopoeisis?
 			String attr    = sa.get( 0 ),
 			       pattern = sa.get( 1 ),
 			       val     = Strings.trim( sa.get( 2 ), '"' );
@@ -155,7 +155,7 @@ public class Autopoiesis extends Intention {
 			 * "X is X" and "X is Y" -- same shape, different usage.
 			 * At least need to avoid this (spot when "X is X" happens)
 			 */
-			audit.debug( "Adding "+ name +": ["+ sa.toString( Strings.CSV )+"]");
+			audit.debug( "Adding "+ type +": ["+ sa.toString( Strings.CSV )+"]");
 			if ( pattern.equals( "help" ))
 				s.help( val ); // add: help="text" to cached sign
 			else // create then add a new cached sign into the list of signs

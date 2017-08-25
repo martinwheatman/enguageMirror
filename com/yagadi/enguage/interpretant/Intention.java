@@ -1,6 +1,5 @@
 package com.yagadi.enguage.interpretant;
 
-import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
@@ -13,7 +12,8 @@ import com.yagadi.enguage.vehicle.Utterance;
 import com.yagadi.enguage.vehicle.when.Moment;
 import com.yagadi.enguage.vehicle.when.When;
 
-public class Intention extends Attribute {
+public class Intention {
+	
 	private static Audit audit = new Audit( "Intention" );
 	
 	public static final String      REPLY = "r";
@@ -26,6 +26,9 @@ public class Intention extends Attribute {
 	public static final String ELSE_RUN   = "N";
 	public static final String FINALLY    = "f";
 
+	public String type  = "";
+	public String value = "";
+	
 	public boolean   temporal = false;
 	public boolean   isTemporal() { return temporal; }
 	public Intention temporalIs( boolean b ) { temporal = b; return this; }
@@ -35,7 +38,7 @@ public class Intention extends Attribute {
 	public Intention spatialIs( boolean s ) { spatial = s; return this; }
 
 
-	public Intention( String name, String value ) { super( name, value ); }	
+	public Intention( String nm, String val ) { type=nm; value = val; }	
 	
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
@@ -122,31 +125,31 @@ public class Intention extends Attribute {
 		//if (audit.tracing) audit.in( "mediate", name +"='"+ value +"', r='"+ r.asString() +"', ctx =>"+ Context.valueOf());
 		
 		if (r.isDone()) { 
-			audit.debug( "skipping "+ name() +": reply already found" );
+			audit.debug( "skipping "+ type +": reply already found" );
 		
-		} else if (name.equals( "finally" )) {
+		} else if (type.equals( "finally" )) {
 			perform( r ); // ignore result of finally
 
 		} else {
 			
 			if (r.negative()) {
-				if (name.equals( ELSE_THINK ))
+				if (type.equals( ELSE_THINK ))
 					r = think( r );
-				else if (name.equals( ELSE_DO ))
+				else if (type.equals( ELSE_DO ))
 					r = perform( r );
-				else if (name.equals( ELSE_RUN ))
+				else if (type.equals( ELSE_RUN ))
 					r = new Proc( value ).run( r );
-				else if (name.equals( ELSE_REPLY ))
+				else if (type.equals( ELSE_REPLY ))
 					r = reply( r );
  					
 			} else { // train of thought is neutral/positive
-				if (name.equals( THINK ))
+				if (type.equals( THINK ))
 					r = think( r );
-				else if (name.equals( DO ))
+				else if (type.equals( DO ))
 					r = perform( r );
-				else if (name.equals( RUN ))
+				else if (type.equals( RUN ))
 					r = new Proc( value ).run( r );
-				else if (name.equals( REPLY )) // if Reply.NO -- deal with -ve replies!
+				else if (type.equals( REPLY )) // if Reply.NO -- deal with -ve replies!
 					r = reply( r );
 		}	}
 		

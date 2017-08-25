@@ -154,7 +154,7 @@ public class Sign extends Tag {
 			       value = an.value();
 			//audit.debug( name +"='"+ value +"'" );
 			r = name.equals( Allopoiesis.NAME ) ?
-					new Allopoiesis(      name, value ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
+					new Allopoiesis( name, value ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
 				: name.equals( Autopoiesis.APPEND )  ||
 				  name.equals( Autopoiesis.PREPEND ) ||
 				  name.equals( Autopoiesis.NEW ) ?
