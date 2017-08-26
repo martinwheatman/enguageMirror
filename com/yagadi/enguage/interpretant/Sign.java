@@ -1,9 +1,9 @@
 package com.yagadi.enguage.interpretant;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
 import com.yagadi.enguage.util.Audit;
@@ -11,6 +11,11 @@ import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Reply;
 
 public class Sign extends Tag {
+	
+	private class Intentions extends ArrayList<Intention> {
+		static final long serialVersionUID = 0L;
+	}
+	
 	private static final String   NAME = "sign";
 	private static       Audit   audit = new Audit( NAME );
 	private static final String indent = "    ";
@@ -24,6 +29,23 @@ public class Sign extends Tag {
 		concept( concept );
 	}
 	
+	Intentions intentions = new Intentions();
+	public Intentions intentions() { return intentions; }
+	public Sign intention( int posn, Intention intent ) { intentions.add( posn, intent ); return this;}
+	//public Sign create( Intention intent )
+	public Sign append( Intention intent ){ intentions.add( intent ); return this;}
+	public Sign headAppend( Intention intent ){ intentions.add( 1, intent ); return this;}
+	public Sign prepend( Intention i ){ intentions.add( 0, i ); return this;}
+	public Sign add( int i, Intention intent ) { intentions.add( i, intent ); return this;}
+	public Sign append( String name, String value ) { append( new Intention( name, value )); return this; }
+	public Sign prepend( String name, String value ) { return add( 0, new Intention( name, value ));}  // 0 == add at 0th index!
+	
+	// methods need to return correct class of this
+	public Sign attribute( String name, String value ) {
+		append( new Intention( Intention.nameToType( name ), value ));
+		return this;
+	}
+
 	/* To protect against being interpreted twice on resetting the iterator
 	 * after a DNU is returned on co-modification of the iterator by
 	 * autoloading repertoires.
@@ -127,12 +149,6 @@ public class Sign extends Tag {
 				: MID_RANGE*namedTags + LOW_RANGE*boilerplate + rnd*10;
 	}
 	
-	// methods need to return correct class of this
-	public Sign attribute( String name, String value ) {
-		attributes( new Attribute( name, value ));
-		return this;
-	}
-	
 	@Override
 	public Sign content( Tags ta ) { content = ta; return this; }
 	public Sign content( Tag  t )  { content.add( t ); return this; }
@@ -147,12 +163,12 @@ public class Sign extends Tag {
 	
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", "\n"+ toXml() );
-		Iterator<Attribute> ai = attributes().iterator();
+		Iterator<Intention> ai = intentions().iterator();
 		while (!r.isDone() && ai.hasNext()) {
-			Attribute an = ai.next();
-			String  name = an.name(),
+			Intention an = ai.next();
+			String  name = Intention.typeToString( an.type ),
 			       value = an.value();
-			//audit.debug( name +"='"+ value +"'" );
+			audit.debug( name +"='"+ value +"'" );
 			r = name.equals( Allopoiesis.NAME ) ?
 					new Allopoiesis( name, value ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
 				: name.equals( Autopoiesis.APPEND )  ||
@@ -175,7 +191,7 @@ public class Sign extends Tag {
 		p.attribute("reply", "hello world");
 		p.content( new Tag().prefix( new Strings( "hello" )));
 		Reply r = new Reply();
-		Intention intent = new Intention( "say", "hello world" );
+		Intention intent = new Intention( Intention.thenReply, "hello world" );
 		r = intent.mediate( r );
 		audit.log( "r="+ r.toString());
 		
@@ -194,5 +210,4 @@ public class Sign extends Tag {
 		ts = new Tags();
 		ts.add( new Tag( "this is a", "x" ).attribute( "phrase", "phrase" ));
 		complexityTest( ts );
-		
 }	}

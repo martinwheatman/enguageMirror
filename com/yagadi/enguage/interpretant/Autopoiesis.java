@@ -12,84 +12,73 @@ import com.yagadi.enguage.vehicle.Reply;
 public class Autopoiesis extends Intention {
 	private static       Audit   audit = new Audit( "Autopoiesis" );
 
-	public static final String NAME    = "autopoiesis";
-	
-	public static final String UNDEF   = "und";
-	public static final String NEW     = "new";
-	public static final String APPEND  = "app";
-	public static final String PREPEND = "prep";
-	
-	public static final int    undef      = -1;
-	public static final int    create     =  0;
-	public static final int    prepend    =  1;
-	public static final int    append     =  2;
-	public static final int    headAppend =  3;
+	public static final String NAME    = Intention.AUTOP;
 	
 	public static final Sign[] autopoiesis = {
 		// PATTERN CREATION cases (7).
 		// a1: On X, think Y.
-		new Sign().attribute( NEW, Intention.THINK +" X Y")
+		new Sign().append( new Intention( NEW, Intention.THINK +" X Y" ))
 			.content( new Tag(     "On ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
 			
 		// a2: On X, reply Y.
-		new Sign().attribute( NEW, Intention.REPLY +" X Y")
+		new Sign().append( new Intention( NEW, Intention.REPLY +" X Y" ))
 			.content( new Tag(     "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", reply ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 			
 		// a3: On X, perform Y.
-		new Sign().attribute( NEW, Intention.DO +" X Y") // <<<< trying this
+		new Sign().append( new Intention( NEW, Intention.DO +" X Y" )) // <<<< trying this
 			.content( new Tag(       "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 			
 		// b1: Then on X think Y.
-		new Sign().attribute( APPEND, Intention.THINK +" Y")
+		new Sign().append( new Intention( APPEND, Intention.THINK +" Y" ))
 			.content( new Tag( "Then on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
 			
 		// b2: Then on X reply Y.
-		new Sign().attribute( APPEND, Intention.REPLY+" Y")
+		new Sign().append( new Intention( APPEND, Intention.REPLY+" Y" ))
 			.content( new Tag( "Then  on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", reply   ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 			
 		// b3: Then on X perform Y.
-		new Sign().attribute( APPEND, Intention.DO +" Y")
+		new Sign().append( new Intention( APPEND, Intention.DO +" Y" ))
 			.content( new Tag( "Then  on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 		
 		// At some point this could be improved to say "On X, perform Y; if not, reply Z." -- ??? think!
 		// !b1: Else on X think Y.
-		new Sign().attribute( APPEND, Intention.ELSE_THINK +" Y")
+		new Sign().append( new Intention( APPEND, Intention.ELSE_THINK +" Y" ))
 			.content( new Tag( "Then on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
 			
 		// !b2: Else on X reply Y.
-		new Sign().attribute( APPEND, Intention.ELSE_REPLY +" Y")
+		new Sign().append( new Intention( APPEND, Intention.ELSE_REPLY +" Y"))
 			.content( new Tag(  "Then on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, reply ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 			
 		// !b3: Else on X perform Y.
-		new Sign().attribute( APPEND, Intention.ELSE_DO +" Y" )
+		new Sign().append( new Intention( APPEND, Intention.ELSE_DO +" Y" ))
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 					
 		/*	Added new signs for the running of applications external to enguage...
 		 */
-		new Sign().attribute( NEW, Intention.RUN +" X Y")
+		new Sign().append( new Intention( NEW, Intention.RUN +" X Y" ))
 			.content( new Tag( "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 		
-		new Sign().attribute( APPEND, Intention.RUN +" Y" )
+		new Sign().append( new Intention( APPEND, Intention.RUN +" Y" ))
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 
-		new Sign().attribute( APPEND, Intention.ELSE_RUN +" Y" )
+		new Sign().append( new Intention( APPEND, Intention.ELSE_RUN +" Y" ))
 			.content( new Tag( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ", if not, run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
 
 		/* c1: Finally on X perform Y. -- dont need think or reply?
 		 */
-		new Sign().attribute( APPEND, Intention.FINALLY+" Y")
+		new Sign().append( new Intention( APPEND, Intention.FINALLY+" Y" ))
 			.content( new Tag( " Finally on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
 			.content( new Tag( ",   perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted ))
 	};
@@ -108,32 +97,32 @@ public class Autopoiesis extends Intention {
 	static public  String concept() { return concept; }
 	
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", "NAME="+ NAME +", value="+ value +", "+ Context.valueOf());
-		Strings sa = Context.deref( new Strings( value ));
+		audit.in( "mediate", "NAME="+ NAME +", value="+ value() +", "+ Context.valueOf());
+		Strings sa = Context.deref( new Strings( value() ));
 		
 		// needs to switch on type (intent)
 		if (intent == create ) { // manually adding a sign
 			
-			audit.debug( "autop: creating new sign: ["+ value +"]");
+			audit.debug( "autop: creating new sign: ["+ value() +"]");
 			Repertoire.signs.insert(
 				s = new Sign()
-					.content( new Tags( value )) // manual new Tags
+					.content( new Tags( value() )) // manual new Tags
 					.concept( Repertoire.AUTOPOIETIC )
 			);
 			
 		} else if (intent == append ) { // add intent to end of interpretant
-			if (null != s) s.append( type, Tags.toPattern( value ).toString());
+			if (null != s) s.append( new Intention( type, Tags.toPattern( value() ).toString()));
 			
 		} else if (intent == prepend ) { // add intent to start of interpretant
-			audit.debug( "auto.mediate(): prepending "+ value );
-			if (null != s) s.prepend( type, Tags.toPattern( value ).toString() );
+			audit.debug( "auto.mediate(): prepending "+ value() );
+			if (null != s) s.prepend( new Intention( type, Tags.toPattern( value() ).toString() ));
 			
 		} else if (intent == headAppend ) { // add intent to first but one...  
-			audit.debug( "auto.mediate(): headAppending "+ value );
-			if (null != s) s.add( 1, type, Tags.toPattern( value ).toString() );
+			audit.debug( "auto.mediate(): headAppending "+ value() );
+			if (null != s) s.add( 1, new Intention( type, Tags.toPattern( value() ).toString() ));
 			
 		// following these are trad. autopoiesis...this need updating as above!!!
-		} else if (type.equals( APPEND ) || type.equals( PREPEND )) {
+		} else if (typeToString().equals( APPEND ) || typeToString().equals( PREPEND )) {
 			if (null == s)
 				// this should return DNU...
 				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
@@ -141,13 +130,13 @@ public class Autopoiesis extends Intention {
 				String attr = sa.get( 0 ),
 					    val  = Strings.trim( sa.get( 1 ), '"' );
 				audit.debug( type +"ending  to EXISTING rule: ["+ sa.toString( Strings.CSV )+"]");
-				if (type.equals( APPEND ))
+				if (typeToString().equals( APPEND ))
 					s.append(  attr, val );
 				else
 					s.prepend( attr, val );
 			}
 			
-		} else if (type.equals( NEW )) { // autopoeisis?
+		} else if (typeToString().equals( NEW )) { // autopoeisis?
 			String attr    = sa.get( 0 ),
 			       pattern = sa.get( 1 ),
 			       val     = Strings.trim( sa.get( 2 ), '"' );
@@ -155,7 +144,7 @@ public class Autopoiesis extends Intention {
 			 * "X is X" and "X is Y" -- same shape, different usage.
 			 * At least need to avoid this (spot when "X is X" happens)
 			 */
-			audit.debug( "Adding "+ type +": ["+ sa.toString( Strings.CSV )+"]");
+			audit.debug( "Adding "+ typeToString() +": ["+ sa.toString( Strings.CSV )+"]");
 			if ( pattern.equals( "help" ))
 				s.help( val ); // add: help="text" to cached sign
 			else // create then add a new cached sign into the list of signs

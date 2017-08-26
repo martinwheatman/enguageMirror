@@ -16,6 +16,12 @@ public class Intention {
 	
 	private static Audit audit = new Audit( "Intention" );
 	
+	public static final String UNDEF   = "und";
+	public static final String NEW     = "new";
+	public static final String APPEND  = "app";
+	public static final String PREPEND = "prep";
+	public static final String HEADAPP = "headApp"; // unused?
+	
 	public static final String      REPLY = "r";
 	public static final String ELSE_REPLY = "R";
 	public static final String      THINK = "t";
@@ -25,9 +31,99 @@ public class Intention {
 	public static final String      RUN   = "n";
 	public static final String ELSE_RUN   = "N";
 	public static final String FINALLY    = "f";
+	public static final String ALLOP      = "engine";
+	public static final String AUTOP      = "autopoiesis";
+	
+	public static final int _then        = 0x00; // 0000
+	public static final int _else        = 0x01; // 0001
+	public static final int _think       = 0x00; // 0000
+	public static final int _do          = 0x02; // 0010
+	public static final int _run         = 0x04; // 0100 -- TODO: combine with tcpip and do!!!
+	public static final int _say         = 0x06; // 0110
+	
+	public static final int    undef      = -1;
 
-	public String type  = "";
-	public String value = "";
+	public static final int thenThink   = _then | _think; // =  0
+	public static final int elseThink   = _else | _think; // =  1
+	public static final int thenDo      = _then | _do;    // =  2
+	public static final int elseDo      = _else | _do;    // =  3
+	public static final int thenRun     = _then | _run;   // =  4
+	public static final int elseRun     = _else | _run;   // =  5
+	public static final int thenReply   = _then | _say;   // =  6
+	public static final int elseReply   = _else | _say;   // =  7
+	public static final int allop       =  0x8;           // =  8
+	public static final int autop       =  0x9;           // =  9
+	public static final int thenFinally =  0xf; // 1111      = 16
+
+	public static final int    create     =  0xa;
+	public static final int    prepend    =  0xb;
+	public static final int    append     =  0xc;
+	public static final int    headAppend =  0xd;
+
+	public  int    type  = 0;
+	private String value = "";
+	public  String value() { return value; }
+	
+	static public String typeToString( int type ) {
+		switch (type) {
+			case thenReply : return REPLY;
+			case elseReply : return ELSE_REPLY;
+			case thenThink : return THINK;
+			case elseThink : return ELSE_THINK;
+			case thenDo    : return DO;
+			case elseDo    : return ELSE_DO;
+			case thenRun   : return RUN;
+			case elseRun   : return ELSE_RUN;
+			case allop     : return ALLOP;
+			case autop     : return AUTOP;
+			case create    : return NEW;
+			case prepend   : return PREPEND;
+			case append    : return APPEND;
+			case headAppend : return HEADAPP; // don't think this is called!
+			case thenFinally : return FINALLY;
+			default:
+				audit.FATAL( "Intention: still returning undefined" );
+				return UNDEF;
+	}	}
+	public String typeToString() {
+		return typeToString( type );
+	}
+	static public int nameToType( String name ) {
+		if ( name.equals( REPLY ))
+			return thenReply;
+		else if ( name.equals( ELSE_REPLY ))
+			return elseReply;
+		else if ( name.equals( THINK ))
+			return thenThink;
+		else if ( name.equals( ELSE_THINK ))
+			return elseThink;
+		else if ( name.equals( DO))
+			return thenDo; 
+		else if ( name.equals( ELSE_DO ))
+			return elseDo; 
+		else if ( name.equals( RUN ))
+			return thenRun; 
+		else if ( name.equals( ELSE_RUN ))
+			return elseRun;
+		else if ( name.equals( FINALLY ))
+			return thenFinally;
+		else if ( name.equals( ALLOP ))
+			return allop;
+		else if ( name.equals( AUTOP ))
+			return autop;
+		else if ( name.equals( NEW ))
+			return create;
+		else if ( name.equals( APPEND ))
+			return append;
+		else if ( name.equals( PREPEND ))
+			return prepend;
+		else if ( name.equals( HEADAPP )) {
+			audit.FATAL( "typing headApp" );
+			return headAppend;
+		} else {
+			audit.FATAL( "typing undef" );
+			return undef;
+	}	}
 	
 	public boolean   temporal = false;
 	public boolean   isTemporal() { return temporal; }
@@ -38,7 +134,8 @@ public class Intention {
 	public Intention spatialIs( boolean s ) { spatial = s; return this; }
 
 
-	public Intention( String nm, String val ) { type=nm; value = val; }	
+	public Intention( int nm, String val ) { type=nm; value = val; }	
+	public Intention( String nm, String val ) { type=nameToType( nm ); value = val; }	
 	
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
@@ -122,41 +219,40 @@ public class Intention {
 	}
 	
 	public Reply mediate( Reply r ) {
-		//if (audit.tracing) audit.in( "mediate", name +"='"+ value +"', r='"+ r.asString() +"', ctx =>"+ Context.valueOf());
+		audit.in( "mediate", typeToString( type ) +"='"+ value +"', ctx =>"+ Context.valueOf());
 		
 		if (r.isDone()) { 
-			audit.debug( "skipping "+ type +": reply already found" );
+			audit.debug( "skipping "+ typeToString() +": reply already found" );
 		
-		} else if (type.equals( "finally" )) {
+		} else if (typeToString().equals( "finally" )) {
 			perform( r ); // ignore result of finally
 
 		} else {
 			
 			if (r.negative()) {
-				if (type.equals( ELSE_THINK ))
+				if (typeToString().equals( ELSE_THINK ))
 					r = think( r );
-				else if (type.equals( ELSE_DO ))
+				else if (typeToString().equals( ELSE_DO ))
 					r = perform( r );
-				else if (type.equals( ELSE_RUN ))
+				else if (typeToString().equals( ELSE_RUN ))
 					r = new Proc( value ).run( r );
-				else if (type.equals( ELSE_REPLY ))
+				else if (typeToString().equals( ELSE_REPLY ))
 					r = reply( r );
  					
 			} else { // train of thought is neutral/positive
-				if (type.equals( THINK ))
+				if (typeToString().equals( THINK ))
 					r = think( r );
-				else if (type.equals( DO ))
+				else if (typeToString().equals( DO ))
 					r = perform( r );
-				else if (type.equals( RUN ))
+				else if (typeToString().equals( RUN ))
 					r = new Proc( value ).run( r );
-				else if (type.equals( REPLY )) // if Reply.NO -- deal with -ve replies!
+				else if (typeToString().equals( REPLY )) // if Reply.NO -- deal with -ve replies!
 					r = reply( r );
 		}	}
 		
-		//if (audit.tracing) audit.out( "r='"+ r.toString() +"' ("+ r.asString() +")");
-		return r;
+		return (Reply) audit.out( r );
 	}
 	public static void main( String argv[]) {
 		Reply r = new Reply().answer( "world" );
-		audit.log( new Intention( REPLY, "hello ..." ).mediate( r ).toString() );
+		audit.log( new Intention( thenReply, "hello ..." ).mediate( r ).toString() );
 }	}

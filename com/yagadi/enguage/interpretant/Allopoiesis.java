@@ -18,7 +18,7 @@ import com.yagadi.enguage.vehicle.Utterance;
 public class Allopoiesis extends Intention {
 	private static Audit audit = new Audit( "Allop" );
 
-	public  static final String NAME = "engine";
+	public  static final String NAME = Intention.ALLOP;
 	public  static final String HELP = "help";
 	private static final String DISAMBIGUATE = "disamb";
 	
@@ -192,18 +192,13 @@ public class Allopoiesis extends Intention {
 		Strings cmds =
 				Context.deref(
 					/*Variable.deref(*/
-						new Strings( value )
+						new Strings( value() )
 					/*)*/
 				);
 		cmds = cmds.normalise();
 		String cmd = cmds.remove( 0 );
 		int sz = cmds.size();
 
-/*		audit.debug( "in Allop.mediate, ctx="+ Reply.context().toString());
-		audit.debug( "in Allop.mediate, val=[ "+ value +" ]");
-		audit.debug( "in Allop.mediate, cmd=[ "+ Strings.toString( cmd, Strings.CSV ) +" ]");
-		audit.debug( "in Allop.mediate, NAME='"+ NAME +"', value='"+ value +"'");
-// */
 		if ( cmd.equals( "primeAnswer" )) {
 			
 			Question.primedAnswer( cmds.toString() ); // needs to be tidied up...
@@ -408,7 +403,7 @@ public class Allopoiesis extends Intention {
 			}
 
 
-		} else if ( value.equals( "repeat" )) {
+		} else if ( value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
 				audit.log("Allop:repeating dnu");
 				r.format( Reply.dnu());
