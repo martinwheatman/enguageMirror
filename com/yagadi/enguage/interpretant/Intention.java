@@ -41,7 +41,7 @@ public class Intention {
 	public static final int _run         = 0x04; // 0100 -- TODO: combine with tcpip and do!!!
 	public static final int _say         = 0x06; // 0110
 	
-	public static final int    undef      = -1;
+	public static final int   undef      = -1;
 
 	public static final int thenThink   = _then | _think; // =  0
 	public static final int elseThink   = _else | _think; // =  1
@@ -60,7 +60,8 @@ public class Intention {
 	public static final int    append     =  0xc;
 	public static final int    headAppend =  0xd;
 
-	public  int    type  = 0;
+	private int    type  = 0;
+	public  int    type() { return type; }
 	private String value = "";
 	public  String value() { return value; }
 	
@@ -135,7 +136,6 @@ public class Intention {
 
 
 	public Intention( int nm, String val ) { type=nm; value = val; }	
-	public Intention( String nm, String val ) { type=nameToType( nm ); value = val; }	
 	
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
@@ -230,23 +230,23 @@ public class Intention {
 		} else {
 			
 			if (r.negative()) {
-				if (typeToString().equals( ELSE_THINK ))
+				if (type == elseThink )
 					r = think( r );
-				else if (typeToString().equals( ELSE_DO ))
+				else if (type == elseDo )
 					r = perform( r );
-				else if (typeToString().equals( ELSE_RUN ))
+				else if (type == elseRun )
 					r = new Proc( value ).run( r );
-				else if (typeToString().equals( ELSE_REPLY ))
+				else if (type == elseReply )
 					r = reply( r );
  					
 			} else { // train of thought is neutral/positive
-				if (typeToString().equals( THINK ))
+				if (type == thenThink )
 					r = think( r );
-				else if (typeToString().equals( DO ))
+				else if (type == thenDo )
 					r = perform( r );
-				else if (typeToString().equals( RUN ))
+				else if (type == thenRun )
 					r = new Proc( value ).run( r );
-				else if (typeToString().equals( REPLY )) // if Reply.NO -- deal with -ve replies!
+				else if (type == thenReply ) // if Reply.NO -- deal with -ve replies!
 					r = reply( r );
 		}	}
 		

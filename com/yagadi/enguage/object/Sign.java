@@ -34,16 +34,16 @@ public class Sign {
 			}
 			if (cmd.equals( "create" )) {
 				audit.debug( "creating sign with: " +   argv.toString());
-				rc = new Autopoiesis( Autopoiesis.NEW,                                 argv.toString(),    Autopoiesis.create ).mediate( r ).toString();
+				rc = new Autopoiesis( Autopoiesis.create,                                 argv.toString(),    Autopoiesis.create ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "perform" )) {
 				audit.debug( "adding a conceptual "+    argv.toString() );
-				rc = new Autopoiesis( isElse ? Intention.ELSE_DO : Intention.DO,       argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
+				rc = new Autopoiesis( isElse ? Intention.elseDo : Intention.thenDo,       argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
 				//audit.LOG( (prepending?"pre":"app")+"ing a reply "+  (isElse? Intention.ELSE_REPLY : Intention.REPLY) +" "+ argv.toString() );
 				rc = new Autopoiesis(
-						isElse? Intention.ELSE_REPLY : Intention.REPLY, 
+						isElse? Intention.elseReply : Intention.thenReply, 
 						argv.toString(), 
 						prepending ?
 							Autopoiesis.prepend :
@@ -53,21 +53,21 @@ public class Sign {
 				
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "Sign: prepending an implication '"+ argv.toString() +"'");
-				rc = new Autopoiesis( isElse? Intention.ELSE_THINK : Intention.THINK,  argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
+				rc = new Autopoiesis( isElse? Intention.elseThink : Intention.thenThink,  argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
 				audit.debug( "adding a final clause? "+ argv.toString() );
 				cmd = argv.remove( 0 );
 				if (cmd.equals( "perform" ))
-					rc = new Autopoiesis( isElse ? Intention.ELSE_DO    : Intention.DO,    argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+					rc = new Autopoiesis( isElse ? Intention.elseDo    : Intention.thenDo,    argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 				else if (cmd.equals( "reply" ))
-					rc = new Autopoiesis( isElse ? Intention.ELSE_REPLY : Intention.REPLY, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+					rc = new Autopoiesis( isElse ? Intention.elseReply : Intention.thenReply, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 				else
-					rc = new Autopoiesis( isElse ? Intention.ELSE_THINK : Intention.THINK, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+					rc = new Autopoiesis( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 			
 			} else {
 				audit.debug( "adding a thought "+ argv.toString() );
-				rc = new Autopoiesis(     Intention.THINK, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+				rc = new Autopoiesis(     Intention.thenThink, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 		}	}
 		return audit.out( rc );
 	}

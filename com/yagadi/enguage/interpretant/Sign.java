@@ -12,9 +12,6 @@ import com.yagadi.enguage.vehicle.Reply;
 
 public class Sign extends Tag {
 	
-	private class Intentions extends ArrayList<Intention> {
-		static final long serialVersionUID = 0L;
-	}
 	
 	private static final String   NAME = "sign";
 	private static       Audit   audit = new Audit( NAME );
@@ -29,16 +26,14 @@ public class Sign extends Tag {
 		concept( concept );
 	}
 	
-	Intentions intentions = new Intentions();
-	public Intentions intentions() { return intentions; }
+	ArrayList<Intention> intentions = new ArrayList<Intention>();
+	public ArrayList<Intention> intentions() { return intentions; }
 	public Sign intention( int posn, Intention intent ) { intentions.add( posn, intent ); return this;}
 	//public Sign create( Intention intent )
 	public Sign append( Intention intent ){ intentions.add( intent ); return this;}
 	public Sign headAppend( Intention intent ){ intentions.add( 1, intent ); return this;}
 	public Sign prepend( Intention i ){ intentions.add( 0, i ); return this;}
 	public Sign add( int i, Intention intent ) { intentions.add( i, intent ); return this;}
-	public Sign append( String name, String value ) { append( new Intention( name, value )); return this; }
-	public Sign prepend( String name, String value ) { return add( 0, new Intention( name, value ));}  // 0 == add at 0th index!
 	
 	// methods need to return correct class of this
 	public Sign attribute( String name, String value ) {
@@ -154,9 +149,14 @@ public class Sign extends Tag {
 	public Sign content( Tag  t )  { content.add( t ); return this; }
 	
 	public String toString( int n, long c ) {
+		
+		String intents = "";
+		for (Intention in : intentions)
+			intents += "\n      " + Intention.typeToString( in.type() ) +"+"+ in.value();
+		
 		return prefix().toString() + (name().equals( "" ) ? "" :
 			(indent +"<"+ name() +" n='"+ n +"' complexity='"+ c +"' repertoire='"+ concept() +"'"
-			+ attributes().toString( "\n      " )
+			+ intents
 			+(null == content() ? "/>" : ( ">\n"+ indent + indent + content().toString() + "</"+ name() +">" ))))
 			+ postfix + "\n";
 	}
@@ -165,18 +165,15 @@ public class Sign extends Tag {
 		audit.in( "mediate", "\n"+ toXml() );
 		Iterator<Intention> ai = intentions().iterator();
 		while (!r.isDone() && ai.hasNext()) {
-			Intention an = ai.next();
-			String  name = Intention.typeToString( an.type ),
-			       value = an.value();
-			audit.debug( name +"='"+ value +"'" );
-			r = name.equals( Allopoiesis.NAME ) ?
-					new Allopoiesis( name, value ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
-				: name.equals( Autopoiesis.APPEND )  ||
-				  name.equals( Autopoiesis.PREPEND ) ||
-				  name.equals( Autopoiesis.NEW ) ?
-					new Autopoiesis( name, value ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
-				: // finally, perform, think, say...
-					new Intention(   name, value ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r );
+			Intention in = ai.next();
+			r = in.type() == Intention.allop ?
+					new Allopoiesis( in.type(), in.value() ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
+				: in.type() == Intention.append  ||
+				  in.type() == Intention.prepend ||
+				  in.type() == Intention.create ?
+					new Autopoiesis( in.type(), in.value() ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
+				: // finally, think, do, say...   TODO: why not: in.mediate( r ); ???
+					new Intention(   in.type(), in.value() ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r );
 		}
 		return (Reply) audit.out( r );
 	}

@@ -112,7 +112,7 @@ public class Allopoiesis extends Intention {
 					.attribute( THINK,  "X"    )
 	 };
 	
-	public Allopoiesis( String name, String value ) { super( name, value ); }
+	public Allopoiesis( int type, String value ) { super( type , value ); }
 	
 	// this supports the command="" attribute loaded in the creation of command data structure
 	// needs "command //delete "...". -- to remove a tag, to support '"X" is meaningless.'
@@ -451,7 +451,7 @@ public class Allopoiesis extends Intention {
 		//Enguage eng = new Enguage( null );
 		Reply r = new Reply();
 		// TODO: this fails, cose Enguage.e is not initialised!!!
-		Allopoiesis e = new Allopoiesis( "engine", "ask answering yes or no , is it safe" );
+		Allopoiesis e = new Allopoiesis( Intention.allop, "ask answering yes or no , is it safe" );
 		//Repertoire.load( "need" );
 		e.mediate( r );
 }	}
