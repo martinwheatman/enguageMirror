@@ -72,21 +72,21 @@ public class Utterance {
 		if ((s.isTemporal() && !when.isUnassigned()) &&
 		    (s.isSpatial()  &&  whenWhere.assigned())      )
 		{
-			if (null != (match = s.content().matchValues( temporospatial )))
+			if (null != (match = s.pattern.content().matchValues( temporospatial )))
 				match.addAll( a ); // add it, don't not pop it.
 			
 		} else if (s.isTemporal() && !when.isUnassigned()) {
-			if (null != (match = s.content().matchValues( temporal )))
+			if (null != (match = s.pattern.content().matchValues( temporal )))
 				match.addAll( a ); // add it, don't not pop it.
 			
 		} else if (s.isSpatial()  &&  where.assigned()) {
-			if (null != (match = s.content().matchValues( spatial )))
+			if (null != (match = s.pattern.content().matchValues( spatial )))
 				match.addAll( a ); // add it, don't not pop it.
 		}
 		Context.pop();  // do pop it! Keep context clean!
 		
 		// if no qualified match, attempt an expanded match
-		return match == null ? s.content().matchValues( expanded ) : match;
+		return match == null ? s.pattern.content().matchValues( expanded ) : match;
 	}
 		
 	public String toString( int layout ) { return representamen.toString( layout );}

@@ -10,8 +10,9 @@ import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Reply;
 
-public class Sign extends Tag {
+public class Sign {
 	
+	public Tag pattern = new Tag(); // we're just interested in contents...
 	
 	private static final String   NAME = "sign";
 	private static       Audit   audit = new Audit( NAME );
@@ -19,7 +20,7 @@ public class Sign extends Tag {
 
 	public Sign() {
 		super();
-		name( NAME );
+		pattern.name( NAME );
 	}
 	public Sign( String concept ) {
 		this();
@@ -131,7 +132,7 @@ public class Sign extends Tag {
 		       namedTags = 0,
 		             rnd = rn.nextInt( RANGE/10 ); // word count component
 		
-		for (Tag t : content()) {
+		for (Tag t : pattern.content()) {
 			boilerplate += t.prefix().size();
 			if (t.isPhrased()) //attributes().get( phrase ).equals( phrase ))
 				infinite = true;
@@ -144,9 +145,8 @@ public class Sign extends Tag {
 				: MID_RANGE*namedTags + LOW_RANGE*boilerplate + rnd*10;
 	}
 	
-	@Override
-	public Sign content( Tags ta ) { content = ta; return this; }
-	public Sign content( Tag  t )  { content.add( t ); return this; }
+	public Sign content( Tags ta ) { pattern.content( ta ); return this; }
+	public Sign content( Tag  t )  { pattern.content.add( t ); return this; }
 	
 	public String toString( int n, long c ) {
 		
@@ -154,15 +154,15 @@ public class Sign extends Tag {
 		for (Intention in : intentions)
 			intents += "\n      " + Intention.typeToString( in.type() ) +"+"+ in.value();
 		
-		return prefix().toString() + (name().equals( "" ) ? "" :
-			(indent +"<"+ name() +" n='"+ n +"' complexity='"+ c +"' repertoire='"+ concept() +"'"
+		return pattern.prefix().toString() + (pattern.name().equals( "" ) ? "" :
+			(indent +"<"+ pattern.name() +" n='"+ n +"' complexity='"+ c +"' repertoire='"+ concept() +"'"
 			+ intents
-			+(null == content() ? "/>" : ( ">\n"+ indent + indent + content().toString() + "</"+ name() +">" ))))
-			+ postfix + "\n";
+			+(null == pattern.content() ? "/>" : ( ">\n"+ indent + indent + pattern.content().toString() + "</"+ pattern.name() +">" ))))
+			+ pattern.postfix + "\n";
 	}
 	
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", "\n"+ toXml() );
+		audit.in( "mediate", "\n"+ pattern.toXml() );
 		Iterator<Intention> ai = intentions().iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Intention in = ai.next();

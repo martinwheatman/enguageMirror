@@ -313,7 +313,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				(s.concept().equals("") || s.concept().equalsIgnoreCase( name )))
 			{	String helpDesc = s.help();
 				items.add( (html?"<b><i>":"")
-						+ s.content().toText()
+						+ s.pattern.content().toText()
 						+ (html?"</i></b> ":" ") +
 						(helpDesc.equals("") ? "" : ", " + helpDesc));
 		}	}
