@@ -7,7 +7,6 @@ import com.yagadi.enguage.interpretant.Net;
 import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Sofa;
-import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Shell;

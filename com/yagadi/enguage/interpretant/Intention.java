@@ -16,11 +16,10 @@ public class Intention {
 	
 	private static Audit audit = new Audit( "Intention" );
 	
-	public static final String UNDEF   = "und";
-	public static final String NEW     = "new";
-	public static final String APPEND  = "app";
-	public static final String PREPEND = "prep";
-	//public static final String HEADAPP = "headApp"; // unused?
+	public static final String UNDEF      = "und";
+	public static final String NEW        = "new";
+	public static final String APPEND     = "app";
+	public static final String PREPEND    = "prep";
 	
 	public static final String      REPLY = "r";
 	public static final String ELSE_REPLY = "R";
@@ -81,7 +80,6 @@ public class Intention {
 			case create    : return NEW;
 			case prepend   : return PREPEND;
 			case append    : return APPEND;
-			//case headAppend : return HEADAPP; // don't think this is called!
 			case thenFinally : return FINALLY;
 			default:
 				audit.FATAL( "Intention: still returning undefined" );
@@ -118,10 +116,6 @@ public class Intention {
 			return append;
 		else if ( name.equals( PREPEND ))
 			return prepend;
-		//else if ( name.equals( HEADAPP )) {
-		//	audit.FATAL( "typing headApp" );
-		//	return headAppend;
-		//} 
 		else {
 			audit.FATAL( "typing undef" );
 			return undef;
