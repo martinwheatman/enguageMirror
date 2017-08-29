@@ -27,59 +27,59 @@ public class Allopoiesis extends Intention {
 		 * interpretations and so are built here alongside those interpretations.
 		 */
 		new Sign( NAME )
-			.content( new Tag( "remove primed answer ", "" ))
+			.pattern( new Patternette( "remove primed answer ", "" ))
           		.attribute( NAME, "removePrimedAnswer" ),
 	          	
     	new Sign( NAME )
-			.content( new Tag( "prime answer ", "answer" ).attribute( Tag.phrase, Tag.phrase ))
+			.pattern( new Patternette( "prime answer ", "answer" ).attribute( Tag.phrase, Tag.phrase ))
 	          	.attribute( NAME, "primeAnswer ANSWER" ),
 			          	
 		new Sign( NAME )
-			.content( new Tag( "answering", "answers" ).attribute( Tag.phrase, Tag.phrase ))
-			.content( new Tag( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
+			.pattern( new Patternette( "answering", "answers" ).attribute( Tag.phrase, Tag.phrase ))
+			.pattern( new Patternette( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
 	          	.attribute( NAME, "ask answering ANSWERS , QUESTION" ),
 	          	
-		new Sign( NAME ).content( new Tag(  "describe ", "x" ))
+		new Sign( NAME ).pattern( new Patternette(  "describe ", "x" ))
 				 .attribute( NAME, "describe X" )
 				 .help( "where x is a repertoire" ),
 				 
-		new Sign( NAME ).content( new Tag( "list repertoires","" ))
+		new Sign( NAME ).pattern( new Patternette( "list repertoires","" ))
 				 .attribute( NAME, "list" )
 				 .help( ""     ),
-		new Sign( NAME ).content( new Tag(           "help", "" )).attribute( NAME, "help" ),
-		new Sign( NAME ).content( new Tag(          "hello", "" )).attribute( NAME, "hello"),
-		new Sign( NAME ).content( new Tag(        "welcome", "" )).attribute( NAME, "welcome"),
-		new Sign( NAME ).content( new Tag( "what can i say", "" ))
+		new Sign( NAME ).pattern( new Patternette(           "help", "" )).attribute( NAME, "help" ),
+		new Sign( NAME ).pattern( new Patternette(          "hello", "" )).attribute( NAME, "hello"),
+		new Sign( NAME ).pattern( new Patternette(        "welcome", "" )).attribute( NAME, "welcome"),
+		new Sign( NAME ).pattern( new Patternette( "what can i say", "" ))
 				 .attribute( NAME, "repertoire"  )
 				 .help( ""            ),
-		new Sign( NAME ).content( new Tag(   "load ", "NAME" )).attribute( NAME,   "load NAME" ),
-/*		new Sign( NAME ).content( new Tag( "unload ", "NAME" )).attribute( NAME, "unload NAME" ),
-		new Sign( NAME ).content( new Tag( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
-// */	//new Sign( NAME ).attribute( NAME, "save"    ).content( new Tag( "save", "", "" ) ),
-		//new Sign( NAME ).attribute( NAME, "saveas $NAME" ).content( new Tag("saveas ", "NAME", ".")),
+		new Sign( NAME ).pattern( new Patternette(   "load ", "NAME" )).attribute( NAME,   "load NAME" ),
+/*		new Sign( NAME ).content( new Patternette( "unload ", "NAME" )).attribute( NAME, "unload NAME" ),
+		new Sign( NAME ).content( new Patternette( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
+// */	//new Sign( NAME ).attribute( NAME, "save"    ).content( new Patternette( "save", "", "" ) ),
+		//new Sign( NAME ).attribute( NAME, "saveas $NAME" ).content( new Patternette("saveas ", "NAME", ".")),
 															 		
-		new Sign( NAME ).content( new Tag(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
-		new Sign( NAME ).content( new Tag(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
-		new Sign( NAME ).content( new Tag(           "undo",  "" )).attribute( NAME, "undo"         ),
-		new Sign( NAME ).content( new Tag(      "say again",  "" )).attribute( NAME, "repeat"       ),
-		new Sign( NAME ).content( new Tag(         "spell ", "x" )).attribute( NAME, "spell X"      ),
+		new Sign( NAME ).pattern( new Patternette(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
+		new Sign( NAME ).pattern( new Patternette(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
+		new Sign( NAME ).pattern( new Patternette(           "undo",  "" )).attribute( NAME, "undo"         ),
+		new Sign( NAME ).pattern( new Patternette(      "say again",  "" )).attribute( NAME, "repeat"       ),
+		new Sign( NAME ).pattern( new Patternette(         "spell ", "x" )).attribute( NAME, "spell X"      ),
 		
-//		new Sign( NAME ).content( new Tag("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
+//		new Sign( NAME ).content( new Patternette("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
 		
-		new Sign( NAME ).content( new Tag(         "timing  on",  "" )).attribute( NAME, "tracing on" ),
-		new Sign( NAME ).content( new Tag(         "timing off",  "" )).attribute( NAME, "tracing off" ),
-		new Sign( NAME ).content( new Tag(        "tracing  on",  "" )).attribute( NAME, "tracing on" ),
-		new Sign( NAME ).content( new Tag(        "tracing off",  "" )).attribute( NAME, "tracing off" ),
-		new Sign( NAME ).content( new Tag(         "detail  on",  "" )).attribute( NAME, "detailed on" ),
-		new Sign( NAME ).content( new Tag(         "detail off",  "" )).attribute( NAME, "detailed off" ),
+		new Sign( NAME ).pattern( new Patternette(         "timing  on",  "" )).attribute( NAME, "tracing on" ),
+		new Sign( NAME ).pattern( new Patternette(         "timing off",  "" )).attribute( NAME, "tracing off" ),
+		new Sign( NAME ).pattern( new Patternette(        "tracing  on",  "" )).attribute( NAME, "tracing on" ),
+		new Sign( NAME ).pattern( new Patternette(        "tracing off",  "" )).attribute( NAME, "tracing off" ),
+		new Sign( NAME ).pattern( new Patternette(         "detail  on",  "" )).attribute( NAME, "detailed on" ),
+		new Sign( NAME ).pattern( new Patternette(         "detail off",  "" )).attribute( NAME, "detailed off" ),
 		new Sign( NAME )
-				.content( new Tag( "tcpip ",  "address" ))
-				.content( new Tag(      " ",  "port" ))
-				.content( new Tag(      " ",  "data" ).attribute( Tag.quoted, Tag.quoted ))
+				.pattern( new Patternette( "tcpip ",  "address" ))
+				.pattern( new Patternette(      " ",  "port" ))
+				.pattern( new Patternette(      " ",  "data" ).attribute( Tag.quoted, Tag.quoted ))
 					.attribute( NAME, "tcpip ADDRESS PORT DATA" ),
-		new Sign( NAME ).content( new Tag(              "show ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette(              "show ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 				.attribute( NAME, "show X" ),
-		new Sign( NAME ).content( new Tag(         "debug ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette(         "debug ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 				.attribute( NAME, "debug X" ),
 		/* 
 		 * it is possible to arrive at the following construct:   think="reply 'I know'"
@@ -88,20 +88,20 @@ public class Allopoiesis extends Intention {
 		 * representamen: "if X, reply Y", then Y is just the quoted string.
 		 * However, the following should deal with this situation.
 		 */
-		new Sign( NAME ).content( new Tag( REPLY +" ", "x" ).attribute( Tag.quoted, Tag.quoted ))
+		new Sign( NAME ).pattern( new Patternette( REPLY +" ", "x" ).attribute( Tag.quoted, Tag.quoted ))
 				.attribute( REPLY, "X" ),
 		
 		// fix to allow better reading of autopoietic  
-		new Sign( NAME ).content( new Tag( "if so, ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette( "if so, ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 				.attribute( THINK, "X" ),
 
 		// for vocal description of concepts... autopoiesis!		
-		new Sign( NAME ).content( new Tag( "perform ", "args" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette( "perform ", "args" ).attribute( Tag.phrase, Tag.phrase ))
 				.attribute( DO, "ARGS" ),
 		/* 
 		 * REDO: undo and do again, or disambiguate
 		 */
-		new Sign( NAME ).content( new Tag( "No ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette( "No ", "x" ).attribute( Tag.phrase, Tag.phrase ))
 					.attribute( NAME, "undo" )
 					.attribute( ELSE_REPLY, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,

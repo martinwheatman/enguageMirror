@@ -1,8 +1,8 @@
 package com.yagadi.enguage.vehicle;
 
+import com.yagadi.enguage.interpretant.Pattern;
+import com.yagadi.enguage.interpretant.Patternette;
 import com.yagadi.enguage.interpretant.Sign;
-import com.yagadi.enguage.interpretant.Tag;
-import com.yagadi.enguage.interpretant.Tags;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Numeric;
 import com.yagadi.enguage.object.Sofa;
@@ -72,21 +72,21 @@ public class Utterance {
 		if ((s.isTemporal() && !when.isUnassigned()) &&
 		    (s.isSpatial()  &&  whenWhere.assigned())      )
 		{
-			if (null != (match = s.pattern.content().matchValues( temporospatial )))
+			if (null != (match = s.pattern().matchValues( temporospatial )))
 				match.addAll( a ); // add it, don't not pop it.
 			
 		} else if (s.isTemporal() && !when.isUnassigned()) {
-			if (null != (match = s.pattern.content().matchValues( temporal )))
+			if (null != (match = s.pattern().matchValues( temporal )))
 				match.addAll( a ); // add it, don't not pop it.
 			
 		} else if (s.isSpatial()  &&  where.assigned()) {
-			if (null != (match = s.pattern.content().matchValues( spatial )))
+			if (null != (match = s.pattern().matchValues( spatial )))
 				match.addAll( a ); // add it, don't not pop it.
 		}
 		Context.pop();  // do pop it! Keep context clean!
 		
 		// if no qualified match, attempt an expanded match
-		return match == null ? s.pattern.content().matchValues( expanded ) : match;
+		return match == null ? s.pattern().matchValues( expanded ) : match;
 	}
 		
 	public String toString( int layout ) { return representamen.toString( layout );}
@@ -130,9 +130,9 @@ public class Utterance {
 		);
 
 		// create a meeting repertoire
-		Tags ts = new Tags();
-		ts.add( new Tag( "i am meeting", "WHOM" ).attribute( "phrase", "phrase" ) );
-		Sign s = new Sign().concept("meeting").content( ts );
+		Pattern ts = new Pattern();
+		ts.add( new Patternette( "i am meeting", "WHOM" ).attribute( "phrase", "phrase" ) );
+		Sign s = new Sign().concept("meeting").pattern( ts );
 		Spatial.addConcept("meeting");
 		Temporal.addConcept("meeting");
 		s.isSpatial();

@@ -286,7 +286,7 @@ public class Enguage extends Shell {
 			audit.title( "On-the-fly Langauge Learning" );
 			
 			// First, what we can't say yet...
-			testInterpret( "my name is martin",                "I don't understand." );
+			testInterpret( "my name is martin",                 "I don't understand." );
 			testInterpret( "if not  reply i already know this", "I don't understand." );
 			Variable.unset( "NAME" );
 			

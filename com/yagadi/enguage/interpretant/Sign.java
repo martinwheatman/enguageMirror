@@ -12,7 +12,6 @@ import com.yagadi.enguage.vehicle.Reply;
 
 public class Sign {
 	
-	public Tag pattern = new Tag(); // we're just interested in contents...
 	
 	private static final String   NAME = "sign";
 	private static       Audit   audit = new Audit( NAME );
@@ -20,12 +19,25 @@ public class Sign {
 
 	public Sign() {
 		super();
-		pattern.name( NAME );
+		//pattern.name( NAME );
 	}
 	public Sign( String concept ) {
 		this();
 		concept( concept );
 	}
+	
+	private Pattern pattern = new Pattern();
+	public  Pattern pattern() {return pattern;}
+	public  Sign  pattern( Pattern ta ) { pattern = ta; return this; }
+	public  Sign  pattern( int n, Patternette t ) { pattern.add( n, t ); return this; }
+	public  Sign  pattern( Patternette child ) {
+		if (null != child && !child.isEmpty()) {
+			//type = START;
+			pattern.add( child );
+		}
+		return this;
+	}
+
 	
 	ArrayList<Intention> intentions = new ArrayList<Intention>();
 	public ArrayList<Intention> intentions() { return intentions; }
@@ -132,7 +144,7 @@ public class Sign {
 		       namedTags = 0,
 		             rnd = rn.nextInt( RANGE/10 ); // word count component
 		
-		for (Tag t : pattern.content()) {
+		for (Patternette t : pattern()) {
 			boilerplate += t.prefix().size();
 			if (t.isPhrased()) //attributes().get( phrase ).equals( phrase ))
 				infinite = true;
@@ -145,24 +157,20 @@ public class Sign {
 				: MID_RANGE*namedTags + LOW_RANGE*boilerplate + rnd*10;
 	}
 	
-	public Sign content( Tags ta ) { pattern.content( ta ); return this; }
-	public Sign content( Tag  t )  { pattern.content.add( t ); return this; }
-	
-	public String toString( int n, long c ) {
+	public String toString( int n, long complexity ) {
 		
 		String intents = "";
 		for (Intention in : intentions)
-			intents += "\n      " + Intention.typeToString( in.type() ) +"+"+ in.value();
+			intents += "\n      " + Intention.typeToString( in.type() ) +"='"+ in.value() +"'";
 		
-		return pattern.prefix().toString() + (pattern.name().equals( "" ) ? "" :
-			(indent +"<"+ pattern.name() +" n='"+ n +"' complexity='"+ c +"' repertoire='"+ concept() +"'"
-			+ intents
-			+(null == pattern.content() ? "/>" : ( ">\n"+ indent + indent + pattern.content().toString() + "</"+ pattern.name() +">" ))))
-			+ pattern.postfix + "\n";
+		return  indent +"<"+ NAME +" n='"+ n +"' complexity='"+ complexity +"' repertoire='"+ concept() +"'"
+				+ intents
+				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">"
+				+ "\n";
 	}
 	
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", "\n"+ pattern.toXml() );
+		audit.in( "mediate", "\n"+ pattern().toXml() );
 		Iterator<Intention> ai = intentions().iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Intention in = ai.next();
@@ -178,33 +186,33 @@ public class Sign {
 		return (Reply) audit.out( r );
 	}
 	// ---
-	public static void complexityTest( Tags t ) {
+	public static void complexityTest( Pattern t ) {
 		Sign container = new Sign();
-		container.content( t );
+		container.pattern( t );
 		audit.log( "Complexity of "+ container.toString() +"("+ container.complexity() +")\n");
 	}
 	public static void main( String argv[]) {
 		Sign p = new Sign();
 		p.attribute("reply", "hello world");
-		p.content( new Tag().prefix( new Strings( "hello" )));
+		p.pattern( new Patternette().prefix( new Strings( "hello" )));
 		Reply r = new Reply();
 		Intention intent = new Intention( Intention.thenReply, "hello world" );
 		r = intent.mediate( r );
 		audit.log( "r="+ r.toString());
 		
-		Tags ts = new Tags();
-		ts.add( new Tag( "one small step for man", "" ));
+		Pattern ts = new Pattern();
+		ts.add( new Patternette( "one small step for man", "" ));
 		complexityTest( ts );
 		
-		ts = new Tags();
-		ts.add( new Tag( "this is a", "test" ));
+		ts = new Pattern();
+		ts.add( new Patternette( "this is a", "test" ));
 		complexityTest( ts );
 		
-		ts = new Tags();
-		ts.add( new Tag( "this is a test", "x" ).attribute( "phrase", "phrase" ) );
+		ts = new Pattern();
+		ts.add( new Patternette( "this is a test", "x" ).attribute( "phrase", "phrase" ) );
 		complexityTest( ts );
 		
-		ts = new Tags();
-		ts.add( new Tag( "this is a", "x" ).attribute( "phrase", "phrase" ));
+		ts = new Pattern();
+		ts.add( new Patternette( "this is a", "x" ).attribute( "phrase", "phrase" ));
 		complexityTest( ts );
 }	}

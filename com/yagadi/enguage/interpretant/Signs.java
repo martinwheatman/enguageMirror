@@ -313,7 +313,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				(s.concept().equals("") || s.concept().equalsIgnoreCase( name )))
 			{	String helpDesc = s.help();
 				items.add( (html?"<b><i>":"")
-						+ s.pattern.content().toText()
+						+ s.pattern().toText()
 						+ (html?"</i></b> ":" ") +
 						(helpDesc.equals("") ? "" : ", " + helpDesc));
 		}	}
@@ -340,18 +340,18 @@ public class Signs extends TreeMap<Integer,Sign> {
 		audit.tracing = true;
 		Signs r = new Signs( "test" );
 		r.insert(
-				new Sign().content( new Tag(  "debug ", "x", ""))
+				new Sign().pattern( new Patternette(  "debug ", "x", ""))
 					.concept( "test" )
 					.attribute( "engine", "debug X" )
 			);
 		r.insert(
-				new Sign().content( new Tag(  "describe ", "x", ""))
+				new Sign().pattern( new Patternette(  "describe ", "x", ""))
 					.concept( "test" )
 					.attribute( "engine", "describe X" )
 					.help( "where x is a repertoire" )
 			);
 		r.insert(
-			new Sign().content( new Tag(  "list repertoires ", "", ""))
+			new Sign().pattern( new Patternette(  "list repertoires ", "", ""))
 				.concept( "test" )
 				.attribute( "engine", "list repertoires" )
 				.help( "" )
