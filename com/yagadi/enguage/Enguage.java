@@ -288,7 +288,7 @@ public class Enguage extends Shell {
 			// First, what we can't say yet...
 			testInterpret( "my name is martin",                 "I don't understand." );
 			testInterpret( "if not  reply i already know this", "I don't understand." );
-			Variable.unset( "NAME" );
+			testInterpret( "unset the value of name",           "ok." );
 			
 			// build-a-program...
 			testInterpret( "interpret my name is phrase variable name thus", "go on." );

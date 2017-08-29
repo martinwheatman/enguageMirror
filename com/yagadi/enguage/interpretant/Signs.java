@@ -342,18 +342,18 @@ public class Signs extends TreeMap<Integer,Sign> {
 		r.insert(
 				new Sign().pattern( new Patternette(  "debug ", "x", ""))
 					.concept( "test" )
-					.attribute( "engine", "debug X" )
+					.append( new Intention( Intention.allop, "debug X" ))
 			);
 		r.insert(
 				new Sign().pattern( new Patternette(  "describe ", "x", ""))
 					.concept( "test" )
-					.attribute( "engine", "describe X" )
+					.append( new Intention( Intention.allop, "describe X" ))
 					.help( "where x is a repertoire" )
 			);
 		r.insert(
 			new Sign().pattern( new Patternette(  "list repertoires ", "", ""))
 				.concept( "test" )
-				.attribute( "engine", "list repertoires" )
+				.append( new Intention( Intention.allop, "list repertoires" ))
 				.help( "" )
 		);
 		audit.log( r.helpedToString( "test" ));

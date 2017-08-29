@@ -98,7 +98,7 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 	static public        boolean debug() { return debug; }
 	static public        void    debug( boolean b ) { debug = b; }
 	
-	public boolean equals( Pattern ta ) {
+	public boolean xequals( Pattern ta ) {
 		if (ta == null || size() != ta.size())
 			return false;
 		else {
@@ -109,7 +109,7 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 		}
 		return true;
 	}
-	public boolean matches( Pattern patterns ) {
+	public boolean xmatches( Pattern patterns ) {
 		if (patterns.size() == 0) return true; // ALL = "" 
 		if (patterns == null || size() < patterns.size()) return false;
 		Iterator<Patternette> it = iterator(),

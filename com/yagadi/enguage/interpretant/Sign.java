@@ -17,60 +17,34 @@ public class Sign {
 	private static       Audit   audit = new Audit( NAME );
 	private static final String indent = "    ";
 
-	public Sign() {
-		super();
-		//pattern.name( NAME );
-	}
+	public Sign() { super(); }
 	public Sign( String concept ) {
 		this();
 		concept( concept );
 	}
 	
 	private Pattern pattern = new Pattern();
+	
 	public  Pattern pattern() {return pattern;}
 	public  Sign  pattern( Pattern ta ) { pattern = ta; return this; }
 	public  Sign  pattern( int n, Patternette t ) { pattern.add( n, t ); return this; }
 	public  Sign  pattern( Patternette child ) {
-		if (null != child && !child.isEmpty()) {
-			//type = START;
+		if (null != child && !child.isEmpty())
 			pattern.add( child );
-		}
 		return this;
 	}
 
 	
-	ArrayList<Intention> intentions = new ArrayList<Intention>();
-	public ArrayList<Intention> intentions() { return intentions; }
-	public Sign intention( int posn, Intention intent ) { intentions.add( posn, intent ); return this;}
-	//public Sign create( Intention intent )
-	public Sign append( Intention intent ){ intentions.add( intent ); return this;}
-	public Sign headAppend( Intention intent ){ intentions.add( 1, intent ); return this;}
-	public Sign prepend( Intention i ){ intentions.add( 0, i ); return this;}
-	public Sign add( int i, Intention intent ) { intentions.add( i, intent ); return this;}
+	private ArrayList<Intention> intentions = new ArrayList<Intention>();
 	
-	// methods need to return correct class of this
-	public Sign attribute( String name, String value ) {
-		append( new Intention( Intention.nameToType( name ), value ));
-		return this;
-	}
+	public  Sign append(        Intention intent ){ intentions.add(    intent ); return this;}
+	//public Sign headAppend(   Intention intent ){ intentions.add( 1, intent ); return this;}
+	public  Sign prepend(       Intention intent ){ intentions.add( 0, intent ); return this;}
+	public  Sign insert( int i, Intention intent ){ intentions.add( i, intent ); return this;}
+	public Sign appendIntention( int typ, String val ) {intentions.add( new Intention(typ,val));return this;}
 
-	/* To protect against being interpreted twice on resetting the iterator
-	 * after a DNU is returned on co-modification of the iterator by
-	 * autoloading repertoires.
-	 * 
-	 * We may see this pattern in a list of signs following comodification:
-	 * 	t t t t f t t t f f t t f f f t t T f f f f f f f f f f f f f f
-	 *                                    ^ 
-	 * 'cos some new signs will be peppered through out the list. We need
-	 * to start again at the sign following "^".
-	 * N.B. Don't really want to unload those autoloaded signs as they may well
-	 * be needed by the eventually understood utterance.  Autounloading (aging) 
-	 * will manage the list if not.
-	 * In fact, there should only be one T, the other t's are tidied as 
-	 * processing progresses, so there is no need to determine when the...
-	 */
-	public int interpretation = Signs.noInterpretation;
-
+	
+	
 	// Set during autopoiesis - replaces 'id' attribute 
 	private String  concept = "";
 	public  String  concept() { return concept; }
@@ -101,6 +75,23 @@ public class Sign {
 	public  Sign   help( String str ) { help = str; return this; }
 	
 	
+	/* To protect against being interpreted twice on resetting the iterator
+	 * after a DNU is returned on co-modification of the iterator by
+	 * autoloading repertoires.
+	 * 
+	 * We may see this pattern in a list of signs following comodification:
+	 * 	t t t t f t t t f f t t f f f t t T f f f f f f f f f f f f f f
+	 *                                    ^ 
+	 * 'cos some new signs will be peppered through out the list. We need
+	 * to start again at the sign following "^".
+	 * N.B. Don't really want to unload those autoloaded signs as they may well
+	 * be needed by the eventually understood utterance.  Autounloading (aging) 
+	 * will manage the list if not.
+	 * In fact, there should only be one T, the other t's are tidied as 
+	 * processing progresses, so there is no need to determine when the...
+	 */
+	public int interpretation = Signs.noInterpretation;
+
 	/*  The complexity of a sign, used to rank signs in a repertoire.
 	 *  "the eagle has landed" comes before "the X has landed", BUT
 	 *  "the    X    Y-PHRASE" comes before "the Y-PHRASE" so it is not
@@ -171,7 +162,7 @@ public class Sign {
 	
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", "\n"+ pattern().toXml() );
-		Iterator<Intention> ai = intentions().iterator();
+		Iterator<Intention> ai = intentions.iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Intention in = ai.next();
 			r = in.type() == Intention.allop ?
@@ -193,7 +184,7 @@ public class Sign {
 	}
 	public static void main( String argv[]) {
 		Sign p = new Sign();
-		p.attribute("reply", "hello world");
+		p.append( new Intention( Intention.thenReply, "hello world" ));
 		p.pattern( new Patternette().prefix( new Strings( "hello" )));
 		Reply r = new Reply();
 		Intention intent = new Intention( Intention.thenReply, "hello world" );

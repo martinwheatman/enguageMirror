@@ -28,59 +28,59 @@ public class Allopoiesis extends Intention {
 		 */
 		new Sign( NAME )
 			.pattern( new Patternette( "remove primed answer ", "" ))
-          		.attribute( NAME, "removePrimedAnswer" ),
+          		.appendIntention( Intention.allop, "removePrimedAnswer" ),
 	          	
     	new Sign( NAME )
 			.pattern( new Patternette( "prime answer ", "answer" ).attribute( Tag.phrase, Tag.phrase ))
-	          	.attribute( NAME, "primeAnswer ANSWER" ),
+	          	.appendIntention( Intention.allop, "primeAnswer ANSWER" ),
 			          	
 		new Sign( NAME )
 			.pattern( new Patternette( "answering", "answers" ).attribute( Tag.phrase, Tag.phrase ))
 			.pattern( new Patternette( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
-	          	.attribute( NAME, "ask answering ANSWERS , QUESTION" ),
+	          	.appendIntention( Intention.allop, "ask answering ANSWERS , QUESTION" ),
 	          	
 		new Sign( NAME ).pattern( new Patternette(  "describe ", "x" ))
-				 .attribute( NAME, "describe X" )
+				 .appendIntention( Intention.allop, "describe X" )
 				 .help( "where x is a repertoire" ),
 				 
 		new Sign( NAME ).pattern( new Patternette( "list repertoires","" ))
-				 .attribute( NAME, "list" )
+				 .appendIntention( Intention.allop, "list" )
 				 .help( ""     ),
-		new Sign( NAME ).pattern( new Patternette(           "help", "" )).attribute( NAME, "help" ),
-		new Sign( NAME ).pattern( new Patternette(          "hello", "" )).attribute( NAME, "hello"),
-		new Sign( NAME ).pattern( new Patternette(        "welcome", "" )).attribute( NAME, "welcome"),
+		new Sign( NAME ).pattern( new Patternette(           "help", "" )).appendIntention( Intention.allop, "help" ),
+		new Sign( NAME ).pattern( new Patternette(          "hello", "" )).appendIntention( Intention.allop, "hello"),
+		new Sign( NAME ).pattern( new Patternette(        "welcome", "" )).appendIntention( Intention.allop, "welcome"),
 		new Sign( NAME ).pattern( new Patternette( "what can i say", "" ))
-				 .attribute( NAME, "repertoire"  )
+				 .appendIntention( Intention.allop, "repertoire"  )
 				 .help( ""            ),
-		new Sign( NAME ).pattern( new Patternette(   "load ", "NAME" )).attribute( NAME,   "load NAME" ),
-/*		new Sign( NAME ).content( new Patternette( "unload ", "NAME" )).attribute( NAME, "unload NAME" ),
+		new Sign( NAME ).pattern( new Patternette(   "load ", "NAME" )).appendIntention( Intention.allop,   "load NAME" ),
+/*		new Sign( NAME ).content( new Patternette( "unload ", "NAME" )).attribute( new Intention( Intention.allop, "unload NAME" ),
 		new Sign( NAME ).content( new Patternette( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
 // */	//new Sign( NAME ).attribute( NAME, "save"    ).content( new Patternette( "save", "", "" ) ),
 		//new Sign( NAME ).attribute( NAME, "saveas $NAME" ).content( new Patternette("saveas ", "NAME", ".")),
 															 		
-		new Sign( NAME ).pattern( new Patternette(    "enable undo",  "" )).attribute( NAME, "undo enable"  ),
-		new Sign( NAME ).pattern( new Patternette(   "disable undo",  "" )).attribute( NAME, "undo disable" ),
-		new Sign( NAME ).pattern( new Patternette(           "undo",  "" )).attribute( NAME, "undo"         ),
-		new Sign( NAME ).pattern( new Patternette(      "say again",  "" )).attribute( NAME, "repeat"       ),
-		new Sign( NAME ).pattern( new Patternette(         "spell ", "x" )).attribute( NAME, "spell X"      ),
+		new Sign( NAME ).pattern( new Patternette(    "enable undo",  "" )).appendIntention( Intention.allop, "undo enable"  ),
+		new Sign( NAME ).pattern( new Patternette(   "disable undo",  "" )).appendIntention( Intention.allop, "undo disable" ),
+		new Sign( NAME ).pattern( new Patternette(           "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
+		new Sign( NAME ).pattern( new Patternette(      "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
+		new Sign( NAME ).pattern( new Patternette(         "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
 		
 //		new Sign( NAME ).content( new Patternette("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
 		
-		new Sign( NAME ).pattern( new Patternette(         "timing  on",  "" )).attribute( NAME, "tracing on" ),
-		new Sign( NAME ).pattern( new Patternette(         "timing off",  "" )).attribute( NAME, "tracing off" ),
-		new Sign( NAME ).pattern( new Patternette(        "tracing  on",  "" )).attribute( NAME, "tracing on" ),
-		new Sign( NAME ).pattern( new Patternette(        "tracing off",  "" )).attribute( NAME, "tracing off" ),
-		new Sign( NAME ).pattern( new Patternette(         "detail  on",  "" )).attribute( NAME, "detailed on" ),
-		new Sign( NAME ).pattern( new Patternette(         "detail off",  "" )).attribute( NAME, "detailed off" ),
+		new Sign( NAME ).pattern( new Patternette(         "timing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
+		new Sign( NAME ).pattern( new Patternette(         "timing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
+		new Sign( NAME ).pattern( new Patternette(        "tracing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
+		new Sign( NAME ).pattern( new Patternette(        "tracing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
+		new Sign( NAME ).pattern( new Patternette(         "detail  on",  "" )).appendIntention( Intention.allop, "detailed on" ),
+		new Sign( NAME ).pattern( new Patternette(         "detail off",  "" )).appendIntention( Intention.allop, "detailed off" ),
 		new Sign( NAME )
 				.pattern( new Patternette( "tcpip ",  "address" ))
 				.pattern( new Patternette(      " ",  "port" ))
 				.pattern( new Patternette(      " ",  "data" ).attribute( Tag.quoted, Tag.quoted ))
-					.attribute( NAME, "tcpip ADDRESS PORT DATA" ),
+					.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" ),
 		new Sign( NAME ).pattern( new Patternette(              "show ", "x" ).attribute( Tag.phrase, Tag.phrase ))
-				.attribute( NAME, "show X" ),
+				.appendIntention( Intention.allop, "show X" ),
 		new Sign( NAME ).pattern( new Patternette(         "debug ", "x" ).attribute( Tag.phrase, Tag.phrase ))
-				.attribute( NAME, "debug X" ),
+				.appendIntention( Intention.allop, "debug X" ),
 		/* 
 		 * it is possible to arrive at the following construct:   think="reply 'I know'"
 		 * e.g. "if X, Y", if the instance is "if already exists, reply 'I know'"
@@ -89,27 +89,27 @@ public class Allopoiesis extends Intention {
 		 * However, the following should deal with this situation.
 		 */
 		new Sign( NAME ).pattern( new Patternette( REPLY +" ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-				.attribute( REPLY, "X" ),
+				.appendIntention( Intention.thenReply, "X" ),
 		
 		// fix to allow better reading of autopoietic  
 		new Sign( NAME ).pattern( new Patternette( "if so, ", "x" ).attribute( Tag.phrase, Tag.phrase ))
-				.attribute( THINK, "X" ),
+				.appendIntention( Intention.thenThink, "X" ),
 
 		// for vocal description of concepts... autopoiesis!		
 		new Sign( NAME ).pattern( new Patternette( "perform ", "args" ).attribute( Tag.phrase, Tag.phrase ))
-				.attribute( DO, "ARGS" ),
+				.appendIntention( Intention.thenDo, "ARGS" ),
 		/* 
 		 * REDO: undo and do again, or disambiguate
 		 */
 		new Sign( NAME ).pattern( new Patternette( "No ", "x" ).attribute( Tag.phrase, Tag.phrase ))
-					.attribute( NAME, "undo" )
-					.attribute( ELSE_REPLY, "undo is not available" )
+					.appendIntention( Intention.allop, "undo" )
+					.appendIntention( Intention.elseReply, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,
 					 * need to search for the appropriate sign from where we left off
 					 * Dealing with ambiguity: "X", "No, /X/"
 					 */
-					.attribute( NAME,  DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
-					.attribute( THINK,  "X"    )
+					.appendIntention( Intention.allop,  DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
+					.appendIntention( Intention.thenThink,  "X"    )
 	 };
 	
 	public Allopoiesis( int type, String value ) { super( type , value ); }

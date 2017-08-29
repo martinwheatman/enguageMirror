@@ -96,43 +96,43 @@ public class Autopoiesis extends Intention {
 	static public  String concept() { return concept; }
 	
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", "NAME="+ NAME +", value="+ value() +", "+ Context.valueOf());
-		Strings sa = Context.deref( new Strings( value() ));
+		audit.in( "mediate", "NAME="+ NAME +", value="+ value +", "+ Context.valueOf());
+		Strings sa = Context.deref( new Strings( value ));
 		
 		// needs to switch on type (intent)
 		if (intent == create ) { // manually adding a sign
 			
-			//audit.debug( "autop: creating new sign: ["+ value() +"]");
+			//audit.debug( "autop: creating new sign: ["+ value +"]");
 			Repertoire.signs.insert(
 				s = new Sign()
-					.pattern( new Pattern( value() )) // manual Pattern
+					.pattern( new Pattern( value )) // manual Pattern
 					.concept( Repertoire.AUTOPOIETIC )
 			);
 			
 		} else if (intent == append ) { // add intent to end of interpretant
-			if (null != s) s.append( new Intention( type(), Pattern.toPattern( value() ).toString()));
+			if (null != s) s.append( new Intention( type, Pattern.toPattern( value ).toString()));
 			
 		} else if (intent == prepend ) { // add intent to start of interpretant
-			if (null != s) s.prepend( new Intention( type(), Pattern.toPattern( value() ).toString() ));
+			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( value ).toString() ));
 			
 		} else if (intent == headAppend ) { // add intent to first but one...  
-			if (null != s) s.add( 1, new Intention( type(), Pattern.toPattern( value() ).toString() ));
+			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( value ).toString() ));
 			
 		// following these are trad. autopoiesis...this need updating as above!!!
-		} else if (typeToString().equals( APPEND ) || typeToString().equals( PREPEND )) {
+		} else if (type == append || type == prepend ) {
 			if (null == s)
 				// this should return DNU...
 				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
 			else {
 				String attr = sa.get( 0 ),
-					    val  = Strings.trim( sa.get( 1 ), '"' );
-				if (typeToString().equals( APPEND ))
+					    val = Strings.trim( sa.get( 1 ), '"' );
+				if (type == append )
 					s.append( new Intention( nameToType(  attr ), val ));
 				else
 					s.prepend( new Intention( nameToType( attr ), val ));
 			}
 			
-		} else if (typeToString().equals( NEW )) { // autopoeisis?
+		} else if (type == create ) { // autopoeisis?
 			String attr    = sa.get( 0 ),
 			       pattern = sa.get( 1 ),
 			       val     = Strings.trim( sa.get( 2 ), '"' );
@@ -148,7 +148,7 @@ public class Autopoiesis extends Intention {
 					s = new Sign()
 						.pattern( new Pattern( new Strings( Strings.trim( pattern, '"' ))) )
 						.concept( concept() )
-						.attribute( attr, val ));
+						.append( new Intention( Intention.nameToType( attr ), val )));
 		}
 		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
 	}
@@ -157,8 +157,8 @@ public class Autopoiesis extends Intention {
 		Iterator<Intention> ins = intents.iterator();
 		while (!r.isDone() && ins.hasNext()) {
 			Intention in = ins.next();
-			audit.log( typeToString( in.type() )  +"='"+ in.value() +"'" );
-			r = new Autopoiesis( in.type(), in.value() ).mediate( r );
+			audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
+			r = new Autopoiesis( in.type, in.value ).mediate( r );
 		}
 		return r;
 	}
@@ -198,7 +198,7 @@ public class Autopoiesis extends Intention {
 		// ...This implies COND
 		s.prepend( new Intention( thenThink, "one two three four" ));
 		// ...if not reply EXECP REPLY
-		s.add( 1, new Intention( elseReply, "two three four" ));
+		s.insert( 1, new Intention( elseReply, "two three four" ));
 		
 		Repertoire.signs.insert( s );
 		r.answer( Reply.yes().toString() );

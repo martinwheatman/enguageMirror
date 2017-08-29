@@ -20,7 +20,7 @@ public class Intention {
 	public static final String NEW     = "new";
 	public static final String APPEND  = "app";
 	public static final String PREPEND = "prep";
-	public static final String HEADAPP = "headApp"; // unused?
+	//public static final String HEADAPP = "headApp"; // unused?
 	
 	public static final String      REPLY = "r";
 	public static final String ELSE_REPLY = "R";
@@ -34,36 +34,37 @@ public class Intention {
 	public static final String ALLOP      = "engine";
 	public static final String AUTOP      = "autopoiesis";
 	
-	public static final int _then        = 0x00; // 0000
-	public static final int _else        = 0x01; // 0001
-	public static final int _think       = 0x00; // 0000
-	public static final int _do          = 0x02; // 0010
-	public static final int _run         = 0x04; // 0100 -- TODO: combine with tcpip and do!!!
-	public static final int _say         = 0x06; // 0110
+	public static final int _then         = 0x00; // 0000
+	public static final int _else         = 0x01; // 0001
+	public static final int _think        = 0x00; // 0000
+	public static final int _do           = 0x02; // 0010
+	public static final int _run          = 0x04; // 0100 -- TODO: combine with tcpip and do!!!
+	public static final int _say          = 0x06; // 0110
 	
-	public static final int   undef      = -1;
+	public static final int undef         = -1;
 
-	public static final int thenThink   = _then | _think; // =  0
-	public static final int elseThink   = _else | _think; // =  1
-	public static final int thenDo      = _then | _do;    // =  2
-	public static final int elseDo      = _else | _do;    // =  3
-	public static final int thenRun     = _then | _run;   // =  4
-	public static final int elseRun     = _else | _run;   // =  5
-	public static final int thenReply   = _then | _say;   // =  6
-	public static final int elseReply   = _else | _say;   // =  7
-	public static final int allop       =  0x8;           // =  8
-	public static final int autop       =  0x9;           // =  9
-	public static final int thenFinally =  0xf; // 1111      = 16
+	public static final int thenThink     = _then | _think; // =  0
+	public static final int elseThink     = _else | _think; // =  1
+	public static final int thenDo        = _then | _do;    // =  2
+	public static final int elseDo        = _else | _do;    // =  3
+	public static final int thenRun       = _then | _run;   // =  4
+	public static final int elseRun       = _else | _run;   // =  5
+	public static final int thenReply     = _then | _say;   // =  6
+	public static final int elseReply     = _else | _say;   // =  7
+	public static final int allop         =  0x8;           // =  8
+	public static final int autop         =  0x9;           // =  9
+	public static final int thenFinally   =  0xf; // 1111      = 16
 
-	public static final int    create     =  0xa;
-	public static final int    prepend    =  0xb;
-	public static final int    append     =  0xc;
-	public static final int    headAppend =  0xd;
+	public static final int  create       =  0xa;
+	public static final int  prepend      =  0xb;
+	public static final int  append       =  0xc;
+	public static final int  headAppend   =  0xd;
 
-	private int    type  = 0;
-	public  int    type() { return type; }
-	private String value = "";
-	public  String value() { return value; }
+	protected int    type  = 0;
+	public    int    type() { return type; }
+	
+	protected String value = "";
+	public    String value() { return value; }
 	
 	static public String typeToString( int type ) {
 		switch (type) {
@@ -80,15 +81,14 @@ public class Intention {
 			case create    : return NEW;
 			case prepend   : return PREPEND;
 			case append    : return APPEND;
-			case headAppend : return HEADAPP; // don't think this is called!
+			//case headAppend : return HEADAPP; // don't think this is called!
 			case thenFinally : return FINALLY;
 			default:
 				audit.FATAL( "Intention: still returning undefined" );
 				return UNDEF;
 	}	}
-	public String typeToString() {
-		return typeToString( type );
-	}
+	public String typeToString() { return typeToString( type ); }
+	
 	static public int nameToType( String name ) {
 		if ( name.equals( REPLY ))
 			return thenReply;
@@ -118,10 +118,11 @@ public class Intention {
 			return append;
 		else if ( name.equals( PREPEND ))
 			return prepend;
-		else if ( name.equals( HEADAPP )) {
-			audit.FATAL( "typing headApp" );
-			return headAppend;
-		} else {
+		//else if ( name.equals( HEADAPP )) {
+		//	audit.FATAL( "typing headApp" );
+		//	return headAppend;
+		//} 
+		else {
 			audit.FATAL( "typing undef" );
 			return undef;
 	}	}
