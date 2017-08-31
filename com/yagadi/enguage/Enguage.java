@@ -191,7 +191,39 @@ public class Enguage extends Shell {
 			testInterpret( "times 2 all squared",
 						   "times 2 all squared makes 36.");
 			testInterpret( "what is 36 + 4 all divided by 2",
-						   "36 plus 4 all divided by 2 is 20." ); 
+						   "36 plus 4 all divided by 2 is 20." );
+			
+			//testInterpret( "unset the value of subtotal",           "ok." );
+			
+			/* Ideally, we want:
+			 * - the factorial of 1 is 1;
+			 * - the factorial of n is n times the factorial of n - 1;
+			 * - what is the factorial of 3.
+			 * /
+			testInterpret( "to the phrase what is the factorial of 1 reply the factorial of 1 is 1", "go on." );
+			testInterpret( "ok", "ok." );
+			testInterpret( "what is the factorial of 1",  "the factorial of 1 is 1." );
+			
+			testInterpret( "to the phrase the factorial of 1 reply 1", "go on." );
+			testInterpret( "ok", "ok." );
+			testInterpret( "the factorial of 1",  "1." );
+			/*
+			testInterpret( "interpret the factorial of numeric phrase variable n thus", "go on." );
+			testInterpret( "first the factorial of variable n - 1", "go on." );
+			testInterpret( "then times variable n", "go on." );
+			testInterpret( "then reply whatever", "go on." );
+			testInterpret( "ok", "ok." );
+			
+			//Repertoire.signs.show( "OTF" );
+
+			testInterpret( "tracing on" );
+			//testInterpret( "the factorial of 3", "6." );
+			testInterpret( "tracing off" );
+			testInterpret( "unset the value of subtotal", "ok." );
+
+			
+			//testInterpret( "on the phrase what is the factorial of numeric variable n reply the factorial of n is whatever" );
+			// */
 		}
 
 		if ( level == 0 || level == 4 ) {

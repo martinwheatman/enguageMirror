@@ -60,7 +60,7 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 			String word = wi.next();
 			if (word.equals( variable )) {
 				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable )) // so we can't have VARIABLE, ok...
-						out.append( word.toUpperCase( Locale.getDefault()) );
+					out.append( word.toUpperCase( Locale.getDefault()) );
 				else // variable. OR variable variable
 					out.append( variable );
 				
