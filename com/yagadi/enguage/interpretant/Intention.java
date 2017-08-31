@@ -216,12 +216,12 @@ public class Intention {
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", typeToString( type ) +"='"+ value +"', ctx =>"+ Context.valueOf());
 		
-		if (r.isDone()) { 
-			audit.debug( "skipping "+ typeToString() +": reply already found" );
-		
-		} else if (typeToString().equals( "finally" )) {
+		if (typeToString().equals( "finally" )) {
 			perform( r ); // ignore result of finally
 
+		} else if (r.isDone()) { 
+			audit.debug( "skipping "+ typeToString() +": reply already found" );
+		
 		} else {
 			
 			if (r.negative()) {
