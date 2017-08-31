@@ -33,12 +33,8 @@ public class Patternette {
 	public static final String quotedPrefix = quoted.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String plural = Plural.NAME; // "plural";
 	public static final String pluralPrefix = plural.toUpperCase( Locale.getDefault()) + "-";
-	public static final String numeric = "numeric";
-	public static final String numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String singular = "singular";
 	public static final String singularPrefix = singular.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String phrase = "phrase";
-	public static final String phrasePrefix = phrase.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String abstr  = "abstract";
 	
 	
@@ -73,13 +69,13 @@ public class Patternette {
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Patternette        attributes( Attribute a ) {
-		if (a.name().equals( phrase ))
+		if (a.name().equals( Pattern.phrase ))
 			isPhrased = true;
 		else if (a.name().equals( plural ))
 			isPlural = true;
 		else if (a.name().equals( quoted ))
 			isQuoted = true;
-		else if (a.name().equals( numeric ))
+		else if (a.name().equals( Pattern.numeric ))
 			numericIs( true );
 		else
 			attrs.add( a );
@@ -98,7 +94,7 @@ public class Patternette {
 	public  Patternette        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
 	public  Patternette        prepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
 	public  Patternette        add( int posn, String name, String value ) {
-		if (name.equals( phrase ))
+		if (name.equals( Pattern.phrase ))
 			isPhrased = true;
 		else
 			attrs.add( posn, new Attribute( name, value ));

@@ -17,6 +17,10 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 	static final         long serialVersionUID = 0;
 	static private       Audit           audit = new Audit( "Tags", false );
 	static private final String       variable = "variable";
+	public static final String phrase = "phrase";
+	public static final String phrasePrefix = phrase.toUpperCase( Locale.getDefault() ) + "-";
+	public static final String numeric = "numeric";
+	public static final String numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
@@ -55,40 +59,47 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 		while ( wi.hasNext() ) {
 			String word = wi.next();
 			if (word.equals( variable )) {
-				if (wi.hasNext()
-						&& null != (word = wi.next())
-						&& !word.equals( variable )) // so we can't have VARIABLE, ok...
-					out.append( word.toUpperCase( Locale.getDefault()) );
-				else
+				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable )) // so we can't have VARIABLE, ok...
+						out.append( word.toUpperCase( Locale.getDefault()) );
+				else // variable. OR variable variable
 					out.append( variable );
 				
-			} else if (word.equals( Patternette.numeric )) {
-				if (wi.hasNext()) {
-					word = wi.next();
-					if (word.equals( variable )
-							&& wi.hasNext()
-							&& null != (word = wi.next())
-							&& !word.equals( variable ))
-						out.append( Patternette.numericPrefix + word.toUpperCase( Locale.getDefault()) );
-					else // was "numeric <word>" OR "numeric variable variable" => "numeric" + word
-						out.append( Patternette.numeric ).append( word );
-				} else // "numeric" was last word...
-					out.append( Patternette.numeric );
+			} else if (word.equals( numeric ))
+				if (wi.hasNext() && null != (word = wi.next()))
+					if (word.equals( variable ))
+						if (wi.hasNext() && (null != (word = wi.next() )) && !word.equals( variable ))
+							out.append( numericPrefix + word.toUpperCase( Locale.getDefault()) );
+						else // numeric variable. or numeric variable variable
+							out.append( numeric ).append( variable );
+					
+					else if (word.equals( phrase ))
+						if (wi.hasNext() && null != (word = wi.next()))
+							if (word.equals( variable ))
+								if (wi.hasNext() && (null != (word = wi.next() )) && !word.equals( variable ))
+									out.append( numericPrefix + phrasePrefix + word.toUpperCase( Locale.getDefault()) );
+								else // numeric phrase variable. OR numeric phrase variable variable
+									out.append( numeric ).append( phrase ).append( variable );
+							else // numeric phrase blah
+								out.append( numeric ).append( phrase ).append( word );
+						else // numeric phrase.
+							out.append( numeric ).append( phrase );
+					else // numeric blah
+						out.append( numeric ).append( word );		
+				else // numeric.
+					out.append( numeric );
 				
-			} else if (word.equals( Patternette.phrase )) {
-				if (wi.hasNext()) {
-					word = wi.next();
-					if (word.equals( variable )
-							&& wi.hasNext()
-							&& null != (word = wi.next())
-							&& !word.equals( variable ))
-						out.append( Patternette.phrasePrefix + word.toUpperCase( Locale.getDefault()) );
-					else
-						out.append( Patternette.phrase ).append( word );
-				} else
-					out.append( Patternette.phrase );
-				
-			} else
+			else if (word.equals( phrase ))
+				if (wi.hasNext() && null != (word = wi.next()))
+					if (word.equals( variable ))
+						if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable ))
+							out.append( phrasePrefix + word.toUpperCase( Locale.getDefault()) );
+						else // phrase variable. OR phrase variable variable
+							out.append( phrase ).append( word );
+					else // phrase blah
+						out.append( phrase ).append( word );
+				else // phrase.
+					out.append( phrase );
+			else // blah
 				out.append( word );
 		}
 		return out;
@@ -187,7 +198,7 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 		{
 			return null;
 		}
-		audit.debug( "Ok, in matchVals with "+ utterance.toString());
+		
 		/* We need to be able to extract:
 		 * NAME="value"				... <NAME/>
 		 * NAME="some value"		... <NAME phrased="phrased"/>
@@ -295,6 +306,15 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 			audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
 		audit.out();
 	}
+	private static void toPatternTest( String utt  ) {
+		toPatternTest( utt, utt ); // check it against itself!
+	}
+	private static void toPatternTest( String utt, String answer ) {
+		String patt = toPattern( utt ).toString();
+		if (answer != null && !answer.equals( patt ))
+			audit.FATAL( "answer '"+ patt +"' doesn't equal expected: '" + answer +"'" );
+		audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
+	}
 
 	public static void main(String args[]) {
 		Audit.allOn();
@@ -304,7 +324,7 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 		audit.LOG( "pattern: "+ toPattern( "variable name needs numeric variable quantity units of phrase variable object" ));
 
 		Pattern t = new Pattern();
-		t.add( new Patternette( "what is ", "X" ).attribute( Patternette.numeric, Patternette.numeric ) );
+		t.add( new Patternette( "what is ", "X" ).attribute( numeric, numeric ) );
 		printTagsAndValues( t, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
 
 		printTagsAndValues( new Pattern( "i need phrase variable need" ),
@@ -319,6 +339,32 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 					.add( "unit",     "cup" )
 					.add( "need",     "coffee" )
 		);
-		String utt = "my name is phrase variable name";
-		audit.log( ">"+ utt +"< to pattern is >"+ toPattern( utt ) +"<" );
+		
+		//toPattern() tests...
+		toPatternTest( "the factorial of n" );
+		toPatternTest( "the factorial of n blah" );
+		toPatternTest( "the factorial of variable variable", "the factorial of variable" );
+		toPatternTest( "the factorial of variable n", "the factorial of N" );
+		toPatternTest( "the factorial of variable n blah", "the factorial of N blah" );
+
+		toPatternTest( "the factorial of phrase" );
+		toPatternTest( "the factorial of phrase n" );
+		toPatternTest( "the factorial of phrase variable variable","the factorial of phrase variable" );
+		toPatternTest( "the factorial of phrase variable n", "the factorial of PHRASE-N" );
+		toPatternTest( "the factorial of phrase variable n blah", "the factorial of PHRASE-N blah" );
+
+		toPatternTest( "the factorial of numeric" );
+		toPatternTest( "the factorial of numeric n" );
+		toPatternTest( "the factorial of numeric variable variable", "the factorial of numeric variable" );
+		toPatternTest( "the factorial of numeric variable n", "the factorial of NUMERIC-N" );
+		toPatternTest( "the factorial of numeric variable n blah", "the factorial of NUMERIC-N blah" );
+
+		toPatternTest( "the factorial of numeric phrase" );
+		toPatternTest( "the factorial of numeric phrase n" );
+		toPatternTest( "the factorial of numeric phrase n blah" );
+		toPatternTest( "the factorial of numeric phrase variable" );
+		toPatternTest( "the factorial of numeric phrase variable variable", "the factorial of numeric phrase variable" );
+		toPatternTest( "the factorial of numeric phrase variable n", "the factorial of NUMERIC-PHRASE-N" );
+		toPatternTest( "the factorial of numeric phrase variable n blah", "the factorial of NUMERIC-PHRASE-N blah" );
+		audit.log( "PASSED" );
 }	}
