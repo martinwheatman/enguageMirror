@@ -40,15 +40,21 @@ public class Utterance {
 	 * - extensible - at runtime. See sgai 2016 paper...
 	 * Further, taught word phrases to determine tense: will ~, ~s, ~ed; plurality?
 	 */
-	public Utterance( Strings orig ) {
+	public Utterance( Strings orig ) { this( orig, null ); }
+	public Utterance( Strings orig, Strings prevAnswer ) {
 		//audit.in( "ctor", orig.toString( Strings.SPACED ));
 		representamen = orig;
 		expanded =	Colloquial.applyIncoming(       // I'm => I am => _user is
 						new Strings( orig ).normalise() // "i am/." becomes "i/am/."
 					).decap()                          // deref anything in the environment?
 					.contract( "=" );                  // [ name, =, "value" ] => [ name="value" ]
-		audit.debug( "expanded: "+ expanded.toString( Strings.SPACED ));
+		audit.LOG( "Utterance: expanded: "+ expanded.toString( Strings.SPACED ));
 
+		if (null != prevAnswer && expanded.contains( Ans.placeholder())) {
+			audit.LOG( ">>>>>replacing "+ Ans.placeholderAsStrings() +" with "+ new Strings( prevAnswer ));
+			expanded.replace( Ans.placeholderAsStrings(), new Strings( prevAnswer ));
+		}
+			
 		temporal = new Strings( expanded );
 		when = When.getWhen( temporal );
 		
@@ -89,7 +95,8 @@ public class Utterance {
 		return match == null ? s.pattern().matchValues( expanded ) : match;
 	}
 		
-	public String toString( int layout ) { return representamen.toString( layout );}
+	public String toString( int layout ) { return expanded.toString( layout );}
+	public String toString() { return toString( Strings.SPACED );}
 	
 	// helpers
 	static public boolean sane( Utterance u ) {return u != null && u.representamen.size() > 0;	}
@@ -117,12 +124,15 @@ public class Utterance {
 	}
 
 	// test code...
-	public static void test( Sign s, String utterance ) {
-		Attributes a = new Utterance( new Strings( utterance )).match(s);
+	public static void test( Sign s, String utterance ) { test( s, utterance, null ); }
+	public static void test( Sign s, String utterance, Strings prevAns ) {
+		Utterance u = new Utterance( new Strings( utterance ), prevAns );
+		Attributes a = u.match(s);
 		audit.log( "utterance is: "
-				+ utterance +"\n"
+				+ u.toString() +"\n"
 				+ (null == a ? "NOT matched." : "matched attrs is: "+ a ));
 	}
+	
 	public static void main( String arg[]) {
 		Where.doLocators();
 		audit.log("Creating a pub:" +
@@ -140,4 +150,10 @@ public class Utterance {
 		
 		test( s, "i am meeting my brother at the pub at 7" );
 		test( s, "i am meeting my sister  at the pub" );
+		
+		ts = new Pattern();
+		ts.add( new Patternette( "what is the factorial of", "N" ).attribute( "numeric", "numeric" ));
+		s = new Sign().concept("meeting").pattern( ts );
+
+		test( s, "what is the factorial of whatever", new Strings( "3" ));
 }	}
