@@ -180,7 +180,7 @@ public class Sign {
 	public static void complexityTest( Pattern t ) {
 		Sign container = new Sign();
 		container.pattern( t );
-		audit.log( "Complexity of "+ container.toString() +"("+ container.complexity() +")\n");
+		audit.log( "Complexity of "+ container.toString( 0, container.complexity() ) +"\n" );
 	}
 	public static void main( String argv[]) {
 		Sign p = new Sign();
