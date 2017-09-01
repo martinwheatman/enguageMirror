@@ -148,7 +148,7 @@ public class Sign {
 				: MID_RANGE*namedTags + LOW_RANGE*boilerplate + rnd*10;
 	}
 	
-	public String toString( int n, long complexity ) {
+	public String toXml( int n, long complexity ) {
 		
 		String intents = "";
 		for (Intention in : intentions)
@@ -159,9 +159,10 @@ public class Sign {
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">"
 				+ "\n";
 	}
+	public String toString() {return pattern().toString();}
 	
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", "\n"+ pattern().toXml() );
+		audit.in( "mediate", pattern().toString() );
 		Iterator<Intention> ai = intentions.iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Intention in = ai.next();
@@ -180,7 +181,7 @@ public class Sign {
 	public static void complexityTest( Pattern t ) {
 		Sign container = new Sign();
 		container.pattern( t );
-		audit.log( "Complexity of "+ container.toString( 0, container.complexity() ) +"\n" );
+		audit.log( "Complexity of "+ container.toXml( 0, container.complexity() ) +"\n" );
 	}
 	public static void main( String argv[]) {
 		Sign p = new Sign();

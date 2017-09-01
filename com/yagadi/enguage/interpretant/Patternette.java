@@ -389,10 +389,13 @@ public class Patternette {
 		return s;
 	}
 	public String toString() {
-		return prefix().toString() + (name.equals( "" ) ? "" :
-			("<"+ name +" "+ attrs.toString()+  // attributes doesn't have preceding space
-			/*(0 == content().size() ?*/ "/>" /*: ( ">"+ content.toString() + "</"+ name +">" ))*/))
-			+ postfix;
+		return prefix().toString() 
+				+" "+ 
+				(name.equals( "" ) ? "" :
+					(isNumeric()? Pattern.numericPrefix : "")
+					+ (isPhrased()? Pattern.phrasePrefix : "")
+					+ name.toUpperCase( Locale.getDefault()) +" ")
+				+ postfix;
 	}
 	public String toText() {
 		return prefix().toString()
