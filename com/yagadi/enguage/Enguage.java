@@ -209,7 +209,8 @@ public class Enguage extends Shell {
 			testInterpret( "the factorial of 1",  "1." );
 			/*
 			testInterpret( "interpret the factorial of numeric phrase variable n thus", "go on." );
-			testInterpret( "first the factorial of variable n - 1", "go on." );
+			testInterpret( "first perform numeric evaluate variable n - 1",             "go on." );
+			testInterpret( "then the factorial of whatever", "go on." );
 			testInterpret( "then times variable n", "go on." );
 			testInterpret( "then reply whatever", "go on." );
 			testInterpret( "ok", "ok." );
