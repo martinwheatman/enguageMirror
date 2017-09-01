@@ -188,14 +188,33 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 	/* TODO: Proposal: that a singular tag (i.e. non-PHRASE) can match with a known string
 	 * i.e. an object id: e.g. theOldMan, thePub, fishAndChips camelised
 	 */
+	private int notMatched = 0;
+	public String notMatched() {
+		return notMatched == 0 ? "matched" :
+			notMatched == 1 ? "precheck 1" :
+			notMatched == 2 ? "precheck 2" :
+			notMatched == 11 ? "prefix" :
+			notMatched == 15 ? "not numeric" :
+			notMatched == 16 ? "invalid flags" :
+			notMatched == 19 ? "postfix" :
+			notMatched == 21 ? "more pattern" :
+			notMatched == 22 ? "more utterance" : ("unknown:"+ notMatched);
+	}
 	public Attributes matchValues( Strings utterance ) {
+		
+		notMatched = 0;
+		
 		// First, a sanity check
-		if (size() == 0) return null; // manual/vocal Tags creation can produce null Tags objects
-		                              // see "first reply well fancy that" in Enguage sanity test.
+		if (size() == 0) {
+			notMatched = 1;
+			return null; // manual/vocal Tags creation can produce null Tags objects
+                         // see "first reply well fancy that" in Enguage sanity test.
+		}
 		Strings  prefix = get( 0 ).prefix();
 		if ( prefix.size() > 0 &&
 		    !prefix.get( 0 ).equalsIgnoreCase( utterance.get( 0 ) ))
 		{
+			notMatched = 2;
 			return null;
 		}
 		
@@ -216,21 +235,26 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 			Patternette t = (next != null) ? next : patti.next();
 			next = null;
 			
-			if (null == (utti = matchBoilerplate( t.prefix(), utti ))) // ...match prefix
+			if (null == (utti = matchBoilerplate( t.prefix(), utti ))) { // ...match prefix
+				notMatched = 11;
 				return null;
 				
-			else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
+			} else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
 				if (patti.hasNext()) next = patti.next();
 				
 			} else if (utti.hasNext() && !t.name().equals( "" )) { // do these loaded match?
 				String val = null;
 				if (t.isNumeric()) {
 					
-					if (null == (val = doNumeric( utti )))
+					if (null == (val = doNumeric( utti ))) {
+						notMatched = 15;
 						return null;
+					}
 					
-				} else if (t.invalid( utti ))
+				} else if (t.invalid( utti )) {
+					notMatched = 16;
 					return null;
+				}
 					
 				else
 					val = getVal( t, patti, utti );
@@ -239,12 +263,20 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 				if (null == matched) matched = new Attributes();
 				matched.add( t.matchedAttr( val )); // remember what it was matched with!
 				
-				if (null == (utti = matchBoilerplate( t.postfixAsStrings(), utti )))
+				if (null == (utti = matchBoilerplate( t.postfixAsStrings(), utti ))) {
+					notMatched = 19;
 					return null;
+				}
 		}	}
 		
-		if (patti.hasNext() || utti.hasNext()) return null;
-		
+		if (patti.hasNext()) {
+			notMatched = 21;
+			return null;
+		}
+		if (utti.hasNext()) {
+			notMatched = 22;
+			return null;
+		}
 		return null == matched ? new Attributes() : matched;
 	}
 	// with postfix boilerplate:
