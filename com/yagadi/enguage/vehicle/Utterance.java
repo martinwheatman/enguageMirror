@@ -48,10 +48,10 @@ public class Utterance {
 						new Strings( orig ).normalise() // "i am/." becomes "i/am/."
 					).decap()                          // deref anything in the environment?
 					.contract( "=" );                  // [ name, =, "value" ] => [ name="value" ]
-		audit.LOG( "Utterance: expanded: "+ expanded.toString( Strings.SPACED ));
+		//audit.LOG( "Utterance: expanded: "+ expanded.toString( Strings.SPACED ));
 
 		if (null != prevAnswer && expanded.contains( Ans.placeholder())) {
-			audit.LOG( ">>>>>replacing "+ Ans.placeholderAsStrings() +" with "+ new Strings( prevAnswer ));
+			//audit.LOG( ">>>>>replacing "+ Ans.placeholderAsStrings() +" with "+ new Strings( prevAnswer ));
 			expanded.replace( Ans.placeholderAsStrings(), new Strings( prevAnswer ));
 		}
 			
