@@ -38,7 +38,15 @@ public class Sign {
 				
 			} else if (cmd.equals( "perform" )) {
 				audit.debug( "adding a conceptual "+    argv.toString() );
-				rc = new Autopoiesis( isElse ? Intention.elseDo : Intention.thenDo,       argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
+				rc = new Autopoiesis(
+							isElse ? Intention.elseDo : Intention.thenDo,
+							argv.toString(),
+						   prepending ?
+								Autopoiesis.prepend :
+							   headAppending ?
+								Autopoiesis.headAppend :
+								Autopoiesis.append
+						).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
 				//audit.LOG( (prepending?"pre":"app")+"ing a reply "+  (isElse? Intention.ELSE_REPLY : Intention.REPLY) +" "+ argv.toString() );
@@ -49,8 +57,20 @@ public class Sign {
 							Autopoiesis.prepend :
 						   headAppending ?
 							Autopoiesis.headAppend :
-							Autopoiesis.append ).mediate( r ).toString();
+							Autopoiesis.append
+					  ).mediate( r ).toString();
 				
+			} else if (cmd.equals( "think" )) {
+				audit.debug( "adding a thought "+ argv.toString() );
+				rc = new Autopoiesis(
+							Intention.thenThink,
+							argv.toString(), 
+							prepending ?
+								Autopoiesis.prepend :
+								 headAppending ?
+									Autopoiesis.headAppend :
+									Autopoiesis.append
+					  ).mediate( r ).toString();
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "Sign: prepending an implication '"+ argv.toString() +"'");
 				rc = new Autopoiesis( isElse? Intention.elseThink : Intention.thenThink,  argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
@@ -66,8 +86,7 @@ public class Sign {
 					rc = new Autopoiesis( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
 			
 			} else {
-				audit.debug( "adding a thought "+ argv.toString() );
-				rc = new Autopoiesis(     Intention.thenThink, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
 		}	}
 		return audit.out( rc );
 	}
