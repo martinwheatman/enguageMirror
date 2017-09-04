@@ -568,6 +568,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				return false;
 		return true;
 	}
+	public boolean areLowerCase() {
+		for (String a : this )
+			if (isUpperCase( a ))
+				return false;
+		return true;
+	}
 	public static boolean isUpperCaseWithHyphens( String a ) {
 		for (int i=0; i<a.length(); i++) {
 			char ch = a.charAt( i );
