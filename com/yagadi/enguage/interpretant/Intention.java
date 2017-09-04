@@ -6,6 +6,7 @@ import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.vehicle.Ans;
 import com.yagadi.enguage.vehicle.Context;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.Utterance;
@@ -146,6 +147,7 @@ public class Intention {
 		Strings thought = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		// This is mediation...
+		// CH5? Reply tmpr = Repertoire.interpret( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
 		Reply tmpr = Repertoire.interpret( new Utterance( thought )); // just recycle existing reply
 		if (r.a.isAppending())
 			r.a.add( tmpr.a.toString() );
@@ -162,6 +164,9 @@ public class Intention {
 		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
+		// CHNAGE 4?
+		//if (null != answer && cmd.contains( Ans.placeholder()))
+		//	cmd.replace( Ans.placeholderAsStrings(), new Strings( answer ));
 		
 		if (isTemporal()) {
 			String when = Context.get( "when" );
@@ -207,6 +212,7 @@ public class Intention {
 		/* TODO: 
 		 * if reply on its own, return reply from previous/inner reply -- imagination!
 		 */
+		// CH6? value = formulate( value, true ).toString();
 		r.format( value.equals( "" ) ? Reply.success() : value );
 		r.setType( new Strings( value ));
 		r.doneIs( r.type() != Reply.DNU );

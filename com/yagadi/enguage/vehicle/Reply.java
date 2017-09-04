@@ -193,6 +193,11 @@ public class Reply { // a reply is basically a formatted answer
 			cache = null;
 			type( calculateType() );
 		}
+		
+		/* CHANGE 1... factorial induction: add this in at some point...
+		 * if (!f.variable()) f = new Fmt(); // overwrite format!
+		 */
+
 		return this;
 	}
 	
@@ -207,6 +212,13 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   format( String s ) {
 		cache = null; //de-cache any previous reply
 		f.ormat( s );
+
+		/* CHANGE 2...factorial induction: add this in at some point...
+		 * CHANGE 3 in Signs.java
+		 * if (!new Strings( s ).areLowerCase() &&
+		 *		!s.contains("...")) answer( s ); // overwrite answer!
+		 */
+
 		//type( calculateType() ); -- add this in at some point!!!
 		return this;
 	}
