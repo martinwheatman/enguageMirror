@@ -114,7 +114,6 @@ public class Enguage extends Shell {
 		audit.LOG( "     : -t runs a test sanity check" );
 	}
 	public static void main( String args[] ) {
-		
 		if (args.length == 0)
 			usage();
 		else {
@@ -183,7 +182,6 @@ public class Enguage extends Shell {
 			testInterpret( "what do i need",
 						   "you don't need anything." );
 		}
-
 		if ( level == 0 || level == 3 ) {
 			audit.title( "Verbal Arithmetical" );
 			testInterpret( "what is 1 + 2",
@@ -226,7 +224,6 @@ public class Enguage extends Shell {
 			//Repertoire.signs.show( "OTF" );
 			testInterpret( "what is the factorial of 4",  "24 the factorial of 4 is 24." );
 		}
-
 		if ( level == 0 || level == 4 ) {
 			audit.title( "Numerical Context" );
 			testInterpret( "i need a coffee",

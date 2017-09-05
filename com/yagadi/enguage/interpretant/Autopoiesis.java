@@ -17,69 +17,69 @@ public class Autopoiesis extends Intention {
 		// PATTERN CREATION cases (7).
 		// a1: On X, think Y.
 		new Sign().append( new Intention( create, Intention.THINK +" X Y" ))
-			.pattern( new Patternette(     "On ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
+			.pattern( new Patternette(     "On ", "x"      ).quotedIs())
+			.pattern( new Patternette( ", ", "y", "" ).phrasedIs()),
 			
 		// a2: On X, reply Y.
 		new Sign().append( new Intention( create, Intention.REPLY +" X Y" ))
-			.pattern( new Patternette(     "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", reply ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette(     "On ", "x" ).quotedIs())
+			.pattern( new Patternette( ", reply ", "y", "" ).quotedIs()),
 			
 		// a3: On X, perform Y.
 		new Sign().append( new Intention( create, Intention.DO +" X Y" )) // <<<< trying this
-			.pattern( new Patternette(       "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette(       "On ", "x" ).quotedIs())
+			.pattern( new Patternette( ", perform ", "y", "" ).quotedIs()),
 			
 		// b1: Then on X think Y.
 		new Sign().append( new Intention( append, Intention.THINK +" Y" ))
-			.pattern( new Patternette( "Then on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
+			.pattern( new Patternette( "Then on ", "x" ).quotedIs())
+			.pattern( new Patternette( ", ", "y", "" ).phrasedIs()),
 			
 		// b2: Then on X reply Y.
 		new Sign().append( new Intention( append, Intention.REPLY+" Y" ))
-			.pattern( new Patternette( "Then  on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", reply   ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette( "Then  on ", "x" ).quotedIs())
+			.pattern( new Patternette( ", reply   ", "y", "" ).quotedIs()),
 			
 		// b3: Then on X perform Y.
 		new Sign().append( new Intention( append, Intention.DO +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette( "Then  on ", "x" ).quotedIs())
+			.pattern( new Patternette( ", perform ", "y", "" ).quotedIs()),
 		
 		// At some point this could be improved to say "On X, perform Y; if not, reply Z." -- ??? think!
 		// !b1: Else on X think Y.
 		new Sign().append( new Intention( append, Intention.ELSE_THINK +" Y" ))
-			.pattern( new Patternette( "Then on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", if not, ", "y", "" ).attribute( Tag.phrase, Tag.phrase )),
+			.pattern( new Patternette( "Then on ", "x"      ).quotedIs())
+			.pattern( new Patternette( ", if not, ", "y", "" ).phrasedIs()),
 			
 		// !b2: Else on X reply Y.
 		new Sign().append( new Intention( append, Intention.ELSE_REPLY +" Y"))
-			.pattern( new Patternette(  "Then on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", if not, reply ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette(  "Then on ", "x"      ).quotedIs())
+			.pattern( new Patternette( ", if not, reply ", "y", "" ).quotedIs()),
 			
 		// !b3: Else on X perform Y.
 		new Sign().append( new Intention( append, Intention.ELSE_DO +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", if not, perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette( "Then  on ", "x"      ).quotedIs())
+			.pattern( new Patternette( ", if not, perform ", "y", "" ).quotedIs()),
 					
 		/*	Added new signs for the running of applications external to enguage...
 		 */
 		new Sign().append( new Intention( create, Intention.RUN +" X Y" ))
-			.pattern( new Patternette( "On ", "x" ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette( "On ", "x" ).quotedIs())
+			.pattern( new Patternette( ", run ", "y", "" ).quotedIs()),
 		
 		new Sign().append( new Intention( append, Intention.RUN +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette( "Then  on ", "x"      ).quotedIs())
+			.pattern( new Patternette( ", run ", "y", "" ).quotedIs()),
 
 		new Sign().append( new Intention( append, Intention.ELSE_RUN +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ", if not, run ", "y", "" ).attribute( Tag.quoted, Tag.quoted )),
+			.pattern( new Patternette( "Then  on ", "x"      ).quotedIs())
+			.pattern( new Patternette( ", if not, run ", "y", "" ).quotedIs()),
 
 		/* c1: Finally on X perform Y. -- dont need think or reply?
 		 */
 		new Sign().append( new Intention( append, Intention.FINALLY+" Y" ))
-			.pattern( new Patternette( " Finally on ", "x"      ).attribute( Tag.quoted, Tag.quoted ))
-			.pattern( new Patternette( ",   perform ", "y", "" ).attribute( Tag.quoted, Tag.quoted ))
+			.pattern( new Patternette( " Finally on ", "x"      ).quotedIs())
+			.pattern( new Patternette( ",   perform ", "y", "" ).quotedIs())
 	};
 
 	public Autopoiesis( int type, String value ) { super( type, value ); }	
@@ -176,7 +176,7 @@ public class Autopoiesis extends Intention {
 		audit.log( Repertoire.signs.toString() );
 		audit.log( r.toString());
 		
-		audit.title( "manual sign creation... add each attribute individually" );
+		audit.title( "manual sign creation... add each intention individually" );
 		r = new Reply();
 		r = new Autopoiesis( create,    "b variable pattern z", create ).mediate( r );
 		r = new Autopoiesis( thenThink, "one two three four"  , append ).mediate( r );

@@ -13,14 +13,16 @@ import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
 import com.yagadi.enguage.vehicle.Reply;
 
-public class Pattern extends ArrayList<Patternette> { // was Tags
+public class Pattern extends ArrayList<Patternette> {
 	static final         long serialVersionUID = 0;
-	static private       Audit           audit = new Audit( "Tags", false );
-	static private final String       variable = "variable";
-	public static final String phrase = "phrase";
-	public static final String phrasePrefix = phrase.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String numeric = "numeric";
-	public static final String numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
+	static private       Audit           audit = new Audit( "Pattern" );
+	static private final String  variable      = "variable";
+	public static  final String  quoted        = "quoted";
+	public static  final String  quotedPrefix  = quoted.toUpperCase( Locale.getDefault() ) + "-";
+	public static  final String  phrase        = "phrase";
+	public static  final String  phrasePrefix  = phrase.toUpperCase( Locale.getDefault() ) + "-";
+	public static  final String  numeric       = "numeric";
+	public static  final String  numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
@@ -109,28 +111,6 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 	static public        boolean debug() { return debug; }
 	static public        void    debug( boolean b ) { debug = b; }
 	
-	public boolean xequals( Pattern ta ) {
-		if (ta == null || size() != ta.size())
-			return false;
-		else {
-			Iterator<Patternette> it = iterator(), tait = ta.iterator();
-			while (it.hasNext())
-				if (!it.next().equals( tait.next() ))
-					return false;
-		}
-		return true;
-	}
-	public boolean xmatches( Pattern patterns ) {
-		if (patterns.size() == 0) return true; // ALL = "" 
-		if (patterns == null || size() < patterns.size()) return false;
-		Iterator<Patternette> it = iterator(),
-				pit = patterns.iterator();
-		while (it.hasNext()) // ordered by patterns
-			if (!it.next().matches( pit.next() ))
-				return false;
-		return true;
-	}
-
 	/* *************************************************************************
 	 * matchValues() coming soon...
 	 */
@@ -191,8 +171,8 @@ public class Pattern extends ArrayList<Patternette> { // was Tags
 	private int notMatched = 0;
 	public String notMatched() {
 		return notMatched == 0 ? "matched" :
-			notMatched == 1 ? "precheck 1" :
-			notMatched == 2 ? "precheck 2" :
+			notMatched ==  1 ? "precheck 1" :
+			notMatched ==  2 ? "precheck 2" :
 			notMatched == 11 ? "prefix" :
 			notMatched == 15 ? "not numeric" :
 			notMatched == 16 ? "invalid flags" :

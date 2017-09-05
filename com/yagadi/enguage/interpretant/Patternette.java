@@ -10,7 +10,6 @@ import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Indent;
-import com.yagadi.enguage.util.Number;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
 import com.yagadi.enguage.vehicle.Plural;
@@ -29,8 +28,6 @@ public class Patternette {
 	private int  type() { return type; }
 	private void type( int t ) { if (t>=NULL && t<=END) type = t; }
 
-	public static final String quoted = "quoted";
-	public static final String quotedPrefix = quoted.toUpperCase( Locale.getDefault() ) + "-";
 	public static final String plural = Plural.NAME; // "plural";
 	public static final String pluralPrefix = plural.toUpperCase( Locale.getDefault()) + "-";
 	public static final String singular = "singular";
@@ -55,28 +52,35 @@ public class Patternette {
 
 	private boolean isNumeric = false;
 	public  boolean isNumeric() { return isNumeric; }
-	public  Patternette     numericIs( boolean nm ) { isNumeric = nm; return this; }
+	//public  Patternette numericIs( boolean nm ) { isNumeric = nm; return this; }
+	public  Patternette numericIs() { isNumeric = true; return this; }
 
 	private boolean isQuoted = false;
 	public  boolean quoted() { return isQuoted;}
+	//public  Patternette quotedIs( boolean b ) { isQuoted = b; return this; }
+	public  Patternette quotedIs() { isQuoted = true; return this; }
 	
 	private boolean isPlural = false;
-	public  boolean pluraled() { return isPlural; }
+	public  boolean isPlural() { return isPlural; }
+	//public  Patternette pluralIs( boolean b ) { isPlural = b; return this; }
+	public  Patternette pluralIs() { isPlural = true; return this; }
 	
-	private boolean isPhrased = false;
-	public  boolean isPhrased() { return isPhrased; }
+	private boolean     isPhrased = false;
+	public  boolean     isPhrased() { return isPhrased; }
+	//public  Patternette phrasedIs( boolean b ) { isPhrased = b; return this; }
+	public  Patternette phrasedIs() { isPhrased = true; return this; }
 	
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Patternette        attributes( Attribute a ) {
 		if (a.name().equals( Pattern.phrase ))
-			isPhrased = true;
+			phrasedIs();
 		else if (a.name().equals( plural ))
-			isPlural = true;
-		else if (a.name().equals( quoted ))
-			isQuoted = true;
+			pluralIs();
+		else if (a.name().equals( Pattern.quoted ))
+			quotedIs();
 		else if (a.name().equals( Pattern.numeric ))
-			numericIs( true );
+			numericIs();
 		else
 			attrs.add( a );
 		return this;
@@ -91,8 +95,8 @@ public class Patternette {
 	public  String     attribute( String name ) { return attrs.get( name ); }
 	public  Patternette        attribute( String name, String value ) {attributes( new Attribute( name, value )); return this; }
 	// ordering of attributes relevant to Autopoiesis
-	public  Patternette        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
-	public  Patternette        prepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
+	public  Patternette        xappend( String name, String value ) { attributes( new Attribute( name, value )); return this; }
+	public  Patternette        xprepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
 	public  Patternette        add( int posn, String name, String value ) {
 		if (name.equals( Pattern.phrase ))
 			isPhrased = true;
@@ -115,7 +119,6 @@ public class Patternette {
 					name.equals("unit") ? Plural.singular( val ) : val
 				).toString( Strings.SPACED ) );
 	}
-
 	
 	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }
 
@@ -124,7 +127,7 @@ public class Patternette {
 		if (ui.hasNext()) {
 			String candidate = ui.next();
 			rc = (  quoted() && !Language.isQuoted( candidate ))
-			  || (pluraled() && !Plural.isPlural(   candidate ))
+			  || (isPlural() && !Plural.isPlural(   candidate ))
 			  // Useful for preventing class "class" being created...
 			  //|| (attribute( Tag.abstr ).equals( Tag.abstr ) && // Archaic? Refactor anyway!
 				//		candidate.equalsIgnoreCase( name()    )   )
@@ -134,75 +137,6 @@ public class Patternette {
 		return rc;
 	}
 	
-	// --
-	public Patternette update( Attributes as ) {
-		/*
-		 * this contains some item specific code :(
-		 */
-		audit.in( "update", as.toString() );
-		for (Attribute a : as) {
-			String value = a.value(),
-					name = a.name();
-			if (name.equals( "quantity" )) {
-				/*
-				 * should getNumber() and combine number from value.
-				 */
-				Strings vs = new Strings( value );
-				if (vs.size() == 2) {
-					/*
-					 * combine magnitude - replace if both absolute, add if relative etc.
-					 * Should be in Number? Should deal with "1 more" + "2 more" = "3 more"
-					 */
-					String firstVal = vs.get( 0 ), secondVal = vs.get( 1 );
-					if (secondVal.equals( Number.MORE ) || secondVal.equals( Number.FEWER )) {
-						int oldInt = 0, newInt = 0;
-						try {
-							oldInt = Integer.valueOf( attribute( name ));
-						} catch (Exception e) {} // fail silently, oldInt = 0
-						//audit.debug( "oldInt is "+ oldInt );
-						try {
-							newInt = Integer.valueOf( firstVal );
-							//audit.debug( "newInt is "+ newInt );
-							/*
-							 * What the ...?
-							 */
-							value = Integer.toString( oldInt + (secondVal.equals( Number.MORE ) ? newInt : -newInt));
-							//audit.debug( "value  is "+ value );
-							
-						} catch (Exception e) {} // fail silently, newInt = 0;
-				}	}
-			//} else if (name.equals( "unit" )) {
-			}
-			replace( a.name(), value );
-		}
-		audit.out();
-		return this;
-	}
-//	public int remove( Patternette pattern ) {
-//		//audit.traceIn( "remove", pattern.toString());
-//		int rc = 0;
-//		Iterator<Patternette> i = content().iterator();
-//		while (i.hasNext()) {
-//			Patternette t = i.next();
-//			audit.debug( "checking against: "+ t.toString() );
-//			if (t.equals( pattern )) {
-//				i.remove();
-//				rc++;
-//		}	}
-//		//audit.traceut( rc );
-//		return rc;
-//	}
-//	public int removeMatches( Patternette pattern ) {
-//		int rc = 0;
-//		Iterator<Patternette> i = content().iterator();
-//		while (i.hasNext()) {
-//			Patternette t = i.next();
-//			if (t.matches( pattern )) {
-//				i.remove();
-//				rc++;
-//		}	}
-//		return rc;
-//	}
 	public boolean equals( Patternette pattern ) {
 		//if (audit.tracing) audit.in( "equals", "this="+ toXml() +", with="+ pattern.toXml());
 		boolean rc;
@@ -364,7 +298,6 @@ public class Patternette {
 		attributes( new Attributes( orig.attributes()));
 		//content( orig.content());
 	}
-
 	private static Indent indent = new Indent( "  " );
 	public String toXml() { return toXml( indent );}
 	public String toXml( Indent indent ) {
@@ -410,7 +343,6 @@ public class Patternette {
 				//+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
-	
 	public static Patternette fromFile( String fname ) {
 		Patternette t = null;
 		try {
@@ -453,7 +385,7 @@ public class Patternette {
 		audit.tracing = true;
 		Strings a = new Strings( argv );
 		int argc = argv.length;
-		Patternette orig = new Patternette("prefix ", "util", "posstfix").append("sofa", "show").append("attr","one");
+		Patternette orig = new Patternette("prefix ", "util", "posstfix");//.append("sofa", "show").append("attr","one");
 		//orig.content( new Patternette().prefix( new Strings( "show" )).name("sub"));
 		//orig.content( new Patternette().prefix( new Strings( "fred") ));
 		Patternette t = new Patternette( orig );
