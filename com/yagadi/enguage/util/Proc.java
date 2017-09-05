@@ -1,12 +1,9 @@
-package com.yagadi.enguage.interpretant;
+package com.yagadi.enguage.util;
 
 import java.io.InputStream;
 import java.io.PrintWriter;
 
 import com.yagadi.enguage.object.Variable;
-import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Shell;
-import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Context;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.when.Moment;
@@ -15,7 +12,7 @@ import com.yagadi.enguage.vehicle.when.When;
 public class Proc {
 	static private Audit audit = new Audit( "run" );
 	
-	Proc (String command) { cmd = command; }
+	public Proc (String command) { cmd = command; }
 
 	private String cmd = "";
 	

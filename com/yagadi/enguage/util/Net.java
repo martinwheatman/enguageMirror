@@ -1,4 +1,4 @@
-package com.yagadi.enguage.interpretant;
+package com.yagadi.enguage.util;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.yagadi.enguage.Enguage;
-import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.vehicle.Context;
 import com.yagadi.enguage.vehicle.Reply;
 

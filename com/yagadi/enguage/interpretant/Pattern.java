@@ -27,6 +27,7 @@ public class Pattern extends ArrayList<Patternette> {
 	public static  final String  numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
 	public static  final String  plural        = Plural.NAME; // "plural";
 	public static  final String  pluralPrefix  = plural.toUpperCase( Locale.getDefault()) + "-";
+	public static  final String  singularPrefix = "SINGULAR-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
@@ -202,13 +203,6 @@ public class Pattern extends ArrayList<Patternette> {
 			notMatched = 1;
 			return null; // manual/vocal Tags creation can produce null Tags objects
                          // see "first reply well fancy that" in Enguage sanity test.
-		}
-		Strings  prefix = get( 0 ).prefix();
-		if ( prefix.size() > 0 &&
-		    !prefix.get( 0 ).equalsIgnoreCase( utterance.get( 0 ) ))
-		{
-			notMatched = 2;
-			return null;
 		}
 		
 		/* We need to be able to extract:

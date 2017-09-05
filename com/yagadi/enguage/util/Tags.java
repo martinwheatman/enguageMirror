@@ -1,4 +1,4 @@
-package com.yagadi.enguage.interpretant;
+package com.yagadi.enguage.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,10 +6,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import com.yagadi.enguage.object.Attributes;
-import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Indent;
-import com.yagadi.enguage.util.Number;
-import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
 import com.yagadi.enguage.vehicle.Reply;
 

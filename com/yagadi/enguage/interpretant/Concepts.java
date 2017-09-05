@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.util.Tag;
 
 public class Concepts {
 	/* Concepts is a list of names, TODO: pre-processed into a list of Concept(pattern+name)

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import com.yagadi.enguage.interpretant.Tag;
+import com.yagadi.enguage.interpretant.Pattern;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -164,9 +164,9 @@ public class Attributes extends ArrayList<Attribute> {
 			String orig = name;
 			// if we have QUOTED-X, retrieve X and leave answer QUOTED
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
-			boolean quoted = name.contains( Tag.quotedPrefix ),
-					plural = name.contains( Tag.pluralPrefix ),
-					singular = name.contains( Tag.singularPrefix );
+			boolean quoted = name.contains( Pattern.quotedPrefix ),
+					plural = name.contains( Pattern.pluralPrefix ),
+					singular = name.contains( Pattern.singularPrefix );
 			
 			// remove all prefixes...
 			name = name.substring( name.lastIndexOf( "-" )+1 );

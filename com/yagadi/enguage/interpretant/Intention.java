@@ -4,6 +4,7 @@ import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
+import com.yagadi.enguage.util.Proc;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Context;

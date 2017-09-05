@@ -1,4 +1,4 @@
-package com.yagadi.enguage.interpretant;
+package com.yagadi.enguage.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,11 +9,6 @@ import java.util.Locale;
 
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
-import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Fs;
-import com.yagadi.enguage.util.Indent;
-import com.yagadi.enguage.util.Number;
-import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
 import com.yagadi.enguage.vehicle.Plural;
 
