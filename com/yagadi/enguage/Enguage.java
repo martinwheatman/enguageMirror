@@ -208,20 +208,22 @@ public class Enguage extends Shell {
 			testInterpret( "ok", "ok." );
 			testInterpret( "the factorial of 1",  "1." );
 			
+			testInterpret( "interpret multiply numeric phrase variable n by numeric phrase variable m thus", "go on." );
+			testInterpret( "first perform numeric evaluate variable n times numeric phrase variable m",             "go on." );
+			testInterpret( "ok", "ok." );
+			
+			testInterpret( "multiply 2 by 3", "6." );
+			
 			testInterpret( "interpret the factorial of numeric phrase variable n thus", "go on." );
 			testInterpret( "first perform numeric evaluate variable n - 1",             "go on." );
 			testInterpret( "then the factorial of whatever",                            "go on." );
-			testInterpret( "then perform numeric evaluate whatever times numeric phrase variable n", "go on." );
+			testInterpret( "then multiply whatever by numeric phrase variable n",    "go on." );
 			testInterpret( "ok", "ok." );
 			
-			/*
-			Repertoire.signs.show( "OTF" );
-			testInterpret( "tracing on" );
-			//testInterpret( "the factorial of 3", "6." );
-			testInterpret( "tracing off" );
-			
-			//testInterpret( "on the phrase what is the factorial of numeric variable n reply the factorial of n is whatever" );
-			// */
+			//Repertoire.signs.show( "OTF" );
+			//testInterpret( "tracing on" );
+			testInterpret( "the factorial of 3", "6." );
+			//testInterpret( "tracing off" );
 		}
 
 		if ( level == 0 || level == 4 ) {

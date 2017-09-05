@@ -146,9 +146,9 @@ public class Intention {
 		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
 		Strings thought = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		// This is mediation...
-		// CH5? Reply tmpr = Repertoire.interpret( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
-		Reply tmpr = Repertoire.interpret( new Utterance( thought )); // just recycle existing reply
+		
+		Reply tmpr = Repertoire.interpret( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
+		
 		if (r.a.isAppending())
 			r.a.add( tmpr.a.toString() );
 		else
@@ -164,9 +164,6 @@ public class Intention {
 		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
-		// CHNAGE 4?
-		//if (null != answer && cmd.contains( Ans.placeholder()))
-		//	cmd.replace( Ans.placeholderAsStrings(), new Strings( answer ));
 		
 		if (isTemporal()) {
 			String when = Context.get( "when" );
