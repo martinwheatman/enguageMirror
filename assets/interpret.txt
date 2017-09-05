@@ -33,6 +33,7 @@
 		then, reply "go on".
 		
 	On "first PHRASE-X", then X.
+	On "think PHRASE-X", then X.
 	On "next  PHRASE-X", then X.
 #                             #
 ###############################

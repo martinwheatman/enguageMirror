@@ -178,16 +178,16 @@ public class Reply { // a reply is basically a formatted answer
 	 *                                     or in List class, below.
 	 * e.g. You need tea and biscuits and you are meeting your brother at 7pm.
 	 */
-	public Ans a = new Ans();
+	public Answer a = new Answer();
 	
 	public  Reply   answer( String ans ) {
 		if (null == ans) {
-			a = new Ans(); // a.nswer = new Strings();
+			a = new Answer(); // a.nswer = new Strings();
 			cache = null;
 			type(  DNU );
 		} else if (!ans.equals( Shell.IGNORE )) {
 			if (!a.isAppending())
-				a = new Ans(); // a.nswer = new Strings();
+				a = new Answer(); // a.nswer = new Strings();
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
@@ -201,7 +201,7 @@ public class Reply { // a reply is basically a formatted answer
 	/** Format
 	 * 
 	 */
-	private Fmt f = new Fmt();
+	private Format f = new Format();
 	
 	public  boolean verbose() { return !f.shrt(); }
 	public  void    verbose( boolean v ) { f.shrt( v );}
@@ -230,8 +230,8 @@ public class Reply { // a reply is basically a formatted answer
 				reply = new Strings( dnu() );
 			else if (reply.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 				reply.replace( Strings.ellipsis, new Strings( a.toString() ));
-			else if (reply.contains( Ans.placeholder() ))
-				reply.replace( Ans.placeholderAsStrings(), new Strings( a.toString() ));
+			else if (reply.contains( Answer.placeholder() ))
+				reply.replace( Answer.placeholderAsStrings(), new Strings( a.toString() ));
 
 			// ... then post-process:
 			cache = Utterance.externalise( reply, isVerbatim() );

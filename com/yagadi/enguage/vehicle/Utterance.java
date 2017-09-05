@@ -50,9 +50,9 @@ public class Utterance {
 					.contract( "=" );                  // [ name, =, "value" ] => [ name="value" ]
 		//audit.LOG( "Utterance: expanded: "+ expanded.toString( Strings.SPACED ));
 
-		if (null != prevAnswer && expanded.contains( Ans.placeholder())) {
+		if (null != prevAnswer && expanded.contains( Answer.placeholder())) {
 			//audit.LOG( ">>>>>replacing "+ Ans.placeholderAsStrings() +" with "+ new Strings( prevAnswer ));
-			expanded.replace( Ans.placeholderAsStrings(), new Strings( prevAnswer ));
+			expanded.replace( Answer.placeholderAsStrings(), new Strings( prevAnswer ));
 		}
 			
 		temporal = new Strings( expanded );

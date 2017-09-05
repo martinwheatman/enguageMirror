@@ -4,8 +4,8 @@ import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 
-public class Fmt {
-	/** Fmt:
+public class Format {
+	/** Format:
 	 * e.g. ["Ok", ",", "you", "need", Strings.ELLIPSIS"]
 	 */
 	
@@ -18,14 +18,14 @@ public class Fmt {
 	private boolean variable = false;
 	public  boolean variable() {return variable;}
 	
-	private Strings ormat = new Strings();
-	public  Strings ormat() { return ormat; }
+	private Strings format = new Strings();
+	public  Strings ormat() { return format; }
 	public  void    ormat(String s) {
-		ormat = new Strings( s );
-		if (ormat.get(0).equals( Strings.ELLIPSIS )) variable = true;
+		format = new Strings( s );
+		if (format.get(0).equals( Strings.ELLIPSIS )) variable = true;
 	}
 	static public void main( String args[] ) {
-		Fmt f = new Fmt();
+		Format f = new Format();
 		Variable.set( "FMTEST", "martin" );
 		f.ormat( "FMTEST needs "+ Strings.ELLIPSIS );
 		audit.log( "fmt: "+ f.ormat());

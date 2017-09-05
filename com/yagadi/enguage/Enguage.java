@@ -200,10 +200,6 @@ public class Enguage extends Shell {
 			 * - the factorial of n is n times the factorial of n - 1;
 			 * - what is the factorial of 3.
 			 */
-			testInterpret( "to the phrase what is the factorial of 1 reply the factorial of 1 is 1", "go on." );
-			testInterpret( "ok", "ok." );
-			testInterpret( "what is the factorial of 1",  "the factorial of 1 is 1." );
-			
 			testInterpret( "to the phrase the factorial of 1 reply 1", "go on." );
 			testInterpret( "ok", "ok." );
 			testInterpret( "the factorial of 1",  "1." );
@@ -217,13 +213,18 @@ public class Enguage extends Shell {
 			testInterpret( "interpret the factorial of numeric phrase variable n thus", "go on." );
 			testInterpret( "first perform numeric evaluate variable n - 1",             "go on." );
 			testInterpret( "then the factorial of whatever",                            "go on." );
-			testInterpret( "then multiply whatever by numeric phrase variable n",    "go on." );
+			testInterpret( "then multiply whatever by numeric phrase variable n",       "go on." );
 			testInterpret( "ok", "ok." );
 			
-			//Repertoire.signs.show( "OTF" );
 			//testInterpret( "tracing on" );
 			testInterpret( "the factorial of 3", "6." );
 			//testInterpret( "tracing off" );
+
+			testInterpret( "interpret what is the factorial of numeric variable n thus", "go on." );
+			testInterpret( "think the factorial of variable n", "go on." );
+			testInterpret( "ok", "ok." );
+			Repertoire.signs.show( "OTF" );
+			testInterpret( "what is the factorial of 1",  "1." );
 		}
 
 		if ( level == 0 || level == 4 ) {
