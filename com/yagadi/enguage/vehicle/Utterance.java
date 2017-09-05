@@ -141,7 +141,7 @@ public class Utterance {
 
 		// create a meeting repertoire
 		Pattern ts = new Pattern();
-		ts.add( new Patternette( "i am meeting", "WHOM" ).attribute( "phrase", "phrase" ) );
+		ts.add( new Patternette( "i am meeting", "WHOM" ).phrasedIs() );
 		Sign s = new Sign().concept("meeting").pattern( ts );
 		Spatial.addConcept("meeting");
 		Temporal.addConcept("meeting");
@@ -152,7 +152,7 @@ public class Utterance {
 		test( s, "i am meeting my sister  at the pub" );
 		
 		ts = new Pattern();
-		ts.add( new Patternette( "what is the factorial of", "N" ).attribute( "numeric", "numeric" ));
+		ts.add( new Patternette( "what is the factorial of", "N" ).numericIs() );
 		s = new Sign().concept("meeting").pattern( ts );
 
 		test( s, "what is the factorial of whatever", new Strings( "3" ));

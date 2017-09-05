@@ -1,14 +1,10 @@
 package com.yagadi.enguage.interpretant;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ListIterator;
 import java.util.Locale;
 
 import com.yagadi.enguage.object.Attribute;
-import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.util.Audit;
-import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Indent;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
@@ -17,23 +13,16 @@ import com.yagadi.enguage.vehicle.Plural;
 public class Patternette {
 	private static Audit audit = new Audit( "Patternette" );
 	
-	public static final int NULL   = 0;
-	public static final int ATOMIC = 1;
-	public static final int START  = 2;
-	public static final int END    = 3;
+	//public static final int NULL   = 0;
+	//public static final int ATOMIC = 1;
+	//public static final int START  = 2;
+	//public static final int END    = 3;
 	
 	public static final String emptyPrefix = "";
 
-	private int  type = NULL;
-	private int  type() { return type; }
-	private void type( int t ) { if (t>=NULL && t<=END) type = t; }
-
-	public static final String plural = Plural.NAME; // "plural";
-	public static final String pluralPrefix = plural.toUpperCase( Locale.getDefault()) + "-";
-	public static final String singular = "singular";
-	public static final String singularPrefix = singular.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String abstr  = "abstract";
-	
+	public static final String xsingular = "singular";
+	public static final String xsingularPrefix = xsingular.toUpperCase( Locale.getDefault() ) + "-";
+	public static final String xabstr  = "abstract";
 	
 	private Strings prefix = new Strings();
 	public  Strings prefix() { return prefix; }
@@ -52,65 +41,23 @@ public class Patternette {
 
 	private boolean isNumeric = false;
 	public  boolean isNumeric() { return isNumeric; }
-	//public  Patternette numericIs( boolean nm ) { isNumeric = nm; return this; }
+	public  Patternette numericIs( boolean nm ) { isNumeric = nm; return this; }
 	public  Patternette numericIs() { isNumeric = true; return this; }
 
 	private boolean isQuoted = false;
 	public  boolean quoted() { return isQuoted;}
-	//public  Patternette quotedIs( boolean b ) { isQuoted = b; return this; }
+	public  Patternette quotedIs( boolean b ) { isQuoted = b; return this; }
 	public  Patternette quotedIs() { isQuoted = true; return this; }
 	
 	private boolean isPlural = false;
 	public  boolean isPlural() { return isPlural; }
-	//public  Patternette pluralIs( boolean b ) { isPlural = b; return this; }
+	public  Patternette pluralIs( boolean b ) { isPlural = b; return this; }
 	public  Patternette pluralIs() { isPlural = true; return this; }
 	
 	private boolean     isPhrased = false;
 	public  boolean     isPhrased() { return isPhrased; }
-	//public  Patternette phrasedIs( boolean b ) { isPhrased = b; return this; }
+	public  Patternette phrasedIs( boolean b ) { isPhrased = b; return this; }
 	public  Patternette phrasedIs() { isPhrased = true; return this; }
-	
-	private Attributes attrs = new Attributes();
-	public  Attributes attributes() { return attrs; }
-	public  Patternette        attributes( Attribute a ) {
-		if (a.name().equals( Pattern.phrase ))
-			phrasedIs();
-		else if (a.name().equals( plural ))
-			pluralIs();
-		else if (a.name().equals( Pattern.quoted ))
-			quotedIs();
-		else if (a.name().equals( Pattern.numeric ))
-			numericIs();
-		else
-			attrs.add( a );
-		return this;
-	}
-	public  Patternette        attributes( Attributes as ) {
-		for( Attribute a : as)
-			attributes( a ); // add each individually
-		// Propagate num chars read on creation...
-		attrs.nchars( as.nchars());
-		return this;
-	}
-	public  String     attribute( String name ) { return attrs.get( name ); }
-	public  Patternette        attribute( String name, String value ) {attributes( new Attribute( name, value )); return this; }
-	// ordering of attributes relevant to Autopoiesis
-	public  Patternette        xappend( String name, String value ) { attributes( new Attribute( name, value )); return this; }
-	public  Patternette        xprepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
-	public  Patternette        add( int posn, String name, String value ) {
-		if (name.equals( Pattern.phrase ))
-			isPhrased = true;
-		else
-			attrs.add( posn, new Attribute( name, value ));
-		return this;
-	}
-	public  Patternette        remove( int nth ) { attrs.remove( nth ); return this; }
-	public  Patternette        remove( String name ) { attrs.remove( name ); return this; }
-	public  Patternette        replace( String name, String value ) {
-		attrs.remove( name );
-		attrs.add( new Attribute( name, value ));
-		return this;
-	}
 	
 	public Attribute matchedAttr( String val ) {
 		return new Attribute(
@@ -127,164 +74,14 @@ public class Patternette {
 		if (ui.hasNext()) {
 			String candidate = ui.next();
 			rc = (  quoted() && !Language.isQuoted( candidate ))
-			  || (isPlural() && !Plural.isPlural(   candidate ))
-			  // Useful for preventing class "class" being created...
-			  //|| (attribute( Tag.abstr ).equals( Tag.abstr ) && // Archaic? Refactor anyway!
-				//		candidate.equalsIgnoreCase( name()    )   )
-						;
+			  || (isPlural() && !Plural.isPlural(   candidate ));
 			if (ui.hasPrevious()) ui.previous();
 		}
 		return rc;
 	}
 	
-	public boolean equals( Patternette pattern ) {
-		//if (audit.tracing) audit.in( "equals", "this="+ toXml() +", with="+ pattern.toXml());
-		boolean rc;
-		if (attributes().size() < pattern.attributes().size()) { // not exact!!!
-			//audit.audit( " T:Size issue:"+ attributes().size() +":with:"+ pattern.attributes().size() +":");
-			rc = false;
-//		} else if ((content().size()==0 && pattern.content().size()!=0) 
-	//			|| (content().size()!=0 && pattern.content().size()==0)) {
-		//	//audit.audit(" T:one content empty -> false");
-			//rc =  false;
-		} else {
-			//audit.audit( " T:Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() +":" );
-			//audit.audit( " T:Checking also prefx:"+ prefix() +":with:"+ pattern.prefix() +":" );
-			rc =   Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
-				&& Plural.singular( postfix()).equals( Plural.singular( pattern.postfix()))
-				&& attributes().matches( pattern.attributes()) // not exact!!!
-				//&& content().equals( pattern.content())
-						;
-			//audit.audit( " T:full check returns: "+ rc );
-		}
-		//if (audit.tracing) audit.out( rc );
-		return rc;
-	}
-	/* <fred attr1="a" attr2="b">fred<content/> bill<content/></fred>.(
-	//		<fred attr2="b"/> -> true
-	// )
-	 * 
-	 */
-	public boolean matches( Patternette pattern ) {
-		//if (audit.tracing) audit.in( "matches", "this="+ toXml() +", pattern="+ pattern.toXml() );
-		boolean rc;
-		if (attributes().size() < pattern.attributes().size()) {
-			//audit.debug( "Too many attrs -> false" );
-			rc = false;
-//		} else if ((content().size()==0 && pattern.content().size()!=0) ){
-	//		//	|| (content().size()!=0 && pattern.content().size()==0)) {
-	//		//audit.audit("one content empty -> false");
-		//	rc =  false;
-		} else {
-			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
-			rc =   Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
-				&& postfix().equals( pattern.postfix())
-				&& attributes().matches( pattern.attributes())
-				//&&    content().matches( pattern.content())
-				;
-			//audit.debug("full check returns: "+ rc );
-		}
-		//if (audit.tracing) audit.out( rc );
-		return rc;
-	}
-	public boolean matchesContent( Patternette pattern ) {
-		//audit.traceIn( "matches", "this="+ toString() +", pattern="+ pattern.toString() );
-		boolean rc;
-//		if (   (content().size()==0 && pattern.content().size()!=0) 
-//			|| (content().size()!=0 && pattern.content().size()==0)) {
-//			//audit.audit("one content empty -> false");
-//			rc =  false;
-//		} else {
-			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
-			rc =   Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
-					&& postfix().equals( pattern.postfix())
-					//&& content().matches( pattern.content())
-					;
-			//audit.debug("full check returns: "+ rc );
-//		}
-		//audit.traceut( rc );
-		return rc;
-	}
-
-	// -- tag from string ctor
-	private Patternette doPreamble() {
-		int i = 0;
-		String preamble = "";
-		while (i < postfix().length() && '<' != postfix().charAt( i )) 
-			preamble += postfix().charAt( i++ );
-		prefix( new Strings( preamble ));
-		if (i < postfix().length()) {
-			i++; // read over terminator
-			postfix( postfix().substring( i )); // ...save rest for later!
-		} else
-			postfix( "" );
-		return this;
-	}
-	private Patternette doName() {
-		int i = 0;
-		while(i < postfix().length() && Character.isWhitespace( postfix().charAt( i ))) i++; //read over space following '<'
-		if (i < postfix().length() && '/' == postfix().charAt( i )) {
-			i++;
-			type( END );
-		}
-		if (i < postfix().length()) {
-			String name = "";
-			while (i < postfix().length() && Character.isLetterOrDigit( postfix().charAt( i ))) name += postfix().charAt( i++ );
-			name( name );
-			
-			if (i < postfix().length()) postfix( postfix().substring( i )); // ...save rest for later!
-		} else
-			name( "" ).postfix( "" );
-		return this;
-	}
-	private Patternette doAttrs() {
-		attributes( new Attributes( postfix() ));
-		int i = attributes().nchars();
-		//audit.log( "read "+ i +"chars in "+ attributes().toString() );
-		//if (i>0) i++;
-		if (i < postfix().length()) {
-			//audit.log( "char at i="+ postfix().charAt( i ) );
-			type( '/' == postfix().charAt( i ) ? ATOMIC : START );
-			while (i < postfix().length() && '>' != postfix().charAt( i )) i++; // read to tag end
-			if (i < postfix().length()) i++; // should be at '>' -- read over it
-		}
-		postfix( postfix().substring( i )); // save rest for later
-		return this;
-	}
-	private Patternette doChildren() {
-		if ( null != postfix() && !postfix().equals("") ) {
-			Patternette child = new Patternette( postfix());
-			while( NULL != child.type()) {
-				// move child remained to tag...
-				postfix( child.postfix());
-				// ...add child, sans remainder, to tag content
-				//content( child.postfix( "" ));
-				child = new Patternette( postfix());
-			}
-			//postfix( child.postfix() ).content( child.postfix( "" ));
-		}
-		return this;
-	}
-	private Patternette doEnd() {
-		name( "" ).type( NULL );
-		int i = 0;
-		while (i < postfix().length() && '>' != postfix().charAt( i )) i++; // read over tag end
-		postfix( i == postfix().length() ? "" : postfix().substring( ++i ));
-		return this;
-	}
 	// -- constructors...
 	public Patternette() {}
-	public Patternette( String cpp ) { // tagFromString()
-		this();
-		postfix( cpp );
-		doPreamble().doName();
-		if (type() == END) 
-			doEnd();
-		else {
-			doAttrs();
-			if (type() == START) doChildren();
-	}	}
-	// -- tag from string: DONE
 	public Patternette( String pre, String nm ) {
 		this();
 		prefix( new Strings( pre )).name( nm );
@@ -295,28 +92,21 @@ public class Patternette {
 	}
 	public Patternette( Patternette orig ) {
 		this( orig.prefix().toString(), orig.name(), orig.postfix());
-		attributes( new Attributes( orig.attributes()));
-		//content( orig.content());
+		numericIs( orig.isNumeric() );
+		phrasedIs( orig.isPhrased() );
+		 pluralIs( orig.isPlural()  );
 	}
 	private static Indent indent = new Indent( "  " );
 	public String toXml() { return toXml( indent );}
 	public String toXml( Indent indent ) {
-		//int sz = content.size();
-		//String contentSep = /*sz > 0? ("\n" + indent.toString()) : sz == 1 ? " " :*/ "";
 		indent.incr();
-		String    attrSep = /*sz > 0  ? "\n  "+indent.toString() :*/ " " ;
 		String s = prefix().toString( Strings.OUTERSP )
 				+ (name.equals( "" ) ? "" :
 					("<"+ name
-							+ attrs.toString( attrSep )
-							+ //(0 == content().size() ? 
-									"/>" //:
-//									( ">"
-//									+ content.toXml( indent )
-//									+ contentSep
-//									+ "</"+ name +">"
-//				  )
-									)		  )		//)
+							+ (isPhrased() ? " phrased='true'":"")
+							+ (isNumeric() ? " numeric='true'":"")
+							+ "/>"
+				  ) )
 				+ postfix;
 		indent.decr();
 		return s;
@@ -334,51 +124,11 @@ public class Patternette {
 		return prefix().toString()
 			+ (prefix().toString()==null||prefix().toString().equals("") ? "":" ")
 			+ (name.equals( "" ) ? "" :
-				( name.toUpperCase( Locale.getDefault() ) +" "//+  // attributes has preceding space
-					/*(0 == content().size() ? "" : content.toText() )*/))
+				( name.toUpperCase( Locale.getDefault() ) +" "))
 			+ postfix;
 	}
-	public String toLine() {
-		return prefix().toString()
-				//+ (0 == content().size() ? "" : content.toText() )
-				+ postfix ;
-	}
-	public static Patternette fromFile( String fname ) {
-		Patternette t = null;
-		try {
-			t = new Patternette( Fs.stringFromStream( new FileInputStream( fname )) );
-		} catch( IOException e ) {
-			audit.ERROR( "no tag found in file "+ fname );
-		}
-		return t;
-	}
-	/*
-	public static Tag fromAsset( String fname, Activity ctx ) {
-		//audit.traceIn( "fromAsset", fname );
-		Tag t = null;
-		AssetManager am = ctx.getAssets();
-		try {
-			InputStream is = am.open( fname );
-			t = new Tag( Filesystem.stringFromStream( is ));
-			is.close();
-		} catch (IOException e) {
-			audit.ERROR( "no tag found in asset "+ fname );
-		}
-		//audit.traceut();
-		return t;
-	}
-	*/
-	public Patternette findByName( String nm ) {
-		Patternette rc = null;
-		if (name().equals( nm ))
-			rc = this; // found
-		else {
-//			ArrayList<Patternette> ta = content();
-//			for (int i=0; i<ta.size() && null == rc; ++i) // find first child
-//				rc = ta.get( i ).findByName( nm );
-		}
-		return rc;
-	}
+	public String toLine() { return prefix().toString() +" "+ name +" "+ postfix; }
+	
 	// -- test code
 	public static void main( String argv[]) {
 		Audit.allOn();
@@ -386,36 +136,8 @@ public class Patternette {
 		Strings a = new Strings( argv );
 		int argc = argv.length;
 		Patternette orig = new Patternette("prefix ", "util", "posstfix");//.append("sofa", "show").append("attr","one");
-		//orig.content( new Patternette().prefix( new Strings( "show" )).name("sub"));
-		//orig.content( new Patternette().prefix( new Strings( "fred") ));
 		Patternette t = new Patternette( orig );
-		//audit.log( "orig was:"+ orig.toString());
-		//audit.audit( "copy: "+ t.toString());
-		//t = new Tag( orig.toString());
-		//audit.audit( "copy2: "+ t.toString());
-		//Tag pattern = new Tag("prefix <util attr='one'/>posstfix");
-		//audit.audit( "patt: "+ pattern.toString());
-		//audit.audit( "orig "+ (orig.matchesContent( pattern )?"DOES":"does NOT") +" (and should) match pattern" );
 		
-		//t = new Tag("<test id='123' quantity='5 * 3 more'/>");
-		//orig.update( t.attributes() );
-		//audit.log( "orig is now:"+ orig.toString());
-		
-		t = new Patternette( "<xml>\n"+
-			" <config \n"+
-			"   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
-			"   DNU=\"I do not understand\" >\n" +	
-            "   <concepts>\n"+
-			"     <concept id=\"colloquia\"      op=\"load\"/>\n"+
-			"     <concept id=\"needs\"          op=\"load\"/>\n"+
-			"     <concept id=\"engine\"         op=\"load\"/>\n"+
-			"   </concepts>\n"+
-	        "   </config>\n"+
-	        "   </xml>"        );
-		audit.log( "tag:"+ t.toXml());
-		
-		if (argc > 0) {
+		if (argc > 0)
 			audit.log( "Comparing "+ t.toString() +", with ["+ a.toString( Strings.DQCSV ) +"]");
-			//Attributes attr = t.content().matchValues( a );
-			//audit.log( (null == attr ? "NOT " : "("+ attr.toString() +")" ) + "Matched" );
-}	}	}
+}	}

@@ -31,12 +31,12 @@ public class Allopoiesis extends Intention {
           		.appendIntention( Intention.allop, "removePrimedAnswer" ),
 	          	
     	new Sign( NAME )
-			.pattern( new Patternette( "prime answer ", "answer" ).attribute( Tag.phrase, Tag.phrase ))
+			.pattern( new Patternette( "prime answer ", "answer" ).phrasedIs())
 	          	.appendIntention( Intention.allop, "primeAnswer ANSWER" ),
 			          	
 		new Sign( NAME )
-			.pattern( new Patternette( "answering", "answers" ).attribute( Tag.phrase, Tag.phrase ))
-			.pattern( new Patternette( "ask", "question" ).attribute( Tag.phrase, Tag.phrase ))
+			.pattern( new Patternette( "answering", "answers" ).phrasedIs())
+			.pattern( new Patternette( "ask", "question" ).phrasedIs())
 	          	.appendIntention( Intention.allop, "ask answering ANSWERS , QUESTION" ),
 	          	
 		new Sign( NAME ).pattern( new Patternette(  "describe ", "x" ))
@@ -75,11 +75,11 @@ public class Allopoiesis extends Intention {
 		new Sign( NAME )
 				.pattern( new Patternette( "tcpip ",  "address" ))
 				.pattern( new Patternette(      " ",  "port" ))
-				.pattern( new Patternette(      " ",  "data" ).attribute( Tag.quoted, Tag.quoted ))
+				.pattern( new Patternette(      " ",  "data" ).quotedIs())
 					.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" ),
-		new Sign( NAME ).pattern( new Patternette(              "show ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette(              "show ", "x" ).phrasedIs())
 				.appendIntention( Intention.allop, "show X" ),
-		new Sign( NAME ).pattern( new Patternette(         "debug ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette(         "debug ", "x" ).phrasedIs())
 				.appendIntention( Intention.allop, "debug X" ),
 		/* 
 		 * it is possible to arrive at the following construct:   think="reply 'I know'"
@@ -88,20 +88,20 @@ public class Allopoiesis extends Intention {
 		 * representamen: "if X, reply Y", then Y is just the quoted string.
 		 * However, the following should deal with this situation.
 		 */
-		new Sign( NAME ).pattern( new Patternette( REPLY +" ", "x" ).attribute( Tag.quoted, Tag.quoted ))
+		new Sign( NAME ).pattern( new Patternette( REPLY +" ", "x" ).quotedIs())
 				.appendIntention( Intention.thenReply, "X" ),
 		
 		// fix to allow better reading of autopoietic  
-		new Sign( NAME ).pattern( new Patternette( "if so, ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette( "if so, ", "x" ).phrasedIs())
 				.appendIntention( Intention.thenThink, "X" ),
 
 		// for vocal description of concepts... autopoiesis!		
-		new Sign( NAME ).pattern( new Patternette( "perform ", "args" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette( "perform ", "args" ).phrasedIs())
 				.appendIntention( Intention.thenDo, "ARGS" ),
 		/* 
 		 * REDO: undo and do again, or disambiguate
 		 */
-		new Sign( NAME ).pattern( new Patternette( "No ", "x" ).attribute( Tag.phrase, Tag.phrase ))
+		new Sign( NAME ).pattern( new Patternette( "No ", "x" ).phrasedIs())
 					.appendIntention( Intention.allop, "undo" )
 					.appendIntention( Intention.elseReply, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,

@@ -11,11 +11,13 @@ import com.yagadi.enguage.util.Indent;
 import com.yagadi.enguage.util.Number;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Language;
+import com.yagadi.enguage.vehicle.Plural;
 import com.yagadi.enguage.vehicle.Reply;
 
 public class Pattern extends ArrayList<Patternette> {
 	static final         long serialVersionUID = 0;
 	static private       Audit           audit = new Audit( "Pattern" );
+	
 	static private final String  variable      = "variable";
 	public static  final String  quoted        = "quoted";
 	public static  final String  quotedPrefix  = quoted.toUpperCase( Locale.getDefault() ) + "-";
@@ -23,6 +25,8 @@ public class Pattern extends ArrayList<Patternette> {
 	public static  final String  phrasePrefix  = phrase.toUpperCase( Locale.getDefault() ) + "-";
 	public static  final String  numeric       = "numeric";
 	public static  final String  numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
+	public static  final String  plural        = Plural.NAME; // "plural";
+	public static  final String  pluralPrefix  = plural.toUpperCase( Locale.getDefault()) + "-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
@@ -34,9 +38,18 @@ public class Pattern extends ArrayList<Patternette> {
 				int  j = 0, asz = arr.size();
 				for (String subWord : arr) {
 					subWord = subWord.toLowerCase( Locale.getDefault());
-					if ( asz > ++j ) // 
-						t.attribute( subWord, subWord ); // non-last words in array
-					else
+					if ( asz > ++j ) {// 
+						//t.attribute( subWord, subWord ); // non-last words in array
+						if (subWord.equals( phrase ))
+							t.phrasedIs();
+						else if (subWord.equals( plural ))
+							t.pluralIs();
+						else if (subWord.equals( quoted ))
+							t.quotedIs();
+						else if (subWord.equals( numeric ))
+							t.numericIs();
+
+					} else
 						t.name( subWord ); // last word in array
 				}
 				add( t );
@@ -297,7 +310,9 @@ public class Pattern extends ArrayList<Patternette> {
 		Iterator<Patternette> ti = iterator();
 		while (ti.hasNext()) {
 			Patternette t = ti.next();
-			str += ( " "+t.prefix().toString()+" <"+t.name() +" "+ t.attributes().toString() +"/> "+t.postfix());
+			str += ( " "+t.prefix().toString()+" <"+t.name() +" "
+			//+ t.attributes().toString()
+					+"/> "+t.postfix());
 		}
 		return str;
 	}
@@ -336,7 +351,7 @@ public class Pattern extends ArrayList<Patternette> {
 		audit.LOG( "pattern: "+ toPattern( "variable name needs numeric variable quantity units of phrase variable object" ));
 
 		Pattern t = new Pattern();
-		t.add( new Patternette( "what is ", "X" ).attribute( numeric, numeric ) );
+		t.add( new Patternette( "what is ", "X" ).numericIs() );
 		printTagsAndValues( t, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
 
 		printTagsAndValues( new Pattern( "i need phrase variable need" ),

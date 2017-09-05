@@ -201,10 +201,10 @@ public class Sign {
 		complexityTest( ts );
 		
 		ts = new Pattern();
-		ts.add( new Patternette( "this is a test", "x" ).attribute( "phrase", "phrase" ) );
+		ts.add( new Patternette( "this is a test", "x" ).phrasedIs() );
 		complexityTest( ts );
 		
 		ts = new Pattern();
-		ts.add( new Patternette( "this is a", "x" ).attribute( "phrase", "phrase" ));
+		ts.add( new Patternette( "this is a", "x" ).phrasedIs() );
 		complexityTest( ts );
 }	}
