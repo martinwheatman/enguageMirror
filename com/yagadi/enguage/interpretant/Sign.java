@@ -167,13 +167,13 @@ public class Sign {
 		while (!r.isDone() && ai.hasNext()) {
 			Intention in = ai.next();
 			r = in.type() == Intention.allop ?
-					new Allopoiesis( in.type(), in.value() ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
+					new Allopoiesis( in, isTemporal(), isSpatial() ).mediate( r )
 				: in.type() == Intention.append  ||
 				  in.type() == Intention.prepend ||
 				  in.type() == Intention.create ?
-					new Autopoiesis( in.type(), in.value() ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r )
+					new Autopoiesis( in, isTemporal(), isSpatial()).mediate( r )
 				: // finally, think, do, say...   TODO: why not: in.mediate( r ); ???
-					new Intention(   in.type(), in.value() ).temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r );
+					new Intention( in, isTemporal(), isSpatial()).mediate( r );
 		}
 		return (Reply) audit.out( r );
 	}

@@ -60,6 +60,13 @@ public class Intention {
 	public static final int  append       =  0xc;
 	public static final int  headAppend   =  0xd;
 
+	public Intention( int nm, String val ) { type=nm; value = val; }
+	public Intention( Intention in, boolean temp, boolean spatial ) {
+		this( in.type(), in.value() );
+		temporalIs( temp );
+		spatialIs( spatial );
+	}
+	
 	protected int    type  = 0;
 	public    int    type() { return type; }
 	
@@ -130,9 +137,6 @@ public class Intention {
 	public boolean   isSpatial() { return spatial; }
 	public Intention spatialIs( boolean s ) { spatial = s; return this; }
 
-
-	public Intention( int nm, String val ) { type=nm; value = val; }	
-	
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"

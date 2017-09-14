@@ -82,7 +82,7 @@ public class Autopoiesis extends Intention {
 			.pattern( new Patternette( ",   perform ", "y", "" ).quotedIs())
 	};
 
-	public Autopoiesis( int type, String value ) { super( type, value ); }	
+	public Autopoiesis( Intention base, boolean temp, boolean spatial ) { super( base, temp, spatial ); }	
 	public Autopoiesis( int type, String value, int intnt ) { super( type, value ); intent = intnt;}	
 	
 	private int intent = undef;
@@ -158,7 +158,7 @@ public class Autopoiesis extends Intention {
 		while (!r.isDone() && ins.hasNext()) {
 			Intention in = ins.next();
 			audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
-			r = new Autopoiesis( in.type, in.value ).mediate( r );
+			r = new Autopoiesis( in, false, false ).mediate( r );
 		}
 		return r;
 	}

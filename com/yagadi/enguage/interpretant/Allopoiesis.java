@@ -115,6 +115,9 @@ public class Allopoiesis extends Intention {
 	 };
 	
 	public Allopoiesis( int type, String value ) { super( type , value ); }
+	public Allopoiesis( Intention in, boolean temp, boolean spatial ) {
+		super( in, temp, spatial );
+	}
 	
 	// this supports the command="" attribute loaded in the creation of command data structure
 	// needs "command //delete "...". -- to remove a tag, to support '"X" is meaningless.'
