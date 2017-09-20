@@ -202,16 +202,22 @@ public class Enguage extends Shell {
 			testInterpret( "ok", "ok." );
 			testInterpret( "the factorial of 1",  "1." );
 			
-			testInterpret( "interpret multiply numeric phrase variable multa by numeric phrase variable multb thus", "go on." );
-			testInterpret( "first perform numeric evaluate variable multa times numeric phrase variable multb",      "go on." );
+			testInterpret( "interpret multiply numeric phrase variable a by numeric phrase variable b thus", "go on." );
+			testInterpret( "first perform numeric evaluate variable a times numeric phrase variable b",      "go on." );
 			testInterpret( "ok", "ok." );
 			
 			testInterpret( "multiply 2 by 3", "6." );
 			
+			testInterpret( "interpret subtract numeric phrase variable c from numeric phrase variable d thus", "go on." );
+			testInterpret( "first perform numeric evaluate variable d - variable c",                           "go on." );
+			testInterpret( "ok", "ok." );
+			
+			testInterpret( "subtract 2 from 3", "1." );
+			
 			testInterpret( "interpret the factorial of numeric phrase variable n thus", "go on." );
-			testInterpret( "first perform numeric evaluate variable n - 1",             "go on." );
+			testInterpret( "first subtract 1 from variable n",                          "go on." );
 			testInterpret( "then the factorial of whatever",                            "go on." );
-			testInterpret( "then multiply whatever by numeric phrase variable n",       "go on." );
+			testInterpret( "then multiply whatever by variable n",                      "go on." );
 			testInterpret( "ok", "ok." );
 			
 			testInterpret( "the factorial of 3", "6." );
