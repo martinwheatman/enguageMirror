@@ -198,9 +198,9 @@ public class Enguage extends Shell {
 			 * - the factorial of n is n times the factorial of n - 1;
 			 * - what is the factorial of 3.
 			 */
-			testInterpret( "to the phrase the factorial of 1 reply 1", "go on." );
+			testInterpret( "to the phrase what is the factorial of 1 reply 1", "go on." );
 			testInterpret( "ok", "ok." );
-			testInterpret( "the factorial of 1",  "1." );
+			testInterpret( "what is the factorial of 1",  "1." );
 			
 			testInterpret( "interpret multiply numeric phrase variable a by numeric phrase variable b thus", "go on." );
 			testInterpret( "first perform numeric evaluate variable a times numeric phrase variable b",      "go on." );
@@ -214,20 +214,15 @@ public class Enguage extends Shell {
 			
 			testInterpret( "subtract 2 from 3", "1." );
 			
-			testInterpret( "interpret the factorial of numeric phrase variable n thus", "go on." );
-			testInterpret( "first subtract 1 from variable n",                          "go on." );
-			testInterpret( "then the factorial of whatever",                            "go on." );
-			testInterpret( "then multiply whatever by variable n",                      "go on." );
-			testInterpret( "ok", "ok." );
-			
-			testInterpret( "the factorial of 3", "6." );
-
-			testInterpret( "interpret what is the factorial of numeric variable m thus", "go on." );
-			testInterpret( "think the factorial of variable m", "go on." );
-			testInterpret( "then reply whatever the factorial of variable m is whatever", "go on." );
+			testInterpret( "interpret what is the factorial of numeric phrase variable n thus", "go on." );
+			testInterpret( "first subtract 1 from variable n",                                  "go on." );
+			testInterpret( "then what is the factorial of whatever",                            "go on." );
+			testInterpret( "then multiply whatever by variable n",                              "go on." );
+			testInterpret( "then reply whatever the factorial of variable n is whatever",       "go on." );
 			testInterpret( "ok", "ok." );
 			
 			//Repertoire.signs.show( "OTF" );
+			//testInterpret("tracing on");
 			testInterpret( "what is the factorial of 4",  "24 the factorial of 4 is 24." );
 		}
 		if ( level == 0 || level == 4 ) {
