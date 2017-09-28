@@ -143,35 +143,6 @@ public class Reply { // a reply is basically a formatted answer
 		type( UDU ); // forces us out to I don't know?
 	}
 
-	// todo: needs to be split out into answerType() and formatType()
-	// needs to be split out into class Answer and class Format: think!
-	private int calculateType(Strings ss) {
-		String s = ss.toString();
-		     if (s.equalsIgnoreCase(   yes )) return YES;
-		else if (s.equalsIgnoreCase(success)) return YES;
-		else if (s.equalsIgnoreCase(    no )) return NO;
-		else if (s.equalsIgnoreCase(failure)) return NO;
-		else if (s.equalsIgnoreCase(    ik )) return IK;
-		else if (s.equalsIgnoreCase(   dnk )) return NK;
-		else if (s.equalsIgnoreCase(   dnu )) return DNU;
-		else return CHS;
-	}
-	private int calculateType() {
-		
-		if (type == UDU) return UDU;
-		
-		String ans = a.valueOf().toString();
-		if (ans.equals( "" ) && f.ormat().size() == 0)
-			return DNU;
-		else if (ans.equals( no ) && f.ormat().equals( new Strings( ik )))
-			return CHS;
-		else if (ans.equals( "" ) && f.variable())
-			return NK;
-		else if (ans.toString().equals( "" ) && !f.variable())
-			return calculateType( f.ormat() );
-		else
-			return calculateType( a.valueOf() );
-	}
 
 	/** Answer:
 	 * Multiple answers should now be implemented in a Replies class!
@@ -191,10 +162,8 @@ public class Reply { // a reply is basically a formatted answer
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			type( calculateType() );
+			type( a.type( type ) );
 		}
-		
-
 		return this;
 	}
 	
@@ -216,8 +185,6 @@ public class Reply { // a reply is basically a formatted answer
 			audit.debug( "overwriting answer with "+ s );
 			answer( s ); // overwrite answer!
 		}
-
-		//type( calculateType() ); -- add this in at some point!!!
 		return this;
 	}
 	private String encache() {
