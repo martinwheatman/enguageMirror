@@ -60,11 +60,13 @@ public class Allopoiesis extends Intention {
 // */	//new Sign( NAME ).attribute( NAME, "save"    ).content( new Patternette( "save", "", "" ) ),
 		//new Sign( NAME ).attribute( NAME, "saveas $NAME" ).content( new Patternette("saveas ", "NAME", ".")),
 															 		
-		new Sign( NAME ).pattern( new Patternette(    "enable undo",  "" )).appendIntention( Intention.allop, "undo enable"  ),
-		new Sign( NAME ).pattern( new Patternette(   "disable undo",  "" )).appendIntention( Intention.allop, "undo disable" ),
-		new Sign( NAME ).pattern( new Patternette(           "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
-		new Sign( NAME ).pattern( new Patternette(      "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
-		new Sign( NAME ).pattern( new Patternette(         "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
+		new Sign( NAME ).pattern( new Patternette(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
+		new Sign( NAME ).pattern( new Patternette(        "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
+		new Sign( NAME ).pattern( new Patternette(   "enable undo",  "" )).appendIntention( Intention.allop, "undo enable"  ),
+		new Sign( NAME ).pattern( new Patternette(  "disable undo",  "" )).appendIntention( Intention.allop, "undo disable" ),
+		new Sign( NAME ).pattern( new Patternette(          "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
+		new Sign( NAME ).pattern( new Patternette( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
+		new Sign( NAME ).pattern( new Patternette( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
 		
 //		new Sign( NAME ).content( new Patternette("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
 		
