@@ -315,6 +315,12 @@ public class Enguage extends Shell {
 		}
 		if (level == 0 || level == 9) {
 			audit.title( "On-the-fly Langauge Learning" );
+			/* TODO: create filename from pattern:
+			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)
+			 *    "this is part of the need concept" => need.txt (append)
+			 *    Enguage.interpret() => overlay
+			 *    Conceept.load() => can this outlive Enguage overlay???
+			 */
 			
 			// First, what we can't say yet...
 			testInterpret( "my name is martin",                 "I don't understand." );
