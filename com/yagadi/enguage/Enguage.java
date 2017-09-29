@@ -280,6 +280,10 @@ public class Enguage extends Shell {
 
 			audit.title( "Temporospatial concept MEETING" );
 			
+			/* Where.doLocators();
+			 * new Sofa().interpret( new Strings( "entity create pub" ));
+			 */
+			// 1. create a pub:
 			Where.doLocators();
 			new Sofa().interpret( new Strings( "entity create pub" ));
 
@@ -304,6 +308,10 @@ public class Enguage extends Shell {
 					"i don't know if you're meeting your dad." );
 			testInterpret( "Where am I meeting my dad" ,
 					"i don't know if you're meeting your dad." );
+			
+			// create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
+			// she died in 1603
+			// she reigned for 45 years (so she ascended/came to the throne in 1548!)
 		}
 		
 		if (level == 0 || level == 8) {
