@@ -188,7 +188,7 @@ public class Intention {
 			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
 	
 		audit.debug( "performing: "+ cmd.toString());
-		String rc = new Sofa().interpret( cmd );
+		String rc = new Sofa().doCall( new Strings( cmd )); // was interpret(), now doCall()
 		
 		// de-conceptualise raw answer
 		String method = cmd.get( 1 );
