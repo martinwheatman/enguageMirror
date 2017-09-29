@@ -240,7 +240,6 @@ public class Enguage extends Shell {
 			testInterpret( "what do i need",
 						   "You need 3 coffees , and a cup of tea." );
 		}
-
 		if ( level == 0 || level == 5 ) {
 			audit.title( "Correction" );
 			testInterpret( "i need another coffee",
@@ -253,7 +252,6 @@ public class Enguage extends Shell {
 			testInterpret( "i don't need anything",
 						   "ok, you don't need anything." );
 		}
-
 		if ( level == 0 || level == 6 ) {
 			audit.title( "Disambiguation" );
 			testInterpret( "the eagle has landed" //,
@@ -271,9 +269,7 @@ public class Enguage extends Shell {
 			// Issue here: on DNU, we need to advance this on "the eagle has landed"
 			// i.e. w/o "no ..."
 		}
-
 		if ( level == 0 || level == 7 ) {
-			
 			audit.title( "Temporal interpret" );
 			testInterpret( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
@@ -313,14 +309,11 @@ public class Enguage extends Shell {
 			// she died in 1603
 			// she reigned for 45 years (so she ascended/came to the throne in 1548!)
 		}
-		
 		if (level == 0 || level == 8) {
 			testInterpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok." );
 			testInterpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry." );
 		}
-		
 		if (level == 0 || level == 9) {
-			
 			audit.title( "On-the-fly Langauge Learning" );
 			
 			// First, what we can't say yet...
@@ -361,16 +354,10 @@ public class Enguage extends Shell {
 			testInterpret( "ok", "ok." );
 			
 			testInterpret( "just call me phrase variable name means i am called variable name", "ok." );
-
-			//Repertoire.signs.show( "OTF" );
-			
 			testInterpret( "just call me martin", "i already know this." );
 		}
-		
 		if ( level == 0 || level == 10 ) {
-			
 			audit.title( "Ask: Confirmation" );
-			//testInterpret( "tracing on" );
 			
 			Question.primedAnswer( "yes" );
 			testInterpret( "i have everything", "ok , you don't need anything." );
