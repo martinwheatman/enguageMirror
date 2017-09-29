@@ -23,6 +23,8 @@ public class Format {
 	public  void    ormat(String s) {
 		format = new Strings( s );
 		if (format.get(0).equals( Strings.ELLIPSIS )) variable = true;
+		// Decontextualise format, while we're in the moment!
+		format = Context.deref( format );
 	}
 	static public void main( String args[] ) {
 		Format f = new Format();

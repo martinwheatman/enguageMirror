@@ -120,7 +120,7 @@ public class Utterance {
 						Language.sentenceCapitalisation( 
 							Language.pronunciation( reply )));
 		
-		return Language.asString( Numeric.deref( Context.deref( reply ) ));
+		return Language.asString( Numeric.deref( reply ));
 	}
 
 	// test code...

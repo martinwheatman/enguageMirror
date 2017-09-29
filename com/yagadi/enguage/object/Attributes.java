@@ -158,7 +158,7 @@ public class Attributes extends ArrayList<Attribute> {
 	// BEVERAGE -> coffee + [ NAME="martins", beverage="tea" ].deref( "SINGULAR-NAME needs a $BEVERAGE" );
 	// => martin needs a coffee.
 	private String derefName( String name, boolean expand ) { // hopefully non-blank string
-		//audit.traceIn( "derefName", name );
+		//audit.in( "derefName", name );
 		String value = null;
 		if (null != name && name.length() > 0 ) {
 			String orig = name;
@@ -190,7 +190,7 @@ public class Attributes extends ArrayList<Attribute> {
 				//value = name +"='"+ value +"'";
 				// Look to sofa to expand WHOM WHERE
 		}	}
-		//audit.traceOut( value );
+		//audit.out( value );
 		return value;
 	}
 	public Strings deref( Strings ans ) { return deref( ans, false ); } // backward compatible
