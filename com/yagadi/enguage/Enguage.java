@@ -276,7 +276,11 @@ public class Enguage extends Shell {
 
 			audit.title( "Temporospatial concept MEETING" );
 			
-			/* Where.doLocators();
+			/* interpret think of a variable entity thus.        // see sofa for particular details!
+			 * first create a class variable entity.             // mkdir pub; touch pub/isa 
+			 * then  create an anonymous entity variable entity. // mkdir pub/a
+			 * then  set the context of the variable entity to a variable entity // ln -s pub/the pub/a
+			 * ok.
 			 * new Sofa().interpret( new Strings( "entity create pub" ));
 			 */
 			// 1. create a pub:
