@@ -5,7 +5,6 @@ import com.yagadi.enguage.interpretant.Autoload;
 import com.yagadi.enguage.interpretant.Concepts;
 import com.yagadi.enguage.interpretant.Repertoire;
 import com.yagadi.enguage.object.Overlay;
-import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Net;
@@ -191,8 +190,6 @@ public class Enguage extends Shell {
 			testInterpret( "what is 36 + 4 all divided by 2",
 						   "36 plus 4 all divided by 2 is 20." );
 			
-			//testInterpret( "unset the value of subtotal",           "ok." );
-			
 			/* Ideally, we want:
 			 * - the factorial of 1 is 1;
 			 * - the factorial of n is n times the factorial of n - 1;
@@ -276,16 +273,34 @@ public class Enguage extends Shell {
 
 			audit.title( "Temporospatial concept MEETING" );
 			
-			/* interpret think of a variable entity thus.        // see sofa for particular details!
+			/*TODO:
+			 *   This needs to be driven by voice! Do opposites need to be programmed? No:
+			 *     I am to the left of the pub, is the pub to my right.
+			 *     I am outside the pub, but the pub is not inside me!
+			 *   Perhaps as a concept? Try: spatially something can be X or Y something else. 
+			 */
+			Where.locatorIs( "to the left of" );
+			Where.locatorIs( "to the right of" );
+			Where.locatorIs( "in front of" );
+			Where.locatorIs( "on top of" );
+			Where.locatorIs( "behind" );
+			Where.locatorIs( "in" );
+			Where.locatorIs( "on" );
+			Where.locatorIs( "under" );
+			Where.locatorIs( "underneath" );
+			Where.locatorIs( "over" );
+			Where.locatorIs( "at" );
+
+			
+			/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
 			 * first create a class variable entity.             // mkdir pub; touch pub/isa 
 			 * then  create an anonymous entity variable entity. // mkdir pub/a
 			 * then  set the context of the variable entity to a variable entity // ln -s pub/the pub/a
 			 * ok.
 			 * new Sofa().interpret( new Strings( "entity create pub" ));
 			 */
-			// 1. create a pub:
-			Where.doLocators();
-			new Sofa().interpret( new Strings( "entity create pub" ));
+			// Creating a pub not needed
+			//new Sofa().interpret( new Strings( "entity create pub" ));
 
 			testInterpret( "I'm not meeting anybody",
 					"Ok , you're not meeting anybody." );
@@ -309,9 +324,11 @@ public class Enguage extends Shell {
 			testInterpret( "Where am I meeting my dad" ,
 					"i don't know if you're meeting your dad." );
 			
-			// create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
-			// she died in 1603
-			// she reigned for 45 years (so she ascended/came to the throne in 1548!)
+			/* TODO:
+			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
+			 *  she died in 1603
+			 * she reigned for 45 years (so she ascended/came to the throne in 1548!)
+			 */
 		}
 		if (level == 0 || level == 8) {
 			testInterpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok." );
@@ -377,6 +394,13 @@ public class Enguage extends Shell {
 
 			Question.primedAnswer( "i do not understand" );
 			testInterpret( "i have everything", "Ok , let us leave things as they are." );
+			
+			/* TODO:
+			 * To the phrase: i am p v name       => set user name NAME
+			 *                my name is p v name => set user name NAME
+			 *                p v name            => set user name NAME
+			 * Ask: what is your name?
+			 */
 		}
 		audit.log( "PASSED" );
 }	}

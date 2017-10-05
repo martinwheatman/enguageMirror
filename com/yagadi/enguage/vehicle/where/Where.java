@@ -107,7 +107,12 @@ public class Where {
 					.add( "locator", locator())
 					.add( "location", location().toString( Strings.SPACED ));
 	}
-	static public void doLocators() {
+	static public void doLocators( String locators ) {
+		Strings locs = new Strings( locators, '/' );
+		for (String l : locs) 
+			locatorIs( l );
+	}
+	static private void doLocators() {
 		// locators need to be in decreasing length...
 		locatorIs( "to the left of" );
 		locatorIs( "to the right of" );

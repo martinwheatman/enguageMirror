@@ -134,7 +134,10 @@ public class Utterance {
 	}
 	
 	public static void main( String arg[]) {
-		Where.doLocators();
+		
+		Where.doLocators( "to the left of/to the right of/in front of/on top of");
+		Where.doLocators( "behind/in/on/under/underneath/over/at" );
+		
 		audit.log("Creating a pub:" +
 						new Sofa().interpret(new Strings("entity create pub"))
 		);
