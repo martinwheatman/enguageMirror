@@ -28,7 +28,8 @@ public class Where {
 	// e.g. "in", "at", "on", "in front of"
 	static private ArrayList<Strings> locators = new ArrayList<Strings>();
 	static public  boolean isLocator( String l ) { return locators.contains( new Strings( l )); }
-	static public  void    locatorIs( String l ) { locators.add( new Strings( l )); }
+	static public  void    locatorIs( String l ) { locatorIs( new Strings( l )); }
+	static public  void    locatorIs( Strings l ){ if (l.size() > 0) locators.add( l ); }
 
 	private boolean assigned = false;
 	public  boolean assigned() { return assigned; }

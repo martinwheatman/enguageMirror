@@ -13,7 +13,6 @@ import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Question;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.Utterance;
-import com.yagadi.enguage.vehicle.where.Where;
 
 public class Enguage extends Shell {
 	
@@ -94,7 +93,9 @@ public class Enguage extends Shell {
 			
 		String answer = Enguage.interpret( cmd );
 		
-		if (expected != null)
+		if (expected != null) {
+			int len = expected.length();
+			if (len > 0 && expected.charAt( len - 1 ) != '.') expected += ".";
 			if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
 				audit.log( "Hint is:" + Repertoire.prompt() );
 			else if (   !expected.equals( "" )
@@ -103,7 +104,7 @@ public class Enguage extends Shell {
 				audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
 			else
 				audit.log( answer +"\n" );
-	}
+	}	}
 	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
 	private static void usage() {
 		audit.LOG( "Usage: java -jar enguage.jar [-c <configDir>] [-p <port> | -s | -t ]" );
@@ -273,24 +274,23 @@ public class Enguage extends Shell {
 
 			audit.title( "Temporospatial concept MEETING" );
 			
-			/*TODO:
-			 *   This needs to be driven by voice! Do opposites need to be programmed? No:
-			 *     I am to the left of the pub, is the pub to my right.
-			 *     I am outside the pub, but the pub is not inside me!
-			 *   Perhaps as a concept? Try: spatially something can be X or Y something else. 
-			 */
-			Where.locatorIs( "to the left of" );
-			Where.locatorIs( "to the right of" );
-			Where.locatorIs( "in front of" );
-			Where.locatorIs( "on top of" );
-			Where.locatorIs( "behind" );
-			Where.locatorIs( "in" );
-			Where.locatorIs( "on" );
-			Where.locatorIs( "under" );
-			Where.locatorIs( "underneath" );
-			Where.locatorIs( "over" );
-			Where.locatorIs( "at" );
-
+			//Where.locatorIs( "at" ); is the same as...
+			// new Sofa().interpret( new Strings( "spatial locator at" )); is the same as...
+			testInterpret( "interpret spatially something can be phrase variable locator thus", "go on." );
+			testInterpret( "first perform spatial locator variable locator", "go on." );
+			testInterpret( "ok", "ok." );
+			
+			testInterpret( "spatially something can be to the left of",  "ok." );
+			testInterpret( "spatially something can be to the right of", "ok." );
+			testInterpret( "spatially something can be in front of",     "ok." );
+			testInterpret( "spatially something can be on top of",       "ok." );
+			testInterpret( "spatially something can be behind",          "ok." );
+			testInterpret( "spatially something can be in",              "ok." );
+			testInterpret( "spatially something can be on",              "ok." );
+			testInterpret( "spatially something can be under",           "ok." );
+			testInterpret( "spatially something can be underneath",      "ok." );
+			testInterpret( "spatially something can be over",            "ok." );
+			testInterpret( "spatially something can be at",              "ok." );
 			
 			/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
 			 * first create a class variable entity.             // mkdir pub; touch pub/isa 

@@ -3,6 +3,7 @@ package com.yagadi.enguage.object;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.vehicle.where.Where;
 
 public class Spatial {
 	
@@ -21,11 +22,15 @@ public class Spatial {
 		audit.in( "interpret", args.toString() );
 		String rc = Shell.IGNORE;
 		if (args.size() > 1) {
-			rc = Shell.FAIL;
-			if (args.remove( 0 ).equals( "add" )) {
+			String cmd = args.remove( 0 );
+			rc = Shell.SUCCESS;
+			if (cmd.equals( "add" ))
 				addConcepts( args );
-				rc = Shell.SUCCESS;
-		}	}
+			else if (cmd.equals( "locator" ))
+				Where.locatorIs( args.toString() );
+			else
+				rc = Shell.FAIL;
+		}
 		audit.out( rc );
 		return rc;
 	}
