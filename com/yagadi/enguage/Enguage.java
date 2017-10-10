@@ -331,6 +331,7 @@ public class Enguage extends Shell {
 			 *  she died in 1603
 			 * she reigned for 45 years (so she ascended/came to the throne in 1548!)
 			 */
+			testInterpret( "a queen is a monarch" );
 		}
 		if (level == 0 || level == 8) {
 			testInterpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok" );
