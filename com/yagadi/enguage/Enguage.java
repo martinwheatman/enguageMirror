@@ -299,10 +299,9 @@ public class Enguage extends Shell {
 			 * then  create an anonymous entity variable entity. // mkdir pub/a
 			 * then  set the context of the variable entity to a variable entity // ln -s pub/the pub/a
 			 * ok.
-			 * new Sofa().interpret( new Strings( "entity create pub" ));
 			 */
-			// Creating a pub not needed
-			//new Sofa().interpret( new Strings( "entity create pub" ));
+			// Creating a pub _is_ needed
+			testInterpret( "a pub is a place" );
 
 			testInterpret( "I'm not meeting anybody",
 					"Ok , you're not meeting anybody" );
