@@ -132,7 +132,7 @@ public class Pattern extends ArrayList<Patternette> {
 		String toString = Number.getNumber( ui ).toString();
 		return toString.equals( Number.NotANumber ) ? null : toString;
 	}
-	private String getPhraseTerm( Patternette t, ListIterator<Patternette> ti ) {
+	private String getPhraseTerminator( Patternette t, ListIterator<Patternette> ti ) {
 		String term = null;
 		if (t.postfix != null && !t.postfix.equals( "" ))
 			term = t.postfixAsStrings().get( 0 );
@@ -150,7 +150,7 @@ public class Pattern extends ArrayList<Patternette> {
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
 		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunctions().contains( u ))) {
-			String term = getPhraseTerm( t, ti );
+			String term = getPhraseTerminator( t, ti );
 			//audit.audit( "phrased, looking for terminator "+ term );
 			// here: "... one AND two AND three" => "one+two+three"
 			if (term == null) {  // just read to the end
