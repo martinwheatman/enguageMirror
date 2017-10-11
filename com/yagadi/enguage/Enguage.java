@@ -355,16 +355,16 @@ public class Enguage extends Shell {
 			testInterpret( "first set name to variable name",                "go on" );
 			testInterpret( "then get the value of name",                     "go on" ); // not strictly necessary!
 			testInterpret( "then reply hello whatever",                      "go on" );
-			testInterpret( "and that is it",                                 "ok."    );
+			testInterpret( "and that is it",                                 "ok"    );
 
 			testInterpret( "my name is ruth",   "hello   ruth" );
 			testInterpret( "my name is martin", "hello martin" );
 			
 			//...or to put it another way
 			testInterpret( "to the phrase i am called phrase variable name reply hi whatever", "go on" );
-			testInterpret( "this implies name gets set to variable name", "go on" );
+			testInterpret( "this implies name gets set to variable name",   "go on" );
 			testInterpret( "this implies name is not set to variable name", "go on" );
-			testInterpret( "if not reply i already know this", "go on" );
+			testInterpret( "if not reply i already know this",              "go on" );
 			testInterpret( "ok", "ok" );
 			
 			testInterpret( "i am called martin", "i already know this" );

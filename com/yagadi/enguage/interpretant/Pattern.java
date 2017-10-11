@@ -134,7 +134,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	private String getPhraseTerminator( Patternette t, ListIterator<Patternette> ti ) {
 		String term = null;
-		if (t.postfix() != null && t.postfix().size() != 0)
+		if (t.postfix().size() != 0)
 			term = t.postfix().get( 0 );
 		else if (ti.hasNext()) {
 			// next prefix as array is...
@@ -168,7 +168,7 @@ public class Pattern extends ArrayList<Patternette> {
 					} else {
 						vals.add( u );
 		}	}	}	}
-		return vals.toString( Strings.SPACED );
+		return vals.toString();
 	}
 	private static ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
 		Iterator<String> tbpi = tbp.iterator();

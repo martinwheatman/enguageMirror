@@ -20,14 +20,11 @@ public class Patternette {
 	
 	public static final String emptyPrefix = "";
 
-	public static final String xsingular = "singular";
-	public static final String xsingularPrefix = xsingular.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String xabstr  = "abstract";
 	
-	private Strings prefix = new Strings();
-	public  Strings prefix() { return prefix; }
-	public  Patternette     prefix( Strings s ) { prefix = s; return this; }
-	public  Patternette     prefix( String str ) { prefix.append( str ); return this; }
+	private Strings     prefix = new Strings();
+	public  Strings     prefix() { return prefix; }
+	public  Patternette prefix( Strings s ) { prefix = s; return this; }
+	public  Patternette prefix( String str ) { prefix.append( str ); return this; }
 
 	public Strings     postfix = new Strings();
 	public Strings     postfix() { return postfix; }
@@ -54,7 +51,6 @@ public class Patternette {
 	
 	private boolean     isPhrased = false;
 	public  boolean     isPhrased() { return isPhrased; }
-	public  Patternette phrasedIs( boolean b ) { isPhrased = b; return this; }
 	public  Patternette phrasedIs() { isPhrased = true; return this; }
 	
 	public Attribute matchedAttr( String val ) {
@@ -62,7 +58,7 @@ public class Patternette {
 				name,
 				Attribute.expandValues( // prevents X="x='val'"
 					name.equals("unit") ? Plural.singular( val ) : val
-				).toString( Strings.SPACED ) );
+				).toString());
 	}
 	
 	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }
@@ -82,7 +78,7 @@ public class Patternette {
 	public Patternette() {}
 	public Patternette( Strings pre, String nm ) {
 		this();
-		prefix( new Strings( pre )).name( nm );
+		prefix( pre ).name( nm );
 	}
 	public Patternette( Strings pre, String nm, Strings post ) {
 		this( pre, nm );
@@ -90,12 +86,7 @@ public class Patternette {
 	}
 	//just a helper ctor for hardcoded Patternettes
 	public Patternette( String pre, String nm ) { this( new Strings( pre ), nm );}
-	public Patternette( Patternette orig ) {
-		this( orig.prefix(), orig.name(), orig.postfix());
-		numericIs( orig.isNumeric() );
-		phrasedIs( orig.isPhrased() );
-		 pluralIs( orig.isPlural()  );
-	}
+
 	public String toXml( Indent indent ) {
 		indent.incr();
 		String s = prefix().toString( Strings.OUTERSP )
@@ -131,11 +122,4 @@ public class Patternette {
 	public static void main( String argv[]) {
 		Audit.allOn();
 		audit.tracing = true;
-		Strings a = new Strings( argv );
-		int argc = argv.length;
-		Patternette orig = new Patternette(new Strings("prefix"), "util", new Strings("posstfix"));//.append("sofa", "show").append("attr","one");
-		Patternette t = new Patternette( orig );
-		
-		if (argc > 0)
-			audit.log( "Comparing "+ t.toString() +", with ["+ a.toString( Strings.DQCSV ) +"]");
 }	}
