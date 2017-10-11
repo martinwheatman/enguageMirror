@@ -328,7 +328,7 @@ public class Enguage extends Shell {
 			/* TODO:
 			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
 			 *  she died in 1603
-			 * she reigned for 45 years (so she ascended/came to the throne in 1548!)
+			 *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
 			 */
 			testInterpret( "a queen is a monarch" );
 		}
@@ -357,8 +357,8 @@ public class Enguage extends Shell {
 			testInterpret( "then reply hello whatever",                      "go on" );
 			testInterpret( "and that is it",                                 "ok."    );
 
-			testInterpret( "my name is ruth",    "hello ruth" );
-			testInterpret( "my name is martin",  "hello martin" );
+			testInterpret( "my name is ruth",   "hello   ruth" );
+			testInterpret( "my name is martin", "hello martin" );
 			
 			//...or to put it another way
 			testInterpret( "to the phrase i am called phrase variable name reply hi whatever", "go on" );
