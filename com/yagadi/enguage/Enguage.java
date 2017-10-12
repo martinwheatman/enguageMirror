@@ -253,14 +253,33 @@ public class Enguage extends Shell {
 		}
 		if ( level == 0 || level == 5 ) {
 			audit.title( "Annotation" );
-			testInterpret( "interpret i am variable annotn thus",          "go on" );
-			testInterpret( "first perform value set i am variable annotn", "go on" );
-			testInterpret( "then if not reply i cannot add this value",    "go on" );
-			testInterpret( "then reply ok",                                "go on" );
+			testInterpret( "interpret i am variable state thus",               "go on" );
+			testInterpret( "first perform list add i am variable state",       "go on" );
+			testInterpret( "then  perform list remove i amNot variable state", "go on" );
+			testInterpret( "then if not reply ok",                             "go on" );
+			testInterpret( "then reply ok",                                    "go on" );
 			testInterpret( "ok", "ok" );
 			
 			testInterpret( "i am alive", "ok" );
 
+			testInterpret( "interpret am i variable state thus",                      "go on" );
+			testInterpret( "first perform list exists i am variable state",           "go on" );
+			testInterpret( "then reply yes i am variable state",                      "go on" );
+			testInterpret( "then if not perform list exists i amNot variable state",  "go on" );
+			testInterpret( "then reply no i am not variable state",                   "go on" );
+			testInterpret( "then if not reply i do not know",                          "go on" );
+			testInterpret( "ok", "ok" );
+			
+			testInterpret( "am i alive", "yes i'm alive" );
+			
+			testInterpret( "interpret i am not variable state thus",        "go on" );
+			testInterpret( "first perform list add i amNot variable state", "go on" );
+			testInterpret( "then  perform list remove i am variable state", "go on" );
+			testInterpret( "then reply ok",                                 "go on" );
+			testInterpret( "ok", "ok" );
+			
+			testInterpret( "i am not alive", "ok" );
+			testInterpret( "am i alive",     "no i'm not alive" );
 			
 			/* TODO:
 			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)

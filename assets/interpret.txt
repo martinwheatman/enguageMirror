@@ -34,6 +34,12 @@
 		perform "sign else think X";
 		then, reply "go on".
 		
+	On "then if not perform PHRASE-X":
+		get the value of induction;
+		if not, reply "i do not understand";
+		perform "sign else perform X";
+		then, reply "go on".
+		
 	On "then if not reply PHRASE-X":
 		get the value of induction;
 		if not, reply "i do not understand";
