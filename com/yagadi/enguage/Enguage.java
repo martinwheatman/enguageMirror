@@ -239,8 +239,7 @@ public class Enguage extends Shell {
 						   "ok, you need 1 more coffee" );
 			testInterpret( "what do i need",
 						   "You need 3 coffees , and a cup of tea" );
-		}
-		if ( level == 0 || level == 5 ) {
+			
 			audit.title( "Correction" );
 			testInterpret( "i need another coffee",
 						   "ok, you need 1 more coffee.");
@@ -251,6 +250,27 @@ public class Enguage extends Shell {
 			Question.primedAnswer( "yes" );
 			testInterpret( "i don't need anything",
 						   "ok, you don't need anything" );
+		}
+		if ( level == 0 || level == 5 ) {
+			audit.title( "Annotation" );
+			testInterpret( "interpret i am variable annotn thus",          "go on" );
+			testInterpret( "first perform value set i am variable annotn", "go on" );
+			testInterpret( "then if not reply i cannot add this value",    "go on" );
+			testInterpret( "then reply ok",                                "go on" );
+			testInterpret( "ok", "ok" );
+			
+			testInterpret( "i am alive", "ok" );
+
+			
+			/* TODO:
+			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
+			 *  she died in 1603
+			 *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
+			 */
+			testInterpret( "a queen is a monarch" );
+			// my name is martin
+			// my name is martin wheatman
+
 		}
 		if ( level == 0 || level == 6 ) {
 			audit.title( "Disambiguation" );
@@ -325,13 +345,6 @@ public class Enguage extends Shell {
 					"i don't know if you're meeting your dad" );
 			testInterpret( "Where am I meeting my dad" ,
 					"i don't know if you're meeting your dad" );
-			
-			/* TODO:
-			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
-			 *  she died in 1603
-			 * she reigned for 45 years (so she ascended/came to the throne in 1548!)
-			 */
-			testInterpret( "a queen is a monarch" );
 		}
 		if (level == 0 || level == 8) {
 			testInterpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok" );

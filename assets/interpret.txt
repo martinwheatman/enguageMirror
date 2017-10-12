@@ -26,6 +26,23 @@
 #                             #
 ###############################
 
+##########################################
+# Some infelicity....                    #
+	On "then if not PHRASE-X":
+		get the value of induction;
+		if not, reply "i do not understand";
+		perform "sign else think X";
+		then, reply "go on".
+		
+	On "then if not reply PHRASE-X":
+		get the value of induction;
+		if not, reply "i do not understand";
+		perform "sign else reply X";
+		then, reply "go on".
+#                                        #
+##########################################
+
+
 ###############################
 #                             #
 	On "then PHRASE-X":
