@@ -132,10 +132,10 @@ public class Pattern extends ArrayList<Patternette> {
 		String toString = Number.getNumber( ui ).toString();
 		return toString.equals( Number.NotANumber ) ? null : toString;
 	}
-	private String getPhraseTerm( Patternette t, ListIterator<Patternette> ti ) {
+	private String getPhraseTerminator( Patternette t, ListIterator<Patternette> ti ) {
 		String term = null;
-		if (t.postfix != null && !t.postfix.equals( "" ))
-			term = t.postfixAsStrings().get( 0 );
+		if (t.postfix().size() != 0)
+			term = t.postfix().get( 0 );
 		else if (ti.hasNext()) {
 			// next prefix as array is...
 			Strings arr = ti.next().prefix();
@@ -150,7 +150,7 @@ public class Pattern extends ArrayList<Patternette> {
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
 		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunctions().contains( u ))) {
-			String term = getPhraseTerm( t, ti );
+			String term = getPhraseTerminator( t, ti );
 			//audit.audit( "phrased, looking for terminator "+ term );
 			// here: "... one AND two AND three" => "one+two+three"
 			if (term == null) {  // just read to the end
@@ -168,7 +168,7 @@ public class Pattern extends ArrayList<Patternette> {
 					} else {
 						vals.add( u );
 		}	}	}	}
-		return vals.toString( Strings.SPACED );
+		return vals.toString();
 	}
 	private static ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
 		Iterator<String> tbpi = tbp.iterator();
@@ -250,7 +250,7 @@ public class Pattern extends ArrayList<Patternette> {
 				if (null == matched) matched = new Attributes();
 				matched.add( t.matchedAttr( val )); // remember what it was matched with!
 				
-				if (null == (utti = matchBoilerplate( t.postfixAsStrings(), utti ))) {
+				if (null == (utti = matchBoilerplate( t.postfix(), utti ))) {
 					notMatched = 19;
 					return null;
 				}
@@ -306,7 +306,7 @@ public class Pattern extends ArrayList<Patternette> {
 			Patternette t = ti.next();
 			str += ( " "+t.prefix().toString()+" <"+t.name() +" "
 			//+ t.attributes().toString()
-					+"/> "+t.postfix());
+					+"/> "+t.postfix().toString());
 		}
 		return str;
 	}

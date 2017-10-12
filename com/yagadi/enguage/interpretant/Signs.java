@@ -340,18 +340,18 @@ public class Signs extends TreeMap<Integer,Sign> {
 		audit.tracing = true;
 		Signs r = new Signs( "test" );
 		r.insert(
-				new Sign().pattern( new Patternette(  "debug ", "x", ""))
+				new Sign().pattern( new Patternette(  "debug ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "debug X" ))
 			);
 		r.insert(
-				new Sign().pattern( new Patternette(  "describe ", "x", ""))
+				new Sign().pattern( new Patternette(  "describe ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "describe X" ))
 					.help( "where x is a repertoire" )
 			);
 		r.insert(
-			new Sign().pattern( new Patternette(  "list repertoires ", "", ""))
+			new Sign().pattern( new Patternette(  "list repertoires ", "" ))
 				.concept( "test" )
 				.append( new Intention( Intention.allop, "list repertoires" ))
 				.help( "" )
