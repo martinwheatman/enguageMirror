@@ -258,11 +258,12 @@ public class Enguage extends Shell {
 			testInterpret( "delete martin is    list", "ok" );
 			testInterpret( "delete martin isNot list", "ok" );
 			
-			testInterpret( "interpret variable entity is variable state thus",               "go on" );
-			testInterpret( "first perform list add variable entity    is    variable state", "go on" );
-			testInterpret( "then  perform list remove variable entity isNot variable state", "go on" );
-			testInterpret( "then if not reply ok",                                           "go on" );
-			testInterpret( "then reply ok",                                                  "go on" );
+			testInterpret( "interpret variable entity is variable state thus",            "go on" );
+//			testInterpret( "first add state to entity's is list", "go on" );
+			testInterpret( "first add    variable state to   variable entity is    list", "go on" );
+			testInterpret( "then  remove variable state from variable entity isNot list", "go on" );
+			testInterpret( "then if not reply ok",                                        "go on" );
+			testInterpret( "then reply ok",                                               "go on" );
 			testInterpret( "ok", "ok" );
 			
 			testInterpret( "interpret variable entity is not variable state thus",           "go on" );
