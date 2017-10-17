@@ -18,15 +18,16 @@ public class Pattern extends ArrayList<Patternette> {
 	static final         long serialVersionUID = 0;
 	static private       Audit           audit = new Audit( "Pattern" );
 	
+	static private final Locale  locale        = Locale.getDefault();
 	static private final String  variable      = "variable";
 	public static  final String  quoted        = "quoted";
-	public static  final String  quotedPrefix  = quoted.toUpperCase( Locale.getDefault() ) + "-";
+	public static  final String  quotedPrefix  = quoted.toUpperCase( locale ) + "-";
 	public static  final String  phrase        = "phrase";
-	public static  final String  phrasePrefix  = phrase.toUpperCase( Locale.getDefault() ) + "-";
+	public static  final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
 	public static  final String  numeric       = "numeric";
-	public static  final String  numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
+	public static  final String  numericPrefix = numeric.toUpperCase( locale ) + "-";
 	public static  final String  plural        = Plural.NAME; // "plural";
-	public static  final String  pluralPrefix  = plural.toUpperCase( Locale.getDefault()) + "-";
+	public static  final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
 	public static  final String  singularPrefix = "SINGULAR-";
 	
 	public Pattern() { super(); }
@@ -38,7 +39,7 @@ public class Pattern extends ArrayList<Patternette> {
 				Strings arr = new Strings( word, '-' ); // should at least be array of 1 element!
 				int  j = 0, asz = arr.size();
 				for (String subWord : arr) {
-					subWord = subWord.toLowerCase( Locale.getDefault());
+					subWord = subWord.toLowerCase( locale );
 					if ( asz > ++j ) {// 
 						//t.attribute( subWord, subWord ); // non-last words in array
 						if (subWord.equals( phrase ))
@@ -76,7 +77,7 @@ public class Pattern extends ArrayList<Patternette> {
 			String word = wi.next();
 			if (word.equals( variable )) {
 				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable )) // so we can't have VARIABLE, ok...
-					out.append( word.toUpperCase( Locale.getDefault()) );
+					out.append( word.toUpperCase( locale ));
 				else // variable. OR variable variable
 					out.append( variable );
 				
@@ -84,7 +85,7 @@ public class Pattern extends ArrayList<Patternette> {
 				if (wi.hasNext() && null != (word = wi.next()))
 					if (word.equals( variable ))
 						if (wi.hasNext() && (null != (word = wi.next() )) && !word.equals( variable ))
-							out.append( numericPrefix + word.toUpperCase( Locale.getDefault()) );
+							out.append( numericPrefix + word.toUpperCase( locale ));
 						else // numeric variable. or numeric variable variable
 							out.append( numeric ).append( variable );
 					
@@ -92,7 +93,7 @@ public class Pattern extends ArrayList<Patternette> {
 						if (wi.hasNext() && null != (word = wi.next()))
 							if (word.equals( variable ))
 								if (wi.hasNext() && (null != (word = wi.next() )) && !word.equals( variable ))
-									out.append( numericPrefix + phrasePrefix + word.toUpperCase( Locale.getDefault()) );
+									out.append( numericPrefix + phrasePrefix + word.toUpperCase( locale ));
 								else // numeric phrase variable. OR numeric phrase variable variable
 									out.append( numeric ).append( phrase ).append( variable );
 							else // numeric phrase blah
@@ -108,7 +109,7 @@ public class Pattern extends ArrayList<Patternette> {
 				if (wi.hasNext() && null != (word = wi.next()))
 					if (word.equals( variable ))
 						if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable ))
-							out.append( phrasePrefix + word.toUpperCase( Locale.getDefault()) );
+							out.append( phrasePrefix + word.toUpperCase( locale ));
 						else // phrase variable. OR phrase variable variable
 							out.append( phrase ).append( word );
 					else // phrase blah
