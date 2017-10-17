@@ -63,7 +63,7 @@ public class Sign {
 			} else if (cmd.equals( "think" )) {
 				audit.debug( "adding a thought "+ argv.toString() );
 				rc = new Autopoiesis(
-							Intention.thenThink,
+							isElse? Intention.elseThink : Intention.thenThink,
 							argv.toString(), 
 							prepending ?
 								Autopoiesis.prepend :
@@ -73,7 +73,11 @@ public class Sign {
 					  ).mediate( r ).toString();
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "Sign: prepending an implication '"+ argv.toString() +"'");
-				rc = new Autopoiesis( isElse? Intention.elseThink : Intention.thenThink,  argv.toString(),    Autopoiesis.prepend ).mediate( r ).toString();
+				rc = new Autopoiesis(
+						isElse? Intention.elseThink : Intention.thenThink,
+						argv.toString(),
+						Autopoiesis.prepend
+					 ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
 				audit.debug( "adding a final clause? "+ argv.toString() );
