@@ -290,10 +290,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 				} // matched	
 			}	
 		} // while more signs and not done		
-		/* CHANGE 3... (1&2 in Reply!)
-		 * audit.log( "reply is prior to adding answer: "+ r.toString() );
-		 * return (Reply) audit.out( r );
-		 */
 		return (Reply) audit.out( r.answer( answer ));
 	}	
 	// help...
