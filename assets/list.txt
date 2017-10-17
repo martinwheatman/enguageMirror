@@ -16,11 +16,8 @@ On "                                PHRASE-OBJECT does not exist  in SUBJECT LIS
 On "    NUMERIC-QUANTITY            PHRASE-OBJECT does not exist  in SUBJECT LIST list",                                    perform "!list          exists SUBJECT LIST OBJECT QUANTITY".
 On "    NUMERIC-QUANTITY UNIT of    PHRASE-OBJECT does not exist  in SUBJECT LIST list",                                    perform "!list          exists SUBJECT LIST OBJECT QUANTITY UNIT".
 
-On "add                                    OBJECT                 to SUBJECT LIST list": perform "variable set  OP    add"; perform " list             add SUBJECT LIST OBJECT";               then, reply "ok".
-# this needs to be fixed --- /'s removed -- phrases checked from far side!
-# add to go to town to martin needs list, where "to" is the terminator!
-# if not append PHRASE-OBJECT onto SUBJECT LIST list.  ????
-On "add                           / PHRASE-OBJECT /               to SUBJECT LIST list": perform "variable set $OP    add"; perform " list             add SUBJECT LIST OBJECT";               then, reply "ok".
+On "append                          PHRASE-OBJECT               onto SUBJECT LIST list": perform "variable set  OP    add"; perform " list             add SUBJECT LIST OBJECT";               then, reply "ok".
+On "add                             PHRASE-OBJECT                 to SUBJECT LIST list": perform "variable set $OP    add"; perform " list             add SUBJECT LIST OBJECT"; if not, reply "sorry"; then, reply "ok".
 On "add    NUMERIC-QUANTITY         PHRASE-OBJECT                 to SUBJECT LIST list": perform "variable set $OP    add"; perform " list             add SUBJECT LIST OBJECT QUANTITY";      then, reply "ok".
 On "add    NUMERIC-QUANTITY UNIT of PHRASE-OBJECT                 to SUBJECT LIST list": perform "variable set $OP    add"; perform " list             add SUBJECT LIST OBJECT QUANTITY UNIT"; then, reply "ok".
 On "add                             WHOM at WHERE                 to SUBJECT LIST list": perform "variable set $OP    add"; perform " list             add SUBJECT LIST OBJECT";               then, reply "ok".

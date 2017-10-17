@@ -5,7 +5,8 @@ On "SUBJECT needs PHRASE-OBJECTS":
 	set output format to "QUANTITY,UNIT of,,from FROM";
 	OBJECTS exists in SUBJECT needs list;
 	reply "I know";
-	if not, add / OBJECTS / to SUBJECT needs list;
+	if not, add OBJECTS to SUBJECT needs list;
+	if not, append OBJECTS onto SUBJECT needs list;
 	then, reply "ok, SUBJECT needs ...".
 	
 On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":

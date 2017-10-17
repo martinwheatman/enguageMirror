@@ -198,7 +198,7 @@ public class Intention {
 			  && (rc.equals( "" )) ?
 				Reply.dnk()
 				: rc.equals( Shell.FAIL ) ?
-					Reply.no()
+					Reply.failure()
 					:	rc.equals( Shell.SUCCESS ) ?
 							(   answer.equals( "" )
 							 || answer.equals( Reply.no() )) ?
@@ -213,10 +213,9 @@ public class Intention {
 		/* TODO: 
 		 * if reply on its own, return reply from previous/inner reply -- imagination!
 		 */
-		// CH6? value = formulate( value, true ).toString();
 		r.format( value.equals( "" ) ? Reply.success() : value );
 		r.setType( new Strings( value ));
-		r.doneIs( r.type() != Reply.DNU );
+		r.doneIs( r.type() != Reply.DNU && r.type() != Reply.FAIL );
 		return (Reply) audit.out( r );
 	}
 	

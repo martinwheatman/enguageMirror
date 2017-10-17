@@ -11,13 +11,14 @@ public class Reply { // a reply is basically a formatted answer
 	
 	static private Audit audit = new Audit( "Reply" );
 
-	static public final int   NO = 0; // FALSE -- -ve
-	static public final int  YES = 1; // TRUE  -- +ve
-	static public final int  DNU = 2; // DO NOT UNDERSTAND
-	static public final int   NK = 3; // NOT KNOWN -- init
-	static public final int   IK = 4; // I know, silly!
-	static public final int  CHS = 5; // use stored expression
-	static public final int  UDU = 6; // user does not understand
+	static public final int FAIL = -1; // FALSE -- -ve
+	static public final int   NO =  0; // FALSE -- -ve
+	static public final int  YES =  1; // TRUE  -- +ve
+	static public final int  DNU =  2; // DO NOT UNDERSTAND
+	static public final int   NK =  3; // NOT KNOWN -- init
+	static public final int   IK =  4; // I know, silly!
+	static public final int  CHS =  5; // use stored expression
+	static public final int  UDU =  6; // user does not understand
 	
 	static private boolean verbatim = false; // set to true in handleDNU()
 	static public  boolean isVerbatim() { return verbatim; }
@@ -122,8 +123,7 @@ public class Reply { // a reply is basically a formatted answer
 	private int     type = DNU;
 	public  int     type() { return type; }
 	private void    type( int t ) {type = t;}
-	public  boolean positive() {return YES == type || CHS == type; } // != !negative() !!!!!
-	public  boolean negative() {return  NO == type ||  NK == type || type == UDU; } // != !positive() !!!!!
+	public  boolean negative() {return  FAIL == type ||  NK == type || type == UDU; } // != !positive() !!!!!
 	public  Reply setType( Strings response ) {
 		
 		if (type == UDU) return this;
@@ -131,11 +131,12 @@ public class Reply { // a reply is basically a formatted answer
 			 if (response.beginsIgnoreCase( new Strings(   yes ))) type( YES );
 		else if (response.beginsIgnoreCase( new Strings(success))) type( YES );
 		else if (response.beginsIgnoreCase( new Strings(    no ))) type(  NO );
-		else if (response.beginsIgnoreCase( new Strings(failure))) type(  NO );
+		else if (response.beginsIgnoreCase( new Strings(failure))) type(FAIL );
 		else if (response.beginsIgnoreCase( new Strings(    ik ))) type(  IK );
 		else if (response.beginsIgnoreCase( new Strings(   dnk ))) type(  NK );
 		else if (response.beginsIgnoreCase( new Strings( "I don't know" ))) type( NK );
 		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type(  DNU );
+		else if (response.beginsIgnoreCase( new Strings( "I don't understand" ))) type(  DNU );
 		else type( CHS );
 		return this;
 	}
@@ -252,7 +253,7 @@ public class Reply { // a reply is basically a formatted answer
 				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
 				strangeThought("");
 			}
-			doneIs( true );
+			type( FAIL );
 		
 		} else if ( NO == type() && a.toString().equalsIgnoreCase( ik()))
 			answer( yes());
