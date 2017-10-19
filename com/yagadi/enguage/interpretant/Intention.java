@@ -160,6 +160,8 @@ public class Intention {
 		
 		r.setType( new Strings( r.toString()) )
 		 .conclude( thought );
+		
+		r.doneIs( false );
 
 		return (Reply) audit.out( r );
 	}

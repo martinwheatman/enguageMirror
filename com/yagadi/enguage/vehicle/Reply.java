@@ -237,7 +237,6 @@ public class Reply { // a reply is basically a formatted answer
 	public String toString() { return encache(); }
 	
 	public void conclude( Strings thought ) {
-		doneIs( false );
 		strangeThought("");
 
 		if ( DNU == type()) {
