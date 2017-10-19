@@ -123,7 +123,7 @@ public class Reply { // a reply is basically a formatted answer
 	private int     type = DNU;
 	public  int     type() { return type; }
 	private void    type( int t ) {type = t;}
-	public  boolean negative() {return  FAIL == type ||  NK == type || type == UDU; } // != !positive() !!!!!
+	public  boolean negative() {return  FAIL == type || NO == type ||  NK == type || type == UDU; } // != !positive() !!!!!
 	public  Reply setType( Strings response ) {
 		
 		if (type == UDU) return this;
@@ -163,7 +163,7 @@ public class Reply { // a reply is basically a formatted answer
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			type( a.type( type ) );
+			type( (type == UDU) ? UDU : a.type() );
 		}
 		return this;
 	}

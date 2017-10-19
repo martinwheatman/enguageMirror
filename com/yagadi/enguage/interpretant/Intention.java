@@ -200,11 +200,8 @@ public class Intention {
 				: rc.equals( Shell.FAIL ) ?
 					Reply.failure()
 					:	rc.equals( Shell.SUCCESS ) ?
-							(   answer.equals( "" )
-							 || answer.equals( Reply.no() )) ?
 							Reply.success()
-							: answer
-						: rc;
+							: rc;
 	
 		return (Reply) audit.out( r.answer( rc ));
 	}

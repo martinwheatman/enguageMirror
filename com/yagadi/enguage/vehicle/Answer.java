@@ -29,18 +29,12 @@ public class Answer {
 	public  void    add( String s ) { answer.add( s );}
 	public  boolean none() { return answer.size() == 0; }
 
-	public int type( int type ) {
-		/*
-		 * nominally, answer.type is modified during interpretation,
-		 * format.type is set on reply.
-		 */
-		if (type == Reply.UDU) return Reply.UDU;
-		
+	public int type() {
 		String s = valueOf().toString();
 		     if (s.equalsIgnoreCase( Reply.yes()    )) return Reply.YES;
 		else if (s.equalsIgnoreCase( Reply.success())) return Reply.YES;
 		else if (s.equalsIgnoreCase( Reply.no()     )) return Reply.NO;
-		else if (s.equalsIgnoreCase( Reply.failure())) return Reply.NO;
+		else if (s.equalsIgnoreCase( Reply.failure())) return Reply.FAIL;
 		else if (s.equalsIgnoreCase( Reply.ik()     )) return Reply.IK;
 		else if (s.equalsIgnoreCase( Reply.dnk()    )) return Reply.NK;
 		else if (s.equalsIgnoreCase( Reply.dnu()    )) return Reply.DNU;
