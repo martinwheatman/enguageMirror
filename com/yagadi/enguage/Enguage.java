@@ -137,8 +137,8 @@ public class Enguage extends Shell {
 	}	}
 	private static void sanityCheck() {
 		// useful ephemera
-		//Repertoire.signs.show();
 		//testInterpret( "detail on" );
+		//Repertoire.signs.show( "OTF" );
 		//testInterpret( "tracing on" );
 
 		int level = 0;
@@ -221,8 +221,6 @@ public class Enguage extends Shell {
 			testInterpret( "then reply whatever the factorial of variable n is whatever", "go on" );
 			testInterpret( "ok", "ok" );
 			
-			//Repertoire.signs.show( "OTF" );
-			//testInterpret("tracing on");
 			testInterpret( "what is the factorial of 4",  "24 the factorial of 4 is 24" );
 		}
 		if ( level == 0 || level == 4 ) {
@@ -259,28 +257,35 @@ public class Enguage extends Shell {
 			testInterpret( "delete martin isNot list", "ok" );
 			
 			testInterpret( "interpret variable entity is variable state thus",            "go on" );
-//			testInterpret( "first add state to entity's is list", "go on" );
 			testInterpret( "first add    variable state to   variable entity is    list", "go on" );
 			testInterpret( "then  remove variable state from variable entity isNot list", "go on" );
 			testInterpret( "then if not reply ok",                                        "go on" );
 			testInterpret( "then reply ok",                                               "go on" );
 			testInterpret( "ok", "ok" );
 			
-			testInterpret( "interpret variable entity is not variable state thus",           "go on" );
-			testInterpret( "first perform list add variable entity    isNot variable state", "go on" );
-			testInterpret( "then  perform list remove variable entity is    variable state", "go on" );
-			testInterpret( "then if not reply ok",                                           "go on" );
-			testInterpret( "then reply ok",                                                  "go on" );
+			testInterpret( "interpret variable entity is not variable state thus",       "go on" );
+			testInterpret( "first add   variable state to   variable entity isNot list", "go on" );
+			testInterpret( "then remove variable state from variable entity is    list", "go on" );
+			testInterpret( "then if not reply ok",                                       "go on" );
+			testInterpret( "then reply ok",                                              "go on" );
 			testInterpret( "ok", "ok" );
 			
-			testInterpret( "interpret is variable entity variable state thus",            "go on" );
-			testInterpret( "first perform list exists variable entity is variable state", "go on" );
-			testInterpret( "then reply yes variable entity is variable state",            "go on" );
-			testInterpret( "then if not perform list exists variable entity isNot variable state", "go on" );
-			testInterpret( "then reply no variable entity is not variable state",         "go on" );
-			testInterpret( "then if not reply i do not know",                             "go on" );
+			testInterpret( "interpret is variable entity variable state thus",        "go on" );
+			testInterpret( "first variable state  exists in variable entity is list", "go on" );
+			testInterpret( "then reply yes variable entity is variable state",        "go on" );
+			testInterpret( "then if not variable state exists in variable entity isNot list", "go on" );
+			testInterpret( "then reply no variable entity is not variable state",     "go on" );
+			testInterpret( "then if not reply i do not know",                         "go on" );
 			testInterpret( "ok", "ok" );
-			
+
+			testInterpret( "interpret is variable entity not variable state thus",       "go on" );
+			testInterpret( "first variable state  exists in variable entity isNot list", "go on" );
+			testInterpret( "then reply yes variable entity is not variable state",        "go on" );
+			testInterpret( "then if not variable state exists in variable entity is list", "go on" );
+			testInterpret( "then reply no variable entity is variable state",             "go on" );
+			testInterpret( "then if not reply i do not know",                            "go on" );
+			testInterpret( "ok", "ok" );
+
 			testInterpret( "is martin alive", "i don't know" );
 			
 			testInterpret( "martin is alive", "ok" );
@@ -288,38 +293,21 @@ public class Enguage extends Shell {
 			
 			testInterpret( "martin is not alive", "ok" );
 			testInterpret( "is martin alive",     "no martin is not alive" );
+			testInterpret( "is martin not alive", "yes martin is not alive" );
 			
-	// This is trying to use the "X is Y" code in the "i am Y"
-	//			testInterpret( "interpret i am variable state thus", "go on" );
-	//			testInterpret( "first i is variable state",          "go on" );
-	//			testInterpret( "then reply ok",                      "go on" );
-	//			testInterpret( "ok", "ok" );
-	//			
-	//			testInterpret( "interpret i am not variable state thus", "go on" );
-	//			testInterpret( "first i is not variable state",          "go on" );
-	//			testInterpret( "then reply ok",                          "go on" );
-	//			testInterpret( "ok", "ok" );
-	//			
-	//			testInterpret( "interpret am i variable state thus",    "go on" );
-	//			testInterpret( "first is i variable state",             "go on" );
-	//			testInterpret( "then reply yes i am variable state",    "go on" );
-	//			testInterpret( "then is i not variable state",          "go on" );
-	//			testInterpret( "then reply i am not variable state", "go on" );
-	//			testInterpret( "then if not reply i do not know",       "go on" );
-	//			testInterpret( "ok", "ok" );
 			
-			testInterpret( "interpret i am variable state thus",               "go on" );
-			testInterpret( "first perform list add    i am    variable state", "go on" );
-			testInterpret( "then  perform list remove i amNot variable state", "go on" );
-			testInterpret( "then if not reply ok",                                           "go on" );
-			testInterpret( "then reply ok",                                                  "go on" );
+			testInterpret( "interpret i am variable state thus",         "go on" );
+			testInterpret( "first add    variable state to   i am list", "go on" );
+			testInterpret( "then  remove variable state from i amNot list", "go on" );
+			testInterpret( "then if not reply ok",                       "go on" );
+			testInterpret( "then reply ok",                              "go on" );
 			testInterpret( "ok", "ok" );
 			
-			testInterpret( "interpret i am not variable state thus",           "go on" );
-			testInterpret( "first perform list add i    amNot variable state", "go on" );
-			testInterpret( "then  perform list remove i am    variable state", "go on" );
-			testInterpret( "then if not reply ok",                                           "go on" );
-			testInterpret( "then reply ok",                                                  "go on" );
+			testInterpret( "interpret i am not variable state thus",        "go on" );
+			testInterpret( "first add    variable state to   i amNot list", "go on" );
+			testInterpret( "then  remove variable state from i am    list", "go on" );
+			testInterpret( "then if not reply ok",                          "go on" );
+			testInterpret( "then reply ok",                                 "go on" );
 			testInterpret( "ok", "ok" );
 			
 			testInterpret( "interpret am i variable state thus",                     "go on" );
@@ -330,11 +318,11 @@ public class Enguage extends Shell {
 			testInterpret( "then if not reply i do not know",                        "go on" );
 			testInterpret( "ok", "ok" );
 			
-			testInterpret( "am i alive", "i don't know" );
-			testInterpret( "i am alive", "ok" );
-			testInterpret( "am i alive", "yes i'm alive" );
+			testInterpret( "am i alive",     "i don't know" );
+			testInterpret( "i am alive",     "ok" );
+			testInterpret( "am i alive",     "yes i'm alive" );
 			testInterpret( "i am not alive", "ok" );
-			testInterpret( "am i alive",     "no i'm not alive" );
+			testInterpret( "am i alive",     "no i'm not alive" ); // <<<<<
 			
 			// ... also need was, will be
 			// ... and  X is/was/will be Y: first-person to third-person...
