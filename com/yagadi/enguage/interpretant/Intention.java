@@ -219,35 +219,26 @@ public class Intention {
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", typeToString( type ) +"='"+ value +"', ctx =>"+ Context.valueOf());
 		
-		if (typeToString().equals( "finally" )) {
+		if (typeToString().equals( "finally" ))
 			perform( r ); // ignore result of finally
 
-		} else if (r.isDone()) { 
+		else if (r.isDone())
 			audit.debug( "skipping "+ typeToString() +": reply already found" );
 		
-		} else {
-			
-			if (r.negative()) {
-				if (type == elseThink )
-					r = think( r );
-				else if (type == elseDo )
-					r = perform( r );
-				else if (type == elseRun )
-					r = new Proc( value ).run( r );
-				else if (type == elseReply )
-					r = reply( r );
- 					
-			} else { // train of thought is neutral/positive
-				if (type == thenThink )
-					r = think( r );
-				else if (type == thenDo )
-					r = perform( r );
-				else if (type == thenRun )
-					r = new Proc( value ).run( r );
-				else if (type == thenReply ) // if Reply.NO -- deal with -ve replies!
-					r = reply( r );
-		}	}
-		
+		else if (r.negative())
+			switch (type) {
+				case elseThink: r = think( r );					break;
+				case elseDo:	r = perform( r );				break;
+				case elseRun:	r = new Proc( value ).run( r ); break;
+				case elseReply:	r = reply( r ); // break;
+			}
+ 		else // train of thought is neutral/positive
+			switch (type) {
+				case thenThink:	r = think( r );					break;
+				case thenDo: 	r = perform( r );				break;
+				case thenRun:	r = new Proc( value ).run( r );	break;
+				case thenReply:	r = reply( r ); // break;
+			}
 		return (Reply) audit.out( r );
 	}
 	public static void main( String argv[]) {
