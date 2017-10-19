@@ -153,11 +153,7 @@ public class Reply { // a reply is basically a formatted answer
 	public Answer a = new Answer();
 	
 	public  Reply   answer( String ans ) {
-		if (null == ans) {
-			a = new Answer(); // a.nswer = new Strings();
-			cache = null;
-			type(  DNU );
-		} else if (!ans.equals( Shell.IGNORE )) {
+		if (!ans.equals( Shell.IGNORE )) {
 			if (!a.isAppending())
 				a = new Answer(); // a.nswer = new Strings();
 			a.add( ans );
