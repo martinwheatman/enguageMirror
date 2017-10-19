@@ -23,24 +23,29 @@ public class Answer {
 	public  boolean isAppending() { return appending; }
 	public  void    appendingIs( boolean b ) { appending = b; }
 	
-	private Strings answer = new Strings();
+	private Strings answers = new Strings();
 	
-	public  Strings valueOf() {return answer;}
-	public  void    add( String s ) { answer.add( s );}
-	public  boolean none() { return answer.size() == 0; }
+	public  Strings valueOf() {return answers;}
+	public  void    add( String s ) { answers.add( setType( s ));}
+	public  boolean none() { return answers.size() == 0; }
 
-	public int type() {
-		String s = valueOf().toString();
-		     if (s.equalsIgnoreCase( Reply.yes()    )) return Reply.YES;
-		else if (s.equalsIgnoreCase( Reply.success())) return Reply.YES;
-		else if (s.equalsIgnoreCase( Reply.no()     )) return Reply.NO;
-		else if (s.equalsIgnoreCase( Reply.failure())) return Reply.FAIL;
-		else if (s.equalsIgnoreCase( Reply.ik()     )) return Reply.IK;
-		else if (s.equalsIgnoreCase( Reply.dnk()    )) return Reply.NK;
-		else if (s.equalsIgnoreCase( Reply.dnu()    )) return Reply.DNU;
-		else return Reply.CHS;
+	private int    type = Reply.NK;
+	public  int    type() { return type; }
+	private String setType( String s ) {
+		// This sets type to first non-NK type
+		if (type == Reply.NK) {
+			     if (s.equalsIgnoreCase( Reply.yes()    )) type = Reply.YES;
+			else if (s.equalsIgnoreCase( Reply.success())) type = Reply.YES;
+			else if (s.equalsIgnoreCase( Reply.no()     )) type = Reply.NO;
+			else if (s.equalsIgnoreCase( Reply.dnu()    )) type = Reply.DNU;
+			else if (s.equalsIgnoreCase( Reply.failure())) type = Reply.FAIL;
+			else if (s.equalsIgnoreCase( Reply.ik()     )) type = Reply.IK;
+			else if (s.equalsIgnoreCase( Reply.dnk()    )) type = Reply.NK;
+			else type = Reply.CHS;
+		}	
+		return s;
 	}
 
 	@Override
-	public  String  toString() { return answer.toString( Reply.andListFormat() ); }
+	public  String  toString() { return answers.toString( Reply.andListFormat() ); }
 }
