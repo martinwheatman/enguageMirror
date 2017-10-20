@@ -204,7 +204,6 @@ public class Allopoiesis extends Intention {
 				);
 		cmds = cmds.normalise();
 		String cmd = cmds.remove( 0 );
-		int sz = cmds.size();
 
 		if ( cmd.equals( "primeAnswer" )) {
 			
@@ -252,9 +251,6 @@ public class Allopoiesis extends Intention {
 				r.format( Reply.dnu() );
 			else
 				r = unknownCommand( r, cmd, cmds );
-			
-		} else if (sz == 1 && cmds.get( 0 ).equals( "learning" )) { // <<<<<
-			Repertoire.inductingIs( cmd.equalsIgnoreCase( "start" ));
 			
 		} else if (cmd.equals( DISAMBIGUATE )) {
 			disambOn( cmds );
