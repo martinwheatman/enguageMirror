@@ -347,6 +347,7 @@ public class Allopoiesis extends Intention {
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
 				Audit.timings = false;
+				Audit.allTracing = false;
 				Audit.detailedDebug = false;
 			} else {
 				Audit.allOn();
