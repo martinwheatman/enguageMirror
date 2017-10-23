@@ -10,7 +10,8 @@ public class Audit {
 	static final public  boolean  numericDebug = false;
 	static       public  boolean       timings = false;
 	static       public  boolean  runtimeDebug = false;
-    static       public  boolean detailedDebug = false;
+    static       public  boolean    detailedOn = false;
+                 public  boolean detailedRegis = false;
 	
     static       public  boolean    allTracing = false;
     static       public  void         traceAll( boolean b ) { allTracing = b; }
@@ -49,6 +50,7 @@ public class Audit {
 	
 	public Audit( String nm ) { name = capitalize( nm ); }
 	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
+	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; detailedRegis = d;}
 	
 	public void   FATAL( String msg ) { log( "FATAL: "+ msg ); System.exit( 1 ); }
 	public void   FATAL( String phrase, String msg ) { FATAL( phrase +": "+ msg ); }
@@ -63,6 +65,7 @@ public class Audit {
 		if (!suspended()) LOG( info );
 		return info;
 	}
+	public  void   detail( String info ) { if (detailedOn && detailedRegis) log( info ); }
 	public  void   debug( String info ) { if (on || allOn) log( info ); }
 	public  Object  info(  String fn, String in, Object out ) { // out may be null!
 		if ((on || allOn) && (out!=null && !out.equals("")))

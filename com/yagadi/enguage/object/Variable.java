@@ -199,7 +199,7 @@ public class Variable {
 			audit.ERROR( "ouch: in Variable.java" );
 		} else {
 			Audit.allOn();
-			Audit.detailedDebug = true;
+			Audit.detailedOn = true;
 			
 			printCache();
 			Variable spk = new Variable( "SPOKEN" );

@@ -203,7 +203,7 @@ public class Reply { // a reply is basically a formatted answer
 		return cache;
 	}
 	private void handleDNU( Strings utterance ) {
-		if (Audit.detailedDebug) audit.in( "handleDNU", utterance.toString( Strings.CSV ));
+		if (Audit.detailedOn) audit.in( "handleDNU", utterance.toString( Strings.CSV ));
 		verbatimIs( true );
 		if (Shell.terminators().get( 0 ).equals( Shell.terminatorIs( utterance )))
 			utterance = Shell.stripTerminator( utterance );
@@ -218,7 +218,7 @@ public class Reply { // a reply is basically a formatted answer
 		 */
 		
 		verbatimIs( false );
-		if (Audit.detailedDebug) audit.out();
+		if (Audit.detailedOn) audit.out();
 	}
 	public String toString( Strings utterance ) {
 		String reply = encache();

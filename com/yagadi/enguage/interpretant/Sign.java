@@ -27,7 +27,6 @@ public class Sign {
 	
 	public  Pattern pattern() {return pattern;}
 	public  Sign  pattern( Pattern ta ) { pattern = ta; return this; }
-	public  Sign  pattern( int n, Patternette t ) { pattern.add( n, t ); return this; }
 	public  Sign  pattern( Patternette child ) {
 		if (null != child && !child.isEmpty())
 			pattern.add( child );

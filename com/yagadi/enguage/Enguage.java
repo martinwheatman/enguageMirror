@@ -256,6 +256,7 @@ public class Enguage extends Shell {
 			testInterpret( "delete martin is    list", "ok" );
 			testInterpret( "delete martin isNot list", "ok" );
 			
+			//  martin is alive
 			testInterpret( "interpret variable entity is variable state thus",            "go on" );
 			testInterpret( "first add    variable state to   variable entity is    list", "go on" );
 			testInterpret( "then  remove variable state from variable entity isNot list", "go on" );
@@ -263,6 +264,7 @@ public class Enguage extends Shell {
 			testInterpret( "then reply ok",                                               "go on" );
 			testInterpret( "ok", "ok" );
 			
+			// martin is not alive
 			testInterpret( "interpret variable entity is not variable state thus",       "go on" );
 			testInterpret( "first add   variable state to   variable entity isNot list", "go on" );
 			testInterpret( "then remove variable state from variable entity is    list", "go on" );
@@ -270,6 +272,7 @@ public class Enguage extends Shell {
 			testInterpret( "then reply ok",                                              "go on" );
 			testInterpret( "ok", "ok" );
 			
+			// is martin alive
 			testInterpret( "interpret is variable entity variable state thus",        "go on" );
 			testInterpret( "first variable state  exists in variable entity is list", "go on" );
 			testInterpret( "then reply yes variable entity is variable state",        "go on" );
@@ -278,6 +281,7 @@ public class Enguage extends Shell {
 			testInterpret( "then if not reply i do not know",                         "go on" );
 			testInterpret( "ok", "ok" );
 
+			// is martin not alive
 			testInterpret( "interpret is variable entity not variable state thus",       "go on" );
 			testInterpret( "first variable state  exists in variable entity isNot list", "go on" );
 			testInterpret( "then reply yes variable entity is not variable state",        "go on" );
@@ -295,7 +299,7 @@ public class Enguage extends Shell {
 			testInterpret( "is martin alive",     "no martin is not alive" );
 			testInterpret( "is martin not alive", "yes martin is not alive" );
 			
-			
+			// i am alive
 			testInterpret( "interpret i am variable state thus",         "go on" );
 			testInterpret( "first add    variable state to   i am list", "go on" );
 			testInterpret( "then  remove variable state from i amNot list", "go on" );
@@ -303,6 +307,7 @@ public class Enguage extends Shell {
 			testInterpret( "then reply ok",                              "go on" );
 			testInterpret( "ok", "ok" );
 			
+			// i am not alive
 			testInterpret( "interpret i am not variable state thus",        "go on" );
 			testInterpret( "first add    variable state to   i amNot list", "go on" );
 			testInterpret( "then  remove variable state from i am    list", "go on" );
@@ -310,8 +315,9 @@ public class Enguage extends Shell {
 			testInterpret( "then reply ok",                                 "go on" );
 			testInterpret( "ok", "ok" );
 			
+			// am i alive?
 			testInterpret( "interpret am i variable state thus",                     "go on" );
-			testInterpret( "first perform list exists i am variable state",          "go on" );
+			testInterpret( "first variable state  exists in i am list", "go on" );
 			testInterpret( "then reply yes i am variable state",                     "go on" );
 			testInterpret( "then if not perform list exists i amNot variable state", "go on" );
 			testInterpret( "then reply no i am not variable state",                  "go on" );
@@ -322,7 +328,7 @@ public class Enguage extends Shell {
 			testInterpret( "i am alive",     "ok" );
 			testInterpret( "am i alive",     "yes i'm alive" );
 			testInterpret( "i am not alive", "ok" );
-			testInterpret( "am i alive",     "no i'm not alive" ); // <<<<<
+			testInterpret( "am i alive",     "no i'm not alive" );
 			
 			// ... also need was, will be
 			// ... and  X is/was/will be Y: first-person to third-person...

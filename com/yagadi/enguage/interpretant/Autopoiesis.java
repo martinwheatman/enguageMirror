@@ -79,7 +79,188 @@ public class Autopoiesis extends Intention {
 		 */
 		new Sign().append( new Intention( append, Intention.FINALLY+" Y" ))
 			.pattern( new Patternette( " Finally on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ",   perform ", "y" ).quotedIs())
+			.pattern( new Patternette( ",   perform ", "y" ).quotedIs()),
+			
+		/*
+		 * Spoken Autopoiesis...
+		 */
+//		On "interpret PHRASE-X thus":
+//			set induction to true;
+//			perform "sign create X";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "interpret", "x", "thus" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "set induction to true" )
+			.appendIntention( Intention.thenDo,    "sign create X")
+			.appendIntention( Intention.thenReply, "go on" ),
+		
+//		On "ok":
+//			set induction to false;
+//			get the value of finalReply;
+//			if not, reply "ok";
+//			perform "sign reply ...";
+//			unset the value of finalReply;
+//			then, reply "ok".
+		new Sign()
+			.pattern( new Patternette( "ok" ))
+			.appendIntention( Intention.thenThink, "set induction to false" )
+			.appendIntention( Intention.thenThink, "get the value of finalReply" )
+			.appendIntention( Intention.elseReply, "ok" )
+			.appendIntention( Intention.thenDo,    "sign reply ..." )
+			.appendIntention( Intention.thenThink, "unset the value of finalReply" )
+			.appendIntention( Intention.thenReply, "ok" ),
+			
+//		On "that is it", ok.
+		new Sign()
+			.pattern( new Patternette( "that is it" ))
+			.appendIntention( Intention.thenThink, "ok" ),
+			
+//		On "that is all", ok.
+		new Sign()
+			.pattern( new Patternette( "that is all" ))
+			.appendIntention( Intention.thenThink, "ok" ),
+			
+				
+//		On "finally PHRASE-X":
+//			perform "sign finally X";
+//			then, reply "ok".
+		new Sign()
+			.pattern( new Patternette( "finally", "x" ).phrasedIs())
+			.appendIntention( Intention.thenDo, "sign finally X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+
+//		On "then if not PHRASE-X":
+//			get the value of induction;
+//			if not, reply "i do not understand";
+//			perform "sign else think X";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "then if not ", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo  ,  "sign else think X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+					
+//		On "then if not perform PHRASE-X":
+//			get the value of induction;
+//			if not, reply "i do not understand";
+//			perform "sign else perform X";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "then if not perform", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo,    "sign else perform X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+					
+//		On "then PHRASE-X":
+//			perform "sign think X";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "then", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo, "sign think X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+					
+//		On "first PHRASE-X", then X.
+		new Sign()
+			.pattern( new Patternette( "first", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenThink, "then X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+			
+//		On "think PHRASE-X", then X.
+		new Sign()
+			.pattern( new Patternette( "think", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenThink, "then X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+			
+//		On "next  PHRASE-X", then X.
+		new Sign()
+			.pattern( new Patternette( "next", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenThink, "then X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+
+//		On "then perform PHRASE-X":
+//			perform "sign perform X";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "then perform", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo,    "sign perform X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+				
+//		On "first perform PHRASE-X", then perform X.
+		new Sign()
+			.pattern( new Patternette( "first perform", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo,    "sign perform X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+			
+//		On "next perform PHRASE-X", then perform X.
+		new Sign()
+			.pattern( new Patternette( "next perform", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo, "sign perform X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+
+//		On "just reply PHRASE-X", then reply X. -- translation!
+		new Sign()
+			.pattern( new Patternette( "just reply", "X" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo,    "sign reply X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+			
+//		On "then reply PHRASE-X":
+//			perform "sign reply X";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "then reply", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo,    "sign reply X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+				
+//			On "then if not reply PHRASE-X":
+//			get the value of induction;
+//			if not, reply "i do not understand";
+//			perform "sign else reply X";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "then if not reply", "x" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo, "sign else reply X" )
+			.appendIntention( Intention.thenReply, "go on" ),
+
+
+//		On "next  reply PHRASE-X", then reply X.
+//		new Sign()
+//			.pattern( new Patternette( "next reply", "x" ).phrasedIs())
+//			.appendIntention( Intention.thenThink, "get the value of induction" )
+//			.appendIntention( Intention.elseReply, "i do not understand" )
+//			.appendIntention( Intention.thenDo,    "sign reply X" )
+//			.appendIntention( Intention.thenReply, "go on" ),
+				
+//		On "this implies PHRASE-B":
+//			perform "sign imply B ";
+//			then, reply "go on".
+		new Sign()
+			.pattern( new Patternette( "this implies", "b" ).phrasedIs())
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo,    "sign imply B" )
+			.appendIntention( Intention.thenReply, "go on" ),
 	};
 
 	public Autopoiesis( Intention base, boolean temp, boolean spatial ) { super( base, temp, spatial ); }	

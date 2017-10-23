@@ -322,7 +322,7 @@ public class Allopoiesis extends Intention {
 				Audit.allOn();
 				Audit.runtimeDebug = true;
 				Audit.allTracing = true;
-				Audit.detailedDebug = true;
+				Audit.detailedOn = true;
 				Audit.timings = true;
 			}
 			r.format( Reply.success() );
@@ -333,7 +333,7 @@ public class Allopoiesis extends Intention {
 				Audit.allOff();
 				Audit.timings = false;
 				Audit.allTracing = false;
-				Audit.detailedDebug = false;
+				Audit.detailedOn = false;
 			} else {
 				Audit.allOn();
 				Audit.runtimeDebug = true;
@@ -348,12 +348,12 @@ public class Allopoiesis extends Intention {
 				Audit.allOff();
 				Audit.timings = false;
 				Audit.allTracing = false;
-				Audit.detailedDebug = false;
+				Audit.detailedOn = false;
 			} else {
 				Audit.allOn();
 				Audit.runtimeDebug = true;
 				Audit.allTracing = true;
-				Audit.detailedDebug = true;
+				Audit.detailedOn = true;
 			}
 			r.format( Reply.success() );
 			
@@ -364,7 +364,7 @@ public class Allopoiesis extends Intention {
 				Audit.allTracing = false;
 				Audit.timings = false;
 				Audit.runtimeDebug = false;
-				Audit.detailedDebug = false;
+				Audit.detailedOn = false;
 				
 			} else if (cmds.get( 1 ).equals( "tags" )) {
 				Tags.debug( !Tags.debug() );

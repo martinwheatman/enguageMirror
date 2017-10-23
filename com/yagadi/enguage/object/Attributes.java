@@ -183,7 +183,7 @@ public class Attributes extends ArrayList<Attribute> {
 				if (plural)   value = Plural.plural( value );
 				if (singular) value = Plural.singular( value );
 				if (quoted)   value = "'"+ value +"'";
-				if (Audit.detailedDebug) audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
+				if (Audit.detailedOn) audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
 				//I'd like to have:
 				//   I'm meeting whom="James" where="home"
 				//but returning below is not a good idea.
