@@ -19,7 +19,7 @@ import com.yagadi.enguage.vehicle.Utterance;
 
 public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
-	private static       Audit           audit = new Audit( "Signs", false, true );
+	private static       Audit           audit = new Audit( "Signs" );
 	
 	//private String name = ""; // for debug statements
 	public  Signs( String nm ) { /*name = nm;*/ }

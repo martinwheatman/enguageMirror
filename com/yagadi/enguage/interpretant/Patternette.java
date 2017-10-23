@@ -26,9 +26,9 @@ public class Patternette {
 	public  Patternette prefix( Strings s ) { prefix = s; return this; }
 	public  Patternette prefix( String str ) { prefix.append( str ); return this; }
 
-	public Strings     postfix = new Strings();
-	public Strings     postfix() { return postfix; }
-	public Patternette postfix( Strings ss ) { postfix = ss; return this; }
+	private Strings     postfix = new Strings();
+	public  Strings     postfix() { return postfix; }
+	public  Patternette postfix( Strings ss ) { postfix = ss; return this; }
 
 	private String      name = "";
 	public  String      name() { return name; }
@@ -85,7 +85,9 @@ public class Patternette {
 		postfix( new Strings( post ));
 	}
 	//just a helper ctor for hardcoded Patternettes
+	public Patternette( String pre ) { this( new Strings( pre ), "" ); }
 	public Patternette( String pre, String nm ) { this( new Strings( pre ), nm );}
+	public Patternette( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
 
 	public String toXml( Indent indent ) {
 		indent.incr();
