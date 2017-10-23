@@ -11,7 +11,7 @@ public class Join {
 	private static       Audit           audit = new Audit( "Join" );
 	
 	static private ArrayList<ArrayList<Integer>> combinations( ArrayList<Integer> dimensions ) {
-		if (Audit.detailedDebug) audit.in( "combinations", dimensions.toString());
+		//if (Audit.detailedDebug) audit.in( "combinations", dimensions.toString());
 		/* If we save as OBJECT.0, ... OBJECT.n need to do a join on SUBJECT.m needs OBJECT.n
 		 *   e.g. martin and james need a beer and a packet of crisps.
 		 *        martin needs a beer.
@@ -64,23 +64,23 @@ public class Join {
 			}
 			rc = tmp;
 		}
-		if (Audit.detailedDebug) audit.out( rc.toString() );
+		//if (Audit.detailedDebug) audit.out( rc.toString() );
 		return rc;
 	}
 	static public ArrayList<Attributes> join( Attributes match, Strings sep ){
 		/* there is probably a much easier way to do this!
 		 * -- pass values into combinations() and annotate there!
 		 */
-		if (Audit.detailedDebug) audit.in( "join", "["+ match +"], '"+ sep +"'" );
+		//if (Audit.detailedDebug) audit.in( "join", "["+ match +"], '"+ sep +"'" );
 		
 		// first we get loaded=["SUBJECTS","OBJECTS"]
 		Strings names = match.names();
-		if (Audit.detailedDebug) audit.log( "loaded are: "+ names.toString() );
+		//if (Audit.detailedDebug) audit.log( "loaded are: "+ names.toString() );
 		
 		ArrayList<Attributes> rc = new ArrayList<Attributes>();
 		ArrayList<ArrayList<Strings>> values = match.valuesAsLists( sep );
 		
-		if (Audit.detailedDebug) audit.log( "values are: "+ values.toString() );
+		//if (Audit.detailedDebug) audit.log( "values are: "+ values.toString() );
 		
 		ArrayList<Integer> dimensions = new ArrayList<Integer>();
 		/* Here we have raw arrays, of values and loaded. To limit the join combinations,
@@ -94,7 +94,7 @@ public class Join {
 		Iterator<ArrayList<Integer>> nui = numbers.iterator();
 		while (nui.hasNext()) { // looping round numbers [0, 0]
 			ArrayList<Integer> number = nui.next(); // 0, 0
-			if (Audit.detailedDebug) audit.log( "Numbers are:"+ number.toString() );
+			//if (Audit.detailedDebug) audit.log( "Numbers are:"+ number.toString() );
 			Attributes runs = new Attributes();
 			//
 			int vi=0; // index into values
@@ -109,7 +109,7 @@ public class Join {
 			}
 			rc.add( runs );
 		}
-		if (Audit.detailedDebug) audit.out( rc.toString() );
+		//if (Audit.detailedDebug) audit.out( rc.toString() );
 		return rc;
 	}
 
