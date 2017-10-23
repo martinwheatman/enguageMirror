@@ -19,7 +19,7 @@ import com.yagadi.enguage.vehicle.Utterance;
 
 public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
-	private static       Audit           audit = new Audit( "Signs" );
+	private static       Audit           audit = new Audit( "Signs", false, true );
 	
 	//private String name = ""; // for debug statements
 	public  Signs( String nm ) { /*name = nm;*/ }
@@ -211,10 +211,11 @@ public class Signs extends TreeMap<Integer,Sign> {
 				Sign s = e.getValue(); // s knows if it is temporal!	
 				//TODO: removed noInter check -- need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
-				//audit.debug( "matching: "+ s.toString() +" ("+ s.pattern().notMatched +")");
-				if (null != match) { // we have found a meaning! So I do understand...!
+				if (null == match)
+					audit.detail( "NO match: "+ s.toString() +" ("+ s.pattern().notMatched() +")");
+				else { // we have found a meaning! So I do understand...!
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
-					audit.debug("matched with: "+ match.toString() +":"+ Context.valueOf());
+					audit.debug( s +" matched with: "+ match.toString() +":"+ Context.valueOf());
 					
 					//audit.debug("setting "+ i +" to "+ here );
 					s.interpretation = here; // mark here first as this understanding may be toxic!
