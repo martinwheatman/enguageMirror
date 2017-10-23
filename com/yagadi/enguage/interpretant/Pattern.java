@@ -171,30 +171,35 @@ public class Pattern extends ArrayList<Patternette> {
 		}	}	}	}
 		return vals.toString();
 	}
-	private static ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
+	private int notMatched = 0;
+	public String notMatched() {
+		return  notMatched ==  0 ? "matched" :
+				notMatched ==  1 ? "precheck 1" :
+				notMatched ==  2 ? "precheck 2" :
+				notMatched == 11 ? "prefixa" :
+				notMatched == 12 ? "prefixb" :
+				notMatched == 15 ? "not numeric" :
+				notMatched == 16 ? "invalid flags" :
+				notMatched == 18 ? "postfixa" :
+				notMatched == 19 ? "postfixb" :
+				notMatched == 21 ? "more pattern" :
+				notMatched == 22 ? "more utterance" : ("unknown:"+ notMatched);
+	}
+	private ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
 		Iterator<String> tbpi = tbp.iterator();
 		while ( tbpi.hasNext() && ui.hasNext()) 
-			if (!Language.wordsEqualIgnoreCase( tbpi.next(), ui.next() ))
+			if (!Language.wordsEqualIgnoreCase( tbpi.next(), ui.next() )) {
+				notMatched = 11;
 				return null; // string mismatch
+			}
 		// have we reached end of boilerplate, but not utterance?
+		notMatched = 12;
 		return tbpi.hasNext() ? null : ui;
 	}
 	
 	/* TODO: Proposal: that a singular tag (i.e. non-PHRASE) can match with a known string
 	 * i.e. an object id: e.g. theOldMan, thePub, fishAndChips camelised
 	 */
-	private int notMatched = 0;
-	public String notMatched() {
-		return notMatched == 0 ? "matched" :
-			notMatched ==  1 ? "precheck 1" :
-			notMatched ==  2 ? "precheck 2" :
-			notMatched == 11 ? "prefix" :
-			notMatched == 15 ? "not numeric" :
-			notMatched == 16 ? "invalid flags" :
-			notMatched == 19 ? "postfix" :
-			notMatched == 21 ? "more pattern" :
-			notMatched == 22 ? "more utterance" : ("unknown:"+ notMatched);
-	}
 	public Attributes matchValues( Strings utterance ) {
 		
 		notMatched = 0;
@@ -224,7 +229,7 @@ public class Pattern extends ArrayList<Patternette> {
 			next = null;
 			
 			if (null == (utti = matchBoilerplate( t.prefix(), utti ))) { // ...match prefix
-				notMatched = 11;
+				//notMatched = 11;
 				return null;
 				
 			} else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
@@ -252,7 +257,7 @@ public class Pattern extends ArrayList<Patternette> {
 				matched.add( t.matchedAttr( val )); // remember what it was matched with!
 				
 				if (null == (utti = matchBoilerplate( t.postfix(), utti ))) {
-					notMatched = 19;
+					notMatched += 7; // 18 or 19!
 					return null;
 				}
 		}	}
@@ -318,14 +323,19 @@ public class Pattern extends ArrayList<Patternette> {
 				(expected == null ? "":expected.toString()) );
 		Attributes values = interpretant.matchValues( new Strings( phrase ));
 		
-		// de-reference values...
-		String vals = values.toString();
-		if (null == expected)
-			audit.log( "values => ["+ vals +"]" );
-		else if (values != null && values.matches( expected ))
-			audit.log( "PASSED => ["+ vals +"]" );
-		else 
-			audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
+		if (values == null)
+			audit.log( "no match" );
+		else {
+			// de-reference values...
+			String vals = values.toString();
+			if (null == expected)
+				audit.log( "values => ["+ vals +"]" );
+			else if (values != null && values.matches( expected ))
+				audit.log( "PASSED => ["+ vals +"]" );
+			else {
+				audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
+				audit.log( "      :       got: "+ vals );
+		}	}
 		audit.out();
 	}
 	private static void toPatternTest( String utt  ) {
@@ -388,5 +398,45 @@ public class Pattern extends ArrayList<Patternette> {
 		toPatternTest( "the factorial of numeric phrase variable variable", "the factorial of numeric phrase variable" );
 		toPatternTest( "the factorial of numeric phrase variable n", "the factorial of NUMERIC-PHRASE-N" );
 		toPatternTest( "the factorial of numeric phrase variable n blah", "the factorial of NUMERIC-PHRASE-N blah" );
+		
+		audit.log( "First: martin is alive" );
+		Audit.incr();
+		printTagsAndValues( new Pattern(
+				"first phrase variable x" ),
+				"first variable state exists in variable entity is list", 
+				new Attributes()
+					.add( "x",  "variable state exists in variable entity is list" )
+		);
+		printTagsAndValues( new Pattern(
+				"phrase variable object exists in variable subject variable list list" ),
+				"variable state exists in variable entity is list", 
+				new Attributes()
+					.add( "object",  "variable state" )
+					.add( "subject", "variable entity" )
+					.add( "list",    "is" )
+		);
+		Audit.decr();
+		
+		audit.log( "Second: i am alive" );
+		Audit.incr();
+		printTagsAndValues( new Pattern(
+				"phrase variable object exists in variable subject variable list list" ),
+				"first variable state exists in i am list", 
+				new Attributes()
+				.add( "object",  "variable state" )
+				.add( "subject", "i" )
+				.add( "list",    "am" )
+				);
+		printTagsAndValues( new Pattern(
+				"first phrase variable x" ),
+				"first variable state exists in i am list", 
+				new Attributes()
+					.add( "object",  "variable state" )
+					.add( "subject", "i" )
+					.add( "list",    "am" )
+		);
+		Audit.decr();
+
+		
 		audit.log( "PASSED" );
 }	}
