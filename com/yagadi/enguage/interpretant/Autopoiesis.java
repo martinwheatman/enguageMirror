@@ -88,7 +88,12 @@ public class Autopoiesis extends Intention {
 //			set induction to true;
 //			perform "sign create X";
 //			then, reply "go on".
-		new Sign( "interpret", new Phrase( "x" ), "thus" )
+			new Sign( "interpret", new Phrase( "x" ), "thus" )
+			.appendIntention( Intention.thenThink, "set induction to true" )
+			.appendIntention( Intention.thenDo,    "sign create X")
+			.appendIntention( Intention.thenReply, "go on" ),
+		
+			new Sign( "interpret", new Phrase( "x" ), "like this" )
 			.appendIntention( Intention.thenThink, "set induction to true" )
 			.appendIntention( Intention.thenDo,    "sign create X")
 			.appendIntention( Intention.thenReply, "go on" ),
@@ -100,8 +105,7 @@ public class Autopoiesis extends Intention {
 //			perform "sign reply ...";
 //			unset the value of finalReply;
 //			then, reply "ok".
-		new Sign()
-			.pattern( new Patternette( "ok" ))
+		new Sign( "and that concludes interpretation" )
 			.appendIntention( Intention.thenThink, "set induction to false" )
 			.appendIntention( Intention.thenThink, "get the value of finalReply" )
 			.appendIntention( Intention.elseReply, "ok" )
@@ -110,12 +114,16 @@ public class Autopoiesis extends Intention {
 			.appendIntention( Intention.thenReply, "ok" ),
 			
 //		On "that is it", ok.
+		new Sign( "ok" )
+			.appendIntention( Intention.thenThink, "and that concludes interpretation" ),
+				
+//		On "that is it", ok.
 		new Sign( "that is it" )
-			.appendIntention( Intention.thenThink, "ok" ),
-			
+			.appendIntention( Intention.thenThink, "and that concludes interpretation" ),
+					
 //		On "that is all", ok.
 		new Sign( "that is all" )
-			.appendIntention( Intention.thenThink, "ok" ),
+			.appendIntention( Intention.thenThink, "and that concludes interpretation" ),
 			
 				
 //		On "finally PHRASE-X":
@@ -224,17 +232,17 @@ public class Autopoiesis extends Intention {
 		new Sign( "then if not reply", new Phrase( "x" ))
 			.appendIntention( Intention.thenThink, "get the value of induction" )
 			.appendIntention( Intention.elseReply, "i do not understand" )
-			.appendIntention( Intention.thenDo, "sign else reply X" )
+			.appendIntention( Intention.thenDo,    "sign else reply X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 
 
-//		On "next  reply PHRASE-X", then reply X.
-//		new Sign()
-//			.pattern( new Patternette( "next reply", "x" ).phrasedIs())
-//			.appendIntention( Intention.thenThink, "get the value of induction" )
-//			.appendIntention( Intention.elseReply, "i do not understand" )
-//			.appendIntention( Intention.thenDo,    "sign reply X" )
-//			.appendIntention( Intention.thenReply, "go on" ),
+//		On "then whatever reply PHRASE-X", then reply X.
+		new Sign( "then whatever reply", new Phrase( "x" ))
+			.appendIntention( Intention.thenThink, "get the value of induction" )
+			.appendIntention( Intention.elseReply, "i do not understand" )
+			.appendIntention( Intention.thenDo,    "sign else reply X" )
+			.appendIntention( Intention.thenDo,    "sign reply X" )
+			.appendIntention( Intention.thenThink, "and that concludes interpretation" ),
 				
 //		On "this implies PHRASE-B":
 //			perform "sign imply B ";

@@ -29,3 +29,6 @@ When host says "_user needs"                host means "you need".
 When host says "_user does not need"        host means "you do not need".
 When host says "_user is"                   host means "you are".
 When host says "_user"                      host means "you".
+#When host says "i don't know"              host means "i don't know".
+When host says "i will"                     host means "you'll".
+#When host says "i"                          host means "you".
