@@ -18,10 +18,10 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-	public Sign( String concept ) {
-		this();
-		concept( concept );
-	}
+//	public Sign( String concept ) {
+//		this();
+//		concept( concept );
+//	}
 	
 	private Pattern pattern = new Pattern();
 	
