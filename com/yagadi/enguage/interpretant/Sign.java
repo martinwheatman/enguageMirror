@@ -18,10 +18,23 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-//	public Sign( String concept ) {
-//		this();
-//		concept( concept );
-//	}
+	public Sign( String prefix ) {
+		this();
+		pattern( new Patternette( prefix ));
+	}
+	public Sign( String prefix, Patternette variable ) {
+		this();
+		pattern( variable.prefix( prefix ));
+	}
+	public Sign( String prefix, Patternette variable, String postfix ) {
+		this();
+		pattern(  variable.prefix( prefix ).postfix( new Strings( postfix )));
+	}
+	public Sign( String prefix1, Patternette variable1, String prefix2, Patternette variable2 ) {
+		this();
+		pattern( variable1.prefix( prefix1 ));
+		pattern( variable2.prefix( prefix2 ));
+	}
 	
 	private Pattern pattern = new Pattern();
 	
@@ -40,7 +53,7 @@ public class Sign {
 	//public Sign headAppend(   Intention intent ){ intentions.add( 1, intent ); return this;}
 	public  Sign prepend(       Intention intent ){ intentions.add( 0, intent ); return this;}
 	public  Sign insert( int i, Intention intent ){ intentions.add( i, intent ); return this;}
-	public Sign appendIntention( int typ, String val ) {intentions.add( new Intention(typ,val));return this;}
+	public  Sign appendIntention( int typ, String val ) {intentions.add( new Intention(typ,val));return this;}
 
 	
 	

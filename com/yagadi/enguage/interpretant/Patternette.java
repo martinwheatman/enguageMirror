@@ -24,7 +24,11 @@ public class Patternette {
 	private Strings     prefix = new Strings();
 	public  Strings     prefix() { return prefix; }
 	public  Patternette prefix( Strings s ) { prefix = s; return this; }
-	public  Patternette prefix( String str ) { prefix.append( str ); return this; }
+	public  Patternette prefix( String str ) {
+		for (String s : new Strings( str ))
+			prefix.append( s );
+		return this;
+	}
 
 	private Strings     postfix = new Strings();
 	public  Strings     postfix() { return postfix; }
