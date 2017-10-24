@@ -161,6 +161,7 @@ public class Intention {
 		r.setType( new Strings( r.toString()) )
 		 .conclude( thought );
 		
+		// If we've returned DNU, we want to continue
 		r.doneIs( false );
 
 		return (Reply) audit.out( r );
