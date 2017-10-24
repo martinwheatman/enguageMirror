@@ -13,12 +13,21 @@ import com.yagadi.enguage.vehicle.Plural;
 public class Patternette {
 	private static Audit audit = new Audit( "Patternette" );
 	
-	//public static final int NULL   = 0;
-	//public static final int ATOMIC = 1;
-	//public static final int START  = 2;
-	//public static final int END    = 3;
 	
-	public static final String emptyPrefix = "";
+	// -- constructors...
+	public Patternette() {}
+	public Patternette( Strings pre, String nm ) {
+		this();
+		prefix( pre ).name( nm );
+	}
+	public Patternette( Strings pre, String nm, Strings post ) {
+		this( pre, nm );
+		postfix( new Strings( post ));
+	}
+	//just a helper ctor for hardcoded Patternettes
+	public Patternette( String pre ) { this( new Strings( pre ), "" ); }
+	public Patternette( String pre, String nm ) { this( new Strings( pre ), nm );}
+	public Patternette( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
 
 	
 	private Strings     prefix = new Strings();
@@ -78,21 +87,6 @@ public class Patternette {
 		return rc;
 	}
 	
-	// -- constructors...
-	public Patternette() {}
-	public Patternette( Strings pre, String nm ) {
-		this();
-		prefix( pre ).name( nm );
-	}
-	public Patternette( Strings pre, String nm, Strings post ) {
-		this( pre, nm );
-		postfix( new Strings( post ));
-	}
-	//just a helper ctor for hardcoded Patternettes
-	public Patternette( String pre ) { this( new Strings( pre ), "" ); }
-	public Patternette( String pre, String nm ) { this( new Strings( pre ), nm );}
-	public Patternette( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
-
 	public String toXml( Indent indent ) {
 		indent.incr();
 		String s = prefix().toString( Strings.OUTERSP )

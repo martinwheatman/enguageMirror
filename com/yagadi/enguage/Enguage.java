@@ -316,12 +316,12 @@ public class Enguage extends Shell {
 			testInterpret( "ok", "ok" );
 			
 			// am i alive?
-			testInterpret( "interpret am i variable state thus",                     "go on" );
-			testInterpret( "first variable state  exists in i am list", "go on" );
-			testInterpret( "then reply yes i am variable state",                     "go on" );
-			testInterpret( "then if not perform list exists i amNot variable state", "go on" );
-			testInterpret( "then reply no i am not variable state",                  "go on" );
-			testInterpret( "then if not reply i do not know",                        "go on" );
+			testInterpret( "interpret am i variable state thus",                "go on" );
+			testInterpret( "first variable state  exists in i am list",         "go on" );
+			testInterpret( "then reply yes i am variable state",                "go on" );
+			testInterpret( "then if not variable state exists in i amNot list", "go on" );
+			testInterpret( "then if not reply i do not know",                   "go on" );
+			testInterpret( "then reply no i am not variable state",             "go on" );
 			testInterpret( "ok", "ok" );
 			
 			testInterpret( "am i alive",     "i don't know" );

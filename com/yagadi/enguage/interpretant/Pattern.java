@@ -36,11 +36,10 @@ public class Pattern extends ArrayList<Patternette> {
 		Patternette t = new Patternette();
 		for ( String word : words ) {
 			if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
-				Strings arr = new Strings( word, '-' ); // should at least be array of 1 element!
+				Strings arr = new Strings( word.toLowerCase( locale ), '-' ); // should at least be array of 1 element!
 				int  j = 0, asz = arr.size();
 				for (String subWord : arr) {
-					subWord = subWord.toLowerCase( locale );
-					if ( asz > ++j ) {// 
+					if ( asz > ++j ) { 
 						//t.attribute( subWord, subWord ); // non-last words in array
 						if (subWord.equals( phrase ))
 							t.phrasedIs();

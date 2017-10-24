@@ -37,11 +37,10 @@ public class Sign {
 	}
 	
 	private Pattern pattern = new Pattern();
-	
 	public  Pattern pattern() {return pattern;}
-	public  Sign  pattern( Pattern ta ) { pattern = ta; return this; }
-	public  Sign  pattern( Patternette child ) {
-		if (null != child && !child.isEmpty())
+	public  Sign    pattern( Pattern ta ) { pattern = ta; return this; }
+	public  Sign    pattern( Patternette child ) {
+		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
 	}
