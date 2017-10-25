@@ -14,68 +14,46 @@ public class Autopoiesis extends Intention {
 	public static final String NAME    = Intention.AUTOP;
 	
 	public static final Sign[] written = {
-			
+		// 3 x 3 signs (think/do/say * start/subseq/infelicit) + 1 "finally"
 		new Sign( "On ", new Quote( "x" ), ",", new Phrase( "y" ))
 			.append( new Intention( create, Intention.THINK +" X Y" )),
+			
+		new Sign( "On ",new Quote( "x" ), ", perform ", new Quote( "y" ))
+			.append( new Intention( create, Intention.DO +" X Y" )),
 			
 		new Sign( "On ", new Quote( "x" ), ", reply ", new Quote( "y" ))
 			.append( new Intention( create, Intention.REPLY +" X Y" )),
 			
-		// a3: On X, perform Y.
-		new Sign().append( new Intention( create, Intention.DO +" X Y" )) // <<<< trying this
-			.pattern( new Patternette(       "On ", "x" ).quotedIs())
-			.pattern( new Patternette( ", perform ", "y" ).quotedIs()),
+		new Sign( "Then on ", new Quote( "x" ), ", ", new Phrase( "y" ))
+			.append( new Intention( append, Intention.THINK +" Y" )),
 			
-		// b1: Then on X think Y.
-		new Sign().append( new Intention( append, Intention.THINK +" Y" ))
-			.pattern( new Patternette( "Then on ", "x" ).quotedIs())
-			.pattern( new Patternette( ", ", "y" ).phrasedIs()),
+		new Sign( "Then  on ", new Quote( "x" ), ", perform ",  new Quote( "y" ))
+			.append( new Intention( append, Intention.DO +" Y" )),
 			
-		// b2: Then on X reply Y.
-		new Sign().append( new Intention( append, Intention.REPLY+" Y" ))
-			.pattern( new Patternette( "Then  on ", "x" ).quotedIs())
-			.pattern( new Patternette( ", reply   ", "y" ).quotedIs()),
+		new Sign( "Then  on ", new Quote( "x" ), ", reply   ", new Quote("y" ))
+			.append( new Intention( append, Intention.REPLY+" Y" )),
 			
-		// b3: Then on X perform Y.
-		new Sign().append( new Intention( append, Intention.DO +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x" ).quotedIs())
-			.pattern( new Patternette( ", perform ", "y" ).quotedIs()),
-		
-		// At some point this could be improved to say "On X, perform Y; if not, reply Z." -- ??? think!
-		// !b1: Else on X think Y.
-		new Sign().append( new Intention( append, Intention.ELSE_THINK +" Y" ))
-			.pattern( new Patternette( "Then on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ", if not, ", "y" ).phrasedIs()),
+		new Sign( "Then on ",  new Quote( "x" ), ", if not, ",  new Phrase( "y" ))
+			.append( new Intention( append, Intention.ELSE_THINK +" Y" )),
 			
-		// !b2: Else on X reply Y.
-		new Sign().append( new Intention( append, Intention.ELSE_REPLY +" Y"))
-			.pattern( new Patternette(  "Then on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ", if not, reply ", "y" ).quotedIs()),
-			
-		// !b3: Else on X perform Y.
-		new Sign().append( new Intention( append, Intention.ELSE_DO +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ", if not, perform ", "y" ).quotedIs()),
+		new Sign( "Then  on ", new Quote( "x" ), ", if not, perform ", new Quote( "y" ))
+			.append( new Intention( append, Intention.ELSE_DO +" Y" )),
 					
-		/*	Added new signs for the running of applications external to enguage...
-		 */
-		new Sign().append( new Intention( create, Intention.RUN +" X Y" ))
-			.pattern( new Patternette( "On ", "x" ).quotedIs())
-			.pattern( new Patternette( ", run ", "y" ).quotedIs()),
+		new Sign( "Then on ",  new Quote( "x" ), ", if not, reply ", new Quote( "y" ))
+			.append( new Intention( append, Intention.ELSE_REPLY +" Y")),
+			
+		new Sign( " Finally on ", new Quote( "x" ), ",   perform ", new Quote( "y" ))
+			.append( new Intention( append, Intention.FINALLY+" Y" )),
+			
+		//	Added 3 new signs for the running of applications external to enguage...
+		new Sign( "On ", new Quote( "x" ), ", run ", new Quote( "y" ))
+			.append( new Intention( create, Intention.RUN +" X Y" )),
 		
-		new Sign().append( new Intention( append, Intention.RUN +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ", run ", "y" ).quotedIs()),
+		new Sign( "Then  on ",new Quote( "x" ), ", run ", new Quote( "y" ))
+			.append( new Intention( append, Intention.RUN +" Y" )),
 
-		new Sign().append( new Intention( append, Intention.ELSE_RUN +" Y" ))
-			.pattern( new Patternette( "Then  on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ", if not, run ", "y" ).quotedIs()),
-
-		/* c1: Finally on X perform Y. -- dont need think or reply?
-		 */
-		new Sign().append( new Intention( append, Intention.FINALLY+" Y" ))
-			.pattern( new Patternette( " Finally on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ",   perform ", "y" ).quotedIs())
+		new Sign( "Then  on ", new Quote( "x" ), ", if not, run ", new Quote( "y" ))
+			.append( new Intention( append, Intention.ELSE_RUN +" Y" ))
 	};
 	public static final Sign[] spoken = {
 //		On "interpret PHRASE-X thus":
