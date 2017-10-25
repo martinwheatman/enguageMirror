@@ -14,16 +14,12 @@ public class Autopoiesis extends Intention {
 	public static final String NAME    = Intention.AUTOP;
 	
 	public static final Sign[] written = {
-		// PATTERN CREATION cases (7).
-		// a1: On X, think Y.
-		new Sign().append( new Intention( create, Intention.THINK +" X Y" ))
-			.pattern( new Patternette(     "On ", "x"      ).quotedIs())
-			.pattern( new Patternette( ", ", "y" ).phrasedIs()),
 			
-		// a2: On X, reply Y.
-		new Sign().append( new Intention( create, Intention.REPLY +" X Y" ))
-			.pattern( new Patternette(     "On ", "x" ).quotedIs())
-			.pattern( new Patternette( ", reply ", "y" ).quotedIs()),
+		new Sign( "On ", new Quote( "x" ), ",", new Phrase( "y" ))
+			.append( new Intention( create, Intention.THINK +" X Y" )),
+			
+		new Sign( "On ", new Quote( "x" ), ", reply ", new Quote( "y" ))
+			.append( new Intention( create, Intention.REPLY +" X Y" )),
 			
 		// a3: On X, perform Y.
 		new Sign().append( new Intention( create, Intention.DO +" X Y" )) // <<<< trying this
