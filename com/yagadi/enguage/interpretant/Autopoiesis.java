@@ -102,7 +102,7 @@ public class Autopoiesis extends Intention {
 //			perform "sign finally X";
 //			then, reply "ok".
 		new Sign( "finally", new Phrase( "x" ))
-			.appendIntention( Intention.thenDo, "sign finally X" )
+			.appendIntention( Intention.thenDo,    "sign finally X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 
 //		On "then if not PHRASE-X":
@@ -133,7 +133,7 @@ public class Autopoiesis extends Intention {
 		new Sign( "then", new Phrase( "x" ))
 			.appendIntention( Intention.thenThink, "get the value of induction" )
 			.appendIntention( Intention.elseReply, "i do not understand" )
-			.appendIntention( Intention.thenDo, "sign think X" )
+			.appendIntention( Intention.thenDo,    "sign think X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 					
 //		On "first PHRASE-X", then X.
@@ -177,7 +177,7 @@ public class Autopoiesis extends Intention {
 		new Sign( "next perform", new Phrase( "x" ))
 			.appendIntention( Intention.thenThink, "get the value of induction" )
 			.appendIntention( Intention.elseReply, "i do not understand" )
-			.appendIntention( Intention.thenDo, "sign perform X" )
+			.appendIntention( Intention.thenDo,    "sign perform X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 
 //		On "just reply PHRASE-X", then reply X. -- translation!
