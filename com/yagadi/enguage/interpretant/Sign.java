@@ -2,7 +2,6 @@ package com.yagadi.enguage.interpretant;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
@@ -18,20 +17,15 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-	public Sign( String prefix ) {
-		this();
-		pattern( new Patternette( prefix ));
-	}
-	public Sign( String prefix, Patternette variable ) {
-		this();
-		pattern( variable.prefix( prefix ));
-	}
+	public Sign( Patternette variable ) { this();       pattern( variable );}
+	public Sign( String prefix )        { this( new Patternette( prefix )); }
+	public Sign( String prefix, Patternette variable ) { this( variable.prefix( prefix ));}
 	public Sign( String prefix, Patternette variable, String postfix ) {
-		this();
-		pattern(  variable.prefix( prefix ).postfix( new Strings( postfix )));
+		this( variable.prefix( prefix ).postfix( postfix ));
 	}
-	public Sign( String prefix1, Patternette variable1, String prefix2, Patternette variable2 ) {
-		this();
+	public Sign( String prefix1, Patternette variable1,
+	             String prefix2, Patternette variable2 )
+	{	this();
 		pattern( variable1.prefix( prefix1 ));
 		pattern( variable2.prefix( prefix2 ));
 	}
@@ -102,62 +96,8 @@ public class Sign {
 	 * processing progresses, so there is no need to determine when the...
 	 */
 	public int interpretation = Signs.noInterpretation;
-
-	/*  The complexity of a sign, used to rank signs in a repertoire.
-	 *  "the eagle has landed" comes before "the X has landed", BUT
-	 *  "the    X    Y-PHRASE" comes before "the Y-PHRASE" so it is not
-	 *  a simple count of tags, phrased hot-spots "hoover-up" tags!
-	 *  Phrased hot-spot has a large complexity, and any normal tags
-	 *  will bring this complexity down!
-	 *  
-	 *  Three planes of complexity: bplate hotspots phrased-hotspots
-	 *  ==========================
-	 *  complexity increases with   1xm bp 1->100.
-	 *  complexity increases with 100xn tags 100->10000
-	 *  if phrase exists, complexity counts down from 1000000:
-	 *  10000 x m bp,   range = 10000 -> 100000
-	 *    100 x n tags, range =   100 -> 10000, as before
-	 *
-	 *  Boilerplate complexity:
-	 *  Has been fine tuned to reduce number of clashes when inserting into TreeMap
-	 *  Using a random number (less processing?/more random?)  Make it least
-	 *  
-	 *  Finite:
-	 *  |-----------+-----------+------------------|
-	 *  | Tags 0-99 |Words 0-99 | Random num 0-99  |
-	 *  |-----------+-----------+------------------|
-	 *  
-	 *  Infinite:
-	 *  |----------|   |------------+-----------|------------------+
-	 *  | 1000000  | - | Words 0-99 | Tags 0-99 | Random num 0-99  |
-	 *  |----------|   |------------+-----------|------------------+
-	 *  Range at 1000, random component is 1-100 * 10 - 100 -1000 with 1-99 being
-	 *  the count element 
-	 */
-	static Random rn = new Random();
-	static final int      RANGE = 1000; // means full range will be up to 1 billion
-	static final int FULL_RANGE = RANGE*RANGE*RANGE;
-	static final int  MID_RANGE = RANGE*RANGE;
-	static final int  LOW_RANGE = RANGE;
 	
-	public int complexity() {
-		boolean infinite = false;
-		int  boilerplate = 0,
-		       namedTags = 0,
-		             rnd = rn.nextInt( RANGE/10 ); // word count component
-		
-		for (Patternette t : pattern()) {
-			boilerplate += t.prefix().size();
-			if (t.isPhrased()) //attributes().get( phrase ).equals( phrase ))
-				infinite = true;
-			else if (!t.name().equals( "" ))
-				namedTags ++; // count named tags
-		}
-		// limited to 100bp == 1tag, or phrase + 100 100tags/bp
-		return infinite ?
-				FULL_RANGE - MID_RANGE*boilerplate - LOW_RANGE*namedTags + rnd
-				: MID_RANGE*namedTags + LOW_RANGE*boilerplate + rnd*10;
-	}
+	public int complexity() { return pattern().complexity(); }
 	
 	public String toXml( int n, long complexity ) {
 		

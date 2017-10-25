@@ -13,7 +13,7 @@ public class Autopoiesis extends Intention {
 
 	public static final String NAME    = Intention.AUTOP;
 	
-	public static final Sign[] autopoiesis = {
+	public static final Sign[] written = {
 		// PATTERN CREATION cases (7).
 		// a1: On X, think Y.
 		new Sign().append( new Intention( create, Intention.THINK +" X Y" ))
@@ -79,21 +79,19 @@ public class Autopoiesis extends Intention {
 		 */
 		new Sign().append( new Intention( append, Intention.FINALLY+" Y" ))
 			.pattern( new Patternette( " Finally on ", "x"      ).quotedIs())
-			.pattern( new Patternette( ",   perform ", "y" ).quotedIs()),
-			
-		/*
-		 * Spoken Autopoiesis...
-		 */
+			.pattern( new Patternette( ",   perform ", "y" ).quotedIs())
+	};
+	public static final Sign[] spoken = {
 //		On "interpret PHRASE-X thus":
 //			set induction to true;
 //			perform "sign create X";
 //			then, reply "go on".
-			new Sign( "interpret", new Phrase( "x" ), "thus" )
+		new Sign( "interpret", new Phrase( "x" ), "thus" )
 			.appendIntention( Intention.thenThink, "set induction to true" )
 			.appendIntention( Intention.thenDo,    "sign create X")
 			.appendIntention( Intention.thenReply, "go on" ),
 		
-			new Sign( "interpret", new Phrase( "x" ), "like this" )
+		new Sign( "interpret", new Phrase( "x" ), "like this" )
 			.appendIntention( Intention.thenThink, "set induction to true" )
 			.appendIntention( Intention.thenDo,    "sign create X")
 			.appendIntention( Intention.thenReply, "go on" ),

@@ -21,12 +21,11 @@ public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
 	private static       Audit           audit = new Audit( "Signs" );
 	
-	//private String name = ""; // for debug statements
-	public  Signs( String nm ) { /*name = nm;*/ }
-	public Signs( String name, Sign[] signs ) {
-		this( name );
-		for (Sign sign: signs )
+	public Signs() { super();}
+	public Signs add( Sign[] signs ) {
+		for (Sign sign: signs)
 			insert( sign );
+		return this;
 	}
 
 	static private int   total = 0;
@@ -335,7 +334,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public static void main( String[] args ) {
 		// help test...
 		audit.tracing = true;
-		Signs r = new Signs( "test" );
+		Signs r = new Signs();
 		r.insert(
 				new Sign().pattern( new Patternette(  "debug ", "x" ))
 					.concept( "test" )

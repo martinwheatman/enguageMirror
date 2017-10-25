@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Random;
 
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.util.Audit;
@@ -119,6 +120,62 @@ public class Pattern extends ArrayList<Patternette> {
 				out.append( word );
 		}
 		return out;
+	}
+	
+	/*  The complexity of a pattern, used to rank signs in a repertoire.
+	 *  "the eagle has landed" comes before "the X has landed", BUT
+	 *  "the    X    Y-PHRASE" comes before "the Y-PHRASE" so it is not
+	 *  a simple count of tags, phrased hot-spots "hoover-up" tags!
+	 *  Phrased hot-spot has a large complexity, and any normal tags
+	 *  will bring this complexity down!
+	 *  
+	 *  Three planes of complexity: bplate hotspots phrased-hotspots
+	 *  ==========================
+	 *  complexity increases with   1xm bp 1->100.
+	 *  complexity increases with 100xn tags 100->10000
+	 *  if phrase exists, complexity counts down from 1000000:
+	 *  10000 x m bp,   range = 10000 -> 100000
+	 *    100 x n tags, range =   100 -> 10000, as before
+	 *
+	 *  Boilerplate complexity:
+	 *  Has been fine tuned to reduce number of clashes when inserting into TreeMap
+	 *  Using a random number (less processing?/more random?)  Make it least
+	 *  
+	 *  Finite:
+	 *  |-----------+-----------+------------------|
+	 *  | Tags 0-99 |Words 0-99 | Random num 0-99  |
+	 *  |-----------+-----------+------------------|
+	 *  
+	 *  Infinite:
+	 *  |----------|   |------------+-----------|------------------+
+	 *  | 1000000  | - | Words 0-99 | Tags 0-99 | Random num 0-99  |
+	 *  |----------|   |------------+-----------|------------------+
+	 *  Range at 1000, random component is 1-100 * 10 - 100 -1000 with 1-99 being
+	 *  the count element 
+	 */
+	private static Random rn = new Random();
+	private static final int      RANGE = 1000; // means full range will be up to 1 billion
+	private static final int FULL_RANGE = RANGE*RANGE*RANGE;
+	private static final int  MID_RANGE = RANGE*RANGE;
+	private static final int  LOW_RANGE = RANGE;
+	
+	public int complexity() {
+		boolean infinite = false;
+		int  boilerplate = 0,
+		       namedTags = 0,
+		             rnd = rn.nextInt( RANGE/10 ); // word count component
+		
+		for (Patternette t : this) {
+			boilerplate += t.prefix().size();
+			if (t.isPhrased()) //attributes().get( phrase ).equals( phrase ))
+				infinite = true;
+			else if (!t.name().equals( "" ))
+				namedTags ++; // count named tags
+		}
+		// limited to 100bp == 1tag, or phrase + 100 100tags/bp
+		return infinite ?
+				FULL_RANGE - MID_RANGE*boilerplate - LOW_RANGE*namedTags + rnd
+				: MID_RANGE*namedTags + LOW_RANGE*boilerplate + rnd*10;
 	}
 	
 	static private       boolean debug = false;

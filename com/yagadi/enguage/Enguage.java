@@ -504,12 +504,10 @@ public class Enguage extends Shell {
 			testInterpret( "Am I meeting my brother",
 					"Yes , you're meeting your brother" );
 			
-			//testInterpret( "tracing on" );
 			testInterpret( "I'm meeting my sister at the pub" );
 			testInterpret( "When am I meeting my sister",
 					"I don't know when you're meeting your sister" );
 			
-			//testInterpret( "tracing on" );
 			testInterpret( "When am I meeting my dad",
 					"i don't know if you're meeting your dad" );
 			testInterpret( "Where am I meeting my dad" ,

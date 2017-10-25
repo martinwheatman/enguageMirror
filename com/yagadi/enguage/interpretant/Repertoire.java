@@ -28,9 +28,9 @@ public class Repertoire {
 	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 
 	 * in engine?
 	 */
-	static public Signs signs = new Signs( "users" );
-	static public Signs autop = new Signs( "autop", Autopoiesis.autopoiesis );
-	static public Signs allop = new Signs( "engin", Allopoiesis.commands );
+	static public Signs signs = new Signs();
+	static public Signs autop = new Signs().add( Autopoiesis.written ).add( Autopoiesis.spoken );
+	static public Signs allop = new Signs().add( Allopoiesis.commands );
 	
 	// ----- read concepts used in main e
 	//static private boolean initialising = false;

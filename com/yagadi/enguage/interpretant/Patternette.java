@@ -42,6 +42,12 @@ public class Patternette {
 	private Strings     postfix = new Strings();
 	public  Strings     postfix() { return postfix; }
 	public  Patternette postfix( Strings ss ) { postfix = ss; return this; }
+	public  Patternette postfix( String str ) {
+		for (String s : new Strings( str ))
+			postfix.append( s );
+		return this;
+	}
+
 
 	private String      name = "";
 	public  String      name() { return name; }
