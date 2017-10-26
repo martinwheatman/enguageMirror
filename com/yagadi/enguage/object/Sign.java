@@ -20,11 +20,14 @@ public class Sign {
 	static public String interpret( Strings argv ) {
 		audit.in( "interpret", argv.toString());
 		String rc = Shell.FAIL;
-		String var1 = Variable.get( "prepending" ),
-		       var2 = Variable.get( "headAppending" );
-		boolean prepending    = var1 != null && var1.equals( "true" ),
-		        headAppending = var2 != null && var2.equals( "true" );
-		if (argv.size() > 0) {
+		
+		if (argv.size() > 0)
+		{
+			String var1 = Variable.get( "prepending" ),
+					var2 = Variable.get( "headAppending" );
+			boolean prepending    = var1 != null && var1.equals( "true" ),
+					headAppending = var2 != null && var2.equals( "true" );
+			
 			boolean isElse = false;
 			Reply r = new Reply();
 			String cmd = argv.remove( 0 );
@@ -32,6 +35,7 @@ public class Sign {
 				isElse = true;
 				cmd = argv.remove( 0 );
 			}
+
 			if (cmd.equals( "create" )) {
 				audit.debug( "creating sign with: " +   argv.toString());
 				rc = new Autopoiesis( Autopoiesis.create,                                 argv.toString(),    Autopoiesis.create ).mediate( r ).toString();
@@ -95,6 +99,7 @@ public class Sign {
 		return audit.out( rc );
 	}
 	public static void main( String args[]) {
+		interpret( new Strings( "this won't work!" ));
 		interpret( new Strings( "create variable whom needs phrase variable object" ));
 		interpret( new Strings( "reply  ok variable whom needs variable object" ));
 		interpret( new Strings( "imply  is variable object in variable name needs list" ));
