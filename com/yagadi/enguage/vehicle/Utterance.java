@@ -1,8 +1,8 @@
 package com.yagadi.enguage.vehicle;
 
-import com.yagadi.enguage.interpretant.Pattern;
-import com.yagadi.enguage.interpretant.Patternette;
 import com.yagadi.enguage.interpretant.Sign;
+import com.yagadi.enguage.interpretant.pattern.Pattern;
+import com.yagadi.enguage.interpretant.pattern.Patternette;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Numeric;
 import com.yagadi.enguage.object.Sofa;

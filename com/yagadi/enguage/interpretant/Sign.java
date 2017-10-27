@@ -3,6 +3,8 @@ package com.yagadi.enguage.interpretant;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.yagadi.enguage.interpretant.pattern.Pattern;
+import com.yagadi.enguage.interpretant.pattern.Patternette;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
 import com.yagadi.enguage.util.Audit;

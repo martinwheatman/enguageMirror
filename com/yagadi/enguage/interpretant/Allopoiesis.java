@@ -1,6 +1,7 @@
 package com.yagadi.enguage.interpretant;
 
 import com.yagadi.enguage.Enguage;
+import com.yagadi.enguage.interpretant.pattern.Patternette;
 import com.yagadi.enguage.interpretant.repertoire.Autoload;
 import com.yagadi.enguage.interpretant.repertoire.Concepts;
 import com.yagadi.enguage.interpretant.repertoire.Repertoire;

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.yagadi.enguage.interpretant.pattern.Patternette;
 import com.yagadi.enguage.interpretant.repertoire.Autoload;
 import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.object.Attribute;
