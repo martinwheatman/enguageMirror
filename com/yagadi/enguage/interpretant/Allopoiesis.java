@@ -1,6 +1,9 @@
 package com.yagadi.enguage.interpretant;
 
 import com.yagadi.enguage.Enguage;
+import com.yagadi.enguage.interpretant.repertoire.Autoload;
+import com.yagadi.enguage.interpretant.repertoire.Concepts;
+import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Net;

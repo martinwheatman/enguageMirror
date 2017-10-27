@@ -1,5 +1,6 @@
 package com.yagadi.enguage.interpretant;
 
+import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;

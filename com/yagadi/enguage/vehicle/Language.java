@@ -3,7 +3,7 @@ package com.yagadi.enguage.vehicle;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import com.yagadi.enguage.interpretant.Repertoire;
+import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 

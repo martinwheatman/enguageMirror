@@ -1,9 +1,9 @@
 package com.yagadi.enguage;
 
 import com.yagadi.enguage.interpretant.Allopoiesis;
-import com.yagadi.enguage.interpretant.Autoload;
-import com.yagadi.enguage.interpretant.Concepts;
-import com.yagadi.enguage.interpretant.Repertoire;
+import com.yagadi.enguage.interpretant.repertoire.Autoload;
+import com.yagadi.enguage.interpretant.repertoire.Concepts;
+import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;

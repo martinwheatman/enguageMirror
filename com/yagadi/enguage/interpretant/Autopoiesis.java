@@ -3,6 +3,7 @@ package com.yagadi.enguage.interpretant;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Context;
