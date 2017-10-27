@@ -290,7 +290,7 @@ public class Autopoiesis extends Intention {
 			 * "X is X" and "X is Y" -- same shape, different usage.
 			 * At least need to avoid this (spot when "X is X" happens)
 			 */
-			audit.debug( "Adding "+ typeToString() +": ["+ sa.toString( Strings.CSV )+"]");
+			audit.debug( "Adding >"+ value +"< ["+ sa.toString( Strings.CSV )+"]");
 			if ( pattern.equals( "help" ))
 				s.help( val ); // add: help="text" to cached sign
 			else // create then add a new cached sign into the list of signs

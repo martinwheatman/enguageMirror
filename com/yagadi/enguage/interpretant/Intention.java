@@ -93,7 +93,6 @@ public class Intention {
 				audit.FATAL( "Intention: still returning undefined" );
 				return UNDEF;
 	}	}
-	public String typeToString() { return typeToString( type ); }
 	
 	static public int nameToType( String name ) {
 		if ( name.equals( REPLY ))
@@ -222,11 +221,11 @@ public class Intention {
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", typeToString( type ) +"='"+ value +"', ctx =>"+ Context.valueOf());
 		
-		if (typeToString().equals( "finally" ))
+		if (type == thenFinally )
 			perform( r ); // ignore result of finally
 
 		else if (r.isDone())
-			audit.debug( "skipping "+ typeToString() +": reply already found" );
+			audit.debug( "skipping >"+ value +"< reply already found" );
 		
 		else if (r.negative())
 			switch (type) {
