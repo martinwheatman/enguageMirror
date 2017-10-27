@@ -415,6 +415,27 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}	}
 		return a;
 	}
+	public String camelise( Strings strs ) {
+		String rc = "";
+		for( String s : strs )
+			rc += Character.toUpperCase( s.charAt( 0 )) +  s.substring( 1 );
+		return rc;
+	}
+	public Strings decamelise( String s ) {
+		Strings strs = new Strings();
+		String tmp = "";
+		char ch;
+		for (int i=0; i < s.length(); i++) {
+			ch = s.charAt( i );
+			if (Character.isUpperCase( ch )) {
+				if (!tmp.equals( "" )) strs.add( tmp );
+				tmp = "" + Character.toLowerCase( ch );
+			} else
+				tmp += ch;
+		}
+		if (!tmp.equals( "" )) strs.append( tmp );
+		return strs;
+	}
 	public Strings reverse() {
 		Strings b = new Strings();
 		for (int sz=size(), i=sz-1; i>=0; i--)
