@@ -6,13 +6,10 @@ import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Proc;
-import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Context;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.Utterance;
-import com.yagadi.enguage.vehicle.when.Moment;
-import com.yagadi.enguage.vehicle.when.When;
 
 public class Intention {
 	
@@ -189,24 +186,10 @@ public class Intention {
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()== 1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
-	
-		audit.debug( "performing: "+ cmd.toString());
-		String rc = new Sofa().doCall( new Strings( cmd )); // was interpret(), now doCall()
 		
-		// de-conceptualise raw answer
-		String method = cmd.get( 1 );
-		rc =  Moment.valid( rc ) ?                 // 88888888198888 -> 7pm
-			new When( rc ).rep( Reply.dnk() ).toString()
-			: (method.equals( "get" ) || method.equals( "attributeValue" ))
-			  && (rc.equals( "" )) ?
-				Reply.dnk()
-				: rc.equals( Shell.FAIL ) ?
-					Reply.failure()
-					:	rc.equals( Shell.SUCCESS ) ?
-							Reply.success()
-							: rc;
+		audit.debug( "performing: "+ cmd.toString());
 	
-		return (Reply) audit.out( r.answer( rc ));
+		return (Reply) audit.out( r.rawAnswer( new Sofa().doCall( new Strings( cmd )), cmd.get( 1 ) ));
 	}
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );

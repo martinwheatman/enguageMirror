@@ -6,6 +6,8 @@ import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
+import com.yagadi.enguage.vehicle.when.Moment;
+import com.yagadi.enguage.vehicle.when.When;
 
 public class Reply { // a reply is basically a formatted answer
 	
@@ -161,6 +163,19 @@ public class Reply { // a reply is basically a formatted answer
 			cache = null;
 			type( (type == UDU) ? UDU : a.type() );
 		}
+		return this;
+	}
+	public  Reply   rawAnswer( String rc, String method ) {
+		answer(  Moment.valid( rc ) ? // 88888888198888 -> 7pm
+				new When( rc ).rep( Reply.dnk() ).toString()
+				: (method.equals( "get" ) || method.equals( "attributeValue" ))
+				  && (rc.equals( "" )) ?
+					Reply.dnk()
+					: rc.equals( Shell.FAIL ) ?
+						Reply.failure()
+						:	rc.equals( Shell.SUCCESS ) ?
+								Reply.success()
+								: rc );
 		return this;
 	}
 	
