@@ -155,7 +155,7 @@ public class Intention {
 		else
 			r = tmpr;
 		
-		r.setType( new Strings( r.toString()) )
+		r.type( new Strings( r.toString()) )
 		 .conclude( thought );
 		
 		// If we've returned DNU, we want to continue
@@ -202,7 +202,7 @@ public class Intention {
 		 * if reply on its own, return reply from previous/inner reply -- imagination!
 		 */
 		r.format( value.equals( "" ) ? Reply.success() : value );
-		r.setType( new Strings( value ));
+		r.type( new Strings( value ));
 		r.doneIs( r.type() != Reply.DNU && r.type() != Reply.FAIL );
 		return (Reply) audit.out( r );
 	}

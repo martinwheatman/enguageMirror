@@ -124,27 +124,24 @@ public class Reply { // a reply is basically a formatted answer
 	
 	private int     type = DNU;
 	public  int     type() { return type; }
-	private void    type( int t ) {type = t;}
-	public  boolean negative() {return  FAIL == type || NO == type ||  NK == type || type == UDU; } // != !positive() !!!!!
-	public  Reply setType( Strings response ) {
+	public  Reply   type( Strings response ) {
 		
 		if (type == UDU) return this;
 
-			 if (response.beginsIgnoreCase( new Strings(   yes ))) type( YES );
-		else if (response.beginsIgnoreCase( new Strings(success))) type( YES );
-		else if (response.beginsIgnoreCase( new Strings(    no ))) type(  NO );
-		else if (response.beginsIgnoreCase( new Strings(failure))) type(FAIL );
-		else if (response.beginsIgnoreCase( new Strings(    ik ))) type(  IK );
-		else if (response.beginsIgnoreCase( new Strings(   dnk ))) type(  NK );
-		else if (response.beginsIgnoreCase( new Strings( "I don't know" ))) type( NK );
-		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type(  DNU );
-		else if (response.beginsIgnoreCase( new Strings( "I don't understand" ))) type(  DNU );
-		else type( CHS );
+		     if (response.beginsIgnoreCase( new Strings(   yes ))) type = YES;
+		else if (response.beginsIgnoreCase( new Strings(success))) type = YES;
+		else if (response.beginsIgnoreCase( new Strings(    no ))) type =  NO;
+		else if (response.beginsIgnoreCase( new Strings(failure))) type =FAIL;
+		else if (response.beginsIgnoreCase( new Strings(    ik ))) type =  IK;
+		else if (response.beginsIgnoreCase( new Strings(   dnk ))) type =  NK;
+		else if (response.beginsIgnoreCase( new Strings( "I don't know" ))) type = NK;
+		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type = DNU;
+		else if (response.beginsIgnoreCase( new Strings( "I don't understand" ))) type = DNU;
+		else type = CHS;
 		return this;
 	}
-	public void userDNU() {
-		type( UDU ); // forces us out to I don't know?
-	}
+	public  boolean negative() {return  FAIL == type || NO == type ||  NK == type || type == UDU; } // != !positive() !!!!!
+	public  void userDNU() { type = UDU; }// forces us out to I don't know?
 
 
 	/** Answer:
@@ -161,7 +158,7 @@ public class Reply { // a reply is basically a formatted answer
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			type( (type == UDU) ? UDU : a.type() );
+			type = (type == UDU) ? UDU : a.type();
 		}
 		return this;
 	}
@@ -263,7 +260,7 @@ public class Reply { // a reply is basically a formatted answer
 				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
 				strangeThought("");
 			}
-			type( FAIL );
+			type = FAIL;
 		
 		} else if ( NO == type() && a.toString().equalsIgnoreCase( ik()))
 			answer( yes());
