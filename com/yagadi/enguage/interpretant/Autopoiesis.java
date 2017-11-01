@@ -82,11 +82,12 @@ public class Autopoiesis extends Intention {
 //			unset the value of finalReply;
 //			then, reply "ok".
 		new Sign( "that concludes interpretation" )
-			.appendIntention( Intention.thenThink, "set induction to false" )
-			.appendIntention( Intention.thenThink, "get the value of finalReply" )
-			.appendIntention( Intention.elseReply, "ok" )
-			.appendIntention( Intention.thenDo,    "sign reply ..." )
+			.appendIntention( Intention.thenThink, "get the value of finalReply" ) // only set on toXreply
+			.appendIntention( Intention.thenDo,    "sign reply ..." ) // induction must be true!
 			.appendIntention( Intention.thenThink, "unset the value of finalReply" )
+			.appendIntention( Intention.elseDo,    "variable set induction false" )     // after sign reply...
+			.appendIntention( Intention.thenDo,    "variable set induction false" )     // after sign reply...
+			.appendIntention( Intention.elseReply, "ok" )
 			.appendIntention( Intention.thenReply, "ok" ),
 			
 //		On "that is it", ok.
@@ -108,29 +109,21 @@ public class Autopoiesis extends Intention {
 //			perform "sign think X";
 //			then, reply "go on".
 		new Sign( "then", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign think X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 					
 //		On "first PHRASE-X", then X.
 		new Sign( "first", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenThink, "then X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 			
 //		On "think PHRASE-X", then X.
 		new Sign( "think", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenThink, "then X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 			
 //		On "next  PHRASE-X", then X.
 		new Sign( "next", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenThink, "then X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 			
@@ -140,8 +133,6 @@ public class Autopoiesis extends Intention {
 //			perform "sign else think X";
 //			then, reply "go on".
 		new Sign( "then if not", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo  ,  "sign else think X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 			
@@ -151,22 +142,16 @@ public class Autopoiesis extends Intention {
 //			perform "sign perform X";
 //			then, reply "go on".
 		new Sign( "then perform", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign perform X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 				
 //		On "first perform PHRASE-X", then perform X.
 		new Sign( "first perform", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign perform X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 			
 //		On "next perform PHRASE-X", then perform X.
 		new Sign( "next perform", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign perform X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 
@@ -176,8 +161,6 @@ public class Autopoiesis extends Intention {
 //			perform "sign else perform X";
 //			then, reply "go on".
 		new Sign( "then if not perform", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign else perform X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 						
@@ -185,8 +168,6 @@ public class Autopoiesis extends Intention {
 // ...SAY
 //		On "just reply PHRASE-X", then reply X. -- translation!
 		new Sign( "just reply", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign reply X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 			
@@ -194,8 +175,6 @@ public class Autopoiesis extends Intention {
 //			perform "sign reply X";
 //			then, reply "go on".
 		new Sign( "then reply", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign reply X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 				
@@ -205,15 +184,11 @@ public class Autopoiesis extends Intention {
 //			perform "sign else reply X";
 //			then, reply "go on".
 		new Sign( "then if not reply", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign else reply X" )
 			.appendIntention( Intention.thenReply, "go on" ),
 
 //		On "then whatever reply PHRASE-X", then reply X.
 		new Sign( "then whatever reply", new Phrase( "x" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign else reply X" )
 			.appendIntention( Intention.thenDo,    "sign reply X" )
 			.appendIntention( Intention.thenThink, "that concludes interpretation" ),
@@ -230,8 +205,6 @@ public class Autopoiesis extends Intention {
 //			perform "sign imply B ";
 //			then, reply "go on".
 		new Sign( "this implies", new Phrase( "b" ))
-			.appendIntention( Intention.thenThink, "get the value of induction" )
-			.appendIntention( Intention.elseReply, "i do not understand" )
 			.appendIntention( Intention.thenDo,    "sign imply B" )
 			.appendIntention( Intention.thenReply, "go on" ),
 	};

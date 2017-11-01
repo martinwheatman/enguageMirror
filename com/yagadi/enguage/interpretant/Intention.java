@@ -164,7 +164,10 @@ public class Intention {
 		return (Reply) audit.out( r );
 	}
 	
-	private Reply perform( Reply r ) {
+	private Reply perform( Reply r ) { return perform( r, false ); }
+	private Reply andFinally( Reply r ) { return perform( r, true ); }
+	
+	private Reply perform( Reply r, boolean ignore ) {
 		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
@@ -188,8 +191,10 @@ public class Intention {
 			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
 		
 		audit.debug( "performing: "+ cmd.toString());
-	
-		return (Reply) audit.out( r.rawAnswer( new Sofa().doCall( new Strings( cmd )), cmd.get( 1 ) ));
+		String rawAnswer = new Sofa().doCall( new Strings( cmd ));
+		if (!ignore) r.rawAnswer( rawAnswer, cmd.get( 1 ) );
+
+		return (Reply) audit.out( r );
 	}
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
@@ -205,8 +210,8 @@ public class Intention {
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", typeToString( type ) +"='"+ value +"', ctx =>"+ Context.valueOf());
 		
-		if (type == thenFinally )
-			perform( r ); // ignore result of finally
+		if (type == thenFinally)
+			andFinally( r );
 
 		else if (r.isDone())
 			audit.debug( "skipping >"+ value +"< reply already found" );

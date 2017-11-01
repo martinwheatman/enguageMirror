@@ -5,6 +5,7 @@ package com.yagadi.enguage.object;
 
 import com.yagadi.enguage.interpretant.Autopoiesis;
 import com.yagadi.enguage.interpretant.Intention;
+import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -21,7 +22,8 @@ public class Sign {
 		audit.in( "interpret", argv.toString());
 		String rc = Shell.FAIL;
 		
-		if (argv.size() > 0)
+		if (Repertoire.isInducting() &&
+				argv.size() > 0)
 		{
 			String var1 = Variable.get( "prepending" ),
 					var2 = Variable.get( "headAppending" );
@@ -53,17 +55,17 @@ public class Sign {
 						).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
-				//audit.LOG( (prepending?"pre":"app")+"ing a reply "+  (isElse? Intention.ELSE_REPLY : Intention.REPLY) +" "+ argv.toString() );
-				rc = new Autopoiesis(
-						isElse? Intention.elseReply : Intention.thenReply, 
-						argv.toString(), 
-						prepending ?
-							Autopoiesis.prepend :
-						   headAppending ?
-							Autopoiesis.headAppend :
-							Autopoiesis.append
-					  ).mediate( r ).toString();
-				
+				if (argv.size() > 0) {
+					rc = new Autopoiesis(
+							isElse? Intention.elseReply : Intention.thenReply, 
+							argv.toString(), 
+							prepending ?
+								Autopoiesis.prepend :
+								headAppending ?
+								Autopoiesis.headAppend :
+								Autopoiesis.append
+						  ).mediate( r ).toString();
+				}
 			} else if (cmd.equals( "think" )) {
 				audit.debug( "adding a thought "+ argv.toString() );
 				rc = new Autopoiesis(
