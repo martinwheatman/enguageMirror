@@ -19,13 +19,20 @@ public class Net {
 		ServerSocket server = null;
 		try {
 			server = new ServerSocket( Integer.valueOf( port ));
+			audit.LOG( "Server listening on port: "+ port );
 			while (true) {
+				
 				Socket connection = server.accept();
+				
 				BufferedReader in =
 				   new BufferedReader( new InputStreamReader( connection.getInputStream()));
 				DataOutputStream out = new DataOutputStream( connection.getOutputStream());
 				
-				out.writeBytes( Enguage.interpret( in.readLine() ));
+				out.writeBytes( Enguage.interpret( in.readLine() ) + "\n" );
+
+				in.close();
+				out.close();
+				connection.close();
 			}
 		} catch (IOException e) {
 			audit.ERROR( "Engauge.main():IO error in TCP socket operation" );
@@ -36,32 +43,39 @@ public class Net {
 				audit.ERROR( "Engauge.main():IO error in closing TCP socket" );
 		}	}
 	}
-	static public Reply client( Reply r, String addr, int port, String data ) {
+	static public String client( String addr, int port, String data ) {
 		audit.in( "tcpip", "addr="+ addr +", port="+ port +"value='"+ data +"', ["+ Context.valueOf() +"]" );
 		//audit.log( "tcpip( value='"+ data +"', ["+ Context.valueOf() +"])" );
 		
-		r.answer( Reply.failure() );
+		String rc = Reply.failure();
+		
 		if (port == 999) { // test value
-			r.answer( Reply.success() ); // assume we're stuffed the server intentionally
+			rc = Reply.success(); // assume we're stuffed the server intentionally
 			
 		} else if (port > 1024 && port < 65536) {
 			addr = addr==null || addr.equals( "" ) ? "localhost" : addr;
-			
-			audit.log( "sending: "+ addr +", "+ port +", "+ data );
 			
 			Socket connection = null;
 			try {
 				connection = new Socket( addr, port );
 				DataOutputStream out = new DataOutputStream( connection.getOutputStream());
-				out.writeBytes( data );
-				r.answer( Reply.success() );
+				out.writeBytes( data +"\n" );
+								
+				BufferedReader in =
+						   new BufferedReader( new InputStreamReader( connection.getInputStream()));
+				rc = in.readLine();
+				
+				out.close();
+				connection.close();
+				in.close();
+				
 			} catch (IOException e) {
-				audit.ERROR( "Intentional error: "+ e.toString());
+				audit.ERROR( "error: "+ e.toString());
 			} finally {
 				try {
 					if (null != connection) connection.close();
 				} catch (IOException e){
 					audit.ERROR("closing connection:"+ e.toString());
 		}	}	}
-		return (Reply) audit.out( r ); // assuming it is void, pass something back...
+		return audit.out( rc );
 }	}

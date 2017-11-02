@@ -327,14 +327,12 @@ public class Allopoiesis extends Intention {
 					port = 0;
 			}	}
 			
-			r = Net.client(
-					r,
-					cmds.get( 0 ),
-					port,
-					(null==prefix ? "" : prefix) +
-						Variable.derefUc( Strings.trim( cmds.get( 2 ), '"' )) +
-						(null==suffix ? "" : suffix)
-				);
+			r.format( Net.client( cmds.get( 0 ),
+								  port,
+								  (null==prefix ? "" : prefix) +
+										Variable.derefUc( Strings.trim( cmds.get( 2 ), '"' )) +
+										(null==suffix ? "" : suffix)
+					)			);
 			
 		} else if (cmd.equals( "timing" )) {
 			audit.log( cmd +" "+ cmds.toString());

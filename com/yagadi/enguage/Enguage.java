@@ -91,7 +91,7 @@ public class Enguage extends Shell {
 		audit.LOG( "where: default config dir=\".src/assets\"" );
 		audit.LOG( "     : -p <port> listens on a TCP/IP port" );
 		audit.LOG( "     : -s runs Engauge as a shell" );
-		audit.LOG( "     : -t runs a test sanity check" );
+		//audit.LOG( "     : -t runs a test sanity check" );
 	}
 	public static void main( String args[] ) {
 		if (args.length == 0)
@@ -99,12 +99,12 @@ public class Enguage extends Shell {
 		else {
 			
 			int argc = 0;
-			
+			String location = "./src/assets";
 			if (args.length > 1 && args[ argc ].equals( "-c" )) {
 				argc++;
-				Enguage.loadConfig( args[ argc++ ]);
-			} else
-				Enguage.loadConfig( "./src/assets" );
+				location = args[ argc++ ];
+			}
+			Enguage.loadConfig( location );
 			
 			if ( args.length == argc + 1 && args[ argc ].equals( "-s" ))
 				e.aloudIs( true ).run();				
@@ -114,5 +114,4 @@ public class Enguage extends Shell {
 			//	sanityCheck();
 			else
 				usage();
-	}	}
-	}
+}	}	}

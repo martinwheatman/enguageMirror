@@ -2,6 +2,7 @@ package com.yagadi.enguage;
 
 import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
+import com.yagadi.enguage.util.Net;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Question;
 import com.yagadi.enguage.vehicle.Reply;
@@ -10,12 +11,16 @@ public class Test {
 	
 	static private  Audit audit = new Audit( "Test" );
 	
+	static boolean serverTest = false;
+	
 	private static void testInterpret( String cmd, String expected ) {
 		
 		if (expected != null)
 			audit.log( "enguage> "+ cmd );
 			
-		String answer = Enguage.interpret( cmd );
+		String answer = serverTest ?
+				Net.client( "localhost", 8080, cmd )
+				: Enguage.interpret( cmd );
 		
 		if (expected != null) {
 			int len = expected.length();
@@ -32,25 +37,34 @@ public class Test {
 	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
 
 	public static void main( String args[]) {
+		
+		int level = 0;
+		
+		if (args.length > 0 && args[ 0 ].equals( "--client" ))
+			serverTest = true;
+		else {
+			String location = "./src/assets";
+	//		int argc = 0;
+	//		if (args.length > 1 && args[ argc ].equals( "--config" )) {
+	//			location = args[ ++argc ];
+	//			++argc;
+	//		}
+			Enguage.loadConfig( location );
+		}
+
+		
 		// useful ephemera
 		//testInterpret( "detail on" );
 		//Repertoire.signs.show( "OTF" );
 		//testInterpret( "tracing on" );
-		int argc = 0;
-		if (args.length > 1 && args[ argc ].equals( "-c" )) {
-			argc++;
-			Enguage.loadConfig( args[ argc++ ]);
-		} else
-			Enguage.loadConfig( "./src/assets" );
-
-		int level = 0;
-
+		
 		if ( level == 0 || level == 1 ) {
 			audit.title( "The Non-Computable concept of NEED" );
 			
 			// silently clear the decks
-			Question.primedAnswer( "yes" );
-			testInterpret( "i don't need anything", null );
+			testInterpret( "prime answer yes" );
+			
+			testInterpret( "i don't need anything" );
 
 			testInterpret( "what do i need",
 						   "you don't need anything" );
@@ -77,7 +91,7 @@ public class Test {
 			testInterpret( "i don't need to go to town",
 						   "ok, you don't need to go to town" );
 			
-			Question.primedAnswer( "yes" );
+			testInterpret( "prime answer yes" );
 			testInterpret( "I have everything",
 					       "ok, you don't need anything" );
 			
@@ -147,7 +161,7 @@ public class Test {
 						   "ok, you need 3 more coffees.");
 			testInterpret( "what do i need",
 						   "you need 6 coffees, and a cup of tea.");
-			Question.primedAnswer( "yes" );
+			testInterpret( "prime answer yes" );
 			testInterpret( "i don't need anything",
 						   "ok, you don't need anything" );
 		}
@@ -474,13 +488,13 @@ public class Test {
 		if ( level == 0 || level == 10 ) {
 			audit.title( "Ask: Confirmation" );
 			
-			Question.primedAnswer( "yes" );
+			testInterpret( "prime answer yes" );
 			testInterpret( "i have everything", "ok , you don't need anything" );
 			
-			Question.primedAnswer( "no" );
+			testInterpret( "prime answer no" );
 			testInterpret( "i have everything", "ok , let us leave things as they are" );
 
-			Question.primedAnswer( "i do not understand" );
+			testInterpret( "prime answer i do not understand" );
 			testInterpret( "i have everything", "Ok , let us leave things as they are" );
 			
 			/* TODO:
