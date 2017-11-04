@@ -57,7 +57,7 @@ public class Allopoiesis extends Intention {
 				.pattern( new Patternette( "list repertoires","" ))
 				.appendIntention( Intention.allop, "list" )
           		.concept( NAME )
-				.help( ""     ),
+				.help( "" ),
 		new Sign()
 				.pattern( new Patternette(           "help", "" ))
 				.appendIntention( Intention.allop, "help" )
@@ -73,7 +73,7 @@ public class Allopoiesis extends Intention {
 		new Sign().pattern( new Patternette( "what can i say", "" ))
 				 .appendIntention( Intention.allop, "repertoire"  )
 	          	.concept( NAME )
-				 .help( ""            ),
+				 .help( "" ),
 		new Sign()
 				.pattern( new Patternette(   "load ", "NAME" ))
 				.appendIntention( Intention.allop,   "load NAME" )

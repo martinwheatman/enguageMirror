@@ -4,7 +4,6 @@ import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Net;
 import com.yagadi.enguage.util.Strings;
-import com.yagadi.enguage.vehicle.Question;
 import com.yagadi.enguage.vehicle.Reply;
 
 public class Test {
