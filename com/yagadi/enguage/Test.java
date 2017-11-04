@@ -475,10 +475,10 @@ public class Test {
 
 			// 2. could this be built thus?
 			testInterpret( "to phrase variable this means phrase variable that reply ok", "go on" );
-			testInterpret( "this implies set induction to false",                         "go on" );
+			testInterpret( "this implies ok set induction to false",                         "go on" );
 			testInterpret( "this implies perform sign think variable that",               "go on" );
 			testInterpret( "this implies perform sign create variable this",              "go on" );
-			testInterpret( "this implies set induction to true",                          "go on" );
+			testInterpret( "this implies ok set induction to true",                          "go on" );
 			testInterpret( "ok", "ok" );
 			
 			testInterpret( "just call me phrase variable name means i am called variable name", "ok" );
