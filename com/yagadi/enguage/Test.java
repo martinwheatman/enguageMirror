@@ -61,7 +61,7 @@ public class Test {
 			audit.title( "The Non-Computable concept of NEED" );
 			
 			// silently clear the decks
-			testInterpret( "prime answer yes" );
+			testInterpret( "prime the answer yes" );
 			
 			testInterpret( "i don't need anything" );
 
@@ -90,7 +90,7 @@ public class Test {
 			testInterpret( "i don't need to go to town",
 						   "ok, you don't need to go to town" );
 			
-			testInterpret( "prime answer yes" );
+			testInterpret( "prime the answer yes" );
 			testInterpret( "I have everything",
 					       "ok, you don't need anything" );
 			
@@ -160,7 +160,7 @@ public class Test {
 						   "ok, you need 3 more coffees.");
 			testInterpret( "what do i need",
 						   "you need 6 coffees, and a cup of tea.");
-			testInterpret( "prime answer yes" );
+			testInterpret( "prime the answer yes" );
 			testInterpret( "i don't need anything",
 						   "ok, you don't need anything" );
 		}
@@ -304,7 +304,7 @@ public class Test {
 			testInterpret( "then if not reply i do not know",                            "go on" );
 			testInterpret( "ok", "ok" );
 
-			// e.g. will be martin not alive
+			// e.g. will martin not be alive
 			testInterpret( "interpret will variable entity not be variable state thus",      "go on" );
 			testInterpret( "first variable state  exists in variable entity willNotBe list", "go on" );
 			testInterpret( "then reply yes variable entity will not be variable state",      "go on" );
@@ -487,13 +487,13 @@ public class Test {
 		if ( level == 0 || level == 10 ) {
 			audit.title( "Ask: Confirmation" );
 			
-			testInterpret( "prime answer yes" );
+			testInterpret( "prime the answer yes" );
 			testInterpret( "i have everything", "ok , you don't need anything" );
 			
-			testInterpret( "prime answer no" );
+			testInterpret( "prime the answer no" );
 			testInterpret( "i have everything", "ok , let us leave things as they are" );
 
-			testInterpret( "prime answer i do not understand" );
+			testInterpret( "prime the answer i do not understand" );
 			testInterpret( "i have everything", "Ok , let us leave things as they are" );
 			
 			/* TODO:

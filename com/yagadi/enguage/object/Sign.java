@@ -40,7 +40,7 @@ public class Sign {
 
 			if (cmd.equals( "create" )) {
 				audit.debug( "creating sign with: " +   argv.toString());
-				rc = new Autopoiesis( Autopoiesis.create,                                 argv.toString(),    Autopoiesis.create ).mediate( r ).toString();
+				rc = new Autopoiesis( Intention.create, argv.toString(), Intention.create ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "perform" )) {
 				audit.debug( "adding a conceptual "+    argv.toString() );
@@ -48,10 +48,10 @@ public class Sign {
 							isElse ? Intention.elseDo : Intention.thenDo,
 							argv.toString(),
 						   prepending ?
-								Autopoiesis.prepend :
+								Intention.prepend :
 							   headAppending ?
-								Autopoiesis.headAppend :
-								Autopoiesis.append
+								Intention.headAppend :
+								Intention.append
 						).mediate( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
@@ -60,10 +60,10 @@ public class Sign {
 							isElse? Intention.elseReply : Intention.thenReply, 
 							argv.toString(), 
 							prepending ?
-								Autopoiesis.prepend :
+								Intention.prepend :
 								headAppending ?
-								Autopoiesis.headAppend :
-								Autopoiesis.append
+								Intention.headAppend :
+								Intention.append
 						  ).mediate( r ).toString();
 				}
 			} else if (cmd.equals( "think" )) {
@@ -72,28 +72,28 @@ public class Sign {
 							isElse? Intention.elseThink : Intention.thenThink,
 							argv.toString(), 
 							prepending ?
-								Autopoiesis.prepend :
+								Intention.prepend :
 								 headAppending ?
-									Autopoiesis.headAppend :
-									Autopoiesis.append
+									Intention.headAppend :
+									Intention.append
 					  ).mediate( r ).toString();
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "Sign: prepending an implication '"+ argv.toString() +"'");
 				rc = new Autopoiesis(
 						isElse? Intention.elseThink : Intention.thenThink,
 						argv.toString(),
-						Autopoiesis.prepend
+						Intention.prepend
 					 ).mediate( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
 				audit.debug( "adding a final clause? "+ argv.toString() );
 				cmd = argv.remove( 0 );
 				if (cmd.equals( "perform" ))
-					rc = new Autopoiesis( isElse ? Intention.elseDo    : Intention.thenDo,    argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+					rc = new Autopoiesis( isElse ? Intention.elseDo    : Intention.thenDo,    argv.toString(), Intention.append ).mediate( r ).toString();
 				else if (cmd.equals( "reply" ))
-					rc = new Autopoiesis( isElse ? Intention.elseReply : Intention.thenReply, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+					rc = new Autopoiesis( isElse ? Intention.elseReply : Intention.thenReply, argv.toString(), Intention.append ).mediate( r ).toString();
 				else
-					rc = new Autopoiesis( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Autopoiesis.append ).mediate( r ).toString();
+					rc = new Autopoiesis( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Intention.append ).mediate( r ).toString();
 			
 			} else {
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );

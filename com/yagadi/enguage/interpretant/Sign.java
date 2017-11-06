@@ -12,8 +12,6 @@ import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Reply;
 
 public class Sign {
-	
-	
 	private static final String   NAME = "sign";
 	private static       Audit   audit = new Audit( NAME );
 	private static final String indent = "    ";

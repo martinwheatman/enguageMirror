@@ -33,12 +33,12 @@ public class Allopoiesis extends Intention {
 		 * interpretations and so are built here alongside those interpretations.
 		 */
 		new Sign()
-			.pattern( new Patternette( "remove primed answer ", "" ))
+			.pattern( new Patternette( "remove the primed answer ", "" ))
           		.appendIntention( Intention.allop, "removePrimedAnswer" )
           		.concept( NAME ),
 	          	
     	new Sign()
-			.pattern( new Patternette( "prime answer ", "answer" ).phrasedIs())
+			.pattern( new Patternette( "prime the answer ", "answer" ).phrasedIs())
 	          	.appendIntention( Intention.allop, "primeAnswer ANSWER" )
           		.concept( NAME ),
 			          	
