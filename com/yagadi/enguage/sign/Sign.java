@@ -120,15 +120,15 @@ public class Sign {
 		audit.in( "mediate", pattern().toString() );
 		Iterator<Intention> ai = intentions.iterator();
 		while (!r.isDone() && ai.hasNext()) {
-			Intention in = ai.next().temporalIs( isTemporal()).spatialIs( isSpatial());
+			Intention in = ai.next();
 			r = in.type() == Intention.allop ?
 					new Allopoiesis( in, isTemporal(), isSpatial() ).getReply( r )
 				: in.type() == Intention.append  ||
 				  in.type() == Intention.prepend ||
 				  in.type() == Intention.create ?
-					in.autopoiesis( r )
+					in.temporalIs( isTemporal()).spatialIs( isSpatial()).autopoiesis( r )
 				: // finally, think, do, say...   TODO: why not: in.mediate( r ); ???
-					in.mediate( r );
+					in.temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r );
 		}
 		return (Reply) audit.out( r );
 	}
