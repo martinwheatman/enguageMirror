@@ -1,8 +1,8 @@
 package com.yagadi.enguage.vehicle;
 
-import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
+import com.yagadi.enguage.sign.intention.Allopoiesis;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;

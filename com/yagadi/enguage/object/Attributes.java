@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import com.yagadi.enguage.interpretant.pattern.Pattern;
+import com.yagadi.enguage.sign.pattern.Pattern;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;

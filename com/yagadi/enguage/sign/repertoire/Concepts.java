@@ -1,10 +1,10 @@
-package com.yagadi.enguage.interpretant.repertoire;
+package com.yagadi.enguage.sign.repertoire;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import com.yagadi.enguage.interpretant.Allopoiesis;
+import com.yagadi.enguage.sign.intention.Allopoiesis;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.util.Tag;

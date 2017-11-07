@@ -1,11 +1,11 @@
-package com.yagadi.enguage.interpretant.repertoire;
+package com.yagadi.enguage.sign.repertoire;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
 import com.yagadi.enguage.Enguage;
-import com.yagadi.enguage.interpretant.Autopoiesis;
 import com.yagadi.enguage.object.Ospace;
+import com.yagadi.enguage.sign.intention.Intention;
 import com.yagadi.enguage.util.Audit;
 
 public class Concept {
@@ -24,7 +24,7 @@ public class Concept {
 			e.aloudIs( false );
 		}
 		
-		Autopoiesis.concept( name );
+		Intention.concept( name );
 		if (name.equals( Repertoire.DEFAULT_PRIME ))
 			Repertoire.defaultConceptLoadedIs( true );
 		

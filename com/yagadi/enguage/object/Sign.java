@@ -3,9 +3,8 @@
  */
 package com.yagadi.enguage.object;
 
-import com.yagadi.enguage.interpretant.Autopoiesis;
-import com.yagadi.enguage.interpretant.Intention;
-import com.yagadi.enguage.interpretant.repertoire.Repertoire;
+import com.yagadi.enguage.sign.intention.Intention;
+import com.yagadi.enguage.sign.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;
@@ -40,11 +39,11 @@ public class Sign {
 
 			if (cmd.equals( "create" )) {
 				audit.debug( "creating sign with: " +   argv.toString());
-				rc = new Autopoiesis( Intention.create, argv.toString(), Intention.create ).mediate( r ).toString();
+				rc = new Intention( Intention.create, argv.toString(), Intention.create ).autopoiesis( r ).toString();
 				
 			} else if (cmd.equals( "perform" )) {
 				audit.debug( "adding a conceptual "+    argv.toString() );
-				rc = new Autopoiesis(
+				rc = new Intention(
 							isElse ? Intention.elseDo : Intention.thenDo,
 							argv.toString(),
 						   prepending ?
@@ -52,11 +51,11 @@ public class Sign {
 							   headAppending ?
 								Intention.headAppend :
 								Intention.append
-						).mediate( r ).toString();
+						).autopoiesis( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
 				if (argv.size() > 0) {
-					rc = new Autopoiesis(
+					rc = new Intention(
 							isElse? Intention.elseReply : Intention.thenReply, 
 							argv.toString(), 
 							prepending ?
@@ -64,11 +63,11 @@ public class Sign {
 								headAppending ?
 								Intention.headAppend :
 								Intention.append
-						  ).mediate( r ).toString();
+						  ).autopoiesis( r ).toString();
 				}
 			} else if (cmd.equals( "think" )) {
 				audit.debug( "adding a thought "+ argv.toString() );
-				rc = new Autopoiesis(
+				rc = new Intention(
 							isElse? Intention.elseThink : Intention.thenThink,
 							argv.toString(), 
 							prepending ?
@@ -76,24 +75,24 @@ public class Sign {
 								 headAppending ?
 									Intention.headAppend :
 									Intention.append
-					  ).mediate( r ).toString();
+					  ).autopoiesis( r ).toString();
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "Sign: prepending an implication '"+ argv.toString() +"'");
-				rc = new Autopoiesis(
+				rc = new Intention(
 						isElse? Intention.elseThink : Intention.thenThink,
 						argv.toString(),
 						Intention.prepend
-					 ).mediate( r ).toString();
+					 ).autopoiesis( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
 				audit.debug( "adding a final clause? "+ argv.toString() );
 				cmd = argv.remove( 0 );
 				if (cmd.equals( "perform" ))
-					rc = new Autopoiesis( isElse ? Intention.elseDo    : Intention.thenDo,    argv.toString(), Intention.append ).mediate( r ).toString();
+					rc = new Intention( isElse ? Intention.elseDo    : Intention.thenDo,    argv.toString(), Intention.append ).autopoiesis( r ).toString();
 				else if (cmd.equals( "reply" ))
-					rc = new Autopoiesis( isElse ? Intention.elseReply : Intention.thenReply, argv.toString(), Intention.append ).mediate( r ).toString();
+					rc = new Intention( isElse ? Intention.elseReply : Intention.thenReply, argv.toString(), Intention.append ).autopoiesis( r ).toString();
 				else
-					rc = new Autopoiesis( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Intention.append ).mediate( r ).toString();
+					rc = new Intention( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Intention.append ).autopoiesis( r ).toString();
 			
 			} else {
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
@@ -107,5 +106,5 @@ public class Sign {
 		interpret( new Strings( "imply  is variable object in variable name needs list" ));
 		//interpret( new Strings( "reply  i know" ));
 		//interpret( new Strings( "perform add variable object to variable name needs list" ));
-		Autopoiesis.printSign();
+		Intention.printSign();
 }	}

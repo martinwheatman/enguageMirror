@@ -1,10 +1,10 @@
 package com.yagadi.enguage;
 
-import com.yagadi.enguage.interpretant.Allopoiesis;
-import com.yagadi.enguage.interpretant.repertoire.Autoload;
-import com.yagadi.enguage.interpretant.repertoire.Concepts;
-import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.object.Overlay;
+import com.yagadi.enguage.sign.intention.Allopoiesis;
+import com.yagadi.enguage.sign.repertoire.Autoload;
+import com.yagadi.enguage.sign.repertoire.Concepts;
+import com.yagadi.enguage.sign.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Net;

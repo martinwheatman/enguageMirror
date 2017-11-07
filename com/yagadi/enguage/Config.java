@@ -5,14 +5,14 @@ import java.util.GregorianCalendar;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import com.yagadi.enguage.interpretant.Allopoiesis;
-import com.yagadi.enguage.interpretant.Signs;
-import com.yagadi.enguage.interpretant.repertoire.Autoload;
-import com.yagadi.enguage.interpretant.repertoire.Concepts;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Ospace;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Variable;
+import com.yagadi.enguage.sign.Signs;
+import com.yagadi.enguage.sign.intention.Allopoiesis;
+import com.yagadi.enguage.sign.repertoire.Autoload;
+import com.yagadi.enguage.sign.repertoire.Concepts;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Proc;

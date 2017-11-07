@@ -1,9 +1,14 @@
-package com.yagadi.enguage.interpretant;
+package com.yagadi.enguage.sign.intention;
 
-import com.yagadi.enguage.interpretant.repertoire.Repertoire;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Variable;
+import com.yagadi.enguage.sign.Sign;
+import com.yagadi.enguage.sign.pattern.Pattern;
+import com.yagadi.enguage.sign.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Proc;
 import com.yagadi.enguage.util.Strings;
@@ -58,6 +63,7 @@ public class Intention {
 	public static final int  append       =  0xc;
 	public static final int  headAppend   =  0xd;
 
+	public Intention( int type, String value, int intnt ) { this( type, value ); intent = intnt;}	
 	public Intention( int nm, String val ) { type=nm; value = val; }
 	public Intention( Intention in, boolean temp, boolean spatial ) {
 		this( in.type(), in.value() );
@@ -134,6 +140,73 @@ public class Intention {
 	public boolean   isSpatial() { return spatial; }
 	public Intention spatialIs( boolean s ) { spatial = s; return this; }
 
+	private int intent = undef;
+	public  int intent() { return intent;}
+	
+	static private Sign s = null;
+	static public  void printSign() { audit.LOG( "Autop().printSign:\n"+ s.pattern().toXml()); }
+	
+	static private String concept = "";
+	static public    void concept( String name ) { concept = name; }
+	static public  String concept() { return concept; }
+	
+	public Reply autopoiesis( Reply r ) {
+		audit.in( "mediate", "NAME="+ AUTOP +", value="+ value +", "+ Context.valueOf());
+		Strings sa = Context.deref( new Strings( value ));
+		
+		// needs to switch on type (intent)
+		if (intent == create ) { // manually adding a sign
+			
+			//audit.debug( "autop: creating new sign: ["+ value +"]");
+			Repertoire.signs.insert(
+				s = new Sign()
+					.pattern( new Pattern( value )) // manual Pattern
+					.concept( Repertoire.AUTOPOIETIC )
+			);
+			
+		} else if (intent == append ) { // add intent to end of interpretant
+			if (null != s) s.append( new Intention( type, Pattern.toPattern( value ).toString()));
+			
+		} else if (intent == prepend ) { // add intent to start of interpretant
+			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( value ).toString() ));
+			
+		} else if (intent == headAppend ) { // add intent to first but one...  
+			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( value ).toString() ));
+			
+		// following these are trad. autopoiesis...this need updating as above!!!
+		} else if (type == append || type == prepend ) {
+			if (null == s)
+				// this should return DNU...
+				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
+			else {
+				String attr = sa.get( 0 ),
+					    val = Strings.trim( sa.get( 1 ), '"' );
+				if (type == append )
+					s.append( new Intention( nameToType(  attr ), val ));
+				else
+					s.prepend( new Intention( nameToType( attr ), val ));
+			}
+			
+		} else if (type == create ) { // autopoeisis?
+			String attr    = sa.get( 0 ),
+			       pattern = sa.get( 1 ),
+			       val     = Strings.trim( sa.get( 2 ), '"' );
+			/* TODO: need to differentiate between
+			 * "X is X" and "X is Y" -- same shape, different usage.
+			 * At least need to avoid this (spot when "X is X" happens)
+			 */
+			audit.debug( "Adding >"+ value +"< ["+ sa.toString( Strings.CSV )+"]");
+			if ( pattern.equals( "help" ))
+				s.help( val ); // add: help="text" to cached sign
+			else // create then add a new cached sign into the list of signs
+				Repertoire.signs.insert(
+					s = new Sign()
+						.pattern( new Pattern( new Strings( Strings.trim( pattern, '"' ))) )
+						.concept( concept() )
+						.append( new Intention( Intention.nameToType( attr ), val )));
+		}
+		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
+	}
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"
@@ -232,7 +305,60 @@ public class Intention {
 			}
 		return (Reply) audit.out( r );
 	}
+	// ---
+	public static Reply test(Reply r, ArrayList<Intention> intents) {
+		Iterator<Intention> ins = intents.iterator();
+		while (!r.isDone() && ins.hasNext()) {
+			Intention in = ins.next();
+			audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
+			r = new Intention( in, false, false ).autopoiesis( r );
+		}
+		return r;
+	}
 	public static void main( String argv[]) {
 		Reply r = new Reply().answer( "world" );
 		audit.log( new Intention( thenReply, "hello ..." ).mediate( r ).toString() );
+		//Audit.allOn();
+		//audit.trace( true );
+		
+		audit.title( "trad autopoiesis... add to a list and then add that list" );
+		r = new Reply();
+		ArrayList<Intention> a = new ArrayList<Intention>();
+		a.add( new Intention( create, THINK      +" \"a PATTERN z\" \"one two three four\""   ));
+		a.add( new Intention( append, ELSE_REPLY +" \"two three four\""   ));
+		a.add( new Intention( append, REPLY      +" \"three four\"" ));
+		test( r, a );
+		audit.log( Repertoire.signs.toString() );
+		audit.log( r.toString());
+		
+		audit.title( "manual sign creation... add each intention individually" );
+		r = new Reply();
+		r = new Intention( create,    "b variable pattern z", create ).autopoiesis( r );
+		r = new Intention( thenThink, "one two three four"  , append ).autopoiesis( r );
+		r = new Intention( elseReply, "two three four"      , append ).autopoiesis( r );
+		r = new Intention( thenReply, "three four"          , append ).autopoiesis( r );
+		audit.log( Repertoire.signs.toString() );
+		audit.log( r.toString());
+		
+		
+		audit.title( "sign self-build II... add pairs of attributes" );
+		// now built like this...
+		// To PATTERN reply TYPICAL REPLY
+		r = new Reply();
+		s = new Sign()
+				.pattern( new Pattern( "c variable pattern z" ))
+				.concept( concept() );
+		String reply = "three four";
+		s.append( new Intention( thenReply, reply ));
+		// ...This implies COND
+		s.prepend( new Intention( thenThink, "one two three four" ));
+		// ...if not reply EXECP REPLY
+		s.insert( 1, new Intention( elseReply, "two three four" ));
+		
+		Repertoire.signs.insert( s );
+		r.answer( Reply.yes().toString() );
+
+		
+		audit.log( Repertoire.signs.toString() );
+		audit.log( r.toString());
 }	}

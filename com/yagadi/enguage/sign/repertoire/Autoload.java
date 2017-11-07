@@ -1,12 +1,12 @@
-package com.yagadi.enguage.interpretant.repertoire;
+package com.yagadi.enguage.sign.repertoire;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.yagadi.enguage.interpretant.Allopoiesis;
 import com.yagadi.enguage.object.Overlay;
+import com.yagadi.enguage.sign.intention.Allopoiesis;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Strings;

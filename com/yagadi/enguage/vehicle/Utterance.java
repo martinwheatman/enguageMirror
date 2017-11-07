@@ -1,14 +1,14 @@
 package com.yagadi.enguage.vehicle;
 
-import com.yagadi.enguage.interpretant.Sign;
-import com.yagadi.enguage.interpretant.pattern.Pattern;
-import com.yagadi.enguage.interpretant.pattern.Patternette;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Numeric;
 import com.yagadi.enguage.object.Sofa;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
 import com.yagadi.enguage.object.Variable;
+import com.yagadi.enguage.sign.Sign;
+import com.yagadi.enguage.sign.pattern.Pattern;
+import com.yagadi.enguage.sign.pattern.Patternette;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.util.Strings;

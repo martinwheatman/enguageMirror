@@ -1,4 +1,4 @@
-package com.yagadi.enguage.interpretant.pattern;
+package com.yagadi.enguage.sign.pattern;
 
 import java.util.ListIterator;
 import java.util.Locale;

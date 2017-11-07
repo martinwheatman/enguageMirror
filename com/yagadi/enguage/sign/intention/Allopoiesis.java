@@ -1,11 +1,13 @@
-package com.yagadi.enguage.interpretant;
+package com.yagadi.enguage.sign.intention;
 
 import com.yagadi.enguage.Enguage;
-import com.yagadi.enguage.interpretant.pattern.Patternette;
-import com.yagadi.enguage.interpretant.repertoire.Autoload;
-import com.yagadi.enguage.interpretant.repertoire.Concepts;
-import com.yagadi.enguage.interpretant.repertoire.Repertoire;
 import com.yagadi.enguage.object.Variable;
+import com.yagadi.enguage.sign.Sign;
+import com.yagadi.enguage.sign.Signs;
+import com.yagadi.enguage.sign.pattern.Patternette;
+import com.yagadi.enguage.sign.repertoire.Autoload;
+import com.yagadi.enguage.sign.repertoire.Concepts;
+import com.yagadi.enguage.sign.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Net;
 import com.yagadi.enguage.util.Shell;
@@ -216,7 +218,7 @@ public class Allopoiesis extends Intention {
 	//
 	//
 
-	public Reply mediate( Reply r ) {
+	public Reply getReply( Reply r ) {
 		r.answer( Reply.yes()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds =
@@ -478,5 +480,5 @@ public class Allopoiesis extends Intention {
 		// TODO: this fails, cose Enguage.e is not initialised!!!
 		Allopoiesis e = new Allopoiesis( Intention.allop, "ask answering yes or no , is it safe" );
 		//Repertoire.load( "need" );
-		e.mediate( r );
+		e.getReply( r );
 }	}

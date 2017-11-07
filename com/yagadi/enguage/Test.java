@@ -1,6 +1,6 @@
 package com.yagadi.enguage;
 
-import com.yagadi.enguage.interpretant.repertoire.Repertoire;
+import com.yagadi.enguage.sign.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Net;
 import com.yagadi.enguage.util.Strings;

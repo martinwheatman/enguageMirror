@@ -1,4 +1,4 @@
-package com.yagadi.enguage.interpretant;
+package com.yagadi.enguage.sign;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,12 +7,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.yagadi.enguage.interpretant.pattern.Patternette;
-import com.yagadi.enguage.interpretant.repertoire.Autoload;
-import com.yagadi.enguage.interpretant.repertoire.Repertoire;
+import com.yagadi.enguage.sign.Sign;
+import com.yagadi.enguage.sign.Signs;
 import com.yagadi.enguage.object.Attribute;
 import com.yagadi.enguage.object.Attributes;
 import com.yagadi.enguage.object.Variable;
+import com.yagadi.enguage.sign.intention.Intention;
+import com.yagadi.enguage.sign.pattern.Patternette;
+import com.yagadi.enguage.sign.repertoire.Autoload;
+import com.yagadi.enguage.sign.repertoire.Repertoire;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Join;
 import com.yagadi.enguage.util.Strings;

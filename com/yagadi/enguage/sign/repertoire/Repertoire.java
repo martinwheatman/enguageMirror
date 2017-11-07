@@ -1,9 +1,8 @@
-package com.yagadi.enguage.interpretant.repertoire;
+package com.yagadi.enguage.sign.repertoire;
 
-import com.yagadi.enguage.interpretant.Allopoiesis;
-import com.yagadi.enguage.interpretant.Autopoiesis;
-import com.yagadi.enguage.interpretant.Signs;
 import com.yagadi.enguage.object.Variable;
+import com.yagadi.enguage.sign.Signs;
+import com.yagadi.enguage.sign.intention.Allopoiesis;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.Utterance;
@@ -30,7 +29,7 @@ public class Repertoire {
 	 * in engine?
 	 */
 	static public Signs signs = new Signs();
-	static public Signs autop = new Signs().add( Autopoiesis.written ).add( Autopoiesis.spoken );
+	static public Signs autop = new Signs().add( Autopoietic.written ).add( Autopoietic.spoken );
 	static public Signs allop = new Signs().add( Allopoiesis.commands );
 	
 	// ----- read concepts used in main e
