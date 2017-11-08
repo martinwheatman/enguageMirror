@@ -7,7 +7,6 @@ import com.yagadi.enguage.sign.Sign;
 import com.yagadi.enguage.sign.Signs;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
-import com.yagadi.enguage.sign.intention.Allopoiesis;
 import com.yagadi.enguage.sign.intention.Intention;
 import com.yagadi.enguage.sign.pattern.Pattern;
 import com.yagadi.enguage.sign.pattern.Patternette;
@@ -120,16 +119,19 @@ public class Sign {
 		audit.in( "mediate", pattern().toString() );
 		Iterator<Intention> ai = intentions.iterator();
 		while (!r.isDone() && ai.hasNext()) {
-			Intention in = ai.next();
-			r = in.type() == Intention.allop ?
-					new Allopoiesis( in, isTemporal(), isSpatial() ).getReply( r )
-				: in.type() == Intention.append  ||
-				  in.type() == Intention.prepend ||
-				  in.type() == Intention.create ?
-					in.temporalIs( isTemporal()).spatialIs( isSpatial()).autopoiesis( r )
-				: // finally, think, do, say...   TODO: why not: in.mediate( r ); ???
-					in.temporalIs( isTemporal()).spatialIs( isSpatial()).mediate( r );
-		}
+			Intention in = ai.next().temporalIs( isTemporal()).spatialIs( isSpatial());
+			switch (in.type()) {
+			case Intention.allop :
+				r = in.getReply( r );
+				break;
+			case Intention.append:
+			case Intention.prepend:
+			case Intention.create:
+				r = in.autopoiesis( r );
+				break;
+			default: // finally, think, do, say...
+				r = in.mediate( r );
+		}	}
 		return (Reply) audit.out( r );
 	}
 	// ---

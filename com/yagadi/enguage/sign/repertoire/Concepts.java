@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import com.yagadi.enguage.sign.intention.Allopoiesis;
+import com.yagadi.enguage.sign.intention.Redo;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.util.Tag;
@@ -92,13 +92,13 @@ public class Concepts {
 		// add in name as to what is loaded.
 		if (!loaded.contains( name )) {
 			// loading repertoires won't use undo - disable
-			Allopoiesis.undoEnabledIs( false );
+			Redo.undoEnabledIs( false );
 			if ( Concept.load( name )) {
 				loaded.add( name );
 				audit.debug( "LOADED>>>>>>>>>>>>:"+ name );
 			} else
 				audit.debug( "LOAD skipping already loaded:"+ name );
-			Allopoiesis.undoEnabledIs( true );
+			Redo.undoEnabledIs( true );
 		}
 		audit.out();
 	}

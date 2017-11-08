@@ -1,7 +1,7 @@
 package com.yagadi.enguage;
 
 import com.yagadi.enguage.object.Overlay;
-import com.yagadi.enguage.sign.intention.Allopoiesis;
+import com.yagadi.enguage.sign.intention.Redo;
 import com.yagadi.enguage.sign.repertoire.Autoload;
 import com.yagadi.enguage.sign.repertoire.Concepts;
 import com.yagadi.enguage.sign.repertoire.Repertoire;
@@ -32,7 +32,7 @@ public class Enguage extends Shell {
 			audit.FATAL( "Ouch! Cannot autoAttach() to object space" );
 		else {
 			Concepts.names( location );
-			Allopoiesis.spokenInit();
+			Redo.spokenInit();
 			Repertoire.primeUsedInit();
 		}
 		audit.out();
@@ -51,7 +51,7 @@ public class Enguage extends Shell {
 		//if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ));
 
 		if (Reply.understood()) // from previous interpretation!
-			o.startTxn( Allopoiesis.undoIsEnabled() ); // all work in this new overlay
+			o.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 
 		Reply r = Repertoire.interpret( new Utterance( utterance ));
 
@@ -60,9 +60,9 @@ public class Enguage extends Shell {
 
 		String reply = r.toString( utterance );
 		if (Reply.understood()) {
-			o.finishTxn( Allopoiesis.undoIsEnabled() );
-			Allopoiesis.disambOff();
-			Allopoiesis.spoken( true );
+			o.finishTxn( Redo.undoIsEnabled() );
+			Redo.disambOff();
+			Redo.spoken( true );
 		} else {
 			// really lost track?
 			audit.debug( "Enguage:interpret(): not understood, forgeting to ignore: " + Repertoire.signs.ignore().toString() );

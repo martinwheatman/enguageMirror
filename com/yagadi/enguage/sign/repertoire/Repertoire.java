@@ -2,7 +2,6 @@ package com.yagadi.enguage.sign.repertoire;
 
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.sign.Signs;
-import com.yagadi.enguage.sign.intention.Allopoiesis;
 import com.yagadi.enguage.util.Shell;
 import com.yagadi.enguage.vehicle.Reply;
 import com.yagadi.enguage.vehicle.Utterance;
@@ -15,6 +14,8 @@ public class Repertoire {
 	public  static final String PLURALISATION = "repper-to-wahs"; // better than ~ares
 	public  static final String          NAME = "repertoire";
 
+	public  static final String         ALLOP = "engine";
+	public  static final String         AUTOP = "autopoiesis";
 	public  static final String   AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
 	// TODO: create a method to comb users for signs created on-the-fly, 
 	//       and to save them under (append them to) a concept file
@@ -30,7 +31,7 @@ public class Repertoire {
 	 */
 	static public Signs signs = new Signs();
 	static public Signs autop = new Signs().add( Autopoietic.written ).add( Autopoietic.spoken );
-	static public Signs allop = new Signs().add( Allopoiesis.commands );
+	static public Signs allop = new Signs().add( Engine.commands );
 	
 	// ----- read concepts used in main e
 	//static private boolean initialising = false;
@@ -100,4 +101,6 @@ public class Repertoire {
 					r = autop.interpret( u );
 		}	}
 		return r;
-}	}
+}
+
+}

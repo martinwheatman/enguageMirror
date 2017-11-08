@@ -10,7 +10,7 @@ import com.yagadi.enguage.object.Ospace;
 import com.yagadi.enguage.object.Overlay;
 import com.yagadi.enguage.object.Variable;
 import com.yagadi.enguage.sign.Signs;
-import com.yagadi.enguage.sign.intention.Allopoiesis;
+import com.yagadi.enguage.sign.intention.Redo;
 import com.yagadi.enguage.sign.repertoire.Autoload;
 import com.yagadi.enguage.sign.repertoire.Concepts;
 import com.yagadi.enguage.util.Audit;
@@ -97,7 +97,7 @@ public class Config {
 		if (Audit.startupDebug) Audit.allOn();
 		
 		long then = new GregorianCalendar().getTimeInMillis();
-		Allopoiesis.undoEnabledIs( false );
+		Redo.undoEnabledIs( false );
 		
 		audit.log(
 				welcome(
@@ -113,7 +113,7 @@ public class Config {
 			Concepts.load( t.findByName( "concepts" ));
 		}
 
-		Allopoiesis.undoEnabledIs( true );
+		Redo.undoEnabledIs( true );
 		long now = new GregorianCalendar().getTimeInMillis();
 		
 		audit.log( "Initialisation in: " + (now - then) + "ms" );

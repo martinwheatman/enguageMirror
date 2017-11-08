@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.yagadi.enguage.object.Overlay;
-import com.yagadi.enguage.sign.intention.Allopoiesis;
+import com.yagadi.enguage.sign.intention.Redo;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Fs;
 import com.yagadi.enguage.util.Strings;
@@ -32,7 +32,7 @@ public class Autoload {
 		// should not be called if initialising or if autoloading
 		if (!ing()) {
 			Autoload.ing( true );
-			Allopoiesis.undoEnabledIs( false ); // disable undo while loading repertoires
+			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
 			Strings tmp = new Strings();
 			for (String candidate : Concepts.matches( utterance )) {
@@ -59,7 +59,7 @@ public class Autoload {
 			}	}	}
 			
 			//audit.debug( "Autoload.load(): "+ utterance +" => ["+ tmp.toString( Strings.CSV ) +"]");
-			Allopoiesis.undoEnabledIs( true );
+			Redo.undoEnabledIs( true );
 			Autoload.ing( false );
 			//audit.out();
 	}	}
