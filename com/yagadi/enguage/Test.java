@@ -12,16 +12,18 @@ public class Test {
 	
 	static boolean serverTest = false;
 	
+	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
 	private static void testInterpret( String cmd, String expected ) {
 		
-		if (expected != null)
-			audit.log( "enguage> "+ cmd );
+		boolean silentRunning = expected == null;
+		if (!silentRunning)
+			audit.log( "user> "+ cmd );
 			
 		String answer = serverTest ?
 				Net.client( "localhost", 8080, cmd )
 				: Enguage.interpret( cmd );
 		
-		if (expected != null) {
+		if (!silentRunning) {
 			int len = expected.length();
 			if (len > 0 && expected.charAt( len - 1 ) != '.') expected += ".";
 			if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
@@ -31,9 +33,8 @@ public class Test {
 			         		.equalsIgnoreCase( new Strings( expected )))
 				audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
 			else
-				audit.log( answer +"\n" );
+				audit.log( "enguage> "+ answer +"\n" );
 	}	}
-	private static void testInterpret( String cmd ) { testInterpret( cmd, "" );}
 
 	public static void main( String args[]) {
 		

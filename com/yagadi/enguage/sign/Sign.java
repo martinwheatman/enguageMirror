@@ -3,13 +3,12 @@ package com.yagadi.enguage.sign;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.yagadi.enguage.sign.Sign;
-import com.yagadi.enguage.sign.Signs;
 import com.yagadi.enguage.object.Spatial;
 import com.yagadi.enguage.object.Temporal;
 import com.yagadi.enguage.sign.intention.Intention;
 import com.yagadi.enguage.sign.pattern.Pattern;
 import com.yagadi.enguage.sign.pattern.Patternette;
+import com.yagadi.enguage.sign.repertoire.Engine;
 import com.yagadi.enguage.util.Audit;
 import com.yagadi.enguage.util.Strings;
 import com.yagadi.enguage.vehicle.Reply;
@@ -122,11 +121,11 @@ public class Sign {
 			Intention in = ai.next().temporalIs( isTemporal()).spatialIs( isSpatial());
 			switch (in.type()) {
 			case Intention.allop :
-				r = in.getReply( r );
+				r = Engine.getReply( in, r );
 				break;
-			case Intention.append:
-			case Intention.prepend:
 			case Intention.create:
+			case Intention.prepend:
+			case Intention.append:
 				r = in.autopoiesis( r );
 				break;
 			default: // finally, think, do, say...
