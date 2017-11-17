@@ -99,16 +99,13 @@ public class Test {
 						   "you don't need anything" );
 		}
 		if ( level == 0 || level == 3 ) {
-			audit.title( "Verbal Arithmetical" );
-			testInterpret( "what is 1 + 2",
-						   "1 plus 2 is 3.");
-			testInterpret( "times 2 all squared",
-						   "times 2 all squared makes 36.");
-			testInterpret( "what is 36 + 4 all divided by 2",
-						   "36 plus 4 all divided by 2 is 20" );
+			audit.title( "Verbal Arithmetic" );
+			testInterpret( "what is 1 + 2",                    "1 plus 2 is 3.");
+			testInterpret( "times 2 all squared",              "times 2 all squared makes 36.");
+			testInterpret( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
 			
 			audit.title( "Factorial Description" );
-			testInterpret( "what is the factorial of 4", "I don't understand" );
+			testInterpret( "what is the factorial of 4",       "I don't understand" );
 			/* Ideally, we want:
 			 * - the factorial of 1 is 1;
 			 * - the factorial of n is n times the factorial of n - 1;
@@ -119,7 +116,7 @@ public class Test {
 			testInterpret( "what is the factorial of 1",  "1" );
 			
 			testInterpret( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
-			testInterpret( "first perform numeric evaluate variable a times numeric phrase variable b",      "go on" );
+			testInterpret( "first perform numeric evaluate variable a times variable b",       "go on" );
 			testInterpret( "ok", "ok" );
 			
 			testInterpret( "multiply 2 by 3", "6" );
