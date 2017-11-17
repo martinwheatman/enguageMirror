@@ -87,31 +87,38 @@ public class Enguage extends Shell {
 	
 	// ==== test code =====
 	private static void usage() {
-		audit.LOG( "Usage: java -jar enguage.jar [-c <configDir>] [-p <port> | -s | -t ]" );
-		audit.LOG( "where: default config dir=\".src/assets\"" );
-		audit.LOG( "     : -p <port> listens on a TCP/IP port" );
-		audit.LOG( "     : -s runs Engauge as a shell" );
-		//audit.LOG( "     : -t runs a test sanity check" );
+		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | -t ]" );
+		audit.LOG( "where: -d <configDir>" );
+		audit.LOG( "          config directory, default=\"./src/assets\"\n" );
+		audit.LOG( "       -p <port>, --port <port>" );
+		audit.LOG( "          listens on local TCP/IP port number\n" );
+		audit.LOG( "       -s, --shell" );
+		audit.LOG( "          runs Engauge as a shell\n" );
+		audit.LOG( "       -t, --test" );
+		audit.LOG( "          runs a sanity check" );
 	}
 	public static void main( String args[] ) {
-		if (args.length == 0)
+		
+		Strings cmds = new Strings( args );
+		String  cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
+		
+		String location = "./src/assets";
+		if (cmds.size() > 0 && cmd.equals( "-d" )) {
+			location = cmds.remove(0);
+			cmd = cmds.size()==0 ? "":cmds.remove(0);
+		}
+		Enguage.loadConfig( location );
+		
+		
+		if (cmd.equals( "-s" ) || cmd.equals( "--shell" ))
+			e.aloudIs( true ).run();
+		
+		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
+			Net.server( cmds.remove( 0 ));
+		
+		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ))
+			Test.sanityCheck( false, location );
+		
+		else
 			usage();
-		else {
-			
-			int argc = 0;
-			String location = "./src/assets";
-			if (args.length > 1 && args[ argc ].equals( "-c" )) {
-				argc++;
-				location = args[ argc++ ];
-			}
-			Enguage.loadConfig( location );
-			
-			if ( args.length == argc + 1 && args[ argc ].equals( "-s" ))
-				e.aloudIs( true ).run();				
-			else if (args.length == argc + 2 && args[ argc ].equals( "-p" ))
-				Net.server( args[ ++argc ]);
-			//else if (args.length == argc + 1 && args[ argc ].equals( "-t" ))
-			//	sanityCheck();
-			else
-				usage();
-}	}	}
+}	}
