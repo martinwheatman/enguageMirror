@@ -11,6 +11,9 @@ public class Test {
 	static private  Audit audit = new Audit( "Test" );
 	static boolean   serverTest = false;
 	
+	static int       portNumber = 8080;
+	static void portNumber( String pn ) { portNumber = Integer.parseInt( pn );}
+	
 	public static void main( String args[]) {
 		if (args.length == 0)
 			usage();
@@ -48,7 +51,7 @@ public class Test {
 			audit.log( "user> "+ cmd );
 			
 		String answer = serverTest ?
-				Net.client( "localhost", 8080, cmd )
+				Net.client( "localhost", portNumber, cmd )
 				: Enguage.interpret( cmd );
 		
 		if (!silentRunning) {

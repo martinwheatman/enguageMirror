@@ -87,13 +87,17 @@ public class Enguage extends Shell {
 	
 	// ==== test code =====
 	private static void usage() {
-		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | -t ]" );
+		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server [<port>]] -t ]" );
 		audit.LOG( "where: -d <configDir>" );
 		audit.LOG( "          config directory, default=\"./src/assets\"\n" );
 		audit.LOG( "       -p <port>, --port <port>" );
 		audit.LOG( "          listens on local TCP/IP port number\n" );
 		audit.LOG( "       -s, --shell" );
 		audit.LOG( "          runs Engauge as a shell\n" );
+		audit.LOG( "       --server [<port>]" );
+		audit.LOG( "          switch to send test commands to a server." );
+		audit.LOG( "          This is only a test, and is on localhost." );
+		audit.LOG( "          (Needs to be initialised with -p nnnn)\n" );
 		audit.LOG( "       -t, --test" );
 		audit.LOG( "          runs a sanity check" );
 	}
@@ -109,7 +113,17 @@ public class Enguage extends Shell {
 		}
 		Enguage.loadConfig( location );
 		
-		
+		boolean serverTest = false;
+		if (cmds.size() > 0 && cmd.equals( "--server" )) {
+			serverTest = true;
+			cmds.remove(0);
+			cmd = cmds.size()==0 ? "":cmds.remove(0);
+			if (!cmd.equalsIgnoreCase( "-t" ) && !cmd.equalsIgnoreCase( "--test" )) {
+				Test.portNumber( cmds.remove( 0 ));
+				cmd = cmds.size()==0 ? "":cmds.remove(0);
+			}
+		}
+				
 		if (cmd.equals( "-s" ) || cmd.equals( "--shell" ))
 			e.aloudIs( true ).run();
 		
@@ -117,7 +131,7 @@ public class Enguage extends Shell {
 			Net.server( cmds.remove( 0 ));
 		
 		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ))
-			Test.sanityCheck( false, location );
+			Test.sanityCheck( serverTest, location );
 		
 		else
 			usage();
