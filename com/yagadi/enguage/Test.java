@@ -136,6 +136,10 @@ public class Test {
 			interpret( "ok", "ok" );
 			interpret( "what is the factorial of 1",  "1" );
 			
+			interpret( "to the phrase what is the factorial of 0 reply 1", "go on" );
+			interpret( "ok", "ok" );
+			interpret( "what is the factorial of 0",  "1" );
+			
 			interpret( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
 			interpret( "first perform numeric evaluate variable a times variable b",       "go on" );
 			interpret( "ok", "ok" );
