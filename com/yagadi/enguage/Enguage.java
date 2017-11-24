@@ -19,7 +19,9 @@ public class Enguage extends Shell {
 
 	static private  Audit audit = new Audit( "Enguage" );
 	
-	/* Enguage is a singleton, so that its internals can refer to the outer instance.
+	/* Enguage is a singleton, so that its internals can refer 
+	 * to the outer instance. Enguage is therefore instantiated
+	 * at runtime.
 	 */
 	static private Enguage e = new Enguage();
 	static public  Enguage get() { return e; }
@@ -42,13 +44,13 @@ public class Enguage extends Shell {
 	
 	public void  log( String s ) { audit.log( s ); }
 	
+	// locadConfig() is the secondary stage of initialisation and takes time!
 	private Config      config = new Config();
 	public  Enguage loadConfig() { config.load(); return this; }
 
 	@Override
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
-		//if (!audit.tracing && !Audit.allTracing) audit.log( utterance.toString( Strings.SPACED ));
 
 		if (Reply.understood()) // from previous interpretation!
 			o.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
@@ -65,12 +67,14 @@ public class Enguage extends Shell {
 			Redo.spoken( true );
 		} else {
 			// really lost track?
-			audit.debug( "Enguage:interpret(): not understood, forgeting to ignore: " + Repertoire.signs.ignore().toString() );
+			audit.debug( "Enguage:interpret(): not understood, forgeting to ignore: "
+			             +Repertoire.signs.ignore().toString() );
 			Repertoire.signs.ignoreNone();
 			aloudIs( true ); // sets aloud for whole session if reading from fp
 		}
 
-		// autoload() in Repertoire.interpret() -- there is a reason for this asymmetry
+		// auto-unload here - autoloading() in Repertoire.interpret() 
+		// asymmetry: load as we go; tidy-up once finished
 		if (!Repertoire.isInducting() && !Autoload.ing()) Autoload.unload();
 
 		return audit.out( reply );
@@ -92,7 +96,7 @@ public class Enguage extends Shell {
 		audit.LOG( "          config directory, default=\"./src/assets\"\n" );
 		audit.LOG( "       -p <port>, --port <port>" );
 		audit.LOG( "          listens on local TCP/IP port number\n" );
-		audit.LOG( "       -s, --shell" );
+		audit.LOG( "       -c, --client" );
 		audit.LOG( "          runs Engauge as a shell\n" );
 		audit.LOG( "       --server [<port>]" );
 		audit.LOG( "          switch to send test commands to a server." );
@@ -118,13 +122,11 @@ public class Enguage extends Shell {
 			serverTest = true;
 			cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
-			if (!cmd.equalsIgnoreCase( "-t" ) && !cmd.equalsIgnoreCase( "--test" )) {
-				Test.portNumber( cmds.remove( 0 ));
-				cmd = cmds.size()==0 ? "":cmds.remove(0);
-			}
+			Test.portNumber( cmds.remove( 0 ));
+			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
 				
-		if (cmd.equals( "-s" ) || cmd.equals( "--shell" ))
+		if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
 			e.aloudIs( true ).run();
 		
 		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))

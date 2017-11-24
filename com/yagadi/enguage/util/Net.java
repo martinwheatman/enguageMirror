@@ -50,7 +50,7 @@ public class Net {
 		String rc = Reply.failure();
 		
 		if (port == 999) { // test value
-			rc = Reply.success(); // assume we're stuffed the server intentionally
+			rc = Reply.success(); // assume we've stuffed the server intentionally
 			
 		} else if (port > 1024 && port < 65536) {
 			addr = addr==null || addr.equals( "" ) ? "localhost" : addr;
