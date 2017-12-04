@@ -42,13 +42,13 @@ public class Sign {
 	}
 
 	
-	private ArrayList<Intention> intentions = new ArrayList<Intention>();
+	private ArrayList<Intention> programme = new ArrayList<Intention>();
 	
-	public  Sign append(        Intention intent ){ intentions.add(    intent ); return this;}
+	public  Sign append(        Intention intent ){ programme.add(    intent ); return this;}
 	//public Sign headAppend(   Intention intent ){ intentions.add( 1, intent ); return this;}
-	public  Sign prepend(       Intention intent ){ intentions.add( 0, intent ); return this;}
-	public  Sign insert( int i, Intention intent ){ intentions.add( i, intent ); return this;}
-	public  Sign appendIntention( int typ, String val ) {intentions.add( new Intention(typ,val));return this;}
+	public  Sign prepend(       Intention intent ){ programme.add( 0, intent ); return this;}
+	public  Sign insert( int i, Intention intent ){ programme.add( i, intent ); return this;}
+	public  Sign appendIntention( int typ, String val ) {programme.add( new Intention(typ,val));return this;}
 
 	
 	
@@ -104,7 +104,7 @@ public class Sign {
 	public String toXml( int n, long complexity ) {
 		
 		String intents = "";
-		for (Intention in : intentions)
+		for (Intention in : programme)
 			intents += "\n      " + Intention.typeToString( in.type() ) +"='"+ in.value() +"'";
 		
 		return  indent +"<"+ NAME +" n='"+ n +"' complexity='"+ complexity +"' repertoire='"+ concept() +"'"
@@ -116,7 +116,7 @@ public class Sign {
 	
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", pattern().toString() );
-		Iterator<Intention> ai = intentions.iterator();
+		Iterator<Intention> ai = programme.iterator();
 		while (!r.isDone() && ai.hasNext()) {
 			Intention in = ai.next().temporalIs( isTemporal()).spatialIs( isSpatial());
 			switch (in.type()) {
