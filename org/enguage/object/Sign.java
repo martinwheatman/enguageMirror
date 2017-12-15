@@ -10,7 +10,7 @@ import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 
-import com.yagadi.enguage.object.Variable;
+import org.enguage.object.Variable;
 
 public class Sign {
 	static public  String  NAME = "sign";
