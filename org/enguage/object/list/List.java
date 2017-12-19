@@ -214,6 +214,15 @@ public class List extends Value {
 		audit.out( rc );
 		return rc;
 	}
+	public boolean move(List l) {
+		/* 
+		 * moves the content of one list to another.
+		 */
+		while (l.content().size() > 0)
+			add( new Item( l.content().remove( 0 )));
+			
+		return true;
+	}
 	private boolean exists(Item item, Strings params) {
 		/* 
 		 * TODO: to "list exists _user needs coffee"
