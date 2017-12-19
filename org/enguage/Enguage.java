@@ -18,18 +18,19 @@ import org.enguage.Enguage;
 
 public class Enguage extends Shell {
 	
+	public static final String DNU = "DNU";
 	public Enguage() { super( "Enguage" ); }
-
+	
 	static private  Audit audit = new Audit( "Enguage" );
 	
-	/* Enguage is a singleton, so that its internals can refer 
+	/* Enguage is a singleton, so that its internals can refer
 	 * to the outer instance. Enguage is therefore instantiated
 	 * at runtime.
 	 */
-	static private Enguage e = new Enguage();
+	static public  Enguage e = new Enguage();
 	static public  Enguage get() { return e; }
 	static public  void    set( String location ) {
-		audit.in( "Engauge", "location=" + location );
+		audit.in( "Enguage", "location=" + location );
 
 		if (!Fs.location( location ))
 			audit.FATAL( location + ": not found" );
@@ -48,8 +49,8 @@ public class Enguage extends Shell {
 	public void  log( String s ) { audit.log( s ); }
 	
 	// locadConfig() is the secondary stage of initialisation and takes time!
-	private Config      config = new Config();
-	public  Enguage loadConfig() { config.load(); return this; }
+	private        Config     config = new Config();
+	public  static int    loadConfig( String content ) { return get().config.load( content ); }
 
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
@@ -86,9 +87,9 @@ public class Enguage extends Shell {
 	public static String interpret( String utterance ) {
 		return Enguage.get().interpret( new Strings( utterance ));
 	}
-	public static void loadConfig( String location ) {
+	public static void xxxloadConfig( String location ) {
 		set( location );
-		Enguage.get().loadConfig();
+		// Enguage.get().loadConfig();
 	}
 	
 	// ==== test code =====
@@ -117,7 +118,8 @@ public class Enguage extends Shell {
 			location = cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
-		Enguage.loadConfig( location );
+		String context = Fs.stringFromFile( "assets/config.xml" );
+		Enguage.loadConfig( context );
 		
 		boolean serverTest = false;
 		if (cmds.size() > 0 && cmd.equals( "--server" )) {

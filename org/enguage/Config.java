@@ -6,7 +6,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.object.Attribute;
-import org.enguage.object.Ospace;
 import org.enguage.object.Overlay;
 import org.enguage.object.Variable;
 import org.enguage.sign.Signs;
@@ -22,42 +21,18 @@ import org.enguage.util.Tag;
 import org.enguage.vehicle.Answer;
 import org.enguage.vehicle.Reply;
 
-import org.enguage.Config;
-import org.enguage.Enguage;
-
 public class Config {
 	static       private Audit audit = new Audit( "Config" );
 	static final private String NAME = "config";
 	
-	static public String welcome = "welcome";
-	static public String welcome() { return welcome; }
-	static public String welcome( String w ) { return welcome = w; }
+	static private String welcome = "welcome";
+	static public  String welcome() { return welcome; }
+	static public  String welcome( String w ) { return welcome = w; }
 
-	static public boolean firstRun = true;
-	static public boolean firstRun() { return firstRun; }
-	static public void    firstRun( boolean b ) { firstRun = b; }
+	static private boolean firstRun = true;
+	static public  boolean firstRun() { return firstRun; }
+	static public  void    firstRun( boolean b ) { firstRun = b; }
 	
-	/* this needs to go into the app...
-	static public boolean visualMode = true;
-	static public boolean visualMode() { return visualMode; }
-	static public boolean visualMode( boolean b ) { return visualMode = b; }
-	
-	static public boolean verboseMode = true;
-	static public boolean verboseMode() { return verboseMode; }
-	static public boolean verboseMode( boolean b ) { return verboseMode = b; }
-	
-	static public boolean previewMode = true;
-	static public boolean previewMode() { return previewMode; }
-	static public boolean previewMode( boolean b ) { return previewMode = b; }
-	// as does this...
-	static public String directionToSpeak = "direction To Speak";
-	static public String directionToSpeak() { return directionToSpeak; }
-	static public String directionToSpeak( String s ) { return  directionToSpeak = s; }
-
-	static public String helpOnHelp = "help on help";
-	static public String helpOnHelp() { return helpOnHelp; }
-	static public String helpOnHelp( String s ) { return  helpOnHelp = s; }
-	// */
 	public static void setContext( ArrayList<Attribute> aa ) {
 		if (null != aa) {
 			ListIterator<Attribute> pi = aa.listIterator();
@@ -92,10 +67,9 @@ public class Config {
 				}
 	}	}	}
 
-	
-	public void load() { load( "" );}
-	public void load( String name ) {
-		audit.in( "load", name = name.equals("") ? NAME : name );
+	public int load( String content ) {
+		int rc = -1;
+		audit.in( "load", content );
 		Audit.allOff();
 		if (Audit.startupDebug) Audit.allOn();
 		
@@ -107,13 +81,12 @@ public class Config {
 					Enguage.get().copyright() +
 					"\nEnguage main(): overlay is: " + Overlay.Get().toString()
 			)	);
-		//directionToSpeak( "press the button and speak" );
-		//helpOnHelp( "just say help" );
 
-		Tag t = Tag.fromFile( Ospace.location() + name +".xml" );
+		Tag t = new Tag( content );
 		if (t != null && (t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
 			Concepts.load( t.findByName( "concepts" ));
+			rc = content.length();
 		}
 
 		Redo.undoEnabledIs( true );
@@ -124,11 +97,11 @@ public class Config {
 
 		Audit.allOff();
 		if (Audit.runtimeDebug) Audit.allOn();
-		audit.out();
+		return audit.out( rc );
 	}
 	
 	public static void main( String args[]) {
 		Enguage.set( "./src/assets" );
 		Config c = new Config();
-		c.load();
+		c.load( "" );
 }	}
