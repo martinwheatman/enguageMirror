@@ -202,19 +202,43 @@ public class Test {
 			interpret( "delete martin willBe    list", "ok" );
 			interpret( "delete martin willNotBe list", "ok" );
 			
-			//  e.g. martin is alive
+			/*
+			 * Test 5.1 - IS
+			 */
+			// e.g. i am alive - 5.1
+			interpret( "interpret i am variable state thus",         "go on" );
+			interpret( "first add    variable state to   i am list", "go on" );
+			interpret( "then  remove variable state from i amNot list", "go on" );
+			interpret( "then whatever reply ok",                     "ok" );
+			
+			// e.g. i am not alive - 5.1
+			interpret( "interpret i am not variable state thus",        "go on" );
+			interpret( "first add    variable state to   i amNot list", "go on" );
+			interpret( "then  remove variable state from i am    list", "go on" );
+			interpret( "then whatever reply ok",                        "ok" );
+			
+			// e.g. am i alive? - 5.1
+			interpret( "interpret am i variable state thus",                "go on" );
+			interpret( "first variable state exists in i am list",          "go on" );
+			interpret( "then reply yes i am variable state",                "go on" );
+			interpret( "then if not variable state exists in i amNot list", "go on" );
+			interpret( "then if not reply i do not know",                   "go on" );
+			interpret( "then reply no i am not variable state",             "go on" );
+			interpret( "ok", "ok" );
+			
+			//  e.g. martin is alive - 5.1
 			interpret( "interpret variable entity is variable state thus",            "go on" );
 			interpret( "first add    variable state to   variable entity is    list", "go on" );
 			interpret( "then  remove variable state from variable entity isNot list", "go on" );
 			interpret( "then whatever reply ok",                                      "ok" );
 			
-			// e.g. martin is not alive
+			// e.g. martin is not alive - 5.1
 			interpret( "interpret variable entity is not variable state thus",       "go on" );
 			interpret( "first add   variable state to   variable entity isNot list", "go on" );
 			interpret( "then remove variable state from variable entity is    list", "go on" );
 			interpret( "then whatever reply ok",                                     "ok" );
 			
-			// e.g. is martin alive
+			// e.g. is martin alive - 5.1
 			interpret( "interpret is variable entity variable state thus",        "go on" );
 			interpret( "first variable state  exists in variable entity is list", "go on" );
 			interpret( "then reply yes variable entity is variable state",        "go on" );
@@ -223,7 +247,7 @@ public class Test {
 			interpret( "then if not reply i do not know",                         "go on" );
 			interpret( "ok", "ok" );
 
-			// e.g. is martin not alive
+			// e.g. is martin not alive - 5.1
 			interpret( "interpret is variable entity not variable state thus",       "go on" );
 			interpret( "first variable state  exists in variable entity isNot list", "go on" );
 			interpret( "then reply yes variable entity is not variable state",        "go on" );
@@ -233,6 +257,13 @@ public class Test {
 			interpret( "ok", "ok" );
 
 			// test 5.1
+			interpret( "am i alive",     "i don't know" );
+			interpret( "i am alive",     "ok" );
+			interpret( "am i alive",     "yes i'm alive" );
+			interpret( "i am not alive", "ok" );
+			interpret( "am i alive",     "no i'm not alive" );
+			
+			// test 5.1
 			interpret( "is martin alive", "i don't know" );
 			interpret( "martin is alive", "ok" );
 			interpret( "is martin alive", "yes martin is alive" );
@@ -240,48 +271,22 @@ public class Test {
 			interpret( "is martin alive",     "no martin is not alive" );
 			interpret( "is martin not alive", "yes martin is not alive" );
 			
-			// e.g. i am alive
-			interpret( "interpret i am variable state thus",         "go on" );
-			interpret( "first add    variable state to   i am list", "go on" );
-			interpret( "then  remove variable state from i amNot list", "go on" );
-			interpret( "then whatever reply ok",                     "ok" );
-			
-			// e.g. i am not alive
-			interpret( "interpret i am not variable state thus",        "go on" );
-			interpret( "first add    variable state to   i amNot list", "go on" );
-			interpret( "then  remove variable state from i am    list", "go on" );
-			interpret( "then whatever reply ok",                        "ok" );
-			
-			// e.g. am i alive?
-			interpret( "interpret am i variable state thus",                "go on" );
-			interpret( "first variable state exists in i am list",          "go on" );
-			interpret( "then reply yes i am variable state",                "go on" );
-			interpret( "then if not variable state exists in i amNot list", "go on" );
-			interpret( "then if not reply i do not know",                   "go on" );
-			interpret( "then reply no i am not variable state",             "go on" );
-			interpret( "ok", "ok" );
-			
-			// test 5.2
-			interpret( "am i alive",     "i don't know" );
-			interpret( "i am alive",     "ok" );
-			interpret( "am i alive",     "yes i'm alive" );
-			interpret( "i am not alive", "ok" );
-			interpret( "am i alive",     "no i'm not alive" );
-			
-			// Test 5.3 was/was not
-			//  e.g. martin was alive
+			/*
+			 *  Test 5.2 was/was not
+			 */
+			//  e.g. martin was alive - 5.2
 			interpret( "interpret variable entity was variable state thus",            "go on" );
 			interpret( "first add    variable state to   variable entity was    list", "go on" );
 			interpret( "then  remove variable state from variable entity wasNot list", "go on" );
 			interpret( "then whatever reply ok",                                       "ok" );
 			
-			// e.g. martin was not alive
+			// e.g. martin was not alive - 5.2
 			interpret( "interpret variable entity was not variable state thus",       "go on" );
 			interpret( "first add   variable state to   variable entity wasNot list", "go on" );
 			interpret( "then remove variable state from variable entity was    list", "go on" );
 			interpret( "then whatever reply ok",                                      "ok" );
 			
-			// e.g. was martin alive
+			// e.g. was martin alive - 5.2
 			interpret( "interpret was variable entity variable state thus",        "go on" );
 			interpret( "first variable state  exists in variable entity was list", "go on" );
 			interpret( "then reply yes variable entity was variable state",        "go on" );
@@ -290,7 +295,7 @@ public class Test {
 			interpret( "then if not reply i do not know",                          "go on" );
 			interpret( "ok", "ok" );
 
-			// e.g. was martin not alive
+			// e.g. was martin not alive - 5.2
 			interpret( "interpret was variable entity not variable state thus",       "go on" );
 			interpret( "first variable state  exists in variable entity wasNot list", "go on" );
 			interpret( "then reply yes variable entity was not variable state",       "go on" );
@@ -299,7 +304,7 @@ public class Test {
 			interpret( "then if not reply i do not know",                             "go on" );
 			interpret( "ok", "ok" );
 
-			// test 5.3
+			// test 5.2
 			interpret( "was martin alive",     "i don't know" );
 			interpret( "martin was alive",     "ok" );
 			interpret( "was martin alive",     "yes martin was alive" );
@@ -307,20 +312,22 @@ public class Test {
 			interpret( "was martin alive",     "no martin was not alive" );
 			interpret( "was martin not alive", "yes martin was not alive" );
 			
-			// Test 5.4 will be/will not be
-			//  e.g. martin will be alive
+			/*
+			 *  Test 5.3 will be/will not be
+			 */
+			//  e.g. martin will be alive - 5.3
 			interpret( "interpret variable entity will be variable state thus",           "go on" );
 			interpret( "first add    variable state to   variable entity willBe    list", "go on" );
 			interpret( "then  remove variable state from variable entity willNotBe list", "go on" );
 			interpret( "then whatever reply ok",                                          "ok" );
 			
-			// e.g. martin will not be alive
+			// e.g. martin will not be alive - 5.3
 			interpret( "interpret variable entity will not be variable state thus",      "go on" );
 			interpret( "first add   variable state to   variable entity willNotBe list", "go on" );
 			interpret( "then remove variable state from variable entity willBe    list", "go on" );
 			interpret( "then whatever reply ok",                                         "ok" );
 			
-			// e.g. will be martin alive
+			// e.g. will martin be alive - 5.3
 			interpret( "interpret will variable entity be variable state thus",      "go on" );
 			interpret( "first variable state exists in variable entity willBe list", "go on" );
 			interpret( "then reply yes variable entity will be variable state",      "go on" );
@@ -329,7 +336,7 @@ public class Test {
 			interpret( "then if not reply i do not know",                            "go on" );
 			interpret( "ok", "ok" );
 
-			// e.g. will martin not be alive
+			// e.g. will martin not be alive - 5.3
 			interpret( "interpret will variable entity not be variable state thus",      "go on" );
 			interpret( "first variable state  exists in variable entity willNotBe list", "go on" );
 			interpret( "then reply yes variable entity will not be variable state",      "go on" );
@@ -338,7 +345,7 @@ public class Test {
 			interpret( "then if not reply i do not know",                                "go on" );
 			interpret( "ok", "ok" );
 
-			// test 5.4
+			// test 5.3
 			interpret( "will i be alive",     "i don't know" );
 			interpret( "i will be alive",     "ok" );
 			interpret( "will i be alive",     "yes you'll be alive" );
@@ -354,8 +361,9 @@ public class Test {
 			interpret( "will martin not be alive", "yes martin will not be alive" );
 
 			// Test
-			// ... and  X is/was/will be Y: first-person to third-person...
 			// Event: to move is to was (traverse time quanta)
+			interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
+			
 			
 			// dead is the opposite of alive
 			// dead and alive are mutually exclusive
