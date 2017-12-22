@@ -13,6 +13,9 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
 
+import org.enguage.Config;
+import org.enguage.Enguage;
+
 public class Enguage extends Shell {
 
 	public static final String DNU = "DNU";
