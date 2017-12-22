@@ -1,5 +1,6 @@
 package org.enguage.vehicle;
 
+import org.enguage.Enguage;
 import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
 import org.enguage.sign.intention.Redo;
@@ -38,7 +39,7 @@ public class Reply { // a reply is basically a formatted answer
 	static public  void   strangeThought( String thought ) { strangeThought = thought; }
 	static public  String strangeThought(){ return strangeThought; }
 
-	static private String dnu = "DNU";
+	static private String dnu = Enguage.DNU;
 	static public  void   dnu( String s ) { dnu = s; }
 	static public  String dnu(){ return dnu; }
 

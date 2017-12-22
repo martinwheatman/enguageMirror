@@ -1,7 +1,5 @@
 package org.enguage;
 
-import java.io.File;
-
 import org.enguage.object.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
@@ -14,6 +12,9 @@ import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
+
+import org.enguage.Config;
+import org.enguage.Enguage;
 
 public class Enguage extends Shell {
 	

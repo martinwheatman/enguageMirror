@@ -25,12 +25,12 @@ public class Fs {
 		return s != null && new File( s ).exists();
 	}
 
-	static public final String root = 
+	static public String root =
 		null != System.getenv( "HOME" ) ?
 			System.getenv( "HOME" ) :
 			//Environment.getExternalStorageDirectory().getPath();
 			"./"; // -- this is in the non-android version.
-			
+
 	// Composite specific
 	static public boolean createEntity( String name ) { return new File( name ).mkdirs(); }
 	static public boolean renameEntity( String from, String to ) { return new File( from ).renameTo( new File( to )); }

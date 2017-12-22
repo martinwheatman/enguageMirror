@@ -2,6 +2,7 @@ package org.enguage.sign.repertoire;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.enguage.Enguage;
 import org.enguage.object.Ospace;
@@ -32,9 +33,10 @@ public class Concept {
 		//String fname = Ospace.location() + name +".txt";
 		//audit.log( "fname is "+ fname );
 		try {
-			FileInputStream fis = new FileInputStream( Ospace.location() + name +".txt" );
-			e.interpret( fis );
-			fis.close();
+			InputStream is = 
+					new FileInputStream( Ospace.location() + name +".txt" );
+			e.interpret( is );
+			is.close();
 			wasLoaded = true; 
 		} catch (IOException e1) {}
 		
