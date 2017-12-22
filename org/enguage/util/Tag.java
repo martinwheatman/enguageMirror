@@ -422,32 +422,6 @@ public class Tag {
 				+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
-	
-	public static Tag fromFile( String fname ) {
-		Tag t = null;
-		try {
-			t = new Tag( Fs.stringFromStream( new FileInputStream( fname )) );
-		} catch( IOException e ) {
-			audit.ERROR( "no tag found in file "+ fname );
-		}
-		return t;
-	}
-	/*
-	public static Tag fromAsset( String fname, Activity ctx ) {
-		//audit.traceIn( "fromAsset", fname );
-		Tag t = null;
-		AssetManager am = ctx.getAssets();
-		try {
-			InputStream is = am.open( fname );
-			t = new Tag( Filesystem.stringFromStream( is ));
-			is.close();
-		} catch (IOException e) {
-			audit.ERROR( "no tag found in asset "+ fname );
-		}
-		//audit.traceut();
-		return t;
-	}
-	*/
 	public Tag findByName( String nm ) {
 		Tag rc = null;
 		if (name().equals( nm ))

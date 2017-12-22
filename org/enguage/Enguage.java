@@ -1,7 +1,5 @@
 package org.enguage;
 
-import java.io.File;
-
 import org.enguage.object.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
@@ -16,7 +14,7 @@ import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
 
 public class Enguage extends Shell {
-	
+
 	public static final String DNU = "DNU";
 	public Enguage() { super( "Enguage" ); }
 	
@@ -26,28 +24,35 @@ public class Enguage extends Shell {
 	 * to the outer instance. Enguage is therefore instantiated
 	 * at runtime.
 	 */
-	static public  Enguage e = new Enguage();
+	static public Enguage e = new Enguage();
+	/*
+	 * Enguage should be independent of Android, but...
+	 */
+
+	//static private Activity context = null; // if null, not on Android
+	//static public  Activity context() { return context; }
+	//static public  void     context( Activity ctx ) { context = ctx; }
+
+	static public String location() { return Fs.location();}
+	static public void   location( String loc ) {
+		if(!Fs.location( loc ))
+			audit.FATAL(loc +": not found");
+		else if(!Overlay.autoAttach())
+			audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<");
+	}
+
 	static public  Enguage get() { return e; }
 	static public  void    set( String location ) {
 		audit.in( "Enguage", "location=" + location );
-
-		if (!Fs.location( location ))
-			audit.FATAL( location + ": not found" );
-		else if (!Overlay.autoAttach())
-			audit.FATAL( "Ouch! Cannot autoAttach() to object space" );
-		else {
-			Concepts.names( location );
-			Redo.spokenInit();
-			Repertoire.primeUsedInit();
-		}
+		location( location );
+		Concepts.names( location );
+		Redo.spokenInit();
+		Repertoire.primeUsedInit();
 		audit.out();
 	}
 
 	public Overlay o = Overlay.Get();
-	
-	public void  log( String s ) { audit.log( s ); }
-	
-	// locadConfig() is the secondary stage of initialisation and takes time!
+		
 	private        Config     config = new Config();
 	public  static int    loadConfig( String content ) { return get().config.load( content ); }
 
@@ -86,10 +91,10 @@ public class Enguage extends Shell {
 	public static String interpret( String utterance ) {
 		return Enguage.get().interpret( new Strings( utterance ));
 	}
-	public static void xxxloadConfig( String location ) {
+	/*private static void xxxloadConfig( String location ) {
 		set( location );
 		// Enguage.get().loadConfig();
-	}
+	}*/
 	
 	// ==== test code =====
 	private static void usage() {
