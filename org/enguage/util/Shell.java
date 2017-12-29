@@ -81,6 +81,10 @@ abstract public class Shell {
 			br = new BufferedReader( new InputStreamReader( fp ));
 			boolean was = aloud; // so we can reset volume between utterances.
 			while ((line = br.readLine()) != null) {
+
+				//remove Byte order mark...
+				if (line.startsWith("\uFEFF")) { line = line.substring(1); }
+
 				if (!line.equals("\n")) {
 					// truncate comment -- only in real files
 					int i = line.indexOf( '#' );
