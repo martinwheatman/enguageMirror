@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import org.enguage.util.Audit;
+import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 
 import org.enguage.vehicle.Reply;
@@ -33,7 +34,7 @@ public class Question {
 		BufferedReader br = new BufferedReader( new InputStreamReader( System.in ));
 		try {
 			while (line == null || line.equals( "\n" ))
-				line = br.readLine();
+				line = Shell.stripTerminator( br.readLine() );
 		} catch (java.io.IOException e ) {
 			audit.ERROR( "IO exception in Question.getLine( default );" );
 		}

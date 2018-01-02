@@ -38,6 +38,12 @@ abstract public class Shell {
 			a.remove( a.size() - 1 );
 		return a;
 	}
+	static public String stripTerminator( String s ) {
+		Strings a = new Strings( s );
+		if (isTerminated( a ))
+			a.remove( a.size() - 1 );
+		return a.toString();
+	}
 	static public Strings addTerminator( Strings a, String terminator ) {
 		a.add( terminators.contains( terminator ) ? terminator : terminators.get( 0 ));
 		return a;
