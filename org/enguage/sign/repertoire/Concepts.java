@@ -143,7 +143,7 @@ public class Concepts {
 		audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
 	}
 	public static void main( String args[]) {
-		names("./src/assets" );
+		names("./src/assets/concepts" );
 		test( "i need a coffee",false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );

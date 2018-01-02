@@ -1,8 +1,5 @@
 package org.enguage.util;
 
-/* changes - removing preferences - commented out until implemented
- * in app, or restored here
- */
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,9 +8,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 import org.enguage.object.Entity;
-
-import org.enguage.util.Audit;
-import org.enguage.util.Fs;
 
 public class Fs {
 	static Audit audit = new Audit( "Fs" );
@@ -25,11 +19,10 @@ public class Fs {
 		return s != null && new File( s ).exists();
 	}
 
-	static public String root =
-		null != System.getenv( "HOME" ) ?
-			System.getenv( "HOME" ) :
-			//Environment.getExternalStorageDirectory().getPath();
-			"./"; // -- this is in the non-android version.
+	static private String root =
+			(null != System.getenv( "HOME" ) ? System.getenv( "HOME" ) : ".") + File.separator;
+	static public void   root(String rt ) { root = rt; }
+	static public String root() { return root; }
 
 	// Composite specific
 	static public boolean createEntity( String name ) { return new File( name ).mkdirs(); }
@@ -75,8 +68,12 @@ public class Fs {
 		//audit.in( "stringFromStream" );
 		String value = "";
 		try {
+			int n;
 			byte buf[] = new byte[ 1024 ];
-			while (-1 != is.read(buf)) value += new String( buf );
+			while (-1 != (n = is.read(buf))) {
+				for (int i=n; i<1024; i++) buf[ i ] = ' ';
+				value += new String( buf );
+			}
 			value = value.trim(); // remove trailing blanks?
 		} catch (IOException e) {
 			// just ignore non-existent files...

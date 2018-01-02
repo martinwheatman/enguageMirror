@@ -48,7 +48,7 @@ public class Colloquial {
 		Iterator<Map.Entry<Strings,Strings>> i = set.iterator();
 		while(i.hasNext()) {
 			Map.Entry<Strings,Strings> me = (Map.Entry<Strings,Strings>)i.next();
-			str += me.getValue() +"/"+ me.getKey() +" ";
+			str += me.getValue() +"/"+ me.getKey() +"; ";
 		}
 		return str;
 	}
@@ -85,7 +85,7 @@ public class Colloquial {
 
 	static public String interpret( Strings a ) {
 		if (null == a) return Shell.FAIL;
-		//audit.traceIn( "interpret", a.toString( Strings.CSV ));
+		//audit.in( "interpret", a.toString( Strings.CSV ));
 		if (a.size() >= 3) {
 			
 			Strings intl, extl;
@@ -116,7 +116,7 @@ public class Colloquial {
 				audit.ERROR( "Colloquial.interpret(): unknown command: "+ a.toString( Strings.CSV ));
 		} else
 			audit.ERROR( "Colloquial.interpret(): wrong number of params: "+ a.toString( Strings.CSV ));
-		//return audit.traceOut( Shell.SUCCESS );
+		//return audit.out( Shell.SUCCESS );
 		return Shell.SUCCESS;
 	}
 	public static void main( String args[] ) {

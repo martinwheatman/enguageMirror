@@ -1,5 +1,8 @@
 package org.enguage.sign.repertoire;
 
+//import android.app.Activity;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,9 +11,10 @@ import org.enguage.Enguage;
 import org.enguage.object.Ospace;
 import org.enguage.sign.intention.Intention;
 import org.enguage.util.Audit;
+import org.enguage.util.Fs;
 
 public class Concept {
-	//static private Audit audit = new Audit( "Concept" );
+	static private Audit audit = new Audit( "Concept" );
 	static public boolean load( String name ) {
 		//audit.in( "load", name );
 		Enguage e = Enguage.get();
@@ -33,12 +37,17 @@ public class Concept {
 		//String fname = Ospace.location() + name +".txt";
 		//audit.log( "fname is "+ fname );
 		try {
-			InputStream is = 
-					new FileInputStream( Ospace.location() + name +".txt" );
+			//Activity a = Enguage.context();
+			InputStream is =
+					//a == null ?
+							new FileInputStream( Ospace.location() + "concepts/" +name +".txt" );
+					//      : a.getAssets().open( "concepts"+ File.separator + name + ".txt" );
 			e.interpret( is );
 			is.close();
 			wasLoaded = true; 
-		} catch (IOException e1) {}
+		} catch (IOException e1) {
+			//audit.ERROR( "failed to load concept: "+ Ospace.location() + "concepts/" +name +".txt" );
+		}
 		
 		//...un-silence after inner thought
 		if (wasSilenced) {

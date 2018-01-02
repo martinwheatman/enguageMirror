@@ -10,10 +10,6 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
 
-import org.enguage.vehicle.Context;
-import org.enguage.vehicle.Reply;
-import org.enguage.vehicle.Utterance;
-
 public class Reply { // a reply is basically a formatted answer
 	
 	static private Audit audit = new Audit( "Reply" );

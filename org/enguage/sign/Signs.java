@@ -27,7 +27,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
 	private static       Audit           audit = new Audit( "Signs" );
 	
-	public Signs() { super();}
+	public Signs( String nm ) { super(); name=nm; }
 	public Signs add( Sign[] signs ) {
 		for (Sign sign: signs)
 			insert( sign );
@@ -36,6 +36,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 	static private int   total = 0;
 	static private int clashes = 0;
+
+	private String name = "";
 	
 	public Signs insert( Sign insertMe ) {
 		int c = insertMe.complexity(),
@@ -196,7 +198,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public Reply interpret( Utterance u ) {
 		//*
 			audit.in( "interpret",
-				" ("+ size() +") "
+				" ("+ name +"="+ size() +") "
 				+ "'"+ u.toString( Strings.SPACED ) +"'"
 		 		+ (ignore.size()==0?"":("avoiding "+ignore)));
 		// -- */
@@ -340,7 +342,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public static void main( String[] args ) {
 		// help test...
 		audit.tracing = true;
-		Signs r = new Signs();
+		Signs r = new Signs( "test" );
 		r.insert(
 				new Sign().pattern( new Patternette(  "debug ", "x" ))
 					.concept( "test" )

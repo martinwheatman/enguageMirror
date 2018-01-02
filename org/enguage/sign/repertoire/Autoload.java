@@ -18,8 +18,8 @@ public class Autoload {
 	 */
 	private static Audit audit = new Audit( "Autoload" );
 	
-	private static int ttl = 5;
-	public  static void ttl( String age ) { try { ttl = Integer.valueOf( age ); } catch( Exception e ) {}}
+	private static int  ttl = 5;
+	public  static void ttl( String age ) {try {ttl = Integer.valueOf( age );} catch (Exception e){}}
 	
 	public static int autoloading = 0;
 	public static void    ing( boolean al ) { if (al || autoloading>0) autoloading += al ? 1 : -1; }
@@ -34,13 +34,13 @@ public class Autoload {
 			Autoload.ing( true );
 			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
-			Strings tmp = new Strings();
+			//Strings tmp = new Strings();
 			for (String candidate : Concepts.matches( utterance )) {
 				if (!Language.isQuoted( candidate )// don't try to load: anything that is quoted, ...
 					&&	!candidate.equals(",")             // ...punctuation, ...
 					&&	!Strings.isUpperCase( candidate )) // ...hotspots, ...
 				{
-					//audit.debug( "candidate is "+ candidate );
+					//audit.log( "candidate is "+ candidate );
 					// let's just singularise it: needs -> need
 					//if (Plural.isPlural( candidate )) candidate = Plural.singular( candidate );
 					
@@ -48,14 +48,14 @@ public class Autoload {
 						;//audit.debug( "already loaded on init: "+ candidate );
 					} else if (null==autoloaded.get( candidate )) { //...stuff already loaded.
 						if (Concept.load( candidate )) {
-							//audit.debug( "autoloaded: "+ candidate );
+							//audit.LOG( "autoloaded: "+ candidate );
 							autoloaded.put( candidate, 0 ); // just loaded so set new entry to age=0
-							tmp.add( candidate );
+							//tmp.add( candidate );
 						} else // ignore, if no repertoire!
 							audit.ERROR( "not loaded" );
 					} else { // already exists, so reset age to 0
 						//udit.debug("resetting age: " + candidate);
-						autoloaded.put(candidate, 0);
+						autoloaded.put( candidate, 0 );
 			}	}	}
 			
 			//audit.debug( "Autoload.load(): "+ utterance +" => ["+ tmp.toString( Strings.CSV ) +"]");
@@ -96,10 +96,10 @@ public class Autoload {
 		Audit.allTracing = true;
 		if (!Fs.location( "./src/assets" ))
 			audit.FATAL( "./src/assets: not found" );
-		else if (!Overlay.autoAttach()) {
+		else if (!Overlay.autoAttach())
 			audit.ERROR( " can't auto attach" );
-		} else {
-			Concepts.names( "./src/assets" );
+		else {
+			//Concepts.names( "./src/assets" );
 			load( new Strings( "i need a coffee" ));
 			load( new Strings( "martin needs a coffee" ));
 }	}	}

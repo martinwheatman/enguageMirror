@@ -29,9 +29,9 @@ public class Repertoire {
 	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 
 	 * in engine?
 	 */
-	static public Signs signs = new Signs();
-	static public Signs autop = new Signs().add( Autopoietic.written ).add( Autopoietic.spoken );
-	static public Signs allop = new Signs().add( Engine.commands );
+	static public Signs signs = new Signs("user" );
+	static public Signs autop = new Signs("autop" ).add( Autopoietic.written ).add( Autopoietic.spoken );
+	static public Signs allop = new Signs("allop" ).add( Engine.commands );
 	
 	// ----- read concepts used in main e
 	//static private boolean initialising = false;
@@ -101,6 +101,4 @@ public class Repertoire {
 					r = autop.interpret( u );
 		}	}
 		return r;
-}
-
-}
+}	}
