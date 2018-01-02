@@ -1,8 +1,5 @@
 package org.enguage.sign.repertoire;
 
-//import android.app.Activity;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +8,9 @@ import org.enguage.Enguage;
 import org.enguage.object.Ospace;
 import org.enguage.sign.intention.Intention;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
 
 public class Concept {
-	static private Audit audit = new Audit( "Concept" );
+	//static private Audit audit = new Audit( "Concept" );
 	static public boolean load( String name ) {
 		//audit.in( "load", name );
 		Enguage e = Enguage.get();

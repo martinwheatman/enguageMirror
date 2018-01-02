@@ -16,8 +16,6 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
 
-import java.io.File;
-
 public class Enguage extends Shell {
 
 	public static final String DNU = "DNU";
