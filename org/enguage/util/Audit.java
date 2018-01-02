@@ -10,7 +10,7 @@ public class Audit {
 	private              String     name = "";
 	static private       Strings   stack = new Strings();
 	// global DEBUG switches...
-	static final public  boolean  startupDebug = false;
+	static       public  boolean  startupDebug = false;
 	static final public  boolean  numericDebug = false;
 	static       public  boolean       timings = false;
 	static       public  boolean  runtimeDebug = false;

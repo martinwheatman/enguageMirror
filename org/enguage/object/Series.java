@@ -46,8 +46,8 @@ public class Series { // relates to hypothetical attachment of series of overlay
 	static private String name = DETACHED;
 	static public  void   name( String nm ) { name = nm; }
 	static public  String name() { return name; }
-	static public  String name( int vn ) { return Ospace.charsAndInt( Ospace.root + File.separator + name, vn ); }
-	static public  String name( String nm, int vn ) { return Ospace.charsAndInt( Ospace.root + File.separator + nm, vn ); }
+	static public  String name( int vn ) { return Ospace.charsAndInt( Ospace.root() + File.separator + name, vn ); }
+	static public  String name( String nm, int vn ) { return Ospace.charsAndInt( Ospace.root() + File.separator + nm, vn ); }
 	
 	static private int  number = 0; // series.0, series.1, ..., series.n => 1+n
 	static public  int  number() { return number; } // initialised to 1, for 0th overlay
@@ -59,7 +59,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		//audit.in( "count", "name='"+ name +"'" );
 		highest = -1;
 		number = 0;
-		String candidates[] = new File( Ospace.root ).list();
+		String candidates[] = new File( Ospace.root() ).list();
 		if (candidates != null) for (String candidate : candidates) {
 			//audit.debug( "candidate: "+ candidate );
 			if (   candidate.length() > name.length()+1

@@ -1,5 +1,8 @@
 package org.enguage;
 
+/* import android.app.Activity;
+ */
+
 import org.enguage.object.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
@@ -13,12 +16,12 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
 
-import org.enguage.Config;
-import org.enguage.Enguage;
+import java.io.File;
 
 public class Enguage extends Shell {
 
 	public static final String DNU = "DNU";
+
 	public Enguage() { super( "Enguage" ); }
 	
 	static private  Audit audit = new Audit( "Enguage" );
@@ -28,14 +31,14 @@ public class Enguage extends Shell {
 	 * at runtime.
 	 */
 	static public Enguage e = new Enguage();
+
 	/*
 	 * Enguage should be independent of Android, but...
-	 */
-
-	//static private Activity context = null; // if null, not on Android
-	//static public  Activity context() { return context; }
-	//static public  void     context( Activity ctx ) { context = ctx; }
-
+	 *
+	 *static private Activity context = null; // if null, not on Android
+	 *static public  Activity context() { return context; }
+	 *static public  void     context( Activity ctx ) { context = ctx; }
+    */
 	static public String location() { return Fs.location();}
 	static public void   location( String loc ) {
 		if(!Fs.location( loc ))
@@ -44,11 +47,14 @@ public class Enguage extends Shell {
 			audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<");
 	}
 
+	static public void   root( String rt ) {Fs.root( rt );}
+	static public String root() { return Fs.root();}
+
 	static public  Enguage get() { return e; }
 	static public  void    set( String location ) {
 		audit.in( "Enguage", "location=" + location );
 		location( location );
-		Concepts.names( location );
+		Concepts.names( location ); // need to list this location!
 		Redo.spokenInit();
 		Repertoire.primeUsedInit();
 		audit.out();
@@ -94,21 +100,17 @@ public class Enguage extends Shell {
 	public static String interpret( String utterance ) {
 		return Enguage.get().interpret( new Strings( utterance ));
 	}
-	/*private static void xxxloadConfig( String location ) {
-		set( location );
-		// Enguage.get().loadConfig();
-	}*/
 	
 	// ==== test code =====
 	private static void usage() {
-		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server [<port>]] -t ]" );
+		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server <port>] -t ]" );
 		audit.LOG( "where: -d <configDir>" );
 		audit.LOG( "          config directory, default=\"./src/assets\"\n" );
 		audit.LOG( "       -p <port>, --port <port>" );
 		audit.LOG( "          listens on local TCP/IP port number\n" );
 		audit.LOG( "       -c, --client" );
 		audit.LOG( "          runs Engauge as a shell\n" );
-		audit.LOG( "       --server [<port>]" );
+		audit.LOG( "       -s, --server <port>" );
 		audit.LOG( "          switch to send test commands to a server." );
 		audit.LOG( "          This is only a test, and is on localhost." );
 		audit.LOG( "          (Needs to be initialised with -p nnnn)\n" );
@@ -116,7 +118,9 @@ public class Enguage extends Shell {
 		audit.LOG( "          runs a sanity check" );
 	}
 	public static void main( String args[] ) {
-		
+
+		//Audit.startupDebug = true;
+
 		Strings cmds = new Strings( args );
 		String  cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		
@@ -125,13 +129,15 @@ public class Enguage extends Shell {
 			location = cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
+		//Enguage.configList( new Strings( new File( location ).list()).toString( Strings.CSV ) );
 		Enguage.set( location );
 
 		String content = Fs.stringFromFile( Fs.location() + "/config.xml" );
+		//audit.LOG( "config is:"+ content );
 		Enguage.loadConfig( content );
 		
 		boolean serverTest = false;
-		if (cmds.size() > 0 && cmd.equals( "--server" )) {
+		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
 			serverTest = true;
 			cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);

@@ -1,7 +1,8 @@
 package org.enguage.util;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+/*import android.app.Activity;
+ *import android.content.res.AssetManager;
+ */
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -11,12 +12,6 @@ import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
-
-import org.enguage.util.Audit;
-import org.enguage.util.Fs;
-import org.enguage.util.Indent;
-import org.enguage.util.Number;
-import org.enguage.util.Strings;
 
 public class Tag {
 	private static Audit audit = new Audit( "Tag" );
@@ -422,6 +417,22 @@ public class Tag {
 				+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
+	/*
+	public static Tag fromAsset( String fname, Activity ctx ) {
+		audit.in( "fromAsset", fname );
+		Tag t = null;
+		AssetManager am = ctx.getAssets();
+		try {
+			InputStream is = am.open( fname );
+			t = new Tag( Fs.stringFromStream( is ));
+			is.close();
+		} catch (IOException e) {
+			audit.ERROR( "no tag found in asset "+ fname );
+		}
+		audit.out();
+		return t;
+	}*/
+
 	public Tag findByName( String nm ) {
 		Tag rc = null;
 		if (name().equals( nm ))

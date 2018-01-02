@@ -243,7 +243,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	private ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
 		Iterator<String> tbpi = tbp.iterator();
-		while ( tbpi.hasNext() && ui.hasNext()) 
+		while ( tbpi.hasNext() && ui.hasNext())
 			if (!Language.wordsEqualIgnoreCase( tbpi.next(), ui.next() )) {
 				notMatched = 11;
 				return null; // string mismatch
@@ -285,7 +285,7 @@ public class Pattern extends ArrayList<Patternette> {
 			next = null;
 			
 			if (null == (utti = matchBoilerplate( t.prefix(), utti ))) { // ...match prefix
-				//notMatched = 11;
+				//notMatched = 11; -- set within matchBoilerplate()
 				return null;
 				
 			} else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...

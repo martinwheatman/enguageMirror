@@ -65,7 +65,7 @@ public class Overlay {
 		Series.detach(); // start detach()ed;
 		p = new Path( System.getProperty( "user.dir" ));
 		//audit.debug( "initial path is "+ System.getProperty( "user.dir" ) +" (p="+ p.toString() +")" );
-		new File( Ospace.root ).mkdir(); // JIC -- ignore result
+		new File( Ospace.root() ).mkdir(); // JIC -- ignore result
 		/*
 		 * For VERSION 2 - was plain Series.DEFAULT...
 		 * If we put in the following it should result in /yagadi.com being overlaid
@@ -77,7 +77,7 @@ public class Overlay {
 	}
 
 	public int    count() { return Series.number(); }
-	public String toString() { return "[ "+ Ospace.root +", "+ Series.name() +"("+ Series.number() +") ]"; }
+	public String toString() { return "[ "+ Ospace.root() +", "+ Series.name() +"("+ Series.number() +") ]"; }
 	
 	// called from Enguage...
 	public boolean attached() { return Series.attached(); }
@@ -223,7 +223,7 @@ public class Overlay {
 		if (p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
 			int			n = -1,
 			        count = count();
-			String prefix = Ospace.root + File.separator + Series.name() +".";
+			String prefix = Ospace.root() + File.separator + Series.name() +".";
 			String suffix = absName.substring( p.pwd().length());
 			while (++n < count)
 				p.insertDir( prefix + n + suffix, "" );
@@ -397,7 +397,7 @@ public class Overlay {
 		if (!autoAttach())
 			audit.log( "Ouch! Can't auto attach" );
 		else {
-			audit.log( "osroot="+ Ospace.root );
+			audit.log( "osroot="+ Ospace.root() );
 			audit.log( "base="+ Series.name()+", n=" + Series.number() );
 			OverlayShell os = new OverlayShell( new Strings( args ));
 			os.run();
