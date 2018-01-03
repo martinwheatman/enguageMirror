@@ -87,8 +87,7 @@ public class Test {
 			audit.title( "The Non-Computable concept of NEED" );
 			
 			// silently clear the decks
-			//interpret( "prime the answer yes" );
-			
+			interpret( "prime the answer yes" );
 			interpret( "i don't need anything" );
 
 			interpret( "what do i need",
@@ -116,7 +115,7 @@ public class Test {
 			interpret( "i don't need to go to town",
 					   "ok, you don't need to go to town" );
 			
-			//interpret( "prime the answer yes" );
+			interpret( "prime the answer yes" );
 			interpret( "I have everything",
 				       "ok, you don't need anything" );
 			
@@ -522,7 +521,7 @@ public class Test {
 		if ( level == 0 || level == 10 ) {
 			audit.title( "Ask: Confirmation" );
 			
-			/*interpret( "prime the answer yes" );
+			interpret( "prime the answer yes" );
 			interpret( "i have everything", "ok , you don't need anything" );
 			
 			interpret( "prime the answer no" );
