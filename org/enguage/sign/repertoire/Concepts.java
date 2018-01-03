@@ -16,11 +16,10 @@ public class Concepts {
 	 */
 	static private Audit audit = new Audit( "Concepts" );
 
-	static private       TreeSet<String> names = new TreeSet<String>();
-	static private final TreeSet<String> names() { return names; }
-	static public                   void names( String location ) {
-		audit.in( "names", location );
-		for ( String fname : new File( location ).list() ) {
+	static private TreeSet<String> names = new TreeSet<String>();
+	static public             void names( String[] dirlist ) {
+		audit.in( "names", new Strings( dirlist ).toString( Strings.CSV ));
+		for ( String fname : dirlist ) {
 			String[] components = fname.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt")) {
 				audit.debug( "adding concept: "+ components[ 0 ]);
@@ -75,7 +74,7 @@ public class Concepts {
 		//audit.in( "matches", utterance.toString() );
 		// matches: utt=[martin is a wally], candiates=[ "is_a+has_a" ] => add( is_a+has_a )
 		Strings matches = new Strings();
-		for (String candidate : names() ) { // e.g. "is_a+has_a" OR "to_the_phrase-reply_with"
+		for (String candidate : names ) { // e.g. "is_a+has_a" OR "to_the_phrase-reply_with"
 			Strings candid = new Strings( candidate, '+' );
 			// matching: "to my name is martin reply hello martin" with "to-reply-"
 			for (String c : candid) { // e.g. c="to_the_phrase-reply-"
@@ -143,7 +142,7 @@ public class Concepts {
 		audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
 	}
 	public static void main( String args[]) {
-		names("./src/assets/concepts" );
+		names( new File( "./src/assets/concepts" ).list() );
 		test( "i need a coffee",false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );

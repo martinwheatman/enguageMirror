@@ -1,5 +1,7 @@
 package org.enguage;
 
+import java.io.File;
+
 /* import android.app.Activity;
  */
 
@@ -32,11 +34,11 @@ public class Enguage extends Shell {
 
 	/*
 	 * Enguage should be independent of Android, but...
-	 *
-	 *static private Activity context = null; // if null, not on Android
-	 *static public  Activity context() { return context; }
-	 *static public  void     context( Activity ctx ) { context = ctx; }
-    */
+	 */
+	static private Object context = null; // if null, not on Android
+	static public  Object context() { return context; }
+	static public  void   context( Object activity ) { context = activity; }
+    
 	static public String location() { return Fs.location();}
 	static public void   location( String loc ) {
 		if(!Fs.location( loc ))
@@ -52,11 +54,11 @@ public class Enguage extends Shell {
 	static public  void    set( String location ) {
 		audit.in( "Enguage", "location=" + location );
 		location( location );
-		Concepts.names( location + "/concepts" ); // need to list this location!
 		Redo.spokenInit();
 		Repertoire.primeUsedInit();
 		audit.out();
 	}
+	static public void concepts( String[] names ) { Concepts.names( names ); }
 
 	public Overlay o = Overlay.Get();
 		
@@ -127,12 +129,10 @@ public class Enguage extends Shell {
 			location = cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
-		//Enguage.configList( new Strings( new File( location ).list()).toString( Strings.CSV ) );
-		Enguage.set( location );
 
-		String content = Fs.stringFromFile( Fs.location() + "/config.xml" );
-		//audit.LOG( "config is:"+ content );
-		Enguage.loadConfig( content );
+		Enguage.set( location );
+		Enguage.concepts( new File( location + "/concepts" ).list() );
+		Enguage.loadConfig( Fs.stringFromFile( Fs.location() + "/config.xml" ) );
 		
 		boolean serverTest = false;
 		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
