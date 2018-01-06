@@ -11,7 +11,7 @@ where: -d <configDir>
        -c, --client
           runs Engauge as a shell
 
-       --server [<port>]
+       -s <port>, --server <port>
           switch to send test commands to a server.
           This is only a test, and is on localhost.
           (Needs to be initialised with -p nnnn)
