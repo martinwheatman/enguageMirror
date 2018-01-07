@@ -33,7 +33,7 @@ public class Concept {
 		//String fname = Ospace.location() + name +".txt";
 		//audit.log( "fname is "+ fname );
 		try {
-			//Activity a = Enguage.context();
+			//Activity a = (Activity) Enguage.context();
 			InputStream is =
 					//a == null ?
 							new FileInputStream( Ospace.location() + "concepts/" +name +".txt" );
