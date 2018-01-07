@@ -363,7 +363,7 @@ public class Test {
 
 			// Test
 			// Event: to move is to was (traverse time quanta)
-			interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
+			// interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
 			
 			
 			// dead is the opposite of alive
@@ -386,7 +386,7 @@ public class Test {
 			 *  she died in 1603
 			 *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
 			 */
-			interpret( "a queen is a monarch" );
+			interpret( "a queen is a monarch", "ok, a queen is a monarch" );
 			// my name is martin
 			// my name is martin wheatman
 
