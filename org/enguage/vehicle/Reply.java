@@ -256,6 +256,7 @@ public class Reply { // a reply is basically a formatted answer
 			// put this into reply via Reply.strangeThought()
 			audit.ERROR( "Strange thought: I don't understand: '"+ thought.toString() +"'" );
 			strangeThought( thought.toString() );
+
 			// remove strange thought from Reply - just say DNU
 			if (Redo.disambFound()) {
 				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );

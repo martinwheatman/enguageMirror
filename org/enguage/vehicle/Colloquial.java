@@ -130,8 +130,8 @@ public class Colloquial {
 		a = c.internalise( a );
 		audit.log( a.toString( Strings.SPACED ));
 		
-		interpret( new Strings( "both \"does not\"  \"doesn't\"" ));
 		interpret( new Strings( "both \"do not\" \"don't\"" ));
+		interpret( new Strings( "both \"does not\"  \"doesn't\"" ));
 		interpret( new Strings( "both \"cannot\" \"can't\"" ));
 		//interpret( new Strings( "both \"can not\" \"cannot\"" ));
 		interpret( new Strings( "both \"I have\" \"I've\"" ));
@@ -156,7 +156,7 @@ public class Colloquial {
 		
 		audit.log(
 			applyOutgoing(
-				new Strings("_user needs: i do not understand, i do not need anything")
+				new Strings("_user needs: i do not understand, i do not need anything, _user does not need anything.")
 			)
 		.toString( Strings.SPACED ));
 		

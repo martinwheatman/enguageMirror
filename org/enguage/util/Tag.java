@@ -2,6 +2,9 @@ package org.enguage.util;
 
 /*import android.app.Activity;
  *import android.content.res.AssetManager;
+ *import java.io.FileInputStream;
+ *import java.io.IOException;
+ *import java.io.InputStream;
  */
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -418,21 +421,21 @@ public class Tag {
 				+ postfix ;
 	}
 	/*
-	public static Tag fromAsset( String fname, Activity ctx ) {
-		audit.in( "fromAsset", fname );
-		Tag t = null;
-		AssetManager am = ctx.getAssets();
-		try {
-			InputStream is = am.open( fname );
-			t = new Tag( Fs.stringFromStream( is ));
-			is.close();
-		} catch (IOException e) {
-			audit.ERROR( "no tag found in asset "+ fname );
-		}
-		audit.out();
-		return t;
-	}*/
-
+	 * public static Tag fromAsset( String fname, Activity ctx ) {
+	 * 	audit.in( "fromAsset", fname );
+	 * 	Tag t = null;
+	 * 	AssetManager am = ctx.getAssets();
+	 * 	try {
+	 * 		InputStream is = am.open( fname );
+	 * 		t = new Tag( Fs.stringFromStream( is ));
+	 * 		is.close();
+	 * 	} catch (IOException e) {
+	 * 		audit.ERROR( "no tag found in asset "+ fname );
+	 * 	}
+	 * 	audit.out();
+	 * 	return t;
+	 *}
+	*/
 	public Tag findByName( String nm ) {
 		Tag rc = null;
 		if (name().equals( nm ))

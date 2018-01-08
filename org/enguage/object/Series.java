@@ -28,11 +28,11 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		return Fs.stringFromLink( baseName( nm ));
 	}
 	static public boolean existing( String nm ) {
-		audit.log( "Series.existing(): basename is "+ baseName( nm ));
+		//audit.log( "Series.existing(): basename is "+ baseName( nm ));
 		return null != nm && !nm.equals( DETACHED ) && Fs.exists( baseName( nm ) + ".symlink" );
 	}
 	static public boolean create( String name, String whr ) {
-		audit.in( "create", "name="+name+", whence="+whr );
+		//audit.in( "create", "name="+name+", whence="+whr );
 		boolean rc = true;
 		try {
 			Fs.stringToLink( baseName( name ), new File( whr ).getCanonicalPath());
@@ -40,8 +40,8 @@ public class Series { // relates to hypothetical attachment of series of overlay
 			audit.ERROR( "Series.create(): error in canonical path!" );
 			rc = false;
 		}
-		return audit.out( rc );
-		//return rc;
+		//return audit.out( rc );
+		return rc;
 	}
 	static private String name = DETACHED;
 	static public  void   name( String nm ) { name = nm; }
@@ -94,7 +94,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 	static public void append() {
 		//audit.in( "append", "" );
 		highest++;
-		File overlay = new File( name( highest )); 
+		File overlay = new File( name( highest ));
 		if (!overlay.mkdir()) {
 			highest--;
 			audit.ERROR( "unable to create "+ overlay.toString());

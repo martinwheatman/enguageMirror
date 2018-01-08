@@ -113,11 +113,11 @@ public class Utterance {
 			reply.add( Shell.terminators().get( 0 ));
 		
 		reply = Variable.deref(reply);
-		
+
 		// outbound and general colloquials
 		if (!verbatim)
 			reply = Colloquial.applyOutgoing( reply );
-			
+
 		// ...deref any context...
 		
 		// English-dependent processing...

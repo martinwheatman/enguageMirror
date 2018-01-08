@@ -2,9 +2,6 @@ package org.enguage;
 
 import java.io.File;
 
-/* import android.app.Activity;
- */
-
 import org.enguage.object.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
@@ -51,7 +48,7 @@ public class Enguage extends Shell {
 	static public String root() { return Fs.root();}
 
 	static public  Enguage get() { return e; }
-	static public  void    set( String location ) {
+	static public  void    init( String location ) {
 		audit.in( "Enguage", "location=" + location );
 		location( location );
 		Redo.spokenInit();
@@ -130,7 +127,7 @@ public class Enguage extends Shell {
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
 
-		Enguage.set( location );
+		Enguage.init( location );
 		Enguage.concepts( new File( location + "/concepts" ).list() );
 		Enguage.loadConfig( Fs.stringFromFile( Fs.location() + "/config.xml" ) );
 		

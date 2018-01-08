@@ -99,7 +99,7 @@ public class Autoload {
 		else if (!Overlay.autoAttach())
 			audit.ERROR( " can't auto attach" );
 		else {
-			//Concepts.names( "./src/assets" );
+			//Concepts.names();
 			load( new Strings( "i need a coffee" ));
 			load( new Strings( "martin needs a coffee" ));
 }	}	}

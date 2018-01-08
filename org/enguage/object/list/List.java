@@ -44,6 +44,7 @@ public class List extends Value {
 		
 		int pos = -1;
 		for (Tag t : content()) {
+			//audit.LOG( "TAG:"+ t.toXml());
 			pos++;
 			String tlctor  = t.attribute( "LOCATOR" );
 			String tlction = t.attribute( "LOCATION" );
