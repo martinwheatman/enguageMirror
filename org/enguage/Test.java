@@ -6,8 +6,6 @@ import org.enguage.util.Net;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 
-import org.enguage.Enguage;
-
 public class Test {
 	
 	static private  Audit audit = new Audit( "Test" );
@@ -22,12 +20,12 @@ public class Test {
 		else {
 			
 			int argc = 0;
-			String location = "./src/assets";
+			String location = Enguage.defLoc;
 			if (args.length > 1 && args[ argc ].equals( "-d" )) {
 				argc++;
 				location = args[ argc++ ];
 			}
-			Enguage.loadConfig( location );
+			Enguage.init( location );
 			
 			if ( args.length == argc + 1 &&
 					(args[ argc ].equals( "-s" ) || args[ argc ].equals( "--shell" )))
@@ -39,7 +37,7 @@ public class Test {
 	}	}
 	private static void usage() {
 		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | -t ]" );
-		audit.LOG( "where: default config dir=\".src/assets\"" );
+		audit.LOG( "where: default config dir=\""+ Enguage.defLoc +"\"" );
 		audit.LOG( "     : -p <port> listens on a TCP/IP port" );
 		audit.LOG( "     : -s runs Engauge as a shell" );
 		audit.LOG( "     : -t runs a test sanity check" );

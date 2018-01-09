@@ -17,7 +17,8 @@ import org.enguage.vehicle.Utterance;
 
 public class Enguage extends Shell {
 
-	public static final String DNU = "DNU";
+	public static final String    DNU = "DNU";
+	public static final String defLoc = "./src/assets";
 
 	public Enguage() { super( "Enguage" ); }
 	
@@ -51,6 +52,8 @@ public class Enguage extends Shell {
 	static public  void    init( String location ) {
 		audit.in( "Enguage", "location=" + location );
 		location( location );
+		concepts( new File( location + "/concepts" ).list() );
+		loadConfig( Fs.stringFromFile( location + "/config.xml" ) );
 		Redo.spokenInit();
 		Repertoire.primeUsedInit();
 		audit.out();
@@ -102,7 +105,7 @@ public class Enguage extends Shell {
 	private static void usage() {
 		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server <port>] -t ]" );
 		audit.LOG( "where: -d <configDir>" );
-		audit.LOG( "          config directory, default=\"./src/assets\"\n" );
+		audit.LOG( "          config directory, default=\""+ defLoc +"\"\n" );
 		audit.LOG( "       -p <port>, --port <port>" );
 		audit.LOG( "          listens on local TCP/IP port number\n" );
 		audit.LOG( "       -c, --client" );
@@ -121,15 +124,13 @@ public class Enguage extends Shell {
 		Strings cmds = new Strings( args );
 		String  cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		
-		String location = "./src/assets";
+		String location = defLoc;
 		if (cmds.size() > 0 && cmd.equals( "-d" )) {
 			location = cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
 
 		Enguage.init( location );
-		Enguage.concepts( new File( location + "/concepts" ).list() );
-		Enguage.loadConfig( Fs.stringFromFile( Fs.location() + "/config.xml" ) );
 		
 		boolean serverTest = false;
 		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
