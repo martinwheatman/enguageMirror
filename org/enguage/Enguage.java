@@ -29,6 +29,12 @@ public class Enguage extends Shell {
 	 * at runtime.
 	 */
 	static public Enguage e = new Enguage();
+	static public Enguage get() { return e; }
+
+	public Overlay o = Overlay.Get();
+	
+	private        Config     config = new Config();
+	public  static int    loadConfig( String content ) { return get().config.load( content ); }
 
 	/*
 	 * Enguage should be independent of Android, but...
@@ -37,34 +43,22 @@ public class Enguage extends Shell {
 	static public  Object context() { return context; }
 	static public  void   context( Object activity ) { context = activity; }
     
-	static public String location() { return Fs.location();}
-	static public void   location( String loc ) {
-		if(!Fs.location( loc ))
-			audit.FATAL(loc +": not found");
-		else if(!Overlay.autoAttach())
-			audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<");
-	}
-
 	static public void   root( String rt ) {Fs.root( rt );}
 	static public String root() { return Fs.root();}
 
-	static public  Enguage get() { return e; }
 	static public  void    init( String location ) {
 		audit.in( "Enguage", "location=" + location );
-		location( location );
-		concepts( new File( location + "/concepts" ).list() );
+		if(!Fs.location( location ))
+			audit.FATAL(location +": not found");
+		else if(!Overlay.autoAttach())
+			audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<");
+		Concepts.names( new File( location + "/concepts" ).list() );
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ) );
 		Redo.spokenInit();
 		Repertoire.primeUsedInit();
 		audit.out();
 	}
-	static public void concepts( String[] names ) { Concepts.names( names ); }
-
-	public Overlay o = Overlay.Get();
-		
-	private        Config     config = new Config();
-	public  static int    loadConfig( String content ) { return get().config.load( content ); }
-
+	
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
 

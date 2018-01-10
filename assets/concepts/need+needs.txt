@@ -8,7 +8,6 @@ On "SUBJECT needs PHRASE-OBJECTS":
 	if not, add OBJECTS to SUBJECT needs list;
 	if not, append OBJECTS onto SUBJECT needs list;
 	then, reply "ok, SUBJECT needs ...".
-	
 On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,from FROM";
 	QUANTITY OBJECT exists in SUBJECT needs list;
@@ -21,8 +20,6 @@ On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	reply "I know";
 	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
 	then, reply "ok, SUBJECT needs ...".
-
-
 
 On "SUBJECT does not need PHRASE-OBJECTS":
 	OBJECTS exists in SUBJECT needs list;
@@ -49,7 +46,6 @@ On "SUBJECT does not need any PHRASE-OBJECT":
 	remove any OBJECT from SUBJECT needs list;
 	if not, reply "sorry, SUBJECT does not need any OBJECT";
 	then, reply "ok, SUBJECT does not need any OBJECT".
-
 
 On "what does SUBJECT need":
 	set output format to "QUANTITY,UNIT of,,from FROM";
