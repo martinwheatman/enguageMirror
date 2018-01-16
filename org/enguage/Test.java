@@ -1,7 +1,11 @@
 package org.enguage;
 
+import java.io.File;
+
+import org.enguage.object.Overlay;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
+import org.enguage.util.Fs;
 import org.enguage.util.Net;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
@@ -20,13 +24,22 @@ public class Test {
 		else {
 			
 			int argc = 0;
+			Enguage.e = new Enguage();
+
 			String location = Enguage.defLoc;
 			if (args.length > 1 && args[ argc ].equals( "-d" )) {
 				argc++;
 				location = args[ argc++ ];
 			}
-			Enguage.init( location );
-			
+			Enguage.e.location( location );
+
+			if (null == Enguage.e.o || !Enguage.e.o.attached() )
+				if (!Overlay.autoAttach())
+					audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<" );
+
+			Enguage.e.concepts( new File( location + "/concepts" ).list() );
+			Enguage.loadConfig( Fs.stringFromFile( location + "/config.xml" ) );
+
 			if ( args.length == argc + 1 &&
 					(args[ argc ].equals( "-s" ) || args[ argc ].equals( "--shell" )))
 				Enguage.get().aloudIs( true ).run();				
@@ -85,7 +98,7 @@ public class Test {
 			audit.title( "The Non-Computable concept of NEED" );
 			
 			// silently clear the decks
-			interpret( "prime the answer yes" );
+			interpret( "prime the answer yes", "ok, the next answer will be yes" );
 			interpret( "i don't need anything" );
 
 			interpret( "what do i need",
@@ -113,7 +126,7 @@ public class Test {
 			interpret( "i don't need to go to town",
 					   "ok, you don't need to go to town" );
 			
-			interpret( "prime the answer yes" );
+			interpret( "prime the answer yes", "ok, the next answer will be yes" );
 			interpret( "I have everything",
 				       "ok, you don't need anything" );
 			
@@ -184,7 +197,7 @@ public class Test {
 					   "ok, you need 3 more coffees.");
 			interpret( "what do i need",
 					   "you need 6 coffees, and a cup of tea.");
-			interpret( "prime the answer yes" );
+			interpret( "prime the answer yes", "ok, the next answer will be yes" );
 			interpret( "i don't need anything",
 					   "ok, you don't need anything" );
 		}
@@ -519,13 +532,13 @@ public class Test {
 		if ( level == 0 || level == 10 ) {
 			audit.title( "Ask: Confirmation" );
 			
-			interpret( "prime the answer yes" );
+			interpret( "prime the answer yes", "ok, the next answer will be yes" );
 			interpret( "i have everything", "ok , you don't need anything" );
 			
-			interpret( "prime the answer no" );
+			interpret( "prime the answer no", "ok, the next answer will be no" );
 			interpret( "i have everything", "ok , let us leave things as they are" );
 
-			interpret( "prime the answer i do not understand" );
+			interpret( "prime the answer i do not understand", "ok, the next answer will be i don't understand" );
 			interpret( "i have everything", "Ok , let us leave things as they are" );
 			
 			/* TODO:

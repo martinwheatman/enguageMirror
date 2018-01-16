@@ -12,12 +12,9 @@ import org.enguage.Enguage;
 import org.enguage.object.Ospace;
 import org.enguage.sign.intention.Intention;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
 
 public class Concept {
-	//static private Audit audit = new Audit( "Concept" );
 	static public boolean load( String name ) {
-		//audit.in( "load", name );
 		Enguage e = Enguage.get();
 		boolean wasLoaded = false,
 		        wasSilenced = false,
@@ -34,9 +31,7 @@ public class Concept {
 		if (name.equals( Repertoire.DEFAULT_PRIME ))
 			Repertoire.defaultConceptLoadedIs( true );
 		
-		// ...add content from file...
-		//String fname = Ospace.location() + name +".txt";
-		//audit.log( "fname is "+ fname );
+		// ...add content from file/asset...
 		try {
 			//Activity a = (Activity) Enguage.context();
 			InputStream is =
@@ -53,6 +48,5 @@ public class Concept {
 			Audit.resume();
 			e.aloudIs( wasAloud );
 		}
-		//return audit.out( wasLoaded );
 		return wasLoaded;
 }	}

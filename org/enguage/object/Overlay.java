@@ -109,7 +109,10 @@ public class Overlay {
 	private String nthCandidate( String nm, int vn ) {
 		//audit.in( "nthCandidate", "nm='"+ nm +"', vn="+ vn);
 		// nthCandidate( "/home/martin/src/myfile.c", 27 ) => "/var/overlays/series.27/myfile.c"
-		if (vn > Series.highest()) { vn = Series.highest(); audit.ERROR("nthCandidate called with too high a value"); }
+		if (Series.highest() > -1 && vn > Series.highest()) {
+			audit.ERROR("nthCandidate( "+ nm +", "+ vn +" ) called with a too high value (max="+ Series.highest()+")");
+			vn = Series.highest();
+		}
 		return	//audit.out(
 				(0 > vn) ? nm : 
 				(Series.name( vn ) + File.separator

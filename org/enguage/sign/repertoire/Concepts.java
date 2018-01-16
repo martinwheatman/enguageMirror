@@ -17,15 +17,15 @@ public class Concepts {
 	static private Audit audit = new Audit( "Concepts" );
 
 	static private TreeSet<String> names = new TreeSet<String>();
-	static public             void names( String[] dirlist ) {
-		audit.in( "names", new Strings( dirlist ).toString( Strings.CSV ));
-		for ( String fname : dirlist ) {
+	static public             void names( String[] dirList ) {
+		audit.in( "names", new Strings( dirList ).toString( Strings.CSV ));
+		for ( String fname : dirList ) {
 			String[] components = fname.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt")) {
 				audit.debug( "adding concept: "+ components[ 0 ]);
 				names.add( components[ 0 ]);
 		}	}
-		audit.out();
+		audit.out("["+ new Strings( names ).toString( Strings.CSV ) +"]");
 	}
 
 	static private TreeSet<String> loaded = new TreeSet<String>();
@@ -106,7 +106,6 @@ public class Concepts {
 	 * from the config.xml file.
 	 */
 	static public void load( Tag concepts ) {
-		//audit.in( "load", "" );
 		if (null != concepts) {
 			Repertoire.inductingIs( true );
 			audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
@@ -135,7 +134,6 @@ public class Concepts {
 			Repertoire.inductingIs( false );
 		} else
 			audit.ERROR( "Concepts tag not found!" );
-		//audit.out();
 	}
 	private static void test( String s, boolean matchesToReply ) {
 		Strings sa = matches( new Strings( s ));

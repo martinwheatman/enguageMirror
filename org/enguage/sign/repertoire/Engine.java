@@ -33,6 +33,7 @@ public class Engine {
 	    	new Sign()
 				.pattern( new Patternette( "prime the answer ", "answer" ).phrasedIs())
 		          	.appendIntention( Intention.allop, "primeAnswer ANSWER" )
+					.appendIntention( Intention.thenReply, "ok, the next answer will be ANSWER" )
 	          		.concept( NAME ),
 				          	
 			new Sign()

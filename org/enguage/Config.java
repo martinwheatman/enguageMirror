@@ -101,7 +101,7 @@ public class Config {
 	}
 	
 	public static void main( String args[]) {
-		Enguage.init( "./src/assets" );
+		Enguage.e.location( "./src/assets" );
 		Config c = new Config();
 		c.load( "" );
 }	}

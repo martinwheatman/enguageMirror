@@ -1,7 +1,5 @@
 package org.enguage;
 
-import java.io.File;
-
 import org.enguage.object.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
@@ -15,50 +13,50 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
 
+import java.io.File;
+
 public class Enguage extends Shell {
 
 	public static final String    DNU = "DNU";
 	public static final String defLoc = "./src/assets";
 
 	public Enguage() { super( "Enguage" ); }
-	
+
 	static private  Audit audit = new Audit( "Enguage" );
-	
+
 	/* Enguage is a singleton, so that its internals can refer
-	 * to the outer instance. Enguage is therefore instantiated
-	 * at runtime.
+	 * to the outer instance.
 	 */
-	static public Enguage e = new Enguage();
+	static public Enguage e = null;
 	static public Enguage get() { return e; }
 
 	public Overlay o = Overlay.Get();
-	
-	private        Config     config = new Config();
-	public  static int    loadConfig( String content ) { return get().config.load( content ); }
+
+	private static Config     config = new Config();
+	public  static int    loadConfig( String content ) { return Enguage.config.load( content ); }
 
 	/*
 	 * Enguage should be independent of Android, but...
 	 */
-	static private Object context = null; // if null, not on Android
-	static public  Object context() { return context; }
-	static public  void   context( Object activity ) { context = activity; }
-    
-	static public void   root( String rt ) {Fs.root( rt );}
-	static public String root() { return Fs.root();}
+	private Object  context = null; // if null, not on Android
+	public  Object  context() { return context; }
+	public  Enguage context( Object activity ) { context = activity; return this; }
 
-	static public  void    init( String location ) {
+	public  Enguage concepts( String[] names ) { Concepts.names( names ); return this; }
+
+	public  Enguage root( String rt ) { Fs.root( rt ); return this; }
+	public  String  root() { return Fs.root();}
+
+	public  void location( String location ) {
 		audit.in( "Enguage", "location=" + location );
 		if(!Fs.location( location ))
 			audit.FATAL(location +": not found");
-		else if(!Overlay.autoAttach())
-			audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<");
-		Concepts.names( new File( location + "/concepts" ).list() );
-		loadConfig( Fs.stringFromFile( location + "/config.xml" ) );
+
 		Redo.spokenInit();
 		Repertoire.primeUsedInit();
 		audit.out();
 	}
-	
+
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
 
@@ -92,7 +90,7 @@ public class Enguage extends Shell {
 	
 	// === public static calls ===
 	public static String interpret( String utterance ) {
-		return Enguage.get().interpret( new Strings( utterance ));
+		return e.interpret( new Strings( utterance ));
 	}
 	
 	// ==== test code =====
@@ -117,15 +115,27 @@ public class Enguage extends Shell {
 
 		Strings cmds = new Strings( args );
 		String  cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
+
+		e = new Enguage();
 		
 		String location = defLoc;
 		if (cmds.size() > 0 && cmd.equals( "-d" )) {
 			location = cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
+		e.location( location );
+		e.root( null );
+		e.context( null );
 
-		Enguage.init( location );
-		
+
+		if (null == Enguage.e.o || !Enguage.e.o.attached() )
+			if (!Overlay.autoAttach())
+				audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<" );
+
+		e.concepts( new File( location + "/concepts" ).list() );
+
+		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
+
 		boolean serverTest = false;
 		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
 			serverTest = true;
