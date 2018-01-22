@@ -75,7 +75,7 @@ abstract public class Shell {
 	}
 	
 	public Shell( String name ) {
-		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-17" );
+		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-18" );
 	}
 	public Shell( String name, Strings args ) { this( name ); }
 	public void interpret( InputStream fp ) { // reads file stream and "interpret()"s it
