@@ -32,7 +32,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
 	public  static final String        NAME = "MainActivity";
-	//private static       Audit        audit = new Audit( NAME );
 	private static final int REQUEST_SPEECH = 1;
 
 	public TextToSpeech tts = null;
@@ -80,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 		super.onResume();
 
 		if (null == Enguage.e) {
-			Enguage.e = new Enguage();
-			Enguage.e.location( this.getExternalFilesDir(null ).getPath() );
-			Enguage.e.root( this.getExternalFilesDir(null ).getPath() );
-			Enguage.e.context( this );
+			Enguage.e = new Enguage()
+							.location( this.getExternalFilesDir(null ).getPath() )
+							.root( this.getExternalFilesDir(null ).getPath() )
+							.context( this );
 		}
 
 		if (null == Enguage.e.o || !Enguage.e.o.attached() )
@@ -99,9 +98,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 		// read the config in the background...
 		new MainActivity.ReadConfig( this ).execute();
 	}
-	/**
-	 * Showing google speech input dialog
-	 * * /
 	private void promptSpeechInput() {
 
 		Intent intent = new Intent( RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -139,11 +135,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 					Log.i( ">>>>>>>>>>UTTERANCE>>> ", said.get( 0 ));
 					// interpret what is said...
 					// ...in case of config failure, repeat what was said
-					//audit.traceAll( true );
 					String truText = Enguage.e.interpret( new Strings( said.get( 0 ) )),
 						   toSpeak = truText.equals( Enguage.DNU ) ? said.get( 0 ) : truText;
-					//audit.traceAll( false );
-
+					
 					Toast.makeText( getApplicationContext(), truText, Toast.LENGTH_SHORT ).show();
 					Log.i ( ">>>>>>>>>>>REPLY>>> ", toSpeak );
 					if (null != tts) {
@@ -152,19 +146,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 				}	}
 				break;
 
-			/* case REQUEST_LANGUAGE:
-				if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-					// success, create the TTS instance
-					tts = new TextToSpeech(this, this);
-					tts.setLanguage( Locale.getDefault() );
-				} else {
-					// missing data? install it!
-					Intent installIntent = new Intent();
-					installIntent.setAction( TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA );
-					startActivity( installIntent );
-				}
-				break;
-			// * / 
+			// case REQUEST_LANGUAGE:
+			//	if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+			//		// success, create the TTS instance
+			//		tts = new TextToSpeech(this, this);
+			//		tts.setLanguage( Locale.getDefault() );
+			//	} else {
+			//		// missing data? install it!
+			//		Intent installIntent = new Intent();
+			//		installIntent.setAction( TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA );
+			//		startActivity( installIntent );
+			//	}
+			//	break;
 	}	}
 
 	@Override
@@ -180,26 +173,33 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 	}
 	// --------
 	private class ReadConfig extends AsyncTask<Void, Void, Void> {
+		private static final String NAME = "BKG";
+
 		private MainActivity ctx = null;
 		public ReadConfig( MainActivity a ) {
 			super();
 			ctx = a;
 		}
-		//@Override
-		//protected void onPreExecute() { super.onPreExecute(); }
-		//protected void onPostExecute( Void result ) {super.onPostExecute( result );}
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			Log.i( NAME, "Start" );
+		}
+		@Override
+		protected void onPostExecute( Void result ) {
+			super.onPostExecute( result );
+			Log.i( NAME, "Done" );
+		}
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			Log.i( "BKG", "Start" );
 			AssetManager am = ctx.getAssets();
 			try {
 				InputStream is = am.open( "config.xml" );
 				Enguage.loadConfig( Fs.stringFromStream( is ));
 				is.close();
 			} catch (Exception e) {
-				Log.e( MainActivity.NAME, "doInBackground() failed: "+ e.toString() );
+				Log.e( NAME, "doInBackground() failed: "+ e.toString() );
 			}
-			Log.i( "BKG", "Done" );
 			return null;
 }	}	}
 */

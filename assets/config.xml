@@ -29,10 +29,8 @@
 			<concept id="plural"         op="load"/>
 			<concept id="temporal"       op="load"/>
 			<concept id="spatial"        op="load"/>
-			<concept id="settings"       op="load"/>
+			<concept id="set+get+unset"  op="load"/>
 			<concept id="arithmetic"     op="load"/>
-			<concept id="day"            op="load"/>
-			<concept id="meeting"        op="prime"/>
 		</concepts>
 	</config>
 </xml>

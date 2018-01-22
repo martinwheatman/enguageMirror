@@ -1,5 +1,6 @@
 package org.enguage.sign.repertoire;
 
+import java.io.File;
 /*import android.app.Activity;
  *
  *import java.io.File;
@@ -33,14 +34,17 @@ public class Concept {
 		
 		// ...add content from file/asset...
 		try {
+			String fname = "concepts"+ File.separator + name + ".txt";
 			//Activity a = (Activity) Enguage.context();
 			InputStream is =
 					//a == null ?
-							new FileInputStream( Ospace.location() + "concepts/" +name +".txt" );
-					//      : a.getAssets().open( "concepts"+ File.separator + name + ".txt" );
+							new FileInputStream( Ospace.location() + fname );
+					//      : a.getAssets().open( fname );
 			e.interpret( is );
 			is.close();
-			wasLoaded = true; 
+			
+			wasLoaded = true;
+			
 		} catch (IOException e1) {}
 		
 		//...un-silence after inner thought

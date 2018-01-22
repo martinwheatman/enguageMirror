@@ -30,7 +30,7 @@ public class Net {
 				   new BufferedReader( new InputStreamReader( connection.getInputStream()));
 				DataOutputStream out = new DataOutputStream( connection.getOutputStream());
 				
-				out.writeBytes( Enguage.interpret( in.readLine() ) + "\n" );
+				out.writeBytes( Enguage.e.interpret( new Strings( in.readLine() )) + "\n" );
 
 				in.close();
 				out.close();
@@ -47,7 +47,6 @@ public class Net {
 	}
 	static public String client( String addr, int port, String data ) {
 		audit.in( "tcpip", "addr="+ addr +", port="+ port +"value='"+ data +"', ["+ Context.valueOf() +"]" );
-		//audit.log( "tcpip( value='"+ data +"', ["+ Context.valueOf() +"])" );
 		
 		String rc = Reply.failure();
 		
