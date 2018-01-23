@@ -33,7 +33,11 @@ public class Enguage extends Shell {
 
 
 
-	public Enguage() { super( "Enguage" ); }
+	public Enguage() {
+		super( "Enguage" );
+		Redo.spokenInit();
+		Repertoire.primeUsedInit();
+	}
 
 	/*
 	 * Enguage should be independent of Android, but...
@@ -50,13 +54,8 @@ public class Enguage extends Shell {
 	public  String  root() { return Fs.root();}
 
 	public  Enguage location( String location ) {
-		audit.in( "Enguage", "location=" + location );
 		if(!Fs.location( location ))
 			audit.FATAL(location +": not found");
-
-		Redo.spokenInit();
-		Repertoire.primeUsedInit();
-		audit.out();
 		return this;
 	}
 
