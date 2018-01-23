@@ -13,56 +13,47 @@ import org.enguage.util.Fs;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Language;
 
+/** Implements Dynamic Repertoires:
+ * attempts to load all words in an utterance as a repertoire.
+ */
 public class Autoload {
-	/* Implements Dynamic Repertoires:
-	 * attempts to load all words in an utterance, singularly, as a repertoire.
-	 */
 	private static Audit audit = new Audit( "Autoload" );
 	
+	/**
+	 * ttl - Time to live. Specifies the number of unrelated utterances before a concept is purged
+	 */
 	private static int  ttl = 5;
 	public  static void ttl( String age ) {try {ttl = Integer.valueOf( age );} catch (Exception e){}}
 	
-	public static int autoloading = 0;
-	public static void    ing( boolean al ) { if (al || autoloading>0) autoloading += al ? 1 : -1; }
-	public static boolean ing() { return autoloading>0; }
+	/**
+	 * autoloading - Simple flag to prevent autoloading when autoloading.
+	 */
+	public static boolean autoloading = false;
+	public static void    ing( boolean al ) { autoloading = al; }
+	public static boolean ing() { return autoloading; }
 
 	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
 
 	static public void load( Strings utterance ) {
-		//audit.in( "load", utterance.toString());
-		// should not be called if initialising or if autoloading
 		if (!ing()) {
 			Autoload.ing( true );
 			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
-			//Strings tmp = new Strings();
-			for (String candidate : Concepts.matches( utterance )) {
+			for (String candidate : Concepts.matches( utterance ))
 				if (!Language.isQuoted( candidate )// don't try to load: anything that is quoted, ...
 					&&	!candidate.equals(",")             // ...punctuation, ...
-					&&	!Strings.isUpperCase( candidate )) // ...hotspots, ...
+					&&	!Strings.isUpperCase( candidate ) // ...hotspots, ...
+					&&  !Concepts.loaded().contains( candidate )) // not already loaded
 				{
-					//audit.log( "candidate is "+ candidate );
-					// let's just singularise it: needs -> need
-					//if (Plural.isPlural( candidate )) candidate = Plural.singular( candidate );
-					
-					if (Concepts.loaded().contains( candidate )) {// don't load...
-						;//audit.debug( "already loaded on init: "+ candidate );
-					} else if (null==autoloaded.get( candidate )) { //...stuff already loaded.
-						if (Concept.load( candidate )) {
-							//audit.LOG( "autoloaded: "+ candidate );
-							autoloaded.put( candidate, 0 ); // just loaded so set new entry to age=0
-							//tmp.add( candidate );
-						} else // ignore, if no repertoire!
-							audit.ERROR( "not loaded" );
-					} else { // already exists, so reset age to 0
-						//udit.debug("resetting age: " + candidate);
-						autoloaded.put( candidate, 0 );
-			}	}	}
+					if (null != autoloaded.get( candidate )  // Candidate already loaded, OR
+						|| Concept.load( candidate ))      // just loaded so...
+							autoloaded.put( candidate, 0 ); // ...set new entry to age=0
+						else // ignore, if no repertoire!
+							audit.ERROR( "failed to autoload" );
+				}
 			
-			//audit.debug( "Autoload.load(): "+ utterance +" => ["+ tmp.toString( Strings.CSV ) +"]");
 			Redo.undoEnabledIs( true );
 			Autoload.ing( false );
-			//audit.out();
 	}	}
 	static public void unload() {
 		if (!ing()) {
@@ -77,21 +68,17 @@ public class Autoload {
 				Integer nextVal = me.getValue() + 1;
 				if (nextVal > ttl)
 					repsToRemove.add( repertoire );
-				else {
-					//audit.debug( "Aging "+ repertoire +" (now="+ nextVal +"): " );
+				else
 					autoloaded.put( repertoire, nextVal );
-			}	}
+			}
 			
 			// ...now do the removals...
 			Iterator<String> ri = repsToRemove.iterator();
 			while (ri.hasNext()) {
 				String repertoire = ri.next();
-				//if (Audit.detailedDebug) audit.debug( "unloaded: "+ repertoire );
 				Repertoire.signs.remove( repertoire );
 				autoloaded.remove( repertoire );
-			}
-			//audit.debug( "unloanding => ["+ repsToRemove.toString( Strings.CSV ) +"]" );
-	}	}
+	}	}	}
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Audit.allTracing = true;
