@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.activity_main );
 
+		//Audit.startupDebug = true;
+
 		// hide the action bar
 		//getActionBar().hide();
 		Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 				promptSpeechInput();
 			}
 		});
+
+		initEnguage();
 	}
 
 	public void onInit(int code) {
@@ -74,20 +78,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 			ttsInitialised = true;
 	}	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-
+	private void initEnguage() {
 		if (null == Enguage.e) {
 			Enguage.e = new Enguage()
-							.location( this.getExternalFilesDir(null ).getPath() )
-							.root( this.getExternalFilesDir(null ).getPath() )
-							.context( this );
+					.location( this.getExternalFilesDir(null ).getPath() )
+					.root( this.getExternalFilesDir(null ).getPath() )
+					.context( this );
 		}
 
-		if (null == Enguage.e.o || !Enguage.e.o.attached() )
-			if (!Overlay.autoAttach())
-				Log.e( "Ouch!",">>>>>>>> Cannot autoAttach() to object space<<<<<<" );
+		if ((null == Enguage.e.o || !Enguage.e.o.attached() ) && !Overlay.autoAttach())
+			Log.e( "Ouch!",">>>>>>>> Cannot autoAttach() to object space<<<<<<" );
 
 		try {
 			Enguage.e.concepts( this.getAssets().list( "concepts" ));
@@ -97,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 		// read the config in the background...
 		new MainActivity.ReadConfig( this ).execute();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 	private void promptSpeechInput() {
 
