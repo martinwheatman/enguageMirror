@@ -362,12 +362,6 @@ public class Number {
 	}
 
 	// ===== getNumber(): a Number Factory
-	static private void putBack( ListIterator<String> si, int n ) {
-		for (int i =0; i< n; i++) {
-			//String s =
-					si.previous();
-			//audit.debug( "Putting back "+ s );
-	}	}
 	static private int postOpLen( ListIterator<String> si ) {
 		//audit.in( "postOpLen", "");
 		//audit.debug( "looking for: [all] cubed or [all] squared" );
@@ -383,7 +377,7 @@ public class Number {
 			if (s.equals(   "cubed" )
 			 || s.equals( "squared" ))
 				len = read;
-			putBack( si, read ); 
+			Strings.previousN( si, read ); 
 		}
 		//audit.out( len ); 
 		return len;
@@ -427,7 +421,7 @@ public class Number {
 				//audit.debug( "found singular op:"+ op );
 				len = read;
 			}
-			putBack( si, read );
+			Strings.previousN( si, read );
 		}
 		//audit.out( len );
 		return len;
@@ -478,6 +472,7 @@ public class Number {
 						append(  token );
 					} else {
 						//audit.debug( "non-numeric: removing "+ opLen +" tokens" );
+						si.previous(); // replace token
 						removen( si, opLen );
 						break;
 		}	}	}	}
@@ -593,6 +588,7 @@ public class Number {
 		numberTest(  "3 squared",             "9" );
 		numberTest(  "3 squared plus 2",     "11" );
 		numberTest(  "3 plus 1 all squared", "16" );
+		numberTest(  "3 times y",             "3" );
 		// -- */	
 		audit.log( "another test:" );
 		Audit.incr();
