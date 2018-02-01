@@ -1,6 +1,11 @@
-package org.enguage.util;
+package org.enguage.util.algorithm;
 
+import java.util.ArrayList;
 import java.util.ListIterator;
+
+import org.enguage.util.Audit;
+import org.enguage.util.Number;
+import org.enguage.util.Strings;
 /**
  * 1. What is the sum of x and y.
  *    The sum of x and y is x + y. <<< reply definition 'cos we don't know X or Y
@@ -87,6 +92,21 @@ public class Expression {
 		return sa;
 	}
 	// -- static helpers ABOVE
+	static ArrayList<Expression> functions = new ArrayList<Expression>();
+	static public void    save(  Expression a ) { functions.add( a );}
+	static public boolean saved( String name ) {
+		for (Expression e : functions )
+			if (name.equals( e.fnName ))
+				return true;
+		return false;
+	}
+	static public int params( String name ) {
+
+		for (Expression e : functions )
+			if (name.equals( e.fnName ))
+				return e.params.size();
+		return -1;
+	}
 	
 	private String getNumber( ListIterator<String> li, Strings rep ) {
 		String n = Number.getNumber( li ).toString();
@@ -114,12 +134,12 @@ public class Expression {
 		audit.in( "getFactor", peek( li ) +", rep="+ rep.toString());
 		String factor;
 		if (null != (factor = getNumber( li, rep )) ) {
-			audit.log( "peek after number="+ peek( li ));
+			//audit.log( "peek after number="+ peek( li ));
 			return audit.out( new Strings( factor ));
 		}
 				// 2
 		if (null != (factor = getName(   li, rep ))   ) { // x - TODO: getParam( li, param, rep )
-			audit.log( "peek after name="+ peek( li ));
+			//audit.log( "peek after name="+ peek( li ));
 			return audit.out( new Strings( factor ));
 		}
 		audit.out( "null" );
@@ -193,6 +213,7 @@ public class Expression {
 		Expression a = new Expression();
 		ListIterator<String> si = new Strings( s ).listIterator();
 		if (a.getAlgorithm( si )) {
+			Expression.save( a );
 			audit.log( a.toString() );
 			if (!pass) audit.FATAL( "Should've failed!" );
 		} else {
@@ -213,8 +234,8 @@ public class Expression {
 		audit.out();
 	}
 	public static void main( String args[]) {
-		Audit.traceAll( true );
-		/*
+		//Audit.traceAll( true );
+		//*
 		expressionTest( "", false );
 		expressionTest( "a", false );
 		expressionTest( "a plus", false );
