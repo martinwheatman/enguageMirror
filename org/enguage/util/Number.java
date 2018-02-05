@@ -490,13 +490,17 @@ public class Number {
 	 * 
 	 * This MUST match eval()!
 	 */
+	static private boolean aImpliesNumeric = true;
+	static public  void    aImpliesNumeric( boolean implies ) {
+		aImpliesNumeric = implies;
+	}
 	static public Number getNumber( ListIterator<String> si ) {
 		Number number = new Number();
 		if (si.hasNext()) {
 			token = si.next();
 			
 			// PRE-numeric
-			if (token.equals(      "a")) {
+			if (token.equals(      "a") && aImpliesNumeric) {
 				number.relative( false ).positive( true ).magnitude( 1F );
 				token = si.hasNext() ? si.next() : "";
 			}
