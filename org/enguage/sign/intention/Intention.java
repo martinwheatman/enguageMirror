@@ -148,7 +148,7 @@ public class Intention {
 	static public  String concept() { return concept; }
 	
 	public Reply autopoiesis( Reply r ) {
-		audit.in( "mediate", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
+		audit.in( "autopoiesis", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
 		Strings sa = Context.deref( new Strings( value ));
 		
 		// needs to switch on type (intent)
