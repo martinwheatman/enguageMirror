@@ -748,7 +748,74 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		while (si.hasNext() && si.nextIndex() != start) si.next();
 		return si;
 	}
-
+	// -- static Algorithm helpers here...
+	static public String peek( ListIterator<String> li ) {
+		String s = "";
+		if (li.hasNext()) {
+			s = li.next();
+			li.previous();
+		}
+		return s;
+	}
+	static public void unload( ListIterator<String> li, Strings sa ) {
+		audit.in( "unload", peek( li ) +", sa="+ sa.toString());
+		// this assumes all things got have been added to sa
+		int sz=sa.size();
+		while (0 != sz--) {
+			sa.remove( 0 );
+			li.previous();
+		}
+		audit.out();
+	}
+	static public boolean getWord( ListIterator<String> si, String word, Strings rep ) {
+		audit.in( "getWord", peek( si )+", word="+word );
+		if (si.hasNext())
+			if (si.next().equals( word )) {
+				audit.debug( "found: + word ");
+				rep.add( word );
+				return audit.out( true );
+			} else
+				si.previous();
+		return audit.out( false );
+	}
+	static public String getName( ListIterator<String> si, Strings rep ) {
+		String s = si.hasNext() ? si.next() : null;
+		if (s != null)
+			rep.add( s );
+		else
+			unload( si, rep );
+		return s;
+	}
+	static public String getLetter( ListIterator<String> si, Strings rep ) {
+		String s = si.hasNext() ? si.next() : null;
+		if (s != null)
+			rep.add( s );
+		else
+			unload( si, rep );
+		return s;
+	}
+	static public Strings getWords( ListIterator<String> li, String term, Strings rep ) {
+		return getWords( li, 99, term, rep );
+	}
+	static public Strings getWords( ListIterator<String> li, int sanity, String term, Strings rep ) {
+		Strings sa = new Strings();
+		String  s  = "";
+		
+		while (--sanity>=0
+				&& li.hasNext()
+				&& !(s=li.next()).equals( term ))
+			sa.add( s );
+		
+		if (sanity < 0 || !s.equals( term )) {
+			unload( li, rep );
+			sa = null;
+		} else {
+			rep.addAll( sa );
+			rep.add( term );
+		}
+		return sa;
+	}
+	// -- static Algorithm helpers ABOVE
 	// ---------------------------------------------------------
 	
 	public static void main( String args[]) {
