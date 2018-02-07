@@ -1,0 +1,9 @@
+# 
+On "the FUNCTION of PHRASE-PARAMS is BODY":
+	set the parameters of FUNCTION to PARAMS";
+	set the body       of FUNCTION to BODY";
+	then, reply "ok".
+	
+On "the FUNCTION of NUMERIC-PARAM is NUMERIC-BODY":
+	set the PARAM of FUNCTION to BODY;
+	then, reply "ok".

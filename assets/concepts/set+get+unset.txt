@@ -1,21 +1,27 @@
+# VARIABLES
 # E.g set name to martin
-# set output_format to 
 
-On "set ATTRIBUTE to PHRASE-VALUE", perform "variable set ATTRIBUTE VALUE".
-On "set ATTRIBUTE to QUOTED_VALUE", perform "variable set ATTRIBUTE VALUE".
+On "set VARIABLE to PHRASE-VALUE", perform "variable set VARIABLE VALUE".
+On "set VARIABLE to QUOTED_VALUE", perform "variable set VARIABLE VALUE".
 
-On "get the value of ATTRIBUTE", perform "variable get ATTRIBUTE".
-On "unset the value of ATTRIBUTE", perform "variable unset ATTRIBUTE".
+On "set   the value of VARIABLE to PHRASE-VALUE", set VARIABLE to VALUE.
+On "get   the value of VARIABLE", perform "variable get VARIABLE".
+On "unset the value of VARIABLE", perform "variable unset VARIABLE".
 
-On "ATTRIBUTE is not set to PHRASE-VALUE":
-	perform "variable equals ATTRIBUTE VALUE";
-	reply "no, ATTRIBUTE is set to VALUE";
-	then, if not,	reply "yes, ATTRIBUTE is not set to VALUE".
+On "VARIABLE is not set to PHRASE-VALUE":
+	perform "variable equals VARIABLE VALUE";
+	reply "no, VARIABLE is set to VALUE";
+	then, if not,	reply "yes, VARIABLE is not set to VALUE".
 
-On "ATTRIBUTE is set to PHRASE-VALUE":
-	perform "variable equals ATTRIBUTE VALUE";
-	reply "yes, ATTRIBUTE is set to VALUE";
-	then, if not,	reply "no, ATTRIBUTE is not set to VALUE".
+On "VARIABLE is set to PHRASE-VALUE":
+	perform "variable equals VARIABLE VALUE";
+	reply "yes, VARIABLE is set to VALUE";
+	then, if not,	reply "no, VARIABLE is not set to VALUE".
 
 #colloquialisms...
-On "ATTRIBUTE gets set to PHRASE-VALUE", set ATTRIBUTE to VALUE.
+On "VARIABLE gets set to PHRASE-VALUE", set VARIABLE to VALUE.
+
+#################################
+# ENTITY's ATTRIBUTE
+On "set the ATTRIBUTE of ENTITY to PHRASE-VALUE", attribute set ENTITY ATTRIBUTE VALUE.
+On "get the ATTRIBUTE of ENTITY", attribute get ENTITY ATTRIBUTE.

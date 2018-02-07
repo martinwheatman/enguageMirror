@@ -32,7 +32,7 @@ public class Sofa extends Shell {
 	private static final String False = FAIL;
 
 	public String doCall( Strings a ) {
-		//audit.traceIn( "doCall", a.toString( Strings.CSV ));
+		//audit.in( "doCall", a.toString( Strings.CSV ));
 		if (null != a && a.size() > 1) {
 			/* Tags.matchValues() now produces:
 			 * 		["a", "b", "c='d'", "e", "f='g'"]
@@ -51,7 +51,7 @@ public class Sofa extends Shell {
 			//audit.debug("Sofa.doCall() => "+ a.toString());
 			
 			String  type = a.remove( 0 );
-			return //audit.traceOut(
+			return //audit.out(
 			    a.size() == 0 && type.equals(         True ) ? True :
 				 a.size() == 0 && type.equals(        False ) ? False :
 						type.equals(     "entity" ) ?      Entity.interpret( a ) :
@@ -72,6 +72,7 @@ public class Sofa extends Shell {
 						type.equals( Spatial.NAME ) ?     Spatial.interpret( a ) :
 						type.equals(Temporal.NAME ) ?    Temporal.interpret( a ) :
 						type.equals(    Sign.NAME ) ?        Sign.interpret( a ) :
+						type.equals(Function.NAME ) ?    Function.interpret( a ) :
 						//type.equals( Concept.NAME ) ?     Concept.interpret( a ) :
 									  FAIL; // );
 		}

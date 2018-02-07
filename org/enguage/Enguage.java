@@ -32,7 +32,6 @@ public class Enguage extends Shell {
 	static public  int    loadConfig( String content ) { return Enguage.config.load( content ); }
 
 
-
 	public Enguage() {
 		super( "Enguage" );
 		Redo.spokenInit();
@@ -243,7 +242,7 @@ public class Enguage extends Shell {
 			interpret( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
 			
 			audit.title( "Factorial Description" );
-			interpret( "what is the factorial of 4",       "I don't understand" );
+			interpret( "what is the factorial of 4",       "I don't know" );
 			/* Ideally, we want:
 			 * - the factorial of 1 is 1;
 			 * - the factorial of n is n times the factorial of n - 1;
