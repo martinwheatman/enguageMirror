@@ -275,7 +275,28 @@ public class Enguage extends Shell {
 			interpret( "then reply whatever the factorial of variable n is whatever", "go on" );
 			interpret( "ok", "ok" );
 			
-			interpret( "what is the factorial of 4",  "24 the factorial of 4 is 24" );
+			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
+			
+			// interpret( "the height    of  martin is 194" );
+			// interpret( "the factorial of       1 is 1" );
+			// interpret( "the factorial of       n is n times the factorial of n minus 1" );
+			// interpret( "the sum       of x and y is x plus y" );
+			
+			// interpret( "what is the height of martin", "the height    of martin is 194" );
+			// interpret( "what is the factorial of 1",   "the factorial of      1 is 1");
+			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
+			// interpret( "what is the factorial of 4",   "the factorial of 4 is 24" );
+			// interpret( "what is the sum of a and b",   "sum of a and b is a plus b" );
+			// interpret( "what is the sum of 3 and 2",   "the sum of 3 and 2" );
+			// interpret( "a is 3",                       "ok a is 3" );
+			// interpret( "b is 4",                       "ok b is 4" );
+			// interpret( "what is a",                    "a is 3" ); // ?? a is a?
+			// interpret( "what is the value of a",       "a is 3" );
+			// interpret( "what is the sum of a and b",   "the sum of a and b 7" );
+			
+			// interpret( "the product of x and y is x times y" );
+			// interpret( "what is the product of a and b",  "the product of a and b is 12" );
+			
 		}
 		if ( level == 0 || level == 4 ) {
 			audit.title( "Numerical Context" );

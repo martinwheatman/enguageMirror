@@ -2,7 +2,7 @@
 	<config
 			CLASSPATH="/home/martin/ws/Enguage/bin"
 			SOFA="java com.yagadi.enguage.object.Sofa"
-			DNU="I did not catch that"
+			DNU="I don't understand"
 			DNK="I do not know"
 			SUCCESS="ok"
 			FAILURE="sorry"
