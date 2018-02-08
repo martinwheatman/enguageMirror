@@ -9,7 +9,27 @@ public class Function {
 	static public  String  NAME = "function";
 	static private Audit  audit = new Audit( "Function" );
 	
-	public static Strings divvy( Strings input, String sep ) {
+	public Function( String nm ) {
+		name = nm;
+		formals = new Value( name, "formals" );
+		body    = new Value( name, "body" );
+	}
+	
+	private Value    body;
+	public  Function body( String b ) { body.set( b ); return this;}
+	public  String   body() { return body.getAsString();}
+	
+	private Value    formals = null;
+	public  Function formals( String f ) { formals.set( f ); return this; }
+	public  String   formals() { return formals.getAsString(); }
+	
+	private String name;
+	public  String   name() { return name;}
+	
+
+	static public Strings divvy( Strings input, String sep ) {
+		// "a b and c" + "and" => [ "a", "b", "c" ]
+		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]
 		Strings output = new Strings(),
 				tmp    = new Strings();
 		for (String s : input )
@@ -21,79 +41,70 @@ public class Function {
 		if (tmp.size() > 0) output.add( tmp.toString());
 		return output;
 	}
-	public static Strings substitute( String function, Strings actuals ) {
+	static public Strings substitute( String function, Strings actuals ) {
 		return new Strings( new Value( function, "body" ).getAsString() ) // body
 				.substitute(
 						new Strings( new Value( function, "formals" ).getAsString() ),
 						actuals );
 	}
+	static public String evaluate( String function, Strings argv ) {
+		// where function="factorial"
+		//   and argv=[ "a", "b", "and", "c" ], OR [ 'a', 'and', 'b', 'and', c' ]
+		String rc = Number.getNumber(
+						substitute( function, divvy( argv, "and" )).listIterator()
+					).valueOf();
+		if (rc.equals( Number.NotANumber ))
+			rc = argv.toString();
+		return rc;
+	}
+	public String evaluate( String arg ) { return evaluate( new Strings( arg ));}
+	public String evaluate( Strings argv ) {
+		// where function="factorial"
+		//   and argv=[ "a", "b", "and", "c" ], OR [ 'a', 'and', 'b', 'and', c' ]
+		String rc = Number.getNumber(
+						substitute( name, divvy( argv, "and" )).listIterator()
+					).valueOf();
+		if (rc.equals( Number.NotANumber ))
+			rc = argv.toString();
+		return rc;
+	}
 
-	/*
-	 * This will handle:
-	 * 		"eval sum 1 and 2"
-	 */
 	static public String interpret( Strings argv ) {
 		audit.in( "interpret", argv.toString());
 		String  rc = Shell.FAIL,
 		       cmd = argv.remove( 0 );
 
-//		if (cmd.equals( "match" )) {
-//			String function = argv.remove( 0 );
-//			audit.log( "matching "+ function +" params with: " +  argv.toString());
-//			Strings actuals = divvy( argv, "and" );
-//			Value v = new Value( function, "parameters" );
-//			Strings parameters = new Strings( v.getAsString() );
-//			if (actuals.size() != parameters.size())
-//				audit.FATAL( "sizes don't match: ["+ parameters.toString( Strings.DQCSV ) +"] ["+ actuals.toString( Strings.DQCSV ) +"]");
-//			else {
-//				rc = "";
-//				ListIterator<String> pi = parameters.listIterator();
-//				ListIterator<String> ai = actuals.listIterator();
-//				while (pi.hasNext()) {
-//					String param = pi.next();
-//					String actual = ai.next();
-//					rc += param +"="+ actual;
-//					if (ai.hasNext()) rc += " ";
-//			}	}
-//		} else if (cmd.equals( "substitute" )) {
-//			// e.g. [a equals 1. b equals 2. what is the] sum of a and b
-//			//      [what is the] sum of 1 and 2.
-//			//       [what is the] sum of a and b. a=1 b=2
-//			String function = argv.remove( 0 );
-//			argv.remove( 0 ); // of
-//			//audit.log( "substituting "+ function +" params with: " +  argv.toString());
-//			rc = substitute( function, divvy( argv, "and" )).toString();
-			
-		//} else 
 		if (cmd.equals( "eval" )) {
 			// e.g. [a equals 1. b equals 2. what is the] sum of a and b
 			//      [what is the] sum of 1 and 2.
 			//       [what is the] sum of a and b. a=1 b=2
 			String function = argv.remove( 0 );
 			argv.remove( 0 ); // of
-			//audit.log( "substituting "+ function +" params with: " +  argv.toString());
-			rc = Number.getNumber( substitute( function, divvy( argv, "and" )).listIterator() ).valueOf();
-			if (rc.equals( Number.NotANumber ))
-				rc = argv.toString();
+			rc = evaluate( function, argv );
+		} else if (cmd.equals( "create" )) {
+			String function = argv.remove( 0 );
+			argv.remove( 0 ); // of
+			create( function, argv  );
 		} else
 			audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
 	
 		return audit.out( rc );
 	}
-	public static void main( String args[]) {
+	static public void create( String name, Strings args ) {
+		
+	}
+	
+	static public void main( String args[]) {
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
 		else {
 			audit.log( "one> "+ interpret( new Strings( "this won't work!" )));
 			
-			new Value( "sum", "formals" ).set( "a b" );
-			new Value( "sum", "body"       ).set( "a + b" );
-			new Value( "product", "formals" ).set( "x y" );
-			new Value( "product", "body"       ).set( "x times y" );
-			//audit.log( "two> where "+ interpret( new Strings( "match sum 1 and 2" )));
-			//audit.log( "three> eval: "+ interpret( new Strings( "substitute sum of 1 and 2" )));
-			audit.log( "eval> answer: "+ interpret( new Strings( "eval sum of 3 and 2" )));
-			audit.log( "eval> answer: "+ interpret( new Strings( "eval product of 3 and 2" )));
-			audit.log( "eval> answer: "+ interpret( new Strings( "eval product of c and b" )));
+			Function fn   = new Function( "sum"  ).formals( "a b" ).body( "a + b" ),
+					 prod = new Function( "prod" ).formals( "a b" ).body( "a times b" ),
+					 sum  = new Function( "sum"  );
+			
+			audit.log( " sum.evaluate( \"3 and 2\" ) = "+  sum.evaluate( "3 and 2" ));
+			audit.log( "prod.evaluate( \"3 and 2\" ) = "+ prod.evaluate( "3 and 2" ));
 }	}	}

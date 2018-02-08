@@ -277,10 +277,11 @@ public class Enguage extends Shell {
 			
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 			
-			// interpret( "the height    of  martin is 194" );
-			// interpret( "the factorial of       1 is 1" );
-			// interpret( "the factorial of       n is n times the factorial of n minus 1" );
-			// interpret( "the sum       of x and y is x plus y" );
+			// interpret( "the height    of an entity is a numeric value" );
+			// interpret( "the height    of    martin is 194" );
+			// interpret( "the factorial of         1 is 1" );
+			// interpret( "the factorial of         n is n times the factorial of n minus 1" );
+			// interpret( "the sum       of   x and y is x plus y" );
 			
 			// interpret( "what is the height of martin", "the height    of martin is 194" );
 			// interpret( "what is the factorial of 1",   "the factorial of      1 is 1");

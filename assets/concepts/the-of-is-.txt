@@ -7,3 +7,20 @@ On "the FUNCTION of PHRASE-PARAMS is BODY":
 On "the FUNCTION of NUMERIC-PARAM is NUMERIC-BODY":
 	set the PARAM of FUNCTION to BODY;
 	then, reply "ok".
+	
+# Induction:
+# On "the PHRASE-FUNCITON of PHRASE-PARAMS is PHRASE-BODY":
+# 	perform "function induce FUNCTION ( PARAMS ) BODY".
+
+# the height of an entity is a numeric variable.
+# the factorial of n is n times the factorial of n minus 1.
+# the factorial of 1 is 1.
+# the sum of x and y is x plus y
+
+# Deduction:
+# On "the FUNCITON of PHRASE-PARAMS is PHRASE-BODY:"
+# 	perform "function create FUNCTION ( PARAMS ) BODY".
+
+# the height of martin is 194.
+# (what is the factorial of 4).
+# (what is the height of martin.)

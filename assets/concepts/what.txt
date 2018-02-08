@@ -1,2 +1,0 @@
-On "what is the ATTR of ENTITY", get the ATTR of ENTITY.
-	
