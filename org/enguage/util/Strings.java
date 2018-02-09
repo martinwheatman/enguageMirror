@@ -831,6 +831,20 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return sa;
 	}
+	public Strings divvy( String sep ) {
+		// "a b and c" + "and" => [ "a", "b", "c" ]
+		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]
+		Strings output = new Strings(),
+				tmp    = new Strings();
+		for (String s : this )
+			if (s.equals( sep )) {
+				if (tmp.size() > 0) output.add( tmp.toString());
+				tmp = new Strings();
+			} else 
+				tmp.add( s );
+		if (tmp.size() > 0) output.add( tmp.toString());
+		return output;
+	}
 	// -- static Algorithm helpers ABOVE
 	// ---------------------------------------------------------
 	
