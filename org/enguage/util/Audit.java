@@ -56,7 +56,7 @@ public class Audit {
 	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
 	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; detailedRegis = d;}
 	
-	public void   FATAL( String msg ) { log( "FATAL: "+ msg ); System.exit( 1 ); }
+	public void   FATAL( String msg ) { LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 ); }
 	public void   FATAL( String phrase, String msg ) { FATAL( phrase +": "+ msg ); }
 	public void   ERROR( String info ) { System.err.println( "ERROR: " + name +": "+ info);}
 	public int    log( int    info ) { log( ""+ info ); return info; }

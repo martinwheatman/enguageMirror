@@ -750,7 +750,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	// -- static Algorithm helpers here...
 	public Strings substitute( Strings formals, Strings actuals ) {
-		audit.in( "substitue", "(["+ formals.toString( Strings.DQCSV ) +"] => ["+ actuals.toString( Strings.DQCSV ) +"]" );
+		audit.in( "substitute", "(["+ formals.toString( Strings.DQCSV ) +"] => ["+ actuals.toString( Strings.DQCSV ) +"]" );
 		if (actuals.size() != formals.size())
 			audit.FATAL( "sizes don't match: ["+ formals.toString( Strings.DQCSV ) +"] ["+ actuals.toString( Strings.DQCSV ) +"]");
 		else {
