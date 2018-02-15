@@ -39,11 +39,11 @@ public class Where {
 	public  Where   assigned( boolean l ) { assigned = l; return this; }
 
 	private Strings location = new Strings(); //-- e.g. ["the", "pub"]
-	public  Strings location() { return location; }
-	public  Where   location( Strings l ) { location = l; return this; }
-	public  boolean location( ListIterator<String> si ) {
+	private Strings location() { return location; }
+	private Where   location( Strings l ) { location = l; return this; }
+	private boolean location( ListIterator<String> si ) {
 		if (si.hasNext()) {
-			String t = si.next();
+			String t = si.next();  // TODO: Entity.getName( si );?
 			if (new Sofa().interpret( new Strings( "entity exists "+ t )).equals( Shell.SUCCESS ))
 			{	location.add( t );
 				si.remove();
@@ -63,8 +63,8 @@ public class Where {
 	}
 	
 	private String locator = new String(); //-- e.g. "in", "at", "in  front of"
-	public  String locator() { return locator; }
-	public  Where  locator( String l ) { locator = l; return this; }
+	private String locator() { return locator; }
+	private Where  locator( String l ) { locator = l; return this; }
 	private void   locator( ListIterator<String> si ) {
 		//audit.in( "locator", "'"+ locators.size() +"', "+ si );
 		int n = 0;
