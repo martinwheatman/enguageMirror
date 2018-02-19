@@ -6,15 +6,19 @@ import org.enguage.util.Audit;
 import org.enguage.util.Number;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Reply;
 
 public class Function {
 	static public  String  NAME = "function";
-	static private Audit  audit = new Audit( "Function", true );
+	static private Audit  audit = new Audit( "Function" );
+	
+	static private String BNAME = "body.txt";
+	static private String FNAME = "formals.txt";
 	
 	public Function( String nm ) {
-		name = nm;
-		formals = new Value( name, "formals" );
-		body    = new Value( name, "body" );
+		name    = nm;
+		formals = new Value( name, FNAME );
+		body    = new Value( name, BNAME );
 	}
 	
 	private Value    body;
@@ -28,86 +32,81 @@ public class Function {
 	private String   name;
 	public  String   name() { return name;}
 	
-	static private Strings substitute( String function, Strings actuals ) {
-		return new Strings( new Value( function, "body" ).getAsString() ) // body
-				.substitute(
-						new Strings( new Value( function, "formals" ).getAsString() ),
-						actuals );
+	static public String create( String name, Strings args ) {
+		audit.in( "create", "name="+ name +", args="+ args.toString( Strings.DQCSV ));
+		// args=[ "x", "y", "/", "x", "+", "y" ]
+		Strings params = new Strings();
+		ListIterator<String> si = args.listIterator();
+		Strings.getWords( si, "/", params );
+		params = params.normalise();
+		params.remove( params.size()-1 );
+		if (params.size() > 2)
+			params.remove( params.size()-2 );
+		
+		new Function( name )
+				.formals( params.toString() )
+				.body( Attribute.getAttribute( si ).value() );
+		
+		return audit.out( Shell.SUCCESS );
 	}
-	static public String evaluate( String function, Strings argv ) {
-		// where function="factorial"
-		//   and argv=[ "a", "b", "and", "c" ], OR [ 'a', 'and', 'b', 'and', c' ]
-		String rc = Number.getNumber(
-						substitute( function, argv.divvy( "and" )).listIterator()
-					).valueOf();
-		if (rc.equals( Number.NotANumber ))
-			rc = argv.toString();
-		return rc;
+	static private Strings substitute( String function, Strings actuals ) {
+		// takes: "sum", ["3", "4"]
+		audit.in( "substitue", "Function="+ function +", actuals="+ actuals );
+		Function f = new Function( function );
+		audit.log( "f="+ f.name() +", formals="+ f.formals() +", body="+ f.body());
+		Strings ss = new Strings( new Value( function, BNAME ).getAsString() ) // body
+				.substitute(
+						new Strings( new Value( function, FNAME ).getAsString() ), // formals
+						actuals );
+		// returns: ["a", "+", "b"].substitute( ["a", "b"], ["3", "4"] );
+		//          ["3", "+", "4"]!!!
+		return audit.out( ss );
 	}
 	public String evaluate( String arg ) { return evaluate( new Strings( arg ));}
 	public String evaluate( Strings argv ) {
+		audit.in(  "evaluate", argv.toString( Strings.DQCSV ));
+		String rc = Reply.dnk();
 		// where function="factorial"
 		//   and argv=[ "a", "b", "and", "c" ], OR [ 'a', 'and', 'b', 'and', c' ]
-		String rc = Number.getNumber(
-						substitute( name, argv.divvy( "and" )).listIterator()
-					).valueOf();
-		if (rc.equals( Number.NotANumber ))
-			rc = argv.toString();
-		return rc;
-	}
-	static public String interpret( Strings argv ) {
-		audit.in( "interpret", argv.toString());
-		String  rc = Shell.FAIL,
-		       cmd = argv.remove( 0 );
-
-		if (cmd.equals( "eval" )) {
-			// e.g. [a equals 1. b equals 2. what is the] sum of a and b
-			//      [what is the] sum of 1 and 2.
-			//       [what is the] sum of a and b. a=1 b=2
-			String function = argv.remove( 0 );
-			argv.remove( 0 ); // of
-			rc = evaluate( function, argv );
-		} else if (cmd.equals( "create" )) {
-			String function = argv.remove( 0 );
-			argv.remove( 0 ); // of
-			create( function, argv  );
-		} else
-			audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
-	
+		Strings ss = substitute( name, argv.divvy( "and" ));
+		if (ss != null) {
+			rc = Number.getNumber( ss.listIterator()).valueOf();
+			if (rc.equals( Number.NotANumber ))
+				rc = argv.toString();
+		}
 		return audit.out( rc );
 	}
-	static public void create( String name, Strings args ) {
-		audit.log( "create: name="+ name +", args="+ args.toString());
-		// args=[ "(", "x", "y", ")", "x", "+", "y" ]
-		Strings repn = new Strings(),
-				params = new Strings(),
-				body   = new Strings();
-		args.add( ";" );
-		ListIterator<String> si = args.listIterator();
-		Strings.getWord( si, "(", repn );
-		Strings.getWords(si, ")", params );
-		params.remove( params.size()-1 );
-		Strings.getWords(si, ";", body );
-		body.remove( body.size()-1 );
-		
-		audit.log( "ready to create: "+ name +"("+ params.toString( Strings.DQCSV ) +")"+ body.toString());
-		new Function( name ).formals( params.toString() ).body( body.toString() );
-	}
+	static public String interpret( Strings argv ) {
+		audit.in( "interpret", argv.toString( Strings.DQCSV ));
+		String  rc = Shell.FAIL;
+		if (argv.size() >= 2) {
+			String cmd = argv.remove( 0 );
+			String function = argv.remove( 0 );
 	
+			if (cmd.equals( "create" )) {
+				// [function] "create", "sum",  "a", "b", "/", "body", "=", "'a + b'"
+				rc = create( function, argv.contract( "=" ) );
+				
+			} else if (cmd.equals( "evaluate" )) {
+				// [function] "evaluate", "sum", "3", "and", "4"
+				rc = new Function( function ).evaluate( argv.normalise() );
+				
+			} else 
+				audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
+		}
+		return audit.out( rc );
+	}
+	static private String test( String fn, String formals, String body, String actuals ) {
+		interpret( new Strings( "create "+ fn +" "+ formals +" / body='"+ body +"'" ));
+		return interpret( new Strings("evaluate "+ fn +" "+ actuals ));
+	}
 	static public void main( String args[]) {
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
 		else {
-			audit.log( "one> "+ interpret( new Strings( "this won't work!" )));
-
-			create( "summ", new Strings( "( a b )  a + b" ));
-			
-			Function fn   = new Function( "sum"  ),
-					 prod = new Function( "prod" ).formals( "a b" ).body( "a times b" ),
-					 sum  = new Function( "summ"  );
-			
-			audit.log( "  fn.evaluate( \"3 and 4\" ) = "+   fn.evaluate( "3 and 4" ));
-			audit.log( " sum.evaluate( \"3 and 2\" ) = "+  sum.evaluate( "3 and 2" ));
-			audit.log( "prod.evaluate( \"3 and 4\" ) = "+ prod.evaluate( "3 and 4" ));
+			Audit.traceAll( true );
+			test( "sum", "a and b", "a + b", "3 and 2" );
+			test( "sum", "a b c and d", "a + b + c + d", "4 and 3 and 2 and 1" );
+			test( "factorial", "1", "1", "6" );
 }	}	}

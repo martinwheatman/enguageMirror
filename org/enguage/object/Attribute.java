@@ -3,6 +3,8 @@ package org.enguage.object;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
+import java.util.ListIterator;
+
 import org.enguage.object.Attribute;
 
 public class Attribute {
@@ -24,7 +26,6 @@ public class Attribute {
 		}
 		return stripped;
 	}
-
 	private char quote ='\'';
 	private char quote() { return quote; }
 	private void quote( char ch ) { quote = ch; }
@@ -41,8 +42,14 @@ public class Attribute {
 		quote( value.indexOf( "'") == -1 ? '\'' : value.indexOf( "\"") == -1 ? '"' : ':' );
 		return this;
 	}
+	
 	public Attribute( String nm, String val ) { name( nm ).value( val ); }
 	public Attribute( String s ) { this( nameFromAttribute( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
+	static public Attribute getAttribute( ListIterator<String> si ) {
+		audit.in( "getAttribute", Strings.peek( si ));
+		return (Attribute) audit.out(
+				new Attribute( si.hasNext() ? si.next() : "" ));
+	}
 	
 	public String toString() { return toString( quote() ); }
 	public String toString( char quote ) {

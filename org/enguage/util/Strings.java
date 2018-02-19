@@ -546,18 +546,15 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	 * normalise with a parameter uses that param as a user defined separator, rather than whitespace
 	 * normalise([ "one", "two", "+", "three four" ], "+") => [ "one two", "three four" ]
 	 */
-	public Strings normalise( String sep ) {
-		return normalise( sep, " " );
-	}
+	public Strings normalise( String sep ) { return normalise( sep, " " ); }
 	// normalise([ "one", "two three" ]) => [ "one", "two", "three" ]
 	public Strings normalise() {
 		Strings a = new Strings();
-		for (String s1 : this )
-			for ( String s2: new Strings( s1 ))
+		for (String s1 : this)
+			for (String s2 : new Strings( s1 ))
 				a.add( s2 );
 		return a;
 	}
-	
 	// TODO: expand input, and apply each thought...
 	// I need to go to the gym and the jewellers =>
 	// (I need to go to the gym and I need to go to the jewellers =>)
@@ -750,10 +747,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	// -- static Algorithm helpers here...
 	public Strings substitute( Strings formals, Strings actuals ) {
-		audit.in( "substitute", "(["+ formals.toString( Strings.DQCSV ) +"] => ["+ actuals.toString( Strings.DQCSV ) +"]" );
-		if (actuals.size() != formals.size())
-			audit.FATAL( "sizes don't match: ["+ formals.toString( Strings.DQCSV ) +"] ["+ actuals.toString( Strings.DQCSV ) +"]");
-		else {
+		audit.in( toString()+"substitute", "["+ formals.toString( Strings.DQCSV ) +"] => ["+ actuals.toString( Strings.DQCSV ) +"]" );
+		if (actuals.size() == formals.size()) {
 			int i = 0;
 			ListIterator<String> bi = listIterator();
 			while (bi.hasNext()) {
@@ -762,8 +757,10 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				if (-1 != (index = formals.indexOf( token )))
 					token = actuals.get( index );
 				set( i++, token );
-		}	}
-		return this;
+			}
+		} else
+			return null;
+		return audit.out( this );
 	}
 	static public String peek( ListIterator<String> li ) {
 		String s = "";
@@ -832,7 +829,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return sa;
 	}
 	public Strings divvy( String sep ) {
-		// "a b and c" + "and" => [ "a", "b", "c" ]
+		audit.in( "Divvy", toString( Strings.DQCSV ) +", sep='"+ sep +"'");
+		// ["a", "b", "and", "c"].divvy( "and" ) => [ "a", "b", "c" ]
 		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]
 		Strings output = new Strings(),
 				tmp    = new Strings();
@@ -843,7 +841,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			} else 
 				tmp.add( s );
 		if (tmp.size() > 0) output.add( tmp.toString());
-		return output;
+		return audit.out( output );
 	}
 	// -- static Algorithm helpers ABOVE
 	// ---------------------------------------------------------

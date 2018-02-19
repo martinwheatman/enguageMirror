@@ -1,5 +1,7 @@
 package org.enguage;
 
+import java.io.File;
+
 import org.enguage.object.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
@@ -7,13 +9,12 @@ import org.enguage.sign.repertoire.Concepts;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
+import org.enguage.util.Join;
 import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
-
-import java.io.File;
 
 public class Enguage extends Shell {
 
@@ -194,7 +195,7 @@ public class Enguage extends Shell {
 		//Repertoire.signs.show( "OTF" );
 		//interpret( "tracing on" );
 
-		int level = 3;
+		int level = 0;
 
 		if ( level == 0 || level == 1 ) {
 			audit.title( "The Non-Computable concept of NEED" );
@@ -248,41 +249,46 @@ public class Enguage extends Shell {
 			 * - the factorial of n is n times the factorial of n - 1;
 			 * - what is the factorial of 3.
 			 */
-//			interpret( "to the phrase what is the factorial of 1 reply 1", "go on" );
-//			interpret( "ok", "ok" );
-//			interpret( "what is the factorial of 1",  "1" );
-//			
-//			interpret( "to the phrase what is the factorial of 0 reply 1", "go on" );
-//			interpret( "ok", "ok" );
-//			interpret( "what is the factorial of 0",  "1" );
-//			
-//			interpret( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
-//			interpret( "first perform numeric evaluate variable a times variable b",       "go on" );
-//			interpret( "ok", "ok" );
-//			
-//			interpret( "multiply 2 by 3", "6" );
-//			
-//			interpret( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
-//			interpret( "first perform numeric evaluate variable d - variable c",                           "go on" );
-//			interpret( "ok", "ok" );
-//			
-//			interpret( "subtract 2 from 3", "1" );
-//			
-//			interpret( "interpret what is the factorial of numeric variable n thus",  "go on" );
-//			interpret( "first subtract 1 from variable n",                            "go on" );
-//			interpret( "then what is the factorial of whatever",                      "go on" );
-//			interpret( "then multiply whatever by variable n",                        "go on" );
-//			interpret( "then reply whatever the factorial of variable n is whatever", "go on" );
-//			interpret( "ok", "ok" );
-//			
-//			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
+			interpret( "to the phrase what is the factorial of 1 reply 1", "go on" );
+			interpret( "ok", "ok" );
+			interpret( "what is the factorial of 1",  "1" );
+			
+			interpret( "to the phrase what is the factorial of 0 reply 1", "go on" );
+			interpret( "ok", "ok" );
+			interpret( "what is the factorial of 0",  "1" );
+			
+			interpret( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
+			interpret( "first perform numeric evaluate variable a times variable b",       "go on" );
+			interpret( "ok", "ok" );
+			
+			interpret( "multiply 2 by 3", "6" );
+			
+			interpret( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
+			interpret( "first perform numeric evaluate variable d - variable c",                           "go on" );
+			interpret( "ok", "ok" );
+			
+			interpret( "subtract 2 from 3", "1" );
+			
+			interpret( "interpret what is the factorial of numeric variable n thus",  "go on" );
+			interpret( "first subtract 1 from variable n",                            "go on" );
+			interpret( "then what is the factorial of whatever",                      "go on" );
+			interpret( "then multiply whatever by variable n",                        "go on" );
+			interpret( "then reply whatever the factorial of variable n is whatever", "go on" );
+			interpret( "ok", "ok" );
+			
+			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 			
 			// interpret( "the height    of an entity is a numeric value" );
 			// interpret( "the height    of    martin is 194" );
+			
+			Join.on( false );
+			interpret( "the sum of q and p is q + p", "ok" );
+			interpret( "what is the sum of 3 and 4", "7" );
+			Join.on( true );
 
-			interpret( "the factorial of 0 is 1", "ok" );
-			interpret( "the factorial of 1 is 1", "ok" );
-			interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
+			// interpret( "the factorial of 0 is 1", "ok" );
+			// interpret( "the factorial of 1 is 1", "ok" );
+			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
 			
 			
 			// interpret( "the factorial of         1 is 1" );
@@ -332,7 +338,7 @@ public class Enguage extends Shell {
 					   "ok, you don't need anything" );
 		}
 		if ( level == 0 || level == 5 ) {
-			audit.title( "Annotation" );
+			audit.title( "Annotation" ); // TODO: camelise attribute names
 			interpret( "delete martin was       list", "ok" );
 			interpret( "delete martin wasNot    list", "ok" );
 			interpret( "delete i      am        list", "ok" );

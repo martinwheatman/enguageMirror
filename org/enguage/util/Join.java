@@ -13,6 +13,9 @@ import org.enguage.util.Strings;
 public class Join {
 	private static       Audit           audit = new Audit( "Join" );
 	
+	static private boolean on = true;
+	static public  void    on( boolean j ) { on = j; }
+	
 	static private ArrayList<ArrayList<Integer>> combinations( ArrayList<Integer> dimensions ) {
 		//if (Audit.detailedDebug) audit.in( "combinations", dimensions.toString());
 		/* If we save as OBJECT.0, ... OBJECT.n need to do a join on SUBJECT.m needs OBJECT.n
@@ -71,47 +74,51 @@ public class Join {
 		return rc;
 	}
 	static public ArrayList<Attributes> join( Attributes match, Strings sep ){
-		/* there is probably a much easier way to do this!
-		 * -- pass values into combinations() and annotate there!
-		 */
-		//if (Audit.detailedDebug) audit.in( "join", "["+ match +"], '"+ sep +"'" );
-		
-		// first we get loaded=["SUBJECTS","OBJECTS"]
-		Strings names = match.names();
-		//if (Audit.detailedDebug) audit.log( "loaded are: "+ names.toString() );
-		
 		ArrayList<Attributes> rc = new ArrayList<Attributes>();
-		ArrayList<ArrayList<Strings>> values = match.valuesAsLists( sep );
-		
-		//if (Audit.detailedDebug) audit.log( "values are: "+ values.toString() );
-		
-		ArrayList<Integer> dimensions = new ArrayList<Integer>();
-		/* Here we have raw arrays, of values and loaded. To limit the join combinations,
-		 * without doing anything too smart, limit dimensions to loaded which appear plural.
-		 * This puts into the users hands which values are joined.
-		 */
-		for (ArrayList<Strings> value : values)
-			dimensions.add( value.size());
-		ArrayList<ArrayList<Integer>> numbers = combinations( new ArrayList<Integer>( dimensions ));
-		
-		Iterator<ArrayList<Integer>> nui = numbers.iterator();
-		while (nui.hasNext()) { // looping round numbers [0, 0]
-			ArrayList<Integer> number = nui.next(); // 0, 0
-			//if (Audit.detailedDebug) audit.log( "Numbers are:"+ number.toString() );
-			Attributes runs = new Attributes();
-			//
-			int vi=0; // index into values
-			Iterator<String>  ni = names.iterator();
-			Iterator<Integer> li = number.iterator();
-			while (li.hasNext()) { // looping round name/number combo
-				int    lii = li.next();
-				String nii = ni.next();
-				Attribute a = new Attribute( nii, values.get( vi ).get( lii ).toString( Strings.SPACED ));
-				runs.add( a );
-				vi++;
-			}
-			rc.add( runs );
-		}
+		if (!on) {
+			audit.log( "join returning:"+ match.toString());
+			rc.add( match );
+		} else {
+			/* there is probably a much easier way to do this!
+			 * -- pass values into combinations() and annotate there!
+			 */
+			//if (Audit.detailedDebug) audit.in( "join", "["+ match +"], '"+ sep +"'" );
+			
+			// first we get loaded=["SUBJECTS","OBJECTS"]
+			Strings names = match.names();
+			//if (Audit.detailedDebug) audit.log( "loaded are: "+ names.toString() );
+			
+			ArrayList<ArrayList<Strings>> values = match.valuesAsLists( sep );
+			
+			//if (Audit.detailedDebug) audit.log( "values are: "+ values.toString() );
+			
+			ArrayList<Integer> dimensions = new ArrayList<Integer>();
+			/* Here we have raw arrays, of values and loaded. To limit the join combinations,
+			 * without doing anything too smart, limit dimensions to loaded which appear plural.
+			 * This puts into the users hands which values are joined.
+			 */
+			for (ArrayList<Strings> value : values)
+				dimensions.add( value.size());
+			ArrayList<ArrayList<Integer>> numbers = combinations( new ArrayList<Integer>( dimensions ));
+			
+			Iterator<ArrayList<Integer>> nui = numbers.iterator();
+			while (nui.hasNext()) { // looping round numbers [0, 0]
+				ArrayList<Integer> number = nui.next(); // 0, 0
+				//if (Audit.detailedDebug) audit.log( "Numbers are:"+ number.toString() );
+				Attributes runs = new Attributes();
+				//
+				int vi=0; // index into values
+				Iterator<String>  ni = names.iterator();
+				Iterator<Integer> li = number.iterator();
+				while (li.hasNext()) { // looping round name/number combo
+					int    lii = li.next();
+					String nii = ni.next();
+					Attribute a = new Attribute( nii, values.get( vi ).get( lii ).toString( Strings.SPACED ));
+					runs.add( a );
+					vi++;
+				}
+				rc.add( runs );
+		}	}
 		//if (Audit.detailedDebug) audit.out( rc.toString() );
 		return rc;
 	}

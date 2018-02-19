@@ -1,6 +1,6 @@
 # read in conjunction with the-of-is-.txt !
 # what is the height of martin.
-On "what is the ATTR of ENTITY", get the ATTR of ENTITY.
+#On "what is the ATTR of ENTITY", get the ATTR of ENTITY.
 
-# On "what is the FUNCTION of PHRASE-PARAMS", perform "function evaluate FUNCTION PARAMS".
+On "what is the FUNCTION of PHRASE-PARAMS", perform "function evaluate FUNCTION PARAMS".
 	
