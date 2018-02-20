@@ -747,7 +747,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	// -- static Algorithm helpers here...
 	public Strings substitute( Strings formals, Strings actuals ) {
-		audit.in( toString()+"substitute", "["+ formals.toString( Strings.DQCSV ) +"] => ["+ actuals.toString( Strings.DQCSV ) +"]" );
+		audit.in( toString()+".substitute",
+				      "["+ formals.toString( Strings.DQCSV )
+				+"] => ["+ actuals.toString( Strings.DQCSV ) +"]" );
 		if (actuals.size() == formals.size()) {
 			int i = 0;
 			ListIterator<String> bi = listIterator();
@@ -758,8 +760,10 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 					token = actuals.get( index );
 				set( i++, token );
 			}
-		} else
+		} else {
+			audit.out( "null" );
 			return null;
+		}
 		return audit.out( this );
 	}
 	static public String peek( ListIterator<String> li ) {

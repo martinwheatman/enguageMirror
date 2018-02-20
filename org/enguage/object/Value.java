@@ -19,10 +19,12 @@ class ValuesTest extends Shell {
 
 public class Value {
 	static private Audit audit = new Audit( "Value" );
-	public static final String NAME = "value";
-	private static boolean debug = false; // Enguage.runtimeDebugging;
+	
+	public  static final String   NAME = "value";
+	private static       boolean debug = false; // Enguage.runtimeDebugging;
 	
 	protected String ent, attr;
+	public String name() { return attr; }
 
 	// constructor
 	public Value( String e, String a ) {
