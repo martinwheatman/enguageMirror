@@ -59,11 +59,18 @@ public class Function {
 		audit.in( "substitue", "Function="+ function +", argv="+ argv.toString( "[",",","]") );
 		Strings ss = null;
 		Function f = getFunction( function, argv ); // e.g. sum 2 => sum/x,y.txt
-		if (f != null)
+		if (f != null) {
+			Strings actuals = new Strings();
+			for (String a : argv ) {
+				if (!Lambda.isNumeric( a ))
+					a = Variable.get( a );
+				actuals.add( a );
+			}
 			ss = new Strings( f.lambda.body() )
 							.substitute(
 									new Strings( f.lambda.sig() ), // formals
-									argv );
+									actuals );
+		}
 		return audit.out( ss );
 	}
 	static public String evaluate( String name, Strings argv ) {
@@ -99,12 +106,12 @@ public class Function {
 		return audit.out( rc );
 	}
 	//crate + query
-	static private void test( String fn, String formals, String body, String actuals ) {
+	static private void create( String fn, String formals, String body ) {
 		audit.log( "The "+ fn +" of "+ formals +" is "+ body );
 		interpret( new Strings( "create "+ fn +" "+ formals +" / body='"+ body +"'" ));
-		
+	}
+	static private void query( String fn, String actuals ) {
 		audit.log( "What is the "+ fn +" of "+ actuals );
-		
 		String eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
 		audit.log( eval.equals( Reply.dnk()) ?
 			eval :
@@ -120,9 +127,11 @@ public class Function {
 			Variable.set( "y", "2" );
 			//Audit.traceAll( true );
 			audit.debug( "matching passes!" );
-			test( "sum", "a and b", "a + b", "3 and 2" );
-			//Audit.traceAll( false );
-			test( "sum", "a b c and d", "a + b + c + d", "4 and 3 and 2 and 1" );
-			test( "sum", "1", "1", "6" );
-			test( "factorial", "1", "1", "6" );
+			create( "sum", "a and b", "a + b" );
+			query(  "sum", "3 and 2" );
+			create( "sum", "a b c and d", "a + b + c + d" );
+			query(  "sum", "4 and 3 and 2 and 1" );
+			query(  "sum", "x and y" );
+			create( "factorial", "1", "1" );
+			query(  "factorial", "6" );
 }	}	}

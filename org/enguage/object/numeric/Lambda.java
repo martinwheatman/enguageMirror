@@ -12,6 +12,15 @@ import org.enguage.util.Strings;
 public class Lambda {
 	static private Audit  audit = new Audit( "Lambda" );
 
+	static public boolean isNumeric( String s ) {
+		boolean rc = true;
+		try {
+			Integer.valueOf( s );
+		} catch (Exception x) {
+			rc = false;
+		}
+		return rc;
+	}
 	private static boolean match( Strings names, Strings values ) {
 		boolean rc = false;
 		audit.in( "match", "names="+ names +", values="+ values );
@@ -20,14 +29,14 @@ public class Lambda {
 			ListIterator<String> ni = names.listIterator(),
 			                     vi = values.listIterator();
 			while (rc && ni.hasNext()) {
-				String n = ni.next(), s,
+				String n = ni.next(),
 				       v = vi.next();
-				if (!n.equals( v )) { // height != height -- numeric???
-					if (null != (s = Variable.get( v ))
-							&& s.equals( n ))  { // e.g. height != 194
-						audit.log( "failing on match" );
-						rc = false;
-		}	}	}	}
+				// if name is numeric we must match this value
+				if (isNumeric( n )) // height != height -- numeric???
+					rc = n.equals( v );
+				else if (!isNumeric( v ))
+					rc = null != Variable.get( v );
+		}	}
 		return audit.out( rc );
 	}
 	public Lambda( String name, Strings params, String body ) { // new
