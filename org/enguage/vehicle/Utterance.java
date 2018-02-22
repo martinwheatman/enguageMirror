@@ -1,11 +1,11 @@
 package org.enguage.vehicle;
 
 import org.enguage.object.Attributes;
-import org.enguage.object.Numeric;
-import org.enguage.object.Sofa;
 import org.enguage.object.Spatial;
 import org.enguage.object.Temporal;
 import org.enguage.object.Variable;
+import org.enguage.object.numeric.Numeric;
+import org.enguage.object.space.Sofa;
 import org.enguage.sign.Sign;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;

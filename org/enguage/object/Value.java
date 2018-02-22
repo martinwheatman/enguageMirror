@@ -8,9 +8,9 @@ import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 
 import org.enguage.object.Entity;
-import org.enguage.object.Overlay;
 import org.enguage.object.Value;
 import org.enguage.object.ValuesTest;
+import org.enguage.object.space.Overlay;
 
 class ValuesTest extends Shell {
 	ValuesTest( Strings args ) { super( "ValuesTes", args ); }

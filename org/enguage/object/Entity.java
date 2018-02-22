@@ -2,7 +2,6 @@ package org.enguage.object;
 
 import java.io.File;
 
-import org.enguage.object.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
 import org.enguage.util.Shell;
@@ -10,6 +9,7 @@ import org.enguage.util.Strings;
 
 import org.enguage.object.Entity;
 import org.enguage.object.EntityShell;
+import org.enguage.object.space.Overlay;
 
 class EntityShell extends Shell {
 	EntityShell() { super( "Entity" );}

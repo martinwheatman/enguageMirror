@@ -2,7 +2,7 @@ package org.enguage;
 
 import java.io.File;
 
-import org.enguage.object.Overlay;
+import org.enguage.object.space.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
 import org.enguage.sign.repertoire.Concepts;

@@ -6,8 +6,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.object.Attribute;
-import org.enguage.object.Overlay;
 import org.enguage.object.Variable;
+import org.enguage.object.space.Overlay;
 import org.enguage.sign.Signs;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;

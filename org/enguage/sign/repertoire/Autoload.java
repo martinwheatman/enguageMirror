@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.Enguage;
-import org.enguage.object.Overlay;
+import org.enguage.object.space.Overlay;
 import org.enguage.sign.intention.Redo;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;

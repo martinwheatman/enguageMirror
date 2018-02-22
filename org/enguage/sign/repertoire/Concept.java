@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.enguage.Enguage;
-import org.enguage.object.Ospace;
+import org.enguage.object.space.Ospace;
 import org.enguage.sign.intention.Intention;
 import org.enguage.util.Audit;
 

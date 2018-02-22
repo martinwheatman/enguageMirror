@@ -9,11 +9,10 @@ import java.util.TreeMap;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-
-import org.enguage.object.Ospace;
-import org.enguage.object.Overlay;
 import org.enguage.object.Value;
 import org.enguage.object.Variable;
+import org.enguage.object.space.Ospace;
+import org.enguage.object.space.Overlay;
 
 public class Variable {
 	/* As part of the Sofa library, variable manages persistent values:

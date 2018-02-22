@@ -11,8 +11,8 @@ import org.enguage.util.Strings;
 import org.enguage.object.Entity;
 import org.enguage.object.Link;
 import org.enguage.object.LinkShell;
-import org.enguage.object.Overlay;
 import org.enguage.object.Value;
+import org.enguage.object.space.Overlay;
 
 class LinkShell extends Shell {
 	LinkShell() { super( "LinkShell" );}

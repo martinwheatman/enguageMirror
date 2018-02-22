@@ -1,4 +1,4 @@
-package org.enguage.object;
+package org.enguage.object.space;
 
 import java.io.File;
 import java.util.Iterator;
@@ -9,11 +9,8 @@ import org.enguage.util.Path;
 import org.enguage.util.Pent;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-
-import org.enguage.object.Ospace;
-import org.enguage.object.Overlay;
-import org.enguage.object.OverlayShell;
-import org.enguage.object.Series;
+import org.enguage.object.space.Overlay;
+import org.enguage.object.space.OverlayShell;
 
 class OverlayShell extends Shell {
 	OverlayShell( Strings args ) { super( "Overlay", args ); }
@@ -35,14 +32,14 @@ public class Overlay {
 	
 	public static final String DEFAULT = "default";
 	
-	final static String MODE_READ   = "r";
-	final static String MODE_WRITE  = "w";
-	final static String MODE_APPEND = "a";
-	final static String MODE_DELETE = "d";
-	final static String MODE_RENAME = "m";
-	final static String RENAME_CH   = "^";
-	final static String DELETE_CH   = "!";
-	final static String OPT_X       ="-x";
+	public final static String MODE_READ   = "r";
+	public final static String MODE_WRITE  = "w";
+	public final static String MODE_APPEND = "a";
+	public final static String MODE_DELETE = "d";
+	public final static String MODE_RENAME = "m";
+	public final static String RENAME_CH   = "^";
+	public final static String DELETE_CH   = "!";
+	public final static String OPT_X       ="-x";
 	
 	private Path p;
 	private String  path() { return p.toString(); }

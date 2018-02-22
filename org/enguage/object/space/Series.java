@@ -1,13 +1,11 @@
-package org.enguage.object;
+package org.enguage.object.space;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.enguage.object.space.Series;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
-
-import org.enguage.object.Ospace;
-import org.enguage.object.Series;
 
 public class Series { // relates to hypothetical attachment of series of overlays to fs 
 	static private Audit audit = new Audit( "Series" );
