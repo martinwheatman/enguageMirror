@@ -47,17 +47,17 @@ public class Lambda {
 					vi = values.listIterator();
 			while (rc && ni.hasNext()) {
 				String n = ni.next(),
-						v = vi.next();
+				       v = vi.next();
 				// if name is numeric we must match this value
-				if (Number.isNumeric( n )) // height != height -- numeric???
-					rc = n.equals( v );
-				else if (Number.isNumeric( v ))
-					rc = null != Variable.get( v );
+				rc = Number.isNumeric( n ) ? // nmae=1 => value=1 !
+						n.equals( v ) :
+				     Number.isNumeric( v ) ? // value = xxx, deref
+						null == Variable.get( v ) : true;
 			}	}
 		return audit.out( rc );
 	}
 	
-	public void main( String args[] ) {
+	static public void main( String args[] ) {
 		Enguage.e = new Enguage();
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
@@ -71,4 +71,5 @@ public class Lambda {
 				audit.FATAL( "match fails on x/1" );
 			if (!match( new Strings( "y" ), new Strings( "2" )))
 				audit.FATAL( "match fails on y/2" );
+			audit.log( "passed" );
 }	}	}

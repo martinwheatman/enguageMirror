@@ -36,6 +36,7 @@ public class Function {
 		
 		Strings params = new Strings();
 		ListIterator<String> si = args.listIterator();
+		
 		Strings.getWords( si, "/", params ); // added in perform call
 		params = params.normalise(); // "x and y" => "x", "and", "y"
 		params.remove( params.size()-1 ); // remove '/'
@@ -54,25 +55,21 @@ public class Function {
 			fn = null;
 		return (Function) audit.out( fn );
 	}
+	static public Strings derefVariables( Strings argv ) {
+		Strings actuals = new Strings();
+		for (String a : argv ) 
+			actuals.add( Number.isNumeric( a ) ? a:Variable.get( a ));
+		return actuals;
+	}
 	static private Strings substitute( String function, Strings argv ) {
-		// takes: "sum", ["3", "4"]
 		audit.in( "substitue", "Function="+ function +", argv="+ argv.toString( "[",",","]") );
 		Strings ss = null;
-		Function f = getFunction( function, argv ); // e.g. sum 2 => sum/x,y.txt
-		if (f != null) {
-			// dereference any variables...
-			Strings actuals = new Strings();
-			for (String a : argv ) {
-				if (!Number.isNumeric( a ))
-					a = Variable.get( a );
-				actuals.add( a );
-			}
-			// do the substitution
+		Function f = getFunction( function, argv );
+		if (f != null)
 			ss = new Strings( f.lambda.body() )
 					.substitute(
 						new Strings( f.lambda.sig() ), // formals
-						actuals );
-		}
+						derefVariables( argv ) );
 		return audit.out( ss );
 	}
 	static public String evaluate( String name, Strings argv ) {
@@ -115,9 +112,8 @@ public class Function {
 	static private void query( String fn, String actuals ) {
 		audit.log( "What is the "+ fn +" of "+ actuals );
 		String eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
-		audit.log( null == eval ?
-			"I don't know" :
-			"The "+ fn +" of "+ actuals +" is "+ eval +"\n" );
+		audit.log( eval.equals( Reply.dnk()) ?
+			eval : "The "+ fn +" of "+ actuals +" is "+ eval +"\n" );
 	}
 	static public void main( String args[]) {
 		Enguage.e = new Enguage();
@@ -125,6 +121,7 @@ public class Function {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
 		else {
+			Reply.dnk( "I do not know" );
 			Variable.set( "x", "1" );
 			Variable.set( "y", "2" );
 			//Audit.traceAll( true );
