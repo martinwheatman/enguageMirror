@@ -8,41 +8,17 @@ import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.Number;
 
 public class Lambda {
-	static private Audit  audit = new Audit( "Lambda" );
+	static private Audit audit = new Audit( "Lambda" );
 
-	static public boolean isNumeric( String s ) {
-		boolean rc = true;
-		try {
-			Integer.valueOf( s );
-		} catch (Exception x) {
-			rc = false;
-		}
-		return rc;
-	}
-	private static boolean match( Strings names, Strings values ) {
-		boolean rc = false;
-		audit.in( "match", "names="+ names +", values="+ values );
-		if (names.size() == values.size()) {
-			rc = true;
-			ListIterator<String> ni = names.listIterator(),
-			                     vi = values.listIterator();
-			while (rc && ni.hasNext()) {
-				String n = ni.next(),
-				       v = vi.next();
-				// if name is numeric we must match this value
-				if (isNumeric( n )) // height != height -- numeric???
-					rc = n.equals( v );
-				else if (!isNumeric( v ))
-					rc = null != Variable.get( v );
-		}	}
-		return audit.out( rc );
-	}
-	public Lambda( String name, Strings params, String body ) { // new
+	public Lambda( Function f, Strings params, String body ) { // new
 		sig = params;
-		new Value( name,
-				params.toString( Strings.CSV ) + ".txt" );
+		new Value(
+				f.name(),
+				sig.toString( Strings.CSV ) + ".txt"
+			).set( body );
 	}
 	public Lambda( String name, Strings values ) { // find
 		Strings fnames = Enguage.e.o.list( name );
@@ -62,6 +38,25 @@ public class Lambda {
 	
 	public String toString() { return "( "+ sig +" ) "+ body;}
 	
+	private static boolean match( Strings names, Strings values ) {
+		boolean rc = false;
+		audit.in( "match", "names="+ names +", values="+ values );
+		if (names.size() == values.size()) {
+			rc = true;
+			ListIterator<String> ni = names.listIterator(),
+					vi = values.listIterator();
+			while (rc && ni.hasNext()) {
+				String n = ni.next(),
+						v = vi.next();
+				// if name is numeric we must match this value
+				if (Number.isNumeric( n )) // height != height -- numeric???
+					rc = n.equals( v );
+				else if (Number.isNumeric( v ))
+					rc = null != Variable.get( v );
+			}	}
+		return audit.out( rc );
+	}
+	
 	public void main( String args[] ) {
 		Enguage.e = new Enguage();
 		Overlay.Set( Overlay.Get());
@@ -76,5 +71,4 @@ public class Lambda {
 				audit.FATAL( "match fails on x/1" );
 			if (!match( new Strings( "y" ), new Strings( "2" )))
 				audit.FATAL( "match fails on y/2" );
-		}
-}	}
+}	}	}

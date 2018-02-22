@@ -9,7 +9,6 @@ import org.enguage.sign.repertoire.Concepts;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
-import org.enguage.util.Join;
 import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
@@ -236,6 +235,11 @@ public class Enguage extends Shell {
 			interpret( "what do i need",
 					   "you don't need anything" );
 		}
+		if ( level == 0 || level == 2 ) {
+			audit.title( "simple variables" );
+			interpret( "the value of name is big martin", "ok" );
+			interpret( "what is the value of name", "big martin" );
+		}
 		if ( level == 0 || level == 3 ) {
 			audit.title( "Verbal Arithmetic" );
 			interpret( "what is 1 + 2",                    "1 plus 2 is 3.");
@@ -281,10 +285,10 @@ public class Enguage extends Shell {
 			// interpret( "the height    of an entity is a numeric value" );
 			// interpret( "the height    of    martin is 194" );
 			
-			Join.on( false );
-			interpret( "the sum of q and p is q + p", "ok" );
-			interpret( "what is the sum of 3 and 4", "7" );
-			Join.on( true );
+//			Join.on( false );
+//			interpret( "the sum of q and p is q + p", "ok" );
+//			interpret( "what is the sum of 3 and 4", "7" );
+//			Join.on( true );
 
 			// interpret( "the factorial of 0 is 1", "ok" );
 			// interpret( "the factorial of 1 is 1", "ok" );

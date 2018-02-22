@@ -20,7 +20,7 @@ public class Function {
 	public Function( String nm ) { name = nm; } // find
 	public Function( String nm, Strings params, String body ) {
 		this( nm );
-		lambda = new Lambda( nm, params, body );
+		lambda = new Lambda( this, params, body );
 	}
 	
 	private String   name;
@@ -28,11 +28,12 @@ public class Function {
 	
 	private Lambda lambda = null;
 	
-	public  String toString() { return "FUNCTION "+ name + lambda==null ? "<null>" : lambda.toString();}
+	public  String toString() { return NAME +" "+ name + lambda==null ? "<null>" : lambda.toString();}
 	
 	static public String create( String name, Strings args ) {
 		// args=[ "x and y", "/", "body='x + y'" ]
 		audit.in( "create", "name="+ name +", args="+ args.toString( Strings.DQCSV ));
+		
 		Strings params = new Strings();
 		ListIterator<String> si = args.listIterator();
 		Strings.getWords( si, "/", params ); // added in perform call
@@ -46,7 +47,6 @@ public class Function {
 		return audit.out( Shell.SUCCESS );
 	}
 	private static Function getFunction( String name, Strings values ) {
-		// ("area", ["height", "width"])
 		audit.in( "getFunction", name +", "+ values.toString("[", ", ", "]"));
 		Function fn = new Function( name );
 		fn.lambda = new Lambda( name, values );
@@ -60,27 +60,29 @@ public class Function {
 		Strings ss = null;
 		Function f = getFunction( function, argv ); // e.g. sum 2 => sum/x,y.txt
 		if (f != null) {
+			// dereference any variables...
 			Strings actuals = new Strings();
 			for (String a : argv ) {
-				if (!Lambda.isNumeric( a ))
+				if (!Number.isNumeric( a ))
 					a = Variable.get( a );
 				actuals.add( a );
 			}
+			// do the substitution
 			ss = new Strings( f.lambda.body() )
-							.substitute(
-									new Strings( f.lambda.sig() ), // formals
-									actuals );
+					.substitute(
+						new Strings( f.lambda.sig() ), // formals
+						actuals );
 		}
 		return audit.out( ss );
 	}
 	static public String evaluate( String name, Strings argv ) {
 		audit.in(  "evaluate", argv.toString( Strings.DQCSV ));
-		String  rc = Reply.dnk(); //argv.toString();
+		String  rc = Reply.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {
 			rc = Number.getNumber( ss.listIterator()).valueOf();
 			if (rc.equals( Number.NotANumber ))
-				rc = argv.toString();
+				rc = Reply.dnk();
 		}
 		return audit.out( rc );
 	}
@@ -92,20 +94,20 @@ public class Function {
 			       function = argv.remove( 0 );
 			argv = argv.normalise().contract( "=" );
 	
-			if (cmd.equals( "create" )) {
+			if (cmd.equals( "create" ))
 				// [function] "create", "sum", "a", "b", "/", "body='a + b'"
 				rc = create( function, argv );
 				
-			} else if (cmd.equals( "evaluate" )) {
+			else if (cmd.equals( "evaluate" ))
 				// [function] "evaluate", "sum", "3", "and", "4"
 				rc = evaluate( function, argv );
 				
-			} else
+			else
 				audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}
 		return audit.out( rc );
 	}
-	//crate + query
+	// test code below!
 	static private void create( String fn, String formals, String body ) {
 		audit.log( "The "+ fn +" of "+ formals +" is "+ body );
 		interpret( new Strings( "create "+ fn +" "+ formals +" / body='"+ body +"'" ));
@@ -113,8 +115,8 @@ public class Function {
 	static private void query( String fn, String actuals ) {
 		audit.log( "What is the "+ fn +" of "+ actuals );
 		String eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
-		audit.log( eval.equals( Reply.dnk()) ?
-			eval :
+		audit.log( null == eval ?
+			"I don't know" :
 			"The "+ fn +" of "+ actuals +" is "+ eval +"\n" );
 	}
 	static public void main( String args[]) {

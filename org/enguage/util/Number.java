@@ -427,13 +427,13 @@ public class Number {
 		return len;
 	}
 	static public boolean isNumeric( String s ) {
-		//audit.in( "isNumeric", s );
-		float i = 0;
+		boolean rc = true;
 		try {
-			i = Float.parseFloat( s );
-		} catch (NumberFormatException nfe) {} //fail silently!
-		//audit.out( s.equals( "0" ) || 0 != i );
-		return s.equals( "0" ) || 0 != i;
+			Float.parseFloat( s );
+		} catch (NumberFormatException nfe) {
+			rc = false;
+		}
+		return rc;
 	}
 	/*
 	 * getNumber() -- factory method.
