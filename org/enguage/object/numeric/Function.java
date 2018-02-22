@@ -4,7 +4,6 @@ import java.util.ListIterator;
 
 import org.enguage.Enguage;
 import org.enguage.object.Attribute;
-import org.enguage.object.Value;
 import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
 import org.enguage.util.Audit;
@@ -15,50 +14,21 @@ import org.enguage.vehicle.Reply;
 
 public class Function {
 	
-	class Lambda {
-		public Lambda() {} // find
-		public Lambda( Strings params, String body ) { // create
-			sig = params;
-			v = new Value( name,
-					params.toString( Strings.CSV ) + ".txt" );
-		}
-		private Value v = null;
-		
-		private Strings sig = null;
-		public  Strings sig() { return sig; }
-		public  Lambda  sig( Strings s ) { sig = s; return this; }
-		
-		private String body = "";
-		public  String body() { return body; }
-		public  Lambda body( String b ) { body = b; return this; };
-		
-		public void set( Strings params, String body ) {
-			if (null == v) {
-				sig = params;
-				v = new Value( name,
-						params.toString( Strings.CSV ) + ".txt" );
-			}
-			v.set( body ); // writes v!
-		}
-		public String get() { return v.getAsString();}
-		public String toString() { return "( "+ sig +" ) "+ body;}
-	}
-	
 	static public  String  NAME = "function";
 	static private Audit  audit = new Audit( "Function" );
 	
 	public Function( String nm ) { name = nm; } // find
 	public Function( String nm, Strings params, String body ) {
 		this( nm );
-		lambda.set( params, body );
+		lambda = new Lambda( nm, params, body );
 	}
 	
 	private String   name;
 	public  String   name() { return name; }
 	
-	private Lambda lambda = new Lambda();
+	private Lambda lambda = null;
 	
-	public  String toString() { return "FUNCTION "+ name + lambda.toString();}
+	public  String toString() { return "FUNCTION "+ name + lambda==null ? "<null>" : lambda.toString();}
 	
 	static public String create( String name, Strings args ) {
 		// args=[ "x and y", "/", "body='x + y'" ]
@@ -75,46 +45,13 @@ public class Function {
 		
 		return audit.out( Shell.SUCCESS );
 	}
-	private static boolean match( Strings names, Strings values ) {
-		boolean rc = false;
-		audit.in( "match", "names="+ names +", values="+ values );
-		if (names.size() == values.size()) {
-			rc = true;
-			ListIterator<String> ni = names.listIterator(),
-			                     vi = values.listIterator();
-			while (rc && ni.hasNext()) {
-				String n = ni.next(), s,
-				       v = vi.next();
-				if (!n.equals( v )) { // height != height -- numeric???
-					if (null != (s = Variable.get( v ))
-							&& s.equals( n ))  { // e.g. height != 194
-						audit.log( "failing on match" );
-						rc = false;
-		}	}	}	}
-		return audit.out( rc );
-	}
 	private static Function getFunction( String name, Strings values ) {
 		// ("area", ["height", "width"])
 		audit.in( "getFunction", name +", "+ values.toString("[", ", ", "]"));
-		Function fn = null;
-		String     body = "";
-		Strings  params = null,
-		        dirEnts = Enguage.e.o.list( name );
-		// get params and body (lambda)
-		if (null != dirEnts)
-			for (String fname : dirEnts) {
-				Strings tmp = new Strings( fname, '.' );
-				     params = new Strings( tmp.get(0), ',' );
-				if (match( params, values )) {
-					body = new Value( name, fname ).getAsString();
-					break; // can we revisit?
-			}	}
-
-		if (params != null) {
-			fn = new Function( name );
-			fn.lambda.sig( params );
-			fn.lambda.body( body );
-		}
+		Function fn = new Function( name );
+		fn.lambda = new Lambda( name, values );
+		if (fn.lambda.body().equals( "" ))
+			fn = null;
 		return (Function) audit.out( fn );
 	}
 	static private Strings substitute( String function, Strings argv ) {
@@ -125,7 +62,7 @@ public class Function {
 		if (f != null)
 			ss = new Strings( f.lambda.body() )
 							.substitute(
-									new Strings( f.lambda.sig ), // formals
+									new Strings( f.lambda.sig() ), // formals
 									argv );
 		return audit.out( ss );
 	}
@@ -161,12 +98,17 @@ public class Function {
 		}
 		return audit.out( rc );
 	}
+	//crate + query
 	static private void test( String fn, String formals, String body, String actuals ) {
+		audit.log( "The "+ fn +" of "+ formals +" is "+ body );
 		interpret( new Strings( "create "+ fn +" "+ formals +" / body='"+ body +"'" ));
+		
+		audit.log( "What is the "+ fn +" of "+ actuals );
+		
 		String eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
 		audit.log( eval.equals( Reply.dnk()) ?
 			eval :
-			"The "+ fn +" of "+ actuals +" is "+ eval );
+			"The "+ fn +" of "+ actuals +" is "+ eval +"\n" );
 	}
 	static public void main( String args[]) {
 		Enguage.e = new Enguage();
@@ -176,16 +118,11 @@ public class Function {
 		else {
 			Variable.set( "x", "1" );
 			Variable.set( "y", "2" );
-			if (!match( new Strings( "1" ), new Strings( "1" )))
-				audit.FATAL( "match fails on 1/1" );
-			if (!match( new Strings( "x" ), new Strings( "1" )))
-				audit.FATAL( "match fails on x/1" );
-			if (!match( new Strings( "y" ), new Strings( "2" )))
-				audit.FATAL( "match fails on y/2" );
 			//Audit.traceAll( true );
 			audit.debug( "matching passes!" );
 			test( "sum", "a and b", "a + b", "3 and 2" );
 			//Audit.traceAll( false );
 			test( "sum", "a b c and d", "a + b + c + d", "4 and 3 and 2 and 1" );
+			test( "sum", "1", "1", "6" );
 			test( "factorial", "1", "1", "6" );
 }	}	}
