@@ -1,43 +1,50 @@
 ## Simple calculation
-     On "calculate PHRASE-X", perform "numeric evaluate X".
-Then on "calculate PHRASE-X", if not, reply "i did not get that".
+On "calculate PHRASE-X":
+	perform "numeric evaluate X";
+	then, if not, reply "i did not get that".
 
 ## Typical description
-     On "what is NUMERIC-PHRASE-X", perform "numeric evaluate X".
-Then on "what is NUMERIC-PHRASE-X", perform "variable set $SUBTOTAL ...".
-Then on "what is NUMERIC-PHRASE-X", reply "X is ...".
-Then on "what is NUMERIC-PHRASE-X", if not, reply "i did not get that".
-     On "help", reply "to calculate a numeric phrase".
+On "what is NUMERIC-X":
+	perform "numeric evaluate X";
+	perform "variable set $SUBTOTAL ...";
+	reply "X is ...";
+	then, if not, reply "i did not get that".
+On "help", reply "to calculate a numeric phrase".
 
 ## Running total...
-     On "NUMERIC-X", perform "variable set $SUBTOTAL X".
+On "NUMERIC-X", perform "variable set $SUBTOTAL X".
     
-     On "+ NUMERIC-X", perform "numeric evaluate SUBTOTAL plus X".
-Then on "+ NUMERIC-X", perform "variable set $SUBTOTAL ...".
-Then on "+ NUMERIC-X", reply "plus X makes SUBTOTAL".
+On "+ NUMERIC-X":
+	perform "numeric evaluate SUBTOTAL plus X";
+	perform "variable set $SUBTOTAL ...";
+	then, reply "plus X makes SUBTOTAL".
 
-     On "add NUMERIC-X", + X.
-     On "help", reply "and so on, to keep a running total".
+On "add NUMERIC-X", + X.
+On "help", reply "and so on, to keep a running total".
      
 ##
-     On "minus NUMERIC-X", perform "numeric evaluate SUBTOTAL minus X".
-Then on "minus NUMERIC-X", perform "variable set $SUBTOTAL ...".
-Then on "minus NUMERIC-X", reply "minus X makes SUBTOTAL".
+On "minus NUMERIC-X":
+	perform "numeric evaluate SUBTOTAL minus X";
+	perform "variable set $SUBTOTAL ...";
+	then, reply "minus X makes SUBTOTAL".
     
-     On "take away NUMERIC-X", minus X.
+On "take away NUMERIC-X", minus X.
     
 ##
-     On "times NUMERIC-X", perform "numeric evaluate SUBTOTAL times X".
-Then on "times NUMERIC-X", perform "variable set $SUBTOTAL ...".
-Then on "times NUMERIC-X", reply "times X makes SUBTOTAL".
+On "times NUMERIC-X":
+	perform "numeric evaluate SUBTOTAL times X";
+	perform "variable set $SUBTOTAL ...";
+	then, reply "times X makes SUBTOTAL".
     
-     On "times by      NUMERIC-X", times X.
-Then on "times by      NUMERIC-X", reply "times by X makes SUBTOTAL".
+On "times by      NUMERIC-X":
+	times X;
+	then, reply "times by X makes SUBTOTAL".
 
-     On "multiplied by NUMERIC-X", times X.
-Then on "multiplied by NUMERIC-X", reply "multiplied by X makes SUBTOTAL".
-    
-     On "equals", reply "SUBTOTAL".
+On "multiplied by NUMERIC-X":
+	times X.
+	then, reply "multiplied by X makes SUBTOTAL".
+
+On "equals", reply "SUBTOTAL".
 
 ##
      On "divided by NUMERIC-X", perform "numeric evaluate SUBTOTAL divided by X".
