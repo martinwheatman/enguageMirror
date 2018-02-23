@@ -53,6 +53,7 @@ public class Patternette {
 	public  String      name() { return name; }
 	public  Patternette name( String nm ) { if (null != nm) name = nm; return this; }
 
+	// -- mutually exclusive attributes --:
 	private boolean     isNumeric = false;
 	public  boolean     isNumeric() { return isNumeric; }
 	public  Patternette numericIs( boolean nm ) { isNumeric = nm; return this; }
@@ -71,6 +72,15 @@ public class Patternette {
 	private boolean     isPhrased = false;
 	public  boolean     isPhrased() { return isPhrased; }
 	public  Patternette phrasedIs() { isPhrased = true; return this; }
+	
+	private boolean     isList = false;
+	public  boolean     isList() { return isList; }
+	public  Patternette ListIs() { isList = true; return this; }
+	// --
+	
+	private String      conjunction = "";
+	public  String      conjunction() { return conjunction; }
+	public  Patternette conjunction( String c ) { conjunction = c; return this; }
 	
 	public Attribute matchedAttr( String val ) {
 		return new Attribute(

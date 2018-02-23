@@ -22,6 +22,7 @@ public class Pattern extends ArrayList<Patternette> {
 	static private final Locale  locale        = Locale.getDefault();
 	static private final String  variable      = "variable";
 	public static  final String  quoted        = "quoted";
+	public static  final String  list          = "list";
 	public static  final String  quotedPrefix  = quoted.toUpperCase( locale ) + "-";
 	public static  final String  phrase        = "phrase";
 	public static  final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
@@ -37,23 +38,49 @@ public class Pattern extends ArrayList<Patternette> {
 		Patternette t = new Patternette();
 		for ( String word : words ) {
 			if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
-				Strings arr = new Strings( word.toLowerCase( locale ), '-' ); // should at least be array of 1 element!
-				int  j = 0, asz = arr.size();
-				for (String subWord : arr) {
-					if ( asz > ++j ) { 
-						//t.attribute( subWord, subWord ); // non-last words in array
-						if (subWord.equals( phrase ))
-							t.phrasedIs();
-						else if (subWord.equals( plural ))
-							t.pluralIs();
-						else if (subWord.equals( quoted ))
-							t.quotedIs();
-						else if (subWord.equals( numeric ))
-							t.numericIs();
-
-					} else
-						t.name( subWord ); // last word in array
+				Strings arr = new Strings( word.toLowerCase( locale ), '-' );
+				ListIterator<String> wi = arr.listIterator();
+				String sw = wi.next();
+				if (sw.equals( phrase )) {
+					t.phrasedIs();
+					if (wi.hasNext()) sw = wi.next();
+					else audit.ERROR( "ctor: PHRASE variable, missing name." );
+				} else if (sw.equals( plural )) {
+					t.pluralIs();
+					if (wi.hasNext()) sw = wi.next();
+					else audit.ERROR( "ctor: PLURAL variable, missing name." );
+				} else if (sw.equals( quoted )) {
+					t.quotedIs();
+					if (wi.hasNext()) sw = wi.next();
+					else audit.ERROR( "ctor: QUOTED variable, missing name." );
+				} else if (sw.equals( numeric )) {
+					t.numericIs();
+					if (wi.hasNext()) sw = wi.next();
+					else audit.ERROR( "ctor: NUMERIC variable, missing name." );
 				}
+				
+				while ((sw.equals( phrase ) ||
+						sw.equals( plural ) ||
+						sw.equals( quoted ) ||
+						sw.equals( numeric ))
+					 && wi.hasNext())
+				{
+					audit.ERROR( "ctor: mutually exclusive modifiers" );
+					sw = wi.next();
+				}
+				
+				t.name( sw );
+				
+				if( wi.hasNext()) {
+					sw = wi.next();
+					t.conjunction( sw );
+					if (wi.hasNext()) {
+						sw = wi.next();
+						if (!sw.equals( list )) {
+							audit.ERROR( "ctor: unrecognised postfix: "+ t.conjunction() +"-"+ sw );
+							t.conjunction( "" );
+							if (wi.hasNext()) audit.ERROR( "ctor: too many components in variable name");
+				}	}	}
 				add( t );
 				t = new Patternette();
 			} else
@@ -63,7 +90,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	
 	// Manual Autopoiesis... needs to deal with:
-	// if variable x do phrase variable y => if X fo PHRASE-Y
+	// if variable x do phrase variable y => if X do PHRASE-Y
 	// i need numeric variable quantity variable units of phrase variable needs.
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
 	public Pattern( String str ) { this( toPattern( str )); }
@@ -75,31 +102,19 @@ public class Pattern extends ArrayList<Patternette> {
 		Iterator<String> wi = in.iterator();
 		while ( wi.hasNext() ) {
 			String word = wi.next();
-			if (word.equals( variable )) {
-				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable )) // so we can't have VARIABLE, ok...
+			if (word.equals( variable ))
+				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable ))
 					out.append( word.toUpperCase( locale ));
 				else // variable. OR variable variable
 					out.append( variable );
 				
-			} else if (word.equals( numeric ))
+			else if (word.equals( numeric ))
 				if (wi.hasNext() && null != (word = wi.next()))
 					if (word.equals( variable ))
 						if (wi.hasNext() && (null != (word = wi.next() )) && !word.equals( variable ))
 							out.append( numericPrefix + word.toUpperCase( locale ));
 						else // numeric variable. or numeric variable variable
 							out.append( numeric ).append( variable );
-					
-					else if (word.equals( phrase ))
-						if (wi.hasNext() && null != (word = wi.next()))
-							if (word.equals( variable ))
-								if (wi.hasNext() && (null != (word = wi.next() )) && !word.equals( variable ))
-									out.append( numericPrefix + phrasePrefix + word.toUpperCase( locale ));
-								else // numeric phrase variable. OR numeric phrase variable variable
-									out.append( numeric ).append( phrase ).append( variable );
-							else // numeric phrase blah
-								out.append( numeric ).append( phrase ).append( word );
-						else // numeric phrase.
-							out.append( numeric ).append( phrase );
 					else // numeric blah
 						out.append( numeric ).append( word );		
 				else // numeric.
@@ -116,6 +131,19 @@ public class Pattern extends ArrayList<Patternette> {
 						out.append( phrase ).append( word );
 				else // phrase.
 					out.append( phrase );
+			
+			else if (word.equals( "and" ))
+				if (wi.hasNext() && null != (word = wi.next()) && word.equals( "list" ))
+					if (wi.hasNext() && null != (word = wi.next()) && word.equals( "variable" ))
+						if (wi.hasNext() && null != (word = wi.next()) && !word.equals( "variable" ))
+							out.append( word.toUpperCase( locale )+"-AND-LIST" );
+						else // and list variable variable
+							out.append( "and" ).append( "list" ).append( "variable" );
+					else // and list blah
+						out.append( "and" ).append( "list" ).append( word );						
+				else // so we can't have just VARIABLE, ok...
+					out.append( "and" ).append( word );						
+
 			else // blah
 				out.append( word );
 		}
@@ -292,20 +320,20 @@ public class Pattern extends ArrayList<Patternette> {
 				if (patti.hasNext()) next = patti.next();
 				
 			} else if (utti.hasNext() && !t.name().equals( "" )) { // do these loaded match?
+				
 				String val = null;
+				
 				if (t.isNumeric()) {
 					
 					if (null == (val = doNumeric( utti ))) {
 						notMatched = 15;
 						return null;
 					}
-					
 				} else if (t.invalid( utti )) {
 					notMatched = 16;
 					return null;
-				}
 					
-				else
+				} else
 					val = getVal( t, patti, utti );
 					
 				// ...add value
@@ -315,8 +343,7 @@ public class Pattern extends ArrayList<Patternette> {
 				if (null == (utti = matchBoilerplate( t.postfix(), utti ))) {
 					notMatched += 7; // 18 or 19!
 					return null;
-				}
-		}	}
+		}	}	}
 		
 		if (patti.hasNext()) {
 			notMatched = 21;
@@ -447,14 +474,8 @@ public class Pattern extends ArrayList<Patternette> {
 		toPatternTest( "the factorial of numeric variable n", "the factorial of NUMERIC-N" );
 		toPatternTest( "the factorial of numeric variable n blah", "the factorial of NUMERIC-N blah" );
 
-		toPatternTest( "the factorial of numeric phrase" );
-		toPatternTest( "the factorial of numeric phrase n" );
-		toPatternTest( "the factorial of numeric phrase n blah" );
-		toPatternTest( "the factorial of numeric phrase variable" );
-		toPatternTest( "the factorial of numeric phrase variable variable", "the factorial of numeric phrase variable" );
-		toPatternTest( "the factorial of numeric phrase variable n", "the factorial of NUMERIC-PHRASE-N" );
-		toPatternTest( "the factorial of numeric phrase variable n blah", "the factorial of NUMERIC-PHRASE-N blah" );
-		
+		toPatternTest( "the sum of and list variable params is blah", "the sum of PARAMS-AND-LIST is blah" );
+
 		audit.log( "First: martin is alive" );
 		Audit.incr();
 		printTagsAndValues( new Pattern(
@@ -492,7 +513,6 @@ public class Pattern extends ArrayList<Patternette> {
 					.add( "list",    "am" )
 		);
 		Audit.decr();
-
 		
 		audit.log( "PASSED" );
 }	}

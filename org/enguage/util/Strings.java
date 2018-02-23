@@ -367,7 +367,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	public Strings replace( int i, String s ) {
 		remove( i );
-		add( i, s );
+		if (null != s) add( i, s );
 		return this;
 	}
 	public Strings append( Strings sa ) {
@@ -375,11 +375,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return this;
 	}
 	public Strings append( String s ) {
-		add( s );
+		if (null != s) add( s );
 		return this;
 	}
 	public Strings prepend( String str ) {
-		add( 0, str );
+		if (null != str) add( 0, str );
 		return this;
 	}
 	public Strings copyFrom( int n ) {
