@@ -9,6 +9,7 @@ import org.enguage.sign.repertoire.Concepts;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
+import org.enguage.util.Join;
 import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
@@ -110,8 +111,11 @@ public class Enguage extends Shell {
 		audit.LOG( "       -t, --test" );
 		audit.LOG( "          runs a sanity check" );
 	}
+	static int numberOfTests = 0;
 	static private void interpret( String cmd ) { interpret( cmd, "" );}
 	static private void interpret( String cmd, String expected ) {
+		
+		numberOfTests++;
 		
 		boolean silentRunning = expected == null;
 		if (!silentRunning)
@@ -237,8 +241,19 @@ public class Enguage extends Shell {
 		}
 		if ( level == 0 || level == 2 ) {
 			audit.title( "simple variables" );
-			interpret( "the value of name is big martin", "ok" );
-			interpret( "what is the value of name", "big martin" );
+			interpret( "the value of name is fred", "ok" );
+			interpret( "get the value of name",     "fred" );
+			interpret( "set the value of name to fred bloggs" );
+			interpret( "what is the value of name", "fred bloggs, the value of name is fred bloggs" );
+			interpret( "set x to 3",                "ok, x is set to 3" );
+			interpret( "set y to 4",                "ok, y is set to 4" );
+			interpret( "what is the value of x",       "3, the value of x is 3" );
+			Join.on( false );
+			interpret( "the sum of x and y is x plus y" );
+			interpret( "what is the sum of x and y",   "the sum of x and y is 7" );
+			Join.on(  true );
+			interpret( "the height of martin is 194" );
+			interpret( "what is the height of martin", "the height    of martin is 194" );
 		}
 		if ( level == 0 || level == 3 ) {
 			audit.title( "Verbal Arithmetic" );
@@ -283,7 +298,6 @@ public class Enguage extends Shell {
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 			
 			// interpret( "the height    of an entity is a numeric value" );
-			// interpret( "the height    of    martin is 194" );
 			
 //			Join.on( false );
 //			interpret( "the sum of q and p is q + p", "ok" );
@@ -297,7 +311,6 @@ public class Enguage extends Shell {
 			
 			// interpret( "the factorial of         1 is 1" );
 			// interpret( "the factorial of         n is n times the factorial of n minus 1" );
-			// interpret( "the sum       of   x and y is x plus y" );
 			
 			// interpret( "what is the height of martin", "the height    of martin is 194" );
 			// interpret( "what is the factorial of 1",   "the factorial of      1 is 1");
@@ -305,15 +318,9 @@ public class Enguage extends Shell {
 			// interpret( "what is the factorial of 4",   "the factorial of 4 is 24" );
 			// interpret( "what is the sum of a and b",   "sum of a and b is a plus b" );
 			// interpret( "what is the sum of 3 and 2",   "the sum of 3 and 2" );
-			// interpret( "set a to 3",                   "ok a is 3" );
-			// interpret( "set b to 4",                   "ok b is 4" );
-			// interpret( "what is a",                    "a is 3" ); // ?? a is a?
-			// interpret( "what is the value of a",       "a is 3" );
-			// interpret( "what is the sum of a and b",   "the sum of a and b 7" );
 			
 			// interpret( "the product of x and y is x times y" );
 			// interpret( "what is the product of a and b",  "the product of a and b is 12" );
-			
 		}
 		if ( level == 0 || level == 4 ) {
 			audit.title( "Numerical Context" );
@@ -688,5 +695,5 @@ public class Enguage extends Shell {
 			 * Ask: what is your name?
 			 */
 		}
-		audit.log( "+++ PASSED +++" );
+		audit.log( "+++ PASSED "+ numberOfTests +" tests +++" );
 }	}

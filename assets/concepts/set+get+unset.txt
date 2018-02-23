@@ -1,8 +1,12 @@
 # VARIABLES
 # E.g set name to martin
 
-On "set VARIABLE to PHRASE-VALUE", perform "variable set VARIABLE VALUE".
-On "set VARIABLE to QUOTED_VALUE", perform "variable set VARIABLE VALUE".
+On "set VARIABLE to PHRASE-VALUE":
+	perform "variable set VARIABLE VALUE";
+	then, reply "ok, VARIABLE is set to VALUE".
+On "set VARIABLE to QUOTED_VALUE":
+	perform "variable set VARIABLE VALUE";
+	then, reply "ok, VARIABLE is set to VALUE".
 
 On "set   the value of VARIABLE to PHRASE-VALUE", set VARIABLE to VALUE.
 On "get   the value of VARIABLE", perform "variable get VARIABLE".
@@ -11,12 +15,12 @@ On "unset the value of VARIABLE", perform "variable unset VARIABLE".
 On "VARIABLE is not set to PHRASE-VALUE":
 	perform "variable equals VARIABLE VALUE";
 	reply "no, VARIABLE is set to VALUE";
-	then, if not,	reply "yes, VARIABLE is not set to VALUE".
+	then, if not, reply "yes, VARIABLE is not set to VALUE".
 
 On "VARIABLE is set to PHRASE-VALUE":
 	perform "variable equals VARIABLE VALUE";
 	reply "yes, VARIABLE is set to VALUE";
-	then, if not,	reply "no, VARIABLE is not set to VALUE".
+	then, if not, reply "no, VARIABLE is not set to VALUE".
 
 #colloquialisms...
 On "VARIABLE gets set to PHRASE-VALUE", set VARIABLE to VALUE.
