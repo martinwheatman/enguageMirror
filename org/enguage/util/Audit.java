@@ -54,7 +54,8 @@ public class Audit {
 	
 	public Audit( String nm ) { name = capitalize( nm ); }
 	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
-	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; detailedRegis = d;}
+	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; on = d;}
+	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; on = d; detailedRegis = detail;}
 	
 	public void   FATAL( String msg ) { LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 ); }
 	public void   FATAL( String phrase, String msg ) { FATAL( phrase +": "+ msg ); }

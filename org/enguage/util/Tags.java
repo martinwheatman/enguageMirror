@@ -139,7 +139,7 @@ public class Tags extends ArrayList<Tag> {
 		String u = "unseta";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
-		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunctions().contains( u ))) {
+		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunction().equals( u ))) {
 			String term = getPhraseTerm( t, ti );
 			//audit.audit( "phrased, looking for terminator "+ term );
 			// here: "... one AND two AND three" => "one+two+three"

@@ -73,7 +73,7 @@ public class Join {
 		//if (Audit.detailedDebug) audit.out( rc.toString() );
 		return rc;
 	}
-	static public ArrayList<Attributes> join( Attributes match, Strings sep ){
+	static public ArrayList<Attributes> join( Attributes match, String sep ){
 		ArrayList<Attributes> rc = new ArrayList<Attributes>();
 		if (!on) {
 			audit.log( "join returning:"+ match.toString());
@@ -131,7 +131,7 @@ public class Join {
 		match.add( new Attribute(  "OBJECT", "2 coffees, a pot of tea and biscuits" ));
 		
 		audit.log( "Context is:\n\t"+ match );
-		ArrayList<Attributes> ala = join( match, new Strings( ", and" ));
+		ArrayList<Attributes> ala = join( match, "and" );
 		audit.log( "Combinations of which are:\n\t"+ ala.toString() );
 		
 		match = new Attributes();
@@ -139,6 +139,6 @@ public class Join {
 		match.add( new Attribute(  "OBJECTS", "2 coffees, a pot of tea and biscuits" ));
 		
 		audit.log( "Context is:\n\t"+ match );
-		ala = join( match, new Strings( ", and" ));
+		ala = join( match, "and" );
 		audit.log( "Combinations of which are:\n\t"+ ala.toString() );
 }	}

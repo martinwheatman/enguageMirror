@@ -2,7 +2,7 @@
 # what is the height of martin.
 #On "what is the ATTR of ENTITY", get the ATTR of ENTITY.
 
-On "what is the FUNCTION of PHRASE-PARAMS":
+On "what is the FUNCTION of AND-LIST-PARAMS":
 	perform "function evaluate FUNCTION PARAMS";
 	if not, get the FUNCTION of PARAMS;
 	if not, reply "I do not know";

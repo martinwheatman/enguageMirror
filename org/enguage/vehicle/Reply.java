@@ -72,9 +72,9 @@ public class Reply { // a reply is basically a formatted answer
 	static public  void   helpPrefix( String s ) { helpPrefix = s; }
 	static public  String helpPrefix() { return helpPrefix; }
 
-	static private Strings andConjunctions = new Strings( ", and" );
-	static public  void    andConjunctions( Strings sa ) { andConjunctions = sa; }
-	static public  Strings andConjunctions() { return andConjunctions; }
+	static private String  andConjunction = new String( "and" );
+	static public  void    andConjunction( String s ) { andConjunction = s; }
+	static public  String  andConjunction() { return andConjunction; }
 
 	static private Strings andListFormat = new Strings( ", /, and ", '/' );
 	static public  void    andListFormat( String s ) { andListFormat = new Strings( s, listSep().charAt( 0 )); }

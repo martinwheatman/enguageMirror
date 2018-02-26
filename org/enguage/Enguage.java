@@ -248,10 +248,10 @@ public class Enguage extends Shell {
 			interpret( "set x to 3",                "ok, x is set to 3" );
 			interpret( "set y to 4",                "ok, y is set to 4" );
 			interpret( "what is the value of x",    "3, the value of x is 3" );
-			Join.on( false );
-			interpret( "the sum of x and y is x plus y" );
+			//Join.on( false );
+			interpret( "the sum of x and y is x plus y", "ok" );
 			interpret( "what is the sum of x and y",   "the sum of x and y is 7" );
-			Join.on(  true );
+			//Join.on(  true );
 			interpret( "the height of martin is 194" );
 			interpret( "what is the height of martin", "the height    of martin is 194" );
 		}

@@ -60,6 +60,21 @@ public class Pattern extends ArrayList<Patternette> {
 					t.numericIs();
 					if (wi.hasNext()) sw = wi.next();
 					else audit.ERROR( "ctor: NUMERIC variable, missing name." );
+				} else if (sw.equals( Reply.andConjunction() )) {
+					audit.LOG( "found: "+ Reply.andConjunction() );
+					if (wi.hasNext()) {
+						sw = wi.next();
+						if (sw.equals( list )) {
+							if (wi.hasNext()) {
+								audit.LOG( "bingo: found isList" );
+								sw = wi.next();
+								t.listIs();
+							} else
+								audit.ERROR( "ctor: AND-LIST variable, missing name." );
+						} else
+							audit.ERROR( "ctor: AND-LIST? 'LIST' missing" );
+					} else
+						audit.ERROR( "ctor: AND terminates variable" );
 				}
 				
 				while ((sw.equals( phrase ) ||
@@ -74,16 +89,6 @@ public class Pattern extends ArrayList<Patternette> {
 				
 				t.name( sw );
 				
-				if( wi.hasNext()) {
-					sw = wi.next();
-					t.conjunction( sw );
-					if (wi.hasNext()) {
-						sw = wi.next();
-						if (!sw.equals( list )) {
-							audit.ERROR( "ctor: unrecognised postfix: "+ t.conjunction() +"-"+ sw );
-							t.conjunction( "" );
-							if (wi.hasNext()) audit.ERROR( "ctor: too many components in variable name");
-				}	}	}
 				add( t );
 				t = new Patternette();
 			} else
@@ -240,7 +245,7 @@ public class Pattern extends ArrayList<Patternette> {
 		String u = "unseta";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
-		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunctions().contains( u ))) {
+		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunction().equals( u ))) {
 			String term = getPhraseTerminator( t, ti );
 			//audit.audit( "phrased, looking for terminator "+ term );
 			// here: "... one AND two AND three" => "one+two+three"
@@ -268,8 +273,10 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched ==  2 ? "precheck 2" :
 				notMatched == 11 ? "prefixa" :
 				notMatched == 12 ? "prefixb" :
+				notMatched == 14 ? "and-list runs into hotspot" :
 				notMatched == 15 ? "not numeric" :
 				notMatched == 16 ? "invalid flags" :
+				notMatched == 17 ? "unterminated and-list" :
 				notMatched == 18 ? "postfixa" :
 				notMatched == 19 ? "postfixb" :
 				notMatched == 21 ? "more pattern" :
@@ -308,9 +315,9 @@ public class Pattern extends ArrayList<Patternette> {
 		 * ???NAME="an/array/or/list"	... <NAME array="array"/>
 		 * ???NAME="value one/value two/value three" <NAME phrased="phrased" array="array"/>
 		 */
-		Attributes         matched = null; // lazy creation
-		ListIterator<Patternette>    patti = listIterator();           // [ 'this    is    a   <test/>' ]
-		ListIterator<String>  utti = utterance.listIterator(); // [ "this", "is", "a", "test"   ]
+		Attributes              matched = null; // lazy creation
+		ListIterator<Patternette> patti = listIterator();           // [ 'this    is    a   <test/>' ]
+		ListIterator<String>       utti = utterance.listIterator(); // [ "this", "is", "a", "test"   ]
 		
 		Patternette next = null;
 		while (patti.hasNext() && utti.hasNext()) {
@@ -319,7 +326,7 @@ public class Pattern extends ArrayList<Patternette> {
 			next = null;
 			
 			if (null == (utti = matchBoilerplate( t.prefix(), utti ))) { // ...match prefix
-				//notMatched = 11; -- set within matchBoilerplate()
+				//notMatched set within matchBoilerplate()
 				return null;
 				
 			} else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
@@ -335,6 +342,34 @@ public class Pattern extends ArrayList<Patternette> {
 						notMatched = 15;
 						return null;
 					}
+					
+				} else if (t.isList()) {
+					
+					Strings vals = new Strings();
+					if (patti.hasNext()) {
+						
+						// peek at terminator
+						String terminator = patti.next().prefix().get( 0 );
+						patti.previous();
+						String  word = utti.next();
+						vals.add( word ); // add at least one val!
+						if (utti.hasNext()) word = utti.next();
+						while ( !word.equals( terminator )) {
+							vals.add( word );
+							if (utti.hasNext())
+								word = utti.next();
+							else {
+								notMatched = 17;
+								return null;
+							}
+						}
+						utti.previous(); // replace terminator!
+					} else // read to end
+						while (utti.hasNext())
+							vals.add( utti.next() );
+					
+					val = vals.toString();
+					
 				} else if (t.invalid( utti )) {
 					notMatched = 16;
 					return null;

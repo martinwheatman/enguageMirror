@@ -229,7 +229,7 @@ public class Attributes extends ArrayList<Attribute> {
 		return sa;
 	}
 	// ---- join():  => 
-	public ArrayList<ArrayList<Strings>> valuesAsLists( Strings seps ) {
+	public ArrayList<ArrayList<Strings>> valuesAsLists( String sep ) {
 		/* Called from join -- note plurality of attribute loaded:
 		 * ([ SUBJECT="martin and ruth", OBJECTS="coffee and decaf tea" ], "and" ) =>
 		 *      [[[martin and ruth], [coffee], [decaf tea]]
@@ -243,7 +243,7 @@ public class Attributes extends ArrayList<Attribute> {
 			Strings ss = new Strings( a.value());
 			ArrayList<Strings> als ;
 			if (Plural.isPlural( a.name().toLowerCase( Locale.getDefault()) )) {
-				als = ss.divide( seps, false ); // seps are "," and "and" -- not too interesting!
+				als = ss.divide( sep, false ); // seps are "," and "and" -- not too interesting!
 			} else {
 				als = new ArrayList<Strings>();
 				als.add( ss );

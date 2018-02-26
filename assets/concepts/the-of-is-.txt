@@ -1,5 +1,5 @@
 # 
-On "the FUNCTION of PHRASE-PARAMS is PHRASE-BODY":
+On "the FUNCTION of AND-LIST-PARAMS is PHRASE-BODY":
 	#set the PARAMS of FUNCTION to BODY;
 	perform "function create FUNCTION PARAMS / BODY";
 	then, reply "ok".

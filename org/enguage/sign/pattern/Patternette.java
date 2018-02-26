@@ -75,7 +75,7 @@ public class Patternette {
 	
 	private boolean     isList = false;
 	public  boolean     isList() { return isList; }
-	public  Patternette ListIs() { isList = true; return this; }
+	public  Patternette listIs() { isList = true; return this; }
 	// --
 	
 	private String      conjunction = "";

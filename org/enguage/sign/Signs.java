@@ -222,7 +222,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					audit.detail( "NO match: "+ s.toString() +" ("+ s.pattern().notMatched() +")");
 				else { // we have found a meaning! So I do understand...!
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
-					audit.debug( s +" matched with: "+ match.toString() +":"+ Context.valueOf());
+					audit.debug( "matched '"+ s +"' with: "+ match.toString() +":"+ Context.valueOf());
 					
 					//audit.debug("setting "+ i +" to "+ here );
 					s.interpretation = here; // mark here first as this understanding may be toxic!
@@ -242,7 +242,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					
 					r = new Reply();
 					
-					ArrayList<Attributes> ala = Join.join( match, Reply.andConjunctions() );
+					ArrayList<Attributes> ala = Join.join( match, Reply.andConjunction() );
 					//if (ala.size() > 1) audit.debug( "Combinations found:"+ ala );
 					for( Attributes m : ala ) {
 						//audit.debug( "Signs().interpret().context:"+ m.toString());

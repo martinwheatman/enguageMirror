@@ -40,7 +40,7 @@ public class Config {
 				Attribute a = pi.next();
 				String name = a.name().toUpperCase( Locale.getDefault()), value=a.value();
 				     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
-				else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunctions(  new Strings( value ));
+				else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunction( value );
 				else if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value ));
 				else if (name.equals("ANDLISTFORMAT" )) Reply.andListFormat( value);
 				else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );

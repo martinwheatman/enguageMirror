@@ -654,6 +654,19 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		divisions.add( division );
 		return divisions;
 	}
+	public ArrayList<Strings> divide( String terminator, boolean inclusive ) {
+		// [ "o", "t", ".", "t", "?", "f", "f" ]( ".?!" ) => [["o", "t", "."], ["t", "?"], ["f", "f"]]
+		ArrayList<Strings> divisions = new ArrayList<Strings>();
+		Strings division = new Strings();
+		for (String s : this) {
+			if (inclusive || !terminator.equals( s )) division.add( s );
+			if (terminator.equals( s )) {
+				divisions.add( division );
+				division = new Strings();
+		}	}
+		divisions.add( division );
+		return divisions;
+	}
 	static Strings combine( ArrayList<Strings> as ) {
 		// [["o", "t". "."], ["t", "?"], ["f", "f"]] => [ "o", "t", ".", "t", "?", "f", "f" ]
 		Strings sa = new Strings();
