@@ -156,9 +156,9 @@ public class Enguage extends Shell {
 		 .root( null )
 		 .context( null );
 
-		if (null == Enguage.e.o || !Enguage.e.o.attached() )
-			if (!Overlay.autoAttach())
-				audit.FATAL(">>>>>>>>Ouch! Cannot autoAttach() to object space<<<<<<" );
+		if (   (null == Enguage.e.o || !Enguage.e.o.attached())
+			&& !Overlay.autoAttach())
+			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
 
 		e.concepts( new File( location + "/concepts" ).list() );
 
@@ -247,7 +247,7 @@ public class Enguage extends Shell {
 			interpret( "what is the value of name", "fred bloggs, the value of name is fred bloggs" );
 			interpret( "set x to 3",                "ok, x is set to 3" );
 			interpret( "set y to 4",                "ok, y is set to 4" );
-			interpret( "what is the value of x",       "3, the value of x is 3" );
+			interpret( "what is the value of x",    "3, the value of x is 3" );
 			Join.on( false );
 			interpret( "the sum of x and y is x plus y" );
 			interpret( "what is the sum of x and y",   "the sum of x and y is 7" );

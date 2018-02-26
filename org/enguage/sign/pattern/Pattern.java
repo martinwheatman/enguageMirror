@@ -11,7 +11,6 @@ import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Number;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.Reply;
 
@@ -34,9 +33,13 @@ public class Pattern extends ArrayList<Patternette> {
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
+		
 		// "if X do Y" -> [ <x prefix=["if"]/>, <y prefix=["do"] postfix="."/> ]
 		Patternette t = new Patternette();
 		for ( String word : words ) {
+			
+			if (word.equals( "an" )) word = "a";
+			
 			if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
 				Strings arr = new Strings( word.toLowerCase( locale ), '-' );
 				ListIterator<String> wi = arr.listIterator();
@@ -102,6 +105,9 @@ public class Pattern extends ArrayList<Patternette> {
 		Iterator<String> wi = in.iterator();
 		while ( wi.hasNext() ) {
 			String word = wi.next();
+			
+			if (word.equals( "an" )) word = "a";
+			
 			if (word.equals( variable ))
 				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable ))
 					out.append( word.toUpperCase( locale ));
@@ -272,7 +278,7 @@ public class Pattern extends ArrayList<Patternette> {
 	private ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
 		Iterator<String> tbpi = tbp.iterator();
 		while ( tbpi.hasNext() && ui.hasNext())
-			if (!Language.wordsEqualIgnoreCase( tbpi.next(), ui.next() )) {
+			if (!tbpi.next().equalsIgnoreCase( ui.next() )) {
 				notMatched = 11;
 				return null; // string mismatch
 			}

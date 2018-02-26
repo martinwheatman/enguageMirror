@@ -6,13 +6,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.object.Attributes;
-import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Reply;
-
-import org.enguage.util.Audit;
-import org.enguage.util.Indent;
-import org.enguage.util.Number;
-import org.enguage.util.Strings;
 
 public class Tags extends ArrayList<Tag> {
 	static final         long serialVersionUID = 0;
@@ -169,7 +163,7 @@ public class Tags extends ArrayList<Tag> {
 	private static ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
 		Iterator<String> tbpi = tbp.iterator();
 		while ( tbpi.hasNext() && ui.hasNext()) 
-			if (!Language.wordsEqualIgnoreCase( tbpi.next(), ui.next() ))
+			if (!tbpi.next().equalsIgnoreCase( ui.next() ))
 				return null; // string mismatch
 		// have we reached end of boilerplate, but not utterance?
 		return tbpi.hasNext() ? null : ui;

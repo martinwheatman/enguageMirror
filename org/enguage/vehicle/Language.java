@@ -105,17 +105,17 @@ public class Language {  // English-ism!
 				ans.set( i, isVowel( ans.get( 1+i ).charAt( 0 )) ? "an" : "a" );
 		return ans;
 	}
-/*	static private Strings indefiniteArticleFlatten( Strings a ) {
+/*	static public Strings indefiniteArticleFlatten( Strings a ) {
 		for (int i=0; i<a.size(); i++)
 			if (a.get( i ).equalsIgnoreCase( "an" ))
 				a.set( i, "a" );
 		return a;	
-	}*/
-	static public boolean wordsEqualIgnoreCase( String a, String b ) {
+	}
+	static public boolean xwordsEqualIgnoreCase( String a, String b ) {
 		if ((a.equalsIgnoreCase( "an" ) || a.equalsIgnoreCase( "a" )) &&
 		    (b.equalsIgnoreCase( "an" ) || b.equalsIgnoreCase( "a" ))    ) return true;
 		return a.equalsIgnoreCase( b );
-	}
+	} // */
 	// ...and finally, terminators... moved to Shell
 	public static String spell( String a ) { return Language.spell( a, false ); }
 	public static String spell( String a, boolean slowly ) {
