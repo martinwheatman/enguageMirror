@@ -102,7 +102,7 @@ public class Audit {
 		return result;	
 	}
 	public void    out() { out( (String)null ); }
-	public Strings out( Strings sa ) { out( sa!=null?sa.toString():"<null>"); return sa; }
+	public Strings out( Strings sa ) { out( sa!=null?"["+sa.toString(Strings.DQCSV)+"]":"<null>"); return sa; }
 	public boolean out( boolean b ) { out( Boolean.toString( b )); return b; }
 	public int     out( int   n ) { out( Integer.toString( n )); return n;}
 	public Float   out( Float f ) { out( Float.toString( f )); return f;}
