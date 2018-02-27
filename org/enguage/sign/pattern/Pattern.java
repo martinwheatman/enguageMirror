@@ -61,12 +61,12 @@ public class Pattern extends ArrayList<Patternette> {
 					if (wi.hasNext()) sw = wi.next();
 					else audit.ERROR( "ctor: NUMERIC variable, missing name." );
 				} else if (sw.equals( Reply.andConjunction() )) {
-					audit.LOG( "found: "+ Reply.andConjunction() );
+					//audit.LOG( "found: "+ Reply.andConjunction() );
 					if (wi.hasNext()) {
 						sw = wi.next();
 						if (sw.equals( list )) {
 							if (wi.hasNext()) {
-								audit.LOG( "bingo: found isList" );
+								//audit.LOG( "bingo: found isList" );
 								sw = wi.next();
 								t.listIs();
 							} else
