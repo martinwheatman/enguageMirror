@@ -769,9 +769,10 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			while (bi.hasNext()) {
 				int index;
 				String token = bi.next();
-				if (-1 != (index = formals.indexOf( token )))
-					token = actuals.get( index );
-				set( i++, token );
+				if (-1   != (index = formals.indexOf( token )) &&
+				    null != (token = actuals.get(     index ))    )
+					set( i, token );
+				i++;
 			}
 		} else {
 			audit.out( "null" );
@@ -846,7 +847,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return sa;
 	}
 	public Strings divvy( String sep ) {
-		audit.in( "Divvy", toString( Strings.DQCSV ) +", sep='"+ sep +"'");
+		audit.in( "divvy", toString( Strings.DQCSV ) +", sep='"+ sep +"'");
 		// ["a", "b", "and", "c"].divvy( "and" ) => [ "a", "b", "c" ]
 		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]
 		Strings output = new Strings(),
@@ -865,6 +866,10 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
 	public static void main( String args[]) {
 		Audit.allOn(); //main()
+		
+//		Audit.traceAll( true );
+//		new Strings( "a + b" ).substitute( new Strings("a b"), new Strings( "1 2"));
+//		System.exit( 0 );
 		audit.log( "hello, world" );
 		
 		Strings a = new Strings( "hello there" ),
