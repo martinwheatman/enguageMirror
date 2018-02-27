@@ -132,14 +132,15 @@ public class Variable {
 		return out;
 	}
 
-	static public Strings deref( String name ) {
+	static private Strings deref( String name ) {
 		// must return strings for case where variable value is 'hello world'
 		// must contract( "=" ) for case where 'name' is "SUBJECT='fred'"
 		// this should ignore $SUBJECT
 		Strings rc = ( (null != name
 				&& !name.equals("")
+				&& !name.equals(",")
 				&& name.charAt( 0 ) != intPrefix) ?
-						new Strings( get( name, name )) :
+						new Strings( get( name, name )).replace( ",", "and" ) :
 						new Strings( name ));
 		return rc.contract( "=" );
 	}

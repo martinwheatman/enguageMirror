@@ -370,6 +370,15 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		if (null != s) add( i, s );
 		return this;
 	}
+	public Strings replace( String s1, String s2 ) {
+		int i=0;
+		for (String s : this) {
+			if (s.equals( s1 ))
+				set( i, s2 );
+			i++;
+		}
+		return this;
+	}
 	public Strings append( Strings sa ) {
 		addAll( sa );
 		return this;
