@@ -368,7 +368,8 @@ public class Pattern extends ArrayList<Patternette> {
 						while (utti.hasNext())
 							vals.add( utti.next() );
 					
-					val = vals.toString();
+					// remove "and" from AND-LIST, replacing with ","
+					val = vals.divvy( "and" ).toString(Strings.CSV);
 					
 				} else if (t.invalid( utti )) {
 					notMatched = 16;

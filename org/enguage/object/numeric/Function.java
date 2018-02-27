@@ -75,7 +75,7 @@ public class Function {
 	static public String evaluate( String name, Strings argv ) {
 		audit.in(  "evaluate", argv.toString( Strings.DQCSV ));
 		String  rc = Reply.dnk();
-		Strings ss = substitute( name, argv.divvy( "and" ));
+		Strings ss = substitute( name, argv.divvy( "," ));
 		if (ss != null) {
 			rc = Number.getNumber( ss.listIterator()).valueOf();
 			if (rc.equals( Number.NotANumber ))
@@ -126,11 +126,12 @@ public class Function {
 			Variable.set( "y", "2" );
 			//Audit.traceAll( true );
 			audit.debug( "matching passes!" );
-			create( "sum", "a and b", "a + b" );
-			query(  "sum", "3 and 2" );
+			query(  "sum", "1 , 1" );
+			create( "sum", "a , b", "a + b" );
+			query(  "sum", "3 , 2" );
 			create( "sum", "a b c and d", "a + b + c + d" );
-			query(  "sum", "4 and 3 and 2 and 1" );
-			query(  "sum", "x and y" );
+			query(  "sum", "4 , 3 , 2 , 1" );
+			query(  "sum", "x , y" );
 			create( "factorial", "1", "1" );
 			query(  "factorial", "6" );
 }	}	}
