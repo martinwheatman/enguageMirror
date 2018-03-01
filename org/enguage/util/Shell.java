@@ -66,7 +66,7 @@ abstract public class Shell {
 	public  String copyright() { return prog +" (c) "+ who +", "+ dates; }
 	public  Shell  copyright( String wh, String dts ) { who = wh; dates = dts; return this; }
 
-	static private long then =  new GregorianCalendar().getTimeInMillis();
+	static private long then = new GregorianCalendar().getTimeInMillis();
 	static public  long interval() {
 		long now = new GregorianCalendar().getTimeInMillis();
 		long rc = now - then;
@@ -128,7 +128,6 @@ abstract public class Shell {
 			} catch (java.io.IOException e ) { //ignore?
 	}	}	}
 	public void run() { interpret( System.in ); }
-	//public void run( String[] args ) { interpret( args ); }
 	
 	public static ArrayList<Strings> expandSemicolonList( Strings sentence ) {
 		/*  "on one: do two; do three; and, do four." =>

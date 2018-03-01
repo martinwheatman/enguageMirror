@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 					// ...in case of config failure, repeat what was said
 					String truText = Enguage.e.interpret( new Strings( said.get( 0 ) )),
 						   toSpeak = truText.equals( Enguage.DNU ) ? said.get( 0 ) : truText;
-					
+
 					Toast.makeText( getApplicationContext(), truText, Toast.LENGTH_SHORT ).show();
 					Log.i ( ">>>>>>>>>>>REPLY>>> ", toSpeak );
 					if (null != tts) {

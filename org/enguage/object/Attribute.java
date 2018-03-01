@@ -26,6 +26,7 @@ public class Attribute {
 		}
 		return stripped;
 	}
+
 	private char quote ='\'';
 	private char quote() { return quote; }
 	private void quote( char ch ) { quote = ch; }

@@ -282,16 +282,16 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched == 21 ? "more pattern" :
 				notMatched == 22 ? "more utterance" : ("unknown:"+ notMatched);
 	}
-	private ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
-		Iterator<String> tbpi = tbp.iterator();
-		while ( tbpi.hasNext() && ui.hasNext())
-			if (!tbpi.next().equalsIgnoreCase( ui.next() )) {
+	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui ) {
+		Iterator<String> bpi = bp.iterator();
+		while ( bpi.hasNext() && ui.hasNext())
+			if (!bpi.next().equalsIgnoreCase( ui.next() )) {
 				notMatched = 11;
 				return null; // string mismatch
 			}
 		// have we reached end of boilerplate, but not utterance?
 		notMatched = 12;
-		return tbpi.hasNext() ? null : ui;
+		return bpi.hasNext() ? null : ui;
 	}
 	
 	/* TODO: Proposal: that a singular tag (i.e. non-PHRASE) can match with a known string

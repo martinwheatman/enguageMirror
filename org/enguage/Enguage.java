@@ -9,7 +9,6 @@ import org.enguage.sign.repertoire.Concepts;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
-import org.enguage.util.Join;
 import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;

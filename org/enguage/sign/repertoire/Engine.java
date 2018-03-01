@@ -303,7 +303,7 @@ public class Engine {
 				Audit.runtimeDebug = false;
 				Audit.detailedOn = false;
 				
-			} else if (cmds.get( 1 ).equals( "tags" )) {
+			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
 				Tags.debug( !Tags.debug() );
 				
 			} else {
