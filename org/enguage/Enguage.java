@@ -239,6 +239,7 @@ public class Enguage extends Shell {
 					   "you don't need anything" );
 		}
 		if ( level == 0 || level == 2 ) {
+			
 			audit.title( "Simple Variables" );
 			interpret( "the value of name is fred",       "ok, name is set to fred" );
 			interpret( "get the value of name",           "fred" );
@@ -246,13 +247,11 @@ public class Enguage extends Shell {
 			interpret( "what is the value of name",       "fred bloggs, the value of name is fred bloggs" );
 			
 			audit.title( "Simple Numerics" );
-			
 			interpret( "the height of martin is 194",     "ok" );
 			interpret( "what is the height of martin",    "the height    of martin is 194" );
 			interpret( "set the weight of martin to 104", "ok" );
 			interpret( "get the weight of martin",        "Ok, the weight of martin is 104.");
-//		}
-//		if ( level == 0 || level == 3 ) {
+			
 			audit.title( "Verbal Arithmetic" );
 			interpret( "what is 1 + 2",                    "1 plus 2 is 3.");
 			interpret( "times 2 all squared",              "times 2 all squared makes 36.");
@@ -292,8 +291,8 @@ public class Enguage extends Shell {
 			interpret( "the product of x and y is x times y" );
 			interpret( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
 			
-//			interpret( "to the phrase multiply numeric variable a by numeric variable b think what is the product of a and b", "go on" );
-//			interpret( "ok", "ok" );
+			//interpret( "to the phrase multiply numeric variable a by numeric variable b think what is the product of a and b", "go on" );
+			//interpret( "ok", "ok" );
 			
 			//interpret( "multiply 2 by 3", "6" );
 			interpret( "what is the product of 2 and 3", "The product of 2 and 3 is 6" );
@@ -315,9 +314,7 @@ public class Enguage extends Shell {
 			interpret( "then reply whatever the factorial of variable n is whatever", "go on" );
 			interpret( "ok", "ok" );
 			
-			//Audit.traceAll( true );
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
-			//Audit.traceAll( false );
 			
 			// TODO:
 			// who-.txt
