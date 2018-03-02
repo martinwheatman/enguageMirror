@@ -17,7 +17,7 @@ public class Lambda {
 		sig = params;
 		new Value(
 				f.name(),
-				sig.toString( Strings.CSV ) + ".txt"
+				sig.toString( Strings.CSV ) + ".lambda"
 			).set( body );
 	}
 	public Lambda( String name, Strings values ) { // find
