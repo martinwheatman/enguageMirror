@@ -8,10 +8,24 @@ On "set VARIABLE to QUOTED_VALUE":
 	perform "variable set VARIABLE VALUE";
 	then, reply "ok, VARIABLE is set to VALUE".
 
+# Anomoly number four:
+On "set VARIABLE to for", set VARIABLE to 4.
+
 On "set   the value of VARIABLE to PHRASE-VALUE", set VARIABLE to VALUE.
 On "get   the value of VARIABLE", perform "variable get VARIABLE".
 On "unset the value of VARIABLE", perform "variable unset VARIABLE".
 
+On "is VARIABLE not set to PHRASE-VALUE":
+	perform "variable equals VARIABLE VALUE";
+	reply "no, VARIABLE is set to VALUE";
+	then, if not, reply "yes, VARIABLE is not set to VALUE".
+
+On "is VARIABLE set to PHRASE-VALUE":
+	perform "variable equals VARIABLE VALUE";
+	reply "yes, VARIABLE is set to VALUE";
+	then, if not, reply "no, VARIABLE is not set to VALUE".
+
+# this implies
 On "VARIABLE is not set to PHRASE-VALUE":
 	perform "variable equals VARIABLE VALUE";
 	reply "no, VARIABLE is set to VALUE";

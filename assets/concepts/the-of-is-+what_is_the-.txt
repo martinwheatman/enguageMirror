@@ -1,0 +1,31 @@
+# Induction:
+On "the FUNCTION of AND-LIST-PARAMS is PHRASE-BODY":
+	#set the PARAMS of FUNCTION to BODY;
+	perform "function create FUNCTION PARAMS / BODY";
+	then, reply "ok".
+
+On "the value of VARIABLE is PHRASE-VALUE", set VARIABLE to VALUE.
+
+# the height of an entity is a numeric variable.
+# the factorial of n is n times the factorial of n minus 1.
+# the factorial of 1 is 1.
+# the sum of x and y is x plus y
+
+
+# Deduction:
+# what is the height of martin.
+#On "what is the ATTR of ENTITY", get the ATTR of ENTITY.
+
+On "what is the FUNCTION of AND-LIST-PARAMS":
+	perform "function evaluate FUNCTION PARAMS";
+	if not, get the FUNCTION of PARAMS;
+	if not, reply "I do not know";
+	then, reply "the FUNCTION of PARAMS is ...".
+
+#On "what is the value of VARIABLE":
+#	perform "variable get VARIABLE";
+#	then, reply "..., the value of VARIABLE is ...".
+	
+On "what is the value of VARIABLE":
+	get the value of VARIABLE;
+	then, reply "..., the value of VARIABLE is ...".

@@ -98,7 +98,10 @@ public class Function {
 			else if (cmd.equals( "evaluate" ))
 				// [function] "evaluate", "sum", "3", "and", "4"
 				rc = evaluate( function, argv );
-				
+			/* TODO:
+			where does this get set as an answer to be replaced by whatever?
+			set it as a default/class answer to be used if answer is still blank?
+			*/
 			else
 				audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}

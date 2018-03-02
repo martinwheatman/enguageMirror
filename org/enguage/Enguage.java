@@ -239,38 +239,48 @@ public class Enguage extends Shell {
 					   "you don't need anything" );
 		}
 		if ( level == 0 || level == 2 ) {
-			audit.title( "simple variables" );
-			interpret( "the value of name is fred", "ok" );
-			interpret( "get the value of name",     "fred" );
-			interpret( "set the value of name to fred bloggs" );
-			interpret( "what is the value of name", "fred bloggs, the value of name is fred bloggs" );
-			interpret( "set x to 3",                "ok, x is set to 3" );
-			interpret( "set y to 4",                "ok, y is set to 4" );
-			interpret( "what is the value of x",    "3, the value of x is 3" );
-			//Join.on( false );
-			interpret( "the sum of x and y is x plus y", "ok" );
-			interpret( "what is the sum of x and y",   "the sum of x and y is 7" );
-			//Join.on(  true );
-			interpret( "the height of martin is 194" );
-			interpret( "what is the height of martin", "the height    of martin is 194" );
-		}
-		if ( level == 0 || level == 3 ) {
+			audit.title( "Simple Variables" );
+			interpret( "the value of name is fred",       "ok, name is set to fred" );
+			interpret( "get the value of name",           "fred" );
+			interpret( "set the value of name to fred bloggs", "ok, name is set to fred bloggs" );
+			interpret( "what is the value of name",       "fred bloggs, the value of name is fred bloggs" );
+			
+			audit.title( "Simple Numerics" );
+			
+			interpret( "the height of martin is 194",     "ok" );
+			interpret( "what is the height of martin",    "the height    of martin is 194" );
+			interpret( "set the weight of martin to 104", "ok" );
+			interpret( "get the weight of martin",        "Ok, the weight of martin is 104.");
+//		}
+//		if ( level == 0 || level == 3 ) {
 			audit.title( "Verbal Arithmetic" );
 			interpret( "what is 1 + 2",                    "1 plus 2 is 3.");
 			interpret( "times 2 all squared",              "times 2 all squared makes 36.");
 			interpret( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
 			
+			audit.title( "Simple Functions" );
+			interpret( "the sum of x and y is x plus y",  "ok" );
+			interpret( "what is the sum of 3 and 2",      "the sum of 3 and 2is 5 " );
+			interpret( "set x to 3",                      "ok, x is set to 3" );
+			interpret( "set y to 4",                      "ok, y is set to 4" );
+			interpret( "what is the value of x",          "3, the value of x is 3" );
+			interpret( "what is the sum of x and y",      "the sum of x and y is 7" );
+			// Speculative: function as attribute?
+			//interpret( "what is the sum of a and b",      "sum of a and b is a plus b" );
+
 			audit.title( "Factorial Description" );
 			interpret( "what is the factorial of 4",       "I don't know" );
 			/* Ideally, we want:
 			 * - the factorial of 1 is 1;
 			 * - the factorial of n is n times the factorial of n - 1;
 			 * - what is the factorial of 3.
-			 */
 			interpret( "to the phrase what is the factorial of 1 reply 1", "go on" );
 			interpret( "ok", "ok" );
 			interpret( "what is the factorial of 1",  "1" );
+			 */
+			interpret( "the factorial of 1 is 1", "ok" );
 			
+			// in longhand this is...
 			interpret( "to the phrase what is the factorial of 0 reply 1", "go on" );
 			interpret( "ok", "ok" );
 			interpret( "what is the factorial of 0",  "1" );
@@ -279,47 +289,48 @@ public class Enguage extends Shell {
 			interpret( "first perform numeric evaluate variable a times variable b",       "go on" );
 			interpret( "ok", "ok" );
 			
-			interpret( "multiply 2 by 3", "6" );
+			interpret( "the product of x and y is x times y" );
+			interpret( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
 			
+//			interpret( "to the phrase multiply numeric variable a by numeric variable b think what is the product of a and b", "go on" );
+//			interpret( "ok", "ok" );
+			
+			//interpret( "multiply 2 by 3", "6" );
+			interpret( "what is the product of 2 and 3", "The product of 2 and 3 is 6" );
+			
+			// again, in longhand this is...
 			interpret( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
 			interpret( "first perform numeric evaluate variable d - variable c",                           "go on" );
 			interpret( "ok", "ok" );
 			
 			interpret( "subtract 2 from 3", "1" );
 			
+			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
+			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
 			interpret( "interpret what is the factorial of numeric variable n thus",  "go on" );
 			interpret( "first subtract 1 from variable n",                            "go on" );
 			interpret( "then what is the factorial of whatever",                      "go on" );
-			interpret( "then multiply whatever by variable n",                        "go on" );
+			interpret( "then multiply whatever by variable n",  "go on" );
+			//interpret( "then what is the product of whatever and variable n",                        "go on" );
 			interpret( "then reply whatever the factorial of variable n is whatever", "go on" );
 			interpret( "ok", "ok" );
 			
+			//Audit.traceAll( true );
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
+			//Audit.traceAll( false );
 			
-			// interpret( "the height    of an entity is a numeric value" );
+			// TODO:
+			// who-.txt
+			// who is
+			// who is the
+			// + sets HE/SHE/HIM/HIS/HER/THEY/THEM
+			// what is
+			// + sets IT/THEY/THEM
 			
-//			Join.on( false );
-//			interpret( "the sum of q and p is q + p", "ok" );
-//			interpret( "what is the sum of 3 and 4", "7" );
-//			Join.on( true );
-
-			// interpret( "the factorial of 0 is 1", "ok" );
-			// interpret( "the factorial of 1 is 1", "ok" );
-			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
-			
-			
-			// interpret( "the factorial of         1 is 1" );
-			// interpret( "the factorial of         n is n times the factorial of n minus 1" );
-			
-			// interpret( "what is the height of martin", "the height    of martin is 194" );
-			// interpret( "what is the factorial of 1",   "the factorial of      1 is 1");
-			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
-			// interpret( "what is the factorial of 4",   "the factorial of 4 is 24" );
-			// interpret( "what is the sum of a and b",   "sum of a and b is a plus b" );
-			// interpret( "what is the sum of 3 and 2",   "the sum of 3 and 2" );
-			
-			// interpret( "the product of x and y is x times y" );
-			// interpret( "what is the product of a and b",  "the product of a and b is 12" );
+			// age is the given date minus the date of inception
+			// if no date given, use the current date.
+			// persons age given in years
+			// what is my age [in <epoch default="years"/>]
 		}
 		if ( level == 0 || level == 4 ) {
 			audit.title( "Numerical Context" );
