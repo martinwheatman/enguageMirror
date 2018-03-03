@@ -77,10 +77,10 @@ public class Pattern extends ArrayList<Patternette> {
 						audit.ERROR( "ctor: AND terminates variable" );
 				}
 				
-				while ((sw.equals( phrase ) ||
-						sw.equals( plural ) ||
-						sw.equals( quoted ) ||
-						sw.equals( numeric ))
+				while ((sw.equals(  phrase ) ||
+						  sw.equals(  plural ) ||
+						  sw.equals(  quoted ) ||
+						  sw.equals( numeric )    )
 					 && wi.hasNext())
 				{
 					audit.ERROR( "ctor: mutually exclusive modifiers" );
@@ -88,9 +88,9 @@ public class Pattern extends ArrayList<Patternette> {
 				}
 				
 				t.name( sw );
-				
 				add( t );
 				t = new Patternette();
+				
 			} else
 				t.prefix( word );
 		}
