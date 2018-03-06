@@ -125,7 +125,7 @@ public class Utterance {
 						Language.sentenceCapitalisation( 
 							Language.pronunciation( reply )));
 		
-		return Language.asString( Numeric.deref( reply ));
+		return Language.asString( Numeric.deref( reply )).replace( " '' ", "'" );
 	}
 
 	// test code...

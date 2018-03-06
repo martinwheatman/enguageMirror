@@ -11,6 +11,7 @@
 			TTL="5"
 			TERMS=". ? !"
 			VALUESEP="+"
+			APOSTROPHES="true"
 			REPEATFORMAT="I said, ... ."
 			ANDCONJUNCTIONS="and"
 			 ORCONJUNCTIONS="or"

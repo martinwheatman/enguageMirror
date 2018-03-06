@@ -228,6 +228,45 @@ public class Pattern extends ArrayList<Patternette> {
 		String toString = Number.getNumber( ui ).toString();
 		return toString.equals( Number.NotANumber ) ? null : toString;
 	}
+	private String doList( ListIterator<Patternette> patti,
+	                       ListIterator<String>      utti  ) 
+	{
+		Strings vals = new Strings();
+		if (patti.hasNext()) {
+			
+			// peek at terminator
+			String terminator = patti.next().prefix().get( 0 );
+			patti.previous();
+			//audit.log( "Terminator is "+ terminator );
+			String  word = utti.next();
+			
+			if (word.length() != 1) return null;
+			//audit.log("first word is "+word);
+			vals.add( word );  // add at least one val!
+			if (utti.hasNext()) word = utti.next();
+			
+			while ( !word.equals( terminator )) {
+				
+				if ( word.length() != 1 &&
+					!word.equals( "and" )) return null;
+				
+				vals.add( word );
+				if (utti.hasNext())
+					word = utti.next();
+				else
+					return null;
+			}
+			utti.previous(); // replace terminator!
+		} else { // read to end {
+			//audit.log( "READING to end" );
+			while (utti.hasNext())
+				vals.add( utti.next() );
+		}
+		
+		// remove "and"s from AND-LIST, replacing with ","
+		//audit.log( "returning with "+ vals.divvy( "and" ).toString(Strings.CSV));
+		return vals.divvy( "and" ).toString(Strings.CSV);
+	}
 	private String getPhraseTerminator( Patternette t, ListIterator<Patternette> ti ) {
 		String term = null;
 		if (t.postfix().size() != 0)
@@ -345,31 +384,10 @@ public class Pattern extends ArrayList<Patternette> {
 					
 				} else if (t.isList()) {
 					
-					Strings vals = new Strings();
-					if (patti.hasNext()) {
-						
-						// peek at terminator
-						String terminator = patti.next().prefix().get( 0 );
-						patti.previous();
-						String  word = utti.next();
-						vals.add( word ); // add at least one val!
-						if (utti.hasNext()) word = utti.next();
-						while ( !word.equals( terminator )) {
-							vals.add( word );
-							if (utti.hasNext())
-								word = utti.next();
-							else {
-								notMatched = 17;
-								return null;
-							}
-						}
-						utti.previous(); // replace terminator!
-					} else // read to end
-						while (utti.hasNext())
-							vals.add( utti.next() );
-					
-					// remove "and" from AND-LIST, replacing with ","
-					val = vals.divvy( "and" ).toString(Strings.CSV);
+					if (null == (val = doList( patti, utti ))) {
+						notMatched = 17;
+						return null;
+					}
 					
 				} else if (t.invalid( utti )) {
 					notMatched = 16;

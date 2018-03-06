@@ -19,6 +19,7 @@ import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.util.Tag;
 import org.enguage.vehicle.Answer;
+import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Reply;
 
 public class Config {
@@ -45,6 +46,7 @@ public class Config {
 				else if (name.equals("ANDLISTFORMAT" )) Reply.andListFormat( value);
 				else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
 				else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
+				else if (name.equals( "APOSTROPHES" )) Language.possessive(   new Boolean( value ));
 				else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));
 				else if (name.equals( "CLASSPATH" )) Proc.classpath( value );
 				else if (name.equals( "LOCATION"  )) Fs.location( value );

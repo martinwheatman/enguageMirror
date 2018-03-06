@@ -6,8 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.vehicle.Language;
 
 abstract public class Shell {
 
@@ -110,6 +109,7 @@ abstract public class Shell {
 							ArrayList<Strings> sentenceList = expandSemicolonList( sentence );
 							for (Strings s : sentenceList ) {
 								interval();
+								if (Language.possessive()) s = Language.expandPossessives( s );
 								String rc = interpret( s );
 								if (aloud)
 									audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
@@ -185,9 +185,12 @@ abstract public class Shell {
 		audit.log("expanded list is:");
 		for (Strings s : listOfLists ) {
 			audit.log( ">>>"+ s.toString( Strings.SPACED ) );
-		}
-	}
+	}	}
 	public static void main( String args[]) {
+		
+		Language.possessive( true );
+		audit.log( Language.expandPossessives( new Strings( "St. James's Park" )).toString() );
+		
 		test( "I need coffee" );
 		test( "on this: do here; there; and, everywhere" );
 		test( "On \"X needs PHRASE-Y\":"

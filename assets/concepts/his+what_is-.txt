@@ -1,0 +1,8 @@
+On "ENTITY his ATTR is PHRASE-VALUE":
+	set the ATTR of ENTITY to VALUE;
+	then, reply "ok, ENTITY '' s  ATTR is VALUE".
+	
+On "what is ENT his ATTR":
+	perform "value get ENT ATTR";
+	then, reply "..., ENT '' s ATTR is ...".
+	

@@ -9,9 +9,11 @@ import org.enguage.sign.repertoire.Concepts;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
+import org.enguage.util.Join;
 import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
 
@@ -122,7 +124,10 @@ public class Enguage extends Shell {
 
 		String answer = serverTest ?
 				Net.client( "localhost", portNumber, cmd )
-				: Enguage.e.interpret( new Strings( cmd ));
+				: Enguage.e.interpret(
+						Language.expandPossessives(
+								new Strings( cmd )
+				  )		);
 
 		if (!silentRunning) {
 			int len = expected.length();
@@ -240,6 +245,30 @@ public class Enguage extends Shell {
 		}
 		if ( level == 0 || level == 2 ) {
 			
+			// non-numerical values
+			audit.title( "Simply ent/attr model" );
+			interpret( "the height of martin is 195",  "Ok,  the height of martin is 195" );
+			interpret( "what is the height of martin", "195, the height of martin is 195" );
+
+			audit.title( "Apostrophe's ;-)" );
+			interpret( "martin's height is 194",  "Ok,  martin's height is 194" );
+			interpret( "what is martin's height", "194, martin's height is 194" );
+
+			// TODO:
+			// who-.txt
+			// who is
+			// who is the
+			// + sets HE/SHE/HIM/HIS/HER/THEY/THEM
+			// what is
+			// + sets IT/THEY/THEM
+			
+			// age is the given date minus the date of inception
+			// if no date given, use the current date.
+			// persons age given in years
+			// what is my age [in <epoch default="years"/>]
+		}
+		if ( level == 0 || level == 3 ) {
+			
 			audit.title( "Simple Variables" );
 			interpret( "the value of name is fred",       "ok, name is set to fred" );
 			interpret( "get the value of name",           "fred" );
@@ -247,8 +276,8 @@ public class Enguage extends Shell {
 			interpret( "what is the value of name",       "fred bloggs, the value of name is fred bloggs" );
 			
 			audit.title( "Simple Numerics" );
-			interpret( "the height of martin is 194",     "ok" );
-			interpret( "what is the height of martin",    "the height    of martin is 194" );
+			interpret( "the height of martin is 194",     "Ok , the height of martin is 194" );
+			interpret( "what is the height of martin",    "194, the height of martin is 194" );
 			interpret( "set the weight of martin to 104", "ok" );
 			interpret( "get the weight of martin",        "Ok, the weight of martin is 104.");
 			
@@ -259,7 +288,10 @@ public class Enguage extends Shell {
 			
 			audit.title( "Simple Functions" );
 			interpret( "the sum of x and y is x plus y",  "ok" );
-			interpret( "what is the sum of 3 and 2",      "the sum of 3 and 2is 5 " );
+			//Audit.traceAll( true );
+			Join.on( false );
+			interpret( "what is the sum of 3 and 2",      "the sum of 3 and 2 is 5 " );
+			Join.on( false );
 			interpret( "set x to 3",                      "ok, x is set to 3" );
 			interpret( "set y to 4",                      "ok, y is set to 4" );
 			interpret( "what is the value of x",          "3, the value of x is 3" );
@@ -277,7 +309,7 @@ public class Enguage extends Shell {
 			interpret( "ok", "ok" );
 			interpret( "what is the factorial of 1",  "1" );
 			 */
-			interpret( "the factorial of 1 is 1", "ok" );
+			interpret( "the factorial of 1 is 1", "ok, the factorial of 1 is 1" );
 			
 			// in longhand this is...
 			interpret( "to the phrase what is the factorial of 0 reply 1", "go on" );
@@ -316,18 +348,6 @@ public class Enguage extends Shell {
 			
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 			
-			// TODO:
-			// who-.txt
-			// who is
-			// who is the
-			// + sets HE/SHE/HIM/HIS/HER/THEY/THEM
-			// what is
-			// + sets IT/THEY/THEM
-			
-			// age is the given date minus the date of inception
-			// if no date given, use the current date.
-			// persons age given in years
-			// what is my age [in <epoch default="years"/>]
 		}
 		if ( level == 0 || level == 4 ) {
 			

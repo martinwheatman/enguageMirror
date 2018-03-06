@@ -76,7 +76,7 @@ public class Join {
 	static public ArrayList<Attributes> join( Attributes match, String sep ){
 		ArrayList<Attributes> rc = new ArrayList<Attributes>();
 		if (!on) {
-			audit.log( "join returning:"+ match.toString());
+			//audit.log( "join returning:"+ match.toString());
 			rc.add( match );
 		} else {
 			/* there is probably a much easier way to do this!
