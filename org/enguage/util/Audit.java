@@ -26,15 +26,15 @@ public class Audit {
 	public  static boolean suspended() { return suspended > 0; }
 	
 	private static boolean allOn = false;
-	public  static void    allOff() { allOn = false; indent.reset(); }
-	public  static void    allOn() {  allOn = true; }
+	public  static void    allOff() { allOn = false; allTracing = false; indent.reset(); }
+	public  static void    allOn() {  allOn = true; allTracing = true; }
 	public  static boolean allAreOn() { return allOn; }
 	
-	private boolean on = false;
-	public  void    off() { on = false; }
-	public  void    on() {  on = true; }
-	public  void    on(boolean b) {  on = b; }
-	public  boolean isOn() { return on; }
+	private boolean auditOn = false;
+	public  void    off() { auditOn = false; }
+	public  void    on() {  auditOn = true; }
+	public  void    on(boolean b) {  auditOn = b; }
+	public  boolean isOn() { return auditOn; }
 	
 	private static Indent indent = new Indent();
 	public  static void   incr() { indent.incr(); }
@@ -54,8 +54,8 @@ public class Audit {
 	
 	public Audit( String nm ) { name = capitalize( nm ); }
 	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
-	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; on = d;}
-	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; on = d; detailedRegis = detail;}
+	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; auditOn = d;}
+	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; auditOn = d; detailedRegis = detail;}
 	
 	public void   FATAL( String msg ) { LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 ); }
 	public void   FATAL( String phrase, String msg ) { FATAL( phrase +": "+ msg ); }
@@ -71,9 +71,9 @@ public class Audit {
 		return info;
 	}
 	public  void   detail( String info ) { if (detailedOn && detailedRegis) log( info ); }
-	public  void   debug( String info ) { if (on || allOn) log( info ); }
+	public  void   debug( String info ) { if (auditOn || allOn) log( info ); }
 	public  Object  info(  String fn, String in, Object out ) { // out may be null!
-		if ((on || allOn) && (out!=null && !out.equals("")))
+		if ((auditOn || allOn) && (out!=null && !out.equals("")))
 			log( name +"."+ fn +"( "+ in +" ) => "+ out.toString() );
 		return out;
 	}
