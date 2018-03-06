@@ -218,9 +218,10 @@ public class Signs extends TreeMap<Integer,Sign> {
 				Sign s = e.getValue(); // s knows if it is temporal!	
 				//TODO: removed noInter check -- need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
-				if (null == match)
-					audit.detail( "NO match: "+ s.toString() +" ("+ s.pattern().notMatched() +")");
-				else { // we have found a meaning! So I do understand...!
+				if (null == match) {
+					if (!s.pattern().notMatched().equals("prefixa"))
+						audit.debug( "NO match: "+ s.toString() +" ("+ s.pattern().notMatched() +")");
+				} else { // we have found a meaning! So I do understand...!
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
 					audit.debug( "matched '"+ s +"' with: "+ match.toString() +":"+ Context.valueOf());
 					

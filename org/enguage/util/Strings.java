@@ -856,7 +856,6 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return sa;
 	}
 	public Strings divvy( String sep ) {
-		audit.in( "divvy", toString( Strings.DQCSV ) +", sep='"+ sep +"'");
 		// ["a", "b", "and", "c"].divvy( "and" ) => [ "a", "b", "c" ]
 		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]
 		Strings output = new Strings(),
@@ -868,7 +867,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			} else 
 				tmp.add( s );
 		if (tmp.size() > 0) output.add( tmp.toString());
-		return audit.out( output );
+		return output;
 	}
 	// -- static Algorithm helpers ABOVE
 	// ---------------------------------------------------------
