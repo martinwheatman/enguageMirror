@@ -19,14 +19,26 @@ public class Where {
 	 * in the pub  - create pub as a location
 	 * in Paris    - do we need to know paris is a place? Ask where is Paris: Paris is the capital of France.
 	 * in the capital - the capital of which country?
+	 * from the dairy aisle - i need milk
 	 */
 
-	public static final String NAME = "where";
-	public static       Audit audit = new Audit( NAME );
+	public static final String     NAME = "where";
+	public static final String  LOCATOR = "LOCATOR";
+	public static final String LOCATION = "LOCATION";
+	public static       Audit     audit = new Audit( NAME );
 
 	public Where() {}
-	public Where( String tor, String tion ) { locator( tor); location( new Strings( tion ));}
-	public Where( Attributes a ) { this( a.get( "locator" ), a.get( "location" )); }
+	public Where( String tor, String tion ) {
+		locator( tor);
+		location( new Strings( tion ));
+		assigned( tor != null && tion != null );
+	}
+	public Where( String tor, Strings tion ) {
+		locator( tor);
+		location( tion );
+		assigned( tor  != null && tion != null && tion.size()>0 );
+	}
+	public Where( Attributes a ) { this( a.get( LOCATOR ), a.get( LOCATION )); }
 
 	// e.g. "in", "at", "on", "in front of"
 	static private ArrayList<Strings> locators = new ArrayList<Strings>();
@@ -39,7 +51,7 @@ public class Where {
 	public  Where   assigned( boolean l ) { assigned = l; return this; }
 
 	private Strings location = new Strings(); //-- e.g. ["the", "pub"]
-	private Strings location() { return location; }
+	public  Strings location() { return location; }
 	private Where   location( Strings l ) { location = l; return this; }
 	private boolean location( ListIterator<String> si ) {
 		if (si.hasNext()) {
@@ -63,7 +75,7 @@ public class Where {
 	}
 	
 	private String locator = new String(); //-- e.g. "in", "at", "in  front of"
-	private String locator() { return locator; }
+	public  String locator() { return locator; }
 	private Where  locator( String l ) { locator = l; return this; }
 	private void   locator( ListIterator<String> si ) {
 		//audit.in( "locator", "'"+ locators.size() +"', "+ si );
@@ -101,15 +113,38 @@ public class Where {
 		return w;
 	}
 	public static Where getWhere( Strings sa ) { return getWhere( new Where(), sa ); }
-	
+	public static Where getWhere( String uttered, String term, ListIterator<String> ui ) {
+		Where w = null;
+		if (Where.isLocator( uttered )) {
+			String locator = uttered;
+			Strings locs = new Strings();
+			if (ui.hasNext()) {
+				uttered = ui.next(); // typically "the"
+				locs.add( uttered );
+				boolean dontStop = null == term;
+				while (ui.hasNext()) {
+					uttered = ui.next();
+					if (dontStop || !uttered.equals( term )) {
+						locs.add( uttered );
+					} else {
+						ui.previous();
+						break;
+				}	}
+				if (( dontStop && !ui.hasNext()) ||
+				    (!dontStop &&  ui.hasNext())    )
+					w = new Where( locator, locs.toString()).assigned( true );
+		}	}		
+		return w;
+	}
+
 	// --
 	public String toString() {
 		return assigned() ? locator +" "+ location.toString( Strings.SPACED ) : "";
 	}
 	public Attributes toAttributes() {
 		return new Attributes()
-					.add( "locator", locator())
-					.add( "location", location().toString( Strings.SPACED ));
+					.add( LOCATOR, locator())
+					.add( LOCATION, location().toString( Strings.SPACED ));
 	}
 	static public void doLocators( String locators ) {
 		Strings locs = new Strings( locators, '/' );
@@ -125,6 +160,7 @@ public class Where {
 		locatorIs( "behind" );
 		locatorIs( "in" );
 		locatorIs( "on" );
+		locatorIs( "from" );
 		locatorIs( "under" );
 		locatorIs( "underneath" );
 		locatorIs( "over" );

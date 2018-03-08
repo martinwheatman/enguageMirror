@@ -15,6 +15,7 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Context;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.where.Where;
 
 public class Intention {
 	
@@ -248,12 +249,12 @@ public class Intention {
 				cmd.append( "WHEN='"+ when +"'" );
 		}		
 		if (isSpatial()) {
-			String locator = Context.get( "locator" );
+			String locator = Context.get( Where.LOCATOR );
 			if (!locator.equals("")) {
-				String location = Context.get( "location" );
+				String location = Context.get( Where.LOCATION );
 				if (!location.equals("")) {
-					cmd.append( "LOCATOR='"+  locator  +"'" );
-					cmd.append( "LOCATION='"+ location +"'" );
+					cmd.append( Where.LOCATOR  +"='"+  locator  +"'" );
+					cmd.append( Where.LOCATION +"='"+ location +"'" );
 		}	}	}
 
 		// In the case of vocal perform, value="args='<commands>'" - expand!

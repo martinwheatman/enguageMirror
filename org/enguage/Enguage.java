@@ -289,7 +289,7 @@ public class Enguage extends Shell {
 			audit.title( "Simple Functions" );
 			interpret( "the sum of x and y is x plus y",  "ok" );
 			//Audit.traceAll( true );
-			Join.on( false );
+			Join.on( false ); // need this cos 3 and 2 is a phrase!
 			interpret( "what is the sum of 3 and 2",      "the sum of 3 and 2 is 5 " );
 			Join.on( false );
 			interpret( "set x to 3",                      "ok, x is set to 3" );
@@ -309,7 +309,10 @@ public class Enguage extends Shell {
 			interpret( "ok", "ok" );
 			interpret( "what is the factorial of 1",  "1" );
 			 */
-			interpret( "the factorial of 1 is 1", "ok, the factorial of 1 is 1" );
+			// Bug: sometimes FUNCTION, sometimes ATTRIBUTE
+			//Audit.allOn();
+			interpret( "the factorial of 1 is 1",          "ok, the factorial of 1 is 1" );
+			//Audit.allOff();
 			
 			// in longhand this is...
 			interpret( "to the phrase what is the factorial of 0 reply 1", "go on" );

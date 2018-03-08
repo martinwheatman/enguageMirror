@@ -60,7 +60,7 @@ public class Sign {
 	private boolean temporalSet = false;
 	private boolean temporal = false;
 	public  boolean isTemporal() {
-		if (!temporalSet) {
+		if (!temporalSet && !concept.equals( "" )) {
 			temporal = Temporal.isConcept( concept );
 			temporalSet = true;
 		}
@@ -70,7 +70,7 @@ public class Sign {
 	private boolean spatialSet = false;
 	private boolean spatial = false;
 	public  boolean isSpatial() {
-		if (!spatialSet) {
+		if (!spatialSet && !concept.equals( "" )) {
 			spatial = Spatial.isConcept( concept );
 			spatialSet = true;
 		}

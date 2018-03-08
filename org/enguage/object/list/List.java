@@ -11,14 +11,12 @@ import org.enguage.util.Strings;
 import org.enguage.util.Tag;
 import org.enguage.util.Tags;
 import org.enguage.vehicle.Reply;
-
-import org.enguage.object.list.Item;
-import org.enguage.object.list.List;
+import org.enguage.vehicle.where.Where;
 
 public class List extends Value {
-	private static       Audit   audit = new Audit( "List" );
+	private static       Audit        audit = new Audit( "List" );
 	private static       boolean localDebug = false;
-	public  static final String  NAME = "list";
+	public  static final String        NAME = "list";
 	
 	// constructors
 	public List( String e, String a ) {
@@ -34,8 +32,8 @@ public class List extends Value {
 	private int position( Item item, boolean exact ) { // e.g. ["cake slices","2"]
 		audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
 		
-		String ilctor  = item.tag().attribute( "LOCATOR" );
-		String ilction = item.tag().attribute( "LOCATION" );
+		String ilctor  = item.tag().attribute( Where.LOCATOR );
+		String ilction = item.tag().attribute( Where.LOCATION );
 		
 		long it = -1; // item time
 		try {
@@ -46,8 +44,8 @@ public class List extends Value {
 		for (Tag t : content()) {
 			//audit.LOG( "TAG:"+ t.toXml());
 			pos++;
-			String tlctor  = t.attribute( "LOCATOR" );
-			String tlction = t.attribute( "LOCATION" );
+			String tlctor  = t.attribute( Where.LOCATOR );
+			String tlction = t.attribute( Where.LOCATION );
 			long tt = -1; //tag time
 			try {
 				tt = Long.valueOf( t.attribute( "WHEN" ));
@@ -401,7 +399,7 @@ public class List extends Value {
 		// END SHOPPING LIST TEST.
 		
 		// BEGIN Calendar list tests...
-		Item.format( ",LOCATOR LOCATION,WHEN" );
+		Item.format( ","+Where.LOCATOR +" "+ Where.LOCATION+",WHEN" );
 		test( 201, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
 				  "fred at the pub at 7 pm on the 25th of December , 2015" );
 		test( 202, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",

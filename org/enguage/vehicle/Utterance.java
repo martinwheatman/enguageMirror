@@ -30,13 +30,9 @@ public class Utterance {
 	// members
 	private Strings representamen;
 	private Strings temporal;
-	private Strings temporospatial;
-	private Strings spatial;
 	private Strings expanded;
 	public  Strings expanded() { return expanded; }
 	private When    when;
-	private Where   whenWhere;
-	private Where   where;
 	private Attributes a;
 	// ... extensible?
 
@@ -63,14 +59,7 @@ public class Utterance {
 		temporal = new Strings( expanded );
 		when = When.getWhen( temporal );
 		
-		spatial = new Strings( expanded );
-		where = Where.getWhere( spatial );
-		
-		temporospatial = new Strings( temporal );
-		whenWhere = Where.getWhere( temporospatial );
-		
 		a = when.toAttributes();
-		a.addAll( where.toAttributes() );
 		//audit.out( "when: "+ when +", where: "+ where +", t/s: "+ whenWhere );
 	}
 	
@@ -80,24 +69,15 @@ public class Utterance {
 
 		Context.push( a );
 		
-		if ((s.isTemporal() && !when.isUnassigned()) &&
-		    (s.isSpatial()  &&  whenWhere.assigned())      )
-		{
-			if (null != (match = s.pattern().matchValues( temporospatial )))
-				match.addAll( a ); // add it, don't not pop it.
-			
-		} else if (s.isTemporal() && !when.isUnassigned()) {
-			if (null != (match = s.pattern().matchValues( temporal )))
-				match.addAll( a ); // add it, don't not pop it.
-			
-		} else if (s.isSpatial()  &&  where.assigned()) {
-			if (null != (match = s.pattern().matchValues( spatial )))
-				match.addAll( a ); // add it, don't not pop it.
-		}
+		if (s.isTemporal()
+			&& !when.isUnassigned()
+			&& (null != (match = s.pattern().matchValues( temporal, s.isSpatial() ))))
+			match.addAll( a ); // add it, don't not pop it.
+
 		Context.pop();  // do pop it! Keep context clean!
 		
 		// if no qualified match, attempt an expanded match
-		return match == null ? s.pattern().matchValues( expanded ) : match;
+		return match == null ? s.pattern().matchValues( expanded, s.isSpatial() ) : match;
 	}
 		
 	public String toString( int layout ) { return expanded.toString( layout );}

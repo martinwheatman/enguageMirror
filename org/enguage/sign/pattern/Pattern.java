@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Random;
 
+import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
@@ -13,6 +14,7 @@ import org.enguage.util.Number;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.Reply;
+import org.enguage.vehicle.where.Where;
 
 public class Pattern extends ArrayList<Patternette> {
 	static final         long serialVersionUID = 0;
@@ -224,6 +226,18 @@ public class Pattern extends ArrayList<Patternette> {
 	/* *************************************************************************
 	 * matchValues() coming soon...
 	 */
+	private Attributes matched = null; // lazy creation
+	private void matched( Attribute a ) {
+		if (null == matched) matched = new Attributes();
+		matched.add( a ); // remember what it was matched with!
+	}
+	private void matched( Where w ) {
+		// ?? addAll( w.toAttributes()); ??
+		if (null == matched) matched = new Attributes();
+		matched( new Attribute( Where.LOCATOR,  w.locator ().toString()));
+		matched( new Attribute( Where.LOCATION, w.location().toString()));
+	}
+	
 	private String doNumeric( ListIterator<String> ui ) {
 		String toString = Number.getNumber( ui ).toString();
 		return toString.equals( Number.NotANumber ) ? null : toString;
@@ -267,7 +281,7 @@ public class Pattern extends ArrayList<Patternette> {
 		//audit.log( "returning with "+ vals.divvy( "and" ).toString(Strings.CSV));
 		return vals.divvy( "and" ).toString(Strings.CSV);
 	}
-	private String getPhraseTerminator( Patternette t, ListIterator<Patternette> ti ) {
+	private String getNextBoilerplate( Patternette t, ListIterator<Patternette> ti ) {
 		String term = null;
 		if (t.postfix().size() != 0)
 			term = t.postfix().get( 0 );
@@ -280,30 +294,36 @@ public class Pattern extends ArrayList<Patternette> {
 		}
 		return term;
 	}
-	private String getVal( Patternette t, ListIterator<Patternette> ti, ListIterator<String> ui) {
+	private String getVal( Patternette t, ListIterator<Patternette> ti, ListIterator<String> ui, boolean whr ) {
+		audit.in( "getVal", "...");
 		String u = "unseta";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
 		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunction().equals( u ))) {
-			String term = getPhraseTerminator( t, ti );
+			Where where = null;
+			String term = getNextBoilerplate( t, ti );
 			//audit.audit( "phrased, looking for terminator "+ term );
 			// here: "... one AND two AND three" => "one+two+three"
 			if (term == null) {  // just read to the end
 				while (ui.hasNext()) {
 					u = ui.next();
-					vals.add( u );
+					if (whr && null != (where = Where.getWhere( u, null, ui ))) // null => read to end
+						matched( where );
+					else
+						vals.add( u );
 				}
 			} else {
 				while (ui.hasNext()) {
 					u = ui.next();
-					//audit.debug( "next u="+ u );
-					if (term.equals( u )) {
+					if (whr && null != (where = Where.getWhere( u, term, ui ))) // null => read to end
+						matched( where );
+					else if (term.equals( u )) {
 						ui.previous();
 						break;
-					} else {
+					} else
 						vals.add( u );
-		}	}	}	}
-		return vals.toString();
+		}	}	}
+		return audit.out( vals.toString());
 	}
 	private int notMatched = 0;
 	public String notMatched() {
@@ -321,24 +341,36 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched == 21 ? "more pattern" :
 				notMatched == 22 ? "more utterance" : ("unknown:"+ notMatched);
 	}
-	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui ) {
+	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui, boolean spatial ) {
+		//audit.in( "matchBoilerplate", bp.toString() +", ..., "+ spatial );
+		String term, uttered;
 		Iterator<String> bpi = bp.iterator();
 		while ( bpi.hasNext() && ui.hasNext())
-			if (!bpi.next().equalsIgnoreCase( ui.next() )) {
-				notMatched = 11;
-				return null; // string mismatch
-			}
+			if (!(term = bpi.next()).equalsIgnoreCase( uttered = ui.next() )) {
+				Where w;
+				if (spatial) audit.debug( "bp: checking for where term="+ term +"/uttered="+ uttered );
+				if (spatial && null != (w = Where.getWhere( uttered, term, ui ))) {
+					audit.debug( "where:"+ w.toString() +", found in bp" );
+					matched( w );
+					if (ui.hasNext()) uttered = ui.next(); // getWhere doen't consume terminator
+				} else {
+					notMatched = 11;
+					//audit.out( "not matched" );
+					return null; // string mismatch
+			}	}
 		// have we reached end of boilerplate, but not utterance?
 		notMatched = 12;
+		//audit.out( bpi.hasNext() ? "bp !complete" : "SUCCESS");
 		return bpi.hasNext() ? null : ui;
 	}
 	
 	/* TODO: Proposal: that a singular tag (i.e. non-PHRASE) can match with a known string
 	 * i.e. an object id: e.g. theOldMan, thePub, fishAndChips camelised
 	 */
-	public Attributes matchValues( Strings utterance ) {
+	public  Attributes matchValues( Strings utterance, boolean spatial ) {
 		
 		notMatched = 0;
+		matched = null;
 		
 		// First, a sanity check
 		if (size() == 0) {
@@ -354,7 +386,6 @@ public class Pattern extends ArrayList<Patternette> {
 		 * ???NAME="an/array/or/list"	... <NAME array="array"/>
 		 * ???NAME="value one/value two/value three" <NAME phrased="phrased" array="array"/>
 		 */
-		Attributes              matched = null; // lazy creation
 		ListIterator<Patternette> patti = listIterator();           // [ 'this    is    a   <test/>' ]
 		ListIterator<String>       utti = utterance.listIterator(); // [ "this", "is", "a", "test"   ]
 		
@@ -364,7 +395,7 @@ public class Pattern extends ArrayList<Patternette> {
 			Patternette t = (next != null) ? next : patti.next();
 			next = null;
 			
-			if (null == (utti = matchBoilerplate( t.prefix(), utti ))) { // ...match prefix
+			if (null == (utti = matchBoilerplate( t.prefix(), utti, spatial ))) { // ...match prefix
 				//notMatched set within matchBoilerplate()
 				return null;
 				
@@ -394,13 +425,14 @@ public class Pattern extends ArrayList<Patternette> {
 					return null;
 					
 				} else
-					val = getVal( t, patti, utti );
+					val = getVal( t, patti, utti, spatial );
 					
 				// ...add value
-				if (null == matched) matched = new Attributes();
-				matched.add( t.matchedAttr( val )); // remember what it was matched with!
+				//if (null == matched) matched = new Attributes();
+				//matched.add( t.matchedAttr( val )); // remember what it was matched with!
+				matched( t.matchedAttr( val ));
 				
-				if (null == (utti = matchBoilerplate( t.postfix(), utti ))) {
+				if (null == (utti = matchBoilerplate( t.postfix(), utti, spatial ))) {
 					notMatched += 7; // 18 or 19!
 					return null;
 		}	}	}
@@ -464,7 +496,7 @@ public class Pattern extends ArrayList<Patternette> {
 	public static void printTagsAndValues( Pattern interpretant, String phrase, Attributes expected ) {
 		audit.in( "printTagsAndValues", "ta="+ interpretant.toString() +", phr="+ phrase +", expected="+ 
 				(expected == null ? "":expected.toString()) );
-		Attributes values = interpretant.matchValues( new Strings( phrase ));
+		Attributes values = interpretant.matchValues( new Strings( phrase ), true );
 		
 		if (values == null)
 			audit.log( "no match" );
@@ -481,98 +513,137 @@ public class Pattern extends ArrayList<Patternette> {
 		}	}
 		audit.out();
 	}
-	private static void toPatternTest( String utt  ) {
-		toPatternTest( utt, utt ); // check it against itself!
+//	private static void toPatternTest( String utt  ) {
+//		toPatternTest( utt, utt ); // check it against itself!
+//	}
+//	private static void toPatternTest( String utt, String answer ) {
+//		String patt = toPattern( utt ).toString();
+//		if (answer != null && !answer.equals( patt ))
+//			audit.FATAL( "answer '"+ patt +"' doesn't equal expected: '" + answer +"'" );
+//		audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
+//	}
+	private void newTest( String utterance ) {
+		audit.in( "newTest", utterance );
+		Attributes as;
+		audit.log( "Utterance: "+ utterance );
+		if (null != (as = matchValues( new Strings( utterance ), true )))
+			audit.log( "  matches: "+ as.toString());
+		else
+			audit.log( "notMatched (="+ notMatched +")" );
+		audit.out();
 	}
-	private static void toPatternTest( String utt, String answer ) {
-		String patt = toPattern( utt ).toString();
-		if (answer != null && !answer.equals( patt ))
-			audit.FATAL( "answer '"+ patt +"' doesn't equal expected: '" + answer +"'" );
-		audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
-	}
-
 	public static void main(String args[]) {
+//		Audit.allOn();
+//		audit.tracing = true;
+//		debug( true );
+		
+//		Pattern t = new Pattern();
+//		t.add( new Patternette( "what is ", "X" ).numericIs() );
+//		printTagsAndValues( t, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
+//
+//		printTagsAndValues( new Pattern( "i need phrase variable need" ),
+//				"I need coffee", 
+//				new Attributes()
+//					.add( "need",     "coffee" )
+//		);
+//		printTagsAndValues( new Pattern( "i need numeric variable quantity variable unit of phrase variable need" ),
+//				"I need a cup of coffee", 
+//				new Attributes()
+//					.add( "quantity", "1" )
+//					.add( "unit",     "cup" )
+//					.add( "need",     "coffee" )
+//		);
+		
+//		//toPattern() tests...
+//		toPatternTest( "the factorial of n" );
+//		toPatternTest( "the factorial of n blah" );
+//		toPatternTest( "the factorial of variable variable", "the factorial of variable" );
+//		toPatternTest( "the factorial of variable n", "the factorial of N" );
+//		toPatternTest( "the factorial of variable n blah", "the factorial of N blah" );
+//
+//		toPatternTest( "the factorial of phrase" );
+//		toPatternTest( "the factorial of phrase n" );
+//		toPatternTest( "the factorial of phrase variable variable","the factorial of phrase variable" );
+//		toPatternTest( "the factorial of phrase variable n", "the factorial of PHRASE-N" );
+//		toPatternTest( "the factorial of phrase variable n blah", "the factorial of PHRASE-N blah" );
+//
+//		toPatternTest( "the factorial of numeric" );
+//		toPatternTest( "the factorial of numeric n" );
+//		toPatternTest( "the factorial of numeric variable variable", "the factorial of numeric variable" );
+//		toPatternTest( "the factorial of numeric variable n", "the factorial of NUMERIC-N" );
+//		toPatternTest( "the factorial of numeric variable n blah", "the factorial of NUMERIC-N blah" );
+//
+//		toPatternTest( "the sum of and list variable params is blah", "the sum of PARAMS-AND-LIST is blah" );
+
+//		audit.log( "First: martin is alive" );
+//		Audit.incr();
+//		printTagsAndValues( new Pattern(
+//				"first phrase variable x" ),
+//				"first variable state exists in variable entity is list", 
+//				new Attributes()
+//					.add( "x",  "variable state exists in variable entity is list" )
+//		);
+//		printTagsAndValues( new Pattern(
+//				"phrase variable object exists in variable subject variable list list" ),
+//				"variable state exists in variable entity is list", 
+//				new Attributes()
+//					.add( "object",  "variable state" )
+//					.add( "subject", "variable entity" )
+//					.add( "list",    "is" )
+//		);
+//		Audit.decr();
+		
+//		audit.log( "Second: i am alive" );
+//		Audit.incr();
+//		printTagsAndValues( new Pattern(
+//				"phrase variable object exists in variable subject variable list list" ),
+//				"first variable state exists in i am list", 
+//				new Attributes()
+//				.add( "object",  "variable state" )
+//				.add( "subject", "i" )
+//				.add( "list",    "am" )
+//				);
+//		printTagsAndValues( new Pattern(
+//				"first phrase variable x" ),
+//				"first variable state exists in i am list", 
+//				new Attributes()
+//					.add( "object",  "variable state" )
+//					.add( "subject", "i" )
+//					.add( "list",    "am" )
+//		);
+//		Audit.decr();
+		
+//		Audit.allOn();
+//		audit.tracing = false;
+//		debug( debug );
+//		Audit.allOff();
+//		Audit.runtimeDebug = false;
+//		Audit.traceAll( false );		
+		
+		audit.LOG(
+			"pattern: "+
+			toPattern(
+				"variable nm needs numeric variable quantity units of phrase variable object"
+		)	);
+
+		Where.doLocators("at/from/in");
+		Pattern p = new Pattern( "i need PHRASE-OBJECTS" );
+		audit.log( "sign is: "+ p.toXml());
+		
+		p.newTest( "i need milk" );
+		p.newTest( "i need milk from the dairy aisle" );
+		p.newTest( "i from the dairy aisle need milk" );
+		p.newTest( "from the dairy aisle i need milk" );
+		p.newTest( "i need sliced bread from the bakery" );
+		
 		Audit.allOn();
-		audit.tracing = true;
-		debug( true );
+		//Audit.traceAll( true );		
 		
-		audit.LOG( "pattern: "+ toPattern( "variable name needs numeric variable quantity units of phrase variable object" ));
-
-		Pattern t = new Pattern();
-		t.add( new Patternette( "what is ", "X" ).numericIs() );
-		printTagsAndValues( t, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
-
-		printTagsAndValues( new Pattern( "i need phrase variable need" ),
-				"I need coffee", 
-				new Attributes()
-					.add( "need",     "coffee" )
-		);
-		printTagsAndValues( new Pattern( "i need numeric variable quantity variable unit of phrase variable need" ),
-				"I need a cup of coffee", 
-				new Attributes()
-					.add( "quantity", "1" )
-					.add( "unit",     "cup" )
-					.add( "need",     "coffee" )
-		);
+		p = new Pattern( "help" );
+		audit.log( "sign is now: "+ p.toXml());
+		p.newTest( "at the pub i am meeting my brother" );
 		
-		//toPattern() tests...
-		toPatternTest( "the factorial of n" );
-		toPatternTest( "the factorial of n blah" );
-		toPatternTest( "the factorial of variable variable", "the factorial of variable" );
-		toPatternTest( "the factorial of variable n", "the factorial of N" );
-		toPatternTest( "the factorial of variable n blah", "the factorial of N blah" );
-
-		toPatternTest( "the factorial of phrase" );
-		toPatternTest( "the factorial of phrase n" );
-		toPatternTest( "the factorial of phrase variable variable","the factorial of phrase variable" );
-		toPatternTest( "the factorial of phrase variable n", "the factorial of PHRASE-N" );
-		toPatternTest( "the factorial of phrase variable n blah", "the factorial of PHRASE-N blah" );
-
-		toPatternTest( "the factorial of numeric" );
-		toPatternTest( "the factorial of numeric n" );
-		toPatternTest( "the factorial of numeric variable variable", "the factorial of numeric variable" );
-		toPatternTest( "the factorial of numeric variable n", "the factorial of NUMERIC-N" );
-		toPatternTest( "the factorial of numeric variable n blah", "the factorial of NUMERIC-N blah" );
-
-		toPatternTest( "the sum of and list variable params is blah", "the sum of PARAMS-AND-LIST is blah" );
-
-		audit.log( "First: martin is alive" );
-		Audit.incr();
-		printTagsAndValues( new Pattern(
-				"first phrase variable x" ),
-				"first variable state exists in variable entity is list", 
-				new Attributes()
-					.add( "x",  "variable state exists in variable entity is list" )
-		);
-		printTagsAndValues( new Pattern(
-				"phrase variable object exists in variable subject variable list list" ),
-				"variable state exists in variable entity is list", 
-				new Attributes()
-					.add( "object",  "variable state" )
-					.add( "subject", "variable entity" )
-					.add( "list",    "is" )
-		);
-		Audit.decr();
-		
-		audit.log( "Second: i am alive" );
-		Audit.incr();
-		printTagsAndValues( new Pattern(
-				"phrase variable object exists in variable subject variable list list" ),
-				"first variable state exists in i am list", 
-				new Attributes()
-				.add( "object",  "variable state" )
-				.add( "subject", "i" )
-				.add( "list",    "am" )
-				);
-		printTagsAndValues( new Pattern(
-				"first phrase variable x" ),
-				"first variable state exists in i am list", 
-				new Attributes()
-					.add( "object",  "variable state" )
-					.add( "subject", "i" )
-					.add( "list",    "am" )
-		);
-		Audit.decr();
+		p.newTest( "doesnt match at all" );
 		
 		audit.log( "PASSED" );
 }	}

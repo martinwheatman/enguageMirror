@@ -13,14 +13,13 @@ import org.enguage.util.Tags;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
-
-import org.enguage.object.list.Item;
+import org.enguage.vehicle.where.Where;
 
 public class Item {
 	/* 
 	 * Item.class replaces Tuple.class
 	 */
-	static Audit audit = new Audit("Item", true);
+	static              Audit audit = new Audit("Item", true);
 	static public final String NAME = "item";
 	//static private boolean debug = true;
 	
@@ -128,7 +127,7 @@ public class Item {
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Audit.traceAll( true );
-		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,LOCATOR,LOCATION" );
+		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCATOR +" "+ Where.LOCATION );
 		audit.debug("Item.toString(): using format:"+ format() );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'" );
 		test( "black coffees quantity='2' unit='cup'" );
