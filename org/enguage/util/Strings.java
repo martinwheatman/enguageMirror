@@ -380,7 +380,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return this;
 	}
 	public Strings append( Strings sa ) {
-		addAll( sa );
+		if (null != sa) addAll( sa );
 		return this;
 	}
 	public Strings append( String s ) {
