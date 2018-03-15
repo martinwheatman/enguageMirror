@@ -1,4 +1,4 @@
-package org.enguage.object.numeric;
+package org.enguage.object.expression;
 
 import java.util.ListIterator;
 

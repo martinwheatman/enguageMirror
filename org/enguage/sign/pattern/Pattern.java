@@ -8,6 +8,7 @@ import java.util.Random;
 
 import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
+import org.enguage.util.algorithm.Expression;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Number;
@@ -22,16 +23,19 @@ public class Pattern extends ArrayList<Patternette> {
 	
 	static private final Locale  locale        = Locale.getDefault();
 	static private final String  variable      = "variable";
-	public static  final String  quoted        = "quoted";
-	public static  final String  list          = "list";
-	public static  final String  quotedPrefix  = quoted.toUpperCase( locale ) + "-";
-	public static  final String  phrase        = "phrase";
-	public static  final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
-	public static  final String  numeric       = "numeric";
-	public static  final String  numericPrefix = numeric.toUpperCase( locale ) + "-";
-	public static  final String  plural        = Plural.NAME; // "plural";
-	public static  final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
-	public static  final String  singularPrefix = "SINGULAR-";
+	static public  final String  quoted        = "quoted";
+	static public  final String  list          = "list";
+	static public  final String  quotedPrefix  = quoted.toUpperCase( locale ) + "-";
+	static public  final String  phrase        = "phrase";
+	static public  final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
+	static public  final String  numeric       = "numeric";
+	static public  final String  numericPrefix = numeric.toUpperCase( locale ) + "-";
+	static public  final String  expression    = "expression";
+	static public  final String  expr          = "expr";
+	static public  final String  exprPrefix    = expr.toUpperCase( locale ) + "-";
+	static public  final String  plural        = Plural.NAME; // "plural";
+	static public  final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
+	static public  final String  singularPrefix = "SINGULAR-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
@@ -62,6 +66,10 @@ public class Pattern extends ArrayList<Patternette> {
 					t.numericIs();
 					if (wi.hasNext()) sw = wi.next();
 					else audit.ERROR( "ctor: NUMERIC variable, missing name." );
+				} else if (sw.equals( expr )) {
+					t.exprIs();
+					if (wi.hasNext()) sw = wi.next();
+					else audit.ERROR( "ctor: EXPR variable, missing name." );
 				} else if (sw.equals( Reply.andConjunction() )) {
 					//audit.LOG( "found: "+ Reply.andConjunction() );
 					if (wi.hasNext()) {
@@ -79,10 +87,11 @@ public class Pattern extends ArrayList<Patternette> {
 						audit.ERROR( "ctor: AND terminates variable" );
 				}
 				
-				while ((sw.equals(  phrase ) ||
-						  sw.equals(  plural ) ||
-						  sw.equals(  quoted ) ||
-						  sw.equals( numeric )    )
+				while ((sw.equals( phrase  ) ||
+				        sw.equals( plural  ) ||
+				        sw.equals( quoted  ) ||
+				        sw.equals( expr    ) ||
+				        sw.equals( numeric )    )
 					 && wi.hasNext())
 				{
 					audit.ERROR( "ctor: mutually exclusive modifiers" );
@@ -132,6 +141,18 @@ public class Pattern extends ArrayList<Patternette> {
 						out.append( numeric ).append( word );		
 				else // numeric.
 					out.append( numeric );
+				
+			else if (word.equals( expression ))
+				if (wi.hasNext() && null != (word = wi.next()))
+					if (word.equals( variable ))
+						if (wi.hasNext() && (null != (word = wi.next() )) && !word.equals( variable ))
+							out.append( exprPrefix + word.toUpperCase( locale ));
+						else // numeric variable. or numeric variable variable
+							out.append( expression ).append( variable );
+					else // numeric blah
+						out.append( expression ).append( word );		
+				else // numeric.
+					out.append( expression );
 				
 			else if (word.equals( phrase ))
 				if (wi.hasNext() && null != (word = wi.next()))
@@ -242,6 +263,10 @@ public class Pattern extends ArrayList<Patternette> {
 		String toString = Number.getNumber( ui ).toString();
 		return toString.equals( Number.NotANumber ) ? null : toString;
 	}
+	private String doExpr( ListIterator<String> ui ) {
+		Strings rep = new Strings();
+		return Expression.getExpr( ui, rep ).toString();
+	}
 	private String doList( ListIterator<Patternette> patti,
 	                       ListIterator<String>      utti  ) 
 	{
@@ -332,6 +357,7 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched ==  2 ? "precheck 2" :
 				notMatched == 11 ? "prefixa" :
 				notMatched == 12 ? "prefixb" :
+				notMatched == 13 ? "invalid expr" :
 				notMatched == 14 ? "and-list runs into hotspot" :
 				notMatched == 15 ? "not numeric" :
 				notMatched == 16 ? "invalid flags" :
@@ -420,6 +446,13 @@ public class Pattern extends ArrayList<Patternette> {
 						return null;
 					}
 					
+				} else if (t.isExpr()) {
+					
+					if (null == (val = doExpr( utti ))) {
+						notMatched = 13;
+						return null;
+					}
+					
 				} else if (t.invalid( utti )) {
 					notMatched = 16;
 					return null;
@@ -493,7 +526,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	
 	// --- test code...
-	public static void printTagsAndValues( Pattern interpretant, String phrase, Attributes expected ) {
+	static public void printTagsAndValues( Pattern interpretant, String phrase, Attributes expected ) {
 		audit.in( "printTagsAndValues", "ta="+ interpretant.toString() +", phr="+ phrase +", expected="+ 
 				(expected == null ? "":expected.toString()) );
 		Attributes values = interpretant.matchValues( new Strings( phrase ), true );
@@ -532,7 +565,7 @@ public class Pattern extends ArrayList<Patternette> {
 			audit.log( "notMatched (="+ notMatched +")" );
 		audit.out();
 	}
-	public static void main(String args[]) {
+	static public void main(String args[]) {
 //		Audit.allOn();
 //		audit.tracing = true;
 //		debug( true );
@@ -644,6 +677,12 @@ public class Pattern extends ArrayList<Patternette> {
 		p.newTest( "at the pub i am meeting my brother" );
 		
 		p.newTest( "doesnt match at all" );
+
+		// -- expr
+		p = new Pattern( "the FUNCITON of LIST-FNAME is EXPR-VAL" );
+		audit.log( "sign is: "+ p.toXml());
 		
+		p.newTest( "the sum of x is x plus y" );
+
 		audit.log( "PASSED" );
 }	}

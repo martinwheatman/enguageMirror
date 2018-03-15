@@ -1,8 +1,7 @@
-package org.enguage.object.numeric;
+package org.enguage.object;
 
 import java.util.ListIterator;
 
-import org.enguage.object.Value;
 import org.enguage.object.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
@@ -70,7 +69,7 @@ public class Numeric extends Value {
 	}
 	static public Strings deref( Strings sa ){
 		ListIterator<String> i = sa.listIterator();
-		while ( i.hasNext())
+		while (i.hasNext())
 			i.set( deref( i.next()));
 		return sa;
 	}

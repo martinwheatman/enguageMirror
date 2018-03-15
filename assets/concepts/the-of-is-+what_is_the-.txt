@@ -1,8 +1,8 @@
 # Induction:
-On "the FUNCTION of AND-LIST-PARAMS is PHRASE-BODY":
+On "the FUNCTION of AND-LIST-PARAMS is EXPR-BODY":
 	#set the PARAMS of FUNCTION to BODY;
 	perform "function create FUNCTION PARAMS / BODY";
-	then, reply "ok".
+	then, reply "ok, the FUNCTION of PARAMS is BODY".
 
 On "the value of VARIABLE is PHRASE-VALUE", set VARIABLE to VALUE.
 

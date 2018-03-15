@@ -2,8 +2,6 @@ package org.enguage.object.space;
 
 import org.enguage.object.list.Item;
 import org.enguage.object.list.List;
-import org.enguage.object.numeric.Function;
-import org.enguage.object.numeric.Numeric;
 import org.enguage.object.space.Sofa;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
@@ -14,12 +12,14 @@ import org.enguage.vehicle.Plural;
 import org.enguage.object.Attribute;
 import org.enguage.object.Entity;
 import org.enguage.object.Link;
+import org.enguage.object.Numeric;
 import org.enguage.object.Preferences;
 import org.enguage.object.Sign;
 import org.enguage.object.Spatial;
 import org.enguage.object.Temporal;
 import org.enguage.object.Value;
 import org.enguage.object.Variable;
+import org.enguage.object.expression.Function;
 
 public class Sofa extends Shell {
 	static private Audit audit = new Audit( "Sofa" );

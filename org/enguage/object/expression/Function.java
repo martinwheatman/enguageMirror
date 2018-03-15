@@ -1,4 +1,4 @@
-package org.enguage.object.numeric;
+package org.enguage.object.expression;
 
 import java.util.ListIterator;
 
@@ -16,6 +16,11 @@ public class Function {
 	
 	static public  String  NAME = "function";
 	static private Audit  audit = new Audit( "Function" );
+	
+	// TODO: should be a tree!
+	static private Strings list = new Strings();
+	static public  void    functionIs( String fn ) { list.append( fn );}
+	static public  boolean isFunction( String fn ) { return list.contains( fn );}
 	
 	public Function( String nm ) { name = nm; } // find
 	public Function( String nm, Strings params, String body ) {
@@ -62,7 +67,7 @@ public class Function {
 		return actuals;
 	}
 	static private Strings substitute( String function, Strings argv ) {
-		audit.in( "substitue", "Function="+ function +", argv="+ argv.toString( "[",",","]") );
+		audit.in( "substitute", "Function="+ function +", argv="+ argv.toString( "[",",","]") );
 		Strings ss = null;
 		Function f = getFunction( function, argv );
 		if (f != null)
@@ -125,16 +130,21 @@ public class Function {
 			audit.ERROR( "Ouch!" );
 		else {
 			Reply.dnk( "I do not know" );
-			Variable.set( "x", "1" );
-			Variable.set( "y", "2" );
 			//Audit.traceAll( true );
-			audit.debug( "matching passes!" );
 			query(  "sum", "1 , 1" );
-			create( "sum", "a , b", "a + b" );
+			
+			create( "sum", "a and b", "a + b" );
 			query(  "sum", "3 and 2" );
+			
 			create( "sum", "a b c and d", "a + b + c + d" );
 			query(  "sum", "4 and 3 and 2 and 1" );
+			
+			audit.log( "setting x to 1" );
+			Variable.set( "x", "1" );
+			audit.log( "setting y to 2" );
+			Variable.set( "y", "2" );
 			query(  "sum", "x and y" );
+			
 			create( "factorial", "1", "1" );
 			query(  "factorial", "6" );
 }	}	}

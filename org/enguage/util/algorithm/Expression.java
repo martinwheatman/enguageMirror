@@ -8,7 +8,7 @@ import org.enguage.util.Strings;
 
 public class Expression {
 	
-	static private Audit audit = new Audit( "Expression", true );
+	static private Audit audit = new Audit( "Expression" );
 
 	static private String getNumber( ListIterator<String> li, Strings rep ) {
 		String n = Number.getNumber( li ).toString();
@@ -88,11 +88,14 @@ public class Expression {
 		ListIterator<String> si = new Strings( s ).listIterator();
 		Strings repr = new Strings(),
 		        body = getExpr( si, repr );
-		audit.out( "expr: "+ body);
+		audit.log( "expr: "+ body);
+		audit.out();
 	}
 	static public void main( String[] args) {
 		Number.aImpliesNumeric( false ); // prevent a being seen as implying 1
 		expressionTest( "1" );
+		expressionTest( "fred" );
+		expressionTest( "fred bill steve" );
 		expressionTest( "a plus b" );
 		expressionTest( "a + b" );
 		// TODO: work on this next!

@@ -59,6 +59,11 @@ public class Patternette {
 	public  Patternette numericIs( boolean nm ) { isNumeric = nm; return this; }
 	public  Patternette numericIs() { isNumeric = true; return this; }
 
+	private boolean     isExpr = false;
+	public  boolean     isExpr() { return isExpr; }
+	public  Patternette exprIs( boolean ex ) { isExpr = ex; return this; }
+	public  Patternette exprIs() { isExpr = true; return this; }
+
 	private boolean     isQuoted = false;
 	public  boolean     quoted() { return isQuoted;}
 	public  Patternette quotedIs( boolean b ) { isQuoted = b; return this; }
