@@ -213,8 +213,9 @@ public class Enguage extends Shell {
 
 			interpret( "what do i need",
 					   "you don't need anything" );
+			Join.on( false );
 			interpret( "i need 2 cups of coffee and a biscuit",
-					   "ok, you need 2 cups of coffee, and a biscuit.");
+					   "ok, you need 2 cups of coffee and a biscuit.");
 			interpret( "what do i need",
 					   "you need 2 cups of coffee, and a biscuit.");
 			interpret( "how many coffees do i need",
@@ -242,6 +243,7 @@ public class Enguage extends Shell {
 			
 			interpret( "what do i need",
 					   "you don't need anything" );
+			//Join.on( true );
 		}
 		if ( level == 0 || level == 2 ) {
 			
@@ -347,7 +349,6 @@ public class Enguage extends Shell {
 			interpret( "ok", "ok" );
 			
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
-			
 		}
 		if ( level == 0 || level == 4 ) {
 			
@@ -575,7 +576,6 @@ public class Enguage extends Shell {
 			interpret( "a queen is a monarch", "ok, a queen is a monarch" );
 			// my name is martin
 			// my name is martin wheatman
-
 		}
 		if ( level == 0 || level == 6 ) {
 			audit.title( "Disambiguation" );

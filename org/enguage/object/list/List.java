@@ -1,11 +1,14 @@
 package org.enguage.object.list;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
+import org.enguage.Enguage;
 import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
 import org.enguage.object.Value;
 import org.enguage.util.Audit;
+import org.enguage.util.Join;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.util.Tag;
@@ -240,6 +243,68 @@ public class List extends Value {
 				!(lastParam.equals( "quantity='some'" )
 				||lastParam.equals( "quantity='any'" ))) != -1;
 	}
+	static public Strings strip( Strings ss, String from, String to ) {
+		// this {one} and {two} is => one two
+		boolean adding = false;
+		Strings rc = new Strings();
+		for (String s : ss) {
+			if (s.equals( from ))
+				adding = true;
+			else if (s.equals( to ))
+				adding = false;
+			else if (adding)
+				rc.add( s );
+		}
+		return rc;
+	}
+	static public Strings reinsert( Strings ss, Attributes as, String from, String to ) {
+		// this {one} and {two} is => one two
+		int i = 0;
+		boolean adding = true;
+		Strings rc = new Strings();
+		for (String s : ss) {
+			if (s.equals( from ))
+				adding = false;
+			else if (s.equals( to )) {
+				adding = true;
+				rc.add( as.get( i++ ).value());
+			} else if (adding)
+				rc.add( s );
+		}
+		return rc;
+	}
+	static public String forEach( Strings sa ) {
+		String rc = Shell.FAIL;
+		
+		// Strip attributes from params
+		Strings stripped = strip( sa, "{", "}" );
+		//audit.log( "stripped=[ "+ stripped.toString( Strings.DQCSV ) +" ]" );
+		Attributes match = new Attributes( stripped.toString() );
+		
+		//audit.log( ">>Contexts:\n"+ match );
+		Join.on( true );
+		ArrayList<Attributes> ala = Join.join( match, "and" );
+		Join.on( false );
+		if (ala.size() <= 1) {
+			//audit.log( "  not a list >>>> attris="+ ala.toString() );
+			rc = Shell.FAIL;
+		} else {
+			//audit.log( "  Combos: "+ ala.toString() );
+			rc = Shell.SUCCESS;
+			for( Attributes m : ala ) {
+				// re-build and re-issue utterance
+				Strings u = reinsert( sa, m, "{", "}" );
+				//audit.log( "running enguage with: "+ u.toString() );
+				String reply = Enguage.e.interpret( u );
+				//audit.log( "...enguage replied with: "+ reply );
+				if (reply.equals( /*Enguage.DNU*/ "I don't understand" ) ||
+					reply.toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
+				{	//audit.log( ">>>LIST FAILED<<<" );
+					rc = Shell.FAIL;
+					break;
+		}	}	}
+		return rc;
+	}
 	static public String interpret( Strings sa ) {
 		/* What we're doing here is to process the parameters provided in 
 		 * the repertoire as processed by Intention.class (attributes are 
@@ -259,6 +324,12 @@ public class List extends Value {
 		String	cmd = sa.remove( 0 ),
 				ent = sa.remove( 0 ), 
 				atr = sa.remove( 0 );
+		
+		if (cmd.equals( "forEach" )) { // dummy dummy removed above
+			// TODO: remove this from the object model!
+			return forEach( sa );
+		}
+		
 		List  list = new List( ent, atr );
 		
 		if (cmd.equals( "delete" )) {

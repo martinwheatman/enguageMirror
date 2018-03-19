@@ -2,6 +2,11 @@
 ### Concept: X needs Y
 ####################################################
 
+On "SUBJECTS needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
+	perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }";
+	if not, reply "i do not understand";
+	then, reply "ok, SUBJECTS needs OBJECTS".
+
 On "SUBJECT needs PHRASE-OBJECTS":
 	set output format to "QUANTITY,UNIT of,";
 	OBJECTS exists in SUBJECT needs list;

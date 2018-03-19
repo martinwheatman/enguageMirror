@@ -270,26 +270,27 @@ public class Pattern extends ArrayList<Patternette> {
 	private String doList( ListIterator<Patternette> patti,
 	                       ListIterator<String>      utti  ) 
 	{
-		Strings vals = new Strings();
+		String  word = utti.next();
+		Strings words = new Strings(),
+		        vals  = new Strings();
 		if (patti.hasNext()) {
 			
 			// peek at terminator
 			String terminator = patti.next().prefix().get( 0 );
 			patti.previous();
 			//audit.log( "Terminator is "+ terminator );
-			String  word = utti.next();
 			
-			if (word.length() != 1) return null;
-			//audit.log("first word is "+word);
-			vals.add( word );  // add at least one val!
+			words.add( word );  // add at least one val!
 			if (utti.hasNext()) word = utti.next();
 			
 			while ( !word.equals( terminator )) {
 				
-				if ( word.length() != 1 &&
-					!word.equals( "and" )) return null;
+				if ( word.equals( "and" )) {
+					vals.add( words.toString() );
+					words = new Strings();
+				} else
+					words.add( word );
 				
-				vals.add( word );
 				if (utti.hasNext())
 					word = utti.next();
 				else
@@ -297,14 +298,20 @@ public class Pattern extends ArrayList<Patternette> {
 			}
 			utti.previous(); // replace terminator!
 		} else { // read to end {
-			//audit.log( "READING to end" );
-			while (utti.hasNext())
-				vals.add( utti.next() );
-		}
-		
+			words.add( word ); // at least one!
+			while (utti.hasNext()) {
+				word = utti.next();
+				if ( word.equals( "and" )) {
+					vals.add( words.toString() );
+					words = new Strings();
+				} else
+					words.add( word );
+		}	}
+		if (words.size() > 0) vals.add( words.toString());
+		if (vals.size() <= 1) return null;
 		// remove "and"s from AND-LIST, replacing with ","
-		//audit.log( "returning with "+ vals.divvy( "and" ).toString(Strings.CSV));
-		return vals.divvy( "and" ).toString(Strings.CSV);
+		//audit.log( "P::doList(): "+ vals.toString("", " and ", ""));
+		return vals.toString("", " and ", "");
 	}
 	private String getNextBoilerplate( Patternette t, ListIterator<Patternette> ti ) {
 		String term = null;
@@ -320,7 +327,6 @@ public class Pattern extends ArrayList<Patternette> {
 		return term;
 	}
 	private String getVal( Patternette t, ListIterator<Patternette> ti, ListIterator<String> ui, boolean whr ) {
-		audit.in( "getVal", "...");
 		String u = "unseta";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
@@ -348,7 +354,7 @@ public class Pattern extends ArrayList<Patternette> {
 					} else
 						vals.add( u );
 		}	}	}
-		return audit.out( vals.toString());
+		return vals.toString();
 	}
 	private int notMatched = 0;
 	public String notMatched() {

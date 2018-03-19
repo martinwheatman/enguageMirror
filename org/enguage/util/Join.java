@@ -13,7 +13,7 @@ import org.enguage.util.Strings;
 public class Join {
 	private static       Audit           audit = new Audit( "Join" );
 	
-	static private boolean on = true;
+	static private boolean on = false;
 	static public  void    on( boolean j ) { on = j; }
 	
 	static private ArrayList<ArrayList<Integer>> combinations( ArrayList<Integer> dimensions ) {
