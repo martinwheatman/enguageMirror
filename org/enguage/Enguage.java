@@ -9,7 +9,6 @@ import org.enguage.sign.repertoire.Concepts;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
-import org.enguage.util.Join;
 import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
@@ -213,7 +212,6 @@ public class Enguage extends Shell {
 
 			interpret( "what do i need",
 					   "you don't need anything" );
-			Join.on( false );
 			interpret( "i need 2 cups of coffee and a biscuit",
 					   "ok, you need 2 cups of coffee and a biscuit.");
 			interpret( "what do i need",
@@ -243,7 +241,6 @@ public class Enguage extends Shell {
 			
 			interpret( "what do i need",
 					   "you don't need anything" );
-			//Join.on( true );
 		}
 		if ( level == 0 || level == 2 ) {
 			
@@ -291,9 +288,7 @@ public class Enguage extends Shell {
 			audit.title( "Simple Functions" );
 			interpret( "the sum of x and y is x plus y",  "ok, the sum of x and y is x plus y" );
 			//Audit.traceAll( true );
-			Join.on( false ); // need this cos 3 and 2 is a phrase!
 			interpret( "what is the sum of 3 and 2",      "the sum of 3 and 2 is 5 " );
-			Join.on( false );
 			interpret( "set x to 3",                      "ok, x is set to 3" );
 			interpret( "set y to 4",                      "ok, y is set to 4" );
 			interpret( "what is the value of x",          "3, the value of x is 3" );

@@ -160,7 +160,6 @@ public class Reply { // a reply is basically a formatted answer
 			// type is dependent on answer
 			cache = null;
 			type = (type == UDU) ? UDU : a.type();
-			type = ans.equals( Reply.failure())? DNU:type;
 		}
 		return this;
 	}

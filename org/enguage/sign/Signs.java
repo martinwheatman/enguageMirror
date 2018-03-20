@@ -10,14 +10,11 @@ import java.util.TreeMap;
 import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
 import org.enguage.object.Variable;
-import org.enguage.sign.Sign;
-import org.enguage.sign.Signs;
 import org.enguage.sign.intention.Intention;
 import org.enguage.sign.pattern.Patternette;
 import org.enguage.sign.repertoire.Autoload;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
-import org.enguage.util.Join;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Context;
 import org.enguage.vehicle.Reply;
@@ -243,58 +240,46 @@ public class Signs extends TreeMap<Integer,Sign> {
 					
 					r = new Reply();
 					
-					ArrayList<Attributes> ala = Join.join( match, Reply.andConjunction() );
-					//if (ala.size() > 1) audit.debug( "Combinations found:"+ ala );
-					for( Attributes m : ala ) {
-						//audit.debug( "Signs().interpret().context:"+ m.toString());
-						/* If we save as OBJECT.0, ... OBJECT.n need to do a join:
-						 * SUBJECT.m needs OBJECT.n
-						 *   [1,1] => [1,1];
-						 *   [2,3] => [1,1], [1,2], [1,3], [2,1] [2,2] [2,3];
-						 * [1,2,1] => [1,1,1], [1,2,1]
+					Context.push( match );
+					r = s.mediate( r ); // may pass back DNU
+					Context.pop();
+					
+					r.a.appendingIs( true );
+					 
+					
+					/* May have modified repertoire by autoloading.
+					 * ignores now works on key (complexity)
+					 * 
+					 * 1  2  3  4  5              original
+					 * 1  2 -1  3 -1 -1  4 -1  5  comodified
+					 * 1  2  3  4  5  6  7  8  9  eventual
+					 * 
+					 * So Ignores got from 2, 4 to 2, 7.
+					 */
+					
+					// if reply is DNU, this meaning is not appropriate!
+					if (r.type() == Reply.DNU) {
+						audit.debug( "Signs.interpretation() returned DNU" );
+						/* Comodification error?
+						 * If, during interpretation, we've modified the repertoire
+						 * by autoloading and we've not understood this we've 
+						 * screwed the repertoire we're currently half-way through.
 						 */
-						Context.push( m );
-						r = s.mediate( r ); // may pass back DNU
-						Context.pop();
+						s = reassign( here );
+					} else {
 						
-						r.a.appendingIs( true );
-						 
-						
-						/* May have modified repertoire by autoloading.
-						 * ignores now works on key (complexity)
-						 * 
-						 * 1  2  3  4  5              original
-						 * 1  2 -1  3 -1 -1  4 -1  5  comodified
-						 * 1  2  3  4  5  6  7  8  9  eventual
-						 * 
-						 * So Ignores got from 2, 4 to 2, 7.
-						 */
-						
-						// if reply is DNU, this meaning is not appropriate!
-						if (r.type() == Reply.DNU) {
-							audit.debug( "Signs.interpretation() returned DNU" );
-							/* Comodification error?
-							 * If, during interpretation, we've modified the repertoire
-							 * by autoloading and we've not understood this we've 
-							 * screwed the repertoire we're currently half-way through.
-							 */
-							s = reassign( here );
-							break;
-						} else {
-							
-							// we've used the prime repertoire, successfully
-							// used by MainActivity on deciding to what help is said.
-							//audit.audit("signs - prime="+ Repertoires.prime());
-							if (    s.concept().equals( Repertoire.prime() )
-								&& !s.concept().equals( Repertoire.NO_PRIME ))
-								Repertoire.primeUsed( true );
+						// we've used the prime repertoire, successfully
+						// used by MainActivity on deciding to what help is said.
+						//audit.audit("signs - prime="+ Repertoires.prime());
+						if (    s.concept().equals( Repertoire.prime() )
+							&& !s.concept().equals( Repertoire.NO_PRIME ))
+							Repertoire.primeUsed( true );
 
-							//if (Audit.detailedDebug) audit.debug("understood resetting "+ i );
-							s.interpretation = noInterpretation; // tidy as we go
-							answer = r.a.toString();
-							done = true;
-						}
-					} // AND combo: I need milk and I need cheese.
+						//if (Audit.detailedDebug) audit.debug("understood resetting "+ i );
+						s.interpretation = noInterpretation; // tidy as we go
+						answer = r.a.toString();
+						done = true;
+					}
 					r.a.appendingIs( false );
 				} // matched	
 			}	
