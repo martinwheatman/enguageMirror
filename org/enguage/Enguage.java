@@ -218,6 +218,7 @@ public class Enguage extends Shell {
 					   "you need 2 cups of coffee, and a biscuit.");
 			interpret( "how many coffees do i need",
 					   "2, you need 2 coffees" );
+			interpret( "i need 2 coffees", "i know" );
 			interpret( "i don't need any coffee",
 					   "ok, you don't need any coffee" );
 			interpret( "what do i need",

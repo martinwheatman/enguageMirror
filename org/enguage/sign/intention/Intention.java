@@ -215,7 +215,7 @@ public class Intention {
 				)	);
 	}
 	private Reply think( Reply r ) {
-		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"', ctx =>"+ Context.valueOf());
+		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" );
 		Strings thought = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		
@@ -239,7 +239,7 @@ public class Intention {
 	private Reply andFinally( Reply r ) { return perform( r, true ); }
 	
 	private Reply perform( Reply r, boolean ignore ) {
-		audit.in( "perform", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		audit.in( "perform", "value='"+ value +"'" );
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
 		
@@ -279,7 +279,7 @@ public class Intention {
 	}
 	
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", typeToString( type ) +"='"+ value +"', ctx =>"+ Context.valueOf());
+		audit.in( "mediate", typeToString( type ) +"='"+ value +"'" );
 		
 		if (type == thenFinally)
 			andFinally( r );
