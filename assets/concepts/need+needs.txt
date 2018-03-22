@@ -89,7 +89,8 @@ On "SUBJECT does not need any PHRASE-OBJECT":
 ### does X need .../how many
 On "what does SUBJECT need":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
-	get SUBJECT needs list;
+#	get SUBJECT needs list;
+	perform "list get SUBJECT needs :"; # TODO: ":" stops SOFA's expanding (removed)s
 	if not, reply "SUBJECT does not need anything";
 	then, reply "SUBJECT needs ...".
 

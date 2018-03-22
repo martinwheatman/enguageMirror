@@ -46,10 +46,11 @@ public class Sofa extends Shell {
 			 * package class requirements...?
 			 */
 			for (int i=0; i<5 && i<a.size(); i++)
-				a.set( i, Attribute.expandValues( a.get( i ) ).toString( Strings.SPACED ));
-			//audit.audit("Sofa.doCall() => a is "+ a.toString());
-			//a = a.normalise().contract( "=" );// rejig:"list","get","one two","three four"] => "list","get","one","two","three","four"]
-			//audit.debug("Sofa.doCall() => "+ a.toString());
+				if (a.get( i ).equals( ":")) {
+					a.remove( i );
+					break;
+				} else
+					a.set( i, Attribute.expandValues( a.get( i ) ).toString());
 			
 			String  type = a.remove( 0 );
 			return //audit.out(
