@@ -374,25 +374,20 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched == 22 ? "more utterance" : ("unknown:"+ notMatched);
 	}
 	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui, boolean spatial ) {
-		//audit.in( "matchBoilerplate", bp.toString() +", ..., "+ spatial );
 		String term, uttered;
 		Iterator<String> bpi = bp.iterator();
 		while ( bpi.hasNext() && ui.hasNext())
 			if (!(term = bpi.next()).equalsIgnoreCase( uttered = ui.next() )) {
 				Where w;
-				if (spatial) audit.debug( "bp: checking for where term="+ term +"/uttered="+ uttered );
-				if (spatial && null != (w = Where.getWhere( uttered, term, ui ))) {
-					audit.debug( "where:"+ w.toString() +", found in bp" );
+				if (spatial && null != (w = Where.getWhere( uttered, term, ui )))
 					matched( w );
-					if (ui.hasNext()) uttered = ui.next(); // getWhere doen't consume terminator
-				} else {
+				else {
 					notMatched = 11;
-					//audit.out( "not matched" );
 					return null; // string mismatch
-			}	}
-		// have we reached end of boilerplate, but not utterance?
+				}
+				if (ui.hasNext()) uttered = ui.next(); // getWhere doen't consume terminator
+			}
 		notMatched = 12;
-		//audit.out( bpi.hasNext() ? "bp !complete" : "SUCCESS");
 		return bpi.hasNext() ? null : ui;
 	}
 	

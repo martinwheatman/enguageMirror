@@ -2,8 +2,7 @@
 ### Concept: X needs Y
 ####################################################
 
-Need  is spatial.
-Needs is spatial.
+this concept is spatial.
 
 On "SUBJECTS needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
 	perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }";
@@ -11,39 +10,44 @@ On "SUBJECTS needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
 	then, reply "ok, SUBJECTS needs OBJECTS".
 
 On "SUBJECT needs PHRASE-OBJECTS":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	OBJECTS exists in SUBJECT needs list;
 	reply "I know";
-	if not, add OBJECTS to SUBJECT needs list;
-	if not, append OBJECTS onto SUBJECT needs list;
+#	TODO: propagate spatiallity and temporallity through THINK
+#	if not, add OBJECTS to SUBJECT needs list;
+	if not, perform "list add    SUBJECT needs OBJECTS";
+#	if not, append OBJECTS onto SUBJECT needs list;
+	if not, perform "list append SUBJECT needs OBJECTS";
 	then, reply "ok, SUBJECT needs ...".
 
 On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY OBJECT exists in SUBJECT needs list;
 	reply "I know";
-	if not, add QUANTITY OBJECT to SUBJECT needs list;
+#	if not, add QUANTITY OBJECT to SUBJECT needs list;
+	if not, perform "list add SUBJECT needs OBJECT QUANTITY";
 	then, reply "ok, SUBJECT needs ... ".
 
 On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY UNIT of OBJECT exists in SUBJECT needs list;
 	reply "I know";
-	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
+#	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
+	if not, perform "list add SUBJECT needs OBJECT QUANTITY UNIT";
 	then, reply "ok, SUBJECT needs ...".
 
 On "and NUMERIC-QUANTITY":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	SUBJECT needs QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
 On "and NUMERIC-QUANTITY OBJECT":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	SUBJECT needs another QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
 On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	SUBJECT needs another QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
@@ -84,7 +88,7 @@ On "SUBJECT does not need any PHRASE-OBJECT":
 
 ### does X need .../how many
 On "what does SUBJECT need":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	get SUBJECT needs list;
 	if not, reply "SUBJECT does not need anything";
 	then, reply "SUBJECT needs ...".

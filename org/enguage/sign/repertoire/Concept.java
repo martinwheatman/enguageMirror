@@ -10,16 +10,20 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.enguage.Enguage;
+import org.enguage.object.Variable;
 import org.enguage.object.space.Ospace;
 import org.enguage.sign.intention.Intention;
 import org.enguage.util.Audit;
 
 public class Concept {
+	static public final String LOADING = "CONCEPT";
 	static public boolean load( String name ) {
 		Enguage e = Enguage.get();
 		boolean wasLoaded = false,
 		        wasSilenced = false,
 		        wasAloud = e.isAloud();
+		
+		Variable.set( LOADING, name );
 		
 		// silence on inner thought...
 		if (!Audit.startupDebug) {
@@ -52,5 +56,7 @@ public class Concept {
 			Audit.resume();
 			e.aloudIs( wasAloud );
 		}
+		
+		Variable.unset( LOADING );
 		return wasLoaded;
 }	}

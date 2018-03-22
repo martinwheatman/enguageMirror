@@ -1,1 +1,3 @@
 On "X is spatial", perform "spatial add X".
+
+On "this concept is spatial", perform "spatial addCurrent".

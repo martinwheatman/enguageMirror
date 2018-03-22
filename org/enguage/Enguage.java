@@ -607,12 +607,13 @@ public class Enguage extends Shell {
 			interpret( "spatially something can be to the right of", "ok" );
 			interpret( "spatially something can be in front of",     "ok" );
 			interpret( "spatially something can be on top of",       "ok" );
-			interpret( "spatially something can be behind",          "ok" );
-			interpret( "spatially something can be in",              "ok" );
-			interpret( "spatially something can be on",              "ok" );
-			interpret( "spatially something can be under",           "ok" );
 			interpret( "spatially something can be underneath",      "ok" );
+			interpret( "spatially something can be behind",          "ok" );
+			interpret( "spatially something can be from",            "ok" );
+			interpret( "spatially something can be under",           "ok" );
 			interpret( "spatially something can be over",            "ok" );
+			interpret( "spatially something can be on",              "ok" );
+			interpret( "spatially something can be in",              "ok" );
 			interpret( "spatially something can be at",              "ok" );
 			
 			/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
@@ -621,9 +622,6 @@ public class Enguage extends Shell {
 			 * then  set the context of the variable entity to a variable entity // ln -s pub/the pub/a
 			 * ok.
 			 */
-			// Creating a pub _is_ needed
-			interpret( "a pub is a place" );
-
 			interpret( "I'm not meeting anybody",
 					   "Ok , you're not meeting anybody" );
 			interpret( "At 7 I'm meeting my brother at the pub",
@@ -643,7 +641,29 @@ public class Enguage extends Shell {
 					   "i don't know if you're meeting your dad" );
 			interpret( "Where am I meeting my dad" ,
 					   "i don't know if you're meeting your dad" );
-		}
+			{	// silently clear the decks
+				audit.title( "LBFQ" );
+				interpret( "prime the answer yes", "ok, the next answer will be yes" );
+				interpret( "i don't need anything" );
+				
+				interpret( "i need biscuits",
+						   "ok, you need biscuits" );
+				
+				interpret( "i need milk from the dairy aisle",
+						   "ok, you need milk from the dairy aisle" );
+				
+				interpret( "what from the dairy aisle do i need",
+						   "you need milk from the dairy aisle" );
+				interpret( "from the dairy aisle what do i need",
+						   "you need milk from the dairy aisle" );
+	
+				interpret( "prime the answer yes", "ok, the next answer will be yes" );
+				interpret( "I have everything",
+					       "ok, you don't need anything" );
+				
+				interpret( "what do i need",
+						   "you don't need anything" );
+		}	}
 		if (level == 0 || level == 8) {
 			interpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok" );
 			interpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry" );
