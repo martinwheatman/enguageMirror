@@ -641,29 +641,37 @@ public class Enguage extends Shell {
 					   "i don't know if you're meeting your dad" );
 			interpret( "Where am I meeting my dad" ,
 					   "i don't know if you're meeting your dad" );
-			{	// silently clear the decks
-				audit.title( "LBFQ" );
-				interpret( "prime the answer yes", "ok, the next answer will be yes" );
-				interpret( "i don't need anything" );
-				
-				interpret( "i need biscuits",
-						   "ok, you need biscuits" );
-				
-				interpret( "i need milk from the dairy aisle",
-						   "ok, you need milk from the dairy aisle" );
-				
-				interpret( "what from the dairy aisle do i need",
-						   "you need milk from the dairy aisle" );
-				interpret( "from the dairy aisle what do i need",
-						   "you need milk from the dairy aisle" );
-	
-				interpret( "prime the answer yes", "ok, the next answer will be yes" );
-				interpret( "I have everything",
-					       "ok, you don't need anything" );
-				
-				interpret( "what do i need",
-						   "you don't need anything" );
-		}	}
+			
+			audit.title( "LBFQ" );
+			// silently clear the decks
+			interpret( "prime the answer yes", "ok, the next answer will be yes" );
+			interpret( "i don't need anything" );
+			
+			interpret( "i need biscuits",
+					   "ok, you need biscuits" );
+			
+			interpret( "i need milk from the dairy aisle",
+					   "ok, you need milk from the dairy aisle" );
+			
+			interpret( "what do i need",
+					   "you need biscuits, and milk from the dairy aisle" );
+			
+			interpret( "from the dairy aisle what do i need",
+					   "you need milk from the dairy aisle" );
+
+			interpret( "what from the dairy aisle do i need",
+					   "you need milk from the dairy aisle" );
+			
+			// TODO: propagate spatiality through think()
+//			interpret( "what do i need from the dairy aisle",
+//					   "you need milk from the dairy aisle" );
+			
+			interpret( "prime the answer yes", "ok, the next answer will be yes" );
+			interpret( "I have everything",
+				       "ok, you don't need anything" );
+			interpret( "what do i need",
+					   "you don't need anything" );
+		}
 		if (level == 0 || level == 8) {
 			interpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok" );
 			interpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry" );
