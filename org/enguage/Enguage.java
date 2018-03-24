@@ -140,6 +140,11 @@ public class Enguage extends Shell {
 			else
 				audit.log( "enguage> "+ answer +"\n" );
 	}	}
+	private static void clearTheNeedsList() {
+		interpret( "prime the answer yes", "ok, the next answer will be yes" );
+		interpret( "I have everything",
+			       "ok, you don't need anything" );
+	}
 
 	public static void main( String args[] ) {
 
@@ -188,7 +193,7 @@ public class Enguage extends Shell {
 		else
 			usage();
 	}
-
+	
 	public static void sanityCheck( boolean serverTest, String location ) {
 
 		//Audit.traceAll( true );
@@ -206,9 +211,7 @@ public class Enguage extends Shell {
 		if ( level == 0 || level == 1 ) {
 			audit.title( "The Non-Computable concept of NEED" );
 
-			// silently clear the decks
-			interpret( "prime the answer yes", "ok, the next answer will be yes" );
-			interpret( "i don't need anything" );
+			clearTheNeedsList();
 
 			interpret( "what do i need",
 					   "you don't need anything" );
@@ -236,9 +239,7 @@ public class Enguage extends Shell {
 			interpret( "i don't need to go to town",
 					   "ok, you don't need to go to town" );
 			
-			interpret( "prime the answer yes", "ok, the next answer will be yes" );
-			interpret( "I have everything",
-				       "ok, you don't need anything" );
+			clearTheNeedsList();
 			
 			interpret( "what do i need",
 					   "you don't need anything" );
@@ -643,9 +644,7 @@ public class Enguage extends Shell {
 					   "i don't know if you're meeting your dad" );
 			
 			audit.title( "LBFQ" );
-			// silently clear the decks
-			interpret( "prime the answer yes", "ok, the next answer will be yes" );
-			interpret( "i don't need anything" );
+			clearTheNeedsList();
 			
 			interpret( "i need biscuits",
 					   "ok, you need biscuits" );
@@ -666,11 +665,7 @@ public class Enguage extends Shell {
 //			interpret( "what do i need from the dairy aisle",
 //					   "you need milk from the dairy aisle" );
 			
-			interpret( "prime the answer yes", "ok, the next answer will be yes" );
-			interpret( "I have everything",
-				       "ok, you don't need anything" );
-			interpret( "what do i need",
-					   "you don't need anything" );
+			clearTheNeedsList();
 		}
 		if (level == 0 || level == 8) {
 			interpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok" );
