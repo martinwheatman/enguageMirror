@@ -109,7 +109,7 @@ public class Item {
 	}
 	static public String interpret( Strings cmd ) {
 		String rc = Shell.FAIL;
-		if (cmd.size() == 3
+		if (cmd.size() > 2
 				&& cmd.get( 0 ).equals( "set" )
 				&& cmd.get( 1 ).equals( "format" ))
 		{
