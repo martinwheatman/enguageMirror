@@ -118,7 +118,7 @@ public class Sign {
 		audit.in( "mediate", pattern().toString() );
 		Iterator<Intention> ai = programme.iterator();
 		while (!r.isDone() && ai.hasNext()) {
-			Intention in = ai.next().temporalIs( isTemporal()).spatialIs( isSpatial());
+			Intention in = ai.next();
 			switch (in.type()) {
 			case Intention.allop :
 				r = Engine.getReply( in, r );
