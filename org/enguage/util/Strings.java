@@ -145,17 +145,25 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 						}
 						
 					} else if ('\'' == buffer[ i ] ) {
-						// embedded apostrophes: check "def'def", " 'def" or "...def'[ ,.?!]" 
-						// quoted string with embedded apostrophes 'no don't'
-						//audit.audit("SQ string");
-						word.append( buffer[ i++ ]);
-						while( i<sz &&
-						      !('\'' == buffer[ i ] && // ' followed by WS OR embedded
-						        (1+i==sz || Character.isWhitespace( buffer[ 1+i ]))
-						     ) ) 
+						// first check for stand-alone apostrophe e.g. ENT''s
+						if (i+1<sz && buffer[ i+1 ] == '\'') {
+							i+=2;
+							append( word.toString() );
+							word = new StringBuilder( 32 );
+							word.append( "'" );
+						} else {
+							// embedded apostrophes: check "def'def", " 'def" or "...def'[ ,.?!]" 
+							// quoted string with embedded apostrophes 'no don't'
+							//audit.audit("SQ string");
 							word.append( buffer[ i++ ]);
-						word.append( "'" );
-						i++;
+							while( i<sz &&
+							      !('\'' == buffer[ i ] && // ' followed by WS OR embedded
+							        (1+i==sz || Character.isWhitespace( buffer[ 1+i ]))
+							     ) ) 
+								word.append( buffer[ i++ ]);
+							word.append( "'" );
+							i++;
+						}
 						
 					} else if ('"' == buffer[ i ]) {
 						//audit.audit("DQ string");
@@ -384,11 +392,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return this;
 	}
 	public Strings append( String s ) {
-		if (null != s) add( s );
+		if (null != s && !s.equals( "" )) add( s );
 		return this;
 	}
 	public Strings prepend( String str ) {
-		if (null != str) add( 0, str );
+		if (null != str && !str.equals( "" )) add( 0, str );
 		return this;
 	}
 	public Strings copyFrom( int n ) {
@@ -878,8 +886,10 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 //		Audit.traceAll( true );
 //		new Strings( "a + b" ).substitute( new Strings("a b"), new Strings( "1 2"));
 //		System.exit( 0 );
-
+		
 		audit.log( "hello, world" );
+
+
 		
 		Strings a = new Strings( "hello there" ),
 				b = new Strings( "hello world" ),
@@ -894,10 +904,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		
 		
 		
-		audit.log( "a: "+ new Strings( "failure won't 'do' 'don't'" ));
-		audit.log( "b: "+ new Strings( "..........." ));
-		audit.log( "c: "+ new Strings( "+2.0" ));
-		audit.log( "d: "+ new Strings( "quantity+=2.0" ));
+		audit.log( "a: ["+ new Strings( "martin''s" ).toString( DQCSV ) +"]" );
+		audit.log( "b: ["+ new Strings( "failure won't 'do' 'do n't'" ).toString( DQCSV ) +"]" );
+		audit.log( "c: "+ new Strings( "..........." ));
+		audit.log( "d: "+ new Strings( "+2.0" ));
+		audit.log( "e: "+ new Strings( "quantity+=2.0" ));
 		
 		a = new Strings("hello failure");
 		b = new Strings( "failure" );
