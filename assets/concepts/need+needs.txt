@@ -13,27 +13,22 @@ On "SUBJECT needs PHRASE-OBJECTS":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	OBJECTS exists in SUBJECT needs list;
 	reply "I know";
-#	TODO: propagate spatiallity and temporallity through THINK
-#	if not, add OBJECTS to SUBJECT needs list;
-	if not, perform "list add    SUBJECT needs OBJECTS";
-#	if not, append OBJECTS onto SUBJECT needs list;
-	if not, perform "list append SUBJECT needs OBJECTS";
+	if not, add OBJECTS to SUBJECT needs list;
+	if not, append OBJECTS onto SUBJECT needs list;
 	then, reply "ok, SUBJECT needs ...".
 
 On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY OBJECT exists in SUBJECT needs list;
 	reply "I know";
-#	if not, add QUANTITY OBJECT to SUBJECT needs list;
-	if not, perform "list add SUBJECT needs OBJECT QUANTITY";
+	if not, add QUANTITY OBJECT to SUBJECT needs list;
 	then, reply "ok, SUBJECT needs ... ".
 
 On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY UNIT of OBJECT exists in SUBJECT needs list;
 	reply "I know";
-#	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
-	if not, perform "list add SUBJECT needs OBJECT QUANTITY UNIT";
+	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
 	then, reply "ok, SUBJECT needs ...".
 
 On "and NUMERIC-QUANTITY":
@@ -89,8 +84,7 @@ On "SUBJECT does not need any PHRASE-OBJECT":
 ### does X need .../how many
 On "what does SUBJECT need":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
-#	get SUBJECT needs list;
-	perform "list get SUBJECT needs :"; # TODO: ":" stops SOFA's expanding (removed)s
+	get SUBJECT needs list;
 	if not, reply "SUBJECT does not need anything";
 	then, reply "SUBJECT needs ...".
 
