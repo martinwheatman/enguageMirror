@@ -240,7 +240,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 					
 					r = new Reply();
 					
-					//audit.log( s.isSpatial()+":LOC:"+match.contains( "LOCATION" )+":"+s.toString() );
 					Context.push( match );
 					r = s.mediate( r ); // may pass back DNU
 					Context.pop();
