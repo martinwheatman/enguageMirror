@@ -243,18 +243,18 @@ public class Intention {
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
 		
-		// Add tempro/spatial awareness if it has been added. 
-		String when = Context.get( "when" );
-		if (!when.equals(""))
-			cmd.append( "WHEN='"+ when +"'" );
-		String locator = Context.get( Where.LOCATOR );
-		if (!locator.equals("")) {
-			String location = Context.get( Where.LOCATION );
-			if (!location.equals("")) {
-				if (cmd.size() < 5) cmd.append( ":" ); // TODO: fix SOFA & scripts to accept n='v'
-				cmd.append( Where.LOCATOR  +"='"+  locator  +"'" );
-				cmd.append( Where.LOCATION +"='"+ location +"'" );
-		}	}
+		{ // Add tempro/spatial awareness if it has been added. 
+			String when = Context.get( "when" );
+			if (!when.equals(""))
+				cmd.append( "WHEN='"+ when +"'" );
+			String locator = Context.get( Where.LOCATOR );
+			if (!locator.equals("")) {
+				String location = Context.get( Where.LOCATION );
+				if (!location.equals("")) {
+					if (cmd.size() < 5) cmd.append( ":" ); // TODO: fix SOFA & scripts to accept n='v'
+					cmd.append( Where.LOCATOR  +"='"+  locator  +"'" );
+					cmd.append( Where.LOCATION +"='"+ location +"'" );
+		}	}	}
 
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()== 1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))

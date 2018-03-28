@@ -19,7 +19,7 @@ public class Item {
 	/* 
 	 * Item.class replaces Tuple.class
 	 */
-	static              Audit audit = new Audit("Item", true);
+	static              Audit audit = new Audit("Item" );
 	static public final String NAME = "item";
 	//static private boolean debug = true;
 	

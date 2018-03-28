@@ -29,7 +29,7 @@ public class Where {
 
 	public Where() {}
 	public Where( String tor, String tion ) {
-		locator( tor);
+		locator( tor );
 		location( new Strings( tion ));
 		assigned( tor != null && tion != null );
 	}
