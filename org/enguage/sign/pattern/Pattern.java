@@ -356,8 +356,8 @@ public class Pattern extends ArrayList<Patternette> {
 		}	}	}
 		return vals.toString();
 	}
-	private int notMatched = 0;
-	public String notMatched() {
+	static private int notMatched = 0;
+	static public String notMatched() {
 		return  notMatched ==  0 ? "matched" :
 				notMatched ==  1 ? "precheck 1" :
 				notMatched ==  2 ? "precheck 2" :
@@ -429,6 +429,13 @@ public class Pattern extends ArrayList<Patternette> {
 			} else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
 				if (patti.hasNext()) next = patti.next();
 				
+			} else if (utti.hasNext() &&  t.name().equals( "" )) { // check 4 trailing where
+				if (spatial) {
+					Where w;
+					String uttered = utti.next();
+					if (null != (w = Where.getWhere( uttered, null, utti )))
+						matched( w );
+				}
 			} else if (utti.hasNext() && !t.name().equals( "" )) { // do these loaded match?
 				
 				String val = null;

@@ -1,8 +1,0 @@
-# Compass - managing the on/off state of a Unity3d asset
-# (c) Martin Wheatman, 2017
-
-On "can the compass be on or off", reply "yes".
-
-On "where is the compass", turn the compass on.
-
-On "compass",            toggle compass.

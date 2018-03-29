@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.enguage.object.space.Overlay;
 import org.enguage.sign.intention.Redo;
+import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.repertoire.Autoload;
 import org.enguage.sign.repertoire.Concepts;
 import org.enguage.sign.repertoire.Repertoire;
@@ -136,14 +137,16 @@ public class Enguage extends Shell {
 			else if (   !expected.equals( "" )
 					&& !new Strings( answer )
 					.equalsIgnoreCase( new Strings( expected )))
-				audit.FATAL("reply:"+ answer +",\n    expected:"+ expected );
+				audit.FATAL(
+						"reply: '"+ answer +"',\n             "+
+						"expected: '"+ expected +"' "+
+						"("+ Pattern.notMatched() +")" );
 			else
 				audit.log( "enguage> "+ answer +"\n" );
 	}	}
 	private static void clearTheNeedsList() {
 		interpret( "prime the answer yes", "ok, the next answer will be yes" );
-		interpret( "I have everything",
-			       "ok, you don't need anything" );
+		interpret( "I have everything",    "ok, you don't need anything" );
 	}
 
 	public static void main( String args[] ) {
@@ -661,9 +664,8 @@ public class Enguage extends Shell {
 			interpret( "what from the dairy aisle do i need",
 					   "you need milk from the dairy aisle" );
 			
-			// TODO: propagate spatiality through think()
-//			interpret( "what do i need from the dairy aisle",
-//					   "you need milk from the dairy aisle" );
+			interpret( "what do i need from the dairy aisle",
+					   "you need milk from the dairy aisle" );
 			
 			clearTheNeedsList();
 		}

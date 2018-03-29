@@ -11,6 +11,7 @@ import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
 import org.enguage.object.Variable;
 import org.enguage.sign.intention.Intention;
+import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
 import org.enguage.sign.repertoire.Autoload;
 import org.enguage.sign.repertoire.Repertoire;
@@ -216,8 +217,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 				//TODO: removed noInter check -- need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
 				if (null == match) {
-					if (!s.pattern().notMatched().equals("prefixa"))
-						audit.debug( "NO match: "+ s.toString() +" ("+ s.pattern().notMatched() +")");
+					if (!Pattern.notMatched().equals("prefixa"))
+						audit.debug( "NO match: "+ s.toString() +" ("+ Pattern.notMatched() +")");
 				} else { // we have found a meaning! So I do understand...!
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
 					audit.debug( "matched '"+ s +"' with: "+ match.toString() +":"+ Context.valueOf());
