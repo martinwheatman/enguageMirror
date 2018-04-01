@@ -24,7 +24,7 @@ public class Format {
 	public  Strings ormat() { return format; }
 	public  void    ormat(String s) {
 		format = new Strings( s );
-		if (format.get(0).equals( Strings.ELLIPSIS )) variable = true;
+		if (format.size() > 0 && format.get(0).equals( Strings.ELLIPSIS )) variable = true;
 		// Decontextualise format, while we're in the moment!
 		format = Context.deref( format );
 	}
