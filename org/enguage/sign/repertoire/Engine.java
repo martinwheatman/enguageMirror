@@ -6,11 +6,11 @@ import org.enguage.sign.Sign;
 import org.enguage.sign.Signs;
 import org.enguage.sign.intention.Intention;
 import org.enguage.sign.intention.Redo;
+import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
 import org.enguage.util.Audit;
 import org.enguage.util.Net;
 import org.enguage.util.Strings;
-import org.enguage.util.Tags;
 import org.enguage.vehicle.Context;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Question;
@@ -304,7 +304,7 @@ public class Engine {
 				Audit.detailedOn = false;
 				
 			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
-				Tags.debug( !Tags.debug() );
+				Pattern.debug( !Pattern.debug() );
 				
 			} else {
 				Audit.allOn();

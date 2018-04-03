@@ -74,34 +74,20 @@ public class Tag {
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Tag        attributes( Attribute a ) {
-		if (a.name().equals( phrase ))
-			isPhrased = true;
-		else if (a.name().equals( plural ))
-			isPlural = true;
-		else if (a.name().equals( quoted ))
-			isQuoted = true;
-		else if (a.name().equals( numeric ))
-			numericIs( true );
-		else
-			attrs.add( a );
+		attrs.add( a );
 		return this;
 	}
 	public  Tag        attributes( Attributes as ) {
-		for( Attribute a : as)
-			attributes( a ); // add each individually
-		// Propagate num chars read on creation...
+		attrs = as;
 		attrs.nchars( as.nchars());
 		return this;
 	}
 	public  String     attribute( String name ) { return attrs.get( name ); }
-	public  Tag        attribute( String name, String value ) {attributes( new Attribute( name, value )); return this; }
+	//public  Tag        attribute( String name, String value ) {attributes( new Attribute( name, value )); return this; }
 	// ordering of attributes relevant to Autopoiesis
 	public  Tag        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
 	public  Tag        prepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
 	public  Tag        add( int posn, String name, String value ) {
-		if (name.equals( phrase ))
-			isPhrased = true;
-		else
 			attrs.add( posn, new Attribute( name, value ));
 		return this;
 	}
@@ -269,20 +255,15 @@ public class Tag {
 		return rc;
 	}
 	public boolean matchesContent( Tag pattern ) {
-		//audit.traceIn( "matches", "this="+ toString() +", pattern="+ pattern.toString() );
 		boolean rc;
 		if (   (content().size()==0 && pattern.content().size()!=0) 
 			|| (content().size()!=0 && pattern.content().size()==0)) {
-			//audit.audit("one content empty -> false");
 			rc =  false;
 		} else {
-			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
 			rc =   Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
 					&& postfix().equals( pattern.postfix())
 					&& content().matches( pattern.content());
-			//audit.debug("full check returns: "+ rc );
 		}
-		//audit.traceut( rc );
 		return rc;
 	}
 
@@ -320,10 +301,7 @@ public class Tag {
 	private Tag doAttrs() {
 		attributes( new Attributes( postfix() ));
 		int i = attributes().nchars();
-		//audit.log( "read "+ i +"chars in "+ attributes().toString() );
-		//if (i>0) i++;
 		if (i < postfix().length()) {
-			//audit.log( "char at i="+ postfix().charAt( i ) );
 			type( '/' == postfix().charAt( i ) ? ATOMIC : START );
 			while (i < postfix().length() && '>' != postfix().charAt( i )) i++; // read to tag end
 			if (i < postfix().length()) i++; // should be at '>' -- read over it
@@ -451,25 +429,10 @@ public class Tag {
 	public static void main( String argv[]) {
 		Audit.allOn();
 		audit.tracing = true;
-		Strings a = new Strings( argv );
-		int argc = argv.length;
 		Tag orig = new Tag("prefix ", "util", "posstfix").append("sofa", "show").append("attr","one");
 		orig.content( new Tag().prefix( new Strings( "show" )).name("sub"));
 		orig.content( new Tag().prefix( new Strings( "fred") ));
-		Tag t = new Tag( orig );
-		//audit.log( "orig was:"+ orig.toString());
-		//audit.audit( "copy: "+ t.toString());
-		//t = new Tag( orig.toString());
-		//audit.audit( "copy2: "+ t.toString());
-		//Tag pattern = new Tag("prefix <util attr='one'/>posstfix");
-		//audit.audit( "patt: "+ pattern.toString());
-		//audit.audit( "orig "+ (orig.matchesContent( pattern )?"DOES":"does NOT") +" (and should) match pattern" );
-		
-		//t = new Tag("<test id='123' quantity='5 * 3 more'/>");
-		//orig.update( t.attributes() );
-		//audit.log( "orig is now:"+ orig.toString());
-		
-		t = new Tag( "<xml>\n"+
+		Tag t = new Tag( "<xml>\n"+
 			" <config \n"+
 			"   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
 			"   DNU=\"I do not understand\" >\n" +	
@@ -481,9 +444,4 @@ public class Tag {
 	        "   </config>\n"+
 	        "   </xml>"        );
 		audit.log( "tag:"+ t.toXml());
-		
-		if (argc > 0) {
-			audit.log( "Comparing "+ t.toString() +", with ["+ a.toString( Strings.DQCSV ) +"]");
-			Attributes attr = t.content().matchValues( a );
-			audit.log( (null == attr ? "NOT " : "("+ attr.toString() +")" ) + "Matched" );
-}	}	}
+}	}

@@ -2,16 +2,12 @@ package org.enguage.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.object.Attributes;
-import org.enguage.vehicle.Reply;
-
 public class Tags extends ArrayList<Tag> {
+	
 	static final         long serialVersionUID = 0;
 	static private       Audit           audit = new Audit( "Tags", false );
-	//static private final String       variable = "variable";
 	
 	public Tags() { super(); }
 	public Tags( Strings words ) {
@@ -24,7 +20,7 @@ public class Tags extends ArrayList<Tag> {
 				for (String subWord : arr) {
 					subWord = subWord.toLowerCase( Locale.getDefault());
 					if ( asz > ++j ) // 
-						t.attribute( subWord, subWord ); // non-last words in array
+						t.append( subWord, subWord ); // non-last words in array
 					else
 						t.name( subWord ); // last word in array
 				}
@@ -35,64 +31,6 @@ public class Tags extends ArrayList<Tag> {
 		}
 		if (!t.isEmpty()) add( t );
 	}
-	
-	// Manual Autopoiesis... needs to deal with:
-	// if variable x do phrase variable y => if X fo PHRASE-Y
-	// i need numeric variable quantity variable units of phrase variable needs.
-	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
-	//public Tags( String str ) { this( toPattern( str )); }
-	
-//	static public Strings toPattern( String u ) {
-//		// my name is variable name => my name is NAME
-//		Strings in  = new Strings( u ),
-//				out = new Strings();
-//		Iterator<String> wi = in.iterator();
-//		while ( wi.hasNext() ) {
-//			String word = wi.next();
-//			if (word.equals( variable )) {
-//				if (wi.hasNext()
-//						&& null != (word = wi.next())
-//						&& !word.equals( variable )) // so we can't have VARIABLE, ok...
-//					out.append( word.toUpperCase( Locale.getDefault()) );
-//				else
-//					out.append( variable );
-//				
-//			} else if (word.equals( Tag.numeric )) {
-//				if (wi.hasNext()) {
-//					word = wi.next();
-//					if (word.equals( variable )
-//							&& wi.hasNext()
-//							&& null != (word = wi.next())
-//							&& !word.equals( variable ))
-//						out.append( Tag.numericPrefix + word.toUpperCase( Locale.getDefault()) );
-//					else // was "numeric <word>" OR "numeric variable variable" => "numeric" + word
-//						out.append( Tag.numeric ).append( word );
-//				} else // "numeric" was last word...
-//					out.append( Tag.numeric );
-//				
-//			} else if (word.equals( Tag.phrase )) {
-//				if (wi.hasNext()) {
-//					word = wi.next();
-//					if (word.equals( variable )
-//							&& wi.hasNext()
-//							&& null != (word = wi.next())
-//							&& !word.equals( variable ))
-//						out.append( Tag.phrasePrefix + word.toUpperCase( Locale.getDefault()) );
-//					else
-//						out.append( Tag.phrase ).append( word );
-//				} else
-//					out.append( Tag.phrase );
-//				
-//			} else
-//				out.append( word );
-//		}
-//		return out;
-//	}
-	
-	static private       boolean debug = false;
-	static public        boolean debug() { return debug; }
-	static public        void    debug( boolean b ) { debug = b; }
-	
 	public boolean equals( Tags ta ) {
 		if (ta == null || size() != ta.size())
 			return false;
@@ -115,122 +53,6 @@ public class Tags extends ArrayList<Tag> {
 		return true;
 	}
 
-	/* *************************************************************************
-	 * matchValues() coming soon...
-	 */
-	private String doNumeric( ListIterator<String> ui ) {
-		String toString = Number.getNumber( ui ).toString();
-		return toString.equals( Number.NotANumber ) ? null : toString;
-	}
-	private String getPhraseTerm( Tag t, ListIterator<Tag> ti ) {
-		String term = null;
-		if (t.postfix != null && !t.postfix.equals( "" ))
-			term = t.postfixAsStrings().get( 0 );
-		else if (ti.hasNext()) {
-			// next prefix as array is...
-			Strings arr = ti.next().prefix();
-			// ...first token of which is the terminator
-			term = (arr == null || arr.size() == 0) ? null : arr.get( 0 );
-			ti.previous();
-		}
-		return term;
-	}
-	private String getVal( Tag t, ListIterator<Tag> ti, ListIterator<String> ui) {
-		String u = "unseta";
-		if (ui.hasNext()) u = ui.next();
-		Strings vals = new Strings( u );
-		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunction().equals( u ))) {
-			String term = getPhraseTerm( t, ti );
-			//audit.audit( "phrased, looking for terminator "+ term );
-			// here: "... one AND two AND three" => "one+two+three"
-			if (term == null) {  // just read to the end
-				while (ui.hasNext()) {
-					u = ui.next();
-					vals.add( u );
-				}
-			} else {
-				while (ui.hasNext()) {
-					u = ui.next();
-					//audit.debug( "next u="+ u );
-					if (term.equals( u )) {
-						ui.previous();
-						break;
-					} else {
-						vals.add( u );
-		}	}	}	}
-		return vals.toString( Strings.SPACED );
-	}
-	private static ListIterator<String> matchBoilerplate( Strings tbp, ListIterator<String> ui ) {
-		Iterator<String> tbpi = tbp.iterator();
-		while ( tbpi.hasNext() && ui.hasNext()) 
-			if (!tbpi.next().equalsIgnoreCase( ui.next() ))
-				return null; // string mismatch
-		// have we reached end of boilerplate, but not utterance?
-		return tbpi.hasNext() ? null : ui;
-	}
-	
-	/* TODO: Proposal: that a singular tag (i.e. non-PHRASE) can match with a known string
-	 * i.e. an object id: e.g. theOldMan, thePub, fishAndChips camelised
-	 */
-	public Attributes matchValues( Strings utterance ) {
-		// First, a sanity check
-		if (size() == 0) return null; // manual/vocal Tags creation can produce null Tags objects
-		                              // see "first reply well fancy that" in Enguage sanity test.
-		Strings  prefix = get( 0 ).prefix();
-		if ( prefix.size() > 0 &&
-		    !prefix.get( 0 ).equalsIgnoreCase( utterance.get( 0 ) ))
-		{
-			return null;
-		}
-		
-		/* We need to be able to extract:
-		 * NAME="value"				... <NAME/>
-		 * NAME="some value"		... <NAME phrased="phrased"/>
-		 * NAME="68"                ... <NAME numeric='numeric'/>
-		 * ???NAME="an/array/or/list"	... <NAME array="array"/>
-		 * ???NAME="value one/value two/value three" <NAME phrased="phrased" array="array"/>
-		 */
-		Attributes         matched = null; // lazy creation
-		ListIterator<Tag>    patti = listIterator();           // [ 'this    is    a   <test/>' ]
-		ListIterator<String>  utti = utterance.listIterator(); // [ "this", "is", "a", "test"   ]
-		
-		Tag next = null;
-		while (patti.hasNext() && utti.hasNext()) {
-			
-			Tag t = (next != null) ? next : patti.next();
-			next = null;
-			
-			if (null == (utti = matchBoilerplate( t.prefix(), utti ))) // ...match prefix
-				return null;
-				
-			else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
-				if (patti.hasNext()) next = patti.next();
-				
-			} else if (utti.hasNext() && !t.name().equals( "" )) { // do these loaded match?
-				String val = null;
-				if (t.isNumeric()) {
-					
-					if (null == (val = doNumeric( utti )))
-						return null;
-					
-				} else if (t.invalid( utti ))
-					return null;
-					
-				else
-					val = getVal( t, patti, utti );
-					
-				// ...add value
-				if (null == matched) matched = new Attributes();
-				matched.add( t.matchedAttr( val )); // remember what it was matched with!
-				
-				if (null == (utti = matchBoilerplate( t.postfixAsStrings(), utti )))
-					return null;
-		}	}
-		
-		if (patti.hasNext() || utti.hasNext()) return null;
-		
-		return null == matched ? new Attributes() : matched;
-	}
 	// with postfix boilerplate:
 	// typically { [ ">>>", "name1" ], [ "/", "name2" ], [ "/", "name3" ], [ "<<<", "" ] }.
 	// could be  { [ ">>>", "name1", "" ], [ "/", "name2", "" ], [ "/", "name3", "<<<" ] }.
@@ -275,45 +97,9 @@ public class Tags extends ArrayList<Tag> {
 	}
 	
 	// --- test code...
-	public static void printTagsAndValues( Tags interpretant, String phrase, Attributes expected ) {
-		audit.in( "printTagsAndValues", "ta="+ interpretant.toString() +", phr="+ phrase +", expected="+ 
-				(expected == null ? "":expected.toString()) );
-		Attributes values = interpretant.matchValues( new Strings( phrase ));
-		
-		// de-reference values...
-		String vals = values.toString();
-		if (null == expected)
-			audit.log( "values => ["+ vals +"]" );
-		else if (values != null && values.matches( expected ))
-			audit.log( "PASSED => ["+ vals +"]" );
-		else 
-			audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
-		audit.out();
-	}
-
 	public static void main(String args[]) {
 		Audit.allOn();
 		audit.tracing = true;
-		debug( true );
-		
-		//audit.LOG( "pattern: "+ toPattern( "variable name needs numeric variable quantity units of phrase variable object" ));
-
 		Tags t = new Tags();
-		t.add( new Tag( "what is ", "X" ).attribute( Tag.numeric, Tag.numeric ) );
-		printTagsAndValues( t, "what is 1 + 2", new Attributes().add( "X", "1 + 2" ));
-
-	/*	printTagsAndValues( new Tags( "i need phrase variable need" ),
-				"I need coffee", 
-				new Attributes()
-					.add( "need",     "coffee" )
-		);
-		printTagsAndValues( new Tags( "i need numeric variable quantity variable unit of phrase variable need" ),
-				"I need a cup of coffee", 
-				new Attributes()
-					.add( "quantity", "1" )
-					.add( "unit",     "cup" )
-					.add( "need",     "coffee" )
-		); // */
-		//String utt = "my name is phrase variable name";
-		//audit.log( ">"+ utt +"< to pattern is >"+ toPattern( utt ) +"<" );
+		t.add( new Tag( "what is ", "X" ).append( Tag.numeric, Tag.numeric ) );
 }	}
