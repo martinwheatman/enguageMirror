@@ -16,12 +16,9 @@ import org.enguage.vehicle.when.When;
 import org.enguage.vehicle.where.Where;
 
 public class Item {
-	/* 
-	 * Item.class replaces Tuple.class
-	 */
-	static              Audit audit = new Audit("Item" );
+
+	static private      Audit audit = new Audit("Item" );
 	static public final String NAME = "item";
-	//static private boolean debug = true;
 	
 	static private Strings format = new Strings(); // e.g. "cake slice", "2 cake slices" or "2 slices of cake"
 	static public  void    format( String csv ) { format = new Strings( csv, ',' ); }

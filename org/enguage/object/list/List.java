@@ -45,7 +45,6 @@ public class List extends Value {
 		
 		int pos = -1;
 		for (Tag t : content()) {
-			//audit.LOG( "TAG:"+ t.toXml());
 			pos++;
 			String tlctor  = t.attribute( Where.LOCATOR );
 			String tlction = t.attribute( Where.LOCATION );
@@ -243,67 +242,31 @@ public class List extends Value {
 				!(lastParam.equals( "quantity='some'" )
 				||lastParam.equals( "quantity='any'" ))) != -1;
 	}
-	static public Strings strip( Strings ss, String from, String to ) {
-		// this {one} and {two} is => one two
-		boolean adding = false;
-		Strings rc = new Strings();
-		for (String s : ss) {
-			if (s.equals( from ))
-				adding = true;
-			else if (s.equals( to ))
-				adding = false;
-			else if (adding)
-				rc.add( s );
-		}
-		return rc;
-	}
-	static public Strings reinsert( Strings ss, Attributes as, String from, String to ) {
-		// this {one} and {two} is => one two
-		int i = 0;
-		boolean adding = true;
-		Strings rc = new Strings();
-		for (String s : ss) {
-			if (s.equals( from ))
-				adding = false;
-			else if (s.equals( to )) {
-				adding = true;
-				rc.add( as.get( i++ ).value());
-			} else if (adding)
-				rc.add( s );
-		}
-		return rc;
-	}
-	static public String forEach( Strings sa ) {
+	static private String forEachAttrCombo( Strings sa ) {
+		audit.in( "forEach", "sa=[ "+ sa.toString( Strings.SQCSV ) +" ]" );
 		String rc = Shell.FAIL;
-		
-		// Strip attributes from params
-		Strings stripped = strip( sa, "{", "}" );
-		//audit.log( "stripped=[ "+ stripped.toString( Strings.DQCSV ) +" ]" );
-		Attributes match = new Attributes( stripped.toString() );
-		
-		//audit.log( ">>Contexts:\n"+ match );
+		/* "martin needs a cup of coffee and a biscuit" +
+		 * perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }"; =>
+		 * { subject='martin' } needs { objects='a cup of coffee and a biscuit' }
+		 * recall each joined combination, e.g.: martin needs a cup of coffee
+		 */
+		Attributes match = new Attributes( sa.strip( "{", "}" ));
 		Join.on( true );
 		ArrayList<Attributes> ala = Join.join( match, "and" );
 		Join.on( false );
-		if (ala.size() <= 1) {
-			//audit.log( "  not a list >>>> attris="+ ala.toString() );
-			rc = Shell.FAIL;
-		} else {
-			//audit.log( "  Combos: "+ ala.toString() );
+		
+		if (ala.size() > 1) {
 			rc = Shell.SUCCESS;
 			for( Attributes m : ala ) {
-				// re-build and re-issue utterance
-				Strings u = reinsert( sa, m, "{", "}" );
-				//audit.log( "running enguage with: "+ u.toString() );
-				String reply = Enguage.e.interpret( u );
-				//audit.log( "...enguage replied with: "+ reply );
+				// re-issue rebuilt utterance
+				String reply = Enguage.e.interpret( sa.reinsert( m, "{", "}" ) );
+				audit.debug( "individual reply => "+ reply );
 				if (reply.equals( /*Enguage.DNU*/ "I don't understand" ) ||
 					reply.toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
-				{	//audit.log( ">>>LIST FAILED<<<" );
-					rc = Shell.FAIL;
+				{	rc = Shell.FAIL;
 					break;
 		}	}	}
-		return rc;
+		return audit.out( rc );
 	}
 	static public String interpret( Strings sa ) {
 		/* What we're doing here is to process the parameters provided in 
@@ -327,7 +290,7 @@ public class List extends Value {
 		
 		if (cmd.equals( "forEach" )) { // dummy dummy removed above
 			// TODO: remove this from the object model!
-			return forEach( sa );
+			return forEachAttrCombo( sa );
 		}
 		
 		List  list = new List( ent, atr );

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeSet;
 
+import org.enguage.object.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
@@ -647,6 +648,37 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return s; 
 	}
+	public Strings strip( String from, String to ) {
+		// this {one} and {two} is => one two
+		boolean adding = false;
+		Strings rc = new Strings();
+		for (String s : this) {
+			if (s.equals( from ))
+				adding = true;
+			else if (s.equals( to ))
+				adding = false;
+			else if (adding)
+				rc.add( s );
+		}
+		return rc;
+	}
+	public Strings reinsert( Attributes as, String from, String to ) {
+		// {ONE} and {TWO} + one="martin", two="ruth" => martin and ruth
+		int i = 0;
+		boolean adding = true;
+		Strings rc = new Strings();
+		for (String s : this) {
+			if (s.equals( from ))
+				adding = false;
+			else if (s.equals( to )) {
+				adding = true;
+				rc.add( as.get( i++ ).value());
+			} else if (adding)
+				rc.add( s );
+		}
+		return rc;
+	}
+
 	
 	// ---------------------------------------------------------
 	// ---------------------------------------------------------

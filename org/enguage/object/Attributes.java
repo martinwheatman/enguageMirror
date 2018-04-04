@@ -20,6 +20,7 @@ public class Attributes extends ArrayList<Attribute> {
 	
 	public Attributes() { super(); }
 	public Attributes( Attributes orig ) { super( orig ); }
+	public Attributes( Strings sa ) { this( sa.toString()); }
 	public Attributes( String s ) {
 		super();
 		int i=0, sz=s.length();
