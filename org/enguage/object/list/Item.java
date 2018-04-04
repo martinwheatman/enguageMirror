@@ -56,8 +56,12 @@ public class Item {
 	public  Tag        tag() {        return tag; }
 	public  Tags       content()    { return tag.content(); }
 	public  Attributes attributes() { return tag.attributes(); }
+	public  void       replace( String name, String value ) { tag().replace( name, value );}
+	public  String     attribute( String name ) { return tag().attribute( name ); }
+	public  String     toLine(  ) { return tag().toLine(); }
 	
-	static public void updateAttributes( Tag t, Attributes as ) {
+	public void updateTagAttributes( Tag t ) {
+		Attributes as = tag().attributes();
 		audit.in( "update", as.toString() );
 		for (Attribute a : as) {
 			String value = a.value(),

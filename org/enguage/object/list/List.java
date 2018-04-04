@@ -16,35 +16,39 @@ import org.enguage.util.Tags;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.where.Where;
 
-public class List extends Value {
+public class List {
 	private static       Audit        audit = new Audit( "List" );
 	private static       boolean localDebug = false;
 	public  static final String        NAME = "list";
 	
+	Value value; // instead of extending this class...
+	public void ignore() {value.ignore();}
+	public void restore() {value.restore();}
+	
 	// constructors
 	public List( String e, String a ) {
-		super( e, a );
-		list = new Tag( getAsString() ).name( "list" );
+		value = new Value( e, a ); //super( e, a );
+		list = new Tag( value.getAsString() ).name( "list" );
 	}
 	
 	// member - List manages a tag which represents 
 	private Tag  list = new Tag();
-	public  Tags content() { return list.content(); }
+	public  Tags listTags() { return list.content(); }
 	public  Attributes attributes() { return list.attributes(); }
 	
 	private int position( Item item, boolean exact ) { // e.g. ["cake slices","2"]
 		audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
 		
-		String ilctor  = item.tag().attribute( Where.LOCATOR );
-		String ilction = item.tag().attribute( Where.LOCATION );
+		String ilctor  = item.attribute( Where.LOCATOR );
+		String ilction = item.attribute( Where.LOCATION );
 		
 		long it = -1; // item time
 		try {
-			it = Long.valueOf( item.tag().attribute( "WHEN" ));
+			it = Long.valueOf( item.attribute( "WHEN" ));
 		} catch (Exception e){}
 		
 		int pos = -1;
-		for (Tag t : content()) {
+		for (Tag t : listTags()) {
 			pos++;
 			String tlctor  = t.attribute( Where.LOCATOR );
 			String tlction = t.attribute( Where.LOCATION );
@@ -63,9 +67,9 @@ public class List extends Value {
 		return audit.out( -1 );
 	}
 	private String quantity( Item item, boolean exact ) { // e.g. ["cake slices","2"]
-		audit.in( "quantity", "Item="+item.toString() + ", exact="+ (exact?"T":"F"));
+		//audit.in( "quantity", "Item="+item.toString() + ", exact="+ (exact?"T":"F"));
 		int count = 0;
-		for (Tag t : content() ) // go though the file
+		for (Tag t : listTags() ) // go though the file
 			if (  ( exact && t.equals( item.tag() ))
 				||(!exact && t.matchesContent( item.tag() )))
 			{	int quant = 1;
@@ -74,14 +78,14 @@ public class List extends Value {
 				} catch(Exception e) {} // fail silently
 				count += quant;
 			}
-		audit.out( Integer.valueOf( count ).toString());
+		//audit.out( count );
 		return Integer.valueOf( count ).toString();
 	}
 	public  Strings get() { return get( null ); }
 	private Strings get( Item item ) { // to Items class!
 		audit.in( "get", "item="+ (item==null?"ALL":item.toString()));
 		Strings rc = new Strings();
-		for (Tag t : content())
+		for (Tag t : listTags())
 			if (item == null || t.matches( item.tag()))
 				rc.add( new Item( t ).toString());
 		return audit.out( rc );
@@ -92,28 +96,27 @@ public class List extends Value {
 		int n = position( item, false ); // exact match? No!
 		if (-1 == n) { 
 			audit.debug( "List.add(): item not found, so add whole item." );
-			if (!item.tag().attribute( "quantity" ).equals( "0" )) {
+			if (!item.attribute( "quantity" ).equals( "0" )) {
 				// in case: quantity='+= 37' => set it to '37'
-				Strings quantity = new Strings( item.tag().attribute( "quantity" ));
+				Strings quantity = new Strings( item.attribute( "quantity" ));
 				audit.debug("adding quant:"+ quantity.toString());
 				if (quantity.size()==2) { // += n / -= n => n
-					item.tag().replace( "quantity", quantity.get( 1 ));
-					audit.debug( "quant is now:"+ item.tag().attribute( "quantity" ) +":"+ quantity.get( 1 ));
+					item.replace( "quantity", quantity.get( 1 ));
+					audit.debug( "quant is now:"+ item.attribute( "quantity" ) +":"+ quantity.get( 1 ));
 				}
-				audit.debug( "adding--->" + item.tag().toLine() );
+				audit.debug( "adding--->" + item.toLine() );
 				list.content( item.tag() );
 			}
 		} else { // found so update item...
-			// TODO: need a GENERALISATION just:
-			// I just need coffee (from I need a cup of coffee)
 			Tag removedItemTag = list.removeContent( n );
-			Item.updateAttributes( removedItemTag, item.tag().attributes() );
+			item.updateTagAttributes( removedItemTag );
 			audit.debug( "updated--->" + removedItemTag.toXml() );
 			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
+			if (quantity.equals( "" ) ||
+				Integer.valueOf( quantity ) != 0)
 				list.content( n, removedItemTag );
 		}
-		set( list.toXml() );
+		value.set( list.toXml() );
 		return audit.out( rc );
 	}
 	private String removeAttribute( Item item, String name ) { // adjusts attributes, e.g. quantity
@@ -126,7 +129,7 @@ public class List extends Value {
 			list.content( n, tmp );
 			audit.debug("setting content to "+ tmp.toString());
 			item.tag( tmp );
-			set( list.toXml() ); // was set( lines );
+			value.set( list.toXml() ); // was set( lines );
 		} else
 			audit.ERROR("not found "+ item.toXml());
 		return audit.out( rc );
@@ -181,8 +184,8 @@ public class List extends Value {
 			if (item.attributes().has( "quantity" )
 			  && tmp.attributes().has( "quantity" ))
 			{ // we have two quantity
-				int existing = Integer.valueOf(        tmp.attribute( "quantity" ));
-				     removed = Integer.valueOf( item.tag().attribute( "quantity" ));
+				int existing = Integer.valueOf(  tmp.attribute( "quantity" ));
+				     removed = Integer.valueOf( item.attribute( "quantity" ));
 				if (removed >= existing) {
 					if (localDebug) audit.debug( "Limiting "+ removed +" to "+ existing );
 					removed = existing; // back to zero
@@ -192,12 +195,12 @@ public class List extends Value {
 					int remaining = existing-removed;
 					if (localDebug) audit.debug( "still "+ remaining +" left over" );
 					tmp.replace( "quantity", Integer.valueOf( remaining ).toString() );
-					tmp.content( item.tag().content() ); // will replace crisp with crisps...
+					tmp.content( item.content() ); // will replace crisp with crisps...
 					list.content( n, tmp );              // ...and some coffee with coffees! hmm???
 					//item.tag( new Tag( tmp ));           // update item, too...
 				}
 				// return what is left over...
-				item.tag().replace( "quantity", Integer.valueOf( removed ).toString() );
+				item.replace( "quantity", Integer.valueOf( removed ).toString() );
 			} else {
 				/*
 				 * ...or, as before, remove whole item or all items...
@@ -209,7 +212,7 @@ public class List extends Value {
 					removed = 1;
 			}	}
 			if (removed > 0) {
-				set( list.toString() ); // put list back...
+				value.set( list.toString() ); // put list back...
 				rc = item.toString(); // prepare return value
 		}	}
 		audit.out( rc );
@@ -219,8 +222,8 @@ public class List extends Value {
 		/*
 		 * moves the content of one list to another.
 		 */
-		while (l.content().size() > 0)
-			add( new Item( l.content().remove( 0 )));
+		while (l.listTags().size() > 0)
+			add( new Item( l.listTags().remove( 0 )));
 
 		return true;
 	}

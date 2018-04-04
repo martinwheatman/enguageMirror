@@ -32,7 +32,6 @@ public class Tags extends ArrayList<Tag> {
 	// with postfix boilerplate:
 	// typically { [ ">>>", "name1" ], [ "/", "name2" ], [ "/", "name3" ], [ "<<<", "" ] }.
 	// could be  { [ ">>>", "name1", "" ], [ "/", "name2", "" ], [ "/", "name3", "<<<" ] }.
-	public String toXml() { return toXml( new Indent( "   " )); }
 	public String toXml( Indent indent ) {
 		String oldName = "";
 		String str  = "\n"+indent.toString();
