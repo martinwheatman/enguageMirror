@@ -7,7 +7,6 @@ package org.enguage.util;
  *import java.io.InputStream;
  */
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
@@ -83,12 +82,10 @@ public class Tag {
 		return this;
 	}
 	public  String     attribute( String name ) { return attrs.get( name ); }
-	//public  Tag        attribute( String name, String value ) {attributes( new Attribute( name, value )); return this; }
-	// ordering of attributes relevant to Autopoiesis
 	public  Tag        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
 	public  Tag        prepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
 	public  Tag        add( int posn, String name, String value ) {
-			attrs.add( posn, new Attribute( name, value ));
+		attrs.add( posn, new Attribute( name, value ));
 		return this;
 	}
 	public  Tag        remove( int nth ) { attrs.remove( nth ); return this; }
@@ -107,7 +104,6 @@ public class Tag {
 				).toString( Strings.SPACED ) );
 	}
 
-	
 	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }
 
 	public boolean invalid( ListIterator<String> ui  ) {
@@ -115,11 +111,7 @@ public class Tag {
 		if (ui.hasNext()) {
 			String candidate = ui.next();
 			rc = (  quoted() && !Language.isQuoted( candidate ))
-			  || (pluraled() && !Plural.isPlural(   candidate ))
-			  // Useful for preventing class "class" being created...
-			  //|| (attribute( Tag.abstr ).equals( Tag.abstr ) && // Archaic? Refactor anyway!
-				//		candidate.equalsIgnoreCase( name()    )   )
-						;
+			  || (pluraled() && !Plural.isPlural(   candidate ));
 			if (ui.hasPrevious()) ui.previous();
 		}
 		return rc;
@@ -138,101 +130,21 @@ public class Tag {
 		return this;
 	}
 	// --
-	public Tag update( Attributes as ) {
-		/*
-		 * this contains some item specific code :(
-		 */
-		audit.in( "update", as.toString() );
-		for (Attribute a : as) {
-			String value = a.value(),
-					name = a.name();
-			if (name.equals( "quantity" )) {
-				/*
-				 * should getNumber() and combine number from value.
-				 */
-				Strings vs = new Strings( value );
-				if (vs.size() == 2) {
-					/*
-					 * combine magnitude - replace if both absolute, add if relative etc.
-					 * Should be in Number? Should deal with "1 more" + "2 more" = "3 more"
-					 */
-					String firstVal = vs.get( 0 ), secondVal = vs.get( 1 );
-					if (secondVal.equals( Number.MORE ) || secondVal.equals( Number.FEWER )) {
-						int oldInt = 0, newInt = 0;
-						try {
-							oldInt = Integer.valueOf( attribute( name ));
-						} catch (Exception e) {} // fail silently, oldInt = 0
-						//audit.debug( "oldInt is "+ oldInt );
-						try {
-							newInt = Integer.valueOf( firstVal );
-							//audit.debug( "newInt is "+ newInt );
-							/*
-							 * What the ...?
-							 */
-							value = Integer.toString( oldInt + (secondVal.equals( Number.MORE ) ? newInt : -newInt));
-							//audit.debug( "value  is "+ value );
-							
-						} catch (Exception e) {} // fail silently, newInt = 0;
-				}	}
-			//} else if (name.equals( "unit" )) {
-			}
-			replace( a.name(), value );
-		}
-		audit.out();
-		return this;
-	}
-	public int remove( Tag pattern ) {
-		//audit.traceIn( "remove", pattern.toString());
-		int rc = 0;
-		Iterator<Tag> i = content().iterator();
-		while (i.hasNext()) {
-			Tag t = i.next();
-			audit.debug( "checking against: "+ t.toString() );
-			if (t.equals( pattern )) {
-				i.remove();
-				rc++;
-		}	}
-		//audit.traceut( rc );
-		return rc;
-	}
-	public int removeMatches( Tag pattern ) {
-		int rc = 0;
-		Iterator<Tag> i = content().iterator();
-		while (i.hasNext()) {
-			Tag t = i.next();
-			if (t.matches( pattern )) {
-				i.remove();
-				rc++;
-		}	}
-		return rc;
-	}
 	public boolean equals( Tag pattern ) {
-		//if (audit.tracing) audit.in( "equals", "this="+ toXml() +", with="+ pattern.toXml());
 		boolean rc;
 		if (attributes().size() < pattern.attributes().size()) { // not exact!!!
-			//audit.audit( " T:Size issue:"+ attributes().size() +":with:"+ pattern.attributes().size() +":");
 			rc = false;
 		} else if ((content().size()==0 && pattern.content().size()!=0) 
 				|| (content().size()!=0 && pattern.content().size()==0)) {
-			//audit.audit(" T:one content empty -> false");
 			rc =  false;
 		} else {
-			//audit.audit( " T:Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() +":" );
-			//audit.audit( " T:Checking also prefx:"+ prefix() +":with:"+ pattern.prefix() +":" );
 			rc =   Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
 				&& Plural.singular( postfix()).equals( Plural.singular( pattern.postfix()))
 				&& attributes().matches( pattern.attributes()) // not exact!!!
 				&& content().equals( pattern.content());
-			//audit.audit( " T:full check returns: "+ rc );
 		}
-		//if (audit.tracing) audit.out( rc );
 		return rc;
 	}
-	/* <fred attr1="a" attr2="b">fred<content/> bill<content/></fred>.(
-	//		<fred attr2="b"/> -> true
-	// )
-	 * 
-	 */
 	public boolean matches( Tag pattern ) {
 		//if (audit.tracing) audit.in( "matches", "this="+ toXml() +", pattern="+ pattern.toXml() );
 		boolean rc;

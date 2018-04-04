@@ -106,12 +106,12 @@ public class List extends Value {
 		} else { // found so update item...
 			// TODO: need a GENERALISATION just:
 			// I just need coffee (from I need a cup of coffee)
-			Tag t = list.removeContent( n );
-			t.update( item.tag().attributes() );
-			audit.debug( "updated--->" + t.toXml() );
-			String quantity = t.attribute( "quantity" );
+			Tag removedItemTag = list.removeContent( n );
+			Item.updateAttributes( removedItemTag, item.tag().attributes() );
+			audit.debug( "updated--->" + removedItemTag.toXml() );
+			String quantity = removedItemTag.attribute( "quantity" );
 			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
-				list.content( n, t );
+				list.content( n, removedItemTag );
 		}
 		set( list.toXml() );
 		return audit.out( rc );

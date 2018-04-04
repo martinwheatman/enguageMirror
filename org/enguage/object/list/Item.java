@@ -57,6 +57,38 @@ public class Item {
 	public  Tags       content()    { return tag.content(); }
 	public  Attributes attributes() { return tag.attributes(); }
 	
+	static public void updateAttributes( Tag t, Attributes as ) {
+		audit.in( "update", as.toString() );
+		for (Attribute a : as) {
+			String value = a.value(),
+					name = a.name();
+			if (name.equals( "quantity" )) {
+				/*
+				 * should getNumber() and combine number from value.
+				 */
+				Strings vs = new Strings( value );
+				if (vs.size() == 2) {
+					/*
+					 * combine magnitude - replace if both absolute, add if relative etc.
+					 * Should be in Number? Should deal with "1 more" + "2 more" = "3 more"
+					 */
+					String firstVal = vs.get( 0 ), secondVal = vs.get( 1 );
+					if (secondVal.equals( Number.MORE ) || secondVal.equals( Number.FEWER )) {
+						int oldInt = 0, newInt = 0;
+						try {
+							oldInt = Integer.valueOf( t.attribute( name ));
+						} catch (Exception e) {} // fail silently, oldInt = 0
+						try {
+							newInt = Integer.valueOf( firstVal );
+							value = Integer.toString( oldInt + (secondVal.equals( Number.MORE )
+									? newInt : -newInt));
+							
+						} catch (Exception e) {}
+			}	}	}
+			t.replace( a.name(), value );
+		}
+		audit.out();
+	}
 	public String counted( Float num, String val ) {
 		// N.B. val may be "wrong", e.g. num=1 and val="coffees"
 		if (val.equals("1")) return "a";
