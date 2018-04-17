@@ -60,12 +60,6 @@ public class Function {
 			fn = null;
 		return (Function) audit.out( fn );
 	}
-	static public Strings derefVariables( Strings argv ) {
-		Strings actuals = new Strings();
-		for (String a : argv ) 
-			actuals.add( Number.isNumeric( a ) ? a:Variable.get( a ));
-		return actuals;
-	}
 	static private Strings substitute( String function, Strings argv ) {
 		audit.in( "substitute", "Function="+ function +", argv="+ argv.toString( "[",",","]") );
 		Strings ss = null;
@@ -74,7 +68,7 @@ public class Function {
 			ss = new Strings( f.lambda.body() )
 					.substitute(
 						new Strings( f.lambda.sig() ), // formals
-						derefVariables( argv ) );
+						argv.derefVariables() );
 		return audit.out( ss );
 	}
 	static public String evaluate( String name, Strings argv ) {
