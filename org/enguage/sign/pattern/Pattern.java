@@ -692,5 +692,10 @@ public class Pattern extends ArrayList<Patternette> {
 		
 		p.newTest( "the sum of x is x plus y" );
 
+		// pronouns test...
+		p = new Pattern( "they are" );
+		audit.log( "sign is: "+ p.toXml());
+		p.newTest( "they are from sainsburys" );
+
 		audit.log( "PASSED" );
 }	}

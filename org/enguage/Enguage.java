@@ -16,6 +16,7 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.where.Where;
 
 public class Enguage extends Shell {
 
@@ -250,7 +251,20 @@ public class Enguage extends Shell {
 					   "you don't need anything" );
 		}
 		if ( level == 0 || level == 2 ) {
+			/* Pronouns - see needs.txt!
+			clearTheNeedsList();
 			
+			Where.doLocators( "to/from/over/at" );
+			
+			Audit.traceAll( true );
+			interpret( "i need 2 cups of coffee and a biscuit",
+					   "ok, you need 2 cups of coffee and a biscuit.");
+			interpret( "they are from sainsburys",
+						"ok, they are from sainsburys" );
+			interpret( "what do i need",
+						"ok, you need 2 cups of coffee and a biscuit from sainsburys.");
+			clearTheNeedsList();
+			*/
 		}
 		if ( level == 0 || level == 3 ) {
 			

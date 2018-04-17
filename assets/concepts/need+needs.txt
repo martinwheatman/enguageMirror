@@ -46,6 +46,11 @@ On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 	SUBJECT needs another QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
+#On "they are":
+#	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
+#	perform "list add OBJECT : LOCATOR LOCATION";
+#	then, reply "ok, they are LOCATOR LOCATION".
+	
 ### does not need...
 On "SUBJECT does not need anything":
 	answering yes or no ask i am about to delete the needs list is this ok;
