@@ -57,8 +57,10 @@ public class List {
 				tt = Long.valueOf( t.attribute( "WHEN" ));
 			} catch (Exception e) {}
 			if ( (it == -1 || it == tt) // if tt == -1 && it != -i fail!
-				&& (ilctor.equals( "" ) || ilctor.equals( tlctor ))
-				&& (ilction.equals( "" ) || ilction.equals( tlction ))
+				&& (!exact || (
+					   (ilctor.equals( "" )  || ilctor.equals( tlctor ))
+					&& (ilction.equals( "" ) || ilction.equals( tlction )))
+				)
 				&&     (( exact && t.equals(  item.tag() ))
 			         || (!exact && t.matchesContent( item.tag() )))
 			 )

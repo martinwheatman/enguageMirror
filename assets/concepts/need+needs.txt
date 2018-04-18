@@ -46,6 +46,11 @@ On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 	SUBJECT needs another QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
+On "it is":
+	#set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
+	perform "list add SUBJECT needs OBJECT";
+	then, reply "ok, it is LOCATOR LOCATION".
+	
 #On "they are":
 #	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 #	perform "list add OBJECT : LOCATOR LOCATION";

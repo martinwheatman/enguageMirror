@@ -124,7 +124,9 @@ public class Item {
 								String val = tag.attributes().getIgnoreCase( component );
 								if (component.equals("WHEN"))
 									subrc.add( new When( new Moment( Long.valueOf( val ))).toString() );
-								else {
+								else if (component.equals("LOCATION") || component.equals("LOCATOR"))
+									subrc.add( val ); // don't count these!
+								else { // 3 cupS -- pertains to unit/quantity only?
 									subrc.add( counted( prevNum, val ) );  // UNIT='cup(S)'
 									ListIterator<String> si = new Strings( val ).listIterator();
 									prevNum = Number.getNumber( si ).magnitude(); //Integer.valueOf( val );

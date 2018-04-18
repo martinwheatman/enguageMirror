@@ -215,6 +215,19 @@ public class Enguage extends Shell {
 		int level = 0;
 
 		if ( level == 0 || level == 1 ) {
+			audit.title( "Pronouns - see needs.txt" );
+			
+			clearTheNeedsList();
+			Where.doLocators( "to/from/over/at" );
+			
+			interpret( "i need biscuits",       "ok, you need biscuits" );
+			interpret( "i need coffee",         "ok, you need coffee" );
+			interpret( "it is from sainsburys", "ok, it is from sainsburys" );
+			interpret( "what do i need",		"you need biscuits, and coffee from sainsburys" );
+			
+			clearTheNeedsList();
+		}
+		if ( level == 0 || level == 2 ) {
 			audit.title( "The Non-Computable concept of NEED" );
 
 			clearTheNeedsList();
@@ -249,22 +262,6 @@ public class Enguage extends Shell {
 			
 			interpret( "what do i need",
 					   "you don't need anything" );
-		}
-		if ( level == 0 || level == 2 ) {
-			/* Pronouns - see needs.txt!
-			clearTheNeedsList();
-			
-			Where.doLocators( "to/from/over/at" );
-			
-			Audit.traceAll( true );
-			interpret( "i need 2 cups of coffee and a biscuit",
-					   "ok, you need 2 cups of coffee and a biscuit.");
-			interpret( "they are from sainsburys",
-						"ok, they are from sainsburys" );
-			interpret( "what do i need",
-						"ok, you need 2 cups of coffee and a biscuit from sainsburys.");
-			clearTheNeedsList();
-			*/
 		}
 		if ( level == 0 || level == 3 ) {
 			
