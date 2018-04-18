@@ -18,6 +18,17 @@ public class Expression {
 			rep.add( n );
 		return n;
 	}
+	static private Strings getFactor( ListIterator<String> li, Strings rep ) {
+		audit.in( "getFactor", Strings.peek( li ) +", rep="+ rep.toString());
+		String factor;
+		if (Strings.peek( li ).equals( "the" ))
+			return audit.out( getFunction( li, rep ));
+		if (null != (factor = getNumber(       li, rep )) ||
+			null != (factor = Strings.getName( li, rep ))   )  // x - TODO: getParam( li, param, rep )
+			return audit.out( new Strings( factor ));
+		audit.out( "<null factor>" );
+		return null;
+	}
 	static private Strings getFactorOp( ListIterator<String> li, Strings rep ) {
 		audit.in( "getFactorOp", Strings.peek( li ) +", rep="+ rep.toString());
 		if (li.hasNext()) {
@@ -32,14 +43,13 @@ public class Expression {
 		audit.out( "null" );
 		return null;
 	}
-	static private Strings getFactor( ListIterator<String> li, Strings rep ) {
-		audit.in( "getFactor", Strings.peek( li ) +", rep="+ rep.toString());
-		String factor;
-		if (null != (factor = getNumber(       li, rep )) ||
-			null != (factor = Strings.getName( li, rep ))   )  // x - TODO: getParam( li, param, rep )
-			return audit.out( new Strings( factor ));
-		audit.out( "<null factor>" );
-		return null;
+	static private boolean getTermOp( ListIterator<String> li, Strings rep ) {
+		audit.in( "getTermOp", Strings.peek( li ) +", rep="+ rep.toString());
+		return audit.out( li.hasNext() &&
+				(Strings.getWord( li,     "+", rep ) ||
+				 Strings.getWord( li,     "-", rep ) ||
+				 Strings.getWord( li,  "plus", rep ) ||
+				 Strings.getWord( li, "minus", rep ) ) );
 	}
 	static private Strings getTerm( ListIterator<String> li, Strings rep ) {
 		audit.in(  "getTerm", Strings.peek(li) +", found="+ rep.toString());
@@ -58,14 +68,6 @@ public class Expression {
 			Strings.unload( li, rep );
 		return audit.out( term );
 	}
-	static private boolean getTermOp( ListIterator<String> li, Strings rep ) {
-		audit.in( "getTermOp", Strings.peek( li ) +", rep="+ rep.toString());
-		return audit.out( li.hasNext() &&
-				(Strings.getWord( li,     "+", rep ) ||
-				 Strings.getWord( li,     "-", rep ) ||
-				 Strings.getWord( li,  "plus", rep ) ||
-				 Strings.getWord( li, "minus", rep ) ) );
-	}
 	static public Strings getExpr( ListIterator<String> li, Strings repr ) {
 		audit.in( "getExpr", "li="+ Strings.peek(li) );
 		Strings expr = getTerm( li, repr );
@@ -81,13 +83,24 @@ public class Expression {
 		}
 		return audit.out( expr );
 	}
-	
+	static public Strings getFunction( ListIterator<String> li, Strings repr ) {
+		audit.in( "getExpr", "li="+ Strings.peek( li ));
+		if (           Strings.getWord( li, "the", repr )
+			&& null == Strings.getWords(    li,  "of", repr ))
+			audit.ERROR( "function fail:"+ Strings.peek( li ));
+		Expression.getExpr(  li, repr );
+		if (li.hasNext()) {
+			Strings.unload( li, repr );
+			repr = null;
+		}
+		return audit.out( repr );
+	}
 	// ---- test code ----
 	static private void expressionTest( String s ) {
 		audit.in( "expressionTest", s );
 		ListIterator<String> si = new Strings( s ).listIterator();
 		Strings repr = new Strings(),
-		        body = getExpr( si, repr );
+		        body = getFunction( si, repr );
 		audit.log( "expr: "+ body);
 		audit.out();
 	}
@@ -98,6 +111,5 @@ public class Expression {
 		expressionTest( "fred bill steve" );
 		expressionTest( "a plus b" );
 		expressionTest( "a + b" );
-		// TODO: work on this next!
-		// expressionTest( "a plus the factorial of n" );
+		expressionTest( "n times the factorial of n minus 1" );
 }	}
