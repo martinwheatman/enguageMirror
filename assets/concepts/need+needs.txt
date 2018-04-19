@@ -46,15 +46,22 @@ On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 	SUBJECT needs another QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
-On "it is":
-	#set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
+###### Pronoun ancillaries - it is/they are from X #######
+On "the PHRASE-OBJECT is LOCATOR LOCATION": #  LOCATOR LOCATION are implied anyway!
 	perform "list add SUBJECT needs OBJECT";
+	then, reply "ok, OBJECT is LOCATOR LOCATION".
+
+On "it is": # do we need to unset LOCs?
+	the OBJECT is LOCATOR LOCATION;
 	then, reply "ok, it is LOCATOR LOCATION".
+
+On "the PHRASE-OBJECTS are":
+	perform "list forEach dummy dummy {OBJECTS} is LOCATOR LOCATION";
+	then, reply "ok, OBJECTS are LOCATOR LOCATION".
 	
-#On "they are":
-#	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
-#	perform "list add OBJECT : LOCATOR LOCATION";
-#	then, reply "ok, they are LOCATOR LOCATION".
+On "they are":
+	the OBJECTS are LOCATOR LOCATION;
+	then, reply "ok, they are LOCATOR LOCATION".
 	
 ### does not need...
 On "SUBJECT does not need anything":

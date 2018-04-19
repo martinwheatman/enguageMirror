@@ -222,7 +222,10 @@ public class Enguage extends Shell {
 			interpret( "i need biscuits",       "ok, you need biscuits" );
 			interpret( "i need coffee",         "ok, you need coffee" );
 			interpret( "it is from sainsburys", "ok, it is from sainsburys" );
-			interpret( "what do i need",		"you need biscuits, and coffee from sainsburys" );
+//			interpret( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
+//			Audit.traceAll( true );
+//			interpret( "they are from sainsburys",   "ok, it is from sainsburys" );
+//			interpret( "what do i need", "you need biscuits from sainsburys, and coffee from sainsburys" );
 		}
 		if ( level == 0 || level == 2 ) {
 			clearTheNeedsList();

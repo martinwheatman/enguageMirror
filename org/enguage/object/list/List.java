@@ -253,7 +253,9 @@ public class List {
 		/* "martin needs a cup of coffee and a biscuit" +
 		 * perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }"; =>
 		 * { subject='martin' } needs { objects='a cup of coffee and a biscuit' }
-		 * recall each joined combination, e.g.: martin needs a cup of coffee
+		 * recall each joined combination, e.g.:
+		 *      martin needs a cup of coffee
+		 *      martin needs a biscuit
 		 */
 		Attributes match = new Attributes( sa.strip( "{", "}" ));
 		Join.on( true );
@@ -270,7 +272,9 @@ public class List {
 					reply.toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
 				{	rc = Shell.FAIL;
 					break;
-		}	}	}
+			}	}
+		} else
+			audit.debug( "join failed" );
 		return audit.out( rc );
 	}
 	static public String interpret( Strings sa ) {
