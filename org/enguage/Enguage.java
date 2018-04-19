@@ -215,53 +215,37 @@ public class Enguage extends Shell {
 		int level = 0;
 
 		if ( level == 0 || level == 1 ) {
-			audit.title( "Pronouns - see needs.txt" );
-			
 			clearTheNeedsList();
 			Where.doLocators( "to/from/over/at" );
 			
+			audit.title( "Pronouns - see needs.txt" );
 			interpret( "i need biscuits",       "ok, you need biscuits" );
 			interpret( "i need coffee",         "ok, you need coffee" );
 			interpret( "it is from sainsburys", "ok, it is from sainsburys" );
 			interpret( "what do i need",		"you need biscuits, and coffee from sainsburys" );
-			
-			clearTheNeedsList();
 		}
 		if ( level == 0 || level == 2 ) {
-			audit.title( "The Non-Computable concept of NEED" );
-
 			clearTheNeedsList();
 
-			interpret( "what do i need",
-					   "you don't need anything" );
+			audit.title( "The Non-Computable concept of NEED" );
+			interpret( "what do i need",	         "you don't need anything" );
 			interpret( "i need 2 cups of coffee and a biscuit",
 					   "ok, you need 2 cups of coffee and a biscuit.");
-			interpret( "what do i need",
-					   "you need 2 cups of coffee, and a biscuit.");
-			interpret( "how many coffees do i need",
-					   "2, you need 2 coffees" );
-			interpret( "i need 2 coffees", "i know" );
-			interpret( "i don't need any coffee",
-					   "ok, you don't need any coffee" );
-			interpret( "what do i need",
-					   "you need a biscuit" );
+			interpret( "what do i need",             "you need 2 cups of coffee, and a biscuit.");
+			interpret( "how many coffees do i need", "2, you need 2 coffees" );
+			interpret( "i need 2 coffees",           "i know" );
+			interpret( "i don't need any coffee",    "ok, you don't need any coffee" );
+			interpret( "what do i need",             "you need a biscuit" );
 
 			audit.title( "Semantic Thrust" );
-			interpret( "i need to go to town",
-					   "ok, you need to go to town" );
-			interpret( "what do i need",
-					   "you need a biscuit, and to go to town" );
-			interpret( "i have a biscuit",
-					   "ok, you don't need a biscuit" );
-			interpret( "i have to go to town",
-					   "I know" );
-			interpret( "i don't need to go to town",
-					   "ok, you don't need to go to town" );
+			interpret( "i need to go to town",       "ok, you need to go to town" );
+			interpret( "what do i need",             "you need a biscuit, and to go to town" );
+			interpret( "i have a biscuit",           "ok, you don't need a biscuit" );
+			interpret( "i have to go to town",       "I know" );
+			interpret( "i don't need to go to town", "ok, you don't need to go to town" );
 			
 			clearTheNeedsList();
-			
-			interpret( "what do i need",
-					   "you don't need anything" );
+			interpret( "what do i need",             "you don't need anything" );
 		}
 		if ( level == 0 || level == 3 ) {
 			
