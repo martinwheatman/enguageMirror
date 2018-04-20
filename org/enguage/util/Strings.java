@@ -664,7 +664,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return rc;
 	}
 	public Strings reinsert( Attributes as, String from, String to ) {
-		// {ONE} and {TWO} + one="martin", two="ruth" => martin and ruth
+		// "{ONE} and {TWO}".reinsert( as=[one="martin", two="ruth"], "{", "}" ) => martin and ruth
 		int i = 0;
 		boolean adding = true;
 		Strings rc = new Strings();

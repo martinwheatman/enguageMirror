@@ -1,14 +1,11 @@
 package org.enguage.object.list;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
-import org.enguage.Enguage;
 import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
 import org.enguage.object.Value;
 import org.enguage.util.Audit;
-import org.enguage.util.Join;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.util.Tag;
@@ -247,36 +244,6 @@ public class List {
 				!(lastParam.equals( "quantity='some'" )
 				||lastParam.equals( "quantity='any'" ))) != -1;
 	}
-	static private String forEachAttrCombo( Strings sa ) {
-		audit.in( "forEach", "sa=[ "+ sa.toString( Strings.SQCSV ) +" ]" );
-		String rc = Shell.FAIL;
-		/* "martin needs a cup of coffee and a biscuit" +
-		 * perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }"; =>
-		 * { subject='martin' } needs { objects='a cup of coffee and a biscuit' }
-		 * recall each joined combination, e.g.:
-		 *      martin needs a cup of coffee
-		 *      martin needs a biscuit
-		 */
-		Attributes match = new Attributes( sa.strip( "{", "}" ));
-		Join.on( true );
-		ArrayList<Attributes> ala = Join.join( match, "and" );
-		Join.on( false );
-		
-		if (ala.size() > 1) {
-			rc = Shell.SUCCESS;
-			for( Attributes m : ala ) {
-				// re-issue rebuilt utterance
-				String reply = Enguage.e.interpret( sa.reinsert( m, "{", "}" ) );
-				audit.debug( "individual reply => "+ reply );
-				if (reply.equals( /*Enguage.DNU*/ "I don't understand" ) ||
-					reply.toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
-				{	rc = Shell.FAIL;
-					break;
-			}	}
-		} else
-			audit.debug( "join failed" );
-		return audit.out( rc );
-	}
 	static public String interpret( Strings sa ) {
 		/* What we're doing here is to process the parameters provided in 
 		 * the repertoire as processed by Intention.class (attributes are 
@@ -296,11 +263,6 @@ public class List {
 		String	cmd = sa.remove( 0 ),
 				ent = sa.remove( 0 ), 
 				atr = sa.remove( 0 );
-		
-		if (cmd.equals( "forEach" )) { // dummy dummy removed above
-			// TODO: remove this from the object model!
-			return forEachAttrCombo( sa );
-		}
 		
 		List  list = new List( ent, atr );
 		

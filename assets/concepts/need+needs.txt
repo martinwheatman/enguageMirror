@@ -5,7 +5,7 @@
 this concept is spatial.
 
 On "SUBJECTS needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
-	perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }";
+	perform "every : { SUBJECTS } needs { OBJECTS }";
 	if not, reply "i do not understand";
 	then, reply "ok, SUBJECTS needs OBJECTS".
 
@@ -56,7 +56,7 @@ On "it is": # do we need to unset LOCs?
 	then, reply "ok, it is LOCATOR LOCATION".
 
 On "the PHRASE-OBJECTS are":
-	perform "list forEach dummy dummy {OBJECTS} is LOCATOR LOCATION";
+	perform "every : {OBJECTS} is LOCATOR LOCATION";
 	then, reply "ok, OBJECTS are LOCATOR LOCATION".
 	
 On "they are":

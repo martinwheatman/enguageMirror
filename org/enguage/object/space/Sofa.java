@@ -1,16 +1,8 @@
 package org.enguage.object.space;
 
-import org.enguage.object.list.Item;
-import org.enguage.object.list.List;
-import org.enguage.object.space.Sofa;
-import org.enguage.util.Audit;
-import org.enguage.util.Shell;
-import org.enguage.util.Strings;
-import org.enguage.vehicle.Colloquial;
-import org.enguage.vehicle.Plural;
-
 import org.enguage.object.Attribute;
 import org.enguage.object.Entity;
+import org.enguage.object.Every;
 import org.enguage.object.Link;
 import org.enguage.object.Numeric;
 import org.enguage.object.Preferences;
@@ -20,6 +12,13 @@ import org.enguage.object.Temporal;
 import org.enguage.object.Value;
 import org.enguage.object.Variable;
 import org.enguage.object.expression.Function;
+import org.enguage.object.list.Item;
+import org.enguage.object.list.List;
+import org.enguage.util.Audit;
+import org.enguage.util.Shell;
+import org.enguage.util.Strings;
+import org.enguage.vehicle.Colloquial;
+import org.enguage.vehicle.Plural;
 
 public class Sofa extends Shell {
 	static private Audit audit = new Audit( "Sofa" );
@@ -75,7 +74,7 @@ public class Sofa extends Shell {
 						type.equals(Temporal.NAME ) ?    Temporal.interpret( a ) :
 						type.equals(    Sign.NAME ) ?        Sign.interpret( a ) :
 						type.equals(Function.NAME ) ?    Function.interpret( a ) :
-						//type.equals( Concept.NAME ) ?     Concept.interpret( a ) :
+						type.equals(   Every.NAME ) ?       Every.interpret( a ) :
 									  FAIL; // );
 		}
 		audit.ERROR("doCall() fails - "+ (a==null?"no params":"not enough params: "+ a.toString()));
