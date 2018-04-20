@@ -56,7 +56,7 @@ On "it is": # do we need to unset LOCs?
 	then, reply "ok, it is LOCATOR LOCATION".
 
 On "the PHRASE-OBJECTS are":
-	perform "every : {OBJECTS} is LOCATOR LOCATION";
+	perform "every : the {OBJECTS} is";
 	then, reply "ok, OBJECTS are LOCATOR LOCATION".
 	
 On "they are":

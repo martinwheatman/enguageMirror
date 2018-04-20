@@ -7,9 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.object.Attribute;
 import org.enguage.object.Attributes;
-import org.enguage.object.Variable;
 import org.enguage.sign.intention.Intention;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
@@ -235,8 +233,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 					//save the context here, for future use... before interp
 					if (!Autoload.ing() && !Repertoire.isInducting())
-						for ( Attribute m : match )
-							Variable.set( m.name(), m.value());
+						match.toVariables();
+					
 					// TODO: No need for context, now? read from (cached) variables?
 					
 					r = new Reply();

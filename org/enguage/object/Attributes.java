@@ -57,6 +57,10 @@ public class Attributes extends ArrayList<Attribute> {
 	public  int  nchars() { return nchars;}
 	public  void nchars( int n ) { nchars = n;}
 	
+	public void toVariables() {
+		for ( Attribute m : this )
+			Variable.set( m.name(), m.value());
+	}
 	public boolean matches( Attributes pattern ) {
 		// Sanity check: pattern will have less content than target.
 		if (pattern.size() > size()) return false;

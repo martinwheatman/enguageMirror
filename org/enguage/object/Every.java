@@ -13,10 +13,8 @@ public class Every {
 	public  static final String        NAME = "every";
 	private static       Audit        audit = new Audit( "Every" );
 	
-	static private String forEachAttrCombo( Strings sa ) {
-		audit.on( true );
-		audit.trace( true );
-		audit.in( "forEach", "sa=[ "+ sa.toString( Strings.SQCSV ) +" ]" );
+	static private String forEvery( Strings sa ) {
+		audit.in( "forEvery", "sa=[ "+ sa.toString( Strings.SQCSV ) +" ]" );
 		String rc = Shell.FAIL;
 		/* "martin needs a cup of coffee and a biscuit" +
 		 * perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }"; =>
@@ -26,7 +24,6 @@ public class Every {
 		 *      martin needs a biscuit
 		 */
 		Attributes match = new Attributes( sa.strip( "{", "}" ));
-		audit.log( "match="+ match );
 		Join.on( true );
 		ArrayList<Attributes> ala = Join.join( match, "and" );
 		Join.on( false );
@@ -36,9 +33,7 @@ public class Every {
 			for( Attributes m : ala ) {
 				// re-issue rebuilt utterance
 				
-				Strings sb = sa.reinsert( m, "{", "}" );
-				audit.log( "sb="+ sb.toString());
-				String reply = Enguage.e.interpret( sb );
+				String reply = Enguage.e.interpret( sa.reinsert( m, "{", "}" ));
 				audit.debug( "individual reply => "+ reply );
 				if (reply.equals( /*Enguage.DNU*/ "I don't understand" ) ||
 					reply.toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
@@ -46,14 +41,18 @@ public class Every {
 					break;
 			}	}
 		} else
-			audit.log( "join failed" );
-		audit.on( false );
+			audit.debug( "join failed" );
+		
+		// re-save original variables
+		match.toVariables();
+	
+		//audit.on( false );
 		audit.out( rc );
 		audit.trace( false );
 		return rc;
 	}
 	static public String interpret( Strings sa ) {
 		audit.in( "interpret", sa.toString());
-		return audit.out( forEachAttrCombo( sa ) );
+		return audit.out( forEvery( sa ) );
 	}
 }

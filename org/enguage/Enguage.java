@@ -215,22 +215,22 @@ public class Enguage extends Shell {
 		int level = 0;
 
 		if ( level == 0 || level == 1 ) {
-			clearTheNeedsList();
 			Where.doLocators( "to/from/over/at" );
 			
-			audit.title( "Pronouns - see needs.txt" );
+			audit.title( "Pronouns - see need+needs.txt" );
+			clearTheNeedsList();
 			interpret( "i need biscuits",       "ok, you need biscuits" );
 			interpret( "i need coffee",         "ok, you need coffee" );
 			interpret( "it is from sainsburys", "ok, it is from sainsburys" );
-//			interpret( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
-//			Audit.traceAll( true );
-//			interpret( "they are from sainsburys",   "ok, it is from sainsburys" );
-//			interpret( "what do i need", "you need biscuits from sainsburys, and coffee from sainsburys" );
-		}
-		if ( level == 0 || level == 2 ) {
+			interpret( "what do i need", "you need biscuits , and coffee from sainsburys" );
+			
 			clearTheNeedsList();
-
+			interpret( "i need milk and coffee", "ok, you need milk and coffee" );
+			interpret( "they are from sainsburys",   "ok, they are from sainsburys" );
+			interpret( "what do i need", "you need milk from sainsburys, and coffee from sainsburys" );
+			
 			audit.title( "The Non-Computable concept of NEED" );
+			clearTheNeedsList();
 			interpret( "what do i need",	         "you don't need anything" );
 			interpret( "i need 2 cups of coffee and a biscuit",
 					   "ok, you need 2 cups of coffee and a biscuit.");
