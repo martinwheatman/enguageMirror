@@ -107,7 +107,12 @@ public class Item {
 		if (val.equals("1")) return "a";
 		return Plural.ise( num, val );
 	}
-	public String toXml() { return tag.toString(); }
+	public String toXml() {
+		return tag.prefix().toString()
+					+"<"+ tag.name()
+					+" "+ tag.attributes().toString()
+					+"/>";
+	}
 	public String toString() {
 		Strings rc = new Strings();
 		Strings formatting = format();
