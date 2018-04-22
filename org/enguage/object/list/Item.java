@@ -28,16 +28,16 @@ public class Item {
 	public Item( Tag t ) { this(); tag( t ); }
 	public Item( Strings ss ) { // [ "black", "coffee", "quantity='1'", "unit='cup'" ]
 		this();
-		Attributes a = new Attributes();
-		Strings content = new Strings();
+		Attributes  a = new Attributes();
+		Strings descr = new Strings();
 		
 		for (String s : ss)
 			if (Attribute.isAttribute( s ))
 				a.add( new Attribute( s ));
 			else if (!s.equals("-"))
-				content.add( s );
+				descr.add( s );
 
-		tag.content( new Tag().prefix( content ));
+		tag.content( new Tag().prefix( descr ));
 		tag.attributes( a );
 	}
 	public Item( Strings ss, Attributes as ) { // [ "black", "coffee", "quantity='1'"], [unit='cup']
@@ -52,24 +52,38 @@ public class Item {
 	
 	// members to implement tag member: name, desc, attr
 	private String  name = new String();
+	public  String  name() {return name; }
+	public  Item    name( String s ) { name=s; return this; }
 	
 	private Strings desc = new Strings();
 	public  Strings desc() { return desc;}
 	public  Item    desc( Strings s ) { desc=s; return this;}
 	
-	private Attributes attrs = new Attributes();
+	//private Attributes attrs = new Attributes();
 	//public  Attributes attributes() { return attrs; }
-	public  Item       attributes( Attributes a ) { attrs=a; return this; }
+	public  Attributes attributes() { return tag.attributes(); }
+	//public  Item       attributes( Attributes a ) { attrs=a; return this; }
+	public  String     attribute( String name ) { return tag().attributes().get( name ); }
 	
 	// contains one tag -- can't extend as it is recursively defined.
 	private Tag        tag = new Tag();
 	public  void       tag( Tag t ) { tag = t; }
-	public  Tag        tag()        { return tag; }
+	public  Tag        tag()        {
+		Tag t = new Tag().name( "item" ).attributes( tag.attributes());
+		if (tag.content().size() > 0)
+			t.content( new Tag().prefix( tag.content().get( 0 ).prefix()) );
+		return t;
+	}
 	
-	public  Tags       content()    { return tag.content(); }
-	public  Attributes attributes() { return tag.attributes(); }
-	public  void       replace( String name, String value ) { tag().replace( name, value );}
-	public  String     attribute( String name ) { return tag().attribute( name ); }
+	public  Tags       content()    {
+		Tags ts = new Tags();
+		ts.add( new Tag().prefix( tag.prefix() ));
+		return ts;
+	}
+	public  void       replace( String name, String value ) {
+		tag.attributes().remove( name );
+		tag.attributes().add( new Attribute( name, value ));
+	}
 	
 	public void updateTagAttributes( Tag t ) {
 		Attributes as = tag().attributes();
@@ -110,10 +124,10 @@ public class Item {
 		return Plural.ise( num, val );
 	}
 	public String toXml() {
-		return tag.prefix().toString()                // description
-					+"<"+ tag.name()                  // name
-					+" "+ tag.attributes().toString() // attributes
-					+"/>";
+		return 	 "<"+ tag.name()                  // name
+				+" "+ tag.attributes().toString() // attributes
+				+">"+ tag.prefix().toString()     // description
+				+"</"+ tag.name() +">";
 	}
 	public String toLine() { return tag.prefix().toString(); }
 	public String toString() {

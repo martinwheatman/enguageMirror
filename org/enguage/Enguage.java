@@ -16,7 +16,6 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.where.Where;
 
 public class Enguage extends Shell {
 
@@ -215,7 +214,6 @@ public class Enguage extends Shell {
 		int level = 0;
 
 		if ( level == 0 || level == 1 ) {
-			
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
 			interpret( "i need biscuits",       "ok, you need biscuits" );
