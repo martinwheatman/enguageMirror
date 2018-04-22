@@ -215,7 +215,6 @@ public class Enguage extends Shell {
 		int level = 0;
 
 		if ( level == 0 || level == 1 ) {
-			Where.doLocators( "to/from/over/at" );
 			
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
@@ -587,25 +586,6 @@ public class Enguage extends Shell {
 			//testInterpret( "what day is it today" );
 
 			audit.title( "Temporospatial concept MEETING" );
-			
-			//Where.locatorIs( "at" ); is the same as...
-			// new Sofa().interpret( new Strings( "spatial locator at" )); is the same as...
-			interpret( "interpret spatially something can be phrase variable locator thus", "go on" );
-			interpret( "first perform spatial locator variable locator", "go on" );
-			interpret( "ok", "ok" );
-			
-			interpret( "spatially something can be to the left of",  "ok" );
-			interpret( "spatially something can be to the right of", "ok" );
-			interpret( "spatially something can be in front of",     "ok" );
-			interpret( "spatially something can be on top of",       "ok" );
-			interpret( "spatially something can be underneath",      "ok" );
-			interpret( "spatially something can be behind",          "ok" );
-			interpret( "spatially something can be from",            "ok" );
-			interpret( "spatially something can be under",           "ok" );
-			interpret( "spatially something can be over",            "ok" );
-			interpret( "spatially something can be on",              "ok" );
-			interpret( "spatially something can be in",              "ok" );
-			interpret( "spatially something can be at",              "ok" );
 			
 			/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
 			 * first create a class variable entity.             // mkdir pub; touch pub/isa 
