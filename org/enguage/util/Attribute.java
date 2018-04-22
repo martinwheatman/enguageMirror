@@ -1,11 +1,8 @@
-package org.enguage.object;
-
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+package org.enguage.util;
 
 import java.util.ListIterator;
 
-import org.enguage.object.Attribute;
+import org.enguage.util.Attribute;
 
 public class Attribute {
 	static private Audit audit = new Audit( "Attribute" );
@@ -47,9 +44,7 @@ public class Attribute {
 	public Attribute( String nm, String val ) { name( nm ).value( val ); }
 	public Attribute( String s ) { this( nameFromAttribute( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
 	static public Attribute getAttribute( ListIterator<String> si ) {
-		audit.in( "getAttribute", Strings.peek( si ));
-		return (Attribute) audit.out(
-				new Attribute( si.hasNext() ? si.next() : "" ));
+		return new Attribute( si.hasNext() ? si.next() : "" );
 	}
 	
 	public String toString() { return toString( quote() ); }
@@ -72,14 +67,12 @@ public class Attribute {
 		return -1 != (n = s.indexOf("=")) ? s.substring( 0, n ) : s;
 	}
 	static public Strings expandValues( String s ) {
-		//audit.traceIn( "expandValues", "s="+s );
 		Strings rc = new Strings();
 		for (String item : new Strings( s ).contract( "=" ))
 			if (isAttribute( item ))
 				rc.addAll( expandValues( new Attribute( item ).value() ));
 			else
 				rc.add(  item );
-		//audit.traceOut( rc );
 		return rc;
 	}
 	private static boolean isAlphabetic( String s ) {
@@ -92,30 +85,21 @@ public class Attribute {
 		}
 		return true;
 	}
-//	private static boolean isQuotedString( String s ) {
-//		char ch = s.charAt( 0 );
-//		return (s.charAt( s.length()-1 ) == ch) && (ch == '\'' || ch=='"' || ch==':');
-//	}
 	static public boolean isAttribute( String s ) {
 		// this defines attribute as:xxxxx='y y y y y'
 		// this, ultimately,  may be:xxxxxx="y y y y xxxx='y y y's y'"
 		Strings sa = new Strings( s );
-		//audit.audit("sa is "+ sa.toString());
 		return (sa.size() == 3)
 				&& isAlphabetic( sa.get( 0 ))
 				&& sa.get( 1 ).equals( "=" );
-				//&& isQuotedString( sa.get( 2 ));
 	}
-	static public String attrTest( String s ) {
+	// --- test code
+	static private String attrTest( String s ) {
 		return s +" "+ (isAttribute( s ) ? "IS":"is NOT") +" an attribute";
 	}
 	static public void main( String argv[]) {
 		//Audit.turnOn();
-		/* --- */
-		//audit.audit( attrTest( "fred" ) );
 		audit.log( attrTest( "fred=bill" ));
-		//audit.audit( attrTest( "f ed=\"bill\"" ));
-		//audit.audit( attrTest( "fred=\"bill\"" ));
 		audit.log( attrTest( "fred='bill'" ));
 		Attribute a = new Attribute( "fred=\"bill\"" );
 		audit.log( "a is "+ a.toString());
@@ -123,19 +107,6 @@ public class Attribute {
 		audit.log( "a is "+ a.toString());
 		a = new Attribute( "fred=bi'll" );
 		audit.log( "a is "+ a.toString());
-		//audit.audit( attrTest( "fred=:bill:" ));
-		 /* 
-		audit.audit( "===" );
-		Attribute a = new Attribute( "name", "value" );
-		audit.audit( "a is:"+ a.toString() +":");
-		audit.audit( attrTest( a.toString() ));
-		audit.audit( "value is "+ expandValues( a.toString()));
-		audit.audit( "===" );
-		audit.audit( "a is "+ a.value( "to x='go to town' y='for a coffee'" ).toString());
-		audit.audit( "value is '"+ a.value( false ) +"'");
-		audit.audit( "---" );
-		audit.audit( "value is '"+ a.value(  true ) +"'");
-		// */
 		Strings sa = new Strings("list get user='martin' attr='needs to x=\"go to town\" y=\"for martin's coffee\"'");
 		sa.contract( "=" );
 		audit.log("Sofa.doCall() => sa is "+ sa.toString());

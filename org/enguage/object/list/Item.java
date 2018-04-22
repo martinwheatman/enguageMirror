@@ -2,8 +2,8 @@ package org.enguage.object.list;
 
 import java.util.ListIterator;
 
-import org.enguage.object.Attribute;
-import org.enguage.object.Attributes;
+import org.enguage.util.Attribute;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Number;
 import org.enguage.util.Shell;
@@ -24,6 +24,10 @@ public class Item {
 	static public  void    format( String csv ) { format = new Strings( csv, ',' ); }
 	static public  Strings format() { return format; }
 
+	// name
+	// description
+	// attributes
+	
 	public Item() { tag.name( "item" ); }
 	public Item( Tag t ) { this(); tag( t ); }
 	public Item( Strings ss ) { // [ "black", "coffee", "quantity='1'", "unit='cup'" ]
@@ -153,6 +157,7 @@ public class Item {
 		}
 		return rc;
 	}
+	// --- test code ---
 	private static void test( String s ) {
 		audit.debug( ">>>>>>>"+ s +"<<<<" );
 		Item t1 = new Item( new Strings( s ).contract( "=" ));

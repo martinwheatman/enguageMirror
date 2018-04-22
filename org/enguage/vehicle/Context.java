@@ -2,7 +2,7 @@ package org.enguage.vehicle;
 
 import java.util.ArrayList;
 
-import org.enguage.object.Attributes;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 /** Context: a list of attributes, so a list of list of attribute

@@ -2,7 +2,7 @@ package org.enguage.vehicle.when;
 
 import java.util.ListIterator;
 
-import org.enguage.object.Attributes;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

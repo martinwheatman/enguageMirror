@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.object.Attribute;
-import org.enguage.object.Attributes;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 

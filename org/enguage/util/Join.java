@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.enguage.object.Attribute;
-import org.enguage.object.Attributes;
-
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

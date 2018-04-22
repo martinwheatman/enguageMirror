@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.enguage.Enguage;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Join;
 import org.enguage.util.Shell;
@@ -14,8 +15,8 @@ public class Every {
 	private static       Audit        audit = new Audit( "Every" );
 	
 	static private String forEvery( Strings sa ) {
-		audit.in( "forEvery", "sa=[ "+ sa.toString( Strings.SQCSV ) +" ]" );
 		String rc = Shell.FAIL;
+		audit.in( "forEvery", "sa=[ "+ sa.toString( Strings.SQCSV ) +" ]" );
 		/* "martin needs a cup of coffee and a biscuit" +
 		 * perform "list forEach dummy dummy { SUBJECTS } needs { OBJECTS }"; =>
 		 * { subject='martin' } needs { objects='a cup of coffee and a biscuit' }

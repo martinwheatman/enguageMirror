@@ -6,9 +6,9 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Random;
 
-import org.enguage.object.Attribute;
-import org.enguage.object.Attributes;
 import org.enguage.util.algorithm.Expression;
+import org.enguage.util.Attribute;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Number;

@@ -2,9 +2,9 @@ package org.enguage.vehicle.where;
 
 import java.util.ListIterator;
 
-import org.enguage.object.Attributes;
 import org.enguage.object.space.Overlay;
 import org.enguage.object.space.Sofa;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;

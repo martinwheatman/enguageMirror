@@ -3,9 +3,9 @@ package org.enguage.object.expression;
 import java.util.ListIterator;
 
 import org.enguage.Enguage;
-import org.enguage.object.Attribute;
 import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Number;
 import org.enguage.util.Shell;

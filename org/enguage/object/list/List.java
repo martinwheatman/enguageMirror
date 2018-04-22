@@ -2,9 +2,9 @@ package org.enguage.object.list;
 
 import java.util.Locale;
 
-import org.enguage.object.Attribute;
-import org.enguage.object.Attributes;
 import org.enguage.object.Value;
+import org.enguage.util.Attribute;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
@@ -116,6 +116,22 @@ public class List {
 				list.content( n, removedItemTag );
 		}
 		value.set( list.toXml() );
+		return audit.out( rc );
+	}
+	private String update( Item item ) { // adjusts attributes, e.g. quantity
+		String rc = item.toString(); // return what we've just said
+		audit.in( "update", "item created is:"+ item.toXml() +", but rc="+ rc);
+		int n = position( item, false ); // exact match? No!
+		if (-1 != n) { 
+			Tag removedItemTag = list.removeContent( n );
+			item.updateTagAttributes( removedItemTag );
+			audit.debug( "updated--->" + removedItemTag.toXml() );
+			String quantity = removedItemTag.attribute( "quantity" );
+			if (quantity.equals( "" ) ||
+				Integer.valueOf( quantity ) != 0)
+				list.content( n, removedItemTag );
+			value.set( list.toXml() );
+		}
 		return audit.out( rc );
 	}
 	private String removeAttribute( Item item, String name ) { // adjusts attributes, e.g. quantity
@@ -264,7 +280,7 @@ public class List {
 				ent = sa.remove( 0 ), 
 				atr = sa.remove( 0 );
 		
-		List  list = new List( ent, atr );
+		List list = new List( ent, atr );
 		
 		if (cmd.equals( "delete" )) {
 			list.ignore();
@@ -343,6 +359,9 @@ public class List {
 					
 				} else if (cmd.equals( "add" )) {
 					rca.add( list.add( item ));
+					
+				} else if (cmd.equals( "update" )) {
+					rca.add( list.update( item ));
 					
 				} else if (cmd.equals("get"))
 					rca.add(

@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeSet;
 
-import org.enguage.object.Attributes;
 import org.enguage.object.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;

@@ -1,18 +1,14 @@
-package org.enguage.object;
+package org.enguage.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
+import org.enguage.object.Variable;
 import org.enguage.sign.pattern.Pattern;
-import org.enguage.util.Audit;
-import org.enguage.util.Shell;
-import org.enguage.util.Strings;
+import org.enguage.util.Attributes;
 import org.enguage.vehicle.Plural;
-
-import org.enguage.object.Attribute;
-import org.enguage.object.Attributes;
 
 public class Attributes extends ArrayList<Attribute> {
 	static private Audit audit = new Audit( "Attributes" );
@@ -58,7 +54,7 @@ public class Attributes extends ArrayList<Attribute> {
 	public  void nchars( int n ) { nchars = n;}
 	
 	public void toVariables() {
-		for ( Attribute m : this )
+		for (Attribute m : this)
 			Variable.set( m.name(), m.value());
 	}
 	public boolean matches( Attributes pattern ) {
@@ -71,7 +67,7 @@ public class Attributes extends ArrayList<Attribute> {
 			if (!a.value().equals( get( a.name() )))
 				return false;
 		}
-		return true; // for now
+		return true;
 	}
 	public boolean has( String name, String value ) { return indexOf( new Attribute( name, value )) != -1; }
 	public boolean has( String name ) {
@@ -112,16 +108,6 @@ public class Attributes extends ArrayList<Attribute> {
 				return tmp;
 		}	}
 		return "";
-	}
-	public String remove( String name, String value ) {
-		Iterator<Attribute> i = iterator();
-		while (i.hasNext()) {
-			Attribute a = i.next();
-			if (a.name().equals( name ) && a.value().equals( value )) {
-				i.remove();
-				return Shell.SUCCESS;
-		}	}
-		return Shell.FAIL;
 	}
 	public int removeAll( String name ) {
 		int rc = 0;
@@ -166,7 +152,6 @@ public class Attributes extends ArrayList<Attribute> {
 	// BEVERAGE -> coffee + [ NAME="martins", beverage="tea" ].deref( "SINGULAR-NAME needs a $BEVERAGE" );
 	// => martin needs a coffee.
 	private String derefName( String name, boolean expand ) { // hopefully non-blank string
-		//audit.in( "derefName", name );
 		String value = null;
 		if (null != name && name.length() > 0 ) {
 			String orig = name;
@@ -198,35 +183,23 @@ public class Attributes extends ArrayList<Attribute> {
 				//value = name +"='"+ value +"'";
 				// Look to sofa to expand WHOM WHERE
 		}	}
-		//audit.out( value );
 		return value;
 	}
 	public Strings deref( Strings ans ) { return deref( ans, false ); } // backward compatible
 	public Strings deref( Strings ans, boolean expand ) {
-		//audit.traceIn("deref", ans.toString( Strings.DQCSV ));
-		//audit.debug( "attributes are: "+ toString() );
 		if (null != ans) {
 			ListIterator<String> i = ans.listIterator();
 			while (i.hasNext())
 				i.set( derefName( i.next(), expand ));
 		}
-		//audit.traceOut( ans.toString( Strings.DQCSV ));
 		return ans;
 	}
 	public String deref( String value ) { return deref( value, false ); }
 	public String deref( String value, boolean expand ) {
 		return deref( new Strings( value ), expand ).toString( Strings.SPACED );
 	}
-	//public void delistify() { // "beer+crisps" => "beer and crisps"
-		//ListIterator<Attribute> si = this.listIterator();
-		/*for (int i=0, sz=size(); i<sz; i++) {
-		 *	Attribute a = get( i );
-		 *	Strings sa = new Strings( a.value(), Attribute.VALUE_SEP.charAt( 0 ));
-		 *	set( i, new Attribute( a.name(), sa.toString( Reply.andListFormat() )));
-	}	*///}
 	public static Strings stripValues( Strings sa ) {
 		ListIterator<String> si = sa.listIterator();
-		//for (int i=0; i< sa.size(); i++) {
 		while (si.hasNext()) {
 			String s = si.next();
 			si.set( Attribute.expandValues( s ).toString( Strings.SPACED ));

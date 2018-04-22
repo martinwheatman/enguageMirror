@@ -1,6 +1,5 @@
 package org.enguage.object.space;
 
-import org.enguage.object.Attribute;
 import org.enguage.object.Entity;
 import org.enguage.object.Every;
 import org.enguage.object.Link;
@@ -14,6 +13,7 @@ import org.enguage.object.Variable;
 import org.enguage.object.expression.Function;
 import org.enguage.object.list.Item;
 import org.enguage.object.list.List;
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;

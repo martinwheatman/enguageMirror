@@ -1,9 +1,9 @@
 package org.enguage.vehicle;
 
 import org.enguage.Enguage;
-import org.enguage.object.Attribute;
-import org.enguage.object.Attributes;
 import org.enguage.sign.intention.Redo;
+import org.enguage.util.Attribute;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;

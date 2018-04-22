@@ -1,6 +1,5 @@
 package org.enguage.vehicle;
 
-import org.enguage.object.Attributes;
 import org.enguage.object.Numeric;
 import org.enguage.object.Spatial;
 import org.enguage.object.Temporal;
@@ -9,6 +8,7 @@ import org.enguage.object.space.Sofa;
 import org.enguage.sign.Sign;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;

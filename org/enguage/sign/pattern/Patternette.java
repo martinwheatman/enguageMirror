@@ -3,7 +3,7 @@ package org.enguage.sign.pattern;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.object.Attribute;
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;

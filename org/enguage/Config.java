@@ -5,13 +5,13 @@ import java.util.GregorianCalendar;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.object.Attribute;
 import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
 import org.enguage.sign.Signs;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.repertoire.Autoload;
 import org.enguage.sign.repertoire.Concepts;
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
 import org.enguage.util.Proc;

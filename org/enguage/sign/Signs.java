@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.object.Attributes;
 import org.enguage.sign.intention.Intention;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
 import org.enguage.sign.repertoire.Autoload;
 import org.enguage.sign.repertoire.Repertoire;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Context;

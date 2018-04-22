@@ -3,12 +3,12 @@ package org.enguage.sign.intention;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.enguage.object.Attributes;
 import org.enguage.object.Variable;
 import org.enguage.object.space.Sofa;
 import org.enguage.sign.Sign;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.repertoire.Repertoire;
+import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Proc;
 import org.enguage.util.Strings;
