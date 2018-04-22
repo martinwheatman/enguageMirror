@@ -24,10 +24,6 @@ public class Item {
 	static public  void    format( String csv ) { format = new Strings( csv, ',' ); }
 	static public  Strings format() { return format; }
 
-	// name
-	// description
-	// attributes
-	
 	public Item() { tag.name( "item" ); }
 	public Item( Tag t ) { this(); tag( t ); }
 	public Item( Strings ss ) { // [ "black", "coffee", "quantity='1'", "unit='cup'" ]
@@ -41,8 +37,8 @@ public class Item {
 			else if (!s.equals("-"))
 				content.add( s );
 
-		tag.content( new Tag().prefix( content ))
-		   .attributes( a );
+		tag.content( new Tag().prefix( content ));
+		tag.attributes( a );
 	}
 	public Item( Strings ss, Attributes as ) { // [ "black", "coffee", "quantity='1'"], [unit='cup']
 		this( ss );
@@ -54,10 +50,19 @@ public class Item {
 		tag.attributes( new Attributes( item.attributes()) );
 	}
 	
+	// members to implement tag member: desc, attr
+	private Strings desc = new Strings();
+	public  Strings desc() { return desc;}
+	public  Item    desc( Strings s ) { desc=s; return this;}
+	
+	private Attributes attrs = new Attributes();
+	public  Attributes attrs() { return attrs;}
+	public  Item       attrs( Attributes a ) { attrs=a; return this;}
+	
 	// contains one tag -- can't extend as it is recursively defined.
 	private Tag        tag = new Tag();
 	public  void       tag( Tag t ) { tag = t; }
-	public  Tag        tag() {        return tag; }
+	public  Tag        tag()        { return tag; }
 	public  Tags       content()    { return tag.content(); }
 	public  Attributes attributes() { return tag.attributes(); }
 	public  void       replace( String name, String value ) { tag().replace( name, value );}
@@ -157,7 +162,9 @@ public class Item {
 		}
 		return rc;
 	}
+	//
 	// --- test code ---
+	//
 	private static void test( String s ) {
 		audit.debug( ">>>>>>>"+ s +"<<<<" );
 		Item t1 = new Item( new Strings( s ).contract( "=" ));
