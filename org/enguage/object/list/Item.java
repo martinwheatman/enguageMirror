@@ -50,24 +50,26 @@ public class Item {
 		tag.attributes( new Attributes( item.attributes()) );
 	}
 	
-	// members to implement tag member: desc, attr
+	// members to implement tag member: name, desc, attr
+	private String  name = new String();
+	
 	private Strings desc = new Strings();
 	public  Strings desc() { return desc;}
 	public  Item    desc( Strings s ) { desc=s; return this;}
 	
 	private Attributes attrs = new Attributes();
-	public  Attributes attrs() { return attrs;}
-	public  Item       attrs( Attributes a ) { attrs=a; return this;}
+	//public  Attributes attributes() { return attrs; }
+	public  Item       attributes( Attributes a ) { attrs=a; return this; }
 	
 	// contains one tag -- can't extend as it is recursively defined.
 	private Tag        tag = new Tag();
 	public  void       tag( Tag t ) { tag = t; }
 	public  Tag        tag()        { return tag; }
+	
 	public  Tags       content()    { return tag.content(); }
 	public  Attributes attributes() { return tag.attributes(); }
 	public  void       replace( String name, String value ) { tag().replace( name, value );}
 	public  String     attribute( String name ) { return tag().attribute( name ); }
-	public  String     toLine(  ) { return tag().toLine(); }
 	
 	public void updateTagAttributes( Tag t ) {
 		Attributes as = tag().attributes();
@@ -108,11 +110,12 @@ public class Item {
 		return Plural.ise( num, val );
 	}
 	public String toXml() {
-		return tag.prefix().toString()
-					+"<"+ tag.name()
-					+" "+ tag.attributes().toString()
+		return tag.prefix().toString()                // description
+					+"<"+ tag.name()                  // name
+					+" "+ tag.attributes().toString() // attributes
 					+"/>";
 	}
+	public String toLine() { return tag.prefix().toString(); }
 	public String toString() {
 		Strings rc = new Strings();
 		Strings formatting = format();
