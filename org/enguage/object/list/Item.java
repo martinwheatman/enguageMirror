@@ -24,8 +24,12 @@ public class Item {
 	static public  void    format( String csv ) { format = new Strings( csv, ',' ); }
 	static public  Strings format() { return format; }
 
-	public Item() { tag.name( "item" ); }
-	public Item( Tag t ) { this(); tag( t ); }
+	public Item() { name( "item" ); }
+	public Item( Tag t ) {
+		this();
+		description( t.content().get( 0 ).prefix());
+		attributes( t.attributes());
+	}
 	public Item( Strings ss ) { // [ "black", "coffee", "quantity='1'", "unit='cup'" ]
 		this();
 		Attributes  a = new Attributes();
@@ -37,17 +41,17 @@ public class Item {
 			else if (!s.equals("-"))
 				descr.add( s );
 
-		tag.content( new Tag().prefix( descr ));
-		tag.attributes( a );
+		description(  descr );
+		attributes( a );
 	}
 	public Item( Strings ss, Attributes as ) { // [ "black", "coffee", "quantity='1'"], [unit='cup']
 		this( ss );
-		tag.attributes().addAll( as );
+		attributes().addAll( as );
 	}
 	public Item( String s ) { this( new Strings( s ).contract( "=" )); } // "black coffee quantity='1' unit='cup'
 	public Item( Item item ) { // copy c'tor
 		this( item.content().size()>0 ? item.content().get( 0 ).prefix().toString() : "" );
-		tag.attributes( new Attributes( item.attributes()) );
+		attributes( new Attributes( item.attributes()) );
 	}
 	
 	// members to implement tag member: name, desc, attr
@@ -55,34 +59,34 @@ public class Item {
 	public  String  name() {return name; }
 	public  Item    name( String s ) { name=s; return this; }
 	
-	private Strings desc = new Strings();
-	public  Strings desc() { return desc;}
-	public  Item    desc( Strings s ) { desc=s; return this;}
+	private Strings description = new Strings();
+	public  Strings description() { return description;}
+	public  Item    description( Strings s ) { description=s; return this;}
 	
-	//private Attributes attrs = new Attributes();
-	//public  Attributes attributes() { return attrs; }
-	public  Attributes attributes() { return tag.attributes(); }
-	//public  Item       attributes( Attributes a ) { attrs=a; return this; }
+	private Attributes attrs = new Attributes();
+	public  Attributes attributes() { return attrs; }
+	public  Item       attributes( Attributes a ) { attrs=a; return this; }
 	public  String     attribute( String name ) { return tag().attributes().get( name ); }
 	
-	// contains one tag -- can't extend as it is recursively defined.
-	private Tag        tag = new Tag();
-	public  void       tag( Tag t ) { tag = t; }
+	public  void       tag( Tag t ) { //tag = t;
+		attributes( t.attributes());
+		description( t.prefix());
+	}
 	public  Tag        tag()        {
-		Tag t = new Tag().name( "item" ).attributes( tag.attributes());
-		if (tag.content().size() > 0)
-			t.content( new Tag().prefix( tag.content().get( 0 ).prefix()) );
+		Tag t = new Tag().name( "item" ).attributes( attributes());
+		if (description().size() > 0)
+			t.content( new Tag().prefix( description()) );
 		return t;
 	}
 	
 	public  Tags       content()    {
 		Tags ts = new Tags();
-		ts.add( new Tag().prefix( tag.prefix() ));
+		ts.add( new Tag().prefix( description() ));
 		return ts;
 	}
 	public  void       replace( String name, String value ) {
-		tag.attributes().remove( name );
-		tag.attributes().add( new Attribute( name, value ));
+		attributes().remove( name );
+		attributes().add( new Attribute( name, value ));
 	}
 	
 	public void updateTagAttributes( Tag t ) {
@@ -124,17 +128,17 @@ public class Item {
 		return Plural.ise( num, val );
 	}
 	public String toXml() {
-		return 	 "<"+ tag.name()                  // name
-				+" "+ tag.attributes().toString() // attributes
-				+">"+ tag.prefix().toString()     // description
-				+"</"+ tag.name() +">";
+		return 	
+				"<"+   name()
+				+" "+  attributes()
+				+      description()
+				+"</"+ name() +">";
 	}
-	public String toLine() { return tag.prefix().toString(); }
 	public String toString() {
 		Strings rc = new Strings();
 		Strings formatting = format();
 		if (formatting == null || formatting.size() == 0) {
-			if (tag.content().size()>0) rc.add( tag.content().get(0).prefix().toString());
+			if (description.size()>0) rc.add( description().toString());
 		} else {
 			Float prevNum = Float.NaN;    // pluralise to the last number... NaN means no number found yet
 			/* Read through the format string:
@@ -144,15 +148,15 @@ public class Item {
 			 */
 			for (String format : formatting)
 				if (format.equals("")) { // main item: "black coffee"
-					if (tag.content().size()>0)
-						rc.add( Plural.ise( prevNum, tag.content().get(0).prefix().toString() ));
+					if (description().size()>0)
+						rc.add( Plural.ise( prevNum, description().toString() ));
 				} else { // formatted attributes: "UNIT of" + unit='cup' => "cups of"
 					Strings subrc = new Strings();
 					boolean found = true;
 					for (String component : new Strings( format ))
 						if ( Strings.isUpperCase( component )) { // UNIT
-							if (tag.attributes().hasIgnoreCase( component )) {
-								String val = tag.attributes().getIgnoreCase( component );
+							if (attributes().hasIgnoreCase( component )) {
+								String val = attributes().getIgnoreCase( component );
 								if (component.equals("WHEN"))
 									subrc.add( new When( new Moment( Long.valueOf( val ))).toString() );
 								else if (component.equals("LOCATION") || component.equals("LOCATOR"))

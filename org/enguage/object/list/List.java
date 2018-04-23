@@ -103,7 +103,7 @@ public class List {
 					item.replace( "quantity", quantity.get( 1 ));
 					audit.debug( "quant is now:"+ item.attribute( "quantity" ) +":"+ quantity.get( 1 ));
 				}
-				audit.debug( "adding--->" + item.toLine() );
+				audit.debug( "adding--->" + item.description() );
 				list.content( item.tag() );
 			}
 		} else { // found so update item...
