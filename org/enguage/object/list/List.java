@@ -35,8 +35,8 @@ public class List {
 	private int position( Item item, boolean exact ) { // e.g. ["cake slices","2"]
 		audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
 		
-		String ilctor  = item.attribute( Where.LOCATOR );
-		String ilction = item.attribute( Where.LOCATION );
+		String ilocr = item.attribute( Where.LOCATOR );
+		String ilocn = item.attribute( Where.LOCATION );
 		
 		long it = -1; // item time
 		try {
@@ -46,16 +46,16 @@ public class List {
 		int pos = -1;
 		for (Tag t : listTags()) {
 			pos++;
-			String tlctor  = t.attribute( Where.LOCATOR );
-			String tlction = t.attribute( Where.LOCATION );
+			String tlocr = t.attribute( Where.LOCATOR );
+			String tlocn = t.attribute( Where.LOCATION );
 			long tt = -1; //tag time
 			try {
 				tt = Long.valueOf( t.attribute( "WHEN" ));
 			} catch (Exception e) {}
 			if ( (it == -1 || it == tt) // if tt == -1 && it != -i fail!
 				&& (!exact || (
-					   (ilctor.equals( "" )  || ilctor.equals( tlctor ))
-					&& (ilction.equals( "" ) || ilction.equals( tlction )))
+					   (ilocr.equals( "" ) || ilocr.equals( tlocr ))
+					&& (ilocn.equals( "" ) || ilocn.equals( tlocn )))
 				)
 				&&     (( exact && t.equals(  item.tag() ))
 			         || (!exact && t.matchesContent( item.tag() )))
@@ -88,7 +88,7 @@ public class List {
 				rc.add( new Item( t ).toString());
 		return audit.out( rc );
 	}
-	private String add( Item item ) { // adjusts attributes, e.g. quantity
+	private String append( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
 		audit.in( "add", "item created is:"+ item.toXml() +", but rc="+ rc);
 		int n = position( item, false ); // exact match? No!
@@ -220,7 +220,7 @@ public class List {
 		 * moves the content of one list to another.
 		 */
 		while (l.listTags().size() > 0)
-			add( new Item( l.listTags().remove( 0 )));
+			append( new Item( l.listTags().remove( 0 )));
 
 		return true;
 	}
@@ -335,7 +335,7 @@ public class List {
 					rca.add( Shell.SUCCESS );
 					
 				} else if (cmd.equals( "add" )) {
-					rca.add( list.add( item ));
+					rca.add( list.append( item ));
 					
 				} else if (cmd.equals( "update" )) {
 					rca.add( list.update( item ));
