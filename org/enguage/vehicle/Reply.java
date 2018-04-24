@@ -199,7 +199,7 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	private String encache() {
 		if (null == cache) {
-			Strings reply = new Strings( say() ).append( f.ormat());
+			Strings reply = new Strings( say() ).appendAll( f.ormat());
 			if (0 == reply.size())
 				reply = new Strings( a.valueOf() ); // use the raw answer
 

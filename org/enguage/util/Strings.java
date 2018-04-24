@@ -159,7 +159,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 							word.append( buffer[ i++ ]);
 							while( i<sz &&
 							      !('\'' == buffer[ i ] && // ' followed by WS OR embedded
-							        (1+i==sz || Character.isWhitespace( buffer[ 1+i ]))
+							        (1+i==sz || //Character.isWhitespace( buffer[ 1+i ]))
+							        		(   !Character.isLetter( buffer[ i+1 ])
+											 && !Character.isDigit(  buffer[ i+1 ])))
 							     ) ) 
 								word.append( buffer[ i++ ]);
 							word.append( "'" );
@@ -388,8 +390,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return this;
 	}
-	public Strings append( Strings sa ) {
+	public Strings appendAll( Strings sa ) {
 		if (null != sa) addAll( sa );
+		return this;
+	}
+	public Strings append( Strings sa ) {
+		if (null != sa) add( sa.toString() );
 		return this;
 	}
 	public Strings append( String s ) {

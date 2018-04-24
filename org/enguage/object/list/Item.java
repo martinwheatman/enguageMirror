@@ -59,15 +59,45 @@ public class Item {
 	public  String  name() {return name; }
 	public  Item    name( String s ) { name=s; return this; }
 	
-	private Strings description = new Strings();
-	public  Strings description() { return description;}
-	public  Item    description( Strings s ) { description=s; return this;}
+	private Strings descr = new Strings();
+	public  Strings description() { return descr;}
+	public  Item    description( Strings s ) { descr=s; return this;}
 	
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Item       attributes( Attributes a ) { attrs=a; return this; }
 	public  String     attribute( String name ) { return tag().attributes().get( name ); }
 	
+	// -- list helpers
+	public long when() {
+		long it = -1;
+		try {
+			it = Long.valueOf( attribute( "WHEN" ));
+		} catch (Exception e){}
+		return it;
+	}
+	public int quantity() {
+		int quant = 1;
+		try {
+			quant = Integer.parseInt( attribute( "quantity" ));
+		} catch(Exception e) {} // fail silently
+		return quant;
+	}
+	public boolean equals( Item patt ) { // like Tag.equals()
+		return Plural.singular( descr ).equals( Plural.singular( patt.description() ))
+				&& attrs.matches( patt.attributes());
+	}
+	public boolean equalsDescription( Item patt ) { // like Tag.equalsContent()
+		return Plural.singular( descr ).equals( Plural.singular( patt.description() ));
+	}
+	public boolean matches( Item patt ) {
+		return descr.contains( patt.description() ) &&
+				attributes().matches( patt.attributes());
+	}
+	public boolean matchesDescription( Item patt ){
+		return descr.contains( patt.description() );
+	}
+	// -----------------------------------------
 	public  void       tag( Tag t ) { //tag = t;
 		attributes( t.attributes());
 		description( t.prefix());
@@ -122,24 +152,51 @@ public class Item {
 		}
 		audit.out();
 	}
+	public void updateItemAttributes( Item it ) {
+		Attributes as = tag().attributes();
+		audit.in( "update", as.toString() );
+		for (Attribute a : as) {
+			String value = a.value(),
+					name = a.name();
+			if (name.equals( "quantity" )) {
+				/*
+				 * should getNumber() and combine number from value.
+				 */
+				Strings vs = new Strings( value );
+				if (vs.size() == 2) {
+					/*
+					 * combine magnitude - replace if both absolute, add if relative etc.
+					 * Should be in Number? Should deal with "1 more" + "2 more" = "3 more"
+					 */
+					String firstVal = vs.get( 0 ), secondVal = vs.get( 1 );
+					if (secondVal.equals( Number.MORE ) || secondVal.equals( Number.FEWER )) {
+						int oldInt = 0, newInt = 0;
+						try {
+							oldInt = Integer.valueOf( it.attribute( name ));
+						} catch (Exception e) {} // fail silently, oldInt = 0
+						try {
+							newInt = Integer.valueOf( firstVal );
+							value = Integer.toString( oldInt + (secondVal.equals( Number.MORE )
+									? newInt : -newInt));
+							
+						} catch (Exception e) {}
+			}	}	}
+			it.replace( a.name(), value );
+		}
+		audit.out();
+	}
 	public String counted( Float num, String val ) {
 		// N.B. val may be "wrong", e.g. num=1 and val="coffees"
 		if (val.equals("1")) return "a";
 		return Plural.ise( num, val );
 	}
-	public String toXml() {
-		return 	
-				"<"+   name()
-				+" "+  attributes()
-				+      description()
-				+"</"+ name() +">";
-	}
+	public String toXml() { return "<"+name +attrs+">"+descr+"</"+name+">";}
 	public String toString() {
 		Strings rc = new Strings();
 		Strings formatting = format();
-		if (formatting == null || formatting.size() == 0) {
-			if (description.size()>0) rc.add( description().toString());
-		} else {
+		if (formatting == null || formatting.size() == 0)
+			rc.append( descr );
+		else {
 			Float prevNum = Float.NaN;    // pluralise to the last number... NaN means no number found yet
 			/* Read through the format string:
 			 *    add attributes (uppercase loaded),

@@ -1,5 +1,7 @@
 package org.enguage.object.list;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.object.Value;
@@ -13,9 +15,10 @@ import org.enguage.util.Tags;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.where.Where;
 
-public class List {
-	private static       Audit        audit = new Audit( "List" );
-	public  static final String        NAME = "list";
+public class List extends ArrayList<Item> {
+	static final long serialVersionUID = 0L;
+	static       private Audit   audit = new Audit( "List" );
+	static final public    String NAME = "list";
 	
 	Value value; // instead of extending this class...
 	public void ignore() {value.ignore();}
@@ -25,8 +28,134 @@ public class List {
 	public List( String e, String a ) {
 		value = new Value( e, a ); //super( e, a );
 		list = new Tag( value.getAsString() ).name( "list" );
+		//
+		loadTagData( value );
 	}
-	
+	//----------------------- List of Items Code --------
+	private void loadTagData( Value v ) {
+		Strings ss = new Strings( v.getAsString());
+		ListIterator<String> si = ss.listIterator();
+		if (doName( si )) {
+			Item it;
+			while (null != (it = getItem( si )))
+				add( it );
+	}	}
+	private boolean doName( ListIterator<String> si ) {
+		return si.hasNext()
+				 && si.next().equals("<")
+				 && si.hasNext()
+				 && si.next().equals( NAME );
+	}
+	private Item getItem( ListIterator<String> si ) {
+		Item it = null;
+		if (si.hasNext() && si.next().equals( ">" ) &&
+			si.hasNext() && si.next().equals( "<" ) &&
+			si.hasNext() && si.next().equals( "item" ))
+		{
+			it = new Item();
+			Attribute a;
+			while (null != (a = getAttr( si )))
+				it.attributes().add( a );
+			it.description( getDescr( si ));
+			if (!si.hasNext() || !si.next().equals( "/" ) &&
+				!si.hasNext() || !si.next().equals( "item" ))
+				audit.ERROR( "Missing end-item tag");
+		}
+		return it;
+	}
+	private Strings getDescr( ListIterator<String> si ) {
+		Strings sa = new Strings();
+		String s;
+		while (si.hasNext() &&
+				!(s = si.next()).equals( "<" ))
+			sa.append( s );
+		return sa;
+	}
+	private Attribute getAttr( ListIterator<String> si ) {
+		// going to read "name", "=", "val" or ">" descr1 descr2
+		if (si.hasNext()) {
+			String name = si.next();
+			if (si.hasNext()) {
+				if (si.next().equals( "=" ) && si.hasNext())
+					return new Attribute( name, Strings.trim( si.next(), '\'' ) );
+				else
+					si.previous();   // readahead=2, but...
+					//si.previous(); // don't put ">" back
+			} else
+				si.previous();
+		}
+		return null;
+	}
+	private int index( Item item, boolean exact ) {
+		audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
+		
+		String ilocr = item.attribute( Where.LOCATOR );
+		String ilocn = item.attribute( Where.LOCATION );
+		long   iwhen = item.when();
+		
+		int pos = -1;
+		for (Item li : this) {
+			pos++;
+			audit.log( "matching:"+li.toXml() +"/"+ item.toXml()+":");
+			String tlocr = li.attribute( Where.LOCATOR );
+			String tlocn = li.attribute( Where.LOCATION );
+			long   tt    = li.when();
+			if ( (iwhen == -1 || iwhen == tt) // if tt == -1 && it != -i fail!
+				&& (!exact || (
+					   (ilocr.equals( "" ) || ilocr.equals( tlocr ))
+					&& (ilocn.equals( "" ) || ilocn.equals( tlocn )))
+				)
+				&&     (( exact && li.equals( item ))
+			         || (!exact && li.matchesDescription( item )))
+			 )
+				return audit.out( pos );
+		}
+		return audit.out( -1 );
+	}
+	private String iquantity( Item item, boolean exact ) { // e.g. ["cake slices","2"]
+		audit.in( "quantity", "Item="+item.toString() + ", exact="+ (exact?"T":"F"));
+		Integer count = 0;
+		for (Item t : this ) // go though the file
+			if (  ( exact && t.equals( item.tag() ))
+				||(!exact && t.matchesDescription( item )))
+				count += t.quantity();
+		audit.out( count );
+		return count.toString();
+	}
+	public  Strings iget() { return iget( null ); }
+	private Strings iget( Item item ) { // to Items class!
+		audit.in( "get", "item="+ (item==null?"ALL":item.toString()));
+		Strings rc = new Strings();
+		for (Item t : this)
+			if (item == null || t.matches( item ))
+				rc.add( t.toString());
+		return audit.out( rc );
+	}
+	private String iappend( Item item ) { // adjusts attributes, e.g. quantity
+		String rc = item.toString(); // return what we've just said
+		audit.in( "add", "item created is:"+ item.toXml() +", but rc="+ rc);
+		int n = index( item, false ); // exact match? No!
+		if (-1 == n) { 
+			if (!item.attribute( "quantity" ).equals( "0" )) {
+				// in case: quantity='+= 37' => set it to '37'
+				Strings quantity = new Strings( item.attribute( "quantity" ));
+				if (quantity.size()==2) { // += n / -= n => n
+					item.replace( "quantity", quantity.get( 1 ));
+				}
+				add( item );
+			}
+		} else { // found so update item...
+			Item removedItemTag = remove( n );
+			item.updateItemAttributes( removedItemTag );
+			String quantity = removedItemTag.attribute( "quantity" );
+			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
+				add( n, removedItemTag );
+		}
+		value.set( list.toXml() );
+		return audit.out( rc );
+	}
+	//----------------------- end of List of Items Code --------
+
 	// member - List manages a tag which represents 
 	private Tag  list = new Tag();
 	public  Tags listTags() { return list.content(); }
@@ -377,7 +506,17 @@ public class List {
 		// Audit.runtimeDebug = true;
 		// Audit.tracing = true;
 		// localDebug = true;
-		
+
+		List l = new List( "_user", "meeting" );
+		audit.log( "mn index="+ l.index(    new Item()
+											.description( new Strings( "martin" ))
+											.attributes( new Attributes().add( "location", "the pu" )), true ));
+		audit.log( "mx  posn="+ l.position( new Item()
+											.description( new Strings( "martin" ))
+											.attributes( new Attributes().add( "location", "the pb" )), true  ));
+		audit.log( ">>>"+ l.iget());
+		System.exit( 0 );
+
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );
