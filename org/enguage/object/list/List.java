@@ -10,8 +10,6 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.util.Tag;
-import org.enguage.util.Tags;
 import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.where.Where;
 
@@ -26,11 +24,9 @@ public class List extends ArrayList<Item> {
 	
 	// constructors
 	public List( String e, String a ) {
-		value = new Value( e, a ); //super( e, a );
-		list = new Tag( value.getAsString() ).name( "list" );
-		//
-		loadTagData( value );
+		loadTagData( value = new Value( e, a ));
 	}
+	
 	//----------------------- List of Items Code --------
 	private void loadTagData( Value v ) {
 		Strings ss = new Strings( v.getAsString());
@@ -87,7 +83,7 @@ public class List extends ArrayList<Item> {
 		return null;
 	}
 	private int index( Item item, boolean exact ) {
-		audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
+		//audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
 		
 		String ilocr = item.attribute( Where.LOCATOR );
 		String ilocn = item.attribute( Where.LOCATION );
@@ -96,7 +92,6 @@ public class List extends ArrayList<Item> {
 		int pos = -1;
 		for (Item li : this) {
 			pos++;
-			audit.log( "matching:"+li.toXml() +"/"+ item.toXml()+":");
 			String tlocr = li.attribute( Where.LOCATOR );
 			String tlocn = li.attribute( Where.LOCATION );
 			long   tt    = li.when();
@@ -108,22 +103,22 @@ public class List extends ArrayList<Item> {
 				&&     (( exact && li.equals( item ))
 			         || (!exact && li.matchesDescription( item )))
 			 )
-				return audit.out( pos );
+				return pos; //audit.out( pos );
 		}
-		return audit.out( -1 );
+		return -1; //audit.out( -1 );
 	}
-	private String iquantity( Item item, boolean exact ) { // e.g. ["cake slices","2"]
+	private String quantity( Item item, boolean exact ) { // e.g. ["cake slices","2"]
 		audit.in( "quantity", "Item="+item.toString() + ", exact="+ (exact?"T":"F"));
 		Integer count = 0;
 		for (Item t : this ) // go though the file
-			if (  ( exact && t.equals( item.tag() ))
-				||(!exact && t.matchesDescription( item )))
+			if (   ( exact && t.equals( item ))
+			    || (!exact && t.matchesDescription( item )))
 				count += t.quantity();
 		audit.out( count );
 		return count.toString();
 	}
-	public  Strings iget() { return iget( null ); }
-	private Strings iget( Item item ) { // to Items class!
+	public  Strings get() { return get( null ); }
+	private Strings get( Item item ) { // to Items class!
 		audit.in( "get", "item="+ (item==null?"ALL":item.toString()));
 		Strings rc = new Strings();
 		for (Item t : this)
@@ -131,7 +126,7 @@ public class List extends ArrayList<Item> {
 				rc.add( t.toString());
 		return audit.out( rc );
 	}
-	private String iappend( Item item ) { // adjusts attributes, e.g. quantity
+	private String append( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
 		audit.in( "add", "item created is:"+ item.toXml() +", but rc="+ rc);
 		int n = index( item, false ); // exact match? No!
@@ -139,9 +134,8 @@ public class List extends ArrayList<Item> {
 			if (!item.attribute( "quantity" ).equals( "0" )) {
 				// in case: quantity='+= 37' => set it to '37'
 				Strings quantity = new Strings( item.attribute( "quantity" ));
-				if (quantity.size()==2) { // += n / -= n => n
+				if (quantity.size()==2) // += n / -= n => n
 					item.replace( "quantity", quantity.get( 1 ));
-				}
 				add( item );
 			}
 		} else { // found so update item...
@@ -151,118 +145,39 @@ public class List extends ArrayList<Item> {
 			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
 				add( n, removedItemTag );
 		}
-		value.set( list.toXml() );
+		value.set( toXml() );
 		return audit.out( rc );
 	}
 	//----------------------- end of List of Items Code --------
 
-	// member - List manages a tag which represents 
-	private Tag  list = new Tag();
-	public  Tags listTags() { return list.content(); }
-	public  Attributes attributes() { return list.attributes(); }
-	
-	private int position( Item item, boolean exact ) { // e.g. ["cake slices","2"]
-		audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
-		
-		String ilocr = item.attribute( Where.LOCATOR );
-		String ilocn = item.attribute( Where.LOCATION );
-		
-		long it = -1; // item time
-		try {
-			it = Long.valueOf( item.attribute( "WHEN" ));
-		} catch (Exception e){}
-		
-		int pos = -1;
-		for (Tag t : listTags()) {
-			pos++;
-			String tlocr = t.attribute( Where.LOCATOR );
-			String tlocn = t.attribute( Where.LOCATION );
-			long tt = -1; //tag time
-			try {
-				tt = Long.valueOf( t.attribute( "WHEN" ));
-			} catch (Exception e) {}
-			if ( (it == -1 || it == tt) // if tt == -1 && it != -i fail!
-				&& (!exact || (
-					   (ilocr.equals( "" ) || ilocr.equals( tlocr ))
-					&& (ilocn.equals( "" ) || ilocn.equals( tlocn )))
-				)
-				&&     (( exact && t.equals(  item.tag() ))
-			         || (!exact && t.matchesContent( item.tag() )))
-			 )
-				return audit.out( pos );
-		}
-		return audit.out( -1 );
-	}
-	private String quantity( Item item, boolean exact ) { // e.g. ["cake slices","2"]
-		//audit.in( "quantity", "Item="+item.toString() + ", exact="+ (exact?"T":"F"));
-		int count = 0;
-		for (Tag t : listTags() ) // go though the file
-			if (  ( exact && t.equals( item.tag() ))
-				||(!exact && t.matchesContent( item.tag() )))
-			{	int quant = 1;
-				try {
-					quant = Integer.parseInt( t.attribute( "quantity" ));
-				} catch(Exception e) {} // fail silently
-				count += quant;
-			}
-		//audit.out( count );
-		return Integer.valueOf( count ).toString();
-	}
-	public  Strings get() { return get( null ); }
-	private Strings get( Item item ) { // to Items class!
-		audit.in( "get", "item="+ (item==null?"ALL":item.toString()));
-		Strings rc = new Strings();
-		for (Tag t : listTags())
-			if (item == null || t.matches( item.tag()))
-				rc.add( new Item( t ).toString());
-		return audit.out( rc );
-	}
-	private String append( Item item ) { // adjusts attributes, e.g. quantity
-		String rc = item.toString(); // return what we've just said
-		audit.in( "add", "item created is:"+ item.toXml() +", but rc="+ rc);
-		int n = position( item, false ); // exact match? No!
-		if (-1 == n) { 
-			if (!item.attribute( "quantity" ).equals( "0" )) {
-				// in case: quantity='+= 37' => set it to '37'
-				Strings quantity = new Strings( item.attribute( "quantity" ));
-				if (quantity.size()==2) { // += n / -= n => n
-					item.replace( "quantity", quantity.get( 1 ));
-				}
-				list.content( item.tag() );
-			}
-		} else { // found so update item...
-			Tag removedItemTag = list.removeContent( n );
-			item.updateTagAttributes( removedItemTag );
-			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
-				list.content( n, removedItemTag );
-		}
-		value.set( list.toXml() );
-		return audit.out( rc );
-	}
 	private String update( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
-		int n = position( item, false ); // exact match? No!
+		int n = index( item, false ); // exact match? No!
 		if (-1 != n) { 
-			Tag removedItemTag = list.removeContent( n );
-			item.updateTagAttributes( removedItemTag );
+			Item removedItemTag = remove( n );
+			item.updateItemAttributes( removedItemTag );
 			String quantity = removedItemTag.attribute( "quantity" );
 			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
-				list.content( n, removedItemTag );
-			value.set( list.toXml() );
+				add( n, removedItemTag );
+			value.set( toXml() );
 		}
 		return audit.out( rc );
+	}
+	public String toXml() {
+		String list = "";
+		for (Item item : this)
+			list += "   "+item.toXml()+"\n";
+		return "<list>"+ list +"</list>";
 	}
 	private String removeAttribute( Item item, String name ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
 		audit.in( "removeAttribute", "item:"+ item.toXml() +", name="+ name );
-		int n = position( item, false ); // exact match? No!
+		int n = index( item, false ); // exact match? No!
 		if (-1 != n) {
-			Tag tmp = list.removeContent( n );
+			Item tmp = remove( n );
 			tmp.attributes().remove( name );
-			list.content( n, tmp );
-			item.tag( tmp );
-			value.set( list.toXml() ); // was set( lines );
+			add( n, tmp );
+			value.set( toXml() ); // was set( lines );
 		} else
 			audit.ERROR("not found "+ item.toXml());
 		return audit.out( rc );
@@ -271,21 +186,11 @@ public class List extends ArrayList<Item> {
 		Strings   rc = new Strings();
 		String upper = name.toUpperCase( Locale.getDefault() );
 		audit.in( "attributeValue", "item='"+ item.toXml() +"', name="+ upper );
-		for (Tag t : list.content())  {
-			if (item == null || t.matchesContent( item.tag())) {
+		for (Item t : this)  {
+			if (item == null || t.matchesDescription( item )) {
 				if (t.attributes().has( upper )) {
 					rc.add( t.attributes().get( upper ));
 		}	}	}
-		return audit.out( rc );
-	}
-	private Strings namedValues( String name, String value ) {
-		Strings rc = new Strings();
-		audit.in( "namedValues", "attribute="+ name +", name="+ value );
-		for (Tag t : list.content()) {
-			if (t.attributes().has( name ) && t.attributes().get( name ).equals( value )) {
-				rc.add( t.content().toString());
-		}	}
-		if (rc.size()==0) rc.add( Shell.FAIL);
 		return audit.out( rc );
 	}
 	/* this needs to include adjusting quantity downwards, as above in add()
@@ -305,11 +210,11 @@ public class List extends ArrayList<Item> {
 		 * i need 37 coffees + i have coffee
 		 */
 		int removed = 0, n;
-		if (-1 != (n = position( item, exact ))) {
+		if (-1 != (n = index( item, exact ))) {
 			/*
 			 * we have a listed item, remove the item in question...
 			 */
-			Tag tmp = list.removeContent( n );
+			Item tmp = remove( n );
 			
 			if (item.attributes().has( "quantity" )
 			  && tmp.attributes().has( "quantity" ))
@@ -323,8 +228,8 @@ public class List extends ArrayList<Item> {
 					// still some left over
 					int remaining = existing-removed;
 					tmp.replace( "quantity", Integer.valueOf( remaining ).toString() );
-					tmp.content( item.content() ); // will replace crisp with crisps...
-					list.content( n, tmp );              // ...and some coffee with coffees! hmm???
+					tmp.description( item.description() ); // will replace crisp with crisps...
+					add( n, tmp );              // ...and some coffee with coffees! hmm???
 				}
 				// return what is left over...
 				item.replace( "quantity", Integer.valueOf( removed ).toString() );
@@ -333,12 +238,12 @@ public class List extends ArrayList<Item> {
 				 * ...or, as before, remove whole item or all items...
 					// i need milk/i have 37 milks
 				 */
-				if (( exact && tmp.equals( item.tag() ))
-				 || (!exact && tmp.matches( item.tag() ))) {
+				if (( exact && tmp.equals( item ))
+				 || (!exact && tmp.matches( item ))) {
 					removed = 1;
 			}	}
 			if (removed > 0) {
-				value.set( list.toString() ); // put list back...
+				value.set( toXml() ); // put list back...
 				rc = item.toString(); // prepare return value
 		}	}
 		audit.out( rc );
@@ -348,8 +253,8 @@ public class List extends ArrayList<Item> {
 		/*
 		 * moves the content of one list to another.
 		 */
-		while (l.listTags().size() > 0)
-			append( new Item( l.listTags().remove( 0 )));
+		while (l.size() > 0)
+			append( new Item( l.remove( 0 )));
 
 		return true;
 	}
@@ -366,7 +271,7 @@ public class List extends ArrayList<Item> {
 		 */
 		String lastParam = params.get( params.size() - 1 );
 		// also need when='any' !
-		return position( item,
+		return index( item,
 				!(lastParam.equals( "quantity='some'" )
 				||lastParam.equals( "quantity='any'" ))) != -1;
 	}
@@ -442,14 +347,6 @@ public class List extends ArrayList<Item> {
 							).toString( Reply.andListFormat())
 					);
 						
-				} else if (cmd.equals( "getWhere" )) {
-					// Typically: getWhere _user meeting where value='the pub'
-					item = null; // item built with name embedded :(
-					rca.add(
-							list.namedValues( sa.get( 0 ),
-									new Attribute( sa.get( 1 )).value()
-							).toString( Reply.andListFormat())
-					);
 						
 				} else if (cmd.equals( "quantity" )) {
 					rca.add( list.quantity( item, false ));
@@ -459,7 +356,7 @@ public class List extends ArrayList<Item> {
 					rca.add( list.remove( item, false ));
 					
 				} else if (cmd.equals( "removeAny" )) {
-					while (-1 != list.position( item, false ))
+					while (-1 != list.index( item, false ))
 						list.remove( item, false );
 					rca.add( Shell.SUCCESS );
 					
@@ -502,20 +399,12 @@ public class List extends ArrayList<Item> {
 	static public void test( String cmd, String result ) {test( -1, cmd, result );}
 	
 	public static void main( String[] argv ) {
-		// Audit.turnOn();
+		
+		//Audit.allOn();
+		
 		// Audit.runtimeDebug = true;
 		// Audit.tracing = true;
 		// localDebug = true;
-
-		List l = new List( "_user", "meeting" );
-		audit.log( "mn index="+ l.index(    new Item()
-											.description( new Strings( "martin" ))
-											.attributes( new Attributes().add( "location", "the pu" )), true ));
-		audit.log( "mx  posn="+ l.position( new Item()
-											.description( new Strings( "martin" ))
-											.attributes( new Attributes().add( "location", "the pb" )), true  ));
-		audit.log( ">>>"+ l.iget());
-		System.exit( 0 );
 
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );

@@ -8,8 +8,6 @@ import org.enguage.util.Audit;
 import org.enguage.util.Number;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.util.Tag;
-import org.enguage.util.Tags;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
@@ -25,11 +23,6 @@ public class Item {
 	static public  Strings format() { return format; }
 
 	public Item() { name( "item" ); }
-	public Item( Tag t ) {
-		this();
-		description( t.content().get( 0 ).prefix());
-		attributes( t.attributes());
-	}
 	public Item( Strings ss ) { // [ "black", "coffee", "quantity='1'", "unit='cup'" ]
 		this();
 		Attributes  a = new Attributes();
@@ -44,14 +37,19 @@ public class Item {
 		description(  descr );
 		attributes( a );
 	}
-	public Item( Strings ss, Attributes as ) { // [ "black", "coffee", "quantity='1'"], [unit='cup']
+	public Item( Strings ss, Attributes as ) {
+		// [ "black", "coffee", "quantity='1'"], [unit='cup']
 		this( ss );
 		attributes().addAll( as );
 	}
-	public Item( String s ) { this( new Strings( s ).contract( "=" )); } // "black coffee quantity='1' unit='cup'
+	public Item( String s ) {
+		// "black coffee quantity='1' unit='cup'
+		this( new Strings( s ).contract( "=" ));
+	}
 	public Item( Item item ) { // copy c'tor
-		this( item.content().size()>0 ? item.content().get( 0 ).prefix().toString() : "" );
-		attributes( new Attributes( item.attributes()) );
+		this();
+		description( new Strings( item.description() ));
+		attributes( new Attributes( item.attributes() ));
 	}
 	
 	// members to implement tag member: name, desc, attr
@@ -66,7 +64,7 @@ public class Item {
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Item       attributes( Attributes a ) { attrs=a; return this; }
-	public  String     attribute( String name ) { return tag().attributes().get( name ); }
+	public  String     attribute( String name ) { return attributes().get( name ); }
 	
 	// -- list helpers
 	public long when() {
@@ -91,69 +89,19 @@ public class Item {
 		return Plural.singular( descr ).equals( Plural.singular( patt.description() ));
 	}
 	public boolean matches( Item patt ) {
-		return descr.contains( patt.description() ) &&
+		return Plural.singular( descr ).contains( Plural.singular( patt.description() )) &&
 				attributes().matches( patt.attributes());
 	}
 	public boolean matchesDescription( Item patt ){
-		return descr.contains( patt.description() );
+		return Plural.singular( descr ).contains( Plural.singular( patt.description() ));
 	}
 	// -----------------------------------------
-	public  void       tag( Tag t ) { //tag = t;
-		attributes( t.attributes());
-		description( t.prefix());
-	}
-	public  Tag        tag()        {
-		Tag t = new Tag().name( "item" ).attributes( attributes());
-		if (description().size() > 0)
-			t.content( new Tag().prefix( description()) );
-		return t;
-	}
-	
-	public  Tags       content()    {
-		Tags ts = new Tags();
-		ts.add( new Tag().prefix( description() ));
-		return ts;
-	}
 	public  void       replace( String name, String value ) {
 		attributes().remove( name );
 		attributes().add( new Attribute( name, value ));
 	}
-	
-	public void updateTagAttributes( Tag t ) {
-		Attributes as = tag().attributes();
-		audit.in( "update", as.toString() );
-		for (Attribute a : as) {
-			String value = a.value(),
-					name = a.name();
-			if (name.equals( "quantity" )) {
-				/*
-				 * should getNumber() and combine number from value.
-				 */
-				Strings vs = new Strings( value );
-				if (vs.size() == 2) {
-					/*
-					 * combine magnitude - replace if both absolute, add if relative etc.
-					 * Should be in Number? Should deal with "1 more" + "2 more" = "3 more"
-					 */
-					String firstVal = vs.get( 0 ), secondVal = vs.get( 1 );
-					if (secondVal.equals( Number.MORE ) || secondVal.equals( Number.FEWER )) {
-						int oldInt = 0, newInt = 0;
-						try {
-							oldInt = Integer.valueOf( t.attribute( name ));
-						} catch (Exception e) {} // fail silently, oldInt = 0
-						try {
-							newInt = Integer.valueOf( firstVal );
-							value = Integer.toString( oldInt + (secondVal.equals( Number.MORE )
-									? newInt : -newInt));
-							
-						} catch (Exception e) {}
-			}	}	}
-			t.replace( a.name(), value );
-		}
-		audit.out();
-	}
 	public void updateItemAttributes( Item it ) {
-		Attributes as = tag().attributes();
+		Attributes as = attributes();
 		audit.in( "update", as.toString() );
 		for (Attribute a : as) {
 			String value = a.value(),
