@@ -15,7 +15,6 @@ import org.enguage.vehicle.where.Where;
 
 public class List {
 	private static       Audit        audit = new Audit( "List" );
-	private static       boolean localDebug = false;
 	public  static final String        NAME = "list";
 	
 	Value value; // instead of extending this class...
@@ -94,25 +93,19 @@ public class List {
 		audit.in( "add", "item created is:"+ item.toXml() +", but rc="+ rc);
 		int n = position( item, false ); // exact match? No!
 		if (-1 == n) { 
-			audit.debug( "List.add(): item not found, so add whole item." );
 			if (!item.attribute( "quantity" ).equals( "0" )) {
 				// in case: quantity='+= 37' => set it to '37'
 				Strings quantity = new Strings( item.attribute( "quantity" ));
-				audit.debug("adding quant:"+ quantity.toString());
 				if (quantity.size()==2) { // += n / -= n => n
 					item.replace( "quantity", quantity.get( 1 ));
-					audit.debug( "quant is now:"+ item.attribute( "quantity" ) +":"+ quantity.get( 1 ));
 				}
-				audit.debug( "adding--->" + item.description() );
 				list.content( item.tag() );
 			}
 		} else { // found so update item...
 			Tag removedItemTag = list.removeContent( n );
 			item.updateTagAttributes( removedItemTag );
-			audit.debug( "updated--->" + removedItemTag.toXml() );
 			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) ||
-				Integer.valueOf( quantity ) != 0)
+			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
 				list.content( n, removedItemTag );
 		}
 		value.set( list.toXml() );
@@ -120,15 +113,12 @@ public class List {
 	}
 	private String update( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
-		audit.in( "update", "item created is:"+ item.toXml() +", but rc="+ rc);
 		int n = position( item, false ); // exact match? No!
 		if (-1 != n) { 
 			Tag removedItemTag = list.removeContent( n );
 			item.updateTagAttributes( removedItemTag );
-			audit.debug( "updated--->" + removedItemTag.toXml() );
 			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) ||
-				Integer.valueOf( quantity ) != 0)
+			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
 				list.content( n, removedItemTag );
 			value.set( list.toXml() );
 		}
@@ -142,7 +132,6 @@ public class List {
 			Tag tmp = list.removeContent( n );
 			tmp.attributes().remove( name );
 			list.content( n, tmp );
-			audit.debug("setting content to "+ tmp.toString());
 			item.tag( tmp );
 			value.set( list.toXml() ); // was set( lines );
 		} else
@@ -156,7 +145,6 @@ public class List {
 		for (Tag t : list.content())  {
 			if (item == null || t.matchesContent( item.tag())) {
 				if (t.attributes().has( upper )) {
-					audit.debug( "found: "+ upper +"='"+ t.attributes().get( upper ) +"'");
 					rc.add( t.attributes().get( upper ));
 		}	}	}
 		return audit.out( rc );
@@ -165,9 +153,7 @@ public class List {
 		Strings rc = new Strings();
 		audit.in( "namedValues", "attribute="+ name +", name="+ value );
 		for (Tag t : list.content()) {
-			audit.debug( "getting: "+ name +"='"+ value +"'");
 			if (t.attributes().has( name ) && t.attributes().get( name ).equals( value )) {
-				audit.debug( "getting: "+ name +"='"+ t.attributes().get( name ) +"'");
 				rc.add( t.content().toString());
 		}	}
 		if (rc.size()==0) rc.add( Shell.FAIL);
@@ -202,17 +188,14 @@ public class List {
 				int existing = Integer.valueOf(  tmp.attribute( "quantity" ));
 				     removed = Integer.valueOf( item.attribute( "quantity" ));
 				if (removed >= existing) {
-					if (localDebug) audit.debug( "Limiting "+ removed +" to "+ existing );
 					removed = existing; // back to zero
 					tmp = null;
 				} else { //if (existing > removed) {
 					// still some left over
 					int remaining = existing-removed;
-					if (localDebug) audit.debug( "still "+ remaining +" left over" );
 					tmp.replace( "quantity", Integer.valueOf( remaining ).toString() );
 					tmp.content( item.content() ); // will replace crisp with crisps...
 					list.content( n, tmp );              // ...and some coffee with coffees! hmm???
-					//item.tag( new Tag( tmp ));           // update item, too...
 				}
 				// return what is left over...
 				item.replace( "quantity", Integer.valueOf( removed ).toString() );
@@ -223,7 +206,6 @@ public class List {
 				 */
 				if (( exact && tmp.equals( item.tag() ))
 				 || (!exact && tmp.matches( item.tag() ))) {
-					audit.debug( "removed item:"+ tmp.toString());
 					removed = 1;
 			}	}
 			if (removed > 0) {
@@ -254,7 +236,6 @@ public class List {
 		 * i.e. a+b+c? with a+b =>false
 		 */
 		String lastParam = params.get( params.size() - 1 );
-		audit.debug( "last param is:"+ lastParam );
 		// also need when='any' !
 		return position( item,
 				!(lastParam.equals( "quantity='some'" )
@@ -301,11 +282,9 @@ public class List {
 			 */
 			Attributes as = new Attributes();
 			Strings rca = new Strings();
-			if (localDebug) audit.debug( "params>"+ paramsList +"<");
 			
 			for (Strings params : paramsList.divide( "and" )) {
 				Item item = new Item( params, as );
-				if (localDebug) audit.debug( "item:"+ item.toXml());
 				
 				if (cmd.equals( "exists" )) {
 					if (list.exists( item, params )) {
@@ -336,7 +315,6 @@ public class List {
 						
 				} else if (cmd.equals( "getWhere" )) {
 					// Typically: getWhere _user meeting where value='the pub'
-					audit.debug( "item is: "+ item.toXml());
 					item = null; // item built with name embedded :(
 					rca.add(
 							list.namedValues( sa.get( 0 ),
@@ -345,7 +323,6 @@ public class List {
 					);
 						
 				} else if (cmd.equals( "quantity" )) {
-					audit.debug("itemParams="+ params.toString());
 					rca.add( list.quantity( item, false ));
 					
 				} else if (cmd.equals( "remove" )) {
