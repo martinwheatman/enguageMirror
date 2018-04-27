@@ -98,6 +98,11 @@ public class Attributes extends ArrayList<Attribute> {
 		}
 		return "";
 	}
+	public Attributes replace( String name, String value ) {
+		remove( name );
+		add( new Attribute( name, value ));
+		return this;
+	}
 	public String remove( String name ) {
 		Iterator<Attribute> i = iterator();
 		while (i.hasNext()) {

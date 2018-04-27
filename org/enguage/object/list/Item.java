@@ -64,7 +64,8 @@ public class Item {
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Item       attributes( Attributes a ) { attrs=a; return this; }
-	public  String     attribute( String name ) { return attributes().get( name ); }
+	public  String     attribute( String name ) { return attrs.get( name ); }
+	public  void       replace( String name, String val ) { attrs.replace( name, val );}
 	
 	// -- list helpers
 	public long when() {
@@ -96,14 +97,9 @@ public class Item {
 		return Plural.singular( descr ).contains( Plural.singular( patt.description() ));
 	}
 	// -----------------------------------------
-	public  void       replace( String name, String value ) {
-		attributes().remove( name );
-		attributes().add( new Attribute( name, value ));
-	}
 	public void updateItemAttributes( Item it ) {
-		Attributes as = attributes();
-		audit.in( "update", as.toString() );
-		for (Attribute a : as) {
+		// update quantity, then replace/add others/all?
+		for (Attribute a : attrs) {
 			String value = a.value(),
 					name = a.name();
 			if (name.equals( "quantity" )) {
@@ -129,10 +125,8 @@ public class Item {
 							
 						} catch (Exception e) {}
 			}	}	}
-			it.replace( a.name(), value );
-		}
-		audit.out();
-	}
+			it.replace( name, value );
+	}	}
 	public String counted( Float num, String val ) {
 		// N.B. val may be "wrong", e.g. num=1 and val="coffees"
 		if (val.equals("1")) return "a";
