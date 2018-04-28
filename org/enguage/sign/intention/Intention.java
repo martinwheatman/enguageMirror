@@ -239,7 +239,7 @@ public class Intention {
 	private Reply andFinally( Reply r ) { return perform( r, true ); }
 	
 	private Reply perform( Reply r, boolean ignore ) {
-		audit.in( "perform", "value='"+ value +"'" );
+		audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"));
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
 		
@@ -262,7 +262,7 @@ public class Intention {
 		
 		audit.debug( "performing: "+ cmd.toString());
 		String rawAnswer = new Sofa().doCall( new Strings( cmd ));
-		if (!ignore) r.rawAnswer( rawAnswer, cmd.get( 1 ) );
+		if (!ignore) r.rawAnswer( rawAnswer, cmd.get( 1 ));
 
 		return (Reply) audit.out( r );
 	}

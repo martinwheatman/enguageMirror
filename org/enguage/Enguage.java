@@ -219,12 +219,15 @@ public class Enguage extends Shell {
 			interpret( "i need biscuits",       "ok, you need biscuits" );
 			interpret( "i need coffee",         "ok, you need coffee" );
 			interpret( "it is from sainsburys", "ok, it is from sainsburys" );
-			interpret( "what do i need", "you need biscuits , and coffee from sainsburys" );
+			interpret( "what do i need",        "you need biscuits , and coffee from sainsburys" );
 			
 			clearTheNeedsList();
-			interpret( "i need milk and coffee", "ok, you need milk and coffee" );
-			interpret( "they are from sainsburys",   "ok, they are from sainsburys" );
-			interpret( "what do i need", "you need milk from sainsburys, and coffee from sainsburys" );
+			interpret( "i need milk and coffee",   "ok, you need milk and coffee" );
+			interpret( "they are from sainsburys", "ok, they are from sainsburys" );
+			interpret( "what do i need",           "you need milk from sainsburys, and coffee from sainsburys" );
+			interpret( "group by",                 "sorry, i need to know what to group by" );
+			interpret( "group by location",        "ok" );
+			interpret( "what do i need",           "you need milk, and coffee from sainsburys" );
 			
 			audit.title( "The Non-Computable concept of NEED" );
 			clearTheNeedsList();
@@ -621,7 +624,7 @@ public class Enguage extends Shell {
 					   "ok, you need milk from the dairy aisle" );
 			
 			interpret( "what do i need",
-					   "you need biscuits, and milk from the dairy aisle" );
+					   "you need biscuits; and, milk from the dairy aisle" );
 			
 			interpret( "from the dairy aisle what do i need",
 					   "you need milk from the dairy aisle" );
