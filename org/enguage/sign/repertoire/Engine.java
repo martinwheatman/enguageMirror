@@ -1,7 +1,10 @@
 package org.enguage.sign.repertoire;
 
+import java.util.Locale;
+
 import org.enguage.Enguage;
 import org.enguage.object.Variable;
+import org.enguage.object.list.Item;
 import org.enguage.sign.Sign;
 import org.enguage.sign.Signs;
 import org.enguage.sign.intention.Intention;
@@ -84,6 +87,7 @@ public class Engine {
 			new Sign().concept( NAME ).pattern( new Patternette(          "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
 			new Sign().concept( NAME ).pattern( new Patternette( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
 			new Sign().concept( NAME ).pattern( new Patternette( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
+			new Sign().concept( NAME ).pattern( new Patternette( "group by",  "x" )).appendIntention( Intention.allop, "groupby X" ),
 			
 //			new Sign().concept( NAME ).content( new Patternette("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
 			
@@ -170,6 +174,14 @@ public class Engine {
 			r.format( answer );
 			if (!answers.contains( answer ))
 				r.userDNU();
+			
+		} else if ( cmd.equals( "groupby" )) {
+			
+			r.format( Reply.success());
+			if (cmds.size() > 0 && !cmds.get( 0 ).equals( "X" ))
+				Item.groupOn( cmds.get( 0 ).toUpperCase( Locale.getDefault()));
+			else
+				r.format( Reply.failure() +", i need to know what to group by" );
 			
 		} else if ( cmd.equals( "undo" )) {
 			Enguage e = Enguage.get();

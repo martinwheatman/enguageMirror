@@ -216,16 +216,19 @@ public class Enguage extends Shell {
 		if ( level == 0 || level == 1 ) {
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
-			interpret( "i need biscuits",       "ok, you need biscuits" );
-			interpret( "i need coffee",         "ok, you need coffee" );
-			interpret( "it is from sainsburys", "ok, it is from sainsburys" );
-			interpret( "what do i need", "you need biscuits , and coffee from sainsburys" );
-			
-			clearTheNeedsList();
-			interpret( "i need milk and coffee", "ok, you need milk and coffee" );
+			interpret( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
 			interpret( "they are from sainsburys",   "ok, they are from sainsburys" );
-			interpret( "what do i need", "you need milk from sainsburys, and coffee from sainsburys" );
+			interpret( "i need a pint of milk",      "ok, you need a pint of milk" );
+			interpret( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
+			interpret( "i need cheese and eggs from the dairy aisle",
+					                                 "ok, you need cheese and eggs" );
+			interpret( "group by",                   "sorry, i need to know what to group by" );
+			interpret( "group by location",          "ok" );
 			
+			interpret( "what do i need from sainsburys", "you need biscuits, and coffee from sainsburys" );
+
+			interpret( "what do i need from the dairy aisle", "you need a pint of milk, cheese, and eggs from the dairy aisle" );
+						
 			audit.title( "The Non-Computable concept of NEED" );
 			clearTheNeedsList();
 			interpret( "what do i need",	         "you don't need anything" );
@@ -621,7 +624,7 @@ public class Enguage extends Shell {
 					   "ok, you need milk from the dairy aisle" );
 			
 			interpret( "what do i need",
-					   "you need biscuits, and milk from the dairy aisle" );
+					   "you need biscuits; and, milk from the dairy aisle" );
 			
 			interpret( "from the dairy aisle what do i need",
 					   "you need milk from the dairy aisle" );

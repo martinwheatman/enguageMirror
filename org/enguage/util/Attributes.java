@@ -203,7 +203,7 @@ public class Attributes extends ArrayList<Attribute> {
 	public String deref( String value, boolean expand ) {
 		return deref( new Strings( value ), expand ).toString( Strings.SPACED );
 	}
-	public static Strings stripValues( Strings sa ) {
+	public static Strings expandValues( Strings sa ) {
 		ListIterator<String> si = sa.listIterator();
 		while (si.hasNext()) {
 			String s = si.next();

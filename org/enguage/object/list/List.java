@@ -117,18 +117,18 @@ public class List extends ArrayList<Item> {
 		audit.out( count );
 		return count.toString();
 	}
-	public  Strings get() { return get( null ); }
-	private Strings get( Item item ) { // to Items class!
-		audit.in( "get", "item="+ (item==null?"ALL":item.toString()));
-		Strings rc = new Strings();
-		for (Item t : this)
-			if (item == null || t.matches( item ))
-				rc.add( t.toString());
-		return audit.out( rc );
+	public  String toString() { return toString( null ); }
+	private String toString( Item pattern ) { // to Items class!
+		audit.in( "get", "item="+ (pattern==null?"ALL":pattern.toString()));
+		Groups g=new Groups();
+		for (Item item : this)
+			if (pattern == null || item.matches( pattern ))
+				g.add( item.group(), item.toString());
+		return audit.out( g.toString());
 	}
 	private String append( Item item ) { // adjusts attributes, e.g. quantity
-		String rc = item.toString(); // return what we've just said
-		audit.in( "add", "item created is:"+ item.toXml() +", but rc="+ rc);
+		String rc = item.toString()+ " "+ item.group(); // return what we've just said
+		audit.in( "add", item.toXml() +" ("+ rc +")" );
 		int n = index( item, false ); // exact match? No!
 		if (-1 == n) { 
 			if (!item.attribute( "quantity" ).equals( "0" )) {
@@ -307,7 +307,7 @@ public class List extends ArrayList<Item> {
 				
 		} else if (sa.size() == 0) {
 			if (cmd.equals("get"))
-				rc = list.get().toString( Reply.andListFormat());
+				rc = list.toString();
 			
 		} else {
 			Strings paramsList = new Strings( sa );
@@ -318,6 +318,7 @@ public class List extends ArrayList<Item> {
 			Strings rca = new Strings();
 			
 			for (Strings params : paramsList.divide( "and" )) {
+
 				Item item = new Item( params, as );
 				
 				if (cmd.equals( "exists" )) {
@@ -366,11 +367,8 @@ public class List extends ArrayList<Item> {
 				} else if (cmd.equals( "update" )) {
 					rca.add( list.update( item ));
 					
-				} else if (cmd.equals("get"))
-					rca.add(
-							list.get( item ).toString(
-									Reply.andListFormat()
-					)		);
+				} else if (cmd.equals( "get" ))
+					rca.add( list.toString( item ));
 			}
 			// some (e.g. get) may have m-values, some (e.g. exists) only one
 			rc = rca.size() == 0 ?
@@ -406,6 +404,17 @@ public class List extends ArrayList<Item> {
 		// Audit.tracing = true;
 		// localDebug = true;
 
+		List l = new List( "martin", "needs" );
+		l.append( new Item( "coffee   unit='cup' quantity='1' locator='from' location='Sainsburys'"   ));
+		l.append( new Item( "biscuits            quantity='1' locator='from' location='Sainsburys'"   ));
+		l.append( new Item( "locator='from' unit='pint' quantity='1' location='the dairy aisle' milk" ));
+		audit.log( "martin needs: "+ l.toString());
+		
+		Item.format( "QUANTITY,UNIT of,,LOCATOR LOCATION" );
+		Item.groupOn( "LOCATION" );
+		audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
+		System.exit( 0 );
+		
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );

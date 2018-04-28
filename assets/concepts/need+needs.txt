@@ -47,12 +47,12 @@ On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 	then, reply "ok, SUBJECT needs ...".
 
 ###### Pronoun ancillaries - it is/they are from X #######
-On "the PHRASE-OBJECT is LOCATOR LOCATION": #  LOCATOR LOCATION are implied anyway!
+On "the PHRASE-OBJECT is": # LOCATOR PHRASE-LOCATION": #  LOCATOR LOCATION are implied anyway!
 	perform "list update SUBJECT needs OBJECT";
 	then, reply "ok, OBJECT is LOCATOR LOCATION".
 
 On "it is": # do we need to unset LOCs?
-	the OBJECT is LOCATOR LOCATION;
+	the OBJECT is;
 	then, reply "ok, it is LOCATOR LOCATION".
 
 On "the PHRASE-OBJECTS are":
@@ -60,7 +60,7 @@ On "the PHRASE-OBJECTS are":
 	then, reply "ok, OBJECTS are LOCATOR LOCATION".
 	
 On "they are":
-	the OBJECTS are LOCATOR LOCATION;
+	the OBJECTS are;
 	then, reply "ok, they are LOCATOR LOCATION".
 	
 ### does not need...

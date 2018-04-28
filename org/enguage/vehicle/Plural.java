@@ -107,7 +107,16 @@ public class Plural {
 		return i==1 ? Plural.singular( s ) : Plural.plural( s );
 	}
 	public static String ise( Float f, String s ) {
-		return f.isNaN() ? s : f==1.0 ? Plural.singular( s ) : Plural.plural( s );
+		return (s==null || s.equals( "" )) ?
+				null
+				: f.isNaN() ?
+						s
+						: f==1.0 ?
+								Plural.singular( s )
+								: Plural.plural( s );
+	}
+	public static String ise( Float f, Strings strs ) {
+		return ise( f, strs.toString() );
 	}
 	public static Strings ise( Strings s ) {
 		boolean pl = false;

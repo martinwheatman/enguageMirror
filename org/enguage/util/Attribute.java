@@ -67,6 +67,7 @@ public class Attribute {
 		return -1 != (n = s.indexOf("=")) ? s.substring( 0, n ) : s;
 	}
 	static public Strings expandValues( String s ) {
+		// "fred" => "fred" || "name='value'" => "value" || name='v1 n2="v2" v3' => "v1 v2 v3"
 		Strings rc = new Strings();
 		for (String item : new Strings( s ).contract( "=" ))
 			if (isAttribute( item ))
