@@ -216,6 +216,7 @@ public class Enguage extends Shell {
 		if ( level == 0 || level == 1 ) {
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
+			
 			interpret( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
 			interpret( "they are from sainsburys",   "ok, they are from sainsburys" );
 			interpret( "i need a pint of milk",      "ok, you need a pint of milk" );
