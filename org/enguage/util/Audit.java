@@ -2,13 +2,10 @@ package org.enguage.util;
 
 import java.util.GregorianCalendar;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Indent;
-import org.enguage.util.Strings;
-
 public class Audit {
 	private              String     name = "";
-	static private       Strings   stack = new Strings();
+	static private       Strings   stack = new Strings( "zeroStack" );
+
 	// global DEBUG switches...
 	static       public  boolean  startupDebug = false;
 	static final public  boolean  numericDebug = false;
@@ -40,7 +37,7 @@ public class Audit {
 	public  static void   incr() { indent.incr(); }
 	public  static void   decr() { indent.decr(); }
 
-	private static long then =  new GregorianCalendar().getTimeInMillis();
+	private static long then = new GregorianCalendar().getTimeInMillis();
 	public  static long interval() {
 		long now = new GregorianCalendar().getTimeInMillis();
 		long rc = now - then;
@@ -59,7 +56,7 @@ public class Audit {
 	
 	public void   FATAL( String msg ) { LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 ); }
 	public void   FATAL( String phrase, String msg ) { FATAL( phrase +": "+ msg ); }
-	public void   ERROR( String info ) { System.err.println( "ERROR: " + name +": "+ info);}
+	public void   ERROR( String info ) { System.err.println( "ERROR: " + name +"."+ stack.get( 0 ) +"(): "+ info);}
 	public int    log( int    info ) { log( ""+ info ); return info; }
 	public String LOG( String info ) { // ignores suspended value
 		indent.print( System.out );
@@ -87,27 +84,27 @@ public class Audit {
 		// in the traceIn() call being performed at runtime.
 		if (tracing || allTracing) {
 			stack.prepend( fn );
-			log( "IN  "+ name +"."+ stack.get( 0 ) +"("+ (info==null?"":" "+ info +" ") +")");
+			log( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
 			indent.incr();
 	}	}
 	public String out( String result ) {
 		if (tracing || allTracing) {
 			indent.decr();
 			log( "OUT "+ name +"."
-					+ (null==stack || 0==stack.size()? "traceOutNullStack" : stack.get( 0 ))
-					+ (result==null?"":" => "+ result)
+					+ stack.get( 0 )
+					+ (result==null ? "" : " => "+ result)
 				);
 			if (stack.size() > 0) stack.remove( 0 );
 		}
 		return result;	
 	}
 	public void    out() { out( (String)null ); }
-	public Strings out( Strings sa ) { out( sa!=null?"["+sa.toString(Strings.DQCSV)+"]":"<null>"); return sa; }
+	public Strings out( Strings s ) { out( s!=null?"["+s.toString(Strings.DQCSV)+"]":"<null>"); return s; }
 	public boolean out( boolean b ) { out( Boolean.toString( b )); return b; }
-	public int     out( int   n ) { out( Integer.toString( n )); return n;}
-	public Float   out( Float f ) { out( Float.toString( f )); return f;}
-	public long    out( long  l ) { out( Long.toString(  l )); return l;}
-	public Object  out( Object o ) { out( o==null?"null":o.toString()); return o;}
+	public int     out( int     n ) { out( Integer.toString( n )); return n; }
+	public Float   out( Float   f ) { out( Float.toString(   f )); return f; }
+	public long    out( long    l ) { out( Long.toString(    l )); return l; }
+	public Object  out( Object  o ) { out( o==null ? "null" : o.toString()); return o;}
 	
 	public void title( String title ) {
 		String underline = "";
