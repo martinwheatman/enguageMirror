@@ -17,11 +17,6 @@ public class Function {
 	static public  String  NAME = "function";
 	static private Audit  audit = new Audit( "Function" );
 	
-	// TODO: should be a tree!
-	static private Strings list = new Strings();
-	static public  void    functionIs( String fn ) { list.append( fn );}
-	static public  boolean isFunction( String fn ) { return list.contains( fn );}
-	
 	public Function( String nm ) { name = nm; } // find
 	public Function( String nm, Strings params, String body ) {
 		this( nm );
@@ -33,9 +28,7 @@ public class Function {
 	
 	private Lambda lambda = null;
 	
-	public  String toString() { return NAME +" "+ name + lambda==null ? "<null>" : lambda.toString();}
-	
-	static public String create( String name, Strings args ) {
+	static private String create( String name, Strings args ) {
 		// args=[ "x and y", "/", "body='x + y'" ]
 		audit.in( "create", "name="+ name +", args="+ args.toString( Strings.DQCSV ));
 		
@@ -52,7 +45,7 @@ public class Function {
 		
 		return audit.out( Shell.SUCCESS );
 	}
-	private static Function getFunction( String name, Strings values ) {
+	static private Function getFunction( String name, Strings values ) {
 		audit.in( "getFunction", name +", "+ values.toString("[", ", ", "]"));
 		Function fn = new Function( name );
 		fn.lambda = new Lambda( name, values );
@@ -71,7 +64,7 @@ public class Function {
 						argv.derefVariables() );
 		return audit.out( ss );
 	}
-	static public String evaluate( String name, Strings argv ) {
+	static private String evaluate( String name, Strings argv ) {
 		audit.in(  "evaluate", argv.toString( Strings.DQCSV ));
 		String  rc = Reply.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
@@ -106,12 +99,12 @@ public class Function {
 		}
 		return audit.out( rc );
 	}
-	// test code below!
-	static private void create( String fn, String formals, String body ) {
+	// === test code below! ===
+	static private void testCreate( String fn, String formals, String body ) {
 		audit.log( "The "+ fn +" of "+ formals +" is "+ body );
 		interpret( new Strings( "create "+ fn +" "+ formals +" / body='"+ body +"'" ));
 	}
-	static private void query( String fn, String actuals ) {
+	static private void testQuery( String fn, String actuals ) {
 		audit.log( "What is the "+ fn +" of "+ actuals );
 		String eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
 		audit.log( eval.equals( Reply.dnk()) ?
@@ -125,20 +118,20 @@ public class Function {
 		else {
 			Reply.dnk( "I do not know" );
 			//Audit.traceAll( true );
-			query(  "sum", "1 , 1" );
+			testQuery(  "sum", "1 , 1" );
 			
-			create( "sum", "a and b", "a + b" );
-			query(  "sum", "3 and 2" );
+			testCreate( "sum", "a and b", "a + b" );
+			testQuery(  "sum", "3 and 2" );
 			
-			create( "sum", "a b c and d", "a + b + c + d" );
-			query(  "sum", "4 and 3 and 2 and 1" );
+			testCreate( "sum", "a b c and d", "a + b + c + d" );
+			testQuery(  "sum", "4 and 3 and 2 and 1" );
 			
 			audit.log( "setting x to 1" );
 			Variable.set( "x", "1" );
 			audit.log( "setting y to 2" );
 			Variable.set( "y", "2" );
-			query(  "sum", "x and y" );
+			testQuery(  "sum", "x and y" );
 			
-			create( "factorial", "1", "1" );
-			query(  "factorial", "6" );
+			testCreate( "factorial", "1", "1" );
+			testQuery(  "factorial", "6" );
 }	}	}

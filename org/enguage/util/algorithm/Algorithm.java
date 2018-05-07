@@ -32,32 +32,17 @@ public class Algorithm {
 	String  function() { return fnName.toString()+"("+ params.toString()+") { return "+ body +" } "; }
 	
 	static ArrayList<Algorithm> functions = new ArrayList<Algorithm>();
-	static public void    save(  Algorithm a ) { functions.add( a );}
-	static public boolean saved( String name ) {
-		for (Algorithm e : functions )
-			if (name.equals( e.fnName ))
-				return true;
-		return false;
-	}
-	static public int params( String name ) {
-		for (Algorithm e : functions )
-			if (name.equals( e.fnName ))
-				return e.params.size();
-		return -1;
-	}
+	static private void    save(  Algorithm a ) { functions.add( a );}
 	
 	// -- ok below!
-	static int algFail = 0;
-	public boolean getAlgorithm( ListIterator<String> li ) {
+	static  private int algFail = 0;
+	private boolean getAlgorithm( ListIterator<String> li ) {
 		audit.in( "getAlgorithm", Strings.peek( li ));
 		return audit.out(     Strings.getWord(     li, "the", representamen ) && 0 != (algFail = 1) &&
 			null != (fnName = Strings.getWords(    li,  "of", representamen ))&& 0 != (algFail = 2) &&
 			null != (params = Parameters.getFormal(li,  "is", representamen ))&& 0 != (algFail = 3) &&
 			null != (body   = Expression.getExpr(  li,        representamen ))&& 0 != (algFail = 4) &&
 			!li.hasNext());
-	}
-	public String toString() {
-		return representamen.toString() +"/"+ function();
 	}
 	// ---- test code ----
 	static private void algorithmTest( String s, boolean pass ) {

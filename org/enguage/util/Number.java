@@ -37,7 +37,7 @@ public class Number {
 	/* 
 	 * Much as this project is about CONNOTATIONALISM, numbers (and their descriptions)
 	 * have a denotational dimension. Something like:
-	 * a [few|couple of|] }
+	 * a [few|couple of|] |
 	 * about              } [<numeric: digits[{OP digits}]               { [more|less|]
 	 * another            }          [[all|]squared|cubed][OP numeric]>]
 	 * 
@@ -274,12 +274,14 @@ public class Number {
 			if (si.hasNext())
 				append( si.next() );
 	}
-	private void removen( ListIterator<String> si, int n ) {
+	private String removen( ListIterator<String> si, int n ) {
 		int size = repSize;
 		for (int j=0; j<n; j++) {
 			token = si.previous();
 			representamen.remove( --size );
-	}	}
+		}
+		return token;
+	}
 	/* NB Size relates to the numbers of words representing
 	 * the number. So "another three" is 2
 	 */
@@ -292,6 +294,7 @@ public class Number {
 		op = nextOp = "";
 	}
 
+	// properties of a number...
 	private boolean relative = false;
 	public  boolean relative() { return relative; }
 	public  Number  relative( boolean b ) { relative = b; return this; }
@@ -308,7 +311,7 @@ public class Number {
 	public  boolean integer() { return integer; }
 	public  Number  integer( boolean b ) { integer = b; return this; }
 	
-	boolean valued = false;
+	private boolean valued = false;
 	private Float  magnitude = Float.NaN;
 	public  Number magnitude( Float f ) { magnitude = f; return this; }
 	public  Float  magnitude() {
@@ -325,20 +328,17 @@ public class Number {
 	public String magnitudeToString() { return floatToString( magnitude()); }
 	
 	public String toString() {
-		//audit.in( "toString", representamen.toString( Strings.SPACED ));
+		// e.g. "36 all divided by 2 /more/"
 		String rc = exact() ? "" : "about ";
 		rc += representamen.toString( Strings.SPACED );
 		if (rc.equals("")) rc = NotANumber;
-		//audit.out( rc ); // "36 all divided by 2 /more/"
 		return rc;
 	}
 	public String valueOf() {
-		//audit.in( "valueOf", "("+ representamen.toString() +")");
 		String rc;
-		if (representamen.size() == 0) {
-			//audit.debug( "Number.valueOf(): rep size==0" );
+		if (representamen.size() == 0)
 			rc = Number.NotANumber;
-		} else if (representamen.equals( new Strings( "some" )))
+		else if (representamen.equals( new Strings( "some" )))
 			rc = "about 5";
 		else if (representamen.equals( new Strings( "a few" )))
 			rc = "about 3";
@@ -347,9 +347,9 @@ public class Number {
 		else {
 			idx = 0;
 			try {
-				rc = floatToString( magnitude());
+				rc = floatToString( magnitude() );
 				if (rc.equals(Number.NotANumber))
-					audit.ERROR( "Number.valueOf(): floatToString("+ magnitude() +")  returns NaN" );
+					audit.ERROR( "valueOf(): floatToString("+ magnitude() +")  returns NaN" );
 				else
 					rc = (relative ? (positive ? "+" : "-" ) + (exact ? "=" : "~") : "") + rc;
 				
@@ -357,42 +357,35 @@ public class Number {
 				audit.ERROR( "Number.valueOf():"+ nfe.toString());
 				rc = Number.NotANumber;
 		}	}
-		//audit.out( rc );
 		return rc;
 	}
 
 	// ===== getNumber(): a Number Factory
 	static private int postOpLen( ListIterator<String> si ) {
-		//audit.in( "postOpLen", "");
-		//audit.debug( "looking for: [all] cubed or [all] squared" );
-		int read = 0, len = 0;
+		// e.g. [all] cubed or [all] squared
+		int len = 0;
 		if (si.hasNext()) {
+			int    n = 1;
 			String s = si.next();
-			read++;
-			//audit.debug( "just read: "+ s );
-			if (s.equals( "all" ) && si.hasNext()) {
-				s = si.next();
-				read++;
-			}
-			if (s.equals(   "cubed" )
-			 || s.equals( "squared" ))
-				len = read;
-			Strings.previousN( si, read ); 
-		}
-		//audit.out( len ); 
+			if (   s.equals( "all" )
+				&& si.hasNext()
+				&& null != (s = si.next())) n++;
+			if (   s.equals(   "cubed" )
+			    || s.equals( "squared" )) // || to the power of || 
+				len = n;
+			Strings.previousN( si, n ); // put them all back!
+		} 
 		return len;
 	}
 	// TODO: refactor to load into representamen here...
 	static private int opLen( ListIterator<String> si ) { // too simplistic?
 		//audit.in( "opLen", "" );
 		//audit.debug( "looking for: times, multiplied by, times by, divided by or +/-/*//" );
-		int read = 0, len = 0;
+		int len = 0;
 		if (si.hasNext()) {
 			String op = si.next();
-			read++;
-			//audit.debug( "--found op:"+ op );
+			int read = 1;
 			if (op.equals( "all" ) && si.hasNext()) {
-				//audit.debug( "found ALL:"+ op );
 				op = si.next();
 				read++;
 			}
@@ -400,7 +393,6 @@ public class Number {
 			    || op.equals( "multiplied" )
 			    || op.equals( "divided"    ))
 			{
-				//audit.debug( "found product op:"+ op );
 				if ( op.equals( "times" ))
 					len = read; // times is ok on its own
 
@@ -408,17 +400,15 @@ public class Number {
 					op = si.next();
 					read++;
 					if (op.equals( "by" )) {
-						//audit.debug( "found BY op:"+ op );
 						len = read;
 				}	}
 
 			} else if (
 				op.equals( "+" ) || op.equals( "plus"  ) ||
 				op.equals( "-" ) || op.equals( "minus" ) ||
-				op.equals( "x" ) || //op.equals( "times" ) ||
+				op.equals( "x" ) || //op.equals( "over" ) ||
 				op.equals( "/" )                            )
 			{
-				//audit.debug( "found singular op:"+ op );
 				len = read;
 			}
 			Strings.previousN( si, read );
@@ -440,7 +430,7 @@ public class Number {
 	 */
 	// used in getNumber() factory method...
 	static private      String token      = "";
-	private void getNumeric( ListIterator<String> si ) {
+	private String getNumeric( ListIterator<String> si ) {
 		//audit.in( "getNumeric", token );
 		
 		// "another" -> (+=) 1
@@ -451,13 +441,11 @@ public class Number {
 		
 		// ...read into the array a succession of ops and numerals 
 		while (si.hasNext()) {
-			//audit.debug( "in list reading terms" );
 			int opLen, postOpLen;
 			
-			while (0 < (postOpLen = postOpLen( si ))) { // ... all squared
-				//audit.debug("postOpLen="+ postOpLen );
+			while (0 < (postOpLen = postOpLen( si ))) // ... all squared
 				appendn( si, postOpLen );
-			} // optional, so no break if not found
+			// optional, so no break if not found
 			
 			if (0 == (opLen = opLen( si )))
 				break;
@@ -473,10 +461,11 @@ public class Number {
 					} else {
 						//audit.debug( "non-numeric: removing "+ opLen +" tokens" );
 						si.previous(); // replace token
-						removen( si, opLen );
+						token = removen( si, opLen );
 						break;
 		}	}	}	}
 		//audit.out();
+		return token;
 	}
 	/* getNumber() identifies how many items in the array, from the index are numeric
 	 *   [..., "68",    "guns", ...]         => 1 //  9
@@ -486,14 +475,15 @@ public class Number {
 	 *   [..., "some",  "guns", ...]         => 1 // <undefined few|many>
 	 *   [..., "some",   "jam", ...]         => 0 -- jam is not plural!
 	 *   [..., "a",      "gun", ...]         => 1 // 1
-	 * TODO: these can be hardcoded for now but need to be specified somewhere somehow!
-	 * 
-	 * This MUST match eval()!
 	 */
 	static private boolean aImpliesNumeric = true;
 	static public  void    aImpliesNumeric( boolean implies ) {
 		aImpliesNumeric = implies;
 	}
+	// need ?
+	// Strings.equals( si, "in", "a", "while" ); //????
+	// Strings preLoad = new Strings( si, 5 );
+	// preload.equals( "in", "a", "little", "while" );
 	static public Number getNumber( ListIterator<String> si ) {
 		Number number = new Number();
 		if (si.hasNext()) {
@@ -530,7 +520,7 @@ public class Number {
 	
 			// NUMERIC - numerals
 			if (isNumeric( token )) {
-				number.getNumeric( si );
+				token = number.getNumeric( si );
 				
 				// POST-numeric- deal with more OR less...  following numbers
 				if (si.hasNext()) {
@@ -548,7 +538,7 @@ public class Number {
 			//  boolean <= NotaNumberIs( number.magnitude().isNaN() )
 			if (!number.magnitude().isNaN()) { // we've found something
 				// post process
-				if ( number.representamen.size() == 0)
+				if (number.representamen.size() == 0)
 					number.append( number.magnitudeToString());
 				if (number.relative())
 					number.append( number.positive() ? MORE : FEWER );
@@ -557,14 +547,14 @@ public class Number {
 		return number;
 	}
 	//* ===== test code ====
-	private static void numberTest( String term, String ans ) {
+	private static void evaluationTest( String term, String ans ) {
 		ListIterator<String> si = new Strings( term ).listIterator();
 		Number n = Number.getNumber( si );
 		audit.log( "n is '"+ n.toString()
 				+"' ("+ ans +"=="+ n.valueOf() +")" 
 				+" sz="+ n.representamen().size() );
 	} // -- */
-	private static void anotherTest( String s ) {
+	private static void getNumberTest( String s ) {
 		audit.in( "anotherTest", s );
 		ListIterator<String> si = new Strings( s ).listIterator();
 		Number n = Number.getNumber( si );
@@ -579,38 +569,38 @@ public class Number {
 		audit.out();
 	}
 	public static void main( String[] args ) {
-		//udit.allOn();
-		//audit.tracing = true;
+		//Audit.traceOn( true );
+		//audit.on();
 	
 		audit.log( "3.0 -> "+ floatToString( 3.0f ));
 		audit.log( "3.25 -> "+ floatToString( 3.25f ));
 		
-		audit.log( "arithmetic test:");
-		numberTest(  "thsi is not a number",  "5" );
-		numberTest(  "3 plus 2",              "5" );
-		numberTest(  "3 x    2",              "6" );
-		numberTest(  "3 squared",             "9" );
-		numberTest(  "3 squared plus 2",     "11" );
-		numberTest(  "3 plus 1 all squared", "16" );
-		numberTest(  "3 times y",             "3" );
+		audit.log( "evaluation test:");
+		evaluationTest(  "thsi is not a number",  "5" );
+		evaluationTest(  "3 plus 2",              "5" );
+		evaluationTest(  "3 x    2",              "6" );
+		evaluationTest(  "3 squared",             "9" );
+		evaluationTest(  "3 squared plus 2",     "11" );
+		evaluationTest(  "3 plus 1 all squared", "16" );
+		evaluationTest(  "3 times y",             "3" );
 		// -- */	
-		audit.log( "another test:" );
+		audit.log( "get number test:" );
 		Audit.incr();
-		anotherTest( "another" );
-		anotherTest( "another   cup  of coffee" );
-		anotherTest( "another 2 cups of coffee" );
-		anotherTest( "some coffee" );
+		getNumberTest( "another" );
+		getNumberTest( "another   cup  of coffee" );
+		getNumberTest( "another 2 cups of coffee" );
+		getNumberTest( "some coffee" );
 		Audit.decr();
 		// -- */	
 		
 		audit.log( "more/less test:");
 		Audit.incr();
-		anotherTest("about 6 more cups of coffee");
-		anotherTest("6 more cups of coffee");
-		anotherTest("6 less cups of coffee");
-		anotherTest("5 more");
-		anotherTest("5 less");
-		anotherTest("another 6");
+		getNumberTest("about 6 more cups of coffee");
+		getNumberTest("6 more cups of coffee");
+		getNumberTest("6 less cups of coffee");
+		getNumberTest("5 more");
+		getNumberTest("5 less");
+		getNumberTest("another 6");
 		// */
 		Audit.decr();
 		audit.log( "PASSED?" );
@@ -623,5 +613,8 @@ public class Number {
 		//si = new Strings( "this is rubbish" ).listIterator();
 		//n = Number.getNumber( si );
 		////audit.//audit( "n is "+ n.toString() +" ("+ n.valueOf() +")");
+		 * 
+		 * [what is] 6 times the factorial of 6 minus 1 [all ...].
+		 * 
 		// -- */
 }	}

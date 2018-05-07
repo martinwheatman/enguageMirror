@@ -225,16 +225,16 @@ public class Enguage extends Shell {
 					                                 "ok, you need cheese and eggs" );
 			interpret( "group by",                   "sorry, i need to know what to group by" );
 			interpret( "group by location",          "ok" );
-			
-			interpret( "what do i need from sainsburys", "you need biscuits, and coffee from sainsburys" );
-
-			interpret( "what do i need from the dairy aisle", "you need a pint of milk, cheese, and eggs from the dairy aisle" );
+			interpret( "what do i need from sainsburys",
+					                                 "you need biscuits, and coffee from sainsburys" );
+			interpret( "what do i need from the dairy aisle",
+					                                 "you need a pint of milk, cheese, and eggs from the dairy aisle" );
 						
 			audit.title( "The Non-Computable concept of NEED" );
 			clearTheNeedsList();
 			interpret( "what do i need",	         "you don't need anything" );
 			interpret( "i need 2 cups of coffee and a biscuit",
-					   "ok, you need 2 cups of coffee and a biscuit.");
+					                                 "ok, you need 2 cups of coffee and a biscuit.");
 			interpret( "what do i need",             "you need 2 cups of coffee, and a biscuit.");
 			interpret( "how many coffees do i need", "2, you need 2 coffees" );
 			interpret( "i need 2 coffees",           "i know" );
@@ -247,9 +247,11 @@ public class Enguage extends Shell {
 			interpret( "i have a biscuit",           "ok, you don't need a biscuit" );
 			interpret( "i have to go to town",       "I know" );
 			interpret( "i don't need to go to town", "ok, you don't need to go to town" );
-			
-			clearTheNeedsList();
 			interpret( "what do i need",             "you don't need anything" );
+		}
+		if ( level == 0 || level == 2 ) {
+			audit.title( "Why/because" );
+			
 		}
 		if ( level == 0 || level == 3 ) {
 			

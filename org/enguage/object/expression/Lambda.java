@@ -49,20 +49,22 @@ public class Lambda {
 				String n = ni.next(),
 				       v = vi.next();
 				// if name is numeric we must match this value
+				audit.debug( "matching "+ n +", "+ v );
 				rc = Number.isNumeric( n ) ? // nmae=1 => value=1 !
 						n.equals( v ) :
 				     Number.isNumeric( v ) ? // value = xxx, deref
 						null == Variable.get( v ) : true;
-			}	}
+		}	}
 		return audit.out( rc );
 	}
-	
 	static public void main( String args[] ) {
 		Enguage.e = new Enguage();
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
 		else {
+			Audit.traceAll( true );
+			audit.on();
 			Variable.set( "x", "1" );
 			Variable.set( "y", "2" );
 			if (!match( new Strings( "1" ), new Strings( "1" )))
