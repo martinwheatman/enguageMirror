@@ -164,7 +164,7 @@ public class Attributes extends ArrayList<Attribute> {
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
 			boolean quoted = name.contains( Pattern.quotedPrefix ),
 					plural = name.contains( Pattern.pluralPrefix ),
-					singular = name.contains( Pattern.singularPrefix );
+					singular = name.contains( Pattern.sinsignPrefix );
 			
 			// remove all prefixes...
 			name = name.substring( name.lastIndexOf( "-" )+1 );
