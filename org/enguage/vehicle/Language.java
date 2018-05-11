@@ -84,9 +84,10 @@ public class Language {  // English-ism!
 	static public  boolean possessive() { return possessive; }
 	
 	static public Strings expandPossessives( Strings in) {
+		int len = in.size(); // so, don't expand last 
 		Strings out = new Strings();
 		for (String s : in )
-			if (s.endsWith( "'s" )) {
+			if (s.endsWith( "'s" ) && --len > 0) {
 				out.add( s.substring( 0, s.length()-2 ));
 				out.add( "his" );
 			} else

@@ -8,6 +8,7 @@ import org.enguage.object.space.Sofa;
 import org.enguage.sign.Sign;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.repertoire.Repertoire;
+import org.enguage.util.Attribute;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Proc;
@@ -246,14 +247,14 @@ public class Intention {
 		{ // Add tempro/spatial awareness if it has been added. 
 			String when = Context.get( "when" );
 			if (!when.equals(""))
-				cmd.append( "WHEN='"+ when +"'" );
+				cmd.append( new Attribute( "WHEN", when ).toString() );
 			String locator = Context.get( Where.LOCATOR );
 			if (!locator.equals("")) {
 				String location = Context.get( Where.LOCATION );
 				if (!location.equals("")) {
 					if (cmd.size() < 5) cmd.append( ":" ); // TODO: fix SOFA & scripts to accept n='v'
-					cmd.append( Where.LOCATOR  +"='"+  locator  +"'" );
-					cmd.append( Where.LOCATION +"='"+ location +"'" );
+					cmd.append( new Attribute( Where.LOCATOR,  locator  ).toString() );
+					cmd.append( new Attribute( Where.LOCATION, location ).toString() );
 		}	}	}
 
 		// In the case of vocal perform, value="args='<commands>'" - expand!

@@ -598,14 +598,14 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return this;
 	}
 	private static boolean isCapitalised( String str ) {
-		if (null == str) return false;
-		int len = str.length();
-		if (Character.isUpperCase( str.charAt( 0 )) && len > 1) {
-			int i = 0;
-			while (len > ++i && Character.isLowerCase( str.charAt( i )))
-				;
-			return str.length() == i; // capitalised if we're at the end of the string
-		}
+		if (null != str) {
+			int len = str.length();
+			if (len > 1 && Character.isUpperCase( str.charAt( 0 ))) {
+				int i = 0;
+				while (len > ++i && Character.isLowerCase( str.charAt( i )))
+					;
+				return str.length() == i; // capitalised if we're at the end of the string
+		}	}
 		return false;
 	}
 	public static boolean isUpperCase( String a ) {

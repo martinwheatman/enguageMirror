@@ -25,13 +25,13 @@
 			XMLPRE='<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:example="http://ws.cdyne.com/"><SOAP-ENV:Header/><SOAP-ENV:Body>'>
 			
 		<concepts>
-			<concept id="colloquia"      op="load"/>
-			<concept id="engine"         op="load"/>
-			<concept id="plural"         op="load"/>
-			<concept id="temporal"       op="load"/>
-			<concept id="spatial"        op="load"/>
-			<concept id="set+get+unset"  op="load"/>
-			<concept id="arithmetic"     op="load"/>
+			<concept id="colloquia"         op="load"/>
+			<concept id="engine"            op="load"/>
+			<concept id="plural"            op="load"/>
+			<concept id="temporal"          op="load"/>
+			<concept id="spatial+spatially" op="load"/>
+			<concept id="set+get+unset"     op="load"/>
+			<concept id="arithmetic"        op="load"/>
 		</concepts>
 	</config>
 </xml>
