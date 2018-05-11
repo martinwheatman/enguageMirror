@@ -172,15 +172,14 @@ public class Attributes extends ArrayList<Attribute> {
 			if ( isAlphabetic( name ) && isUpperCase( name )) {
 				value = get( name.toLowerCase( Locale.getDefault() ));
 				if (expand && !value.equals( "" ))
-					value = name.toLowerCase( Locale.getDefault() ) +"='"+ value +"'";
-				//audit.debug( "Found: "+name +" => '"+ value +"'");
+					value = Attribute.asString( name.toLowerCase( Locale.getDefault() ), value );
 			}
 			if (value == null || value.equals( "" ))
 				value = orig;
 			else {
 				if (plural)   value = Plural.plural( value );
 				if (singular) value = Plural.singular( value );
-				if (quoted)   value = "'"+ value +"'";
+				if (quoted)   value = Attribute.DEF_QUOTE_CH+ value +Attribute.DEF_QUOTE_CH;
 				if (Audit.detailedOn) audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
 				//I'd like to have:
 				//   I'm meeting whom="James" where="home"

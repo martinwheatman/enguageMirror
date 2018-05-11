@@ -78,25 +78,27 @@ public class Audit {
 	public  boolean  tracing = Audit.allTracing;
     public  void       trace( boolean b ) { tracing = b ? true : Audit.allTracing; }
 
-	public  void in( String fn ) { in( fn, "" );}
-	public  void in( String fn, String info ) {
+    public  void in( String fn ) { in( fn, "" );}
+    public  void in( String fn, String info ) {if (tracing || allTracing) IN( fn, info );}
+    public  void IN( String fn, String info ) {
 		// sometimes this is tested at call time - preventing the string processing
 		// in the traceIn() call being performed at runtime.
-		if (tracing || allTracing) {
-			stack.prepend( fn );
-			log( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
-			indent.incr();
-	}	}
+		stack.prepend( fn );
+		log( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
+		indent.incr();
+	}
+
+    public String OUT( String result ) {
+    	indent.decr();
+		log( "OUT "+ name +"."
+				+ stack.get( 0 )
+				+ (result==null ? "" : " => "+ result)
+			);
+		if (stack.size() > 0) stack.remove( 0 );
+		return result;
+    }
 	public String out( String result ) {
-		if (tracing || allTracing) {
-			indent.decr();
-			log( "OUT "+ name +"."
-					+ stack.get( 0 )
-					+ (result==null ? "" : " => "+ result)
-				);
-			if (stack.size() > 0) stack.remove( 0 );
-		}
-		return result;	
+		return (tracing || allTracing) ? OUT( result ) : result;	
 	}
 	public void    out() { out( (String)null ); }
 	public Strings out( Strings s ) { out( s!=null?"["+s.toString(Strings.DQCSV)+"]":"<null>"); return s; }
