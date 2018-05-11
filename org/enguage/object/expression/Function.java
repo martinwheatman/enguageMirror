@@ -102,7 +102,10 @@ public class Function {
 	// === test code below! ===
 	static private void testCreate( String fn, String formals, String body ) {
 		audit.log( "The "+ fn +" of "+ formals +" is "+ body );
-		interpret( new Strings( "create "+ fn +" "+ formals +" / body='"+ body +"'" ));
+		interpret(
+					new Strings( "create "+ fn +" "+ formals +" / "+
+							     Attribute.asString( "body", body )
+				 )			   );
 	}
 	static private void testQuery( String fn, String actuals ) {
 		audit.log( "What is the "+ fn +" of "+ actuals );
