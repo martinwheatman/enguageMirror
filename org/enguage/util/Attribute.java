@@ -22,7 +22,7 @@ public class Attribute {
 			char quoteCh = stripped.charAt( 0 );
 			if (quoteCh == stripped.charAt( stripped.length() - 1) &&
 				(	quoteCh == '"'
-				 ||	quoteCh == ':'
+				// ||	quoteCh == ':'
 				 ||	quoteCh == '\''   
 				)	)
 				stripped = Strings.trim( stripped, quoteCh );
