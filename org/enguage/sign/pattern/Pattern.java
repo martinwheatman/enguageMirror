@@ -35,7 +35,7 @@ public class Pattern extends ArrayList<Patternette> {
 	static public  final String  exprPrefix    = expr.toUpperCase( locale ) + "-";
 	static public  final String  plural        = Plural.NAME; // "plural";
 	static public  final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
-	static public  final String  singularPrefix = "SINGULAR-";
+	static public  final String  sinsignPrefix = "SIGN-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
@@ -122,7 +122,7 @@ public class Pattern extends ArrayList<Patternette> {
 		while ( wi.hasNext() ) {
 			String word = wi.next();
 			
-			if (word.equals( "an" )) word = "a";
+			if (word.equals( "an" )) word = "a"; // English-ism!
 			
 			if (word.equals( variable ))
 				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable ))

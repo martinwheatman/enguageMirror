@@ -1,0 +1,7 @@
+On "PHRASE-WHY because PHRASE-BECAUSE":
+	WHY;
+	if not, reply "i do not think WHY";
+	BECAUSE;
+	if not, reply "i do not think BECUASE";
+	list add _user because WHY BECAUSE;
+	then, reply "ok, WHY because BECAUSE".

@@ -559,9 +559,9 @@ public class Number {
 		ListIterator<String> si = new Strings( s ).listIterator();
 		Number n = Number.getNumber( si );
 		audit.log(
-				"'"+ s +"': toString='"+ n.toString() +"'"
-				+" rep='"+ n.representamen() +"'"
-				+" valueOf='"+ n.valueOf() +"'"
+				s +": toString=>"+ n.toString() +"<"
+				+" rep=>"+ n.representamen() +"<"
+				+" valueOf=>"+ n.valueOf() +"<"
 				+" sz="+ n.representamen().size()
 				+" mag="+ n.magnitude()
 				+ (si.hasNext() ? ", nxt token is "+ si.next() : "")
