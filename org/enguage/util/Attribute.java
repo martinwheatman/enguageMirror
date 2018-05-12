@@ -6,9 +6,10 @@ import org.enguage.util.Attribute;
 
 public class Attribute {
 	
+	// TODO: these don't seem to swap yet :( -- see colloquia.txt
 	static public final char   DEF_QUOTE_CH  = '\'';
 	static public final String DEF_QUOTE_STR = "'";
-	static public final char   ALT_QUOTE_CH  = '\"';
+	static public final char   ALT_QUOTE_CH  = '"';
 	static public final String ALT_QUOTE_STR = "\"";
 	static private      Audit  audit         = new Audit( "Attribute" );
 	
@@ -32,6 +33,9 @@ public class Attribute {
 	private char quote = DEF_QUOTE_CH;
 	private char quote() { return quote; }
 	private void quote( char ch ) { quote = ch; }
+	static private char quote( String value ) {
+		return value.indexOf( DEF_QUOTE_STR ) == -1 ? DEF_QUOTE_CH : ALT_QUOTE_CH;
+	}
 	
 	protected String name;
 	public    String name() { return name; }
@@ -42,9 +46,7 @@ public class Attribute {
 	public    String    value( boolean expand ) { return expand ? expandValues( value ).toString( Strings.SPACED ) : value; }
 	public    Attribute value( String s ) {
 		value = s; // TODO: TBC - what if "martin" -> '"martin"' => :'"martin"': ???
-		quote( value.indexOf( DEF_QUOTE_STR ) == -1 ? DEF_QUOTE_CH
-				: value.indexOf( ALT_QUOTE_STR ) == -1 ? ALT_QUOTE_CH
-						: ':' );
+		quote( quote( value ));
 		return this;
 	}
 	
@@ -57,16 +59,15 @@ public class Attribute {
 	static public String asString( String name, String value ) {
 		return asString(      // quotes are this way round for a reason!
 				name,
-				value.indexOf( ALT_QUOTE_STR ) == -1 ? ALT_QUOTE_STR : DEF_QUOTE_STR,
+
+				value.indexOf( ALT_QUOTE_STR ) == -1 ? ALT_QUOTE_CH : DEF_QUOTE_CH,
 				value );
 	}
-	static public String asString( String name, String quote, String value ) {
+	static public String asString( String name, char quote, String value ) {
 		return name +"="+ quote + value + quote;
 	}
 	public String toString() { return toString( quote() ); }
-	public String toString( char quote ) {
-		return asString( name, quote == DEF_QUOTE_CH ? DEF_QUOTE_STR : ALT_QUOTE_STR, value );
-	}
+	public String toString( char quote ) { return asString( name, quote, value );}
 	
 	/* In these strip helpers - we may have a value "to x='go to town'"
 	 * so we need to strip the value of x within this value...
