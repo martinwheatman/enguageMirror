@@ -9,6 +9,7 @@ import org.enguage.sign.intention.Intention;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
 import org.enguage.sign.repertoire.Engine;
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
@@ -103,12 +104,15 @@ public class Sign {
 	
 	public String toXml( int n, long complexity ) {
 		
-		String intents = "";
+		String intentions = "";
 		for (Intention in : programme)
-			intents += "\n      " + Intention.typeToString( in.type() ) +"='"+ in.value() +"'";
+			intentions += "\n      " + Attribute.asString( Intention.typeToString( in.type() ), in.value() );
 		
-		return  indent +"<"+ NAME +" n='"+ n +"' complexity='"+ complexity +"' repertoire='"+ concept() +"'"
-				+ intents
+		return  indent +"<"+ NAME +" "
+				+ Attribute.asString( "n" , ""+n )
+				+ Attribute.asString( "complexity", ""+complexity )
+				+ Attribute.asString( "repertoire", concept() )
+				+ intentions
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">"
 				+ "\n";
 	}
