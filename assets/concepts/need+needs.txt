@@ -65,8 +65,8 @@ On "they are":
 	
 ### does not need...
 On "SUBJECT does not need anything":
-	answering yes or no ask i am about to delete the needs list is this ok;
-	if not, reply "ok, let us leave things as they are";
+	#answering yes or no ask i am about to delete the needs list is this ok;
+	#if not, reply "ok, let us leave things as they are";
 	delete SUBJECT needs list;
 	then, reply "ok, SUBJECT does not need anything".
 

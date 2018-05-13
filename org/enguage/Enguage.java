@@ -144,12 +144,7 @@ public class Enguage extends Shell {
 			else
 				audit.log( "enguage> "+ answer +"\n" );
 	}	}
-	private static void clearTheNeedsList() {
-		interpret( "prime the answer yes", "ok, the next answer will be yes" );
-		interpret( "I have everything",    "ok, you don't need anything" );
-		numberOfTests -= 2;
-	}
-
+	
 	public static void main( String args[] ) {
 
 		//Audit.startupDebug = true;
@@ -198,6 +193,16 @@ public class Enguage extends Shell {
 			usage();
 	}
 	
+	// === test code ===
+	static private void clearTheNeedsList() {
+		//interpret( "prime the answer yes", "ok, the next answer will be yes" );
+		interpret( "I have everything",    "ok, you don't need anything" );
+		//numberOfTests -= 2;
+		numberOfTests--;
+	}
+	static private boolean thisTest( int level, int test ) {
+		return level == 0 || level == test || (level < 0 && level != -test);
+	}
 	public static void sanityCheck( boolean serverTest, String location ) {
 
 		//Audit.traceAll( true );
@@ -211,9 +216,9 @@ public class Enguage extends Shell {
 		//Repertoire.signs.show( "OTF" );
 		//interpret( "tracing on" );
 
-		int level = 0;
+		int level = -10;
 
-		if ( level == 0 || level == 1 ) {
+		if (thisTest( level, 1 )) {
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
 			
@@ -249,11 +254,11 @@ public class Enguage extends Shell {
 			interpret( "i don't need to go to town", "ok, you don't need to go to town" );
 			interpret( "what do i need",             "you don't need anything" );
 		}
-		if ( level == 0 || level == 2 ) {
+		if (thisTest( level, 2 )) {
 			audit.title( "Why/because" );
 			
 		}
-		if ( level == 0 || level == 3 ) {
+		if (thisTest( level, 3 )) {
 			
 			audit.title( "Simple Variables" );
 			interpret( "the value of name is fred",       "ok, name is set to fred" );
@@ -340,7 +345,7 @@ public class Enguage extends Shell {
 			
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 		}
-		if ( level == 0 || level == 4 ) {
+		if (thisTest( level, 4 )) {
 			
 			audit.title( "Numerical Context" );
 			interpret( "i need a coffee",
@@ -367,7 +372,7 @@ public class Enguage extends Shell {
 			interpret( "i don't need anything",
 					   "ok, you don't need anything" );
 		}
-		if ( level == 0 || level == 5 ) {
+		if (thisTest( level, 5 )) {
 			audit.title( "Annotation" ); // TODO: camelise attribute names
 			interpret( "delete martin was       list", "ok" );
 			interpret( "delete martin wasNot    list", "ok" );
@@ -567,7 +572,7 @@ public class Enguage extends Shell {
 			// my name is martin
 			// my name is martin wheatman
 		}
-		if ( level == 0 || level == 6 ) {
+		if (thisTest( level, 6 )) {
 			audit.title( "Disambiguation" );
 			interpret( "the eagle has landed" //,
 						   //"Are you an ornithologist."
@@ -584,7 +589,7 @@ public class Enguage extends Shell {
 			// Issue here: on DNU, we need to advance this on "the eagle has landed"
 			// i.e. w/o "no ..."
 		}
-		if ( level == 0 || level == 7 ) {
+		if (thisTest( level, 7 )) {
 			audit.title( "Temporal interpret" );
 			interpret( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
@@ -640,12 +645,12 @@ public class Enguage extends Shell {
 			
 			clearTheNeedsList();
 		}
-		if (level == 0 || level == 8) {
+		if (thisTest( level, 8 )) {
 			audit.title( "TCP/IP test" );
 			interpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok" );
 			interpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry" );
 		}
-		if (level == 0 || level == 9) {
+		if (thisTest( level, 9 )) {
 			audit.title( "On-the-fly Langauge Learning" );
 			/* TODO: create filename from pattern:
 			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)
@@ -697,17 +702,17 @@ public class Enguage extends Shell {
 			interpret( "just call me phrase variable name means i am called variable name", "ok" );
 			interpret( "just call me martin", "i already know this" );
 		}
-		if ( level == 0 || level == 10 ) {
+		if (thisTest( level, 10 )) {
 			audit.title( "Ask: Confirmation" );
 
-			interpret( "prime the answer yes", "ok, the next answer will be yes" );
+			//interpret( "prime the answer yes", "ok, the next answer will be yes" );
 			interpret( "i have everything", "ok , you don't need anything" );
 
-			interpret( "prime the answer no", "ok, the next answer will be no" );
-			interpret( "i have everything", "ok , let us leave things as they are" );
+			//interpret( "prime the answer no", "ok, the next answer will be no" );
+			//interpret( "i have everything", "ok , let us leave things as they are" );
 
-			interpret( "prime the answer i do not understand", "ok, the next answer will be i don't understand" );
-			interpret( "i have everything", "Ok , let us leave things as they are" );
+			//interpret( "prime the answer i do not understand", "ok, the next answer will be i don't understand" );
+			//interpret( "i have everything", "Ok , let us leave things as they are" );
 
 			/* TODO:
 			 * To the phrase: i am p v name       => set user name NAME
@@ -716,5 +721,5 @@ public class Enguage extends Shell {
 			 * Ask: what is your name?
 			 */
 		}
-		audit.log( "+++ PASSED "+ (numberOfTests += 2) +" tests +++" );
+		audit.log( "+++ PASSED "+ (numberOfTests += 1) +" tests +++" );
 }	}
