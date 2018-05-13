@@ -702,24 +702,25 @@ public class Enguage extends Shell {
 			interpret( "just call me phrase variable name means i am called variable name", "ok" );
 			interpret( "just call me martin", "i already know this" );
 		}
-		if (thisTest( level, 10 )) {
-			audit.title( "Ask: Confirmation" );
 
-			//interpret( "prime the answer yes", "ok, the next answer will be yes" );
-			interpret( "i have everything", "ok , you don't need anything" );
-
-			//interpret( "prime the answer no", "ok, the next answer will be no" );
-			//interpret( "i have everything", "ok , let us leave things as they are" );
-
-			//interpret( "prime the answer i do not understand", "ok, the next answer will be i don't understand" );
-			//interpret( "i have everything", "Ok , let us leave things as they are" );
-
-			/* TODO:
-			 * To the phrase: i am p v name       => set user name NAME
-			 *                my name is p v name => set user name NAME
-			 *                p v name            => set user name NAME
-			 * Ask: what is your name?
-			 */
-		}
+//		if (thisTest( level, 10 )) {
+//			audit.title( "Ask: Confirmation" );
+//
+//			//interpret( "prime the answer yes", "ok, the next answer will be yes" );
+//			interpret( "i have everything", "ok , you don't need anything" );
+//
+//			//interpret( "prime the answer no", "ok, the next answer will be no" );
+//			//interpret( "i have everything", "ok , let us leave things as they are" );
+//
+//			//interpret( "prime the answer i do not understand", "ok, the next answer will be i don't understand" );
+//			//interpret( "i have everything", "Ok , let us leave things as they are" );
+//
+//			/* TODO:
+//			 * To the phrase: i am p v name       => set user name NAME
+//			 *                my name is p v name => set user name NAME
+//			 *                p v name            => set user name NAME
+//			 * Ask: what is your name?
+//			 */
+//		}
 		audit.log( "+++ PASSED "+ (numberOfTests += 1) +" tests +++" );
 }	}
