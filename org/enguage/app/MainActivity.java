@@ -19,7 +19,7 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import org.enguage.Enguage;
-import org.enguage.object.Overlay;
+import org.enguage.object.space.Overlay;
 import org.enguage.sign.repertoire.Concepts;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
@@ -138,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 					ArrayList<String> said =
 							data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
 					Log.i( ">>>>>>>>>>UTTERANCE>>> ", said.get( 0 ));
+					if (Audit.runtimeDebug)
+						Toast.makeText( getApplicationContext(), said.get( 0 ), Toast.LENGTH_SHORT ).show();
+
 					// interpret what is said...
 					// ...in case of config failure, repeat what was said
 					String truText = Enguage.e.interpret( new Strings( said.get( 0 ) )),

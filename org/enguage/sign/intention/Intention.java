@@ -247,14 +247,14 @@ public class Intention {
 		{ // Add tempro/spatial awareness if it has been added. 
 			String when = Context.get( "when" );
 			if (!when.equals(""))
-				cmd.append( new Attribute( "WHEN", when ).toString() );
+				cmd.append( Attribute.asString( "WHEN", when ) );
 			String locator = Context.get( Where.LOCATOR );
 			if (!locator.equals("")) {
 				String location = Context.get( Where.LOCATION );
 				if (!location.equals("")) {
 					if (cmd.size() < 5) cmd.append( ":" ); // TODO: fix SOFA & scripts to accept n='v'
-					cmd.append( new Attribute( Where.LOCATOR,  locator  ).toString() );
-					cmd.append( new Attribute( Where.LOCATION, location ).toString() );
+					cmd.append( Attribute.asString( Where.LOCATOR,  locator  ));
+					cmd.append( Attribute.asString( Where.LOCATION, location ));
 		}	}	}
 
 		// In the case of vocal perform, value="args='<commands>'" - expand!

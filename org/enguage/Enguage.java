@@ -216,7 +216,7 @@ public class Enguage extends Shell {
 		//Repertoire.signs.show( "OTF" );
 		//interpret( "tracing on" );
 
-		int level = -10;
+		int level = 0;
 
 		if (thisTest( level, 1 )) {
 			audit.title( "Pronouns - see need+needs.txt" );
