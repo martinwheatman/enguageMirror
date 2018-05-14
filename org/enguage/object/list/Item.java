@@ -5,9 +5,9 @@ import java.util.ListIterator;
 import org.enguage.util.Attribute;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
-import org.enguage.util.Number;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Number;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
@@ -173,7 +173,7 @@ public class Item {
 	public String toString() {
 		Strings rc = new Strings();
 		if (format.size() == 0)
-			rc.append( descr );
+			rc.append( descr.toString() );
 		else
 			/* Read through the format string: ",from LOCATION"
 			 * ADDING attributes: u.c. VARIABLES OR l.c. CONSTANTS),

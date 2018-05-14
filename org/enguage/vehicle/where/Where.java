@@ -89,13 +89,13 @@ public class Where {
 				assigned( location( si ));
 				if (assigned()) {
 					// remove locator...
-					Strings.previousN( si, n );
-					Strings.removeN( si, n );
+					Strings.previous( si, n );
+					Strings.removes( si, n );
 					//audit.out();
 					return; // ...and we're done!
 				}
 				// replace locator
-				Strings.previousN( si, n );
+				Strings.previous( si, n );
 		}	}
 		//audit.out();
 	}

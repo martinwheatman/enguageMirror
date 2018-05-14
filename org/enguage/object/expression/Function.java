@@ -7,9 +7,9 @@ import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
 import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
-import org.enguage.util.Number;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Number;
 import org.enguage.vehicle.Reply;
 
 public class Function {
@@ -23,7 +23,7 @@ public class Function {
 		lambda = new Lambda( this, params, body );
 	}
 	
-	private String   name;
+	private String   name = "";
 	public  String   name() { return name; }
 	
 	private Lambda lambda = null;
@@ -45,6 +45,9 @@ public class Function {
 		
 		return audit.out( Shell.SUCCESS );
 	}
+	public String toString() {
+		return name + (lambda == null ? "<noLambda/>" : lambda.toString());
+	}
 	static private Function getFunction( String name, Strings values ) {
 		audit.in( "getFunction", name +", "+ values.toString("[", ", ", "]"));
 		Function fn = new Function( name );
@@ -60,7 +63,7 @@ public class Function {
 		if (f != null)
 			ss = new Strings( f.lambda.body() )
 					.substitute(
-						new Strings( f.lambda.sig() ), // formals
+						new Strings( f.lambda.signature() ), // formals
 						argv.derefVariables() );
 		return audit.out( ss );
 	}
@@ -75,6 +78,7 @@ public class Function {
 		}
 		return audit.out( rc );
 	}
+	static public String interpret( String arg ) { return interpret( new Strings( arg ));}
 	static public String interpret( Strings argv ) {
 		audit.in( "interpret", argv.toString( Strings.DQCSV ));
 		String  rc = Shell.FAIL;
@@ -136,5 +140,6 @@ public class Function {
 			testQuery(  "sum", "x and y" );
 			
 			testCreate( "factorial", "1", "1" );
-			testQuery(  "factorial", "6" );
+			testQuery(  "factorial", "1" );
+			testQuery(  "factorial", "4" );
 }	}	}

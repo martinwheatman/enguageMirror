@@ -10,6 +10,7 @@ import org.enguage.object.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Number;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
@@ -394,10 +395,6 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		if (null != sa) addAll( sa );
 		return this;
 	}
-	public Strings append( Strings sa ) {
-		if (null != sa) add( sa.toString() );
-		return this;
-	}
 	public Strings append( String s ) {
 		if (null != s && !s.equals( "" )) add( s );
 		return this;
@@ -503,14 +500,22 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return false;
 	}
 	
-	public static void removeN( ListIterator<String> si, int n ) {
-		//audit.debug( "Removing "+ n );
+//	public void append( ListIterator<String> si, int n ) {
+//		for (int j=0; j<n; j++)
+//			if (si.hasNext())
+//				append( si.next() );
+//	}
+	
+	public static void removes( ListIterator<String> si, int n ) {
 		for (int i=0; i<n; i++) si.remove();
 	}
-	public static void previousN( ListIterator<String> si, int n ) {
-		//audit.debug( "Previous "+ n );
+	public static void previous( ListIterator<String> si, int n ) {
 		for (int i=0; i<n; i++) si.previous();
 	}
+	public static void next( ListIterator<String> si, int n ) {
+		for (int i=0; i<n; i++) si.next();
+	}
+	
 	// count the number of matching strings - due for Strings class!!!
 	public int matches( ListIterator<String> li ) {
 		//audit.in( "matches", "'"+ toString( Strings.SPACED ) +"', "+ li.toString());
@@ -524,7 +529,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				break;
 		}
 		//put li back
-		previousN( li, m );
+		previous( li, m );
 		//return audit.out( pi.hasNext() ? 0 : n );
 		return pi.hasNext() ? 0 : n;
 	}

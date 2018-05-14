@@ -3,8 +3,8 @@ package org.enguage.vehicle.when;
 import java.util.ListIterator;
 
 import org.enguage.util.Audit;
-import org.enguage.util.Number;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Number;
 import org.enguage.vehicle.Plural;
 
 import org.enguage.vehicle.when.Absolute;
@@ -75,7 +75,7 @@ public class Relative {
 		boolean found = false;
 		int shift = 0, start = si.nextIndex();
 		Number number = Number.getNumber( si );
-		if (number.repSize() > 0 && si.hasNext()) {
+		if (number.representamen().size() > 0 && si.hasNext()) {
 			shift = Math.round( number.magnitude());
 			audit.debug( "found shift="+ shift );
 			String s = Plural.singular( si.next());

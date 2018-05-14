@@ -8,35 +8,35 @@ import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.Number;
+import org.enguage.vehicle.Number;
 
 public class Lambda {
 	static private Audit audit = new Audit( "Lambda" );
 
 	public Lambda( Function f, Strings params, String body ) { // new
-		sig = params;
+		signature = params;
 		new Value(
 				f.name(),
-				sig.toString( Strings.CSV ) + ".lambda"
+				signature.toString( Strings.CSV ) + ".lambda"
 			).set( body );
 	}
 	public Lambda( String name, Strings values ) { // find
 		Strings fnames = Enguage.e.o.list( name );
 		if (null != fnames) for (String fname : fnames) {
-			sig = new Strings( new Strings( fname, '.' ).get(0), ',' );
-			if (match( sig, values )) {
+			signature = new Strings( new Strings( fname, '.' ).get(0), ',' );
+			if (match( signature, values )) {
 				body = new Value( name, fname ).getAsString();
 				break; // can we revisit?
 	}	}	}
 	
-	private Strings sig = null;
-	public  Strings sig() { return sig; }
+	private Strings signature = null;
+	public  Strings signature() { return signature; }
 	
 	private String body = "";
 	public  String body() { return body; }
 	public  Lambda body( String b ) { body = b; return this; };
 	
-	public String toString() { return "( "+ sig +" ) "+ body;}
+	public String toString() { return "( "+ signature +" ): {"+ body +"}";}
 	
 	private static boolean match( Strings names, Strings values ) {
 		boolean rc = false;

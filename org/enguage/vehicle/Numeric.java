@@ -1,10 +1,16 @@
-package org.enguage.util;
+package org.enguage.vehicle;
 
 import java.util.ListIterator;
+
+import org.enguage.util.Audit;
+import org.enguage.util.Strings;
 
 public class Numeric {
 	static private Audit audit = new Audit( "Numeric", false );
 
+	public Numeric( String tok ) {
+		token = tok;
+	}
 	private Strings representamen = new Strings();
 	public  Strings representamen() { return representamen; }
 	public  Numeric  append( String s ) {
@@ -25,9 +31,6 @@ public class Numeric {
 		}
 		return token;
 	}
-	private Float valueOf() {
-		return 0.0f;
-	}
 	/* NB Size relates to the numbers of words representing
 	 * the number. So "another three" is 2
 	 */
@@ -37,42 +40,47 @@ public class Numeric {
 
 	// ===== getNumber(): a Number Factory
 	static private int postOpLen( ListIterator<String> si ) {
-		// e.g. [all] cubed or [all] squared
+		// e.g. [ [all] cubed | [all] squared ]
 		int len = 0;
 		if (si.hasNext()) {
 			int    n = 1;
 			String s = si.next();
+			
+			// optional "all"
 			if (   s.equals( "all" )
 				&& si.hasNext()
 				&& null != (s = si.next())) n++;
+			
 			if (   s.equals(   "cubed" )
 			    || s.equals( "squared" )) // || to the power of || 
-				len = n;
-			Strings.previousN( si, n ); // put them all back!
+				len = n; // success!
+			
+			Strings.previous( si, n ); // put them all back!
 		} 
 		return len;
 	}
 	static private int opLen( ListIterator<String> si ) {
+		// e.g. [all] times by
 		int len = 0;
 		if (si.hasNext()) {
 			String op = si.next();
-			int read = 1;
-			if (op.equals( "all" ) && si.hasNext()) {
-				op = si.next();
-				read++;
-			}
+			int n = 1;
+			if (   op.equals( "all" )
+				&& si.hasNext()
+				&& null != (op = si.next())) n++;
+			
 			if (   op.equals( "times"      )
 			    || op.equals( "multiplied" )
 			    || op.equals( "divided"    ))
 			{
 				if ( op.equals( "times" ))
-					len = read; // times is ok on its own
+					len = n; // times is ok on its own
 
 				if (si.hasNext()) {
 					op = si.next();
-					read++;
+					n++;
 					if (op.equals( "by" )) {
-						len = read;
+						len = n;
 				}	}
 
 			} else if (
@@ -81,14 +89,14 @@ public class Numeric {
 				op.equals( "x" ) || //op.equals( "over" ) ||
 				op.equals( "/" )                            )
 			{
-				len = read;
+				len = n;
 			}
-			Strings.previousN( si, read );
+			Strings.previous( si, n );
 		}
 		//audit.out( len );
 		return len;
 	}
-	static public boolean isNumeric( String s ) {
+	static private boolean isNumeric( String s ) {
 		boolean rc = true;
 		try {
 			Float.parseFloat( s );
@@ -98,8 +106,8 @@ public class Numeric {
 		return rc;
 	}
 	static private  String token = "";
-	       private boolean getNumeric( ListIterator<String> si ) {
-		//audit.in( "getNumeric", token );
+	private boolean getNumeric( ListIterator<String> si ) {
+		audit.in( "getNumeric", Strings.peek( si ));
 		// "another" -> (+=) 1
 		if (representamen.size() == 0) // != "another"
 			append( token );
@@ -117,21 +125,21 @@ public class Numeric {
 			if (0 == (opLen = opLen( si )))
 				break;
 			else { // ... x 4
-				//audit.debug("appending "+ opLen +" op tokens");
+				audit.debug("appending "+ opLen +" op tokens");
 				appendn( si, opLen );
 				// done op so now do a numeral..
 				if (si.hasNext()) {
 					token = si.next();
 					if (isNumeric( token )) {
-						//audit.debug( "appending "+ token );
-						append(  token );
+						audit.debug( "appending "+ token );
+						append( token );
 					} else {
-						//audit.debug( "non-numeric: removing "+ opLen +" tokens" );
+						audit.debug( "non-numeric: removing "+ opLen +" tokens" );
 						si.previous(); // replace token
 						token = removen( si, opLen );
 						break;
 		}	}	}	}
-		//audit.out();
+		audit.out();
 		return true;
 	}
 	/* getNumber() identifies how many items in the array, from the index are numeric
@@ -144,10 +152,16 @@ public class Numeric {
 	 *   [..., "a",      "gun", ...]         => 1 // 1
 	 */
 	public static void main(String args []) {
-		Strings s = new Strings( "1 + 2" );
-		Numeric n = new Numeric();
-		if (n.getNumeric( s.listIterator() ))
-			audit.log( "n="+ n.valueOf());
+		audit.on();
+		audit.trace( true );
+		Strings s = new Strings( "+ 2" );
+		Numeric n = new Numeric( "1" );
+
+		ListIterator<String> si = s.listIterator();
+		//if (si.hasNext()) token = si.next();
+
+		if (n.getNumeric( si ))
+			audit.log( "n="+ n.representamen());
 		else
 			audit.log( "no numberic value" );
 }	}
