@@ -5,6 +5,7 @@ import java.util.ListIterator;
 import org.enguage.Enguage;
 import org.enguage.object.expression.Function;
 import org.enguage.object.space.Overlay;
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -245,7 +246,7 @@ public class Number {
 	// ======================================
 	
 	public static String floatToString( Float f ) {
-		//audit.in( "floatToString", f.toString() );
+		audit.in( "floatToString", f.toString() );
 		String value;
 		if (Float.isNaN( f ))
 			value = Number.NotANumber;
@@ -259,8 +260,8 @@ public class Number {
 			if (-1 != (i = value.indexOf( "." )))
 				value = value.substring( 0, i ) + " point " + Language.spell( value.substring( i+1 )); 
 		}
-		//return audit.out( value );
-		return value;
+		return audit.out( value );
+		//return value;
 	}
 
 	private Strings representamen = new Strings();
@@ -454,18 +455,33 @@ public class Number {
 		} catch (NumberFormatException nfe) {
 			return false;
 	}	}
+//	private Float doNumeric( ListIterator<String> si ) {
+//		audit.in( "doNumeric", Strings.peek( si ));
+//		Float f = null;
+//		String token;
+//		if (si.hasNext())
+//			if (Float.isNaN( f = new Float( token = si.next() )))
+//				si.previous();
+//			else {
+//				magnitude( f );
+//				return audit.out( f );
+//			}
+//		audit.out( "null" );
+//		return null;
+//	}
 	/*
 	 * getNumber() -- factory method.
 	 */
 	private boolean doNumeral( ListIterator<String> si) {
+		audit.in( "doNumeral", Strings.peek( si ));
 		boolean rc = false;
-		Audit.incr();
 		if (si.hasNext()) {
 			String token;
 			if (rc = isNumeric( token = si.next() ))
 				append( token );
 			else if (token.equals( "the" ) && si.hasNext()) {
 				// could this be: the <FUNCTION/> of <PARAMS/> ?
+				audit.debug( "ok, looking for function" );
 				String fn = si.next();
 				if (si.hasNext()) {
 					if (si.next().equals( "of" ) && si.hasNext()) {
@@ -500,11 +516,12 @@ public class Number {
 			} else
 				si.previous(); // not numeric and not "the" and not "the."
 		}
-		Audit.decr();
+		audit.out( rc );
 		return rc;
 	}
 	// used in getNumber() factory method...
-	private void getNumeric( ListIterator<String> si ) {
+	private void doExpr( ListIterator<String> si ) {
+		audit.in( "getNumeric", Strings.peek( si ));
 		// ...read into the array a succession of ops and numerals 
 		int done;
 		do {
@@ -517,6 +534,7 @@ public class Number {
 				done = 0;
 			}
 		} while (si.hasNext() && done > 0);
+		audit.out();
 	}
 	/* getNumber() identifies how many items in the array, from the index are numeric
 	 *   [..., "68",    "guns", ...]         => 1 //  9
@@ -531,80 +549,113 @@ public class Number {
 	static public  void    aImpliesNumeric( boolean implies ) {
 		aImpliesNumeric = implies;
 	}
-	// need ?
-	// Strings.equals( si, "in", "a", "while" ); //????
-	// Strings preLoad = new Strings( si, 5 );
-	// preload.equals( "in", "a", "little", "while" );
-	static public Number getNumber( ListIterator<String> si ) {
-		String token = "";
-		Number number = new Number();
-		if (si.hasNext()) {
-			token = si.next();
-			
-			// PRE-numeric
-			if (token.equals( "a") && aImpliesNumeric) {
-				number.relative( false ).positive( true ).magnitude( 1F );
-				token = si.hasNext() ? si.next() : "";
-				if (token.equals(    "few")) { 
-					number.exact( false ).magnitude( 3.0f );
-					token = si.hasNext() ? si.next() : "";
-				}
-				if (token.equals( "couple")) {
-					number.append( "couple" ).magnitude( 2.0f ).exact( false );
-					if (si.hasNext()) {
-						token = si.next();
-						if (token.equals( "of" )) {
-							number.append( "of" );
-							token = si.hasNext() ? si.next() : "";
-						}
-					} else
-						si.previous(); // put 'couple' back
-				}
+	private boolean doA( ListIterator<String> si ) {
+		if (si.hasNext() && aImpliesNumeric) {
+			if (si.next().equals( "a" )) {
+				relative( false ).positive( true ).magnitude( 1F );
 				
-			} else if (token.equals(  "about")) {
-				number.exact( false ).append( "about" );
-				token = si.hasNext() ? si.next() : "";
-				
-			} else if (token.equals("another")) {
-				number.relative( true ).positive( true ).magnitude( 1F );
-				audit.debug( "FOUND 'another': "+ number.toString() +"("+ number.valueOf() +")" );
-				token = si.hasNext() ? si.next() : "";
-			}
-	
-			// NUMERIC - numerals
-			if (isNumeric( token )) {
-				
-				// "another" -> (+=) 1
-				if (number.representamen.size() == 0) // != "another"
-					number.append( token );
-				else                    // ?= "another"
-					number.representamen.replace( 0, token );
-				
-				number.getNumeric( si );
-				
-				// POST-numeric- deal with more OR less...  following numbers
 				if (si.hasNext()) {
-					token = si.next();
-					if (token.equals( MORE ))
-						number.relative( true ).positive(  true );
-					else if (token.equals( FEWER ))
-						number.relative( true ).positive( false );
-					else
+					String tmp = si.next();
+					if (tmp.equals( "few"))
+						append( "few" ).exact( false ).magnitude( 3.0f );
+						
+					else if (tmp.equals( "couple")) {
+						append( "couple" ).exact( false ).magnitude( 2.0f );
+						if (si.hasNext())
+							if (si.next().equals( "of" ))
+								append( "of" );
+							else
+								si.previous(); // put !'of' back
+						
+					} else // something
 						si.previous();
-				}
+					return true; // a few, a couple, a something
+					
+				} else
+					si.previous(); // put 'a' back
+				// 'a' on its own -- fall through to false
 			} else
-				if (!token.equals("")) si.previous();
+				si.previous(); // put 'a' back
+		}
+		return false;
+	}
+	private boolean doAbout( ListIterator<String> si ) {
+		if (si.hasNext())
+			if (si.next().equals( "about")) {
+				exact( false ).append( "about" );
+				return true;
+			} else
+				si.previous();
+		return false;
+	}
+	private boolean doAnother( ListIterator<String> si ) {
+		if (si.hasNext())
+			if (si.next().equals(  "another")) {
+				relative( true ).positive( true ).magnitude( 1F );
+				//append( "another" );
+				return true;
+			} else
+				si.previous();
+		return false;
+	}
+	private void doMoreOrLess() {
+		//  boolean <= NotaNumberIs( number.magnitude().isNaN() )
+		if (!magnitude().isNaN()) { // we've found something
+			// post process
+			if (representamen.size() == 0)
+				append( magnitudeToString());
+			if (relative())
+				append( positive() ? MORE : FEWER );
+		}
+	}
+	private void doPostExpr( ListIterator<String> si ) {
+		// POST-numeric- deal with 'more' OR 'less'...  following numbers
+		if (si.hasNext()) {
+			String token = si.next();
+			if (token.equals( MORE ))
+				relative( true ).positive(  true );
+			else if (token.equals( FEWER ))
+				relative( true ).positive( false );
+			else
+				si.previous();
+		}
+	}
+	private boolean doNum( ListIterator<String> si ) {
+		boolean rc = false;
+		if (si.hasNext()) {
+			String token = si.next();
+			if (isNumeric( token )) {
+				rc = true;
+				// "another" -> (+=) 1
+				if (representamen.size() == 0) // != "another"
+					append( token );
+				else                    // ?= "another"
+					representamen.replace( 0, token );
+			} else
+				si.previous();
+		}
+		return rc;
+	}
+	private Number doNumerical( ListIterator<String> si ) {
+		audit.in( "doNumerical", Strings.peek( si ));
+		if (doNum( si )) {
+			doExpr( si );
+			doPostExpr( si );
+		}		
+		return (Number) audit.out( this );
+	}
+	static public Number getNumber( ListIterator<String> si ) {
+		audit.in( "getNumber", Strings.peek( si ));
+		Number number = new Number();
+		
+		if (si.hasNext()) {
+			if (number.doA(       si ) ||
+				number.doAbout(   si ) ||
+				number.doAnother( si )   );
 			
-			//  boolean <= NotaNumberIs( number.magnitude().isNaN() )
-			if (!number.magnitude().isNaN()) { // we've found something
-				// post process
-				if (number.representamen.size() == 0)
-					number.append( number.magnitudeToString());
-				if (number.relative())
-					number.append( number.positive() ? MORE : FEWER );
-		}	}
-		//return (Number) audit.info( "getNumber", firstToken, number );
-		return number;
+			number.doNumerical( si ).doMoreOrLess();
+		}
+		return (Number) audit.out( number );
 	}
 	//* ===== test code ====
 	static private void evaluationTest( String term, String ans ) {
@@ -613,10 +664,10 @@ public class Number {
 		audit.log( "n is '"+ n.toString()
 				+"' ("+ ans +"=="+ n.valueOf() +")" 
 				+" sz="+ n.representamen().size() );
-	} // -- */
+	}
 	static private void getNumberTest( String s ) { getNumberTest( s, "" ); }
 	static private void getNumberTest( String s, String expected ) {
-		audit.in( "anotherTest", s );
+		audit.in( "getNumberTest", s );
 		ListIterator<String> si = new Strings( s ).listIterator();
 		Number n = Number.getNumber( si );
 		audit.log(
@@ -677,14 +728,19 @@ public class Number {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
 		else {
-			getNumberTest( "2 times the factorial of 1",   "2" );
-			getNumberTest( "2 times the factorial of 2",   "4" );
-			getNumberTest( "2 times the factorial of 2 4", "4" );
-			getNumberTest( "2 times the factorial of 2 and 4" );
+			/* factorial( n ): n times the factorial of n minus 1.
+			 * Mersenne number( n ): 2^n ALL minus 1  -- not a definition???
+			 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
+			 */
 			//Function.interpret( "create sum a b / "+ new Attribute( "body", "a + b" ));
 			getNumberTest( "2 times the sum of 2 and 3",  "10" );
+			getNumberTest( "2 times the factorial of 1",   "2" );
+			Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
+			//Audit.allOn();
+			//getNumberTest( "the factorial of 4", "24" );
+			getNumberTest( "2 times the factorial of 2",   "4" );
+			getNumberTest( "2 times the factorial of 2 and 4"  ); // next token 'and' ?
 		}
-		// */
 		Audit.decr();
 		audit.log( "PASSED." );
 }	}
