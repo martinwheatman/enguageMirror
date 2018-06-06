@@ -32,6 +32,7 @@ public class Lambda {
 		// if body is null, this find c'tor has "failed"
 		// TODO: need attach()/detach() methods!
 	}
+
 	
 	private Strings signature = null;
 	public  Strings signature() { return signature; }

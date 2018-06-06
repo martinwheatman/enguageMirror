@@ -51,7 +51,9 @@ public class Function {
 	static private Function getFunction( String name, Strings values ) {
 		audit.in( "getFunction", name +", "+ values.toString("[", ", ", "]"));
 		Function fn = new Function( name );
+		
 		fn.lambda = new Lambda( name, values ); // this is a 'find', body="" == !found
+
 		if (fn.lambda.body().equals( "" )) {
 			audit.ERROR( "Null fn: no body found for "+ name+"/"+ values );
 			fn = null;
@@ -144,4 +146,5 @@ public class Function {
 			testCreate( "factorial", "1", "1" );
 			testQuery(  "factorial", "1" );
 			//testQuery(  "factorial", "4" );
+			audit.log( "PASSED" );
 }	}	}

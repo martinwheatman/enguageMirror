@@ -92,11 +92,11 @@ public class Audit {
 
     public String OUT( String result ) {
     	indent.decr();
-		log( "OUT "+ name +"."
-				+ stack.get( 0 )
+		log( "OUT "+ name
+				+ (stack.size()>1?"."+ stack.get( 0 ) +"()" : "")
 				+ (result==null ? "" : " => "+ result)
 			);
-		if (stack.size() > 0) stack.remove( 0 );
+		if (stack.size() > 1) stack.remove( 0 );
 		return result;
     }
 	public String out( String result ) {
@@ -109,6 +109,7 @@ public class Audit {
 	public Float   out( Float   f ) { out( Float.toString(   f )); return f; }
 	public long    out( long    l ) { out( Long.toString(    l )); return l; }
 	public Object  out( Object  o ) { out( o==null ? "null" : o.toString()); return o;}
+	public Object  OUT( Object  o ) { OUT( o==null ? "null" : o.toString()); return o;}
 	
 	public void title( String title ) {
 		String underline = "";
