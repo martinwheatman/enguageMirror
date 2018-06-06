@@ -270,6 +270,10 @@ public class Number {
 		representamen.add( s );
 		return this;
 	}
+	private  Number  append( Strings sa ) {
+		representamen.addAll( sa );
+		return this;
+	}
 	private void append( ListIterator<String> si, int n ) {
 		for (int j=0; j<n; j++)
 			if (si.hasNext())
@@ -315,14 +319,14 @@ public class Number {
 	private Float  magnitude = Float.NaN;
 	public  Number magnitude( Float f ) { magnitude = f; return this; }
 	public  Float  magnitude() {
-		//audit.in( "magnitude" );
+		audit.in( "magnitude" );
 		if (!valued) {
 			Float tmp = doTerms();
 			if (!tmp.isNaN())
 				magnitude = (magnitude.isNaN() ? 1 : magnitude) * tmp; 
 			valued = true;
 		}
-		//audit.out( magnitude );
+		audit.out( magnitude );
 		return magnitude;
 	}
 	public String magnitudeToString() { return floatToString( magnitude()); }
@@ -335,6 +339,7 @@ public class Number {
 		return rc;
 	}
 	public String valueOf() {
+		audit.in( "valueOf" );
 		String rc;
 		if (representamen.size() == 0)
 			rc = Number.NotANumber;
@@ -350,7 +355,7 @@ public class Number {
 			if (!rc.equals(Number.NotANumber))
 				rc = (relative ? (positive ? "+" : "-" ) + (exact ? "=" : "~") : "") + rc;
 		}	
-		return rc;
+		return audit.out( rc );
 	}
 
 	private int peekwals( Strings sa, ListIterator<String> si ) {
@@ -521,7 +526,7 @@ public class Number {
 	}
 	// used in getNumber() factory method...
 	private void doExpr( ListIterator<String> si ) {
-		audit.in( "getNumeric", Strings.peek( si ));
+		audit.in( "doExpr", Strings.peek( si ));
 		// ...read into the array a succession of ops and numerals 
 		int done;
 		do {
@@ -589,14 +594,15 @@ public class Number {
 		return false;
 	}
 	private boolean doAnother( ListIterator<String> si ) {
+		audit.in( "doAnother", Strings.peek( si ));
 		if (si.hasNext())
-			if (si.next().equals(  "another")) {
+			if (si.next().equals( "another" )) {
 				relative( true ).positive( true ).magnitude( 1F );
 				//append( "another" );
 				return true;
 			} else
 				si.previous();
-		return false;
+		return audit.out( false );
 	}
 	private void doMoreOrLess() {
 		//  boolean <= NotaNumberIs( number.magnitude().isNaN() )
@@ -738,8 +744,8 @@ public class Number {
 			Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
 			//Audit.allOn();
 			//getNumberTest( "the factorial of 4", "24" );
-			getNumberTest( "2 times the factorial of 2",   "4" );
-			getNumberTest( "2 times the factorial of 2 and 4"  ); // next token 'and' ?
+			getNumberTest( "2 times the factorial of 2",  "4" );
+			getNumberTest( "2 times the factorial of 2 and 4" ); // next token 'and' ?
 		}
 		Audit.decr();
 		audit.log( "PASSED." );

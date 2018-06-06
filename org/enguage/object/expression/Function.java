@@ -52,8 +52,10 @@ public class Function {
 		audit.in( "getFunction", name +", "+ values.toString("[", ", ", "]"));
 		Function fn = new Function( name );
 		fn.lambda = new Lambda( name, values );
-		if (fn.lambda.body().equals( "" ))
+		if (fn.lambda.body().equals( "" )) {
+			audit.ERROR( "Null fn: no body found for "+ name+"/"+ values );
 			fn = null;
+		}
 		return (Function) audit.out( fn );
 	}
 	static private Strings substitute( String function, Strings argv ) {
@@ -125,7 +127,7 @@ public class Function {
 		else {
 			Reply.dnk( "I do not know" );
 			//Audit.traceAll( true );
-			testQuery(  "sum", "1 , 1" );
+			testQuery(  "sum", "1 , 1" ); // error!
 			
 			testCreate( "sum", "a and b", "a + b" );
 			testQuery(  "sum", "3 and 2" );
@@ -141,5 +143,5 @@ public class Function {
 			
 			testCreate( "factorial", "1", "1" );
 			testQuery(  "factorial", "1" );
-			testQuery(  "factorial", "4" );
+			//testQuery(  "factorial", "4" );
 }	}	}

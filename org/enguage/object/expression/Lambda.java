@@ -26,7 +26,8 @@ public class Lambda {
 			signature = new Strings( new Strings( fname, '.' ).get(0), ',' );
 			if (match( signature, values )) {
 				body = new Value( name, fname ).getAsString();
-				break; // can we revisit?
+				if (!body.equals("")) break; // can we revisit?
+				// does this conditional protect from missing body/Overlay.list() bug?
 	}	}	}
 	
 	private Strings signature = null;
@@ -44,16 +45,16 @@ public class Lambda {
 		if (names.size() == values.size()) {
 			rc = true;
 			ListIterator<String> ni = names.listIterator(),
-					vi = values.listIterator();
+			                     vi = values.listIterator();
 			while (rc && ni.hasNext()) {
 				String n = ni.next(),
 				       v = vi.next();
 				// if name is numeric we must match this value
 				audit.debug( "matching "+ n +", "+ v );
-				rc = Number.isNumeric( n ) ? // nmae=1 => value=1 !
+				rc = Number.isNumeric( n ) ? // name=1 => value=1 !
 						n.equals( v ) :
-				     Number.isNumeric( v ) ? // value = xxx, deref
-						null == Variable.get( v ) : true;
+						     Number.isNumeric( v ) ? // value = xxx, deref
+								null == Variable.get( v ) : true;
 		}	}
 		return audit.out( rc );
 	}
@@ -71,7 +72,9 @@ public class Lambda {
 				audit.FATAL( "match fails on 1/1" );
 			if (!match( new Strings( "x" ), new Strings( "1" )))
 				audit.FATAL( "match fails on x/1" );
-			if (!match( new Strings( "y" ), new Strings( "2" )))
+			if (!match( new Strings( "x y" ), new Strings( "1 2" )))
 				audit.FATAL( "match fails on y/2" );
-			audit.log( "passed" );
+			if (match( new Strings( "x" ), new Strings( "1 2" )))
+				audit.FATAL( "matched on x/1,2" );
+			audit.log( "PASSED" );
 }	}	}
