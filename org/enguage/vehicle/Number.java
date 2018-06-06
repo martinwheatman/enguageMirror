@@ -460,65 +460,70 @@ public class Number {
 		} catch (NumberFormatException nfe) {
 			return false;
 	}	}
-//	private Float doNumeric( ListIterator<String> si ) {
-//		audit.in( "doNumeric", Strings.peek( si ));
-//		Float f = null;
-//		String token;
-//		if (si.hasNext())
-//			if (Float.isNaN( f = new Float( token = si.next() )))
-//				si.previous();
-//			else {
-//				magnitude( f );
-//				return audit.out( f );
-//			}
-//		audit.out( "null" );
-//		return null;
-//	}
-	/*
-	 * getNumber() -- factory method.
-	 */
-	private boolean doNumeral( ListIterator<String> si) {
+	private Strings getParams( ListIterator<String> si ) {
+		audit.in( "getParams", Strings.peek( si ));
+		Strings params = null;
+		if (si.hasNext()) {
+			String token = si.next(); // <<<<<<<<<<<<< get expression ( and evaluate it! )
+			if (isNumeric( token )) { 
+				params = new Strings( token ); // <<<< need to be appending (4-1), i.e. 3, not 4!!!
+				while (si.hasNext() && isNumeric( token = si.next())) 
+					params.add( token );
+				
+				if (token.equals( "and" ) && si.hasNext() && isNumeric( token = si.next()))
+					params.append( "and" ).append( token );
+				else {
+					if (token.equals( "and" )) si.previous(); // replace "and"
+					for (int sz = params.size(); sz > 1; sz--) {
+						si.previous();
+						params.remove( sz - 1 );
+		}	}	}	}
+		return audit.out( params );
+	}
+	private String numEval( String fn, Strings params ) {
+		String token = Function.interpret( "evaluate "+ fn +" "+ params.toString() );
+		return isNumeric( token ) ? token : null;
+	}
+	private boolean doFunction( ListIterator<String> si ) {
+		audit.in( "doFunction", Strings.peek( si ));
+		boolean rc = false;
+		if (si.hasNext()) {
+			String token = si.next();
+			if (token.equals( "the" ) && si.hasNext()) {
+				// could this be: the <FUNCTION/> of <PARAMS/> ?
+				audit.debug( "ok, looking for function" );
+				String fn = si.next();
+				if (si.hasNext()) {
+					Strings params = null;
+					if (si.next().equals( "of" ) && 
+						null != (params = getParams( si )) &&
+						null != (token  = numEval( fn, params ))) // 5 = sum, [ 2,  3 ]
+					{	
+						rc = true;
+								append( "the" ).append(fn).append("of").append( params );
+					} else {
+						//remove/replace all params
+						if (params !=null) for (int sz = params.size(); sz > 0; sz--) {
+							si.previous();
+							params.remove( sz - 1 );
+						}
+						Strings.previous( si, 3 ); // "the fname of ... and ...".
+					}
+				} else
+					Strings.previous( si, 2 ); // "the fname." 
+			} else
+				si.previous(); // "the." 
+		}
+		return audit.out( rc );
+	}
+	private boolean doNumeral( ListIterator<String> si ) {
 		audit.in( "doNumeral", Strings.peek( si ));
 		boolean rc = false;
 		if (si.hasNext()) {
 			String token;
 			if (rc = isNumeric( token = si.next() ))
 				append( token );
-			else if (token.equals( "the" ) && si.hasNext()) {
-				// could this be: the <FUNCTION/> of <PARAMS/> ?
-				audit.debug( "ok, looking for function" );
-				String fn = si.next();
-				if (si.hasNext()) {
-					if (si.next().equals( "of" ) && si.hasNext()) {
-						if (isNumeric( token = si.next() )) { 
-							Strings params = new Strings( token );
-							while (si.hasNext() && isNumeric( token = si.next())) 
-								params.add( token );
-							
-							if (token.equals( "and" ) && si.hasNext() && isNumeric( token = si.next()))
-								params.append( "and" ).append( token );
-							else {
-								for (int sz = params.size(); sz > 1; sz--) {
-									si.previous();
-									params.remove( sz - 1 );
-							}	}
-							
-							if (rc = isNumeric( token = Function.interpret( "evaluate "+ fn +" "+ params.toString() ) ))
-								append( token );
-							else {
-								for (int sz = params.size(); sz > 1; sz--) {
-									si.previous();
-									params.remove( sz - 1 );
-								}
-								Strings.previous( si, 4 ); // "the unk of 2".
-							}
-						} else
-							Strings.previous( si, 4 ); // "the function of a".
-					} else
-						Strings.previous( si, 3 ); // "the function of." or "the function called ...".
-				} else
-					Strings.previous( si, 2 ); // "the function." 
-			} else
+			else
 				si.previous(); // not numeric and not "the" and not "the."
 		}
 		audit.out( rc );
