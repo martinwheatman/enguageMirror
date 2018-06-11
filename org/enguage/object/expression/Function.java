@@ -55,13 +55,13 @@ public class Function {
 		fn.lambda = new Lambda( name, values ); // this is a 'find', body="" == !found
 
 		if (fn.lambda.body().equals( "" )) {
-			audit.ERROR( "Null fn: no body found for "+ name+"/"+ values );
+			audit.log( "ERROR: Null fn: no body found for "+ name+"/"+ values );
 			fn = null;
 		}
 		return (Function) audit.out( fn );
 	}
 	static private Strings substitute( String function, Strings argv ) {
-		audit.in( "substitute", "Function="+ function +", argv="+ argv.toString( "[",",","]") );
+		audit.in( "substitute", "Function="+ function +", argv="+ argv.toString( Strings.DQCSV ));
 		Strings ss = null;
 		Function f = getFunction( function, argv );
 		if (f != null)
@@ -72,7 +72,7 @@ public class Function {
 		return audit.out( ss );
 	}
 	static private String evaluate( String name, Strings argv ) {
-		audit.in(  "evaluate", argv.toString( Strings.DQCSV ));
+		audit.in(  "evaluate", name +":"+ argv.toString( Strings.DQCSV ));
 		String  rc = Reply.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {

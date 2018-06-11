@@ -7,10 +7,7 @@ import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.enguage.object.Variable;
-import org.enguage.util.Audit;
-import org.enguage.util.Shell;
-import org.enguage.util.Strings;
-import org.enguage.vehicle.Number;
+import org.enguage.vehicle.Numerals;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
@@ -821,7 +818,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public Strings derefVariables() {
 		Strings actuals = new Strings();
 		for (String a : this )  //  why isNumeric + getVar = a if not found???
-			actuals.add( Number.isNumeric( a ) ? a:Variable.get( a ));
+			actuals.add( Numerals.isNumeric( a ) ? a:Variable.get( a ));
 		return actuals;
 	}
 	// -- static Algorithm helpers here...

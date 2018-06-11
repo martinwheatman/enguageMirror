@@ -8,7 +8,7 @@ import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Number;
+import org.enguage.vehicle.Numerals;
 
 public class Lambda {
 	static private Audit audit = new Audit( "Lambda" );
@@ -22,13 +22,17 @@ public class Lambda {
 	}
 	public Lambda( String name, Strings values ) { // find
 		Strings fnames = Enguage.e.o.list( name );
-		if (null != fnames) for (String fname : fnames) {
-			signature = new Strings( new Strings( fname, '.' ).get(0), ',' );
-			if (match( signature, values )) {
-				body = new Value( name, fname ).getAsString();
-				if (!body.equals("")) break; // can we revisit?
-				// does this conditional protect from missing body/Overlay.list() bug?
-		}	}
+		if (null != fnames)
+			for (String fname : fnames) {
+				signature = new Strings( new Strings( fname, '.' ).get(0), ',' );
+				if (match( signature, values )) {
+					body = new Value( name, fname ).getAsString();
+					if (!body.equals(""))
+						break; // can we revisit?
+					else
+						audit.log( "ERROR: empty lambda found: "+ name +"/"+ fname );
+					// does this conditional protect from missing body/Overlay.list() bug?
+			}	}
 		// if body is null, this find c'tor has "failed"
 		// TODO: need attach()/detach() methods!
 	}
@@ -45,7 +49,7 @@ public class Lambda {
 	
 	private static boolean match( Strings names, Strings values ) {
 		boolean rc = false;
-		audit.in( "match", "names="+ names +", values="+ values );
+		audit.in( "match", "names="+ names +", values="+ values.toString( Strings.DQCSV ) );
 		if (names.size() == values.size()) {
 			rc = true;
 			ListIterator<String> ni = names.listIterator(),
@@ -55,11 +59,13 @@ public class Lambda {
 				       v = vi.next();
 				// if name is numeric we must match this value
 				audit.debug( "matching "+ n +", "+ v );
-				rc = Number.isNumeric( n ) ? // name=1 => value=1 !
+				rc = Numerals.isNumeric( n ) ? // name=1 => value=1 !
 						n.equals( v ) :
-						     Number.isNumeric( v ) ? // value = xxx, deref
+						     Numerals.isNumeric( v ) ? // value = xxx, deref
 								null == Variable.get( v ) : true;
-		}	}
+			}
+		} else
+			audit.log( "Mis-match in params: "+ names +"/"+ values.toString( Strings.DQCSV ));
 		return audit.out( rc );
 	}
 	static public void main( String args[] ) {

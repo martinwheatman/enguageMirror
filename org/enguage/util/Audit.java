@@ -6,7 +6,7 @@ public class Audit {
 	private              String     name = "";
 	static private       Strings   stack = new Strings( "zeroStack" );
 
-	// global DEBUG switches...
+	// === global DEBUG switches...
 	static       public  boolean  startupDebug = false;
 	static final public  boolean  numericDebug = false;
 	static       public  boolean       timings = false;
@@ -14,18 +14,25 @@ public class Audit {
     static       public  boolean    detailedOn = false;
                  public  boolean detailedRegis = false;
 	
-    static       public  boolean    allTracing = false;
-    static       public  void         traceAll( boolean b ) { allTracing = b; }
-    
-	private static int     suspended = 0; 
-	public  static void    suspend() { suspended++; }
-	public  static void    resume() {  if (suspended()) suspended--;  }
-	public  static boolean suspended() { return suspended > 0; }
-	
-	private static boolean allOn = false;
-	public  static void    allOff() { allOn = false; allTracing = false; indent.reset(); }
-	public  static void    allOn() {  allOn = true; allTracing = true; }
-	public  static boolean allAreOn() { return allOn; }
+ 	// === indent
+ 	static private Indent indent = new Indent();
+ 	static  public void   incr() { indent.incr(); }
+ 	static  public void   decr() { indent.decr(); }
+
+	// === timestamp
+	static private long then = new GregorianCalendar().getTimeInMillis();
+	static  public long interval() {
+		long now = new GregorianCalendar().getTimeInMillis();
+		long rc = now - then;
+		then = now;
+		return rc;
+	}
+
+	// === debug and detail - "auditing"
+	static private int     suspended = 0; 
+	static public  void    suspend() { suspended++; }
+	static public  void    resume() {  if (suspended()) suspended--;  }
+	static public  boolean suspended() { return suspended > 0; }
 	
 	private boolean auditOn = false;
 	public  void    off() { auditOn = false; }
@@ -33,23 +40,7 @@ public class Audit {
 	public  void    on(boolean b) {  auditOn = b; }
 	public  boolean isOn() { return auditOn; }
 	
-	private static Indent indent = new Indent();
-	public  static void   incr() { indent.incr(); }
-	public  static void   decr() { indent.decr(); }
-
-	private static long then = new GregorianCalendar().getTimeInMillis();
-	public  static long interval() {
-		long now = new GregorianCalendar().getTimeInMillis();
-		long rc = now - then;
-		then = now;
-		return rc;
-	}
-	
-	private String capitalize(final String line) {
-	   return Character.toUpperCase(line.charAt(0)) + line.substring(1);
-	}
-	
-	public Audit( String nm ) { name = capitalize( nm ); }
+	public Audit( String nm ) { name = Character.toUpperCase( nm.charAt(0)) + nm.substring(1); }
 	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
 	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; auditOn = d;}
 	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; auditOn = d; detailedRegis = detail;}
@@ -70,18 +61,22 @@ public class Audit {
 		return info;
 	}
 	public  void   detail( String info ) { if (detailedOn && detailedRegis) log( info ); }
-	public  void   debug( String info ) { if (auditOn || allOn) log( info ); }
+	public  void   debug( String info ) { if (auditOn != allOn) log( info ); }
 	public  Object  info(  String fn, String in, Object out ) { // out may be null!
-		if ((auditOn || allOn) && (out!=null && !out.equals("")))
+		if ((auditOn != allOn) && (out!=null && !out.equals("")))
 			log( name +"."+ fn +"( "+ in +" ) => "+ out.toString() );
 		return out;
 	}
 	
+	// === tracing
+    static       public  boolean    allTracing = false;
+    static       public  void         traceAll( boolean b ) { allTracing = b; }
+    
 	public  boolean  tracing = Audit.allTracing;
     public  void       trace( boolean b ) { tracing = b ? true : Audit.allTracing; }
 
     public  void in( String fn ) { in( fn, "" );}
-    public  void in( String fn, String info ) {if (tracing || allTracing) IN( fn, info );}
+    public  void in( String fn, String info ) {if (tracing != allTracing) IN( fn, info );}
     public  void IN( String fn, String info ) {
 		// sometimes this is tested at call time - preventing the string processing
 		// in the traceIn() call being performed at runtime.
@@ -100,17 +95,26 @@ public class Audit {
 		return result;
     }
 	public String out( String result ) {
-		return (tracing || allTracing) ? OUT( result ) : result;	
+		return (tracing != allTracing) ? OUT( result ) : result;	
 	}
 	public void    out() { out( (String)null ); }
 	public Strings out( Strings s ) { out( s!=null?"["+s.toString(Strings.DQCSV)+"]":"<null>"); return s; }
 	public boolean out( boolean b ) { out( Boolean.toString( b )); return b; }
 	public int     out( int     n ) { out( Integer.toString( n )); return n; }
 	public Float   out( Float   f ) { out( Float.toString(   f )); return f; }
+	public Float   OUT( Float   f ) { OUT( Float.toString(   f )); return f; }
 	public long    out( long    l ) { out( Long.toString(    l )); return l; }
 	public Object  out( Object  o ) { out( o==null ? "null" : o.toString()); return o;}
 	public Object  OUT( Object  o ) { OUT( o==null ? "null" : o.toString()); return o;}
 	
+	// === allOn - tracing AND debug
+	// allOn vs. auditOn - turning auditOn when allOn, suppresses for this level
+	static private boolean allOn = false;
+	static public  void    allOff() { allOn = false; allTracing = false; indent.reset(); }
+	static public  void    allOn() {  allOn = true; allTracing = true; }
+	static public  boolean allAreOn() { return allOn; }
+	
+	// === title
 	public void title( String title ) {
 		String underline = "";
 		log( "\n" );

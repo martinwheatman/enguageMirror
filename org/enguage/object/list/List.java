@@ -142,8 +142,10 @@ public class List extends ArrayList<Item> {
 			Item removedItemTag = remove( n );
 			item.updateItemAttributes( removedItemTag );
 			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
+			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0) {
+				audit.debug( "re-adding "+ removedItemTag.toXml());
 				add( n, removedItemTag );
+			}
 		}
 		value.set( toXml() );
 		return audit.out( rc );

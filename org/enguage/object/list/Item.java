@@ -112,6 +112,7 @@ public class Item {
 				/*
 				 * should getNumber() and combine number from value.
 				 */
+				if (value.equals( "another" )) value = "1 more";
 				Strings vs = new Strings( value );
 				if (vs.size() == 2) {
 					/*
@@ -130,6 +131,7 @@ public class Item {
 									? newInt : -newInt));
 						} catch (Exception e) {}
 			}	}	}
+			audit.debug( "UPdated "+ name +" with "+ value );
 			it.replace( name, value );
 	}	}
 	
