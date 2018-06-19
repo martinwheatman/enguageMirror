@@ -16,7 +16,7 @@ public class Number {
 	 * 
 	 */
 			
-	static private Audit audit = new Audit( "Number", true, true );
+	static private Audit audit = new Audit( "Number" );
 	/* a number is obtained from a string of characters, and can be:
 	 * relative/absolute, exact/vague, positive/negative, e.g
 	 * i need  /another 3/  cups of coffee
@@ -47,9 +47,6 @@ public class Number {
 	static public  final String NotANumber = "not a number";
 	static public  final String       MORE = "more";
 	static public  final String      FEWER = "less";
-	static private final Strings      SOME = new Strings( "some" );
-	static private final Strings  A_COUPLE = new Strings( "a couple" );
-	static private final Strings     A_FEW = new Strings( "a few" );
 
 	
 	
@@ -302,6 +299,8 @@ public class Number {
 
 	private Strings representamen = new Strings();
 	public  Strings representamen() { return representamen; }
+	public  void    representamen( Strings s ) { representamen=s; }
+	
 	public  Number  append( String s ) {
 		representamen.add( s );
 		return this;
@@ -333,15 +332,77 @@ public class Number {
 		idx = 0;
 		op = nextOp = "";
 	}
+	public   Number( String s ) {  // e.g. +=6
+		this();
+		audit.in( "Number", "s="+ s );
+		if (s != null && s.length() > 0) {
+			char sign;
+			if (s.length() > 1 && ((sign = s.charAt( 1 )) == '=' || sign == '~')) {
+				audit.debug( "number from value" );
+				relative( true );
+				ascending( s.charAt( 0 ) == '+' );
+				exact( sign == '=' );
+				magnitude( Float.valueOf( s.substring( 2 )));
+				// create representamen
+				if (!exact()) append( "about" );
+				append( s.substring( 2 ));
+				append( ascending() ? MORE : FEWER );
+			} else {
+				audit.debug( "number from string" );
+				Number n = getNumber( s );
+				relative(  n.relative );
+				ascending( n.ascending );
+				magnitude( n.magnitude );
+				exact(     n.exact );
+				integer(   n.integer );
+				representamen( n.representamen );
+		}	}
+		audit.out( this.toString() );
+	}
 
+	//
+	public Number combine( Number n ) {
+		audit.in( "combine", "'"+ toString() + "' with '" + n.toString() +"'" );
+		if (n.relative()) {
+			audit.debug( "rel="+ relative +" && n.rel="+ n.relative );
+			// relative 
+			relative( relative && n.relative ); // need to set rel before magnitude!
+			exact( exact() && n.exact()); // lowest common denominator
+			integer( integer() && n.integer()); // lowest common denominator
+			Float valueToSet = (ascending ? magnitude : -magnitude) + (n.ascending ? n.magnitude() : -n.magnitude()); 
+			ascending( valueToSet >= 0.0F );
+			magnitude( valueToSet );
+			
+			// this = 3 && n -= 6,  this = -3
+			// recreate representamen
+			representamen = new Strings();
+			if (!exact()) append( "about" );
+			String tmp = String.valueOf( magnitude() );
+			if (integer()) tmp = tmp.substring( 0, tmp.length() - 2 );
+			append( tmp );
+			append( relative ? ascending() ? MORE : FEWER : "" );
+
+		} else {
+			audit.debug( "n is abs" );
+			// replace this with n
+			relative(  false ); // need to set rel before magnitude!
+			ascending(  n.ascending );
+			magnitude( n.magnitude );
+			exact(     n.exact );
+			integer(   n.integer );
+			representamen( n.representamen );
+		}
+		return (Number) audit.out( this );
+	}
+	
 	// properties of a number...
 	private boolean relative = false;
 	public  boolean relative() { return relative; }
 	public  Number  relative( boolean b ) { relative = b; return this; }
 	
-	private boolean positive = true;
-	public  boolean positive() { return positive; }
-	public  Number  positive( boolean b ) { positive = b; return this; }
+	private boolean ascending = true;
+	public  boolean ascending() { return ascending; }
+	public  Number  ascending( boolean b ) { ascending = b; return this; }
 	
 	private boolean exact = true;
 	public  boolean exact() { return exact; }
@@ -352,32 +413,28 @@ public class Number {
 	public  Number  integer( boolean b ) { integer = b; return this; }
 	
 	private Float  magnitude = Float.NaN;
-	public  Number magnitude( Float f ) { if (!f.isNaN()) magnitude=f; return this;}
 	public  Float  magnitude() { return magnitude; }
+	public  Number magnitude( Float valueToSet ) {
+		if (!valueToSet.isNaN()) // <<< TODO: take this out?
+			magnitude = relative() ? Math.abs( valueToSet ) : valueToSet;
+		return this;
+	}
 	
 	public String toString() {
-		// e.g. "36 all divided by 2 /more/"
-		String rc = representamen.toString();
-		//rc += (relative ? (positive ? " more" : " fewer" ) : "");
-		if (rc.equals("")) rc = NotANumber;
-		return rc;
+		// e.g. "another 10"
+		return representamen.size() == 0 ? NotANumber : representamen.toString();
 	}
 	public String valueOf() {
 		//audit.in( "valueOf" );
+		// value = a|[about] N [more/fewer]
 		String rc;
+		idx = 0; // initialise dx for f2Str()
 		if (representamen.size() == 0)
 			rc = Number.NotANumber;
-		else if (representamen.equals( SOME ))
-			rc = "about 5";
-		else if (representamen.equals( A_FEW ))
-			rc = "about 3";
-		else if (representamen.equals( A_COUPLE ))
-			rc = "about 2";
 		else {
-			idx = 0; // initialise dx for f2Str()
 			rc = floatToString( magnitude() );
 			if (!rc.equals(Number.NotANumber))
-				rc = (relative ? (positive ? "+" : "-" ) + (exact ? "=" : "~") : "") + rc;
+				rc = (relative ? (ascending ? "+" : "-" ) + (exact ? "=" : "~") : "") + rc;
 		}	
 		//return audit.out( rc );
 		return rc;
@@ -583,8 +640,9 @@ public class Number {
 	}
 	private boolean doA( ListIterator<String> si ) {
 		if (si.hasNext() && aImpliesNumeric) {
-			if (si.next().equals( "a" )) {
-				relative( false ).positive( true ).magnitude( 1F ).append( "a" );
+			if (si.next().equals( "a" )) { // ascending only valid if relative!
+				// need to set rel before magnitude!
+				relative( false )/*.ascending( true )*/.magnitude( 1F ).append( "a" );
 				
 				if (si.hasNext()) {
 					String tmp = si.next();
@@ -627,8 +685,8 @@ public class Number {
 		boolean rc = false;
 		if (si.hasNext())
 			if (rc = si.next().equals( "another" )) {
-				relative( true );
-				positive( true );
+				relative( true );  // need to set rel before magnitude!
+				ascending( true );
 				exact( true );
 				magnitude( 1.0f );
 				append( "another" );
@@ -644,11 +702,11 @@ public class Number {
 			String token = si.next();
 			if (token.equals( MORE )) {
 				audit.debug( "found more" );
-				relative( true ).positive(  true );
+				relative( true ).ascending(  true );
 				append( MORE );
 			} else if (token.equals( FEWER )) {
 				audit.debug( "found less" );
-				relative( true ).positive( false );
+				relative( true ).ascending( false );
 				append( FEWER );
 			} else
 				si.previous();
@@ -676,6 +734,7 @@ public class Number {
 		//audit.in( "doNumerical", Strings.peek( si ));
 		if (doNum( si )) {
 			doExpr( si );
+			magnitude( doTerms()); // need to do this before more or less
 			doMoreOrLess( si );
 		}		
 		//return (Number) audit.out( this );
@@ -694,8 +753,13 @@ public class Number {
 			number.doNumerical( si ); //.doMoreOrLess( si );
 			audit.debug( "found number: "+ number.toString() +", next word is "+ Strings.peek( si ));
 		}
-		return (Number) audit.out( number.magnitude( number.doTerms() ));
+		return (Number) audit.out( number );
+		//return (Number) audit.out( number.magnitude( number.doTerms() ));
 		//return                   number.magnitude( number.doTerms() ) ;
+	}
+	static public Number getNumber( String s ) {
+		Strings sa = new Strings( s );
+		return getNumber( sa.listIterator());
 	}
 	//* ===== test code ====
 	static private void evaluationTest( String term, String ans ) {
@@ -725,10 +789,24 @@ public class Number {
 			audit.FATAL( "getNumberTest(): "+ val +" is not ("+ expected +")");
 		//audit.out();
 	}
+	static private void combineTest( String number, String with ) {combineTest( number, with, "" );}
+	static private void combineTest( String number, String with, String expVal ) {combineTest( number, with, "", expVal );}
+	static private void combineTest( String number, String with, String expected, String expValue ) {
+		Number m = new Number( number );
+		m.combine( new Number( with ));
+		audit.log( "m="+ m.toString() +"("+ m.valueOf() +")");
+		if (!expValue.equals( "" ) && !expValue.equals( m.valueOf()))
+			audit.FATAL( "Values not equal: "+ expValue +" != "+ m.valueOf() );
+		if (!expected.equals( "" ) && !expected.equals( m.toString()))
+			audit.FATAL( "Strings not equal: '"+ expected +"' != '"+ m.toString() +"'" );
+	}
 	public static void main( String[] args ) {
 		//Audit.allOn();
 		//audit.on();
 	
+		Number n = new Number( "+=6" );
+		audit.log( "n="+ n.toString() +"("+ n.valueOf() +")" );
+		
 		audit.log( "3.0  -> "+ floatToString( 3.0f  ));
 		audit.log( "3.25 -> "+ floatToString( 3.25f ));
 		
@@ -743,7 +821,6 @@ public class Number {
 		// -- */	
 		audit.title( "get number test:" );
 		Audit.incr();
-		Audit.allOn();
 		getNumberTest( "another",                  "+=1" );
 		getNumberTest( "another   cup  of coffee", "+=1" );
 		getNumberTest( "another 2 cups of coffee", "+=2" );
@@ -754,15 +831,12 @@ public class Number {
 		audit.title( "more/less test:");
 		Audit.incr();
 		getNumberTest( "about 6 more cups of coffee", "+~6" );
-		Audit.allOff();
 		getNumberTest( "6 more cups of coffee",       "+=6" );
 		getNumberTest( "6 less cups of coffee",       "-=6" );
 		getNumberTest( "5 more" );
-		Audit.allOn();
 		getNumberTest( "a coffee",                      "1" );
 		getNumberTest( "another",                     "+=1" );
 		getNumberTest( "another coffee",              "+=1" );
-		Audit.allOff();
 		getNumberTest( "a few 1000 more" );
 		getNumberTest( "a couple of 100" );
 		getNumberTest( "a couple" );
@@ -792,5 +866,16 @@ public class Number {
 			//getNumberTest( "2 times the factorial of 2 and 4" ); // next token 'and' ?
 		}
 		Audit.decr();
+		
+		audit.title( "Number combine test:");
+		Audit.incr();
+		combineTest(   "3",   "6",            "6",   "6" );
+		combineTest( "+~3", "-~6", "about 3 less", "-~3" );
+		combineTest( "+~3", "+~3", "about 6 more", "+~6" );
+		combineTest( "-~3", "+~6", "about 3 more", "+~3" );
+		combineTest( "-~3", "-~3", "about 6 less", "-~6" );
+		// somewhere test "about minus 6 more" => "about 6 less" (?)
+		Audit.decr();
+		
 		audit.log( "PASSED." );
 }	}

@@ -23,7 +23,7 @@ public class Item {
 	static public  Strings format() { return format; }
 
 	static private Strings groupOn = new Strings();
-	static public  void    groupOn( String groups ) {groupOn = new Strings( groups );}
+	static public  void    groupOn( String groups ) { groupOn = new Strings( groups );}
 	static public  Strings groupOn() { return groupOn; }
 	
 	// members: name, desc, attr
@@ -105,35 +105,23 @@ public class Item {
 	// -----------------------------------------
 	public void updateItemAttributes( Item it ) {
 		// update quantity, then replace/add others/all?
+		audit.in( "updateItemAttributes", it.toXml());
 		for (Attribute a : attrs) {
 			String value = a.value(),
 					name = a.name();
 			if (name.equals( "quantity" )) {
-				/*
-				 * should getNumber() and combine number from value.
-				 */
-				if (value.equals( "another" )) value = "1 more";
-				Strings vs = new Strings( value );
-				if (vs.size() == 2) {
-					/*
-					 * combine magnitude - replace if both absolute, add if relative etc.
-					 * Should be in Number? Should deal with "1 more" + "2 more" = "3 more"
-					 */
-					String firstVal = vs.get( 0 ), secondVal = vs.get( 1 );
-					if (secondVal.equals( Number.MORE ) || secondVal.equals( Number.FEWER )) {
-						int oldInt = 0, newInt = 0;
-						try {
-							oldInt = Integer.valueOf( it.attribute( name ));
-						} catch (Exception e) {} // fail silently, oldInt = 0
-						try {
-							newInt = Integer.valueOf( firstVal );
-							value = Integer.toString( oldInt + (secondVal.equals( Number.MORE )
-									? newInt : -newInt));
-						} catch (Exception e) {}
-			}	}	}
-			audit.debug( "UPdated "+ name +" with "+ value );
+				audit.log( "quantity value was "+ value );
+				Number n = new Number( value ),
+				       m = new Number( it.attribute( "quantity" ));
+				audit.log( "new quant is "+ it.attribute( "quantity" ) +"("+ m.toString() +")" );
+				m.combine( n );
+				value = m.toString();
+			}
+			audit.log( "Item: updated "+ name +" with "+ value );
 			it.replace( name, value );
-	}	}
+		}
+		audit.out();
+	}
 	
 	// pluralise to the last number... e.g. n cups(s); NaN means no number found yet
 	private Float prevNum = Float.NaN;
@@ -153,6 +141,7 @@ public class Item {
 			if ( Strings.isUpperCase( cmp )) { // variable e.g. UNIT
 				if (groupOn().contains( cmp )) { // ["LOC"].contains( "LOC" )
 					value=null; // IGNORE this component
+					audit.debug( "toString(): ignoring:"+ cmp );
 					break;
 				} else {
 					String val = attributes().getIgnoreCase( cmp );
@@ -173,6 +162,7 @@ public class Item {
 	}
 	public String toXml() { return "<"+name +attrs+">"+descr+"</"+name+">";}
 	public String toString() {
+		audit.in( "toString", "format="+format );
 		Strings rc = new Strings();
 		if (format.size() == 0)
 			rc.append( descr.toString() );
@@ -186,10 +176,11 @@ public class Item {
 					rc.append( Plural.ise( prevNum, descr ));
 				else { // attributes: "UNIT of" + unit='cup' => "cups of"
 					Strings subrc = getFormatComponentValue( f );
+					audit.debug( "fmt="+ f +", val="+ subrc );
 					if (null != subrc) // ignore group name, and undefs
 						rc.addAll( subrc );
 				}
-		return rc.toString( Strings.SPACED );
+		return audit.out( rc.toString());
 	}
 	private Strings getFormatGroupValue( String f ) {
 		boolean found = false;
@@ -260,8 +251,8 @@ public class Item {
 			audit.log( " PASSED: "+ ans );
 	}
 	public static void main( String args[] ) {
-		Audit.allOn();
-		Audit.traceAll( true );
+		//Audit.allOn();
+		//Audit.traceAll( true );
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCATOR +" "+ Where.LOCATION );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffee from Tesco in London" );
@@ -291,4 +282,5 @@ public class Item {
 		
 		audit.title( "Groups" );
 		audit.log( groups.toString() +"." );
+		audit.log( "PASSED" );
 }	}

@@ -6,11 +6,11 @@ import java.util.Locale;
 
 import org.enguage.object.Value;
 import org.enguage.util.Attribute;
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Reply;
+import org.enguage.vehicle.Number;
 import org.enguage.vehicle.where.Where;
 
 public class List extends ArrayList<Item> {
@@ -128,21 +128,26 @@ public class List extends ArrayList<Item> {
 	}
 	private String append( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString()+ " "+ item.group(); // return what we've just said
-		audit.in( "add", item.toXml() +" ("+ rc +")" );
+		audit.in( "append", item.toXml() +" ("+ rc +")" );
 		int n = index( item, false ); // exact match? No!
 		if (-1 == n) { 
-			if (!item.attribute( "quantity" ).equals( "0" )) {
-				// in case: quantity='+= 37' => set it to '37'
-				Strings quantity = new Strings( item.attribute( "quantity" ));
-				if (quantity.size()==2) // += n / -= n => n
-					item.replace( "quantity", quantity.get( 1 ));
+			// combining nothing with a relative number
+			// in case: quantity='+= 37' => set it to '37'
+			String quantity = item.attribute( "quantity" );
+			audit.debug( "quantity="+ quantity );
+			Number number = Number.getNumber( quantity );
+			if (number.magnitude() != 0.0f) {
+				// replace whether relative or not...
+				audit.log( "replacing q with "+ number.toString());
+				item.replace( "quantity", number.toString());
 				add( item );
 			}
 		} else { // found so update item...
 			Item removedItemTag = remove( n );
 			item.updateItemAttributes( removedItemTag );
 			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0) {
+			Number number = new Number( quantity );
+			if (quantity.equals( "" ) || number.magnitude() != 0.0f) {
 				audit.debug( "re-adding "+ removedItemTag.toXml());
 				add( n, removedItemTag );
 			}
@@ -312,16 +317,12 @@ public class List extends ArrayList<Item> {
 				rc = list.toString();
 			
 		} else {
-			Strings paramsList = new Strings( sa );
-			/* We could remove the attributes at the beginning of
-			 * the params list, and add them to all items.
-			 */
-			Attributes as = new Attributes();
-			Strings rca = new Strings();
+			Strings paramsList = new Strings( sa ),
+			        rca        = new Strings();
 			
 			for (Strings params : paramsList.divide( "and" )) {
 
-				Item item = new Item( params, as );
+				Item item = new Item( params );
 				
 				if (cmd.equals( "exists" )) {
 					if (list.exists( item, params )) {
@@ -415,11 +416,12 @@ public class List extends ArrayList<Item> {
 		Item.format( "QUANTITY,UNIT of,,LOCATOR LOCATION" );
 		Item.groupOn( "LOCATION" );
 		audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
-		System.exit( 0 );
+		//System.exit( 0 );
 		
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );
+		Audit.allOn();
 		test( 102, "add martin needs coffee quantity='1'", "a coffee" );
 		test( 103, "add martin needs coffee quantity='8 more'", "8 more coffees" );
 		test( 104, "add martin needs milk quantity='6' unit='pint'",   "6 pints of milk" );
@@ -439,6 +441,7 @@ public class List extends ArrayList<Item> {
 		// END SHOPPING LIST TEST.
 		
 		// BEGIN Calendar list tests...
+		Item.groupOn( "" ); // reset
 		Item.format( ","+Where.LOCATOR +" "+ Where.LOCATION+",WHEN" );
 		test( 201, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
 				  "fred at the pub at 7 pm on the 25th of December , 2015" );
