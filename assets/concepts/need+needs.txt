@@ -31,6 +31,7 @@ On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
 	then, reply "ok, SUBJECT needs ...".
 
+## Elaboration of subsequent utterances
 On "and NUMERIC-QUANTITY":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	SUBJECT needs QUANTITY OBJECT;
@@ -38,12 +39,12 @@ On "and NUMERIC-QUANTITY":
 
 On "and NUMERIC-QUANTITY OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
-	SUBJECT needs another QUANTITY OBJECT;
+	SUBJECT needs QUANTITY OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
 On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
-	SUBJECT needs another QUANTITY OBJECT;
+	SUBJECT needs QUANTITY UNITS of OBJECT;
 	then, reply "ok, SUBJECT needs ...".
 
 ###### Pronoun ancillaries - it is/they are from X #######

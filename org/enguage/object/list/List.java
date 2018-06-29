@@ -131,23 +131,22 @@ public class List extends ArrayList<Item> {
 		audit.in( "append", item.toXml() +" ("+ rc +")" );
 		int n = index( item, false ); // exact match? No!
 		if (-1 == n) { 
-			// combining nothing with a relative number
-			// in case: quantity='+= 37' => set it to '37'
 			String quantity = item.attribute( "quantity" );
-			audit.debug( "quantity="+ quantity );
-			Number number = Number.getNumber( quantity );
-			if (number.magnitude() != 0.0f) {
-				// replace whether relative or not...
-				audit.log( "replacing q with "+ number.toString());
-				item.replace( "quantity", number.toString());
+			Number number = new Number( quantity );
+			if (quantity.equals( "" ) || number.magnitude() != 0.0f) {
+				// combining nothing with a relative number
+				// in case: quantity='+= 37' => set it to '37'
+				if (number.relative()) {
+					number.relative( false );
+					item.replace( "quantity", number.toString() );
+				}
 				add( item );
 			}
 		} else { // found so update item...
 			Item removedItemTag = remove( n );
 			item.updateItemAttributes( removedItemTag );
 			String quantity = removedItemTag.attribute( "quantity" );
-			Number number = new Number( quantity );
-			if (quantity.equals( "" ) || number.magnitude() != 0.0f) {
+			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0f) {
 				audit.debug( "re-adding "+ removedItemTag.toXml());
 				add( n, removedItemTag );
 			}
@@ -164,7 +163,7 @@ public class List extends ArrayList<Item> {
 			Item removedItemTag = remove( n );
 			item.updateItemAttributes( removedItemTag );
 			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) || Integer.valueOf( quantity ) != 0)
+			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0F)
 				add( n, removedItemTag );
 			value.set( toXml() );
 		}
@@ -193,11 +192,10 @@ public class List extends ArrayList<Item> {
 		Strings   rc = new Strings();
 		String upper = name.toUpperCase( Locale.getDefault() );
 		audit.in( "attributeValue", "item='"+ item.toXml() +"', name="+ upper );
-		for (Item t : this)  {
-			if (item == null || t.matchesDescription( item )) {
-				if (t.attributes().has( upper )) {
+		for (Item t : this) 
+			if ((item == null || t.matchesDescription( item ))
+				&& (t.attributes().has( upper )))
 					rc.add( t.attributes().get( upper ));
-		}	}	}
 		return audit.out( rc );
 	}
 	/* this needs to include adjusting quantity downwards, as above in add()

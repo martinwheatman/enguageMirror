@@ -110,12 +110,9 @@ public class Item {
 			String value = a.value(),
 					name = a.name();
 			if (name.equals( "quantity" )) {
-				audit.log( "quantity value was "+ value );
 				Number n = new Number( value ),
 				       m = new Number( it.attribute( "quantity" ));
-				audit.log( "new quant is "+ it.attribute( "quantity" ) +"("+ m.toString() +")" );
-				m.combine( n );
-				value = m.toString();
+				value = m.combine( n ).toString();
 			}
 			audit.log( "Item: updated "+ name +" with "+ value );
 			it.replace( name, value );

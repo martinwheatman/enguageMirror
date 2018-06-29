@@ -216,7 +216,7 @@ public class Enguage extends Shell {
 		//Repertoire.signs.show( "OTF" );
 		//interpret( "tracing on" );
 
-		int level = 4;
+		int level = 0;
 
 		if (thisTest( level, 1 )) {
 			audit.title( "Pronouns - see need+needs.txt" );
@@ -349,27 +349,25 @@ public class Enguage extends Shell {
 			
 			audit.title( "Numerical Context" );
 			clearTheNeedsList();
-			Audit.allOn();
 			interpret( "i need a coffee",
 					"ok, you need a coffee" );
 
-			interpret( "and another", "ok, you need 1 more coffee" );
-			Audit.allOff();
+			interpret( "and another", "ok, you need another coffee" );
 			
 			interpret( "how many coffees do i need",
 					   "2, you need 2 coffees" );
 			interpret( "i need a cup of tea",
 					   "ok, you need a cup of tea" );
 			interpret( "and another coffee",
-					   "ok, you need 1 more coffee" );
+					   "ok, you need another coffee" );
 			interpret( "what do i need",
 					   "You need 3 coffees , and a cup of tea" );
 			
 			audit.title( "Correction" );
 			interpret( "i need another coffee",
-					   "ok, you need 1 more coffee.");
+					   "ok, you need another coffee.");
 			interpret( "no i need another 3",
-					   "ok, you need 3 more coffees.");
+					   "ok, you need another 3 coffees.");
 			interpret( "what do i need",
 					   "you need 6 coffees, and a cup of tea.");
 			interpret( "prime the answer yes", "ok, the next answer will be yes" );

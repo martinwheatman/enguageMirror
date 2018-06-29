@@ -380,7 +380,7 @@ public class Number {
 			String tmp = String.valueOf( magnitude() );
 			if (integer()) tmp = tmp.substring( 0, tmp.length() - 2 );
 			append( tmp );
-			append( relative ? ascending() ? MORE : FEWER : "" );
+			if (relative) append( ascending ? MORE : FEWER );
 
 		} else {
 			audit.debug( "n is abs" );
