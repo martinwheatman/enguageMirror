@@ -789,8 +789,6 @@ public class Number {
 			audit.FATAL( "getNumberTest(): "+ val +" is not ("+ expected +")");
 		//audit.out();
 	}
-	static private void combineTest( String number, String with ) {combineTest( number, with, "" );}
-	static private void combineTest( String number, String with, String expVal ) {combineTest( number, with, "", expVal );}
 	static private void combineTest( String number, String with, String expected, String expValue ) {
 		Number m = new Number( number );
 		m.combine( new Number( with ));

@@ -120,6 +120,17 @@ public class Item {
 		audit.out();
 	}
 	
+	public void updateItemQuantity( Item it ) {
+		audit.in( "updateItemQuantity", it.toXml());
+		String value = attribute( "quantity" );
+		Number n = new Number( value ),
+		       m = new Number( it.attribute( "quantity" ));
+		value = m.combine( n ).toString();
+		audit.log( "Item: updated "+ name +" with "+ value );
+		it.replace( name, value );
+		audit.out();
+	}
+	
 	// pluralise to the last number... e.g. n cups(s); NaN means no number found yet
 	private Float prevNum = Float.NaN;
 	private String counted( Float num, String val ) {

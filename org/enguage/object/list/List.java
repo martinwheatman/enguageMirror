@@ -202,12 +202,12 @@ public class List extends ArrayList<Item> {
 	 * i need coffee + I have 3 coffees = ???
 	 * Returns number removed: existing - to be removed.
 	 */
-	private String remove( Item item, boolean exact ) {
+	private String removeQuantity( Item tbr, boolean exact ) { // to be removed
 		/* removes an item or quantity of item
 		 * returns fail, or a narrative on whatever is remaining.
 		 */
 		String rc = Shell.FAIL;
-		audit.in("remove", "item="+ item.toXml() +", exact="+ (exact?"T":"F"));
+		audit.in("remove", "item="+ tbr.toXml() +", exact="+ (exact?"T":"F"));
 		
 		/* Here if we have quantity, subtract quantity...
 		 * NB this code does not cover the instances where:
@@ -215,41 +215,48 @@ public class List extends ArrayList<Item> {
 		 * i need 37 coffees + i have coffee
 		 */
 		int removed = 0, n;
-		if (-1 != (n = index( item, exact ))) {
+		if (-1 != (n = index( tbr, exact ))) {
 			/*
 			 * we have a listed item, remove the item in question...
 			 */
 			Item tmp = remove( n );
 			
-			if (item.attributes().has( "quantity" )
+			if (tbr.attributes().has( "quantity" )
 			  && tmp.attributes().has( "quantity" ))
 			{ // we have two quantity
-				int existing = Integer.valueOf(  tmp.attribute( "quantity" ));
-				     removed = Integer.valueOf( item.attribute( "quantity" ));
-				if (removed >= existing) {
-					removed = existing; // back to zero
-					tmp = null;
-				} else { //if (existing > removed) {
-					// still some left over
-					int remaining = existing-removed;
-					tmp.replace( "quantity", Integer.valueOf( remaining ).toString() );
-					tmp.description( item.description() ); // will replace crisp with crisps...
-					add( n, tmp );              // ...and some coffee with coffees! hmm???
-				}
+				
+				tbr.updateItemQuantity( tmp );
+				tmp.description( tbr.description() ); // will replace crisp with crisps...
+				
+//				int existing = Integer.valueOf(  tmp.attribute( "quantity" ));
+//				     removed = Integer.valueOf( tbr.attribute( "quantity" ));
+//				if (removed >= existing) {
+//					removed = existing; // remove all
+//					tmp = null;
+//				} else { //if (existing > removed) {
+//					// still some left over
+//					int remaining = existing-removed;
+//					tmp.replace( "quantity", Integer.valueOf( remaining ).toString() );
+//					tmp.description( tbr.description() ); // will replace crisp with crisps...
+//					add( n, tmp );              // ...and some coffee with coffees! hmm???
+//				}
 				// return what is left over...
-				item.replace( "quantity", Integer.valueOf( removed ).toString() );
+				//tbr.replace( "quantity", Integer.valueOf( removed ).toString() );
+				
+				removed = new Number( tbr.attribute( "quantity" )).magnitude() > 0.0F ? 1 : 0;
+				
 			} else {
 				/*
 				 * ...or, as before, remove whole item or all items...
 					// i need milk/i have 37 milks
 				 */
-				if (( exact && tmp.equals( item ))
-				 || (!exact && tmp.matches( item ))) {
+				if (( exact && tmp.equals( tbr ))
+				 || (!exact && tmp.matches( tbr ))) {
 					removed = 1;
 			}	}
 			if (removed > 0) {
 				value.set( toXml() ); // put list back...
-				rc = item.toString(); // prepare return value
+				rc = tbr.toString(); // prepare return value
 		}	}
 		audit.out( rc );
 		return rc;
@@ -355,11 +362,11 @@ public class List extends ArrayList<Item> {
 					
 				} else if (cmd.equals( "remove" )) {
 					// must return those left... so need 10, have 6, return 4.
-					rca.add( list.remove( item, false ));
+					rca.add( list.removeQuantity( item, false ));
 					
 				} else if (cmd.equals( "removeAny" )) {
 					while (-1 != list.index( item, false ))
-						list.remove( item, false );
+						list.removeQuantity( item, false );
 					rca.add( Shell.SUCCESS );
 					
 				} else if (cmd.equals( "add" )) {
