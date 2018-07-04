@@ -204,7 +204,7 @@ public class List extends ArrayList<Item> {
 	 */
 	private String removeQuantity( Item tbr, boolean exact ) { // to be removed
 		/* removes an item or quantity of item
-		 * returns fail, or a narrative on whatever is remaining.
+		 * returns fail, or a narrative on whatever is removed.
 		 */
 		String rc = Shell.FAIL;
 		audit.in("remove", "item="+ tbr.toXml() +", exact="+ (exact?"T":"F"));
@@ -214,36 +214,34 @@ public class List extends ArrayList<Item> {
 		 * I need coffee + i have 37 coffees - ok
 		 * i need 37 coffees + i have coffee
 		 */
-		int removed = 0, n;
+		int n;
 		if (-1 != (n = index( tbr, exact ))) {
 			/*
 			 * we have a listed item, remove the item in question...
 			 */
+			boolean removed = false;
 			Item tmp = remove( n );
 			
 			if (tbr.attributes().has( "quantity" )
 			  && tmp.attributes().has( "quantity" ))
-			{ // we have two quantity
-				
-				tbr.updateItemQuantity( tmp );
+			{ // we have two quantities
+				audit.debug( "removing: "+ tbr.toXml());
+				audit.debug( "    from: "+ tmp.toXml());
+				String maxRemoval = new Number( tmp.attribute( "quantity" )).toString();
+				tbr.removeQuantityFromItem( tmp );
+				audit.debug( "  giving: "+ tbr.toXml());
+				audit.debug( "     and: "+ tmp.toXml());
 				tmp.description( tbr.description() ); // will replace crisp with crisps...
 				
-//				int existing = Integer.valueOf(  tmp.attribute( "quantity" ));
-//				     removed = Integer.valueOf( tbr.attribute( "quantity" ));
-//				if (removed >= existing) {
-//					removed = existing; // remove all
-//					tmp = null;
-//				} else { //if (existing > removed) {
-//					// still some left over
-//					int remaining = existing-removed;
-//					tmp.replace( "quantity", Integer.valueOf( remaining ).toString() );
-//					tmp.description( tbr.description() ); // will replace crisp with crisps...
-//					add( n, tmp );              // ...and some coffee with coffees! hmm???
-//				}
-				// return what is left over...
-				//tbr.replace( "quantity", Integer.valueOf( removed ).toString() );
-				
-				removed = new Number( tbr.attribute( "quantity" )).magnitude() > 0.0F ? 1 : 0;
+				// here...
+				if (new Number( tmp.attribute( "quantity" )).magnitude() <= 0) {
+					tbr.replace( "quantity", maxRemoval );
+					tmp.replace( "quantity", "0" );
+				} else
+					add( n, tmp );
+				removed = true;
+				audit.debug( "removed = "+ tbr +"("+ tmp +")");				
+				rc = tbr.toString(); // prepare return value
 				
 			} else {
 				/*
@@ -252,12 +250,12 @@ public class List extends ArrayList<Item> {
 				 */
 				if (( exact && tmp.equals( tbr ))
 				 || (!exact && tmp.matches( tbr ))) {
-					removed = 1;
+					removed = true;
+					rc = tbr.toString(); // prepare return value
 			}	}
-			if (removed > 0) {
+			if (removed)
 				value.set( toXml() ); // put list back...
-				rc = tbr.toString(); // prepare return value
-		}	}
+		}
 		audit.out( rc );
 		return rc;
 	}
@@ -426,13 +424,13 @@ public class List extends ArrayList<Item> {
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );
-		Audit.allOn();
 		test( 102, "add martin needs coffee quantity='1'", "a coffee" );
 		test( 103, "add martin needs coffee quantity='8 more'", "8 more coffees" );
 		test( 104, "add martin needs milk quantity='6' unit='pint'",   "6 pints of milk" );
 		test( 105, "get martin needs", "9 coffees, and 6 pints of milk" );
 
 		// remove more milk than we've got, and not all coffees
+		Audit.allOn();
 		test( 106, "remove martin needs milk quantity='10' unit='pint'", "6 pints of milk" ); 
 		test( 107, "remove martin needs coffees quantity='6'", "6 coffees" );
 		test( 108, "get martin needs", "3 coffees");

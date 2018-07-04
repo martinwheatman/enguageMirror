@@ -114,20 +114,33 @@ public class Item {
 				       m = new Number( it.attribute( "quantity" ));
 				value = m.combine( n ).toString();
 			}
-			audit.log( "Item: updated "+ name +" with "+ value );
+			audit.debug( "Item: updated "+ name +" with "+ value );
 			it.replace( name, value );
 		}
 		audit.out();
 	}
 	
-	public void updateItemQuantity( Item it ) {
+	public void updateItemWithQuantity( Item it ) {
 		audit.in( "updateItemQuantity", it.toXml());
 		String value = attribute( "quantity" );
 		Number n = new Number( value ),
 		       m = new Number( it.attribute( "quantity" ));
 		value = m.combine( n ).toString();
-		audit.log( "Item: updated "+ name +" with "+ value );
-		it.replace( name, value );
+		audit.debug( "Item: updated quantity with "+ value );
+		it.replace( "quantity", value );
+		audit.out();
+	}
+	
+	public void removeQuantityFromItem( Item it ) {
+		audit.in( "removeItemQuantity", it.toXml());
+		String value = attribute( "quantity" );
+		Number n = new Number( value ),
+		       m = new Number( it.attribute( "quantity" ));
+		n.magnitude( -n.magnitude());
+		n.relative( true );
+		value = m.combine( n ).toString();
+		audit.log( "Item: removed "+ value );
+		it.replace( "quantity", value );
 		audit.out();
 	}
 	
@@ -170,7 +183,7 @@ public class Item {
 	}
 	public String toXml() { return "<"+name +attrs+">"+descr+"</"+name+">";}
 	public String toString() {
-		audit.in( "toString", "format="+format );
+		//audit.in( "toString", "format="+format );
 		Strings rc = new Strings();
 		if (format.size() == 0)
 			rc.append( descr.toString() );
@@ -184,11 +197,12 @@ public class Item {
 					rc.append( Plural.ise( prevNum, descr ));
 				else { // attributes: "UNIT of" + unit='cup' => "cups of"
 					Strings subrc = getFormatComponentValue( f );
-					audit.debug( "fmt="+ f +", val="+ subrc );
+					//audit.debug( "fmt="+ f +", val="+ subrc );
 					if (null != subrc) // ignore group name, and undefs
 						rc.addAll( subrc );
 				}
-		return audit.out( rc.toString());
+		return rc.toString();
+		//return audit.out( rc.toString());
 	}
 	private Strings getFormatGroupValue( String f ) {
 		boolean found = false;

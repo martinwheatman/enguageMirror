@@ -367,8 +367,8 @@ public class Number {
 			audit.debug( "rel="+ relative +" && n.rel="+ n.relative );
 			// relative 
 			relative( relative && n.relative ); // need to set rel before magnitude!
-			exact( exact() && n.exact()); // lowest common denominator
-			integer( integer() && n.integer()); // lowest common denominator
+			exact(     exact &&   n.exact ); // lowest common denominator
+			integer( integer && n.integer ); // lowest common denominator
 			Float valueToSet = (ascending ? magnitude : -magnitude) + (n.ascending ? n.magnitude() : -n.magnitude()); 
 			ascending( valueToSet >= 0.0F );
 			magnitude( valueToSet );
@@ -751,11 +751,9 @@ public class Number {
 				number.doAnother( si )   );
 			
 			number.doNumerical( si ); //.doMoreOrLess( si );
-			audit.debug( "found number: "+ number.toString() +", next word is "+ Strings.peek( si ));
 		}
+		//return number;
 		return (Number) audit.out( number );
-		//return (Number) audit.out( number.magnitude( number.doTerms() ));
-		//return                   number.magnitude( number.doTerms() ) ;
 	}
 	static public Number getNumber( String s ) {
 		Strings sa = new Strings( s );
