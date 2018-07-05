@@ -144,7 +144,7 @@ public class List extends ArrayList<Item> {
 			}
 		} else { // found so update item...
 			Item removedItemTag = remove( n );
-			item.updateItemAttributes( removedItemTag );
+			removedItemTag.updateAttributes( item );
 			String quantity = removedItemTag.attribute( "quantity" );
 			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0f) {
 				audit.debug( "re-adding "+ removedItemTag.toXml());
@@ -161,7 +161,7 @@ public class List extends ArrayList<Item> {
 		int n = index( item, false ); // exact match? No!
 		if (-1 != n) { 
 			Item removedItemTag = remove( n );
-			item.updateItemAttributes( removedItemTag );
+			removedItemTag.updateAttributes( item );
 			String quantity = removedItemTag.attribute( "quantity" );
 			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0F)
 				add( n, removedItemTag );
@@ -202,62 +202,42 @@ public class List extends ArrayList<Item> {
 	 * i need coffee + I have 3 coffees = ???
 	 * Returns number removed: existing - to be removed.
 	 */
-	private String removeQuantity( Item tbr, boolean exact ) { // to be removed
-		/* removes an item or quantity of item
-		 * returns fail, or a narrative on whatever is removed.
-		 */
+	private String removeQuantity( Item tbr, boolean exact ) {
 		String rc = Shell.FAIL;
-		audit.in("remove", "item="+ tbr.toXml() +", exact="+ (exact?"T":"F"));
+		audit.in("removeQuantity", "item="+ tbr.toXml() +", exact="+ (exact?"T":"F"));
 		
-		/* Here if we have quantity, subtract quantity...
-		 * NB this code does not cover the instances where:
-		 * I need coffee + i have 37 coffees - ok
-		 * i need 37 coffees + i have coffee
-		 */
 		int n;
 		if (-1 != (n = index( tbr, exact ))) {
-			/*
-			 * we have a listed item, remove the item in question...
-			 */
-			boolean removed = false;
 			Item tmp = remove( n );
 			
-			if (tbr.attributes().has( "quantity" )
-			  && tmp.attributes().has( "quantity" ))
-			{ // we have two quantities
-				audit.debug( "removing: "+ tbr.toXml());
-				audit.debug( "    from: "+ tmp.toXml());
+			if (   tbr.attributes().has( "quantity" )
+			    && tmp.attributes().has( "quantity" ))
+			{
 				String maxRemoval = new Number( tmp.attribute( "quantity" )).toString();
-				tbr.removeQuantityFromItem( tmp );
-				audit.debug( "  giving: "+ tbr.toXml());
-				audit.debug( "     and: "+ tmp.toXml());
+				
+				tmp.removeQuantity( new Number( tbr.attribute( "quantity" )));
 				tmp.description( tbr.description() ); // will replace crisp with crisps...
 				
-				// here...
 				if (new Number( tmp.attribute( "quantity" )).magnitude() <= 0) {
 					tbr.replace( "quantity", maxRemoval );
 					tmp.replace( "quantity", "0" );
 				} else
 					add( n, tmp );
-				removed = true;
-				audit.debug( "removed = "+ tbr +"("+ tmp +")");				
 				rc = tbr.toString(); // prepare return value
 				
-			} else {
-				/*
-				 * ...or, as before, remove whole item or all items...
-					// i need milk/i have 37 milks
+			} else if (   ( exact && tmp.equals( tbr ))
+			           || (!exact && tmp.matches( tbr )))
+				/* ...or, as before, remove whole item or all items...
+				 *	// i need milk/i have milk
+				 *	// i need milk/i have 37 milks
+				 *	// i need 37 milks/i have milk
 				 */
-				if (( exact && tmp.equals( tbr ))
-				 || (!exact && tmp.matches( tbr ))) {
-					removed = true;
-					rc = tbr.toString(); // prepare return value
-			}	}
-			if (removed)
-				value.set( toXml() ); // put list back...
+				rc = tbr.toString(); // prepare return value
+				
 		}
-		audit.out( rc );
-		return rc;
+		if (!rc.equals( Shell.FAIL ))
+			value.set( toXml() ); // put list back...
+		return audit.out( rc );
 	}
 	public boolean move(List l) {
 		/*

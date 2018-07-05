@@ -103,45 +103,29 @@ public class Item {
 					.contains( Plural.singular( patt.description() ));
 	}
 	// -----------------------------------------
-	public void updateItemAttributes( Item it ) {
+	
+	public void updateAttributes( Item update ) {
 		// update quantity, then replace/add others/all?
-		audit.in( "updateItemAttributes", it.toXml());
-		for (Attribute a : attrs) {
+		audit.in( "updateAttributes", update.toXml());
+		for (Attribute a : update.attrs) {
 			String value = a.value(),
 					name = a.name();
 			if (name.equals( "quantity" )) {
 				Number n = new Number( value ),
-				       m = new Number( it.attribute( "quantity" ));
+				       m = new Number( attribute( "quantity" ));
 				value = m.combine( n ).toString();
 			}
 			audit.debug( "Item: updated "+ name +" with "+ value );
-			it.replace( name, value );
+			replace( name, value );
 		}
 		audit.out();
 	}
-	
-	public void updateItemWithQuantity( Item it ) {
-		audit.in( "updateItemQuantity", it.toXml());
-		String value = attribute( "quantity" );
-		Number n = new Number( value ),
-		       m = new Number( it.attribute( "quantity" ));
-		value = m.combine( n ).toString();
-		audit.debug( "Item: updated quantity with "+ value );
-		it.replace( "quantity", value );
-		audit.out();
-	}
-	
-	public void removeQuantityFromItem( Item it ) {
-		audit.in( "removeItemQuantity", it.toXml());
-		String value = attribute( "quantity" );
-		Number n = new Number( value ),
-		       m = new Number( it.attribute( "quantity" ));
-		n.magnitude( -n.magnitude());
-		n.relative( true );
-		value = m.combine( n ).toString();
-		audit.log( "Item: removed "+ value );
-		it.replace( "quantity", value );
-		audit.out();
+	public Item removeQuantity( Number removed ) {
+		audit.in( "removeQuantity", removed.toString());
+		Number quantity = new Number( attribute( "quantity" ));
+		removed.magnitude( -removed.magnitude()).relative( true );
+		replace( "quantity", quantity.combine( removed ).toString() );
+		return (Item) audit.out( this );
 	}
 	
 	// pluralise to the last number... e.g. n cups(s); NaN means no number found yet
