@@ -5,6 +5,7 @@ import java.util.ListIterator;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Number;
+import org.enguage.vehicle.Numerals;
 
 public class Expression {
 	
@@ -105,11 +106,12 @@ public class Expression {
 		audit.out();
 	}
 	static public void main( String[] args) {
-		Number.aImpliesNumeric( false ); // prevent a being seen as implying 1
+		Numerals.aImpliesNumeric( false ); // prevent a being seen as implying 1
 		expressionTest( "1" );
 		expressionTest( "fred" );
 		expressionTest( "fred bill steve" );
 		expressionTest( "a plus b" );
 		expressionTest( "a + b" );
 		expressionTest( "n times the factorial of n minus 1" );
+		audit.log( "PASSED" );
 }	}

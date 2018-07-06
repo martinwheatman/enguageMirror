@@ -329,7 +329,7 @@ public class Enguage extends Shell {
 			
 			// again, in longhand this is...
 			interpret( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
-			interpret( "first perform numeric evaluate variable d - variable c",                           "go on" );
+			interpret( "first perform numeric evaluate variable d - variable c",             "go on" );
 			interpret( "ok", "ok" );
 			
 			interpret( "subtract 2 from 3", "1" );

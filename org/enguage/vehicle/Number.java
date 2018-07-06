@@ -440,18 +440,6 @@ public class Number {
 		return rc;
 	}
 
-	private int peekwals( Strings sa, ListIterator<String> si ) {
-		boolean rc = true;
-		ListIterator<String> sai = sa.listIterator();
-		int i = si.nextIndex();
-		while (rc && sai.hasNext() && si.hasNext()) {
-			if (!sai.next().equals( si.next()))
-				rc = false;
-		}
-		// if not put si back!
-		while (si.nextIndex() > i) si.previous();
-		return rc && !sai.hasNext() ? sa.size() : 0; // we haven't failed AND got to end of strings
-	}
 	// ===== getNumber(): a Number representamen Factory
 	static private final Strings       ALL = new Strings(       "all" );
 	static private final Strings     CUBED = new Strings(     "cubed" );
@@ -459,26 +447,26 @@ public class Number {
 	static private final Strings  POWER_OF = new Strings( "to the power of" );
 	static private final Strings FACTORIAL = new Strings( "factorial" );
 	
-	private void doPostOp( ListIterator<String> si ) {
+	private void appendPostOp( ListIterator<String> si ) {
 		int oplen, x=0;
 		String power = "";
 		do{
 			oplen = 0;
 			if (si.hasNext()) {
 				int    n = 0;
-				if (   0 != (x = peekwals( ALL, si )))
+				if (   0 != (x = ALL.peekwals( si )))
 				{
 					for (int j=0; j<x; j++) si.next();
 					n+=x; // can only be 1
 				}
-				if (   0 != (x = peekwals(     CUBED, si ))
-				    || 0 != (x = peekwals(   SQUARED, si ))
-					|| 0 != (x = peekwals( FACTORIAL, si ))) // we can say "all factorial"	
+				if (   0 != (x =     CUBED.peekwals( si ))
+				    || 0 != (x =   SQUARED.peekwals( si ))
+					|| 0 != (x = FACTORIAL.peekwals( si ))) // we can say "all factorial"	
 				{
 					Strings.next( si, x );
 					oplen = (n+=x); // success!
 					
-				} else if ( 0 != (x = peekwals(  POWER_OF, si ))) { // we can say "all to the ..."
+				} else if ( 0 != (x = POWER_OF.peekwals( si ))) { // we can say "all to the ..."
 					Strings.next( si, x ); // skip past "to the power of"
 					//audit.debug( "peek:"+ Strings.peek( si )); // ==5
 					n+=x;  // add len "to the..."
@@ -499,7 +487,7 @@ public class Number {
 			}
 		} while (++x<10 && oplen > 0);
 	}
-	private int doOp( ListIterator<String> si) {
+	private int appendOp( ListIterator<String> si) {
 		int len = 0;
 		if (si.hasNext()) {
 			String op = si.next();
@@ -536,7 +524,7 @@ public class Number {
 		}
 		return len;
 	}
-	private Strings getParams( ListIterator<String> si ) {
+	private Strings appendParams( ListIterator<String> si ) {
 		audit.in( "getParams", Strings.peek( si ));
 		Strings params = null;
 		if (si.hasNext()) {
@@ -557,14 +545,11 @@ public class Number {
 		return audit.out( params );
 	}
 	private String numEval( String fn, Strings params ) {
-		//audit.in( "numEval", fn +"( "+ params +" )" );
-		//audit.debug( "<<<<<<<<<<<<<<<<< NUM EVAL >>>>>>>>>>>>>>>>>>>>" );
 		String token = Function.interpret( "evaluate "+ fn +" "+ params.toString() );
-		//return audit.out( Numeric.isNumeric( token ) ? token : null );
 		return Numerals.isNumeric( token ) ? token : null;
 	}
-	private boolean doFunction( ListIterator<String> si ) {
-		//audit.in( "doFunction", Strings.peek( si ));
+	private boolean appendFunction( ListIterator<String> si ) {
+		audit.in( "doFunction", Strings.peek( si ));
 		boolean rc = false;
 		if (si.hasNext()) {
 			String token = si.next();
@@ -574,7 +559,7 @@ public class Number {
 				if (si.hasNext()) {
 					Strings params = null;
 					if (si.next().equals( "of" ) && 
-						null != (params = getParams( si )) &&
+						null != (params = appendParams( si )) &&
 						null != (token  = numEval( fn, params ))) // 5 = sum, [ 2,  3 ]
 					{	
 						rc = true;
@@ -592,15 +577,15 @@ public class Number {
 			} else
 				si.previous(); // "the." 
 		}
-		//return audit.out( rc );
-		return rc;
+		return audit.out( rc );
+		//return rc;
 	}
-	private boolean doNumeral( ListIterator<String> si ) {
+	private boolean appendNumeral( ListIterator<String> si ) {
 		audit.in( "doNumeral", Strings.peek( si ));
 		boolean rc = false;
 		if (si.hasNext()) {
-			String token;
-			if (rc = Numerals.isNumeric( token = si.next() ))
+			String token = si.next();
+			if (rc = Numerals.isNumeric( token ))
 				append( token );
 			else
 				si.previous(); // not numeric and not "the" and not "the."
@@ -608,15 +593,15 @@ public class Number {
 		return audit.out( rc );
 	}
 	// used in getNumber() factory method...
-	private void doExpr( ListIterator<String> si ) {
+	private void appendExpr( ListIterator<String> si ) {
 		//audit.in( "doExpr", Strings.peek( si ));
 		// ...read into the array a succession of ops and numerals 
 		int done;
 		do {
 			// optional, so ignore any return code
-			doPostOp( si ); // [all] squared|cubed|to the power of
-			if (   0 < (done = doOp( si )) // ... times
-				&& !(doNumeral( si ) || doFunction( si )))
+			appendPostOp( si ); // [all] squared|cubed|to the power of
+			if (   0 < (done = appendOp( si )) // ... times
+				&& !(appendNumeral( si ) || appendFunction( si )))
 			{ // if done op but not numeral remove op..
 				remove( si, done );
 				done = 0;
@@ -633,12 +618,8 @@ public class Number {
 	 *   [..., "some",   "jam", ...]         => 0 -- jam is not plural!
 	 *   [..., "a",      "gun", ...]         => 1 // 1
 	 */
-	static private boolean aImpliesNumeric = true;
-	static public  void    aImpliesNumeric( boolean implies ) {
-		aImpliesNumeric = implies;
-	}
 	private boolean doA( ListIterator<String> si ) {
-		if (si.hasNext() && aImpliesNumeric) {
+		if (si.hasNext() && Numerals.aImpliesNumeric()) {
 			if (si.next().equals( "a" )) { // ascending only valid if relative!
 				// need to set rel before magnitude!
 				relative( false )/*.ascending( true )*/.magnitude( 1F ).append( "a" );
@@ -727,15 +708,14 @@ public class Number {
 		return audit.out( rc );
 	}
 	private Number doNumerical( ListIterator<String> si ) {
-		//audit.in( "doNumerical", Strings.peek( si ));
-		if (doNum( si ) || doFunction( si )) {
-		//if (doNum( si )) {
-			doExpr( si );
+		audit.in( "doNumerical", Strings.peek( si ));
+		if (doNum( si ) || appendFunction( si )) {
+			appendExpr( si );
 			magnitude( doTerms()); // need to do this before more or less
 			doMoreOrLess( si );
 		}		
-		//return (Number) audit.out( this );
-		return this;
+		return (Number) audit.out( this );
+		//return this;
 	}
 	static public Number getNumber( ListIterator<String> si ) {
 		audit.in( "getNumbr", Strings.peek( si ));
@@ -847,13 +827,15 @@ public class Number {
 			 * Mersenne number( n ): 2^n ALL minus 1  -- not a definition???
 			 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
 			 */
+			
+			// Function within function:
 			Function.interpret( "create sum x y / "+ new Attribute( "body", "x + y" ));
 			getNumberTest( "2 times the sum of 2 and 3",  "10" );
 			
 			Function.interpret( "create addition x y / "+ new Attribute( "body", "the sum of x and y" ));
-			//Audit.allOn();
 			getNumberTest( "2 times the addition of 2 and 3",  "10" );
 			
+			//Audit.allOn();
 			//getNumberTest( "2 times the factorial of 1",   "2" );
 			//Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
 			//Audit.allOn();

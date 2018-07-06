@@ -265,6 +265,17 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		Strings a = new Strings( buf );
 		return Strings.fromArrayList( a );
 	}*/
+	public int peekwals( ListIterator<String> si ) {
+		boolean rc = true;
+		ListIterator<String> sai = listIterator();
+		int i = si.nextIndex();
+		while (rc && sai.hasNext() && si.hasNext())
+			if (!sai.next().equals( si.next()))
+				rc = false;
+		// if not put si back!
+		while (si.nextIndex() > i) si.previous();
+		return rc && !sai.hasNext() ? size() : 0; // we haven't failed AND got to end of strings
+	}
 	static public String getString( ListIterator<String> si, int n ) {
 		Strings sa = new Strings();
 		for (int i=0; i<n; i++)
