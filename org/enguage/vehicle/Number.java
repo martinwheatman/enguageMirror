@@ -468,18 +468,14 @@ public class Number {
 					
 				} else if ( 0 != (x = POWER_OF.peekwals( si ))) { // we can say "all to the ..."
 					Strings.next( si, x ); // skip past "to the power of"
-					//audit.debug( "peek:"+ Strings.peek( si )); // ==5
 					n+=x;  // add len "to the..."
 					
-					//audit.debug( "do numeral: "+ (doNumeral( si )?"ok":"fail"));
-					if (si.hasNext()) {
+					if (si.hasNext())
 						if (!Numerals.isNumeric( power = si.next() )) {
 							si.previous();
 							power = ""; // reset tmp!
-						} else {
-							//++x; // numeral is just len 1
+						} else
 							oplen = ++n; // success!
-					}	}
 				}
 				Strings.previous( si, n );      // now, put them all back!
 				if (n > 0) append( si, oplen ); // might go back 2 and tx none, or 2.
