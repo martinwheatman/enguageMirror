@@ -167,7 +167,6 @@ public class Item {
 	}
 	public String toXml() { return "<"+name +attrs+">"+descr+"</"+name+">";}
 	public String toString() {
-		//audit.in( "toString", "format="+format );
 		Strings rc = new Strings();
 		if (format.size() == 0)
 			rc.append( descr.toString() );
@@ -181,12 +180,10 @@ public class Item {
 					rc.append( Plural.ise( prevNum, descr ));
 				else { // attributes: "UNIT of" + unit='cup' => "cups of"
 					Strings subrc = getFormatComponentValue( f );
-					//audit.debug( "fmt="+ f +", val="+ subrc );
 					if (null != subrc) // ignore group name, and undefs
 						rc.addAll( subrc );
 				}
 		return rc.toString();
-		//return audit.out( rc.toString());
 	}
 	private Strings getFormatGroupValue( String f ) {
 		boolean found = false;

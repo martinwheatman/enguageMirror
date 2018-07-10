@@ -399,7 +399,6 @@ public class List extends ArrayList<Item> {
 		Item.format( "QUANTITY,UNIT of,,LOCATOR LOCATION" );
 		Item.groupOn( "LOCATION" );
 		audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
-		//System.exit( 0 );
 		
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );

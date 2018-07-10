@@ -507,13 +507,6 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return false;
 	}
-	
-//	public void append( ListIterator<String> si, int n ) {
-//		for (int j=0; j<n; j++)
-//			if (si.hasNext())
-//				append( si.next() );
-//	}
-	
 	public static void removes( ListIterator<String> si, int n ) {
 		for (int i=0; i<n; i++) si.remove();
 	}

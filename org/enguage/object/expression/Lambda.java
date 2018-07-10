@@ -65,7 +65,7 @@ public class Lambda {
 								null == Variable.get( v ) : true;
 			}
 		} else
-			audit.log( "Mis-match in params: "+ names +"/"+ values.toString( Strings.DQCSV ));
+			audit.debug( "Lambda: mis-match in params: "+ names +"/"+ values.toString( Strings.DQCSV ));
 		return audit.out( rc );
 	}
 	static public void main( String args[] ) {

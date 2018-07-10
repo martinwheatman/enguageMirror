@@ -813,32 +813,6 @@ public class Number {
 		getNumberTest( "3 times 4.2 factorial",         "3" );
 		getNumberTest( "2 to the power of",             "2" );
 		getNumberTest( "2 to the power of 5",          "32" );
-		
-		Enguage.e = new Enguage();
-		Overlay.Set( Overlay.Get());
-		if (!Overlay.autoAttach())
-			audit.ERROR( "Ouch!" );
-		else {
-			/* factorial( n ): n times the factorial of n minus 1.
-			 * Mersenne number( n ): 2^n ALL minus 1  -- not a definition???
-			 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
-			 */
-			
-			// Function within function:
-			Function.interpret( "create sum x y / "+ new Attribute( "body", "x + y" ));
-			getNumberTest( "2 times the sum of 2 and 3",  "10" );
-			
-			Function.interpret( "create addition x y / "+ new Attribute( "body", "the sum of x and y" ));
-			getNumberTest( "2 times the addition of 2 and 3",  "10" );
-			
-			//Audit.allOn();
-			//getNumberTest( "2 times the factorial of 1",   "2" );
-			//Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
-			//Audit.allOn();
-			//getNumberTest( "the factorial of 4", "24" );
-			//getNumberTest( "2 times the factorial of 2",  "4" );
-			//getNumberTest( "2 times the factorial of 2 and 4" ); // next token 'and' ?
-		}
 		Audit.decr();
 		
 		audit.title( "Number combine test:");
@@ -850,6 +824,37 @@ public class Number {
 		combineTest( "-~3", "-~3", "about 6 less", "-~6" );
 		// somewhere test "about minus 6 more" => "about 6 less" (?)
 		Audit.decr();
+		
+		Enguage.e = new Enguage();
+		Overlay.Set( Overlay.Get());
+		if (!Overlay.autoAttach())
+			audit.ERROR( "Ouch!" );
+		else {
+			/* factorial( n ): n times the factorial of n minus 1.
+			 * Mersenne number( n ): 2^n ALL minus 1  -- not a definition???
+			 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
+			 */
+			
+			audit.title( "Function test:");
+			Audit.incr();
+			// Function within function:
+			Function.interpret( "create sum x y / "+ new Attribute( "body", "x + y" ));
+			getNumberTest( "2 times the sum of 2 and 3",  "10" );
+			
+			Function.interpret( "create addition x y / "+ new Attribute( "body", "the sum of x and y" ));
+			getNumberTest( "2 times the addition of 2 and 3",  "10" );
+			
+			Function.interpret( "create product x y / "+ new Attribute( "body", "x times y" ));
+			getNumberTest( "2 times the product of 2 and 3",  "12" );
+			
+//			Function.interpret( "create square x / "+ new Attribute( "body", "the product of x and x" ));
+//			getNumberTest( "2 times the square of 2",  "8" );
+			
+			//Audit.allOn();
+			//getNumberTest( "2 times the factorial of 1",   "2" );
+			//Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
+			Audit.decr();
+		}
 		
 		audit.log( "PASSED." );
 }	}
