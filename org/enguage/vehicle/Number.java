@@ -109,29 +109,34 @@ public class Number {
 				if (representamen.size() > ++idx) {
 					String fnName = representamen.get( idx );
 					if (representamen.size() > ++idx) {
-						got = representamen.get( idx );
-						if (got.equals( "of" ) && representamen.size() > ++idx) {
+						got = representamen.get( idx++ );
+						if (got.equals( "of" ) && idx < representamen.size()) {
+							//
 							//get params
-							got = representamen.get( idx );
+							//
+							got = representamen.get( idx++ );
+							audit.log( "just got: "+ got );
 							String initParam = got;
 							Strings params = new Strings();
-							while (representamen.size() > ++idx && !got.equals( "and" )) {
+							while (idx < representamen.size() && !got.equals( "and" )) {
 								audit.debug( "got param "+ got );
 								params.add( got );
-								got = representamen.get( idx );
+								got = representamen.get( idx++ );
+								audit.log( "loop got: "+ got );
 							}
 							audit.debug( "idx="+ idx +", array=["+representamen.toString( Strings.CSV )+"]");
-							if (got.equals( "and" ) && representamen.size() > idx) {
-								got = representamen.get( idx );
-								audit.debug( "read last param "+ got );
-								params.append( "and" ).append( got );
-							} else if (got.equals( "and" ) && representamen.size() >= idx) {
-								audit.debug( "running with saved/initial param" );
-								params = new Strings( initParam );
-							} else {
-								audit.debug( "no params" );
-								params = new Strings();
-							}
+							if (got.equals( "and" )) {
+								if (representamen.size() > idx) {
+									got = representamen.get( idx++ );
+									audit.debug( "read last param "+ got );
+									params.append( "and" ).append( got );
+								} else {
+									audit.debug( "running with saved/initial param" );
+									params = new Strings( initParam );
+								}
+							} else
+								params.add( got );
+							
 							audit.debug( "calling: "+ fnName +" ["+ params.toString( Strings.DQCSV ) +"]" );
 							number = numEval( fnName, params );
 				}	}	}
@@ -847,8 +852,8 @@ public class Number {
 			Function.interpret( "create product x y / "+ new Attribute( "body", "x times y" ));
 			getNumberTest( "2 times the product of 2 and 3",  "12" );
 			
-//			Function.interpret( "create square x / "+ new Attribute( "body", "the product of x and x" ));
-//			getNumberTest( "2 times the square of 2",  "8" );
+			Function.interpret( "create square x / "+ new Attribute( "body", "the product of x and x" ));
+			getNumberTest( "2 times the square of 2",  "8" );
 			
 			//Audit.allOn();
 			//getNumberTest( "2 times the factorial of 1",   "2" );
