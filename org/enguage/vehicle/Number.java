@@ -115,14 +115,12 @@ public class Number {
 							//get params
 							//
 							got = representamen.get( idx++ );
-							audit.log( "just got: "+ got );
 							String initParam = got;
 							Strings params = new Strings();
 							while (idx < representamen.size() && !got.equals( "and" )) {
 								audit.debug( "got param "+ got );
 								params.add( got );
 								got = representamen.get( idx++ );
-								audit.log( "loop got: "+ got );
 							}
 							audit.debug( "idx="+ idx +", array=["+representamen.toString( Strings.CSV )+"]");
 							if (got.equals( "and" )) {
@@ -854,6 +852,7 @@ public class Number {
 			
 			Function.interpret( "create square x / "+ new Attribute( "body", "the product of x and x" ));
 			getNumberTest( "2 times the square of 2",  "8" );
+			//getNumberTest( "the square of x",  "the product of x and x" );
 			
 			//Audit.allOn();
 			//getNumberTest( "2 times the factorial of 1",   "2" );

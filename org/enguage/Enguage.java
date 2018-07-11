@@ -272,12 +272,13 @@ public class Enguage extends Shell {
 			
 			// non-numerical values
 			audit.title( "Simply ent/attr model" );
-			interpret( "the height of martin is 195",  "Ok,  the height of martin is 195" );
-			interpret( "what is the height of martin", "195, the height of martin is 195" );
+			interpret( "the height of martin is 194",  "Ok,  the height of martin is 194" );
+			interpret( "what is the height of martin", "194, the height of martin is 194" );
 
 			audit.title( "Apostrophe's ;-)" );
-			interpret( "martin's height is 194",  "Ok,  martin's height is 194" );
 			interpret( "what is martin's height", "194, martin's height is 194" );
+			interpret( "martin's height is 195",  "Ok,  martin's height is 195" );
+			interpret( "what is the height of martin", "195, the height of martin is 195" );
 
 			// TODO:
 			// who-.txt
@@ -326,6 +327,9 @@ public class Enguage extends Shell {
 			
 			interpret( "the product of x and y is x times y" );
 			interpret( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
+			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
+			//interpret( "the square of x is x times x",    "Ok, the square of x is x times x" );
+			//interpret( "what is 2 times the square of 2", "8, 2 times the square of 2 is 8" );
 			
 			// again, in longhand this is...
 			interpret( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
