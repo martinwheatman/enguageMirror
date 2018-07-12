@@ -327,6 +327,7 @@ public class Enguage extends Shell {
 			
 			interpret( "the product of x and y is x times y" );
 			interpret( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
+			//TODO:
 			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
 			//interpret( "the square of x is x times x",    "Ok, the square of x is x times x" );
 			//interpret( "what is 2 times the square of 2", "8, 2 times the square of 2 is 8" );

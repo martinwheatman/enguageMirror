@@ -54,7 +54,7 @@ public class Function {
 		Function fn = new Function( name );
 		fn.lambda = new Lambda( name, actuals ); // this is a 'find', body="" == !found
 		if (fn.lambda.body().equals( "" )) {
-			audit.log( "FUNCTION: no body found for "+ actuals +"/"+ name );
+			audit.debug( "FUNCTION: no body found for "+ actuals +"/"+ name );
 			fn = null;
 		}
 		return (Function) audit.out( fn );

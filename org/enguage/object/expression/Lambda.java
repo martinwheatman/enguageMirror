@@ -13,6 +13,7 @@ import org.enguage.vehicle.Numerals;
 public class Lambda {
 	static private Audit audit = new Audit( "Lambda" );
 
+	// TODO: need attach()/detach() methods!
 	public Lambda( Function f, Strings params, String body ) { // new/create
 		signature = params;
 		audit.debug( "creating: "+ signature.toString( Strings.CSV ) +"/"+ f.name());
@@ -22,19 +23,14 @@ public class Lambda {
 			).set( body );
 	}
 	public Lambda( String name, Strings values ) { // existing/find
-		audit.in( "ctor", name+ "( "+ values +" )" );
+		audit.in( "ctor", name +"( "+ values +" )" );
 		Strings onames = Enguage.e.o.list( "." );
-		//audit.debug( "names are: "+ onames.toString( Strings.DQCSV ) );
 		if (null != onames) for (String params : onames) 
-			if (!match( (signature = new Strings( params, ',' )), values )
-				|| (body = new Value( params, name ).getAsString()).equals(""))
-				signature = null;
-			else
+			if (match( (signature = new Strings( params, ',' )), values )
+				&& !(body = new Value( params, name ).getAsString()).equals(""))
 				break; // bingo! (can we revisit if this ain't right?)
-
-		if (signature == null)
+		if (body.equals(""))
 			audit.log( "no "+ values.toString( Strings.CSV ) +"/"+ name +" found" );
-		// TODO: need attach()/detach() methods!
 		audit.out();
 	}
 	

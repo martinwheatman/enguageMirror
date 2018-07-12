@@ -852,6 +852,7 @@ public class Number {
 			
 			Function.interpret( "create square x / "+ new Attribute( "body", "the product of x and x" ));
 			getNumberTest( "2 times the square of 2",  "8" );
+			//TODO:
 			//getNumberTest( "the square of x",  "the product of x and x" );
 			
 			//Audit.allOn();
