@@ -41,6 +41,7 @@ public class Function {
 		if (params.size() > 2)
 			params.remove( params.size()-2 ); // remove 'and'
 		
+		audit.debug( "creating: "+ params +"/"+ name );
 		new Function( name, params, Attribute.getAttribute( si ).value() );
 		
 		return audit.out( Shell.SUCCESS );
@@ -48,27 +49,25 @@ public class Function {
 	public String toString() {
 		return name + (lambda == null ? "<noLambda/>" : lambda.toString());
 	}
-	static private Function getFunction( String name, Strings values ) {
-		audit.in( "getFunction", name +", "+ values.toString("[", ", ", "]"));
+	static private Function getFunction( String name, Strings actuals ) {
+		audit.in( "getFunction", name +", "+ actuals.toString("[", ", ", "]"));
 		Function fn = new Function( name );
-		
-		fn.lambda = new Lambda( name, values ); // this is a 'find', body="" == !found
-
+		fn.lambda = new Lambda( name, actuals ); // this is a 'find', body="" == !found
 		if (fn.lambda.body().equals( "" )) {
-			audit.log( "ERROR: Null fn: no body found for "+ name+"/"+ values );
+			audit.log( "FUNCTION: no body found for "+ actuals +"/"+ name );
 			fn = null;
 		}
 		return (Function) audit.out( fn );
 	}
-	static private Strings substitute( String function, Strings argv ) {
-		audit.in( "substitute", "Function="+ function +", argv="+ argv.toString( Strings.DQCSV ));
+	static private Strings substitute( String function, Strings actuals ) {
+		audit.in( "substitute", "Function="+ function +", argv="+ actuals.toString( Strings.DQCSV ));
 		Strings ss = null;
-		Function f = getFunction( function, argv );
+		Function f = getFunction( function, actuals );
 		if (f != null)
 			ss = new Strings( f.lambda.body() )
 					.substitute(
 						new Strings( f.lambda.signature() ), // formals
-						argv.derefVariables() );
+						actuals.derefVariables() );
 		return audit.out( ss );
 	}
 	static private String evaluate( String name, Strings argv ) {
