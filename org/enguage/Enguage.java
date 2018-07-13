@@ -329,12 +329,12 @@ public class Enguage extends Shell {
 			interpret( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
 			//TODO:
 			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
-			//interpret( "the square of x is x times x",    "Ok, the square of x is x times x" );
-			//interpret( "what is 2 times the square of 2", "8, 2 times the square of 2 is 8" );
+			interpret( "the square of x is x times x",    "Ok, the square of x is x times x" );
+			interpret( "what is 2 times the square of 2", "2 times the square of 2 is 8" );
 			
 			// again, in longhand this is...
 			interpret( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
-			interpret( "first perform numeric evaluate variable d - variable c",             "go on" );
+			interpret( "first perform numeric evaluate variable d minus variable c",         "go on" );
 			interpret( "ok", "ok" );
 			
 			interpret( "subtract 2 from 3", "1" );
@@ -352,32 +352,22 @@ public class Enguage extends Shell {
 		}
 		if (thisTest( level, 4 )) {
 			
-			audit.title( "Numerical Context" );
 			clearTheNeedsList();
-			interpret( "i need a coffee",
-					"ok, you need a coffee" );
-
-			interpret( "and another", "ok, you need another coffee" );
 			
-			interpret( "how many coffees do i need",
-					   "2, you need 2 coffees" );
-			interpret( "i need a cup of tea",
-					   "ok, you need a cup of tea" );
-			interpret( "and another coffee",
-					   "ok, you need another coffee" );
-			interpret( "what do i need",
-					   "You need 3 coffees , and a cup of tea" );
+			audit.title( "Numerical Context" );
+			interpret( "i need a coffee",     "ok, you need a coffee" );
+			interpret( "and another",         "ok, you need another coffee" );
+			interpret( "how many coffees do i need", "2, you need 2 coffees" );
+			interpret( "i need a cup of tea", "ok, you need a cup of tea" );
+			interpret( "and another coffee",  "ok, you need another coffee" );
+			interpret( "what do i need",      "You need 3 coffees , and a cup of tea" );
 			
 			audit.title( "Correction" );
-			interpret( "i need another coffee",
-					   "ok, you need another coffee.");
-			interpret( "no i need another 3",
-					   "ok, you need another 3 coffees.");
-			interpret( "what do i need",
-					   "you need 6 coffees, and a cup of tea.");
-			interpret( "prime the answer yes", "ok, the next answer will be yes" );
-			interpret( "i don't need anything",
-					   "ok, you don't need anything" );
+			interpret( "i need another coffee", "ok, you need another coffee.");
+			interpret( "no i need another 3",   "ok, you need another 3 coffees.");
+			interpret( "what do i need",        "you need 6 coffees, and a cup of tea.");
+			interpret( "prime the answer yes",  "ok, the next answer will be yes" );
+			interpret( "i don't need anything", "ok, you don't need anything" );
 		}
 		if (thisTest( level, 5 )) {
 			audit.title( "Annotation" ); // TODO: camelise attribute names

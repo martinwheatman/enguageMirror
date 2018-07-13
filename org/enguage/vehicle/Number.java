@@ -825,7 +825,6 @@ public class Number {
 		combineTest( "+~3", "+~3", "about 6 more", "+~6" );
 		combineTest( "-~3", "+~6", "about 3 more", "+~3" );
 		combineTest( "-~3", "-~3", "about 6 less", "-~6" );
-		// somewhere test "about minus 6 more" => "about 6 less" (?)
 		Audit.decr();
 		
 		Enguage.e = new Enguage();
@@ -856,8 +855,8 @@ public class Number {
 			//getNumberTest( "the square of x",  "the product of x and x" );
 			
 			//Audit.allOn();
-			//getNumberTest( "2 times the factorial of 1",   "2" );
 			//Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
+			//getNumberTest( "2 times the factorial of 4",   "48" );
 			Audit.decr();
 		}
 		

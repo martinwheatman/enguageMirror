@@ -13,7 +13,6 @@ import org.enguage.vehicle.Numerals;
 public class Lambda {
 	static private Audit audit = new Audit( "Lambda" );
 
-	// TODO: need attach()/detach() methods!
 	public Lambda( Function f, Strings params, String body ) { // new/create
 		signature = params;
 		audit.debug( "creating: "+ signature.toString( Strings.CSV ) +"/"+ f.name());
@@ -22,15 +21,15 @@ public class Lambda {
 				f.name()
 			).set( body );
 	}
-	public Lambda( String name, Strings values ) { // existing/find
-		audit.in( "ctor", name +"( "+ values +" )" );
+	public Lambda( Function fn, Strings values ) { // existing/find
+		audit.in( "ctor", "finding: "+ fn +"( "+ values +" )" );
 		Strings onames = Enguage.e.o.list( "." );
-		if (null != onames) for (String params : onames) 
-			if (match( (signature = new Strings( params, ',' )), values )
-				&& !(body = new Value( params, name ).getAsString()).equals(""))
+		if (null != onames) for (String formals : onames) 
+			if (match( (signature = new Strings( formals, ',' )), values )
+				&& !(body = new Value( formals, fn.name() ).getAsString()).equals(""))
 				break; // bingo! (can we revisit if this ain't right?)
 		if (body.equals(""))
-			audit.log( "no "+ values.toString( Strings.CSV ) +"/"+ name +" found" );
+			audit.log( "Lambda: "+ values.toString( Strings.CSV ) +"/"+ fn +" not found" );
 		audit.out();
 	}
 	
@@ -39,9 +38,8 @@ public class Lambda {
 	
 	private String body = "";
 	public  String body() { return body; }
-	public  Lambda body( String b ) { body = b; return this; };
 	
-	public String toString() { return "( "+ signature +" ): {"+ body +"}";}
+	public String toString() { return "( "+ signature.toString( Strings.CSV ) +" ): {"+ body +"}";}
 	
 	private static boolean match( Strings names, Strings values ) {
 		boolean rc = false;
@@ -64,6 +62,8 @@ public class Lambda {
 			audit.debug( "Lambda: name/val mis-match in params: "+ names +"/"+ values.toString( Strings.DQCSV ));
 		return audit.out( rc );
 	}
+	//
+	// === test code ===
 	private static void matchTest( String names, String values, boolean pass ) {
 		audit.in( "matchTest", names +"/"+ values );
 		if (pass != match( new Strings( names ), new Strings( values )))
@@ -78,14 +78,14 @@ public class Lambda {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
 		else {
-			Variable.set( "x", "1" );
-			Variable.set( "y", "2" );
-			matchTest( "1",   "1",   true );
-			matchTest( "x",   "1",   true );
-			matchTest( "x y", "1 2", true );
-			matchTest(   "x", "1 2", false ); // n vals != n names
-			matchTest( "x 1", "1 2", false ); // 1 != 2
-			audit.log( "match tests PASSED" );
+			Variable.set( "x",   "1" );
+			Variable.set( "y",   "2" );
+			matchTest(    "1",   "1",  true );
+			matchTest(    "x",   "1",  true );
+			matchTest(  "x y", "1 2",  true );
+			matchTest(    "x", "1 2", false ); // n vals != n names
+			matchTest(  "x 1", "1 2", false ); // 1 != 2
+			audit.log(  "match tests PASSED" );
 			
 			//Audit.allOn();
 			audit.log( "Creating a blank function, called 'sum'..." );
@@ -94,7 +94,7 @@ public class Lambda {
 			new Lambda( f, new Strings( "a b" ), "a plus b" );
 			audit.log( "Finding it:" );
 			Audit.incr();
-			Lambda l = new Lambda( "sum", new Strings( "2 3" ));
+			Lambda l = new Lambda( f, new Strings( "2 3" ));
 			Audit.decr();
 			audit.log( "PASSED: "+ l.toString() );
 }	}	}
