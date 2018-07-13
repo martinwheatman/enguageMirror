@@ -5,47 +5,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Fs;
-import org.enguage.util.Path;
-import org.enguage.util.PathShell;
-import org.enguage.util.Pent;
-import org.enguage.util.Shell;
-import org.enguage.util.Strings;
-
-class PathShell extends Shell {
-	//static private Audit audit = new Audit( "PathShell" );
-	
-	public static Path p = new Path();
-	
-	PathShell() { super( "Path" );}
-	
-	public String interpret( Strings utterance ) {
-		//audit.traceIn( "interpret", utterance.toString() );
-		String rc = Shell.SUCCESS;
-		int sz = utterance.size();
-		if (sz > 0) {
-			if (utterance.get( 0 ).equals( "cd" )) {
-				Strings pathnames = utterance.copyAfter( 0 );
-				if (!p.cd( pathnames.toString( Strings.CONCAT )))
-					rc = utterance.get( 1 ) +": not found" ;
-			} else if (sz == 1 && utterance.get( 0 ).equals( "up" )) {
-				if (!p.cd( Path.PARENT ))
-					rc = Path.PARENT +": not found" ;
-			} else if (sz == 1 && utterance.get( 0 ).equals( "pwd" ))
-				rc = p.pwd();
-			else if (sz > 0 && utterance.get( 0 ).equals( "ls" )) {
-				rc = "";
-				Iterator<Pent> pi = p.list();
-				while( pi.hasNext() )
-					rc += ("\n" + pi.next().name());
-			} else
-				rc = "Unknown command: " + utterance.toString( Strings.SPACED );
-		}
-		//return audit.traceOut( rc );
-		return rc;
-}	}
-// =======================
 public class Path {
 	//static private Audit audit = new Audit( "Path" );
 	
@@ -145,52 +104,40 @@ public class Path {
 	public void insertDir( String dname, String opts ) {
 		File dirp = new File( dname );
 		if (dirp.isDirectory()) {
-			// first remove anything...
-			String name;
-			for (File flist : dirp.listFiles()) {
-				name = flist.getName();
-				if( '!' == name.charAt( 0 ))
-					pents.remove( new Pent( name.substring( 1 ) ));
-			}
-			// ...then add in what is in this dir
-			for (File flist : dirp.listFiles()) {
-				name = flist.getName();
-				if( '!' != name.charAt( 0 )) {
-					if( opts.equals( OPT_A ) || '.' != name.charAt( 0 )) {
-						String value = "";
-						if (opts.equals( OPT_X )) {
-							if (flist.isFile()) // TTD: move this to String - newCharsFromFilePreview()
-								value = filter( Fs.stringFromFile( flist.getPath()));
-							else if (Fs.isLink( name ))
-								value = filter( Fs.stringFromLink( name));
-							else if (flist.isDirectory())
-								value = "<"+ filter(name) +"/>";
-						}
-						
-						//this needs to do the removes etc.
-						
-						Pent p = new Pent( name, value, flist.isDirectory() );
-						if (!pents.contains( p ))
-							pents.add( p ); // pents.arrayInsert( p, pentCmp );
-			}	}	}
+			File[] list = dirp.listFiles();
+			if (list.length > 0) {
+				// first remove anything...
+				String name;
+				for (File flist : dirp.listFiles()) {
+					name = flist.getName();
+					if( '!' == name.charAt( 0 ))
+						pents.remove( new Pent( name.substring( 1 ) ));
+				}
+				// ...then add in what is in this dir
+				for (File flist : dirp.listFiles()) {
+					name = flist.getName();
+					if( '!' != name.charAt( 0 )) {
+						if( opts.equals( OPT_A ) || '.' != name.charAt( 0 )) {
+							String value = "";
+							if (opts.equals( OPT_X )) {
+								if (flist.isFile()) // TTD: move this to String - newCharsFromFilePreview()
+									value = filter( Fs.stringFromFile( flist.getPath()));
+								else if (Fs.isLink( name ))
+									value = filter( Fs.stringFromLink( name));
+								else if (flist.isDirectory())
+									value = "<"+ filter(name) +"/>";
+							}
+							
+							//this needs to do the removes etc.
+							
+							Pent p = new Pent( name, value, flist.isDirectory() );
+							if (!pents.contains( p ))
+								pents.add( p ); // pents.arrayInsert( p, pentCmp );
+			}	}	}	}
 	}	}
 	public Iterator<Pent> iterator() { return  pents.iterator(); }
 
 	public Iterator<Pent> list() {
 		for (String fname : new File( pwd() ).list()) insertDir( fname, "" );
 		return iterator();
-	}
-
-	// =======================
-
-	public static void main (String args []) {
-		Audit.allOn();
-	/*	System.out.println( "path sep is "+ PATH_SEP_CHAR );
-		Path p = new Path();
-		System.out.println( "cwd is "+ p.toString());
-		p.up();
-		System.out.println( "cwd is "+ p.toString());
-		*/
-		PathShell ps = new PathShell();
-		ps.run();
 }	}

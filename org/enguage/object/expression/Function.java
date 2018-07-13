@@ -52,7 +52,7 @@ public class Function {
 	static private Function getFunction( String name, Strings actuals ) {
 		audit.in( "getFunction", name +", "+ actuals.toString("[", ", ", "]"));
 		Function fn = new Function( name );
-		fn.lambda = new Lambda( name, actuals ); // this is a 'find', body="" == !found
+		fn.lambda = new Lambda( fn, actuals ); // this is a 'find', body="" == !found
 		if (fn.lambda.body().equals( "" )) {
 			audit.debug( "FUNCTION: no body found for "+ actuals +"/"+ name );
 			fn = null;
@@ -97,10 +97,7 @@ public class Function {
 			else if (cmd.equals( "evaluate" ))
 				// [function] "evaluate", "sum", "3", "and", "4"
 				rc = evaluate( function, argv );
-			/* TODO:
-			where does this get set as an answer to be replaced by whatever?
-			set it as a default/class answer to be used if answer is still blank?
-			*/
+			
 			else
 				audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}
@@ -126,8 +123,7 @@ public class Function {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
 		else {
-			Reply.dnk( "I do not know" );
-			//Audit.traceAll( true );
+			Reply.dnk( "I do not know\n" );
 			testQuery(  "sum", "1 , 1" ); // error!
 			
 			testCreate( "sum", "a and b", "a + b" );
