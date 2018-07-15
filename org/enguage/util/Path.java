@@ -105,16 +105,16 @@ public class Path {
 		File dirp = new File( dname );
 		if (dirp.isDirectory()) {
 			File[] list = dirp.listFiles();
-			if (list.length > 0) {
+			if (list != null) {
 				// first remove anything...
 				String name;
-				for (File flist : dirp.listFiles()) {
+				for (File flist : list) {
 					name = flist.getName();
 					if( '!' == name.charAt( 0 ))
 						pents.remove( new Pent( name.substring( 1 ) ));
 				}
 				// ...then add in what is in this dir
-				for (File flist : dirp.listFiles()) {
+				for (File flist : list) {
 					name = flist.getName();
 					if( '!' != name.charAt( 0 )) {
 						if( opts.equals( OPT_A ) || '.' != name.charAt( 0 )) {
