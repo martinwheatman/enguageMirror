@@ -135,16 +135,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 		switch (requestCode) {
 			case REQUEST_SPEECH:
 				if (resultCode == RESULT_OK && null != data) {
-					ArrayList<String> said =
+					ArrayList<String> saidArray =
 							data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
-					Log.i( ">>>>>>>>>>UTTERANCE>>> ", said.get( 0 ));
+					String said = saidArray.get( 0 );
+					Log.i( ">>>>>>>>>>UTTERANCE>>> ", said);
 					if (Audit.runtimeDebug)
-						Toast.makeText( getApplicationContext(), said.get( 0 ), Toast.LENGTH_SHORT ).show();
+						Toast.makeText( getApplicationContext(), said, Toast.LENGTH_SHORT ).show();
 
 					// interpret what is said...
 					// ...in case of config failure, repeat what was said
-					String truText = Enguage.e.interpret( new Strings( said.get( 0 ) )),
-						   toSpeak = truText.equals( Enguage.DNU ) ? said.get( 0 ) : truText;
+					String truText = Enguage.e.interpret( new Strings( said )),
+						   toSpeak = truText.equals( Enguage.DNU ) ? said : truText;
+
+					if (toSpeak.equals( "I don't understand." ))
+						toSpeak += (" " + said);
 
 					Toast.makeText( getApplicationContext(), truText, Toast.LENGTH_SHORT ).show();
 					Log.i ( ">>>>>>>>>>>REPLY>>> ", toSpeak );

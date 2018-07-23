@@ -644,7 +644,7 @@ public class Enguage extends Shell {
 		}
 		if (thisTest( level, 8 )) {
 			audit.title( "TCP/IP test" );
-			interpret( "tcpip localhost 999 \"999 is a test value for port address\"",   "ok" );
+			interpret( "tcpip localhost 0    \"0 is a test value for port address\"",   "ok" );
 			interpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry" );
 		}
 		if (thisTest( level, 9 )) {

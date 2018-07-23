@@ -50,7 +50,7 @@ public class Net {
 		
 		String rc = Reply.failure();
 		
-		if (port == 999) { // test value
+		if (port == 0) { // test value
 			rc = Reply.success(); // assume we've stuffed the server intentionally
 			
 		} else if (port > 1024 && port < 65536) {

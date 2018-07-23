@@ -264,8 +264,9 @@ public class Pattern extends ArrayList<Patternette> {
 		return toString.equals( Number.NotANumber ) ? null : toString;
 	}
 	private String doExpr( ListIterator<String> ui ) {
-		Strings expression = Expression.getExpr( ui, new Strings() );
-		return expression == null ? "" : expression.toString();
+		Strings rep = Expression.getExpr( ui, new Strings() );
+		return rep == null ? "" : rep.toString();
+
 	}
 	private String doList( ListIterator<Patternette> patti,
 	                       ListIterator<String>      utti  ) 
