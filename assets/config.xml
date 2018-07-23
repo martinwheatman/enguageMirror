@@ -20,9 +20,9 @@
 			ANDLISTFORMAT=", :, and "
 			ORLISTFORMAT=", :, or "
 			SERVER="localhost"
-			PORT="5678"
-			XMLPOST="</SOAP-ENV:Body></SOAP-ENV:Envelope>"
-			XMLPRE='<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:example="http://ws.cdyne.com/"><SOAP-ENV:Header/><SOAP-ENV:Body>'>
+			PORT="8080"
+			XMLPOST=""
+			XMLPRE="">
 			
 		<concepts>
 			<concept id="colloquia"         op="load"/>

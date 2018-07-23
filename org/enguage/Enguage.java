@@ -644,8 +644,10 @@ public class Enguage extends Shell {
 		}
 		if (thisTest( level, 8 )) {
 			audit.title( "TCP/IP test" );
-			interpret( "tcpip localhost 0    \"0 is a test value for port address\"",   "ok" );
-			interpret( "tcpip localhost 5678 \"this is a test, which will fail\"",    "Sorry" );
+			// bug here??? config.xml has to be 8080 (matching this) so does 
+			// config port get chosen over thsi one???
+			interpret( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
+			interpret( "tcpip localhost 8080 \"this is a test, which will fail\"",  "Sorry" );
 		}
 		if (thisTest( level, 9 )) {
 			audit.title( "On-the-fly Langauge Learning" );
