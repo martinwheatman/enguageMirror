@@ -15,6 +15,8 @@ import org.enguage.util.Audit;
 
 public class Net {
 	
+	static final public int TestPort = 0;
+
 	static private Audit audit = new Audit( "net" );
 	
 	static public void server( String port ) {
@@ -50,7 +52,7 @@ public class Net {
 		
 		String rc = Reply.failure();
 		
-		if (port == 0) { // test value
+		if (port == TestPort) { // test value
 			rc = Reply.success(); // assume we've stuffed the server intentionally
 			
 		} else if (port > 1024 && port < 65536) {
