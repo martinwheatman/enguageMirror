@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 import org.enguage.object.Variable;
-import org.enguage.vehicle.Context;
-import org.enguage.vehicle.Reply;
+import org.enguage.sign.context.Context;
+import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
 

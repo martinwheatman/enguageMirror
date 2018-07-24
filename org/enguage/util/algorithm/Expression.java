@@ -4,8 +4,8 @@ import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Number;
-import org.enguage.vehicle.Numerals;
+import org.enguage.vehicle.number.Number;
+import org.enguage.vehicle.number.Numerals;
 
 public class Expression {
 	

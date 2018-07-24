@@ -7,17 +7,18 @@ import org.enguage.object.Variable;
 import org.enguage.object.list.Item;
 import org.enguage.sign.Sign;
 import org.enguage.sign.Signs;
+import org.enguage.sign.context.Context;
 import org.enguage.sign.intention.Intention;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Net;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Context;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Question;
-import org.enguage.vehicle.Reply;
+import org.enguage.vehicle.reply.Reply;
 
 public class Engine {
 	
@@ -258,7 +259,7 @@ public class Engine {
 			r.format( Net.client( cmds.get( 0 ),
 								  port,
 								  (null==prefix ? "" : prefix) +
-										Variable.derefUc( Strings.trim( cmds.get( 2 ), '"' )) +
+										Variable.derefUc( Strings.trim( cmds.get( 2 ), Attribute.DOUBLE_QUOTE )) +
 										(null==suffix ? "" : suffix)
 					)			);
 			

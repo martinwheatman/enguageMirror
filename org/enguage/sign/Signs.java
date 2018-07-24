@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.enguage.sign.context.Context;
 import org.enguage.sign.intention.Intention;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
@@ -15,9 +16,8 @@ import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Context;
-import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.reply.Reply;
 
 public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
@@ -195,7 +195,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		//*
 			audit.in( "interpret",
 				" ("+ name +"="+ size() +") "
-				+ "'"+ u.toString( Strings.SPACED ) +"'"
+				+ " '"+ u.toString() +"' "
 		 		+ (ignore.size()==0?"":("avoiding "+ignore)));
 		// -- */
 		int here = interpretation(); // an ID for this interpretation

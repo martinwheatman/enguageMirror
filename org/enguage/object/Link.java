@@ -35,13 +35,13 @@ public class Link {
 	static private Audit audit = new Audit( "Link" );
 	
 	public static String get( String entity, String attribute ) {
-		//audit.traceIn( "get", "entity='"+ entity +"', attribute='"+ attribute +"'" );
+		//audit.traceIn( "get", "entity='"+ entity +"', attribute='"+ attribute +"' " );
 		if ( entity.charAt( 0 ) == '$' ) entity = "_"+ entity.substring( 1 ); // not relevant here?
 		String linkName = null != attribute ?
 				Value.name( entity, Fs.linkName( attribute ), Overlay.MODE_READ ) :
 				Entity.name(    Fs.linkName( entity ), Overlay.MODE_READ ) ;
 		String str = "";
-		//audit.debug( linkName +" => '"+ str +"'" );
+		//audit.debug( linkName +" => '"+ str +"' " );
 		if (Fs.exists( linkName )) {
 			str = Fs.stringFromLink( linkName );
 			if (str.length() > 3)
@@ -88,9 +88,9 @@ public class Link {
 	}
 	// doesn't yet support null attribute
 	public static boolean destroy( String entity, String attribute ) {
-		//audit.traceIn( "destroy", "e='"+ entity+"', a='"+attribute+"'" );
+		//audit.traceIn( "destroy", "e='"+ entity+"', a='"+attribute+"' " );
 		String name = Fs.linkName( Value.name( entity, attribute, Overlay.MODE_WRITE ));
-		//audit.debug( "deleting NAME='"+ NAME +"'" );
+		//audit.debug( "deleting NAME='"+ NAME +"' " );
 		//return audit.traceOut( Filesystem.destroy( NAME ));
 		return Fs.destroy( name );
 	}
@@ -121,7 +121,7 @@ public class Link {
 			// now see if we've found a link... is it the right one?
 			if (value != null && 0 != value.size()) { // found AND we have a required value...
 				Strings b = new Strings( buffer, '/' );
-				//audit.debug( "Checking value '"+ Strings.toString( b, Strings.CSV ) +"' <==> '"+ Strings.toString( value, Strings.CSV ) +"'");
+				//audit.debug( "Checking value '"+ Strings.toString( b, Strings.CSV ) +"' <==> '"+ Strings.toString( value, Strings.CSV ) +"' ");
 				found = arrayCharsEqual( b, value );
 				//audit.debug( "Found is "+ (found?"TRUE":"FALSE"));
 		}	}

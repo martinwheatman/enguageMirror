@@ -7,7 +7,7 @@ import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.enguage.object.Variable;
-import org.enguage.vehicle.Numerals;
+import org.enguage.vehicle.number.Numerals;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
@@ -33,6 +33,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public final static String  MINUS_EQUALS = "-=";
 	public final static String      ELLIPSIS = "...";
 	public final static Strings ellipsis = new Strings( ELLIPSIS, '/' );
+	
+	public final static char    SINGLE_QUOTE = '\'';
+	public final static char    DOUBLE_QUOTE = '"';
 	
 	private String[] tokens = {
 			ELLIPSIS,    AND,  OR,
@@ -98,7 +101,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 							Character.isLetter( buffer[ i ])
 							|| Character.isDigit(  buffer[ i ])
 							||	(( '-'  == buffer[ i ]
-								||	'\'' == buffer[ i ]
+								||	SINGLE_QUOTE == buffer[ i ]
 								||	'_'  == buffer[ i ]
 								||  '.'  == buffer[ i ])
 									&& 1+i < sz && 
@@ -143,9 +146,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 								word.append( buffer[ i++ ]);
 						}
 						
-					} else if ('\'' == buffer[ i ] ) {
+					} else if (SINGLE_QUOTE == buffer[ i ] ) {
 						// first check for stand-alone apostrophe e.g. ENT''s
-						if (i+1<sz && buffer[ i+1 ] == '\'') {
+						if (i+1<sz && buffer[ i+1 ] == SINGLE_QUOTE) {
 							i+=2;
 							append( word.toString() );
 							word = new StringBuilder( 32 );
@@ -156,7 +159,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 							//audit.audit("SQ string");
 							word.append( buffer[ i++ ]);
 							while( i<sz &&
-							      !('\'' == buffer[ i ] && // ' followed by WS OR embedded
+							      !(SINGLE_QUOTE == buffer[ i ] && // ' followed by WS OR embedded
 							        (1+i==sz || //Character.isWhitespace( buffer[ 1+i ]))
 							        		(   !Character.isLetter( buffer[ i+1 ])
 											 && !Character.isDigit(  buffer[ i+1 ])))
@@ -166,12 +169,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 							i++;
 						}
 						
-					} else if ('"' == buffer[ i ]) {
+					} else if (DOUBLE_QUOTE == buffer[ i ]) {
 						//audit.audit("DQ string");
 						word.append( buffer[ i++ ]);
-						while( i<sz && '"' != buffer[ i ])
+						while( i<sz && DOUBLE_QUOTE != buffer[ i ])
 							word.append( buffer[ i++ ]);
-						word.append( '"' ); // always terminate string
+						word.append( DOUBLE_QUOTE ); // always terminate string
 						i++;
 						
 					} else {
@@ -406,6 +409,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public Strings append( String s ) {
 		if (null != s && !s.equals( "" )) add( s );
 		return this;
+	}
+	public void append( ListIterator<String> si, int n ) {
+		for (int j=0; j<n; j++)
+			if (si.hasNext())
+				append( si.next() );
 	}
 	public Strings prepend( String str ) {
 		if (null != str && !str.equals( "" )) add( 0, str );
@@ -655,8 +663,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		int sz = s.length();
 		if (sz>1) {
 			char ch = s.charAt( 0 );
-			     if (ch == '\'') s = Strings.triml( s, sz, '\'' );
-			else if (ch ==  '"') s = Strings.triml( s, sz,  '"' );
+			     if (ch == SINGLE_QUOTE) s = Strings.triml( s, sz, SINGLE_QUOTE );
+			else if (ch == DOUBLE_QUOTE) s = Strings.triml( s, sz, DOUBLE_QUOTE );
 		}
 		return s; 
 	}

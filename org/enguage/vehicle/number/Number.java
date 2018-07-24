@@ -1,4 +1,4 @@
-package org.enguage.vehicle;
+package org.enguage.vehicle.number;
 
 import java.util.ListIterator;
 
@@ -8,6 +8,7 @@ import org.enguage.object.space.Overlay;
 import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Language;
 
 public class Number {
 	/*
@@ -272,7 +273,8 @@ public class Number {
 			}	}
 			if (!nextOp.equals(""))
 				value = doProduct( value );
-			if (idx < representamen.size()) audit.ERROR( idx +" not end of array, on processing: "+ representamen.get( idx ));
+			if (idx < representamen.size())
+				audit.ERROR( idx +" not end of array, on processing: "+ representamen.get( idx ));
 		}
 		//audit.out( value );
 		return value;
@@ -312,11 +314,6 @@ public class Number {
 		representamen.addAll( sa );
 		return this;
 	}
-	private void append( ListIterator<String> si, int n ) {
-		for (int j=0; j<n; j++)
-			if (si.hasNext())
-				append( si.next() );
-	}
 	private void remove( ListIterator<String> si, int n ) {
 		int sz = representamen.size();
 		int req = sz - n;
@@ -324,11 +321,6 @@ public class Number {
 			si.previous();
 			representamen.remove( --sz );
 	}	}
-	/* NB Size relates to the numbers of words representing
-	 * the number. So "another three" is 2
-	 */
-	//private int repSize = 0;
-	//public  int repSize() { return repSize; }
 	
 	public Number() {
 		representamen = new Strings();
@@ -481,8 +473,8 @@ public class Number {
 							oplen = ++n; // success!
 				}
 				Strings.previous( si, n );      // now, put them all back!
-				if (n > 0) append( si, oplen ); // might go back 2 and tx none, or 2.
-				if (!power.equals( "" )) append( si, 1 ); // in case there is a power to add
+				if (n > 0) representamen.append( si, oplen ); // might go back 2 and tx none, or 2.
+				if (!power.equals( "" )) representamen.append( si, 1 ); // in case there is a power to add
 			}
 		} while (++x<10 && oplen > 0);
 	}
@@ -519,29 +511,9 @@ public class Number {
 			}
 			// n >= len
 			Strings.previous( si, n );
-			if (n > 0) append( si, len );
+			if (n > 0) representamen.append( si, len );
 		}
 		return len;
-	}
-	private Strings appendParams( ListIterator<String> si ) {
-		audit.in( "getParams", Strings.peek( si ));
-		Strings params = null;
-		if (si.hasNext()) {
-			String token = si.next(); // <<<<<<<<<<<<< get expression ( and evaluate it! )
-			if (Numerals.isNumeric( token )) { 
-				params = new Strings( token ); // <<<< need to be appending (4-1), i.e. 3, not 4!!!
-				while (si.hasNext() && Numerals.isNumeric( token = si.next())) 
-					params.add( token );
-				
-				if (token.equals( "and" ) && si.hasNext() && Numerals.isNumeric( token = si.next()))
-					params.append( "and" ).append( token );
-				else {
-					if (token.equals( "and" )) si.previous(); // replace "and"
-					for (int sz = params.size(); sz > 1; sz--) {
-						si.previous();
-						params.remove( sz - 1 );
-		}	}	}	}
-		return audit.out( params );
 	}
 	private String numEval( String fn, Strings params ) {
 		String token = Function.interpret( "evaluate "+ fn +" "+ params.toString() );
@@ -558,7 +530,7 @@ public class Number {
 				if (si.hasNext()) {
 					Strings params = null;
 					if (si.next().equals( "of" ) && 
-						null != (params = appendParams( si )) &&
+						null != (params = Numerals.getParams( si )) &&
 						null != (token  = numEval( fn, params ))) // 5 = sum, [ 2,  3 ]
 					{	
 						rc = true;
@@ -584,10 +556,24 @@ public class Number {
 		boolean rc = false;
 		if (si.hasNext()) {
 			String token = si.next();
-			if (rc = Numerals.isNumeric( token ))
+			if (rc = Numerals.isNumeric( token )) {
+				//magnitude( Numerals.valueOf( token ));
 				append( token );
-			else
+			} else
 				si.previous(); // not numeric and not "the" and not "the."
+		}
+		return audit.out( rc );
+	}
+	private boolean doNum( ListIterator<String> si ) {
+		audit.in( "doNum", Strings.peek( si ));
+		boolean rc = false;
+		if (si.hasNext()) {
+			String token = si.next();
+			if (rc = Numerals.isNumeric( token )) {
+				magnitude( Numerals.valueOf( token ));
+				append( token );
+			} else 
+				si.previous();
 		}
 		return audit.out( rc );
 	}
@@ -692,20 +678,6 @@ public class Number {
 		}
 		//audit.out();
 	}
-	private boolean doNum( ListIterator<String> si ) {
-		audit.in( "doNum", Strings.peek( si ));
-		boolean rc = false;
-		if (si.hasNext()) {
-			String token = si.next();
-			if (Numerals.isNumeric( token )) {
-				rc = true;
-				magnitude( Numerals.valueOf( token ));
-				append( token );
-			} else 
-				si.previous();
-		}
-		return audit.out( rc );
-	}
 	private Number doNumerical( ListIterator<String> si ) {
 		audit.in( "doNumerical", Strings.peek( si ));
 		if (doNum( si ) || appendFunction( si )) {
@@ -717,7 +689,7 @@ public class Number {
 		//return this;
 	}
 	static public Number getNumber( ListIterator<String> si ) {
-		audit.in( "getNumbr", Strings.peek( si ));
+		audit.in( "getNumbr", "si.next="+ Strings.peek( si ));
 		
 		Number number = new Number();
 		
@@ -748,8 +720,6 @@ public class Number {
 		ListIterator<String> si = orig.listIterator();
 		Number n = Number.getNumber( si );
 		String val = n.valueOf(), strg = n.toString();
-//		if (orig.size() != n.representamen.size())
-//			audit.log( orig +"<=== is not ===>"+ n.representamen());
 		audit.log(
 				s +": toString=>"+ strg +"<"
 				+" rep=>"+ n.representamen() +"<"

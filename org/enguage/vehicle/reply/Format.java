@@ -1,10 +1,9 @@
-package org.enguage.vehicle;
+package org.enguage.vehicle.reply;
 
 import org.enguage.object.Variable;
+import org.enguage.sign.context.Context;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.Context;
 
 public class Format {
 	/** Format:

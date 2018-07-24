@@ -96,8 +96,8 @@ public class Value {
 				while (++i < a.size() && a.get( i ).equals( "/" ))
 					attribute += ( "/"+ a.get( i ));
 			}
-			//audit.debug( "entity => '"+ entity +"'" );
-			//audit.debug( "attr => '"+ attribute +"'" );
+			//audit.debug( "entity => '"+ entity +"' " );
+			//audit.debug( "attr => '"+ attribute +"' " );
 			// [ "some", "beer", "+", "some crisps" ] => "some beer", "some crisps" ]
 			//Strings values = Strings.rejig( Strings.copyAfter( a, i-1 ), sep );
 			String val = a.copyAfter( i-1 ).toString( Strings.SPACED ); 

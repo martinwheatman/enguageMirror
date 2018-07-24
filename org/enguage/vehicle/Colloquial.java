@@ -5,11 +5,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.Colloquial;
 
 public class Colloquial {
 	static private Audit audit = new Audit( "Colloquial" );
@@ -71,10 +70,12 @@ public class Colloquial {
 	static private Colloquial symmetric = new Colloquial();
 	static public  Colloquial symmetric() {return symmetric;}
 	
+	static public Strings applyOutgoing( String s ) {return applyOutgoing( new Strings( s ));}
 	static public Strings applyOutgoing( Strings s ) {
 		return symmetric().externalise(      // 2. [ "You", "do", "not", "know" ] -> [ "You", "don't", "know" ]
 				    host().externalise( s ));// 1. [ "_user", "does", "not", "know" ] -> [ "You", "do", "not", "know" ]
 	}
+	static public Strings applyIncoming( String s ) {return applyOutgoing( new Strings( s ));}
 	static public Strings applyIncoming( Strings s ) {
 		/* this is called in Repertoires.interpret(), so that any colloquia
 		 * used in the repertoire files are correctly interpreted.
@@ -82,7 +83,7 @@ public class Colloquial {
 		return  user().internalise(       // user phrases expand
 		   symmetric().internalise( s )); // general expansion
 	}
-
+	static public String interpret( String  a ) { return interpret( new Strings( a )); }
 	static public String interpret( Strings a ) {
 		if (null == a) return Shell.FAIL;
 		//audit.in( "interpret", a.toString( Strings.CSV ));
@@ -90,8 +91,8 @@ public class Colloquial {
 			
 			Strings intl, extl;
 			if (a.size() == 3) {
-				intl = new Strings( Strings.trim( a.get( 1 ), '"' ));
-				extl= new Strings( Strings.trim( a.get( 2 ), '"' ));
+				intl = new Strings( Strings.trim( a.get( 1 ), Attribute.ALT_QUOTE_CH ));
+				extl= new Strings( Strings.trim( a.get( 2 ), Attribute.ALT_QUOTE_CH ));
 			} else {
 				intl  = new Strings();
 				extl = new Strings();
@@ -126,38 +127,34 @@ public class Colloquial {
 		c.add( new Strings( "This" ), new Strings( "Hello" ));
 		c.add( new Strings( "test passes" ), new Strings( "world" ));
 		a = c.externalise( a );
-		audit.log( a.toString( Strings.SPACED ));
+		audit.log( a );
 		a = c.internalise( a );
-		audit.log( a.toString( Strings.SPACED ));
+		audit.log( a );
 		
-		interpret( new Strings( "both \"do not\" \"don't\"" ));
-		interpret( new Strings( "both \"does not\"  \"doesn't\"" ));
-		interpret( new Strings( "both \"cannot\" \"can't\"" ));
-		//interpret( new Strings( "both \"can not\" \"cannot\"" ));
-		interpret( new Strings( "both \"I have\" \"I've\"" ));
-		interpret( new Strings( "both \"i am\" \"I'm\"" ));
-		interpret( new Strings( "both \"i would\" \"I'd\"" ));
-		interpret( new Strings( "both \"i will\" \"I'll\"" ));
-		interpret( new Strings( "both \"you are\" \"you're\"" ));
-		interpret( new Strings( "both \"you would\" \"you'd\"" ));
-		interpret( new Strings( "both \"you will\" \"you'll\"" ));
-		interpret( new Strings( "both \"fish'n'chips\" \"fish and chips\"" ));
+		interpret( "both \"do not\" \"don't\"" );
+		interpret( "both \"does not\"  \"doesn't\"" );
+		interpret( "both \"cannot\" \"can't\"" );
+		interpret( "both \"can not\" \"cannot\"" );
+		interpret( "both \"I have\" \"I've\"" );
+		interpret( "both \"i am\" \"I'm\"" );
+		interpret( "both \"i would\" \"I'd\"" );
+		interpret( "both \"i will\" \"I'll\"" );
+		interpret( "both \"you are\" \"you're\"" );
+		interpret( "both \"you would\" \"you'd\"" );
+		interpret( "both \"you will\" \"you'll\"" );
+		interpret( "both \"fish'n'chips\" \"fish and chips\"" );
 
-		interpret( new Strings( "host \"_host's\" \"my\"" ));
-		interpret( new Strings( "host \"_user's\" \"your\"" ));
-		interpret( new Strings( "host \"_user needs\" \"you need\"" ));
-		interpret( new Strings( "host \"_user does not need\" \"you do not need\"" ));
-		interpret( new Strings( "host \"_user\" \"you\"" ));
+		interpret( "host \"_host's\" \"my\"" );
+		interpret( "host \"_user's\" \"your\"" );
+		interpret( "host \"_user needs\" \"you need\"" );
+		interpret( "host \"_user does not need\" \"you do not need\"" );
+		interpret( "host \"_user\" \"you\"" );
 
-		audit.log( 
-				applyIncoming( // general expansion
-					new Strings( "I don't need anything" )
-			).toString( Strings.SPACED ));
+		audit.log( applyIncoming( "I do not need anything" ));
 		
 		audit.log(
 			applyOutgoing(
-				new Strings("_user needs: i do not understand, i do not need anything, _user does not need anything.")
-			)
-		.toString( Strings.SPACED ));
-		
+				"_user needs: i do not understand, i do not need anything, _user does not need anything."
+			));
+		audit.log( "PASSED" );
 }	}

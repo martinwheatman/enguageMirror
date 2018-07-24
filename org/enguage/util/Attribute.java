@@ -7,10 +7,13 @@ import org.enguage.util.Attribute;
 public class Attribute {
 	
 	// TODO: these don't seem to swap yet :( -- see colloquia.txt
-	static public final char   DEF_QUOTE_CH  = '\'';
-	static public final String DEF_QUOTE_STR = "'";
-	static public final char   ALT_QUOTE_CH  = '"';
-	static public final String ALT_QUOTE_STR = "\"";
+	static public final char   DEF_QUOTE_CH  = '\''; // '"';  //
+	static public final String DEF_QUOTE_STR = "'"; // "\""; //
+	static public final char   ALT_QUOTE_CH  = '"'; // '\''; //
+	static public final String ALT_QUOTE_STR = "\""; //  "'";  //
+	
+	static public final char   SINGLE_QUOTE  = '\'';
+	static public final char   DOUBLE_QUOTE  = '"';
 	static private      Audit  audit         = new Audit( "Attribute" );
 	
 	private static String valueFromAttribute( String s ) {
@@ -21,8 +24,8 @@ public class Attribute {
 			stripped = s.substring( 1+n );
 			char quoteCh = stripped.charAt( 0 );
 			if (quoteCh == stripped.charAt( stripped.length() - 1) &&
-				(	quoteCh == '"'
-				 ||	quoteCh == '\''   
+				(	quoteCh == ALT_QUOTE_CH
+				 ||	quoteCh == DEF_QUOTE_CH   
 				)	)
 				stripped = Strings.trim( stripped, quoteCh );
 		}

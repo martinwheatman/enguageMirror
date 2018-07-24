@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.enguage.object.Variable;
 import org.enguage.object.space.Sofa;
 import org.enguage.sign.Sign;
+import org.enguage.sign.context.Context;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Attribute;
@@ -13,9 +14,8 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Proc;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Context;
-import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
 public class Intention {
@@ -179,7 +179,7 @@ public class Intention {
 				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
 			else {
 				String attr = sa.get( 0 ),
-					    val = Strings.trim( sa.get( 1 ), '"' );
+					    val = Strings.trim( sa.get( 1 ), Attribute.DOUBLE_QUOTE );
 				if (type == append )
 					s.append( new Intention( nameToType(  attr ), val ));
 				else
@@ -189,7 +189,7 @@ public class Intention {
 		} else if (type == create ) { // autopoeisis?
 			String attr    = sa.get( 0 ),
 			       pattern = sa.get( 1 ),
-			       val     = Strings.trim( sa.get( 2 ), '"' );
+			       val     = Strings.trim( sa.get( 2 ), Attribute.DOUBLE_QUOTE );
 			/* TODO: need to differentiate between
 			 * "X is X" and "X is Y" -- same shape, different usage.
 			 * At least need to avoid this (spot when "X is X" happens)
@@ -200,7 +200,7 @@ public class Intention {
 			else // create then add a new cached sign into the list of signs
 				Repertoire.signs.insert(
 					s = new Sign()
-						.pattern( new Pattern( new Strings( Strings.trim( pattern, '"' ))) )
+						.pattern( new Pattern( new Strings( Strings.trim( pattern, Attribute.DOUBLE_QUOTE ))) )
 						.concept( concept() )
 						.append( new Intention( Intention.nameToType( attr ), val )));
 		}

@@ -1,12 +1,14 @@
-package org.enguage.vehicle;
+package org.enguage.vehicle.reply;
 
 import org.enguage.Enguage;
+import org.enguage.sign.context.Context;
 import org.enguage.sign.intention.Redo;
 import org.enguage.util.Attribute;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
 

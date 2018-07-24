@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Reply;
+import org.enguage.vehicle.reply.Reply;
 
 public class Groups {
 	static private Audit audit = new Audit( "Group" );

@@ -7,8 +7,7 @@ import java.util.Iterator;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.Reply;
+import org.enguage.vehicle.reply.Reply;
 
 public class Question {
 	

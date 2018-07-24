@@ -78,7 +78,7 @@ public class Where {
 	public  String locator() { return locator; }
 	private Where  locator( String l ) { locator = l; return this; }
 	private void   locator( ListIterator<String> si ) {
-		//audit.in( "locator", "'"+ locators.size() +"', "+ si );
+		//audit.in( "locator", " '"+ locators.size() +"', "+ si );
 		int n = 0;
 		for (Strings pattern : locators ) {
 			//audit.debug( "Checking pattern: "+ pattern.toString( Strings.SPACED ));
@@ -183,7 +183,7 @@ public class Where {
 		else
 			audit.log( "'"+ request  +"' means "+
 					(w.assigned() || shouldBeAssigned?
-						"'"+ sa.toString( Strings.SPACED ) +"'"	: " just that!")
+						" '"+ sa.toString() +"' "	: " just that!")
 			        +"\n  where='"+ w.toString() +"', assigned="+ w.assigned() );
 		audit.log( "" );
 	}

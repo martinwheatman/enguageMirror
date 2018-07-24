@@ -85,7 +85,7 @@ public class Sofa extends Shell {
 	private String doSofa( Strings prog ) {
 		String cmd = prog.get( 0 );
 		char firstCh = cmd.charAt( 0 );
-		return ('"' == firstCh || '\'' == firstCh) ?
+		return (Attribute.DOUBLE_QUOTE == firstCh || '\'' == firstCh) ?
 				Strings.stripQuotes( cmd )
 				: doCall( prog );
 	}

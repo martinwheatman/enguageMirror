@@ -30,10 +30,10 @@ public class Attributes extends ArrayList<Attribute> {
 			if (i<sz && '=' == s.charAt( i )) { // look for a value
 				i++; // read over '='
 				while (i<sz && Character.isWhitespace( s.charAt( i ) )) i++; // read over spaces
-				if (i<sz && ('\'' == s.charAt( i ) || '"' == s.charAt( i ))) {
+				if (i<sz && (Attribute.SINGLE_QUOTE == s.charAt( i ) || Attribute.DOUBLE_QUOTE == s.charAt( i ))) {
 					Character quoteMark = '\0';
 					do {
-						if (i<sz) quoteMark = s.charAt( i++ ); // save and read over '"' or "'"
+						if (i<sz) quoteMark = s.charAt( i++ ); // save and read over " or '
 						while ( i<sz && quoteMark != s.charAt( i ))
 							value += Character.toString( s.charAt( i++ ));
 						i++; //read over end quote
@@ -184,7 +184,7 @@ public class Attributes extends ArrayList<Attribute> {
 				//I'd like to have:
 				//   I'm meeting whom="James" where="home"
 				//but returning below is not a good idea.
-				//value = name +"='"+ value +"'";
+				//value = name +"='"+ value +"' ";
 				// Look to sofa to expand WHOM WHERE
 		}	}
 		return value;

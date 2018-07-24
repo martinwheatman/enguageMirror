@@ -8,9 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.enguage.Enguage;
-import org.enguage.vehicle.Context;
-import org.enguage.vehicle.Reply;
-
+import org.enguage.sign.context.Context;
+import org.enguage.vehicle.reply.Reply;
 import org.enguage.util.Audit;
 
 public class Net {

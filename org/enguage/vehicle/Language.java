@@ -4,11 +4,9 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.sign.repertoire.Repertoire;
+import org.enguage.util.Attribute;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Plural;
 
 
 public class Language {  // English-ism!
@@ -22,11 +20,11 @@ public class Language {  // English-ism!
 		int len;
 		return (null != a) &&
 			   ((len = a.length())>1) &&
-			   (   ((a.charAt( 0 ) ==  '"') && (a.charAt( len-1 ) ==  '"'))
-			    || ((a.charAt( 0 ) == '\'') && (a.charAt( len-1 ) == '\'')) );
+			   (   ((a.charAt( 0 ) ==  Attribute.DOUBLE_QUOTE) && (a.charAt( len-1 ) ==  Attribute.DOUBLE_QUOTE))
+			    || ((a.charAt( 0 ) == Attribute.SINGLE_QUOTE) && (a.charAt( len-1 ) == Attribute.SINGLE_QUOTE)) );
 	}
 	static public boolean isQuote(String a) { // universal?
-		return (null!=a) && (a.equals('\'') || a.equals('"'));
+		return (null!=a) && (a.equals(Attribute.SINGLE_QUOTE) || a.equals( Attribute.DOUBLE_QUOTE ));
 	}
 	static public String asString( Strings ans ) {
 		String str = "";
@@ -61,7 +59,7 @@ public class Language {  // English-ism!
 		}	}
 		return a;
 	}
-	// replace [ x, "'", "y" ] with "x'y" -- or /dont/ or /martins/ if vocalised
+	// replace [ x, ', "y" ] with "x'y" -- or /dont/ or /martins/ if vocalised
 	final static public String APOSTROPHE = "'";
 	static public Strings apostropheContraction( Strings a, String letter ) {
 		if (null != a) for (int i=0, sz=a.size(); i<sz-2; i++)
@@ -85,10 +83,9 @@ public class Language {  // English-ism!
 	static public  boolean possessive() { return possessive; }
 	
 	static public Strings expandPossessives( Strings in) {
-		int len = in.size(); // so, don't expand last 
 		Strings out = new Strings();
 		for (String s : in )
-			if (s.endsWith( "'s" ) && --len > 0) {
+			if (s.endsWith( "'s" )) {
 				out.add( s.substring( 0, s.length()-2 ));
 				out.add( "his" );
 			} else
@@ -99,22 +96,6 @@ public class Language {  // English-ism!
 		return  ('a' == ch) || ('e' == ch) || ('i' == ch) || ('o' == ch) || ('u' == ch)  
 		     || ('A' == ch) || ('E' == ch) || ('I' == ch) || ('O' == ch) || ('U' == ch); 
 	}
-	/*static public Strings indefiniteArticleVowelSwap( Strings ans ) {
-		ListIterator<String> ai = ans.listIterator();
-		while (ai.hasNext()) {
-			String articleCandidate = ai.next();
-			if (ai.hasNext() &&
-				(   articleCandidate.equalsIgnoreCase(  "a" )      // ... a  QUANTITY ...
-				 || articleCandidate.equalsIgnoreCase( "an" ))) {  // ... an ENGINEER ...
-				// look forward to next word...
-				String nextWord = new String( ai.next());
-				String tmp = new String( ai.previous()); // go back to article
-				audit.audit( "art next: "+ tmp +" "+ nextWord );
-				ai.set( isVowel( nextWord.charAt( 0 )) ? "an" : "a" );
-		}	}
-		return ans;
-	}*/
-
 	static public Strings indefiniteArticleVowelSwap( Strings ans ) {
 		for (int i=0, sz=ans.size(); i<sz-1; ++i)
 			if (   ans.get( i ).equalsIgnoreCase(  "a" )
@@ -122,18 +103,6 @@ public class Language {  // English-ism!
 				ans.set( i, isVowel( ans.get( 1+i ).charAt( 0 )) ? "an" : "a" );
 		return ans;
 	}
-/*	static public Strings indefiniteArticleFlatten( Strings a ) {
-		for (int i=0; i<a.size(); i++)
-			if (a.get( i ).equalsIgnoreCase( "an" ))
-				a.set( i, "a" );
-		return a;	
-	}
-	static public boolean xwordsEqualIgnoreCase( String a, String b ) {
-		if ((a.equalsIgnoreCase( "an" ) || a.equalsIgnoreCase( "a" )) &&
-		    (b.equalsIgnoreCase( "an" ) || b.equalsIgnoreCase( "a" ))    ) return true;
-		return a.equalsIgnoreCase( b );
-	} // */
-	// ...and finally, terminators... moved to Shell
 	public static String spell( String a ) { return Language.spell( a, false ); }
 	public static String spell( String a, boolean slowly ) {
 		String b = "";
@@ -144,5 +113,4 @@ public class Language {  // English-ism!
 	static public String nthEnding( int n ){
 		return n==1 || n==21 || n==31 ? "st" :
 			n == 2 || n == 22 ? "nd" : n==3 || n==23 ? "rd" : "th";
-	}
-}
+}	}

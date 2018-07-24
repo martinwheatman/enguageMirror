@@ -14,8 +14,8 @@ import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Reply;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.reply.Reply;
 
 public class Enguage extends Shell {
 
@@ -223,7 +223,7 @@ public class Enguage extends Shell {
 			clearTheNeedsList();
 			
 			interpret( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
-			interpret( "they are from sainsburys",   "ok, they are from sainsburys" );
+			interpret( "they are from Sainsburys",  "ok, they are from sainsburys" ); // <<<<< see this!!
 			interpret( "i need a pint of milk",      "ok, you need a pint of milk" );
 			interpret( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
 			interpret( "i need cheese and eggs from the dairy aisle",
@@ -234,7 +234,8 @@ public class Enguage extends Shell {
 					                                 "you need biscuits, and coffee from sainsburys" );
 			interpret( "what do i need from the dairy aisle",
 					                                 "you need a pint of milk, cheese, and eggs from the dairy aisle" );
-						
+			interpret( "i need an apple" );
+			interpret( "how many apples do i need", "1, you need 1 apples" ); // <<<<<<<<< see this!
 			audit.title( "The Non-Computable concept of NEED" );
 			clearTheNeedsList();
 			interpret( "what do i need",	         "you don't need anything" );

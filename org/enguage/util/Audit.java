@@ -56,6 +56,8 @@ public class Audit {
 		System.out.println( info + (timings ? " -- "+interval()+"ms" : ""));
 		return info;
 	}
+	public String log( Strings info ) { return log( info.toString()); }
+
 	public String log( String info ) {
 		if (!suspended()) LOG( info );
 		return info;

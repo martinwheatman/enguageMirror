@@ -6,6 +6,7 @@ import org.enguage.object.Temporal;
 import org.enguage.object.Variable;
 import org.enguage.object.space.Sofa;
 import org.enguage.sign.Sign;
+import org.enguage.sign.context.Context;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
 import org.enguage.util.Attributes;
@@ -16,9 +17,9 @@ import org.enguage.vehicle.when.When;
 import org.enguage.vehicle.where.Where;
 
 import org.enguage.vehicle.Colloquial;
-import org.enguage.vehicle.Context;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.reply.Answer;
 
 public class Utterance {
 	static private Audit audit = new Audit( "Utterance" );
@@ -105,7 +106,7 @@ public class Utterance {
 						Language.sentenceCapitalisation( 
 							Language.pronunciation( reply )));
 		
-		return Language.asString( Numeric.deref( reply )).replace( " '' ", "'" );
+		return Language.asString( Numeric.deref( reply )).replace( " '' ", Language.APOSTROPHE );
 	}
 
 	// test code...

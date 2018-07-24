@@ -12,9 +12,9 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Number;
 import org.enguage.vehicle.Plural;
-import org.enguage.vehicle.Reply;
+import org.enguage.vehicle.number.Number;
+import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
 public class Pattern extends ArrayList<Patternette> {

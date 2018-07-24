@@ -1,8 +1,6 @@
-package org.enguage.vehicle;
+package org.enguage.vehicle.reply;
 
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.Reply;
 
 public class Answer {
 	

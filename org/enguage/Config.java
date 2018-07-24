@@ -18,9 +18,9 @@ import org.enguage.util.Proc;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.util.Tag;
-import org.enguage.vehicle.Answer;
 import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Reply;
+import org.enguage.vehicle.reply.Answer;
+import org.enguage.vehicle.reply.Reply;
 
 public class Config {
 	static       private Audit audit = new Audit( "Config" );
