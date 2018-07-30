@@ -243,26 +243,29 @@ public class Engine {
 			
 		} else if (cmd.equals( "tcpip" )) {
 			
-			String prefix = Variable.get( "XMLPRE" ),
-					suffix = Variable.get( "XMLPOST" );
-			
-			int port = -1;
-			try {
-				port = Integer.valueOf( cmds.get( 1 ));
-			} catch (Exception e1) {
+			if (cmds.size() != 3)
+				audit.ERROR( "tcpip command without 3 parameters: "+ cmds );
+			else {
+				String host    = cmds.remove( 0 ),
+				       portStr = cmds.remove( 0 ),
+				       msg     = cmds.remove( 0 );
+				String prefix  = Variable.get( "XMLPRE", "" ),
+				       suffix  = Variable.get( "XMLPOST", "" );
+				
+				int port = -1;
 				try {
-					port = Integer.valueOf( Variable.get( "PORT" ));
-				} catch (Exception e2) {
-					port = 0;
-			}	}
+					port = Integer.valueOf( portStr );
+				} catch (Exception e1) {
+					try {
+						port = Integer.valueOf( Variable.get( "PORT" ));
+					} catch (Exception e2) {
+						port = 0;
+				}	}
 			
-			r.format( Net.client( cmds.get( 0 ),
-								  port,
-								  (null==prefix ? "" : prefix) +
-										Variable.derefUc( Strings.trim( cmds.get( 2 ), Attribute.DOUBLE_QUOTE )) +
-										(null==suffix ? "" : suffix)
-					)			);
-			
+				msg = prefix + Variable.derefUc( Strings.trim( msg , Attribute.DOUBLE_QUOTE )) + suffix;
+				String ans = Net.client( host, port, msg );
+				r.answer( ans );
+			}
 		} else if (cmd.equals( "timing" )) {
 			audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {

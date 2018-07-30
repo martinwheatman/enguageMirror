@@ -9,6 +9,7 @@ import java.net.Socket;
 
 import org.enguage.Enguage;
 import org.enguage.sign.context.Context;
+import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.util.Audit;
 
@@ -47,7 +48,12 @@ public class Net {
 		}	}
 	}
 	static public String client( String addr, int port, String data ) {
-		audit.in( "tcpip", "addr="+ addr +", port="+ port +"value='"+ data +"', ["+ Context.valueOf() +"]" );
+		audit.in( "tcpip", "addr="+ addr +", port="+ port +", value='"+ data +"', ["+ Context.valueOf() +"]" );
+		
+		// don't know why, but data needs to be stripped of single quotes???
+		data=Strings.trim( data, '\'' );
+		data=Utterance.externalise( new Strings( data ), false );
+		audit.debug( "data is: "+ data);
 		
 		String rc = Reply.failure();
 		
@@ -58,26 +64,46 @@ public class Net {
 			addr = addr==null || addr.equals( "" ) ? "localhost" : addr;
 			
 			Socket connection = null;
+			DataOutputStream out = null;
+			BufferedReader in = null;
 			try {
+				audit.debug( "creating socket" );
 				connection = new Socket( addr, port );
-				DataOutputStream out = new DataOutputStream( connection.getOutputStream());
-				out.writeBytes( data +"\n" );
-								
-				BufferedReader in =
-						   new BufferedReader( new InputStreamReader( connection.getInputStream()));
-				rc = in.readLine();
 				
-				out.close();
-				connection.close();
-				in.close();
+				out = new DataOutputStream( connection.getOutputStream());
+				audit.debug( "  writing: "+ data );
+				out.writeBytes( data );
+				out.flush();
+				
+				audit.debug( "reading" );
+				in = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+				audit.debug( "  reading..." );
+				rc = in.readLine();
 				
 			} catch (IOException e) {
 				audit.ERROR( "error: "+ e.toString());
 			} finally {
+				try {
+					if (null != in) in.close();
+				} catch (IOException e){
+					audit.ERROR("closing connection:"+ e.toString());
+				}
+				try {
+					if (null != out) out.close();
+				} catch (IOException e){
+					audit.ERROR("closing connection:"+ e.toString());
+				}
 				try {
 					if (null != connection) connection.close();
 				} catch (IOException e){
 					audit.ERROR("closing connection:"+ e.toString());
 		}	}	}
 		return audit.out( rc );
+	}
+	public static void main( String args[]) {
+		Audit.allOn();
+		if (args.length == 1)
+			server( args[ 0 ]);
+		else
+			audit.log( "output: "+ client( "localhost", 8080, "'put your hands on your head'" ));
 }	}

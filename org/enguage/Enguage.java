@@ -216,7 +216,7 @@ public class Enguage extends Shell {
 		//Repertoire.signs.show( "OTF" );
 		//interpret( "tracing on" );
 
-		int level = 0;
+		int level = 2;
 
 		if (thisTest( level, 1 )) {
 			audit.title( "Pronouns - see need+needs.txt" );
@@ -256,7 +256,11 @@ public class Enguage extends Shell {
 			interpret( "what do i need",             "you don't need anything" );
 		}
 		if (thisTest( level, 2 )) {
-			audit.title( "Why/because" );
+			//audit.title( "Why/because" );
+			audit.title( "Light bins" );
+			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
+			interpret( "how many light bins are there", "6, there are 6 light bins" );
+			interpret( "show me light bin 6",           "ok, light bin 6 is flashing" );
 			
 		}
 		if (thisTest( level, 3 )) {
@@ -646,9 +650,10 @@ public class Enguage extends Shell {
 		if (thisTest( level, 8 )) {
 			audit.title( "TCP/IP test" );
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
-			// config port get chosen over thsi one???
+			// config port get chosen over this one???
 			interpret( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
-			interpret( "tcpip localhost 8080 \"this is a test, which will fail\"",  "Sorry" );
+			interpret( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
+			interpret( "simon says put your hands on your head", "ok, success" );
 		}
 		if (thisTest( level, 9 )) {
 			audit.title( "On-the-fly Langauge Learning" );
