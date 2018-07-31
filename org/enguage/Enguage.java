@@ -216,7 +216,7 @@ public class Enguage extends Shell {
 		//Repertoire.signs.show( "OTF" );
 		//interpret( "tracing on" );
 
-		int level = 2;
+		int level = 0;
 
 		if (thisTest( level, 1 )) {
 			audit.title( "Pronouns - see need+needs.txt" );
@@ -259,7 +259,7 @@ public class Enguage extends Shell {
 			//audit.title( "Why/because" );
 			audit.title( "Light bins" );
 			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
-			interpret( "how many light bins are there", "6, there are 6 light bins" );
+			interpret( "how many light bins are there", "6,  there are 6 light bins" );
 			interpret( "show me light bin 6",           "ok, light bin 6 is flashing" );
 			
 		}

@@ -39,7 +39,7 @@ public class Concept {
 		// ...add content from file/asset...
 		try {
 			String fname = "concepts"+ File.separator + name + ".txt";
-			/*Activity a = (Activity) Enguage.context();*/
+			/*Activity a = (Activity) Enguage.e.context();*/
 			InputStream is =
 					/*a == null ?*/
 							new FileInputStream( Ospace.location() + fname )
