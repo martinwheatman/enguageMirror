@@ -73,7 +73,7 @@ public class List extends ArrayList<Item> {
 			String name = si.next();
 			if (si.hasNext()) {
 				if (si.next().equals( "=" ) && si.hasNext())
-					return new Attribute( name, Strings.trim( si.next(), '\'' ) );
+					return new Attribute( name, Strings.trim( Strings.trim( si.next(), Attribute.DEF_QUOTE_CH ), Attribute.ALT_QUOTE_CH) );
 				else
 					si.previous();   // readahead=2, but...
 					//si.previous(); // don't put ">" back
@@ -119,7 +119,7 @@ public class List extends ArrayList<Item> {
 	}
 	public  String toString() { return toString( null ); }
 	private String toString( Item pattern ) { // to Items class!
-		audit.in( "get", "item="+ (pattern==null?"ALL":pattern.toString()));
+		audit.in( "get", "item="+ (pattern==null?"ALL":pattern.toXml()));
 		Groups g=new Groups();
 		for (Item item : this)
 			if (pattern == null || item.matches( pattern ))
@@ -146,10 +146,8 @@ public class List extends ArrayList<Item> {
 			Item removedItemTag = remove( n );
 			removedItemTag.updateAttributes( item );
 			String quantity = removedItemTag.attribute( "quantity" );
-			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0f) {
-				audit.debug( "re-adding "+ removedItemTag.toXml());
+			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0f)
 				add( n, removedItemTag );
-			}
 		}
 		value.set( toXml() );
 		return audit.out( rc );

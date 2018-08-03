@@ -12,6 +12,7 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.reply.Reply;
@@ -98,6 +99,12 @@ public class Pattern extends ArrayList<Patternette> {
 					sw = wi.next();
 				}
 				
+				Strings apostrophes = new Strings( sw, Language.APOSTROPHE.charAt( 0 ));
+				if (apostrophes.size() == 2 && apostrophes.get( 1 ).equals( "s" )) {
+					sw = apostrophes.get( 0 );
+					t.apostrophedIs( apostrophes.get( 1 ));
+				}
+					
 				t.name( sw );
 				add( t );
 				t = new Patternette();
@@ -114,6 +121,14 @@ public class Pattern extends ArrayList<Patternette> {
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
 	public Pattern( String str ) { this( toPattern( str )); }
 	
+	// TODO: not quite right, what about "l'eau" - the water
+	// want to move to u.c. but preserve l.c. apostrophe...
+	static private String toUpperCase( String word ) {
+		// "martin's" => "MARTIN's"
+		Strings uppers = new Strings( word, Language.APOSTROPHE.charAt( 0 ));
+		uppers.set( 0, uppers.get( 0 ).toUpperCase( locale ));
+		return uppers.toString( Strings.CONCAT );
+	}
 	static public Strings toPattern( String u ) {
 		// my name is variable name => my name is NAME
 		Strings in  = new Strings( u ),
@@ -126,7 +141,7 @@ public class Pattern extends ArrayList<Patternette> {
 			
 			if (word.equals( variable ))
 				if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable ))
-					out.append( word.toUpperCase( locale ));
+					out.append( toUpperCase( word ));
 				else // variable. OR variable variable
 					out.append( variable );
 				
@@ -355,7 +370,12 @@ public class Pattern extends ArrayList<Patternette> {
 					} else
 						vals.add( u );
 		}	}	}
-		return vals.toString();
+		String val = vals.toString();
+		// TODO: ...again "l'eau"
+		if (t.isApostrophed())
+			val = val.endsWith( "'s" ) ? val.substring( 0, val.length()-2 ) : null;
+		
+		return val;
 	}
 	static private int notMatched = 0;
 	static public String notMatched() {
@@ -372,7 +392,8 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched == 18 ? "postfixa" :
 				notMatched == 19 ? "postfixb" :
 				notMatched == 21 ? "more pattern" :
-				notMatched == 22 ? "more utterance" : ("unknown:"+ notMatched);
+				notMatched == 22 ? "more utterance" :
+				notMatched == 23 ? "missing apostrophe" : ("unknown:"+ notMatched);
 	}
 	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui, boolean spatial ) {
 		String term, uttered;
@@ -466,9 +487,10 @@ public class Pattern extends ArrayList<Patternette> {
 					notMatched = 16;
 					return null;
 					
-				} else
-					val = getVal( t, patti, utti, spatial );
-					
+				} else if (null == (val = getVal( t, patti, utti, spatial ))) {
+					notMatched = 23;
+					return null;
+				}
 				// ...add value
 				//if (null == matched) matched = new Attributes();
 				//matched.add( t.matchedAttr( val )); // remember what it was matched with!

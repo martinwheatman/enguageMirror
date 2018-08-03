@@ -78,6 +78,10 @@ public class Patternette {
 	public  boolean     isPhrased() { return isPhrased; }
 	public  Patternette phrasedIs() { isPhrased = true; return this; }
 	
+	private String      isApostrophed = null;
+	public  boolean     isApostrophed() { return isApostrophed != null; }
+	public  Patternette apostrophedIs( String s ) { isApostrophed = s; return this; }
+	
 	private boolean     isList = false;
 	public  boolean     isList() { return isList; }
 	public  Patternette listIs() { isList = true; return this; }

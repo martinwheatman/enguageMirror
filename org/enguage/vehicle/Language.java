@@ -77,21 +77,7 @@ public class Language {  // English-ism!
 				b += a.charAt( i );
 		return b;
 	} // */
-
-	static private boolean possessive = false;
-	static public  void    possessive( Boolean b ) { possessive = b; }
-	static public  boolean possessive() { return possessive; }
 	
-	static public Strings expandPossessives( Strings in) {
-		Strings out = new Strings();
-		for (String s : in )
-			if (s.endsWith( "'s" )) {
-				out.add( s.substring( 0, s.length()-2 ));
-				out.add( "his" );
-			} else
-				out.add( s );
-		return out;
-	}
 	static private boolean isVowel( char ch ) {
 		return  ('a' == ch) || ('e' == ch) || ('i' == ch) || ('o' == ch) || ('u' == ch)  
 		     || ('A' == ch) || ('E' == ch) || ('I' == ch) || ('O' == ch) || ('U' == ch); 

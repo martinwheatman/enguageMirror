@@ -115,7 +115,6 @@ public class Item {
 				       m = new Number( attribute( "quantity" ));
 				value = m.combine( n ).toString();
 			}
-			audit.debug( "Item: updated "+ name +" with "+ value );
 			replace( name, value );
 		}
 		audit.out();

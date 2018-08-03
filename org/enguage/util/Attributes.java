@@ -64,7 +64,7 @@ public class Attributes extends ArrayList<Attribute> {
 		Iterator<Attribute> pi = pattern.iterator();
 		while (pi.hasNext()) {
 			Attribute a = pi.next();
-			if (!a.value().equals( get( a.name() )))
+			if (!a.value().equalsIgnoreCase( get( a.name() )))
 				return false;
 		}
 		return true;

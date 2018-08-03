@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.enguage.object.Variable;
+import org.enguage.vehicle.Language;
 import org.enguage.vehicle.number.Numerals;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
@@ -635,8 +636,13 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return true;
 	}
 	public static boolean isUpperCaseWithHyphens( String a ) {
-		for (int i=0; i<a.length(); i++) {
+		int len=a.length();
+		char apostrophe = Language.APOSTROPHE.charAt( 0 );
+		for (int i=0; i<len; i++) {
 			char ch = a.charAt( i );
+			// TODO: l'eau
+			if (ch == apostrophe && i == len-2)
+				return a.endsWith( "s" ) || a.endsWith( "S" );
 			if (!Character.isUpperCase( ch ) && ch != '-' )
 				return false;
 		}
