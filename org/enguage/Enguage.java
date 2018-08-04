@@ -257,10 +257,8 @@ public class Enguage extends Shell {
 			interpret( "there are 6 light bins" ); //,        "ok, there are 6 light bins" );
 			interpret( "how many light bins are there" ); //, "6,  there are 6 light bins" );
 			interpret( "show me light bin 6" ); //,           "ok, light bin 6 is flashing" );
-			
 		}
 		if (thisTest( level, 3 )) {
-			
 			audit.title( "Simple Variables" );
 			interpret( "the value of name is fred",       "ok, name is set to fred" );
 			interpret( "get the value of name",           "fred" );

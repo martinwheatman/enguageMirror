@@ -4,7 +4,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.sign.repertoire.Repertoire;
-import org.enguage.util.Attribute;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 
@@ -20,11 +19,11 @@ public class Language {  // English-ism!
 		int len;
 		return (null != a) &&
 			   ((len = a.length())>1) &&
-			   (   ((a.charAt( 0 ) ==  Attribute.DOUBLE_QUOTE) && (a.charAt( len-1 ) ==  Attribute.DOUBLE_QUOTE))
-			    || ((a.charAt( 0 ) == Attribute.SINGLE_QUOTE) && (a.charAt( len-1 ) == Attribute.SINGLE_QUOTE)) );
+			   (   ((a.charAt( 0 ) == Strings.DOUBLE_QUOTE) && (a.charAt( len-1 ) == Strings.DOUBLE_QUOTE))
+			    || ((a.charAt( 0 ) == Strings.SINGLE_QUOTE) && (a.charAt( len-1 ) == Strings.SINGLE_QUOTE)) );
 	}
 	static public boolean isQuote(String a) { // universal?
-		return (null!=a) && (a.equals(Attribute.SINGLE_QUOTE) || a.equals( Attribute.DOUBLE_QUOTE ));
+		return (null!=a) && (a.equals(Strings.SINGLE_QUOTE) || a.equals( Strings.DOUBLE_QUOTE ));
 	}
 	static public String asString( Strings ans ) {
 		String str = "";

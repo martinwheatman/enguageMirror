@@ -30,7 +30,8 @@ public class Attributes extends ArrayList<Attribute> {
 			if (i<sz && '=' == s.charAt( i )) { // look for a value
 				i++; // read over '='
 				while (i<sz && Character.isWhitespace( s.charAt( i ) )) i++; // read over spaces
-				if (i<sz && (Attribute.SINGLE_QUOTE == s.charAt( i ) || Attribute.DOUBLE_QUOTE == s.charAt( i ))) {
+				if (i<sz && (Strings.SINGLE_QUOTE == s.charAt( i ) ||
+						     Strings.DOUBLE_QUOTE == s.charAt( i )   )) {
 					Character quoteMark = '\0';
 					do {
 						if (i<sz) quoteMark = s.charAt( i++ ); // save and read over " or '

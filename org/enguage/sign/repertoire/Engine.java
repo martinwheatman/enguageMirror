@@ -12,7 +12,6 @@ import org.enguage.sign.intention.Intention;
 import org.enguage.sign.intention.Redo;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.pattern.Patternette;
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Net;
 import org.enguage.util.Strings;
@@ -262,7 +261,7 @@ public class Engine {
 						port = 0;
 				}	}
 			
-				msg = prefix + Variable.derefUc( Strings.trim( msg , Attribute.DOUBLE_QUOTE )) + suffix;
+				msg = prefix + Variable.derefUc( Strings.trim( msg , Strings.DOUBLE_QUOTE )) + suffix;
 				String ans = Net.client( host, port, msg );
 				r.answer( ans );
 			}

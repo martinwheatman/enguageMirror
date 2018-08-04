@@ -12,8 +12,6 @@ public class Attribute {
 	static public final char   ALT_QUOTE_CH  = '"'; // '\''; //
 	static public final String ALT_QUOTE_STR = "\""; //  "'";  //
 	
-	static public final char   SINGLE_QUOTE  = '\'';
-	static public final char   DOUBLE_QUOTE  = '"';
 	static private      Audit  audit         = new Audit( "Attribute" );
 	
 	private static String valueFromAttribute( String s ) {
