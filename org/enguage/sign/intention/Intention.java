@@ -22,10 +22,10 @@ public class Intention {
 	
 	private static Audit audit = new Audit( "Intention" );
 	
-	public static final String UNDEF      = "und";
-	public static final String NEW        = "new";
-	public static final String APPEND     = "app";
-	public static final String PREPEND    = "prep";
+	public static final String UNDEF      = "u";
+	public static final String NEW        = "w";
+	public static final String APPEND     = "a";
+	public static final String PREPEND    = "p";
 	
 	public static final String      REPLY = "r";
 	public static final String ELSE_REPLY = "R";
