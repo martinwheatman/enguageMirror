@@ -637,12 +637,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	public static boolean isUpperCaseWithHyphens( String a ) {
 		int len=a.length();
-		char apostrophe = Language.APOSTROPHE.charAt( 0 );
 		for (int i=0; i<len; i++) {
 			char ch = a.charAt( i );
 			// TODO: l'eau
-			if (ch == apostrophe && i == len-2)
-				return a.endsWith( "s" ) || a.endsWith( "S" );
+			if (ch == Language.APOSTROPHE_CH && i == len-2)
+				return a.endsWith( Language.Apostrophed() );
 			if (!Character.isUpperCase( ch ) && ch != '-' )
 				return false;
 		}
