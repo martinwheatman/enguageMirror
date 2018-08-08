@@ -1,7 +1,7 @@
-On "PHRASE-WHY because PHRASE-BECAUSE":
+On "SIGN-WHY because SIGN-CAUSE":
+	CAUSE;
+	if not, reply "i do not think CUASE";
 	WHY;
 	if not, reply "i do not think WHY";
-	BECAUSE;
-	if not, reply "i do not think BECUASE";
-	list add _user because WHY BECAUSE;
-	then, reply "ok, WHY because BECAUSE".
+	perform "list add _user whyBecause WHY CAUSE";
+	then, reply "ok, WHY because CAUSE".

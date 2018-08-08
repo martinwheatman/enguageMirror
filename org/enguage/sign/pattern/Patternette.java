@@ -78,6 +78,11 @@ public class Patternette {
 	public  boolean     isPhrased() { return isPhrased; }
 	public  Patternette phrasedIs() { isPhrased = true; return this; }
 	
+	private boolean     isSign = false;
+	public  boolean     isSign() { return isSign; }
+	public  Patternette signIs() { isSign = true; return this; }
+	
+   // TODO: Apretrophed
 	private String      isApostrophed = null;
 	public  boolean     isApostrophed() { return isApostrophed != null; }
 	public  Patternette apostrophedIs( String s ) { isApostrophed = s; return this; }

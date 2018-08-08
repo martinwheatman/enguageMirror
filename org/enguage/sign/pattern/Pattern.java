@@ -36,7 +36,8 @@ public class Pattern extends ArrayList<Patternette> {
 	static public  final String  exprPrefix    = expr.toUpperCase( locale ) + "-";
 	static public  final String  plural        = Plural.NAME; // "plural";
 	static public  final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
-	static public  final String  sinsignPrefix = "SIGN-";
+	static public  final String  sinsign       = "sign";
+	static public  final String  sinsignPrefix = sinsign.toUpperCase( locale ) + "-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {
@@ -71,6 +72,10 @@ public class Pattern extends ArrayList<Patternette> {
 					t.exprIs();
 					if (wi.hasNext()) sw = wi.next();
 					else audit.ERROR( "ctor: EXPR variable, missing name." );
+				} else if (sw.equals( sinsign )) {
+					t.signIs();
+					if (wi.hasNext()) sw = wi.next();
+					else audit.ERROR( "ctor: SIGN, missing name." );
 				} else if (sw.equals( Reply.andConjunction() )) {
 					//audit.LOG( "found: "+ Reply.andConjunction() );
 					if (wi.hasNext()) {
@@ -92,6 +97,7 @@ public class Pattern extends ArrayList<Patternette> {
 				        sw.equals( plural  ) ||
 				        sw.equals( quoted  ) ||
 				        sw.equals( expr    ) ||
+				        sw.equals( sinsign ) ||
 				        sw.equals( numeric )    )
 					 && wi.hasNext())
 				{
@@ -192,6 +198,20 @@ public class Pattern extends ArrayList<Patternette> {
 						out.append( "and" ).append( "list" ).append( word );						
 				else // so we can't have just VARIABLE, ok...
 					out.append( "and" ).append( word );						
+
+			// ... "why sentence because reason sentence" ???
+// SIGN IS NOT YET SPOKEN! TODO:
+//			else if (word.equals( "sign" ))
+//				if (wi.hasNext() && null != (word = wi.next()) && word.equals( "list" ))
+//					if (wi.hasNext() && null != (word = wi.next()) && word.equals( "variable" ))
+//						if (wi.hasNext() && null != (word = wi.next()) && !word.equals( "variable" ))
+//							out.append( word.toUpperCase( locale )+"-AND-LIST" );
+//						else // and list variable variable
+//							out.append( "and" ).append( "list" ).append( "variable" );
+//					else // and list blah
+//						out.append( "and" ).append( "list" ).append( word );						
+//				else // so we can't have just VARIABLE, ok...
+//					out.append( "and" ).append( word );						
 
 			else // blah
 				out.append( word );
@@ -346,7 +366,7 @@ public class Pattern extends ArrayList<Patternette> {
 		String u = "unseta";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
-		if (t.isPhrased() || (ui.hasNext() &&  Reply.andConjunction().equals( u ))) {
+		if (t.isPhrased() || t.isSign() || (ui.hasNext() &&  Reply.andConjunction().equals( u ))) {
 			Where where = null;
 			String term = getNextBoilerplate( t, ti );
 			//audit.audit( "phrased, looking for terminator "+ term );
