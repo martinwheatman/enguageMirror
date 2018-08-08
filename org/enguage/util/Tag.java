@@ -7,10 +7,8 @@ package org.enguage.util;
  *import java.io.InputStream;
  */
 import java.util.ArrayList;
-import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 
 public class Tag {
@@ -26,19 +24,6 @@ public class Tag {
 	private int  type = NULL;
 	private int  type() { return type; }
 	private void type( int t ) { if (t>=NULL && t<=END) type = t; }
-
-	public static final String quoted = "quoted";
-	public static final String quotedPrefix = quoted.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String plural = Plural.NAME; // "plural";
-	public static final String pluralPrefix = plural.toUpperCase( Locale.getDefault()) + "-";
-	public static final String numeric = "numeric";
-	public static final String numericPrefix = numeric.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String singular = "singular";
-	public static final String singularPrefix = singular.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String phrase = "phrase";
-	public static final String phrasePrefix = phrase.toUpperCase( Locale.getDefault() ) + "-";
-	public static final String abstr  = "abstract";
-	
 	
 	private Strings prefix = new Strings();
 	public  Strings prefix() { return prefix; }
@@ -54,19 +39,6 @@ public class Tag {
 	private String name = "";
 	public  String name() { return name; }
 	public  Tag    name( String nm ) { if (null != nm) name = nm; return this; }
-
-	private boolean isNumeric = false;
-	public  boolean isNumeric() { return isNumeric; }
-	public  Tag     numericIs( boolean nm ) { isNumeric = nm; return this; }
-
-	private boolean isQuoted = false;
-	public  boolean quoted() { return isQuoted;}
-	
-	private boolean isPlural = false;
-	public  boolean pluraled() { return isPlural; }
-	
-	private boolean isPhrased = false;
-	public  boolean isPhrased() { return isPhrased; }
 	
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
@@ -104,17 +76,6 @@ public class Tag {
 
 	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }
 
-	public boolean invalid( ListIterator<String> ui  ) {
-		boolean rc = false;
-		if (ui.hasNext()) {
-			String candidate = ui.next();
-			rc = (  quoted() && !Language.isQuoted( candidate ))
-			  || (pluraled() && !Plural.isPlural(   candidate ));
-			if (ui.hasPrevious()) ui.previous();
-		}
-		return rc;
-	}
-	
 	Tags content = new Tags();
 	public  Tags content() {return content;}
 	public  Tag  content( Tags ta ) { content = ta; return this; }
