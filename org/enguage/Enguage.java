@@ -32,7 +32,6 @@ public class Enguage extends Shell {
 	static private Config     config = new Config();
 	static public  int    loadConfig( String content ) { return Enguage.config.load( content ); }
 
-
 	public Enguage() {
 		super( "Enguage" );
 		Redo.spokenInit();
@@ -113,33 +112,30 @@ public class Enguage extends Shell {
 	}
 	static int numberOfTests = 0;
 	static private void interpret( String cmd ) { interpret( cmd, "" );}
-	static private void interpret( String cmd, String expected ) {
+	static private void interpret( String cmd, String expected ) { interpret( cmd, expected, "" ); }
+	static private void interpret( String cmd, String expected, String expected2 ) {
 		
 		numberOfTests++;
 		
-		boolean silentRunning = expected == null;
-		if (!silentRunning)
-			audit.log( "user> "+ cmd );
-
-		String answer = serverTest ?
+		String reply = serverTest ?
 				Net.client( "localhost", portNumber, cmd )
 				: Enguage.e.interpret( new Strings( cmd ));
 
-		if (!silentRunning) {
-			int len = expected.length();
-			if (len > 0 && expected.charAt( len - 1 ) != '.') expected += ".";
+		if (expected != null) {
+			audit.log( "user> "+ cmd );
 			if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
 				audit.log( "Hint is:" + Repertoire.prompt() );
-			else if (   !expected.equals( "" )
-					&& !new Strings( answer )
-					.equalsIgnoreCase( new Strings( expected )))
-				audit.FATAL(
-						"reply: '"+ answer +"',\n             "+
-						"expected: '"+ expected +"' "+
-						"("+ Pattern.notMatched() +")" );
-			else
-				audit.log( "enguage> "+ answer +"\n" );
-	}	}
+			else if (!expected.equals( "" )) {
+				if (!expected.endsWith( "." )) expected += ".";
+				if (!new Strings( reply )
+						.equalsIgnoreCase( new Strings( expected )))
+					audit.FATAL(
+							"reply: '"+ reply +"',\n             "+
+							"expected: '"+ expected +"' "+
+							"("+ Pattern.notMatched() +")" );
+				else
+					audit.log( "enguage> "+ reply +"\n" );
+	}	}	}
 	
 	public static void main( String args[] ) {
 
