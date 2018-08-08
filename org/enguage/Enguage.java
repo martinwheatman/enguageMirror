@@ -113,7 +113,7 @@ public class Enguage extends Shell {
 	static int numberOfTests = 0;
 	static private void interpret( String cmd ) { interpret( cmd, "" );}
 	static private void interpret( String cmd, String expected ) { interpret( cmd, expected, "" ); }
-	static private void interpret( String cmd, String expected, String expected2 ) {
+	static private void interpret( String cmd, String expected, String unexpected ) {
 		
 		numberOfTests++;
 		
@@ -127,13 +127,25 @@ public class Enguage extends Shell {
 				audit.log( "Hint is:" + Repertoire.prompt() );
 			else if (!expected.equals( "" )) {
 				if (!expected.endsWith( "." )) expected += ".";
-				if (!new Strings( reply )
-						.equalsIgnoreCase( new Strings( expected )))
-					audit.FATAL(
-							"reply: '"+ reply +"',\n             "+
-							"expected: '"+ expected +"' "+
-							"("+ Pattern.notMatched() +")" );
-				else
+				if (!new Strings( reply ).equalsIgnoreCase( new Strings( expected )))
+				{
+					if (!expected.equals( "" )) {
+						if (!unexpected.endsWith( "." )) unexpected += ".";
+						if (!new Strings( reply ).equalsIgnoreCase( new Strings( unexpected )))
+							audit.FATAL(
+									"reply:       '"+ reply +"',\n             "+
+									"expected:    '"+ expected +"'\n"+
+									"alternative: '"+ unexpected +"' "+
+									"("+ Pattern.notMatched() +")" );
+						else
+							audit.log( "enguage> "+ reply +"\n" );
+					} else
+						if (!new Strings( reply ).equalsIgnoreCase( new Strings( unexpected )))
+							audit.FATAL(
+									"reply: '"+ reply +"',\n             "+
+									"expected: '"+ expected +"' "+
+									"("+ Pattern.notMatched() +")" );
+				} else
 					audit.log( "enguage> "+ reply +"\n" );
 	}	}	}
 	
@@ -252,9 +264,9 @@ public class Enguage extends Shell {
 			interpret( "i need a coffee because i need a coffee" );
 			
 			audit.title( "Light bins" );
-			interpret( "there are 6 light bins" ); //,        "ok, there are 6 light bins" );
-			interpret( "how many light bins are there" ); //, "6,  there are 6 light bins" );
-			interpret( "show me light bin 6" ); //,           "ok, light bin 6 is flashing" );
+			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
+			interpret( "how many light bins are there", "6,  there are 6 light bins" );
+			interpret( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
 		}
 		if (thisTest( level, 3 )) {
 			audit.title( "Simple Variables" );
