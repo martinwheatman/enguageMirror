@@ -393,7 +393,7 @@ public class Pattern extends ArrayList<Patternette> {
 		String val = vals.toString();
 		// TODO: ...again "l'eau"
 		if (t.isApostrophed())
-			val = val.endsWith( "'s" ) ? val.substring( 0, val.length()-2 ) : null;
+			val = val.endsWith( Language.Apostrophed ) ? val.substring( 0, val.length()-2 ) : null;
 		
 		return val;
 	}

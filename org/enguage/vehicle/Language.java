@@ -12,8 +12,12 @@ public class Language {  // English-ism!
 	
 	//static private Audit audit = new Audit( "Language" );
 
-	static public final Strings headers = new Strings( "( { [" );
-	static public final Strings tailers = new Strings( ") } ]" );
+	static public final Strings      headers = new Strings( "( { [" );
+	static public final Strings      tailers = new Strings( ") } ]" );
+	final static public String APOSTROPHE    = "'";
+	final static public char   APOSTROPHE_CH = APOSTROPHE.charAt( 0 );
+	final static public String Apostrophed   = "s";
+	
 	
 	static public boolean isQuoted(String a) { // universal?
 		int len;
@@ -59,7 +63,6 @@ public class Language {  // English-ism!
 		return a;
 	}
 	// replace [ x, ', "y" ] with "x'y" -- or /dont/ or /martins/ if vocalised
-	final static public String APOSTROPHE = "'";
 	static public Strings apostropheContraction( Strings a, String letter ) {
 		if (null != a) for (int i=0, sz=a.size(); i<sz-2; i++)
 			if ( a.get( i+1 ).equals( APOSTROPHE ) && a.get( i+2 ).equalsIgnoreCase(letter)) {
@@ -69,13 +72,7 @@ public class Language {  // English-ism!
 			}
 		return a;
 	}
-	/*static public String apostropheRemoval( String a ) {
-		String b = "";
-		if (null != a) for (int i=0; i<a.length(); i++)
-			if ( a.charAt( i ) != '\'' )
-				b += a.charAt( i );
-		return b;
-	} // */
+
 	
 	static private boolean isVowel( char ch ) {
 		return  ('a' == ch) || ('e' == ch) || ('i' == ch) || ('o' == ch) || ('u' == ch)  

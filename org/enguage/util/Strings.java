@@ -642,7 +642,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			char ch = a.charAt( i );
 			// TODO: l'eau
 			if (ch == apostrophe && i == len-2)
-				return a.endsWith( "s" ) || a.endsWith( "S" );
+				return a.endsWith( Language.Apostrophed );
 			if (!Character.isUpperCase( ch ) && ch != '-' )
 				return false;
 		}
