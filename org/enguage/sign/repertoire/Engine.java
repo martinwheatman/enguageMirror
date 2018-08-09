@@ -88,9 +88,7 @@ public class Engine {
 			new Sign().concept( NAME ).pattern( new Patternette( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
 			new Sign().concept( NAME ).pattern( new Patternette( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
 			new Sign().concept( NAME ).pattern( new Patternette( "group by",  "x" )).appendIntention( Intention.allop, "groupby X" ),
-			
-//			new Sign().concept( NAME ).content( new Patternette("", "x", "is temporal" )).attribute( NAME, "temporal X"   ),
-			
+						
 			new Sign().concept( NAME ).pattern( new Patternette(         "timing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
 			new Sign().concept( NAME ).pattern( new Patternette(         "timing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
 			new Sign().concept( NAME ).pattern( new Patternette(        "tracing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
@@ -139,12 +137,7 @@ public class Engine {
 	static public Reply getReply( Intention in, Reply r ) {
 		r.answer( Reply.yes()); // bland default reply to stop debug output look worrying
 		
-		Strings cmds =
-				Context.deref(
-					/*Variable.deref(*/
-						new Strings( in.value() )
-					/*)*/
-				);
+		Strings cmds = Context.deref( new Strings( in.value() ));
 		cmds = cmds.normalise();
 		String cmd = cmds.remove( 0 );
 

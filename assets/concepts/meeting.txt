@@ -27,7 +27,7 @@ On "when is SUBJECT meeting PHRASE-WHOM":
 	if not, reply "i do not know if SUBJECT is meeting WHOM"; #
 	set output format to ",WHEN";
 	# check if and when...
-	get attribute when of WHOM from SUBJECT meeting list;
+	get the when of WHOM from SUBJECT meeting list;
 	if not, reply "i don't know when SUBJECT is meeting WHOM";
 	then, reply "SUBJECT is meeting WHOM ...".
 On "when am i meeting PHRASE-WHOM", when is _user meeting WHOM.
@@ -40,7 +40,7 @@ On "where is SUBJECT meeting PHRASE-WHOM":
 	if not, reply "i do not know if SUBJECT is meeting WHOM"; #
 	set output format to ",LOCATOR LOCATION";
 	# check if by checking location...
-	get attribute location of WHOM from SUBJECT meeting list;
+	get the location of WHOM from SUBJECT meeting list;
 	if not, reply "i do not know where SUBJECT is meeting WHOM";
 	# ok, get the whole caboose...
 	get SUBJECT meeting list;
