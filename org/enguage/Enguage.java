@@ -220,7 +220,17 @@ public class Enguage extends Shell {
 
 		int level = 0;
 
-		if (thisTest( level, 1 )) {
+		if (thisTest( level, 1 )) { // experimental
+			audit.title( "Why/because" );
+			interpret( "i need a coffee because i need a coffee" );
+			interpret( "why do i need a coffee",  "why because i need a coffee" ); // <<< see this i/you!
+			
+			audit.title( "Light bins" );
+			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
+			interpret( "how many light bins are there", "6,  there are 6 light bins" );
+			interpret( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
+		}
+		if (thisTest( level, 2 )) {
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
 			
@@ -256,16 +266,6 @@ public class Enguage extends Shell {
 			interpret( "i have to go to town",       "I know" );
 			interpret( "i don't need to go to town", "ok, you don't need to go to town" );
 			interpret( "what do i need",             "you don't need anything" );
-		}
-		if (thisTest( level, 2 )) { // experimental
-			audit.title( "Why/because" );
-			interpret( "i need a coffee because i need a coffee" );
-			interpret( "why do i need a coffee",  "why because i need a coffee" ); // <<< see this i/you!
-			
-			audit.title( "Light bins" );
-			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
-			interpret( "how many light bins are there", "6,  there are 6 light bins" );
-			interpret( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
 		}
 		if (thisTest( level, 3 )) {
 			audit.title( "Simple Variables" );
