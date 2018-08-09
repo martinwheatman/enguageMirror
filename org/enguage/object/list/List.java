@@ -2,7 +2,6 @@ package org.enguage.object.list;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.Locale;
 
 import org.enguage.object.Value;
 import org.enguage.util.Attribute;
@@ -170,7 +169,7 @@ public class List extends ArrayList<Item> {
 	public String toXml() {
 		String list = "";
 		for (Item item : this)
-			list += "   "+item.toXml()+"\n";
+			list += item.toXml()+"\n      ";
 		return "<list>"+ list +"</list>";
 	}
 	private String removeAttribute( Item item, String name ) { // adjusts attributes, e.g. quantity
@@ -188,12 +187,11 @@ public class List extends ArrayList<Item> {
 	}
 	private Strings attributeValue( Item item, String name ) {
 		Strings   rc = new Strings();
-		String upper = name.toUpperCase( Locale.getDefault() );
-		audit.in( "attributeValue", "item='"+ item.toXml() +"', name="+ upper );
+		audit.in( "attributeValue", "item='"+ item.toXml() +"', name="+ name );
 		for (Item t : this) 
 			if ((item == null || t.matchesDescription( item ))
-				&& (t.attributes().has( upper )))
-					rc.add( t.attributes().get( upper ));
+				&& (t.attributes().has( name )))
+					rc.add( t.attributes().get( name ));
 		return audit.out( rc );
 	}
 	/* this needs to include adjusting quantity downwards, as above in add()
@@ -331,7 +329,6 @@ public class List extends ArrayList<Item> {
 									sa.get( 1 )).value()
 							).toString( Reply.andListFormat())
 					);
-						
 						
 				} else if (cmd.equals( "quantity" )) {
 					rca.add( list.quantity( item, false ));

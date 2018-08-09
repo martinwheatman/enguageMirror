@@ -260,6 +260,7 @@ public class Enguage extends Shell {
 		if (thisTest( level, 2 )) { // experimental
 			audit.title( "Why/because" );
 			interpret( "i need a coffee because i need a coffee" );
+			interpret( "why do i need a coffee",  "why because i need a coffee" ); // <<< see this i/you!
 			
 			audit.title( "Light bins" );
 			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );

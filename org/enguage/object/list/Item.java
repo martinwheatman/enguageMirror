@@ -148,7 +148,7 @@ public class Item {
 					audit.debug( "toString(): ignoring:"+ cmp );
 					break;
 				} else {
-					String val = attributes().getIgnoreCase( cmp );
+					String val = attributes().get( cmp );
 					if (val.equals( "" )) {
 						value=null; // this component is undefined, IGNORE
 						break;
@@ -189,7 +189,7 @@ public class Item {
 		Strings value = new Strings();
 		for (String cmp : new Strings( f ))
 			if ( Strings.isUpperCase( cmp )) { // variable e.g. UNIT
-				String val = attributes().getIgnoreCase( cmp );
+				String val = attributes().get( cmp );
 				if (val.equals( "" )) {
 					found = false;
 					break;

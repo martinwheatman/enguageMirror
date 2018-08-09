@@ -70,15 +70,7 @@ public class Attributes extends ArrayList<Attribute> {
 		}
 		return true;
 	}
-	public boolean has( String name, String value ) { return indexOf( new Attribute( name, value )) != -1; }
 	public boolean has( String name ) {
-		Iterator<Attribute> i = iterator();
-		while (i.hasNext())
-			if (i.next().name().equals( name ))
-				return true;
-		return false;
-	}
-	public boolean hasIgnoreCase( String name ) {
 		Iterator<Attribute> i = iterator();
 		while (i.hasNext())
 			if (i.next().name().equalsIgnoreCase( name ))
@@ -94,7 +86,7 @@ public class Attributes extends ArrayList<Attribute> {
 		Iterator<Attribute> i = iterator();
 		while (i.hasNext()) {
 			a = i.next();
-			if (a.name().equals( name ))
+			if (a.name().equalsIgnoreCase( name ))
 				return a.value();
 		}
 		return "";
@@ -124,15 +116,6 @@ public class Attributes extends ArrayList<Attribute> {
 				i.remove();
 			}
 		return rc;
-	}
-	public String getIgnoreCase( String name ) {
-		Attribute a;
-		Iterator<Attribute> i = iterator();
-		while (i.hasNext()) {
-			a = i.next();
-			if (a.name().equalsIgnoreCase( name )) return a.value();
-		}
-		return "";
 	}
 	
 	public String toString( String sep ) {
