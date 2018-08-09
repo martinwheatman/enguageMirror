@@ -7,8 +7,8 @@ import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Plural;
+import org.enguage.veh.Language;
+import org.enguage.veh.Plural;
 
 public class Patternette {
 	private static Audit audit = new Audit( "Patternette" );

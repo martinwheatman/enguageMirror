@@ -7,7 +7,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Fs;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.number.Number;
+import org.enguage.veh.number.Number;
 
 public class Numeric extends Value {
 	static private Audit audit = new Audit( "Numeric" );

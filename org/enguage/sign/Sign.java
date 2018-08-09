@@ -12,7 +12,7 @@ import org.enguage.sign.repertoire.Engine;
 import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.veh.reply.Reply;
 
 public class Sign {
 	private static final String   NAME = "sign";

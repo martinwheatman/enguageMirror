@@ -1,4 +1,4 @@
-package org.enguage.vehicle;
+package org.enguage.veh;
 
 import java.util.ListIterator;
 import java.util.Locale;

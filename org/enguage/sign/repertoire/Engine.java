@@ -15,9 +15,9 @@ import org.enguage.sign.pattern.Patternette;
 import org.enguage.util.Audit;
 import org.enguage.util.Net;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Question;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.veh.Language;
+import org.enguage.veh.Question;
+import org.enguage.veh.reply.Reply;
 
 public class Engine {
 	

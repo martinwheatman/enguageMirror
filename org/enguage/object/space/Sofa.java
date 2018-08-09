@@ -17,8 +17,8 @@ import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Colloquial;
-import org.enguage.vehicle.Plural;
+import org.enguage.veh.Colloquial;
+import org.enguage.veh.Plural;
 
 public class Sofa extends Shell {
 	static private Audit audit = new Audit( "Sofa" );

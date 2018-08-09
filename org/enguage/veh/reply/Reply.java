@@ -1,4 +1,4 @@
-package org.enguage.vehicle.reply;
+package org.enguage.veh.reply;
 
 import org.enguage.Enguage;
 import org.enguage.sign.context.Context;
@@ -8,9 +8,9 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.When;
+import org.enguage.veh.Utterance;
+import org.enguage.veh.when.Moment;
+import org.enguage.veh.when.When;
 
 public class Reply { // a reply is basically a formatted answer
 	

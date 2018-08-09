@@ -1,4 +1,4 @@
-package org.enguage.vehicle.where;
+package org.enguage.veh.where;
 
 import java.util.ListIterator;
 
@@ -8,8 +8,7 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.where.Where;
+import org.enguage.veh.where.Where;
 
 import java.util.ArrayList;
 

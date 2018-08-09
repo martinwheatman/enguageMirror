@@ -4,7 +4,7 @@ import org.enguage.sign.repertoire.Concept;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.where.Where;
+import org.enguage.veh.where.Where;
 
 public class Spatial {
 	

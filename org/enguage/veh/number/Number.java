@@ -1,4 +1,4 @@
-package org.enguage.vehicle.number;
+package org.enguage.veh.number;
 
 import java.util.ListIterator;
 
@@ -8,7 +8,7 @@ import org.enguage.object.space.Overlay;
 import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Language;
+import org.enguage.veh.Language;
 
 public class Number {
 	/*

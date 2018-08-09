@@ -1,4 +1,4 @@
-package org.enguage.vehicle;
+package org.enguage.veh;
 
 import org.enguage.object.Numeric;
 import org.enguage.object.Spatial;
@@ -13,13 +13,12 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.when.When;
-import org.enguage.vehicle.where.Where;
-
-import org.enguage.vehicle.Colloquial;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Answer;
+import org.enguage.veh.Colloquial;
+import org.enguage.veh.Language;
+import org.enguage.veh.Utterance;
+import org.enguage.veh.reply.Answer;
+import org.enguage.veh.when.When;
+import org.enguage.veh.where.Where;
 
 public class Utterance {
 	static private Audit audit = new Audit( "Utterance" );

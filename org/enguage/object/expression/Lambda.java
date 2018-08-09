@@ -8,7 +8,7 @@ import org.enguage.object.Variable;
 import org.enguage.object.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.number.Numerals;
+import org.enguage.veh.number.Numerals;
 
 public class Lambda {
 	static private Audit audit = new Audit( "Lambda" );

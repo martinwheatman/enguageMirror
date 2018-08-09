@@ -5,13 +5,12 @@ import java.io.PrintWriter;
 
 import org.enguage.object.Variable;
 import org.enguage.sign.context.Context;
-import org.enguage.vehicle.reply.Reply;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.When;
-
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.veh.reply.Reply;
+import org.enguage.veh.when.Moment;
+import org.enguage.veh.when.When;
 
 public class Proc {
 	static private Audit audit = new Audit( "run" );

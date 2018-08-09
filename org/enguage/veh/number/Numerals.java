@@ -1,4 +1,4 @@
-package org.enguage.vehicle.number;
+package org.enguage.veh.number;
 
 import java.util.ListIterator;
 

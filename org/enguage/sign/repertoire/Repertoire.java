@@ -3,8 +3,8 @@ package org.enguage.sign.repertoire;
 import org.enguage.object.Variable;
 import org.enguage.sign.Signs;
 import org.enguage.util.Shell;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.veh.Utterance;
+import org.enguage.veh.reply.Reply;
 
 public class Repertoire {
 	//static private Audit audit = new Audit( "Repertoire" );

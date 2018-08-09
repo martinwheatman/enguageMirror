@@ -9,7 +9,7 @@ package org.enguage.util;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import org.enguage.vehicle.Plural;
+import org.enguage.veh.Plural;
 
 public class Tag {
 	private static Audit audit = new Audit( "Tag" );

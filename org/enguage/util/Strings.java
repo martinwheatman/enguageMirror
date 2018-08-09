@@ -7,8 +7,8 @@ import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.enguage.object.Variable;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.number.Numerals;
+import org.enguage.veh.Language;
+import org.enguage.veh.number.Numerals;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	

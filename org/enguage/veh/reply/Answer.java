@@ -1,4 +1,4 @@
-package org.enguage.vehicle.reply;
+package org.enguage.veh.reply;
 
 import org.enguage.util.Strings;
 

@@ -1,13 +1,12 @@
-package org.enguage.vehicle.when;
+package org.enguage.veh.when;
 
 import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.when.Month;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
+import org.enguage.veh.when.Month;
+import org.enguage.veh.when.Time;
+import org.enguage.veh.when.When;
 
 public class Absolute {
 

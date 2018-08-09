@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.enguage.object.Variable;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.util.Attributes;
-import org.enguage.vehicle.Plural;
+import org.enguage.veh.Plural;
 
 public class Attributes extends ArrayList<Attribute> {
 	static private Audit audit = new Audit( "Attributes" );

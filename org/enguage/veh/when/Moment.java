@@ -1,4 +1,4 @@
-package org.enguage.vehicle.when;
+package org.enguage.veh.when;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,15 +7,14 @@ import java.util.Locale;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.when.Absolute;
-import org.enguage.vehicle.when.Day;
-import org.enguage.vehicle.when.Duration;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.Month;
-import org.enguage.vehicle.when.Relative;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
+import org.enguage.veh.when.Absolute;
+import org.enguage.veh.when.Day;
+import org.enguage.veh.when.Duration;
+import org.enguage.veh.when.Moment;
+import org.enguage.veh.when.Month;
+import org.enguage.veh.when.Relative;
+import org.enguage.veh.when.Time;
+import org.enguage.veh.when.When;
 
 public class Moment {
 	private        boolean CE = true; // current epoch (western?)

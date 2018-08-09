@@ -14,9 +14,9 @@ import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Proc;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
-import org.enguage.vehicle.where.Where;
+import org.enguage.veh.Utterance;
+import org.enguage.veh.reply.Reply;
+import org.enguage.veh.where.Where;
 
 public class Intention {
 	

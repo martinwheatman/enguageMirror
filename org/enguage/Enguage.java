@@ -13,8 +13,8 @@ import org.enguage.util.Fs;
 import org.enguage.util.Net;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.veh.Utterance;
+import org.enguage.veh.reply.Reply;
 
 public class Enguage extends Shell {
 

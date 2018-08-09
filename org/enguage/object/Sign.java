@@ -8,7 +8,7 @@ import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.veh.reply.Reply;
 import org.enguage.object.Variable;
 
 public class Sign {

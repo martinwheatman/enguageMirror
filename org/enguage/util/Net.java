@@ -9,9 +9,9 @@ import java.net.Socket;
 
 import org.enguage.Enguage;
 import org.enguage.sign.context.Context;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
 import org.enguage.util.Audit;
+import org.enguage.veh.Utterance;
+import org.enguage.veh.reply.Reply;
 
 public class Net {
 	

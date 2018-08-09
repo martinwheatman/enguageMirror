@@ -1,12 +1,11 @@
-package org.enguage.vehicle.when;
+package org.enguage.veh.when;
 
 import java.util.ListIterator;
 
 import org.enguage.util.Audit;
-
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
+import org.enguage.veh.when.Moment;
+import org.enguage.veh.when.Time;
+import org.enguage.veh.when.When;
 
 public class Month {
 	public static Audit audit = new Audit( "Month" );

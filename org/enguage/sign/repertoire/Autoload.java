@@ -11,7 +11,7 @@ import org.enguage.sign.intention.Redo;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Language;
+import org.enguage.veh.Language;
 
 /** Implements Dynamic Repertoires:
  * attempts to load all words in an utterance as a repertoire.

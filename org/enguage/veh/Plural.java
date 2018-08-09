@@ -1,4 +1,4 @@
-package org.enguage.vehicle;
+package org.enguage.veh;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,8 +8,7 @@ import java.util.TreeMap;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-
-import org.enguage.vehicle.Plural;
+import org.enguage.veh.Plural;
 
 public class Plural {
 	static Audit audit = new Audit( "Plural" );

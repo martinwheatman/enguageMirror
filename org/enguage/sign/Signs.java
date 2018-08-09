@@ -16,8 +16,8 @@ import org.enguage.sign.repertoire.Repertoire;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.veh.Utterance;
+import org.enguage.veh.reply.Reply;
 
 public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;

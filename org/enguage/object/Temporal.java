@@ -3,8 +3,8 @@ package org.enguage.object;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.when.Day;
-import org.enguage.vehicle.when.When;
+import org.enguage.veh.when.Day;
+import org.enguage.veh.when.When;
 
 public class Temporal {
 	
