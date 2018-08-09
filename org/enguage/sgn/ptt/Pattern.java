@@ -290,8 +290,8 @@ public class Pattern extends ArrayList<Patternette> {
 	private void matched( Where w ) {
 		// ?? addAll( w.toAttributes()); ??
 		if (null == matched) matched = new Attributes();
-		matched( new Attribute( Where.LOCATOR,  w.locator ().toString()));
-		matched( new Attribute( Where.LOCATION, w.location().toString()));
+		matched( new Attribute( Where.LOCTR,  w.locator ().toString()));
+		matched( new Attribute( Where.LOCTN, w.location().toString()));
 	}
 	
 	private String doNumeric( ListIterator<String> ui ) {

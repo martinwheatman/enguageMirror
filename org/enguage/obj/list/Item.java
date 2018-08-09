@@ -154,7 +154,8 @@ public class Item {
 						break;
 					} else if (cmp.equals("WHEN")) {
 						value.add( new When( new Moment( Long.valueOf( val ))).toString() );
-					} else if (cmp.equals("LOCATION") || cmp.equals("LOCATOR")) {
+					} else if (cmp.equals(Where.LOCTN)
+							|| cmp.equals(Where.LOCTR)) {
 						value.add( val ); // don't count these!
 					} else { // 3 cupS -- pertains to unit/quantity only?
 						value.add( counted( prevNum, val ) );  // UNIT='cup(S)'
@@ -255,7 +256,7 @@ public class Item {
 	public static void main( String args[] ) {
 		//Audit.allOn();
 		//Audit.traceAll( true );
-		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCATOR +" "+ Where.LOCATION );
+		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffee from Tesco in London" );
 		test( "black coffees quantity='2' unit='cup'", "2 cups of black coffee" );
@@ -264,7 +265,7 @@ public class Item {
 		test( "black coffees quantity='5 more' when='20151125074225'" );
 		
 		audit.title( "grouping" );
-		Item.groupOn( "LOCATION" );
+		Item.groupOn( Where.LOCTN );
 		audit.debug("Using format:"+ Item.format.toString( Strings.CSV )
 		          + (Item.groupOn().size() == 0
 		        		  ? ", not grouped."

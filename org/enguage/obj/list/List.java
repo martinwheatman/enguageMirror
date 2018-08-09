@@ -84,15 +84,15 @@ public class List extends ArrayList<Item> {
 	private int index( Item item, boolean exact ) {
 		//audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
 		
-		String ilocr = item.attribute( Where.LOCATOR );
-		String ilocn = item.attribute( Where.LOCATION );
+		String ilocr = item.attribute( Where.LOCTR );
+		String ilocn = item.attribute( Where.LOCTN );
 		long   iwhen = item.when();
 		
 		int pos = -1;
 		for (Item li : this) {
 			pos++;
-			String tlocr = li.attribute( Where.LOCATOR );
-			String tlocn = li.attribute( Where.LOCATION );
+			String tlocr = li.attribute( Where.LOCTR );
+			String tlocn = li.attribute( Where.LOCTN );
 			long   tt    = li.when();
 			if ( (iwhen == -1 || iwhen == tt) // if tt == -1 && it != -i fail!
 				&& (!exact || (
@@ -391,8 +391,8 @@ public class List extends ArrayList<Item> {
 		l.append( new Item( "locator='from' unit='pint' quantity='1' location='the dairy aisle' milk" ));
 		audit.log( "martin needs: "+ l.toString());
 		
-		Item.format( "QUANTITY,UNIT of,,LOCATOR LOCATION" );
-		Item.groupOn( "LOCATION" );
+		Item.format( "QUANTITY,UNIT of,,"+ Where.LOCTR +" "+ Where.LOCTN );
+		Item.groupOn( Where.LOCTN );
 		audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
 		
 		// BEGIN SHOPPING LIST TESTS...
@@ -419,7 +419,7 @@ public class List extends ArrayList<Item> {
 		
 		// BEGIN Calendar list tests...
 		Item.groupOn( "" ); // reset
-		Item.format( ","+Where.LOCATOR +" "+ Where.LOCATION+",WHEN" );
+		Item.format( ","+Where.LOCTR +" "+ Where.LOCTN+",WHEN" );
 		test( 201, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
 				  "fred at the pub at 7 pm on the 25th of December , 2015" );
 		test( 202, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",

@@ -248,13 +248,13 @@ public class Intention {
 			String when = Context.get( "when" );
 			if (!when.equals(""))
 				cmd.append( Attribute.asString( "WHEN", when ) );
-			String locator = Context.get( Where.LOCATOR );
+			String locator = Context.get( Where.LOCTR );
 			if (!locator.equals("")) {
-				String location = Context.get( Where.LOCATION );
+				String location = Context.get( Where.LOCTN );
 				if (!location.equals("")) {
 					if (cmd.size() < 5) cmd.append( ":" ); // TODO: fix SOFA & scripts to accept n='v'
-					cmd.append( Attribute.asString( Where.LOCATOR,  locator  ));
-					cmd.append( Attribute.asString( Where.LOCATION, location ));
+					cmd.append( Attribute.asString( Where.LOCTR,  locator  ));
+					cmd.append( Attribute.asString( Where.LOCTN, location ));
 		}	}	}
 
 		// In the case of vocal perform, value="args='<commands>'" - expand!

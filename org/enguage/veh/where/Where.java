@@ -21,10 +21,10 @@ public class Where {
 	 * from the dairy aisle - i need milk
 	 */
 
-	public static final String     NAME = "where";
-	public static final String  LOCATOR = "LOCATOR";
-	public static final String LOCATION = "LOCATION";
-	public static       Audit     audit = new Audit( NAME );
+	public static final String  NAME = "where";
+	public static final String LOCTR = "LOCATOR";
+	public static final String LOCTN = "LOCATION";
+	public static       Audit  audit = new Audit( NAME );
 
 	public Where() {}
 	public Where( String tor, String tion ) {
@@ -37,7 +37,7 @@ public class Where {
 		location( tion );
 		assigned( tor  != null && tion != null && tion.size()>0 );
 	}
-	public Where( Attributes a ) { this( a.get( LOCATOR ), a.get( LOCATION )); }
+	public Where( Attributes a ) { this( a.get( LOCTR ), a.get( LOCTN )); }
 
 	// e.g. "in", "at", "on", "in front of"
 	static private ArrayList<Strings> locators = new ArrayList<Strings>();
@@ -142,8 +142,8 @@ public class Where {
 	}
 	public Attributes toAttributes() {
 		return new Attributes()
-					.add( LOCATOR, locator())
-					.add( LOCATION, location().toString( Strings.SPACED ));
+					.add( LOCTR, locator())
+					.add( LOCTN, location().toString( Strings.SPACED ));
 	}
 	static public void doLocators( String locators ) {
 		Strings locs = new Strings( locators, '/' );
