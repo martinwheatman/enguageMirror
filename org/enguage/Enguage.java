@@ -127,27 +127,25 @@ public class Enguage extends Shell {
 				audit.log( "Hint is:" + Repertoire.prompt() );
 			else if (!expected.equals( "" )) {
 				if (!expected.endsWith( "." )) expected += ".";
-				if (!new Strings( reply ).equalsIgnoreCase( new Strings( expected )))
-				{
-					if (!expected.equals( "" )) {
-						if (!unexpected.endsWith( "." )) unexpected += ".";
-						if (!new Strings( reply ).equalsIgnoreCase( new Strings( unexpected )))
-							audit.FATAL(
-									"reply:       '"+ reply +"',\n             "+
-									"expected:    '"+ expected +"'\n"+
-									"alternative: '"+ unexpected +"' "+
-									"("+ Pattern.notMatched() +")" );
-						else
-							audit.log( "enguage> "+ reply +"\n" );
-					} else
-						if (!new Strings( reply ).equalsIgnoreCase( new Strings( unexpected )))
-							audit.FATAL(
-									"reply: '"+ reply +"',\n             "+
-									"expected: '"+ expected +"' "+
-									"("+ Pattern.notMatched() +")" );
-				} else
+				Strings replies = new Strings( reply );
+				if (replies.equalsIgnoreCase( new Strings( expected ))) // 1st success
 					audit.log( "enguage> "+ reply +"\n" );
-	}	}	}
+				else if (unexpected.equals( "" ))                       // no second chance
+					audit.FATAL(
+							"reply: '"+ reply +"',\n             "+
+									"expected: '"+ expected +"' "+
+									"(reason="+ Pattern.notMatched() +")" );
+				else {
+					if (!unexpected.endsWith( "." )) unexpected += ".";
+					if (replies.equalsIgnoreCase( new Strings( unexpected )))
+						audit.log( "enguage> "+ reply +"\n" );          // 2nd-ary success
+					else                                                // second chance failed too!
+						audit.FATAL(
+								"reply:       '"+ reply +"',\n             "+
+								"expected:    '"+ expected +"'\n"+
+								"alternative: '"+ unexpected +"'\n          "+
+								"(reason="+ Pattern.notMatched() +")" );
+	}	}	}	}	
 	
 	public static void main( String args[] ) {
 
