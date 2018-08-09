@@ -3,7 +3,7 @@ package org.enguage.veh;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.sign.repertoire.Repertoire;
+import org.enguage.sgn.rep.Repertoire;
 import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 

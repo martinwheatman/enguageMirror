@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeSet;
 
-import org.enguage.object.Variable;
+import org.enguage.obj.Variable;
 import org.enguage.veh.Language;
 import org.enguage.veh.number.Numerals;
 

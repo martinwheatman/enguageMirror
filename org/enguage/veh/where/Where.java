@@ -2,8 +2,8 @@ package org.enguage.veh.where;
 
 import java.util.ListIterator;
 
-import org.enguage.object.space.Overlay;
-import org.enguage.object.space.Sofa;
+import org.enguage.obj.space.Overlay;
+import org.enguage.obj.space.Sofa;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;

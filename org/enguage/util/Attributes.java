@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.object.Variable;
-import org.enguage.sign.pattern.Pattern;
+import org.enguage.obj.Variable;
+import org.enguage.sgn.ptt.Pattern;
 import org.enguage.util.Attributes;
 import org.enguage.veh.Plural;
 

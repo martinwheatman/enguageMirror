@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
-import org.enguage.object.Entity;
+import org.enguage.obj.Entity;
 
 public class Fs {
 	static Audit audit = new Audit( "Fs" );

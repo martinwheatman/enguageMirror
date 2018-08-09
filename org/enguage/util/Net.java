@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.enguage.Enguage;
-import org.enguage.sign.context.Context;
+import org.enguage.sgn.ctx.Context;
 import org.enguage.util.Audit;
 import org.enguage.veh.Utterance;
 import org.enguage.veh.reply.Reply;

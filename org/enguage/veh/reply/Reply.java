@@ -1,8 +1,8 @@
 package org.enguage.veh.reply;
 
 import org.enguage.Enguage;
-import org.enguage.sign.context.Context;
-import org.enguage.sign.intention.Redo;
+import org.enguage.sgn.ctx.Context;
+import org.enguage.sgn.itn.Redo;
 import org.enguage.util.Attribute;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;

@@ -2,12 +2,12 @@ package org.enguage;
 
 import java.io.File;
 
-import org.enguage.object.space.Overlay;
-import org.enguage.sign.intention.Redo;
-import org.enguage.sign.pattern.Pattern;
-import org.enguage.sign.repertoire.Autoload;
-import org.enguage.sign.repertoire.Concepts;
-import org.enguage.sign.repertoire.Repertoire;
+import org.enguage.obj.space.Overlay;
+import org.enguage.sgn.itn.Redo;
+import org.enguage.sgn.ptt.Pattern;
+import org.enguage.sgn.rep.Autoload;
+import org.enguage.sgn.rep.Concepts;
+import org.enguage.sgn.rep.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Fs;
 import org.enguage.util.Net;

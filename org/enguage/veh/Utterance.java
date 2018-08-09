@@ -1,14 +1,14 @@
 package org.enguage.veh;
 
-import org.enguage.object.Numeric;
-import org.enguage.object.Spatial;
-import org.enguage.object.Temporal;
-import org.enguage.object.Variable;
-import org.enguage.object.space.Sofa;
-import org.enguage.sign.Sign;
-import org.enguage.sign.context.Context;
-import org.enguage.sign.pattern.Pattern;
-import org.enguage.sign.pattern.Patternette;
+import org.enguage.obj.Numeric;
+import org.enguage.obj.Spatial;
+import org.enguage.obj.Temporal;
+import org.enguage.obj.Variable;
+import org.enguage.obj.space.Sofa;
+import org.enguage.sgn.Sign;
+import org.enguage.sgn.ctx.Context;
+import org.enguage.sgn.ptt.Pattern;
+import org.enguage.sgn.ptt.Patternette;
 import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Shell;

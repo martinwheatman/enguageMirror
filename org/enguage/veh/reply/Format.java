@@ -1,7 +1,7 @@
 package org.enguage.veh.reply;
 
-import org.enguage.object.Variable;
-import org.enguage.sign.context.Context;
+import org.enguage.obj.Variable;
+import org.enguage.sgn.ctx.Context;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

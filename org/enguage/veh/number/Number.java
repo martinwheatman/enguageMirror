@@ -3,8 +3,8 @@ package org.enguage.veh.number;
 import java.util.ListIterator;
 
 import org.enguage.Enguage;
-import org.enguage.object.expression.Function;
-import org.enguage.object.space.Overlay;
+import org.enguage.obj.expr.Function;
+import org.enguage.obj.space.Overlay;
 import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
