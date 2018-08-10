@@ -79,7 +79,7 @@ public class Where {
 	private void   locator( ListIterator<String> si ) {
 		//audit.in( "locator", " '"+ locators.size() +"', "+ si );
 		int n = 0;
-		for (Strings pattern : locators ) {
+		for (Strings pattern : locators ) {  // read thru registered locators at, in, on, ...
 			//audit.debug( "Checking pattern: "+ pattern.toString( Strings.SPACED ));
 			if (0 != (n = pattern.matches( si ))) {
 				locator = Strings.getString( si, n );
@@ -139,11 +139,6 @@ public class Where {
 	// --
 	public String toString() {
 		return assigned() ? locator +" "+ location.toString( Strings.SPACED ) : "";
-	}
-	public Attributes toAttributes() {
-		return new Attributes()
-					.add( LOCTR, locator())
-					.add( LOCTN, location().toString( Strings.SPACED ));
 	}
 	static public void doLocators( String locators ) {
 		Strings locs = new Strings( locators, '/' );
