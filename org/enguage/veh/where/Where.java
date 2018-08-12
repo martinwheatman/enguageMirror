@@ -4,10 +4,10 @@ import java.util.ListIterator;
 
 import org.enguage.obj.space.Overlay;
 import org.enguage.obj.space.Sofa;
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attributes;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.where.Where;
 
 import java.util.ArrayList;

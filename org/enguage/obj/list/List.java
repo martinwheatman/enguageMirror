@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.enguage.obj.Value;
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.number.Number;
 import org.enguage.veh.reply.Reply;
 import org.enguage.veh.where.Where;

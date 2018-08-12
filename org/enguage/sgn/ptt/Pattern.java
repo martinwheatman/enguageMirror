@@ -7,13 +7,13 @@ import java.util.Locale;
 import java.util.Random;
 
 import org.enguage.util.algorithm.Expression;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
 import org.enguage.veh.Language;
 import org.enguage.veh.Plural;
 import org.enguage.veh.number.Number;
 import org.enguage.veh.reply.Reply;
 import org.enguage.veh.where.Where;
-import org.enguage.util.Attribute;
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;

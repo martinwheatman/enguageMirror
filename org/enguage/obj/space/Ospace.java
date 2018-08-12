@@ -2,7 +2,7 @@ package org.enguage.obj.space;
 
 import java.io.File;
 
-import org.enguage.util.Fs;
+import org.enguage.util.sys.Fs;
 
 public class Ospace {
 	public static String root() {

@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
+import org.enguage.util.sys.Shell;
 import org.enguage.obj.Entity;
 import org.enguage.obj.Link;
 import org.enguage.obj.LinkShell;

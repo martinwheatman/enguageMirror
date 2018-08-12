@@ -1,7 +1,9 @@
-package org.enguage.util;
+package org.enguage.util.tag;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.enguage.util.Indent;
 
 public class Tags extends ArrayList<Tag> {
 	

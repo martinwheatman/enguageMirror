@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.sys.Shell;
 
 public class Colloquial {
 	static private Audit audit = new Audit( "Colloquial" );

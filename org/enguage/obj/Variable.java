@@ -7,8 +7,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Shell;
 import org.enguage.obj.Value;
 import org.enguage.obj.Variable;
 import org.enguage.obj.space.Ospace;

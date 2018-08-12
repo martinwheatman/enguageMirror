@@ -6,11 +6,11 @@ import java.util.Iterator;
 import org.enguage.obj.space.Overlay;
 import org.enguage.obj.space.OverlayShell;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
-import org.enguage.util.Path;
-import org.enguage.util.Pent;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
+import org.enguage.util.sys.Path;
+import org.enguage.util.sys.Pent;
+import org.enguage.util.sys.Shell;
 
 class OverlayShell extends Shell {
 	OverlayShell( Strings args ) { super( "Overlay", args ); }

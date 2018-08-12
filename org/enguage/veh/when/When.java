@@ -2,9 +2,9 @@ package org.enguage.veh.when;
 
 import java.util.ListIterator;
 
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attributes;
 import org.enguage.veh.when.Day;
 import org.enguage.veh.when.Duration;
 import org.enguage.veh.when.Moment;

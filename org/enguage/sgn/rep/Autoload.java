@@ -9,8 +9,8 @@ import org.enguage.Enguage;
 import org.enguage.obj.space.Overlay;
 import org.enguage.sgn.itn.Redo;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
 import org.enguage.veh.Language;
 
 /** Implements Dynamic Repertoires:

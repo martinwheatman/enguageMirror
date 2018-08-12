@@ -1,6 +1,6 @@
-package org.enguage.util;
+package org.enguage.util.sys;
 
-import org.enguage.util.Pent;
+import org.enguage.util.sys.Pent;
 
 public class Pent implements Comparable<Pent> {
 	/* This class describes a path entity, which in most cases will just be a name

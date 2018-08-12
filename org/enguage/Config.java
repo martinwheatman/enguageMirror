@@ -11,13 +11,13 @@ import org.enguage.sgn.Signs;
 import org.enguage.sgn.itn.Redo;
 import org.enguage.sgn.rep.Autoload;
 import org.enguage.sgn.rep.Concepts;
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
-import org.enguage.util.Proc;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
-import org.enguage.util.Tag;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.sys.Fs;
+import org.enguage.util.sys.Proc;
+import org.enguage.util.sys.Shell;
+import org.enguage.util.tag.Tag;
 import org.enguage.veh.reply.Answer;
 import org.enguage.veh.reply.Reply;
 

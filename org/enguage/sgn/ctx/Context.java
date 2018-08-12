@@ -2,9 +2,9 @@ package org.enguage.sgn.ctx;
 
 import java.util.ArrayList;
 
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attributes;
 /** Context: a list of attributes, so a list of list of attribute
  *  [ [ one=>123, two=>456,  thr=>789  ],
  *    [ thr=>123, four=>456, five=>789 ]

@@ -1,4 +1,4 @@
-package org.enguage.util;
+package org.enguage.util.tag;
 
 /*import android.app.Activity;
  *import android.content.res.AssetManager;
@@ -9,6 +9,11 @@ package org.enguage.util;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.enguage.util.Audit;
+import org.enguage.util.Indent;
+import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
 import org.enguage.veh.Plural;
 
 public class Tag {

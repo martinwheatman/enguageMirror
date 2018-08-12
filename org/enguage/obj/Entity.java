@@ -3,9 +3,9 @@ package org.enguage.obj;
 import java.io.File;
 
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
+import org.enguage.util.sys.Shell;
 import org.enguage.obj.Entity;
 import org.enguage.obj.EntityShell;
 import org.enguage.obj.space.Overlay;

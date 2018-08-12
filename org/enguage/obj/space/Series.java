@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.enguage.obj.space.Series;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
+import org.enguage.util.sys.Fs;
 
 public class Series { // relates to hypothetical attachment of series of overlays to fs 
 	static private Audit audit = new Audit( "Series" );

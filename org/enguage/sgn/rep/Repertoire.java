@@ -2,7 +2,7 @@ package org.enguage.sgn.rep;
 
 import org.enguage.obj.Variable;
 import org.enguage.sgn.Signs;
-import org.enguage.util.Shell;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.Utterance;
 import org.enguage.veh.reply.Reply;
 

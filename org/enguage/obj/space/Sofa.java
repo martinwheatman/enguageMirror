@@ -13,10 +13,10 @@ import org.enguage.obj.Variable;
 import org.enguage.obj.expr.Function;
 import org.enguage.obj.list.Item;
 import org.enguage.obj.list.List;
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.Colloquial;
 import org.enguage.veh.Plural;
 

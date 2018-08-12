@@ -9,9 +9,9 @@ import org.enguage.sgn.itn.Intention;
 import org.enguage.sgn.ptt.Pattern;
 import org.enguage.sgn.ptt.Patternette;
 import org.enguage.sgn.rep.Engine;
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.veh.reply.Reply;
 
 public class Sign {

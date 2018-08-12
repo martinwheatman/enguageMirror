@@ -6,6 +6,8 @@ import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
 
 public class Join {
 	private static       Audit           audit = new Audit( "Join" );

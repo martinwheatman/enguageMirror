@@ -4,8 +4,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.sgn.rep.Repertoire;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Shell;
 
 
 public class Language {  // English-ism!

@@ -1,4 +1,4 @@
-package org.enguage.util;
+package org.enguage.util.sys;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -10,6 +10,7 @@ import java.net.Socket;
 import org.enguage.Enguage;
 import org.enguage.sgn.ctx.Context;
 import org.enguage.util.Audit;
+import org.enguage.util.Strings;
 import org.enguage.veh.Utterance;
 import org.enguage.veh.reply.Reply;
 

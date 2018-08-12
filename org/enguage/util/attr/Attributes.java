@@ -1,4 +1,4 @@
-package org.enguage.util;
+package org.enguage.util.attr;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,7 +7,9 @@ import java.util.Locale;
 
 import org.enguage.obj.Variable;
 import org.enguage.sgn.ptt.Pattern;
-import org.enguage.util.Attributes;
+import org.enguage.util.Audit;
+import org.enguage.util.Strings;
+import org.enguage.util.attr.Attributes;
 import org.enguage.veh.Plural;
 
 public class Attributes extends ArrayList<Attribute> {

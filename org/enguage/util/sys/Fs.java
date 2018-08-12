@@ -1,4 +1,4 @@
-package org.enguage.util;
+package org.enguage.util.sys;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 import org.enguage.obj.Entity;
+import org.enguage.util.Audit;
 
 public class Fs {
 	static Audit audit = new Audit( "Fs" );

@@ -9,10 +9,10 @@ import org.enguage.sgn.rep.Autoload;
 import org.enguage.sgn.rep.Concepts;
 import org.enguage.sgn.rep.Repertoire;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
-import org.enguage.util.Net;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
+import org.enguage.util.sys.Net;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.Utterance;
 import org.enguage.veh.reply.Reply;
 

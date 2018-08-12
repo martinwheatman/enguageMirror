@@ -5,9 +5,9 @@ import java.util.ListIterator;
 import org.enguage.Enguage;
 import org.enguage.obj.expr.Function;
 import org.enguage.obj.space.Overlay;
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.veh.Language;
 
 public class Number {

@@ -13,9 +13,9 @@ import org.enguage.sgn.ptt.Pattern;
 import org.enguage.sgn.ptt.Patternette;
 import org.enguage.sgn.rep.Autoload;
 import org.enguage.sgn.rep.Repertoire;
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attributes;
 import org.enguage.veh.Utterance;
 import org.enguage.veh.reply.Reply;
 

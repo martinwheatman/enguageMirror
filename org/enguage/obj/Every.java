@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
 import org.enguage.util.Join;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attributes;
+import org.enguage.util.sys.Shell;
 
 public class Every {
 	public  static final String        NAME = "every";

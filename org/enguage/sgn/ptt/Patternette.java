@@ -3,10 +3,10 @@ package org.enguage.sgn.ptt;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.util.Attribute;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.veh.Language;
 import org.enguage.veh.Plural;
 

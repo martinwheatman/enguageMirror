@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import org.enguage.sgn.itn.Redo;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.Tag;
+import org.enguage.util.tag.Tag;
 
 public class Concepts {
 	/* Concepts is a list of names, TODO: pre-processed into a list of Concept(pattern+name)

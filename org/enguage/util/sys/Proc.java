@@ -1,4 +1,4 @@
-package org.enguage.util;
+package org.enguage.util.sys;
 
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import org.enguage.obj.Variable;
 import org.enguage.sgn.ctx.Context;
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
 import org.enguage.veh.reply.Reply;
 import org.enguage.veh.when.Moment;

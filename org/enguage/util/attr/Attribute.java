@@ -1,8 +1,10 @@
-package org.enguage.util;
+package org.enguage.util.attr;
 
 import java.util.ListIterator;
 
-import org.enguage.util.Attribute;
+import org.enguage.util.Audit;
+import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 
 public class Attribute {
 	

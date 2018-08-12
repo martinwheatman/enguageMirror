@@ -2,8 +2,8 @@ package org.enguage.obj;
 
 import org.enguage.sgn.rep.Concept;
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.where.Where;
 
 public class Spatial {

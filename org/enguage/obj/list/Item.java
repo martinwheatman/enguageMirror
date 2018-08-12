@@ -2,11 +2,11 @@ package org.enguage.obj.list;
 
 import java.util.ListIterator;
 
-import org.enguage.util.Attribute;
-import org.enguage.util.Attributes;
 import org.enguage.util.Audit;
-import org.enguage.util.Shell;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.Plural;
 import org.enguage.veh.number.Number;
 import org.enguage.veh.when.Moment;

@@ -7,6 +7,8 @@ import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.enguage.obj.Variable;
+import org.enguage.util.attr.Attributes;
+import org.enguage.util.sys.Shell;
 import org.enguage.veh.Language;
 import org.enguage.veh.number.Numerals;
 
@@ -741,7 +743,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		divisions.add( division );
 		return divisions;
 	}
-	static Strings combine( ArrayList<Strings> as ) {
+	public static Strings combine( ArrayList<Strings> as ) {
 		// [["o", "t". "."], ["t", "?"], ["f", "f"]] => [ "o", "t", ".", "t", "?", "f", "f" ]
 		Strings sa = new Strings();
 		for (Strings tmp : as)
