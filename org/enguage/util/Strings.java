@@ -6,11 +6,11 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeSet;
 
-import org.enguage.obj.Variable;
+import org.enguage.objects.Variable;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
-import org.enguage.veh.Language;
-import org.enguage.veh.number.Numerals;
+import org.enguage.vehicle.Language;
+import org.enguage.vehicle.number.Numerals;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	

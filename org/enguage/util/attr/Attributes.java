@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.obj.Variable;
-import org.enguage.sgn.ptt.Pattern;
+import org.enguage.interp.pattern.Pattern;
+import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
-import org.enguage.veh.Plural;
+import org.enguage.vehicle.Plural;
 
 public class Attributes extends ArrayList<Attribute> {
 	static private Audit audit = new Audit( "Attributes" );

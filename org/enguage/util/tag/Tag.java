@@ -14,7 +14,7 @@ import org.enguage.util.Indent;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
-import org.enguage.veh.Plural;
+import org.enguage.vehicle.Plural;
 
 public class Tag {
 	private static Audit audit = new Audit( "Tag" );

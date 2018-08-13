@@ -75,21 +75,16 @@ public class Join {
 	static public ArrayList<Attributes> join( Attributes match, String sep ){
 		ArrayList<Attributes> rc = new ArrayList<Attributes>();
 		if (!on) {
-			//audit.log( "join returning:"+ match.toString());
 			rc.add( match );
 		} else {
 			/* there is probably a much easier way to do this!
 			 * -- pass values into combinations() and annotate there!
 			 */
-			//if (Audit.detailedDebug) audit.in( "join", "["+ match +"], '"+ sep +"'" );
 			
 			// first we get loaded=["SUBJECTS","OBJECTS"]
 			Strings names = match.names();
-			//if (Audit.detailedDebug) audit.log( "loaded are: "+ names.toString() );
 			
 			ArrayList<ArrayList<Strings>> values = match.valuesAsLists( sep );
-			
-			//if (Audit.detailedDebug) audit.log( "values are: "+ values.toString() );
 			
 			ArrayList<Integer> dimensions = new ArrayList<Integer>();
 			/* Here we have raw arrays, of values and loaded. To limit the join combinations,
@@ -103,7 +98,6 @@ public class Join {
 			Iterator<ArrayList<Integer>> nui = numbers.iterator();
 			while (nui.hasNext()) { // looping round numbers [0, 0]
 				ArrayList<Integer> number = nui.next(); // 0, 0
-				//if (Audit.detailedDebug) audit.log( "Numbers are:"+ number.toString() );
 				Attributes runs = new Attributes();
 				//
 				int vi=0; // index into values
@@ -112,18 +106,19 @@ public class Join {
 				while (li.hasNext()) { // looping round name/number combo
 					int    lii = li.next();
 					String nii = ni.next();
-					Attribute a = new Attribute( nii, values.get( vi ).get( lii ).toString( Strings.SPACED ));
+					Attribute a = new Attribute( nii, values.get( vi ).get( lii ).toString());
 					runs.add( a );
 					vi++;
 				}
 				rc.add( runs );
 		}	}
-		//if (Audit.detailedDebug) audit.out( rc.toString() );
 		return rc;
 	}
 
 	public static void main( String argv []) {
 		Audit.allOn();
+		
+		on = true;
 		
 		Attributes match = new Attributes();
 		match.add( new Attribute( "SUBJECT", "martin" ));
@@ -134,8 +129,8 @@ public class Join {
 		audit.log( "Combinations of which are:\n\t"+ ala.toString() );
 		
 		match = new Attributes();
-		match.add( new Attribute( "SUBJECTS", "martin" ));
-		match.add( new Attribute(  "OBJECTS", "2 coffees, a pot of tea and biscuits" ));
+		match.add( new Attribute( "SUBJECTS", "martin and ruth" ));
+		match.add( new Attribute(  "OBJECTS", "2 coffees and a pot of tea and biscuits" ));
 		
 		audit.log( "Context is:\n\t"+ match );
 		ala = join( match, "and" );

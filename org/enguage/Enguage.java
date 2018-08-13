@@ -2,19 +2,19 @@ package org.enguage;
 
 import java.io.File;
 
-import org.enguage.obj.space.Overlay;
-import org.enguage.sgn.itn.Redo;
-import org.enguage.sgn.ptt.Pattern;
-import org.enguage.sgn.rep.Autoload;
-import org.enguage.sgn.rep.Concepts;
-import org.enguage.sgn.rep.Repertoire;
+import org.enguage.interp.intention.Redo;
+import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.repertoire.Autoload;
+import org.enguage.interp.repertoire.Concepts;
+import org.enguage.interp.repertoire.Repertoire;
+import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Net;
 import org.enguage.util.sys.Shell;
-import org.enguage.veh.Utterance;
-import org.enguage.veh.reply.Reply;
+import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.reply.Reply;
 
 public class Enguage extends Shell {
 

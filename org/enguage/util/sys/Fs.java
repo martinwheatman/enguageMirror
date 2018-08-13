@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
-import org.enguage.obj.Entity;
+import org.enguage.objects.space.Entity;
 import org.enguage.util.Audit;
 
 public class Fs {

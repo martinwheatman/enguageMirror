@@ -3,13 +3,13 @@ package org.enguage.util.sys;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
-import org.enguage.obj.Variable;
-import org.enguage.sgn.ctx.Context;
+import org.enguage.interp.Context;
+import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.veh.reply.Reply;
-import org.enguage.veh.when.Moment;
-import org.enguage.veh.when.When;
+import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.when.Moment;
+import org.enguage.vehicle.when.When;
 
 public class Proc {
 	static private Audit audit = new Audit( "run" );

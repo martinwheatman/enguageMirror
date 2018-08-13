@@ -5,12 +5,12 @@ import java.util.GregorianCalendar;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.obj.Variable;
-import org.enguage.obj.space.Overlay;
-import org.enguage.sgn.Signs;
-import org.enguage.sgn.itn.Redo;
-import org.enguage.sgn.rep.Autoload;
-import org.enguage.sgn.rep.Concepts;
+import org.enguage.interp.intention.Redo;
+import org.enguage.interp.repertoire.Autoload;
+import org.enguage.interp.repertoire.Concepts;
+import org.enguage.interp.sign.Signs;
+import org.enguage.objects.Variable;
+import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -18,8 +18,8 @@ import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Proc;
 import org.enguage.util.sys.Shell;
 import org.enguage.util.tag.Tag;
-import org.enguage.veh.reply.Answer;
-import org.enguage.veh.reply.Reply;
+import org.enguage.vehicle.reply.Answer;
+import org.enguage.vehicle.reply.Reply;
 
 public class Config {
 	static       private Audit audit = new Audit( "Config" );
