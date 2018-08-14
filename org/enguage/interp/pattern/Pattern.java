@@ -98,7 +98,7 @@ public class Pattern extends ArrayList<Patternette> {
 				        sw.equals( quoted  ) ||
 				        sw.equals( expr    ) ||
 				        sw.equals( sinsign ) ||
-				        sw.equals( numeric )    )
+				        sw.equals( numeric )   )
 					 && wi.hasNext())
 				{
 					audit.ERROR( "ctor: mutually exclusive modifiers" );
@@ -110,9 +110,8 @@ public class Pattern extends ArrayList<Patternette> {
 					sw = apostrophes.get( 0 );
 					t.apostrophedIs( apostrophes.get( 1 ));
 				}
-					
-				t.name( sw );
-				add( t );
+				
+				add( t.name( sw ));
 				t = new Patternette();
 				
 			} else
@@ -288,10 +287,8 @@ public class Pattern extends ArrayList<Patternette> {
 		matched.add( a ); // remember what it was matched with!
 	}
 	private void matched( Where w ) {
-		// ?? addAll( w.toAttributes()); ??
-		if (null == matched) matched = new Attributes();
-		matched( new Attribute( Where.LOCTR,  w.locator ().toString()));
-		matched( new Attribute( Where.LOCTN, w.location().toString()));
+		matched( new Attribute( Where.LOCTR,  w.locatorAsString( 0 )));
+		matched( new Attribute( Where.LOCTN, w.locationAsString( 0 )));
 	}
 	
 	private String doNumeric( ListIterator<String> ui ) {
@@ -362,34 +359,25 @@ public class Pattern extends ArrayList<Patternette> {
 		}
 		return term;
 	}
-	private String getVal( Patternette t, ListIterator<Patternette> ti, ListIterator<String> ui, boolean whr ) {
+	private String getVariable( Patternette t, ListIterator<Patternette> ti, ListIterator<String> ui, boolean spatial ) {
 		String u = "unseta";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
-		if (t.isPhrased() || t.isSign() || (ui.hasNext() &&  Reply.andConjunction().equals( u ))) {
+		if (t.isPhrased() || t.isSign() || (ui.hasNext() && Reply.andConjunction().equals( u ))) {
 			Where where = null;
-			String term = getNextBoilerplate( t, ti );
-			//audit.audit( "phrased, looking for terminator "+ term );
-			// here: "... one AND two AND three" => "one+two+three"
-			if (term == null) {  // just read to the end
-				while (ui.hasNext()) {
+			String term = getNextBoilerplate( t, ti ); // null if this is last tag
+			while (ui.hasNext()) {
+				if (spatial && null != (where = Where.getWhere( ui, term ))) // term==null? => read to end
+					matched( where );
+				else {
 					u = ui.next();
-					if (whr && null != (where = Where.getWhere( u, null, ui ))) // null => read to end
-						matched( where );
-					else
-						vals.add( u );
-				}
-			} else {
-				while (ui.hasNext()) {
-					u = ui.next();
-					if (whr && null != (where = Where.getWhere( u, term, ui ))) // null => read to end
-						matched( where );
-					else if (term.equals( u )) {
+					if (term != null && term.equals( u )) {
 						ui.previous();
 						break;
 					} else
 						vals.add( u );
-		}	}	}
+				}
+		}	}
 		String val = vals.toString();
 		// TODO: ...again "l'eau"
 		if (t.isApostrophed())
@@ -416,25 +404,27 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched == 23 ? "missing apostrophe" : ("unknown:"+ notMatched);
 	}
 	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui, boolean spatial ) {
-		String term, uttered;
+		Where w;
+		String term;
 		Iterator<String> bpi = bp.iterator();
 		while ( bpi.hasNext() && ui.hasNext())
-			if (!(term = bpi.next()).equalsIgnoreCase( uttered = ui.next() )) {
-				Where w;
-				if (spatial && null != (w = Where.getWhere( uttered, term, ui )))
+			if (!(term = bpi.next()).equalsIgnoreCase( ui.next() )) {
+				ui.previous();
+				if (spatial && null != (w = Where.getWhere( ui, term )))
 					matched( w );
 				else {
 					notMatched = 11;
 					return null; // string mismatch
 				}
-				if (ui.hasNext()) uttered = ui.next(); // getWhere doen't consume terminator
+				if (ui.hasNext()) ui.next(); // getWhere doen't consume terminator
 			}
 		notMatched = 12;
 		return bpi.hasNext() ? null : ui;
 	}
 	
 	/* TODO: Proposal: that a singular tag (i.e. non-PHRASE) can match with a known string
-	 * i.e. an object id: e.g. theOldMan, thePub, fishAndChips camelised
+	 * i.e. an object id: e.g. theOldMan, thePub, fishAndChips.
+	 * Matched first so as to avoid "sergeant at arms" as spatial
 	 */
 	public  Attributes matchValues( Strings utterance, boolean spatial ) {
 		
@@ -468,17 +458,19 @@ public class Pattern extends ArrayList<Patternette> {
 				//notMatched set within matchBoilerplate()
 				return null;
 				
-			} else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
-				if (patti.hasNext()) next = patti.next();
+			} else if (!t.named()) { // last tag - no postfix?
 				
-			} else if (utti.hasNext() &&  t.name().equals( "" )) { // check 4 trailing where
-				if (spatial) {
-					Where w;
-					String uttered = utti.next();
-					if (null != (w = Where.getWhere( uttered, null, utti )))
-						matched( w );
+				if (utti.hasNext()) { // end of array on null (end?) tag...
+					if (spatial) {
+						Where w;
+						if (null != (w = Where.getWhere( utti, null )))
+							matched( w );
+					}
+				} else { // check 4 trailing where
+					if (patti.hasNext()) next = patti.next();
 				}
-			} else if (utti.hasNext() && !t.name().equals( "" )) { // do these loaded match?
+				
+			} else if (utti.hasNext()) { // do these loaded match?
 				
 				String val = null;
 				
@@ -507,7 +499,7 @@ public class Pattern extends ArrayList<Patternette> {
 					notMatched = 16;
 					return null;
 					
-				} else if (null == (val = getVal( t, patti, utti, spatial ))) {
+				} else if (null == (val = getVariable( t, patti, utti, spatial ))) {
 					notMatched = 23;
 					return null;
 				}

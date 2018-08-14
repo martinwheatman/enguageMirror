@@ -48,10 +48,11 @@ public class Patternette {
 		return this;
 	}
 
-
+	private boolean     named = false;
 	private String      name = "";
 	public  String      name() { return name; }
-	public  Patternette name( String nm ) { if (null != nm) name = nm; return this; }
+	public  Patternette name( String nm ) { if (null != nm) {name = nm; named = !nm.equals("");} return this; }
+	public  boolean     named() { return named;}
 
 	// -- mutually exclusive attributes --:
 	private boolean     isNumeric = false;
