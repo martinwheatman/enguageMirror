@@ -22,7 +22,7 @@ public class Where {
 		assigned( tor != null && tion != null );
 	}
 
-	// e.g. "in", "at", "on", "in front of"
+	// e.g. [ ["in"], ["at"], ["in", "front", "of"], ...
 	static private ArrayList<Strings> locators = new ArrayList<Strings>();
 	static public  boolean isLocator( String l ) { return locators.contains( new Strings( l )); }
 	static public  void    locatorIs( String l ) { locatorIs( new Strings( l )); }
@@ -36,32 +36,39 @@ public class Where {
 	public  Strings location() { return location; }
 	private Where   location( Strings l ) { location = l; return this; }
 	
-	private String locator = new String(); //-- e.g. "in", "at", "in  front of"
-	public  String locator() { return locator; }
-	private Where  locator( String l ) { locator = l; return this; }
+	private String  locator = new String(); //-- e.g. "in", "at", "in  front of"
+	public  String  locator() { return locator; }
+	private Where   locator( String l ) { locator = l; return this; }
 
 	// --
-	public static Where getWhere( String uttered, String term, ListIterator<String> ui ) {
+	public static Where getWhere( ListIterator<String> ui, String term ) {
 		Where w = null;
-		if (Where.isLocator( uttered )) {
-			String locator = uttered;
-			Strings locs = new Strings();
-			if (ui.hasNext()) {
-				uttered = ui.next(); // typically "the"
-				locs.add( uttered );
-				boolean dontStop = null == term;
-				while (ui.hasNext()) {
-					uttered = ui.next();
-					if (dontStop || !uttered.equals( term )) {
-						locs.add( uttered );
-					} else {
-						ui.previous();
-						break;
-				}	}
-				if (( dontStop && !ui.hasNext()) ||
-				    (!dontStop &&  ui.hasNext())    )
-					w = new Where( locator, locs.toString()).assigned( true );
-		}	}		
+		if (ui.hasNext()) {
+			String uttered = ui.next();
+			int count = 1;
+			if (Where.isLocator( uttered )) { // << see this -- only works on single length locr
+				String locr = uttered;        // <<
+				Strings locn = new Strings();
+				if (ui.hasNext()) {
+					uttered = ui.next(); // typically "the"
+					count++;
+					locn.add( uttered );
+					boolean dontStop = null == term;
+					while (ui.hasNext()) {
+						uttered = ui.next();
+						count++;
+						if (dontStop || !uttered.equals( term )) {
+							locn.add( uttered );
+						} else {
+							ui.previous();
+							break;
+					}	}
+					if (( dontStop && !ui.hasNext()) ||
+					    (!dontStop &&  ui.hasNext())    )
+						w = new Where( locr, locn.toString()).assigned( true );
+			}	}
+			if (w==null) Strings.previous( ui, count );
+		}
 		return w;
 	}
 
@@ -105,8 +112,6 @@ public class Where {
 			
 			// ok, let's do some testing...
 //			testGet( "i am meeting my brother in paris at 10", "i am meeting my brother at 10" );
-//			
 //			testGet( "i am meeting my brother at the pub at 10", "i am meeting my brother at 10" );
-//			
 //			testGet( "underneath" );
 }	}	}
