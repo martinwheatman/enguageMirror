@@ -98,7 +98,7 @@ public class Pattern extends ArrayList<Patternette> {
 				        sw.equals( quoted  ) ||
 				        sw.equals( expr    ) ||
 				        sw.equals( sinsign ) ||
-				        sw.equals( numeric )    )
+				        sw.equals( numeric )   )
 					 && wi.hasNext())
 				{
 					audit.ERROR( "ctor: mutually exclusive modifiers" );
@@ -110,9 +110,8 @@ public class Pattern extends ArrayList<Patternette> {
 					sw = apostrophes.get( 0 );
 					t.apostrophedIs( apostrophes.get( 1 ));
 				}
-					
-				t.name( sw );
-				add( t );
+				
+				add( t.name( sw ));
 				t = new Patternette();
 				
 			} else
@@ -288,8 +287,8 @@ public class Pattern extends ArrayList<Patternette> {
 		matched.add( a ); // remember what it was matched with!
 	}
 	private void matched( Where w ) {
-		matched( new Attribute( Where.LOCTR,  w.locator ().toString()));
-		matched( new Attribute( Where.LOCTN, w.location().toString()));
+		matched( new Attribute( Where.LOCTR,  w.locatorAsString( 0 )));
+		matched( new Attribute( Where.LOCTN, w.locationAsString( 0 )));
 	}
 	
 	private String doNumeric( ListIterator<String> ui ) {
@@ -405,11 +404,12 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched == 23 ? "missing apostrophe" : ("unknown:"+ notMatched);
 	}
 	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui, boolean spatial ) {
+
+		Where w;
 		String term;
 		Iterator<String> bpi = bp.iterator();
 		while ( bpi.hasNext() && ui.hasNext())
 			if (!(term = bpi.next()).equalsIgnoreCase( ui.next() )) {
-				Where w;
 				ui.previous();
 				if (spatial && null != (w = Where.getWhere( ui, term )))
 					matched( w );
@@ -459,16 +459,19 @@ public class Pattern extends ArrayList<Patternette> {
 				//notMatched set within matchBoilerplate()
 				return null;
 				
-			} else if (!utti.hasNext() && t.name().equals( "" )) { // end of array on null (end?) tag...
-				if (patti.hasNext()) next = patti.next();
+			} else if (!t.named()) { // last tag - no postfix?
 				
-			} else if (utti.hasNext() &&  t.name().equals( "" )) { // check 4 trailing where
-				if (spatial) {
-					Where w;
-					if (null != (w = Where.getWhere( utti, null )))
-						matched( w );
+				if (utti.hasNext()) { // end of array on null (end?) tag...
+					if (spatial) {
+						Where w;
+						if (null != (w = Where.getWhere( utti, null )))
+							matched( w );
+					}
+				} else { // check 4 trailing where
+					if (patti.hasNext()) next = patti.next();
 				}
-			} else if (utti.hasNext() && !t.name().equals( "" )) { // do these loaded match?
+				
+			} else if (utti.hasNext()) { // do these loaded match?
 				
 				String val = null;
 				

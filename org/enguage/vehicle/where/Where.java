@@ -16,15 +16,22 @@ public class Where {
 	public static final String LOCTN = "LOCATION";
 	public static       Audit  audit = new Audit( NAME );
 
-	private Where( String tor, String tion ) {
-		locator( tor );
-		location( new Strings( tion ));
-		assigned( tor != null && tion != null );
+	private Where( Strings locr, Strings locn ) {
+		addLocator( locr );
+		addLocation( locn );
+		assigned( locr != null && locn != null );
 	}
-
+	// all possible locators: spatially something can be ... .
 	// e.g. [ ["in"], ["at"], ["in", "front", "of"], ...
 	static private ArrayList<Strings> locators = new ArrayList<Strings>();
 	static public  boolean isLocator( String l ) { return locators.contains( new Strings( l )); }
+	static public  Strings isLocator( ListIterator<String> li ) {
+		Strings rc = new Strings();
+		for (Strings locator : locators)
+			if (0 != (rc = locator.extract( li )).size())
+				return rc;
+		return null;
+	}
 	static public  void    locatorIs( String l ) { locatorIs( new Strings( l )); }
 	static public  void    locatorIs( Strings l ){ if (l.size() > 0) locators.add( l ); }
 
@@ -32,31 +39,33 @@ public class Where {
 	public  boolean assigned() { return assigned; }
 	public  Where   assigned( boolean l ) { assigned = l; return this; }
 
-	private Strings location = new Strings(); //-- e.g. ["the", "pub"]
-	public  Strings location() { return location; }
-	private Where   location( Strings l ) { location = l; return this; }
+	// Was: location=["the", "pub"]
+	// Now: location=[ ["the", pub"] ]
+	private ArrayList<Strings> location = new ArrayList<Strings>();
+	public  ArrayList<Strings> location() { return location; }
+	private Where           addLocation( Strings l ) { location.add( l ); return this; }
+	public  String             locationAsString( int n ) {return location.get( n ).toString();}
 	
-	private String  locator = new String(); //-- e.g. "in", "at", "in  front of"
-	public  String  locator() { return locator; }
-	private Where   locator( String l ) { locator = l; return this; }
+	// Was: locator="at" -- not "in front of"!!!
+	// 2be: locator=[ ["at"] ]
+	private ArrayList<Strings> locator = new ArrayList<Strings>(); //-- e.g. "in", "at", "in front of"
+	public  ArrayList<Strings> locator() { return locator; }
+	private Where           addLocator( Strings l ) { locator.add( l ); return this; }
+	public  String             locatorAsString( int n ) {return locator.get( n ).toString();}
 
 	// --
 	public static Where getWhere( ListIterator<String> ui, String term ) {
 		Where w = null;
 		if (ui.hasNext()) {
-			String uttered = ui.next();
-			int count = 1;
-			if (Where.isLocator( uttered )) { // << see this -- only works on single length locr
-				String locr = uttered;        // <<
+			Strings locr;
+			if (null != (locr = Where.isLocator( ui ))) { // << see this -- only works on single length locr
 				Strings locn = new Strings();
 				if (ui.hasNext()) {
-					uttered = ui.next(); // typically "the"
-					count++;
+					String uttered = ui.next(); // typically "the"
 					locn.add( uttered );
 					boolean dontStop = null == term;
 					while (ui.hasNext()) {
 						uttered = ui.next();
-						count++;
 						if (dontStop || !uttered.equals( term )) {
 							locn.add( uttered );
 						} else {
@@ -65,16 +74,17 @@ public class Where {
 					}	}
 					if (( dontStop && !ui.hasNext()) ||
 					    (!dontStop &&  ui.hasNext())    )
-						w = new Where( locr, locn.toString()).assigned( true );
-			}	}
-			if (w==null) Strings.previous( ui, count );
-		}
+						w = new Where( new Strings( locr ), locn ).assigned( true );
+				}
+				// undo changes to ui...
+				if (w==null) Strings.previous( ui, locr.size() + locn.size() );
+		}	}
 		return w;
 	}
 
 	// --
 	public String toString() {
-		return assigned() ? locator +" "+ location.toString( Strings.SPACED ) : "";
+		return assigned() ? locatorAsString( 0 ) +" "+ locationAsString( 0 ) : "";
 	}
 	static public void doLocators( String locators ) {
 		Strings locs = new Strings( locators, '/' );

@@ -928,6 +928,23 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return sa;
 	}
+	public Strings extract( ListIterator<String> ui ) {
+		ListIterator<String> loci = listIterator();
+		Strings rc = new Strings();
+		String tmp;
+		while (ui.hasNext() && loci.hasNext()) {
+			if ((tmp = ui.next()).equals( loci.next() )) {
+				rc.add( tmp );
+			} else { // not matched...
+				ui.previous(); // ...put this one back!
+				break;
+			}
+		}
+		if (loci.hasNext()) { // we've failed!
+			unload( ui, rc );
+		}
+		return rc;
+	}
 	public Strings divvy( String sep ) {
 		// ["a", "b", "and", "c"].divvy( "and" ) => [ "a", "b", "c" ]
 		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]

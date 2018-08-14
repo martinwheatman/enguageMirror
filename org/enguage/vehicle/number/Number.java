@@ -520,7 +520,7 @@ public class Number {
 		return Numerals.isNumeric( token ) ? token : null;
 	}
 	private boolean appendFunction( ListIterator<String> si ) {
-		audit.in( "doFunction", Strings.peek( si ));
+		//audit.in( "doFunction", Strings.peek( si ));
 		boolean rc = false;
 		if (si.hasNext()) {
 			String token = si.next();
@@ -548,8 +548,8 @@ public class Number {
 			} else
 				si.previous(); // "the." 
 		}
-		return audit.out( rc );
-		//return rc;
+		//return audit.out( rc );
+		return rc;
 	}
 	private boolean appendNumeral( ListIterator<String> si ) {
 		audit.in( "doNumeral", Strings.peek( si ));
@@ -565,7 +565,7 @@ public class Number {
 		return audit.out( rc );
 	}
 	private boolean doNum( ListIterator<String> si ) {
-		audit.in( "doNum", Strings.peek( si ));
+		//audit.in( "doNum", Strings.peek( si ));
 		boolean rc = false;
 		if (si.hasNext()) {
 			String token = si.next();
@@ -575,7 +575,8 @@ public class Number {
 			} else 
 				si.previous();
 		}
-		return audit.out( rc );
+		//return audit.out( rc );
+		return rc;
 	}
 	// used in getNumber() factory method...
 	private void appendExpr( ListIterator<String> si ) {
@@ -679,17 +680,17 @@ public class Number {
 		//audit.out();
 	}
 	private Number doNumerical( ListIterator<String> si ) {
-		audit.in( "doNumerical", Strings.peek( si ));
+		//audit.in( "doNumerical", Strings.peek( si ));
 		if (doNum( si ) || appendFunction( si )) {
 			appendExpr( si );
 			magnitude( doTerms()); // need to do this before more or less
 			doMoreOrLess( si );
 		}		
-		return (Number) audit.out( this );
-		//return this;
+		//return (Number) audit.out( this );
+		return this;
 	}
 	static public Number getNumber( ListIterator<String> si ) {
-		audit.in( "getNumbr", "si.next="+ Strings.peek( si ));
+		//audit.in( "getNumbr", "si.next="+ Strings.peek( si ));
 		
 		Number number = new Number();
 		
@@ -700,7 +701,8 @@ public class Number {
 			
 			number.doNumerical( si ); //.doMoreOrLess( si );
 		}
-		return (Number) audit.out( number );
+		//return (Number) audit.out( number );
+		return number;
 	}
 	static public Number getNumber( String s ) {
 		return getNumber( new Strings( s ).listIterator());
