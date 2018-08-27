@@ -871,15 +871,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return s;
 	}
 	static public void unload( ListIterator<String> li, Strings sa ) {
-		audit.in( "unload", peek( li ) +", sa="+ sa.toString());
 		// this assumes all things got have been added to sa
 		int sz=sa.size();
 		while (0 != sz--) {
 			sa.remove( 0 );
 			li.previous();
-		}
-		audit.out();
-	}
+	}	}
 	static public boolean getWord( ListIterator<String> si, String word, Strings rep ) {
 		audit.in( "getWord", peek( si )+", word="+word );
 		if (si.hasNext())
