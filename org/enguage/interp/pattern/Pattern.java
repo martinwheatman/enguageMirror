@@ -38,6 +38,8 @@ public class Pattern extends ArrayList<Patternette> {
 	static public  final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
 	static public  final String  sinsign       = "sign";
 	static public  final String  sinsignPrefix = sinsign.toUpperCase( locale ) + "-";
+	static public  final String  external      = "ext";
+	static public  final String  externPrefix  = external.toUpperCase( locale ) + "-";
 	
 	public Pattern() { super(); }
 	public Pattern( Strings words ) {

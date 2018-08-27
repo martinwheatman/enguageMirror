@@ -77,6 +77,9 @@ public class Utterance {
 	
 	// helpers
 	static public boolean sane( Utterance u ) {return u != null && u.representamen.size() > 0;	}
+	static public String  externalise( String  reply, boolean verbatim ) {
+		return externalise( new Strings( reply ), verbatim );
+	}
 	static public String  externalise( Strings reply, boolean verbatim ) {
 		// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
 		if (!Shell.isTerminator( reply.get( reply.size() -1))
