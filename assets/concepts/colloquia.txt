@@ -24,12 +24,8 @@ When user says   "an" user means "a".
 
 On "When host says QUOTED-IN host means QUOTED-EX", perform "colloquial host IN EX".
 # beware: this is order sensitive - should be based on longest first
-When host says "_host's"                    host means "my".
-When host says "_user's"                    host means "your".
-When host says "_user needs"                host means "you need".
-When host says "_user does not need"        host means "you do not need".
-When host says "_user is"                   host means "you are".
-When host says "_user"                      host means "you".
-#When host says "i don't know"              host means "i don't know".
-When host says "i will"                     host means "you'll".
-#When host says "i"                          host means "you".
+When host says "_host's"   host means "my".
+When host says "_user's"   host means "your".
+When host says "_user is"  host means "you are".
+When host says "_user"     host means "you".
+When host says "i will"    host means "you'll".

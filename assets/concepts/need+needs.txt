@@ -2,7 +2,9 @@
 ### Concept: X needs Y
 ####################################################
 
-this concept is spatial.
+This concept is spatial.
+When host says "_user needs"         host means "you need".
+When host says "_user does not need" host means "you do not need".
 
 On "SUBJECTS needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
 	perform "every : { SUBJECTS } needs { OBJECTS }";
