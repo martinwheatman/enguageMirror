@@ -117,12 +117,14 @@ public class Enguage extends Shell {
 		
 		numberOfTests++;
 		
+		// expected == null => silent!
+		if (expected != null) audit.log( "user> "+ cmd );
+		
 		String reply = serverTest ?
 				Net.client( "localhost", portNumber, cmd )
 				: Enguage.e.interpret( new Strings( cmd ));
 
 		if (expected != null) {
-			audit.log( "user> "+ cmd );
 			if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
 				audit.log( "Hint is:" + Repertoire.prompt() );
 			else if (!expected.equals( "" )) {
