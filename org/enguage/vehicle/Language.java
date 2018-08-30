@@ -29,7 +29,8 @@ public class Language {  // English-ism!
 			    || ((a.charAt( 0 ) == Strings.SINGLE_QUOTE) && (a.charAt( len-1 ) == Strings.SINGLE_QUOTE)) );
 	}
 	static public boolean isQuote(String a) { // universal?
-		return (null!=a) && (a.equals(Strings.SINGLE_QUOTE) || a.equals( Strings.DOUBLE_QUOTE ));
+		return (null!=a) && (a.equals( ""+Strings.SINGLE_QUOTE )
+				          || a.equals( ""+Strings.DOUBLE_QUOTE ));
 	}
 	static public String asString( Strings ans ) {
 		String str = "";
