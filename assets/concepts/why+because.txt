@@ -1,14 +1,14 @@
-On "SIGN-WHY because SIGN-CAUSE":
+On "SIGN-WHAT because SIGN-CAUSE":
 	CAUSE;
-	if not, reply "i do not think CAUSE";
-	WHY;
-	if not, reply "i do not think WHY";
-	perform "list add _user whyBecause WHY CAUSE";
-	then, reply "ok, WHY because CAUSE".
+	if not, reply "i do not think EXT-CAUSE";
+	WHAT;
+	if not, reply "i do not think EXT-WHAT";
+	perform "list add _user whyBecause WHAT CAUSE";
+	then, reply "ok, EXT-WHAT because EXT-CAUSE".
 	
-On "why do PHRASE-WHY":
-	get the cause of WHY from _user whyBecause list;
+On "why do SIGN-WHAT":
+	get the cause of WHAT from _user whyBecause list;
 	if not, reply "I don't know";
 	then, reply "why because ...".
 
-On "why does PHRASE-WHY", why do WHY.
+On "why does SIGN-WHAT", why do WHAT.

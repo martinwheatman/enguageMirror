@@ -28,6 +28,7 @@ public class Utterance {
 
 	// members
 	private Strings representamen;
+	public  Strings representamen() { return representamen; }
 	private Strings temporal;
 	private Strings expanded;
 	public  Strings expanded() { return expanded; }

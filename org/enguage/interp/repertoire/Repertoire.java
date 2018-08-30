@@ -93,7 +93,15 @@ public class Repertoire {
 					r = allop.interpret( u );
 			}
 		} else {
-			Autoload.load( u.expanded() ); // unloaded up in Enguage.interpret()
+			// representamen or expanded?
+			Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
+			
+			/*
+			 * At this point we need to rebuild utterance with the (auto)loaded concept,
+			 * with any colloquialisms it may have loaded...
+			 */
+			//u = new Utterance( u.representamen() );
+			
 			r = signs.interpret( u );
 			if (Reply.DNU == r.type()) {
 				r = allop.interpret( u );
