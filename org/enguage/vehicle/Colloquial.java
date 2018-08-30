@@ -70,12 +70,12 @@ public class Colloquial {
 	static private Colloquial symmetric = new Colloquial();
 	static public  Colloquial symmetric() {return symmetric;}
 	
-	static public Strings applyOutgoing( String s ) {return applyOutgoing( new Strings( s ));}
+	static public String  applyOutgoing( String s ) {return applyOutgoing( new Strings( s )).toString();}
 	static public Strings applyOutgoing( Strings s ) {
 		return symmetric().externalise(      // 2. [ "You", "do", "not", "know" ] -> [ "You", "don't", "know" ]
 				    host().externalise( s ));// 1. [ "_user", "does", "not", "know" ] -> [ "You", "do", "not", "know" ]
 	}
-	static public Strings applyIncoming( String s ) {return applyOutgoing( new Strings( s ));}
+	static public String  applyIncoming( String s ) {return applyIncoming( new Strings( s )).toString();}
 	static public Strings applyIncoming( Strings s ) {
 		/* this is called in Repertoires.interpret(), so that any colloquia
 		 * used in the repertoire files are correctly interpreted.
