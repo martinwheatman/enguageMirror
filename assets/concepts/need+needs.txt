@@ -165,4 +165,4 @@ On "we need PHRASE-OBJECT", I need OBJECT. # a fix for now
 On "what to we need", what do i need.
 On "do we need PHRASE-OBJECTS", do i need OBJECTS.
 On "we do not need PHRASE-OBJECTS", do i need OBJECTS.
-On "we do not need naything", i do not need anything.
+On "we do not need anything", i do not need anything.
