@@ -193,9 +193,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 							word.append( buffer[ i++ ]);
 
 					}
-					if (!word.equals( "" )) {
-						//audit.audit(">>>>adding:"+word);
-						add( word.toString() );
+					String tmp = word.toString();
+					if (!tmp.equals( "" )) {
+						add( tmp );
 						word = new StringBuilder( 32 );
 					}
 		}	}	}

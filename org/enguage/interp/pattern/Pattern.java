@@ -265,7 +265,7 @@ public class Pattern extends ArrayList<Patternette> {
 		
 		for (Patternette t : this) {
 			boilerplate += t.prefix().size();
-			if (t.isPhrased()) //attributes().get( phrase ).equals( phrase ))
+			if (t.isPhrased()) // ignore if isSign"
 				infinite = true;
 			else if (!t.name().equals( "" ))
 				namedTags ++; // count named tags
