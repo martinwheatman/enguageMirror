@@ -9,7 +9,6 @@ import org.enguage.interp.pattern.Pattern;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Plural;
 
 public class Attributes extends ArrayList<Attribute> {
@@ -140,6 +139,18 @@ public class Attributes extends ArrayList<Attribute> {
 		}
 		return false;
 	}
+	public static Strings reflect( Strings values ) {
+		Strings vals = new Strings();
+		for (String s : values) {
+			if (s.equals("i"))
+				vals.add( "you" );
+			else if(s.equals( "you" ))
+				vals.add( "i" );
+			else
+				vals.add( s );
+		}
+		return vals;
+	}
 	// BEVERAGE -> coffee + [ NAME="martins", beverage="tea" ].deref( "SINGULAR-NAME needs a $BEVERAGE" );
 	// => martin needs a coffee.
 	private String derefName( String name, boolean expand ) { // hopefully non-blank string
@@ -150,7 +161,7 @@ public class Attributes extends ArrayList<Attribute> {
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
 			boolean quoted = name.contains( Pattern.quotedPrefix ),
 					plural = name.contains( Pattern.pluralPrefix ),
-					singular = name.contains( Pattern.sinsignPrefix );
+					external = name.contains( Pattern.externPrefix );
 			
 			// remove all prefixes...
 			name = name.substring( name.lastIndexOf( "-" )+1 );
@@ -163,8 +174,12 @@ public class Attributes extends ArrayList<Attribute> {
 			if (value == null || value.equals( "" ))
 				value = orig;
 			else {
+				if (external)
+					value = reflect( new Strings(
+								Attribute.isAttribute( value ) ? new Attribute( value ).value() : value
+							)).toString();
+				
 				if (plural)   value = Plural.plural( value );
-				if (singular) value = Plural.singular( value );
 				if (quoted)   value = Attribute.DEF_QUOTE_CH+ value +Attribute.DEF_QUOTE_CH;
 				if (Audit.detailedOn) audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
 				//I'd like to have:

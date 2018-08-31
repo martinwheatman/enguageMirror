@@ -45,10 +45,11 @@ public class Attribute {
 	
 	protected String    value;
 	public    String    value() { return value; }
-	public    String    value( boolean expand ) { return expand ? expandValues( value ).toString( Strings.SPACED ) : value; }
+	public    Strings   values() { return new Strings( value ); }
+	public    String    value( boolean expand ) { return expand ? expandValues( value ).toString() : value; }
 	public    Attribute value( String s ) {
 		value = s; // TODO: TBC - what if "martin" -> '"martin"' => :'"martin"': ???
-		quote( quote( value ));
+		quote( quote( value )); // set the quote value against the content
 		return this;
 	}
 	
