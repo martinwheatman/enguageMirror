@@ -6,6 +6,9 @@
 ### 
 ####################################################
 
+On "does SUBJECT LIST list exist", perform "value exists SUBJECT LIST list".
+
+On "does NUMERIC-QUANTITY    PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT".
 On "does                     PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT".
 On "does                     PHRASE-OBJECT at PHRASE-WHERE exist  in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT WHERE WHEN".
 

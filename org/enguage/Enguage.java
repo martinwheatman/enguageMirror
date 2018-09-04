@@ -223,12 +223,20 @@ public class Enguage extends Shell {
 		int level = 0;
 
 		if (thisTest( level, 1 )) { // experimental
-			audit.title( "Why/because" );
-			interpret( "i need a coffee because i need a coffee",
-					"ok, you need a coffee because you need a coffee" );
-			interpret( "why do i need a coffee",
-					"because you need a coffee" );
+			audit.title( "Simple action test" );
+			interpret( "am i baking a cake",     "no, you're not baking a cake" );
+			interpret( "i am baking a cake",     "ok, you're baking a cake" );
+			interpret( "am i baking a cake",     "yes, you're baking a cake" );
 			
+			audit.title( "Why/because" );
+			interpret( "i need 3 eggs because i am baking a cake",
+					"ok, you need 3 eggs because you're baking a cake" );
+			interpret( "why do i need 3 eggs",
+					"because you're baking a cake" );
+			
+			interpret( "i am not baking a cake", "ok, you're not baking a cake" );
+			interpret( "am i baking a cake",     "no, you're not baking a cake" );
+
 			audit.title( "Light bins" );
 			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
 			interpret( "how many light bins are there", "6,  there are 6 light bins" );

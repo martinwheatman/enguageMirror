@@ -140,16 +140,23 @@ public class Attributes extends ArrayList<Attribute> {
 		return false;
 	}
 	public static Strings reflect( Strings values ) {
-		Strings vals = new Strings();
-		for (String s : values) {
-			if (s.equals("i"))
-				vals.add( "you" );
-			else if(s.equals( "you" ))
-				vals.add( "i" );
-			else
-				vals.add( s );
-		}
-		return vals;
+		values.replace( "i", "fgh" );
+		values.replace( "you",  "i" );
+		values.replace( "fgh",  "you" );
+		Strings first = new Strings( "i are" ),
+				second = new Strings( "you are" ),
+				tmp = new Strings( "fgh dfg" );
+		values.replace( first, tmp );
+		values.replace( second, first );
+		values.replace( tmp,  second );
+		Strings firsta = new Strings( "you am" ),
+				seconda = new Strings( "you are" ),
+				tmpa = new Strings( "fgh dfg" );
+		values.replace( firsta, tmpa );
+		values.replace( seconda, firsta );
+		values.replace( tmpa,  seconda );
+
+		return values;
 	}
 	// BEVERAGE -> coffee + [ NAME="martins", beverage="tea" ].deref( "SINGULAR-NAME needs a $BEVERAGE" );
 	// => martin needs a coffee.

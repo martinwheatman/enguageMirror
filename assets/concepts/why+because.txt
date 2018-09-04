@@ -3,7 +3,7 @@ On "SIGN-WHAT because SIGN-CAUSE":
 	if not, reply "i do not think EXT-CAUSE";
 	WHAT;
 	if not, reply "i do not think EXT-WHAT";
-	perform "list add _user whyBecause WHAT EXT-CAUSE";
+	perform "list add _user whyBecause WHAT CAUSE";
 	then, reply "ok, EXT-WHAT because EXT-CAUSE".
 	
 On "why do SIGN-WHAT":
