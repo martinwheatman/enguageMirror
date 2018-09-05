@@ -162,7 +162,7 @@ On "how many PHRASE-OBJECT do I need", how many OBJECT does _user need.
 On "help", reply "to find out if something specific is on the list".
 
 On "we need PHRASE-OBJECT", I need OBJECT. # a fix for now
-On "what to we need", what do i need.
+On "what do we need", what do i need.
 On "do we need PHRASE-OBJECTS", do i need OBJECTS.
 On "we do not need PHRASE-OBJECTS", do i need OBJECTS.
 On "we do not need anything", i do not need anything.
