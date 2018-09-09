@@ -4,7 +4,7 @@
 On "set VARIABLE to PHRASE-VALUE":
 	perform "variable set VARIABLE VALUE";
 	then, reply "ok, VARIABLE is set to VALUE".
-On "set VARIABLE to QUOTED_VALUE":
+On "set VARIABLE to QUOTED-VALUE":
 	perform "variable set VARIABLE VALUE";
 	then, reply "ok, VARIABLE is set to VALUE".
 
