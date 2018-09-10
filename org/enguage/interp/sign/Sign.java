@@ -108,10 +108,10 @@ public class Sign {
 		for (Intention in : programme)
 			intentions += "\n      " + Attribute.asString( Intention.typeToString( in.type() ), in.value() );
 		
-		return  indent +"<"+ NAME +" "
-				+ Attribute.asString( "n" , ""+n )
-				+ Attribute.asString( "complexity", ""+complexity )
-				+ Attribute.asString( "repertoire", concept() )
+		return  indent +"<"+ NAME
+				+" "+ Attribute.asString( "n" , ""+n )
+				+" "+ Attribute.asString( "complexity", ""+complexity )
+				+" "+ Attribute.asString( "repertoire", concept() )
 				+ intentions
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">"
 				+ "\n";
