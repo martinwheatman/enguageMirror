@@ -29,22 +29,27 @@ public class Patternette {
 	public Patternette( String pre, String nm ) { this( new Strings( pre ), nm );}
 	public Patternette( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
 
+	private int  preSz  = 0;
+	private int  postSz = 0;
+	public  int  nconsts() {return preSz + postSz;}
 	
 	private Strings     prefix = new Strings();
 	public  Strings     prefix() { return prefix; }
-	public  Patternette prefix( Strings s ) { prefix = s; return this; }
+	public  Patternette prefix( Strings s ) { prefix = s; preSz = prefix.size(); return this; }
 	public  Patternette prefix( String str ) {
 		for (String s : new Strings( str ))
 			prefix.append( s );
+		preSz = prefix.size();
 		return this;
 	}
 
 	private Strings     postfix = new Strings();
 	public  Strings     postfix() { return postfix; }
-	public  Patternette postfix( Strings ss ) { postfix = ss; return this; }
+	public  Patternette postfix( Strings ss ) { postfix = ss; postSz = postfix.size(); return this; }
 	public  Patternette postfix( String str ) {
 		for (String s : new Strings( str ))
 			postfix.append( s );
+		postSz = postfix.size();
 		return this;
 	}
 

@@ -252,31 +252,25 @@ public class Pattern extends ArrayList<Patternette> {
 	 *  the count element 
 	 */
 	private static Random rn = new Random();
-	private static final int      RANGE = 1000; // means full range will be up to 1 billion
-	private static final int FULL_RANGE = RANGE*RANGE*RANGE;
-	private static final int  MID_RANGE = RANGE*RANGE;
-	private static final int  LOW_RANGE = RANGE;
+	private static final int RANGE = 1000; // means full range will be up to 1 billion
+	private static final int INFTY = RANGE*RANGE*RANGE;
+	private static final int LARGE = RANGE*RANGE;
+	private static final int SMALL = RANGE;
 	
 	public int complexity() {
 		boolean infinite = false;
-		int  bp = 0,
-		     nt = 0,
-		    rnd = rn.nextInt( RANGE );
+		int cons = 0,
+		    vars = 0,
+		    rand = rn.nextInt( RANGE );
 		
 		for (Patternette t : this) {
-			bp += t.prefix().size() + t.postfix().size();
+			cons += t.nconsts();
 			if (t.isPhrased())
 				infinite = true;
 			else if (!t.name().equals( "" ))
-				nt++; // count non-phrase named tags as words
+				vars++; // count non-phrase named tags as words
 		}
-		return (infinite ?
-		/*	FULL_RANGE : 0)
-			+             MID_RANGE * nt
-			+ MID_RANGE - LOW_RANGE * bp // */
-			FULL_RANGE - MID_RANGE*bp - LOW_RANGE*nt
-			:            MID_RANGE*nt + LOW_RANGE*bp)
-			+ rnd;
+		return rand + (infinite ? INFTY - LARGE*cons - SMALL*vars : SMALL*vars);
 	}
 	
 	static private       boolean debug = false;
