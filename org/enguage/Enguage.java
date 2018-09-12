@@ -224,7 +224,7 @@ public class Enguage extends Shell {
 
 		if (thisTest( level, 1 )) { // experimental
 			audit.title( "Simple action test" );
-			interpret( "am i baking a cake",     "no, you're not baking a cake" );
+			interpret( "am i baking a cake",     "no, you're not baking a cake", "i don't know" );
 			interpret( "i am baking a cake",     "ok, you're baking a cake" );
 			interpret( "am i baking a cake",     "yes, you're baking a cake" );
 			
