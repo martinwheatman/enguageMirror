@@ -11,4 +11,15 @@ On "why do SIGN-WHAT":
 	if not, reply "I don't know";
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
+On "why does SIGN-WHAT", why do WHAT.
 
+
+On "do SIGN-WHAT because SIGN-CAUSE":
+	#does WHAT exist in _user whyBecause list;
+	perform "list matches _user whyBecause WHAT";
+	if not, reply "no, it is not the case that EXT-WHAT";
+	#does CAUSE cause WHAT in _user whyBecause list;
+	perform "list matches _user whyBecause WHAT CAUSE";
+	if not, reply "no, it is not the case EXT-WHAT because EXT-CAUSE";
+	then, reply "yes, EXT-WHAT because EXT-CAUSE".
+On "does SIGN-WHAT because SIGN-CAUSE", do WHAT because CAUSE.

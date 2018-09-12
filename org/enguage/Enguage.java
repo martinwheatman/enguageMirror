@@ -236,11 +236,6 @@ public class Enguage extends Shell {
 			
 			interpret( "i am not baking a cake", "ok, you're not baking a cake" );
 			interpret( "am i baking a cake",     "no, you're not baking a cake" );
-
-			audit.title( "Light bins" );
-			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
-			interpret( "how many light bins are there", "6,  there are 6 light bins" );
-			interpret( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
 		}
 		if (thisTest( level, 2 )) {
 			audit.title( "Pronouns - see need+needs.txt" );
@@ -723,7 +718,12 @@ public class Enguage extends Shell {
 			interpret( "just call me martin", "i already know this" );
 		}
 
-//		if (thisTest( level, 10 )) {
+		if (thisTest( level, 10 )) {
+			audit.title( "Light bins" );
+			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
+			interpret( "how many light bins are there", "6,  there are 6 light bins" );
+			interpret( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
+			
 //			audit.title( "Ask: Confirmation" );
 //
 //			//interpret( "prime the answer yes", "ok, the next answer will be yes" );
@@ -741,6 +741,6 @@ public class Enguage extends Shell {
 //			 *                p v name            => set user name NAME
 //			 * Ask: what is your name?
 //			 */
-//		}
+		}
 		audit.log( "+++ PASSED "+ (numberOfTests += 1) +" tests +++" );
 }	}
