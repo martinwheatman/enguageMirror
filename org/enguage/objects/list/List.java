@@ -106,6 +106,17 @@ public class List extends ArrayList<Item> {
 		}
 		return -1; //audit.out( -1 );
 	}
+	private int matches( Item item ) {
+		audit.in( "matches", "item="+ item.toXml());
+		int pos = -1;
+		for (Item li : this) {
+			pos++;
+			audit.debug( "matching: "+ li.toXml() );
+			if (li.matches( item ))
+				return audit.out( pos ); // pos;
+		}
+		return audit.out( -1 ); // -1;
+	}
 	private String quantity( Item item, boolean exact ) { // e.g. ["cake slices","2"]
 		audit.in( "quantity", "Item="+item.toString() + ", exact="+ (exact?"T":"F"));
 		Integer count = 0;
@@ -312,6 +323,15 @@ public class List extends ArrayList<Item> {
 						break;
 					}
 					
+				} else if (cmd.equals( "matches" )) {
+						if (list.matches( item ) != -1) {
+							if (rca.size() == 0) rca.add( Shell.SUCCESS );
+						} else {
+							rca = new Strings();
+							rca.add( Shell.FAIL );
+							break;
+						}
+						
 				} else if (cmd.equals( "removeAttribute" )) {
 					// Typically: removeAttribute SUBJECT LIST OBJECT NAME
 					list.removeAttribute(

@@ -132,22 +132,24 @@ public class Enguage extends Shell {
 				Strings replies = new Strings( reply );
 				if (replies.equalsIgnoreCase( new Strings( expected ))) // 1st success
 					audit.log( "enguage> "+ reply +"\n" );
-				else if (unexpected.equals( "" ))                       // no second chance
+				else if (unexpected.equals( "" )) {                     // no second chance
+					Repertoire.signs.show();
 					audit.FATAL(
 							"reply: '"+ reply +"',\n             "+
 									"expected: '"+ expected +"' "+
 									"(reason="+ Pattern.notMatched() +")" );
-				else {
+				} else {
 					if (!unexpected.endsWith( "." )) unexpected += ".";
 					if (replies.equalsIgnoreCase( new Strings( unexpected )))
 						audit.log( "enguage> "+ reply +"\n" );          // 2nd-ary success
-					else                                                // second chance failed too!
+					else {                                              // second chance failed too!
+						Repertoire.signs.show();
 						audit.FATAL(
 								"reply:       '"+ reply +"',\n             "+
 								"expected:    '"+ expected +"'\n"+
 								"alternative: '"+ unexpected +"'\n          "+
 								"(reason="+ Pattern.notMatched() +")" );
-	}	}	}	}	
+	}	}	}	}	}
 	
 	public static void main( String args[] ) {
 

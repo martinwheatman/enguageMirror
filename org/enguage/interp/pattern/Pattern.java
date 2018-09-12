@@ -259,21 +259,24 @@ public class Pattern extends ArrayList<Patternette> {
 	
 	public int complexity() {
 		boolean infinite = false;
-		int  boilerplate = 0,
-		       namedTags = 0,
-		             rnd = rn.nextInt( RANGE/10 ); // word count component
+		int  bp = 0,
+		     nt = 0,
+		    rnd = rn.nextInt( RANGE );
 		
 		for (Patternette t : this) {
-			boilerplate += t.prefix().size();
-			if (t.isPhrased()) // ignore if isSign"
+			bp += t.prefix().size() + t.postfix().size();
+			if (t.isPhrased())
 				infinite = true;
 			else if (!t.name().equals( "" ))
-				namedTags ++; // count named tags
+				nt++; // count non-phrase named tags as words
 		}
-		// limited to 100bp == 1tag, or phrase + 100 100tags/bp
-		return infinite ?
-				FULL_RANGE - MID_RANGE*boilerplate - LOW_RANGE*namedTags + rnd
-				: MID_RANGE*namedTags + LOW_RANGE*boilerplate + rnd*10;
+		return (infinite ?
+		/*	FULL_RANGE : 0)
+			+             MID_RANGE * nt
+			+ MID_RANGE - LOW_RANGE * bp // */
+			FULL_RANGE - MID_RANGE*bp - LOW_RANGE*nt
+			:            MID_RANGE*nt + LOW_RANGE*bp)
+			+ rnd;
 	}
 	
 	static private       boolean debug = false;
@@ -611,6 +614,13 @@ public class Pattern extends ArrayList<Patternette> {
 			audit.log( "notMatched (="+ notMatched +")" );
 		audit.out();
 	}
+	static private void complexityTest( String str ) {
+		Pattern patt = new Pattern( toPattern( str ));
+		audit.LOG( "pattern: "+ patt );
+		//audit.LOG( "    Xml: "+ patt.toXml() );
+		audit.LOG( " cmplxy: "+ patt.complexity() );
+
+	}
 	static public void main(String args[]) {
 //		Audit.allOn();
 //		audit.tracing = true;
@@ -699,12 +709,6 @@ public class Pattern extends ArrayList<Patternette> {
 //		Audit.runtimeDebug = false;
 //		Audit.traceAll( false );		
 		
-		audit.LOG(
-			"pattern: "+
-			toPattern(
-				"variable nm needs numeric variable quantity units of phrase variable object"
-		)	);
-
 		Where.doLocators("at/from/in");
 		Pattern p = new Pattern( "i need PHRASE-OBJECTS" );
 		audit.log( "sign is: "+ p.toXml());
@@ -735,5 +739,13 @@ public class Pattern extends ArrayList<Patternette> {
 		audit.log( "sign is: "+ p.toXml());
 		p.newTest( "they are from sainsburys" );
 
+		complexityTest(	"i am legend" );
+		complexityTest(	"variable nm needs numeric variable quantity units of phrase variable object" );
+		complexityTest(	"spatially something can be phrase variable locator" );
+		complexityTest(	"is variable var not set to phrase variable value" );
+		complexityTest(	"i am not variable action phrase variable value" );
+		complexityTest(	"i am     variable action phrase variable value" );
+		complexityTest(	"set value of variable x to phrase variable y" );
+		complexityTest(	"set variable attribute of variable x to phrase variable y" );
 		audit.log( "PASSED" );
 }	}

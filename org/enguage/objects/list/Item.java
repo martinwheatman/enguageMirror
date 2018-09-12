@@ -86,21 +86,22 @@ public class Item {
 		} catch(Exception e) {} // fail silently
 		return quant;
 	}
-	public boolean equals( Item patt ) { // like Tag.equals()
-		return Plural.singular( descr ).equals( Plural.singular( patt.description() ))
-				&& attrs.matches( patt.attributes());
-	}
 	public boolean equalsDescription( Item patt ) { // like Tag.equalsContent()
 		return Plural.singular( descr ).equals( Plural.singular( patt.description() ));
 	}
-	public boolean matches( Item patt ) {
-		return Plural.singular( descr )
-					.contains( Plural.singular( patt.description() )) &&
-				attributes().matches( patt.attributes());
-	}
 	public boolean matchesDescription( Item patt ){
-		return Plural.singular( descr )
-					.contains( Plural.singular( patt.description() ));
+		return Plural.singular( descr ).contains( Plural.singular( patt.description() ));
+	}
+	public boolean matchesAttributes( Item patt ){
+		return attributes().matches( patt.attributes());
+	}
+	public boolean equals( Item patt ) {
+		return equalsDescription( patt )
+				&& matchesAttributes( patt );
+	}
+	public boolean matches( Item patt ) {
+		return matchesDescription( patt )
+				&& matchesAttributes( patt );
 	}
 	// -----------------------------------------
 	
