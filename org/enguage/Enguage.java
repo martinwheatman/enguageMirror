@@ -133,7 +133,7 @@ public class Enguage extends Shell {
 				if (replies.equalsIgnoreCase( new Strings( expected ))) // 1st success
 					audit.log( "enguage> "+ reply +"\n" );
 				else if (unexpected.equals( "" )) {                     // no second chance
-					Repertoire.signs.show();
+					//Repertoire.signs.show();
 					audit.FATAL(
 							"reply: '"+ reply +"',\n             "+
 									"expected: '"+ expected +"' "+
@@ -143,11 +143,11 @@ public class Enguage extends Shell {
 					if (replies.equalsIgnoreCase( new Strings( unexpected )))
 						audit.log( "enguage> "+ reply +"\n" );          // 2nd-ary success
 					else {                                              // second chance failed too!
-						Repertoire.signs.show();
+						//Repertoire.signs.show();
 						audit.FATAL(
-								"reply:       '"+ reply +"',\n             "+
-								"expected:    '"+ expected +"'\n"+
-								"alternative: '"+ unexpected +"'\n          "+
+								"reply: '"      + reply      +"'\n             "+
+								"expected: '"   + expected   +"'\n       "+
+								"alternately: '"+ unexpected +"'\n          "+
 								"(reason="+ Pattern.notMatched() +")" );
 	}	}	}	}	}
 	
