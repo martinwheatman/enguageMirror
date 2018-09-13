@@ -270,7 +270,8 @@ public class Pattern extends ArrayList<Patternette> {
 			else if (!t.name().equals( "" ))
 				vars++; // count non-phrase named tags as words
 		}
-		return rand + (infinite ? INFTY - LARGE*cons - SMALL*vars : SMALL*vars);
+		return rand + (infinite ? INFTY - LARGE*cons - SMALL*vars
+				                : LARGE*vars - SMALL*cons);
 	}
 	
 	static private       boolean debug = false;

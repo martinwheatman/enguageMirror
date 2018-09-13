@@ -233,11 +233,19 @@ public class Enguage extends Shell {
 			interpret( "i am not baking a cake", "ok,  you're not baking a cake" );
 			
 			audit.title( "Why/because" );
+			// because
 			interpret( "i need 3 eggs because i am baking a cake",
 					"ok, you need 3 eggs because you're baking a cake" );
+			// sub-utterances...
 			interpret( "am i baking a cake",      "yes, you're     baking a cake" );
 			interpret( "how many eggs do i need", "3, you need 3 eggs" );
+			
+			// why...
 			interpret( "why do i need 3 eggs",    "because you're baking a cake" );
+			
+			// Do I ...
+			interpret( "do I need 3 eggs because I am baking a cake",
+					"yes, you need 3 eggs because you're baking a cake" );
 			
 			interpret( "i am not baking a cake", "ok, you're not baking a cake" );
 			interpret( "am i baking a cake",     "no, you're not baking a cake" );

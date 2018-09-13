@@ -140,9 +140,9 @@ public class Attributes extends ArrayList<Attribute> {
 		return false;
 	}
 	public static Strings reflect( Strings values ) {
-		values.replace( "i", "fgh" );
-		values.replace( "you",  "i" );
-		values.replace( "fgh",  "you" );
+		values.replaceIgnoreCase( "i", "fgh" );
+		values.replaceIgnoreCase( "you",  "i" );
+		values.replaceIgnoreCase( "fgh",  "you" );
 		Strings first = new Strings( "i are" ),
 				second = new Strings( "you are" ),
 				tmp = new Strings( "fgh dfg" );
