@@ -118,6 +118,9 @@ public class Engine {
 			new Sign().concept( NAME ).pattern( new Patternette( "if so, ", "x" ).phrasedIs())
 					.appendIntention( Intention.thenThink, "X" ),
 
+			new Sign().concept( NAME ).pattern( new Patternette( "if i know, ", "x" ).phrasedIs())
+					.appendIntention( Intention.allop, "iknow X" ),
+
 			// for vocal description of concepts... autopoiesis!		
 			new Sign().concept( NAME ).pattern( new Patternette( "perform ", "args" ).phrasedIs())
 					.appendIntention( Intention.thenDo, "ARGS" ),
@@ -232,6 +235,14 @@ public class Engine {
 */
 		} else if (cmd.equals( "spell" )) {
 			r.format( Language.spell( cmds.get( 0 ), true ));
+			
+		} else if (cmd.equals( "iknow" )) {
+			
+			Enguage e = Enguage.get();
+			String tmp = e.interpret( cmds );
+			if (tmp.charAt( tmp.length() - 1) == '.')
+				tmp = tmp.substring( 0, tmp.length() - 1 );
+			r.answer( tmp );
 			
 		} else if (cmd.equals( "tcpip" )) {
 			

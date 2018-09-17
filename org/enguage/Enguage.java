@@ -233,7 +233,7 @@ public class Enguage extends Shell {
 			interpret( "i am not baking a cake", "ok,  you're not baking a cake" );
 			
 			audit.title( "Why/because" );
-			// because
+			// because...
 			interpret( "i need 3 eggs because i am baking a cake",
 					"ok, you need 3 eggs because you're baking a cake" );
 			// sub-utterances...
@@ -247,8 +247,10 @@ public class Enguage extends Shell {
 			interpret( "do I need 3 eggs because I am baking a cake",
 					"yes, you need 3 eggs because you're baking a cake" );
 			
+			// why might...
 			interpret( "i am not baking a cake", "ok, you're not baking a cake" );
 			interpret( "am i baking a cake",     "no, you're not baking a cake" );
+			interpret( "why might i need 3 eggs", "because you're baking a cake" );
 		}
 		if (thisTest( level, 2 )) {
 			audit.title( "Pronouns - see need+needs.txt" );

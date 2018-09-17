@@ -7,6 +7,17 @@ On "SIGN-WHAT because SIGN-CAUSE":
 	then, reply "ok, EXT-WHAT because EXT-CAUSE".
 	
 On "why do SIGN-WHAT":
+	do WHAT;
+	undo;
+	if i know, get the cause of WHAT from _user whyBecause list;
+	set cause to ...;
+	reply "because EXT-CAUSE";
+	if not, reply "I don't know";
+	then, reply "it is not the case that EXT-WHAT".
+On "why does SIGN-WHAT", why do WHAT.
+
+
+On "why might SIGN-WHAT":
 	get the cause of WHAT from _user whyBecause list;
 	if not, reply "I don't know";
 	set cause to ...;
