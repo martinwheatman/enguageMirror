@@ -12,8 +12,7 @@ On "why do SIGN-WHAT":
 	if i know, get the cause of WHAT from _user whyBecause list;
 	set cause to ...;
 	reply "because EXT-CAUSE";
-	if not, reply "I don't know";
-	then, reply "it is not the case that EXT-WHAT".
+	then, if not, reply "it is not the case that EXT-WHAT".
 On "why does SIGN-WHAT", why do WHAT.
 
 

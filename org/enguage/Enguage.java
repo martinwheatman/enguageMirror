@@ -247,9 +247,18 @@ public class Enguage extends Shell {
 			interpret( "do I need 3 eggs because I am baking a cake",
 					"yes, you need 3 eggs because you're baking a cake" );
 			
-			// why might...
-			interpret( "i am not baking a cake", "ok, you're not baking a cake" );
-			interpret( "am i baking a cake",     "no, you're not baking a cake" );
+			interpret( "i need to go to the shops because i need 3 eggs",
+					"ok, you need to go to the shops because you need 3 eggs" );
+			
+			// TODO:
+//			interpret( "do I need to go to the shops because I am baking a cake",
+//					"yes, you need to go to the shops because you're baking a cake" );
+			
+			audit.title( "Why might.../abduction" );
+			interpret( "i am not baking a cake",  "ok, you're not baking a cake" );
+			interpret( "am i baking a cake",      "no, you're not baking a cake" );
+			interpret( "i do not need any eggs",  "ok, you don't need any eggs" );
+			interpret( "why do i need 3 eggs",    "It is not the case that you need 3 eggs" );
 			interpret( "why might i need 3 eggs", "because you're baking a cake" );
 		}
 		if (thisTest( level, 2 )) {
