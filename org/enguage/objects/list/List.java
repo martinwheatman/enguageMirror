@@ -316,9 +316,9 @@ public class List extends ArrayList<Item> {
 			
 			for (Strings params : paramsList.divide( "and" )) {
 				
-				// Expand params...
-				if (params.size() == 1 && Attribute.isAttribute( params.get( 0 ) ))
-					params = new Strings( new Attribute( params.get( 0 )).value() );
+				// Expand params, e.g. if param="OBJECT='black coffee'"
+				if (params.size() == 1)
+					params = Attribute.getValues( params.get( 0 ));
 				
 				Item item = new Item( params );
 				
@@ -351,8 +351,7 @@ public class List extends ArrayList<Item> {
 				} else if (cmd.equals( "attributeValue" )) {
 					
 					// Expand attrName
-					if (Attribute.isAttribute( attrName))
-						attrName = new Attribute( attrName ).value();
+					attrName = Attribute.getValue( attrName );
 					
 					// Typically: attributeValue SUBJECT LIST NAME OBJECT
 					rca.add( list.attributeValue(
@@ -435,7 +434,6 @@ public class List extends ArrayList<Item> {
 		test( 105, "get martin needs", "9 coffees, and 6 pints of milk" );
 
 		// remove more milk than we've got, and not all coffees
-		Audit.allOn();
 		test( 106, "remove martin needs milk quantity='10' unit='pint'", "6 pints of milk" ); 
 		test( 107, "remove martin needs coffees quantity='6'", "6 coffees" );
 		test( 108, "get martin needs", "3 coffees");

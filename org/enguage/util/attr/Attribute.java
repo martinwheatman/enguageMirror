@@ -46,7 +46,7 @@ public class Attribute {
 	protected String    value;
 	public    String    value() { return value; }
 	public    Strings   values() { return new Strings( value ); }
-	public    String    value( boolean expand ) { return expand ? expandValues( value ).toString() : value; }
+	public    String    value( boolean expand ) { return expand ? getValue( value ) : value; }
 	public    Attribute value( String s ) {
 		value = s; // TODO: TBC - what if "martin" -> '"martin"' => :'"martin"': ???
 		quote( quote( value )); // set the quote value against the content
@@ -54,7 +54,7 @@ public class Attribute {
 	}
 	
 	public Attribute( String nm, String val ) { name( nm ).value( val ); }
-	public Attribute( String s ) { this( nameFromAttribute( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
+	public Attribute( String s ) { this( getName( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
 	static public Attribute getAttribute( ListIterator<String> si ) {
 		return new Attribute( si.hasNext() ? si.next() : "" );
 	}
@@ -75,16 +75,17 @@ public class Attribute {
 	/* In these strip helpers - we may have a value "to x='go to town'"
 	 * so we need to strip the value of x within this value...
 	 */
-	static public String nameFromAttribute( String s ) {
+	static public String getName( String s ) {
 		int n;
 		return -1 != (n = s.indexOf("=")) ? s.substring( 0, n ) : s;
 	}
-	static public Strings expandValues( String s ) {
+	static public  String  getValue(  String s ) { return getValues( s ).toString(); }
+	static public  Strings getValues( String s ) {
 		// "fred" => "fred" || "name='value'" => "value" || name='v1 n2="v2" v3' => "v1 v2 v3"
 		Strings rc = new Strings();
 		for (String item : new Strings( s ).contract( "=" ))
 			if (isAttribute( item ))
-				rc.addAll( expandValues( new Attribute( item ).value() ));
+				rc.addAll( getValues( new Attribute( item ).value() ));
 			else
 				rc.add(  item );
 		return rc;
@@ -125,7 +126,7 @@ public class Attribute {
 		sa.contract( "=" );
 		audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		for (int i=0; i<4 && i<sa.size(); i++)
-			sa.set( i, Attribute.expandValues( sa.get( i )).toString( Strings.SPACED ));
+			sa.set( i, Attribute.getValues( sa.get( i )).toString( Strings.SPACED ));
 		audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		sa = sa.normalise();
 		audit.log("Sofa.doCall() => sa is "+ sa.toString());

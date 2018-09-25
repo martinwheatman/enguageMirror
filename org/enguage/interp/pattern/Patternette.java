@@ -105,9 +105,9 @@ public class Patternette {
 	public Attribute matchedAttr( String val ) {
 		return new Attribute(
 				name,
-				Attribute.expandValues( // prevents X="x='val'"
+				Attribute.getValue( // prevents X="x='val'"
 					name.equals("unit") ? Plural.singular( val ) : val
-				).toString());
+				));
 	}
 	
 	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }

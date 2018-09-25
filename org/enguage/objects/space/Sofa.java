@@ -46,7 +46,7 @@ public class Sofa extends Shell {
 					a.remove( i );
 					break;
 				} else
-					a.set( i, Attribute.expandValues( a.get( i ) ).toString());
+					a.set( i, Attribute.getValue( a.get( i ) ));
 			
 			String  type = a.remove( 0 );
 			return //audit.out(

@@ -214,7 +214,7 @@ public class Attributes extends ArrayList<Attribute> {
 		ListIterator<String> si = sa.listIterator();
 		while (si.hasNext()) {
 			String s = si.next();
-			si.set( Attribute.expandValues( s ).toString( Strings.SPACED ));
+			si.set( Attribute.getValue( s ));
 		}
 		return sa;
 	}
