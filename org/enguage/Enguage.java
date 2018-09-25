@@ -227,9 +227,9 @@ public class Enguage extends Shell {
 		if (thisTest( level, 1 )) { // experimental
 			audit.title( "Simple action test" );
 			interpret( "i am not baking a cake" );  // TODO: create empty baking action?
-			interpret( "am i baking a cake",     "no,  you're not baking a cake", "i don't know" );
-			interpret( "i am baking a cake",     "ok,  you're     baking a cake" );
-			interpret( "am i baking a cake",     "yes, you're     baking a cake" );
+			interpret( "am i     baking a cake", "no,  you're not baking a cake", "i don't know" );
+			interpret( "i am     baking a cake", "ok,  you're     baking a cake" );
+			interpret( "am i     baking a cake", "yes, you're     baking a cake" );
 			interpret( "i am not baking a cake", "ok,  you're not baking a cake" );
 			
 			audit.title( "Why/because" );
@@ -259,8 +259,8 @@ public class Enguage extends Shell {
 			interpret( "why might i need 3 eggs", "because you're baking a cake" );
 		}
 		if (thisTest( level, 2 )) {
-			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
+			audit.title( "Pronouns - see need+needs.txt" );
 			
 			interpret( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
 			interpret( "they are from Sainsbury's",  "ok, they are from sainsbury's" );
@@ -276,8 +276,10 @@ public class Enguage extends Shell {
 					                                 "you need a pint of milk, cheese, and eggs from the dairy aisle" );
 			interpret( "i need an apple" );
 			interpret( "how many apples do i need", "1, you need 1 apples" ); // <<<<<<<<< see this!
-			audit.title( "The Non-Computable concept of NEED" );
+			
 			clearTheNeedsList();
+			audit.title( "The Non-Computable concept of NEED" );
+			
 			interpret( "what do i need",	         "you don't need anything" );
 			interpret( "i need 2 cups of coffee and a biscuit",
 					                                 "ok, you need 2 cups of coffee and a biscuit.");
