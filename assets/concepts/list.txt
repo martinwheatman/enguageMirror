@@ -8,9 +8,9 @@
 
 On "does SUBJECT LIST list exist", perform "value exists SUBJECT LIST list".
 
-On "does NUMERIC-QUANTITY    PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT".
-On "does                     PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT".
-On "does                     PHRASE-OBJECT at PHRASE-WHERE exist  in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT WHERE WHEN".
+On "does NUMERIC-QUANTITY    PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list          matches SUBJECT LIST OBJECT".
+On "does                     PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list          matches SUBJECT LIST OBJECT".
+On "does                     PHRASE-OBJECT at PHRASE-WHERE exist  in SUBJECT LIST list",                                    perform " list          matches SUBJECT LIST OBJECT WHERE WHEN".
 
 On "                                PHRASE-OBJECT          exists in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT".
 On "    NUMERIC-QUANTITY            PHRASE-OBJECT          exists in SUBJECT LIST list",                                    perform " list          exists SUBJECT LIST OBJECT QUANTITY".
@@ -31,7 +31,7 @@ On "remove NUMERIC-QUANTITY UNIT of PHRASE-OBJECT               from SUBJECT LIS
 On "remove any                      PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list       removeAny SUBJECT LIST OBJECT".
 On "remove the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list removeAttribute SUBJECT LIST OBJECT NAME".
 
-On "get    the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list  attributeValue SUBJECT LIST OBJECT NAME".
+On "get    the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list  attributeValue SUBJECT LIST NAME OBJECT".
 On "get                                                              SUBJECT LIST list",                                    perform " list             get SUBJECT LIST".
 On "get                                                              SUBJECT LIST list where NAME equals PHRASE-VALUE",     perform " list        getWhere SUBJECT LIST NAME VALUE".
 

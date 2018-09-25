@@ -273,6 +273,9 @@ public class List extends ArrayList<Item> {
 				||lastParam.equals( "quantity='any'" ))) != -1;
 	}
 	static public String interpret( Strings sa ) {
+		/* An item may be <item>black coffee</item>, or
+		 * <item unit="cup" quantity="1">black coffee</item>
+		 */
 		/* What we're doing here is to process the parameters provided in 
 		 * the repertoire as processed by Intention.class (attributes are 
 		 * expanded) i.e. X ==> x='xvalue'
@@ -290,7 +293,8 @@ public class List extends ArrayList<Item> {
 		
 		String	cmd = sa.remove( 0 ),
 				ent = sa.remove( 0 ), 
-				atr = sa.remove( 0 );
+				atr = sa.remove( 0 ),
+				attrName = cmd.equals( "attributeValue" ) ? sa.remove( 0 ) : "";
 		
 		List list = new List( ent, atr );
 		
@@ -311,7 +315,11 @@ public class List extends ArrayList<Item> {
 			        rca        = new Strings();
 			
 			for (Strings params : paramsList.divide( "and" )) {
-
+				
+				// Expand params...
+				if (params.size() == 1 && Attribute.isAttribute( params.get( 0 ) ))
+					params = new Strings( new Attribute( params.get( 0 )).value() );
+				
 				Item item = new Item( params );
 				
 				if (cmd.equals( "exists" )) {
@@ -341,12 +349,15 @@ public class List extends ArrayList<Item> {
 					rca.add( Shell.SUCCESS );
 					
 				} else if (cmd.equals( "attributeValue" )) {
-					// Typically: attributeValue SUBJECT LIST OBJECT NAME
-					item.attributes().remove( "name" ); // item has name embedded :(
+					
+					// Expand attrName
+					if (Attribute.isAttribute( attrName))
+						attrName = new Attribute( attrName ).value();
+					
+					// Typically: attributeValue SUBJECT LIST NAME OBJECT
 					rca.add( list.attributeValue(
-							item,
-							new Attribute(
-									sa.get( 1 )).value()
+								item,
+								attrName
 							).toString( Reply.andListFormat())
 					);
 						
@@ -446,5 +457,15 @@ public class List extends ArrayList<Item> {
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
 		// END Calendar list tests.
 
+		l = new List( "martin", "why" );
+		
+		l.append( new Item( "i need 3 eggs               cause='i am baking a cake'"   ));
+		l.append( new Item( "i need to go to the garage  cause='i need 3 eggs'"   ));
+		l.value.set( l.toXml() );
+		
+		test( 300, "attributeValue martin why name='cause' i need 3 eggs",              "i am baking a cake" );
+		test( 301, "attributeValue martin why name='cause' i need to go to the garage", "i need 3 eggs" );
+		//test( 302, "attributeValue martin why name='cause' i need to go to the garage" );
+		
 		audit.log( "All tests pass!" );
 }	}
