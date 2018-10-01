@@ -15,16 +15,14 @@ import org.enguage.vehicle.where.Where;
 public class List extends ArrayList<Item> {
 	static final long serialVersionUID = 0L;
 	static       private Audit   audit = new Audit( "List" );
-	static final public    String NAME = "list";
+	static final public  String   NAME = "list";
 	
 	Value value; // instead of extending this class...
 	public void ignore() {value.ignore();}
 	public void restore() {value.restore();}
 	
 	// constructors
-	public List( String e, String a ) {
-		loadTagData( value = new Value( e, a ));
-	}
+	public List( String e, String a ) {loadTagData( value = new Value( e, a ));}
 	
 	//----------------------- List of Items Code --------
 	private void loadTagData( Value v ) {
@@ -36,10 +34,8 @@ public class List extends ArrayList<Item> {
 				add( it );
 	}	}
 	private boolean doName( ListIterator<String> si ) {
-		return si.hasNext()
-				 && si.next().equals("<")
-				 && si.hasNext()
-				 && si.next().equals( NAME );
+		return si.hasNext() && si.next().equals("<")
+			&& si.hasNext() && si.next().equals( NAME );
 	}
 	private Item getItem( ListIterator<String> si ) {
 		Item it = null;
@@ -196,9 +192,9 @@ public class List extends ArrayList<Item> {
 			audit.ERROR("not found "+ item.toXml());
 		return audit.out( rc );
 	}
-	private Strings attributeValue( Item item, String name ) {
+	private Strings getAttrVal( Item item, String name ) {
 		Strings   rc = new Strings();
-		audit.in( "attributeValue", "item='"+ item.toXml() +"', name="+ name );
+		audit.in( "getAttrVal", "item='"+ item.toXml() +"', name="+ name );
 		for (Item t : this) 
 			if ((item == null || t.matchesDescription( item ))
 				&& (t.attributes().has( name )))
@@ -294,7 +290,7 @@ public class List extends ArrayList<Item> {
 		String	cmd = sa.remove( 0 ),
 				ent = sa.remove( 0 ), 
 				atr = sa.remove( 0 ),
-				attrName = cmd.equals( "attributeValue" ) ? sa.remove( 0 ) : "";
+				attrName = cmd.equals( "getAttrVal" ) ? sa.remove( 0 ) : "";
 		
 		List list = new List( ent, atr );
 		
@@ -348,15 +344,12 @@ public class List extends ArrayList<Item> {
 					);
 					rca.add( Shell.SUCCESS );
 					
-				} else if (cmd.equals( "attributeValue" )) {
+				} else if (cmd.equals( "getAttrVal" )) {
 					
-					// Expand attrName
-					attrName = Attribute.getValue( attrName );
-					
-					// Typically: attributeValue SUBJECT LIST NAME OBJECT
-					rca.add( list.attributeValue(
+					// Typically: getAttrVal SUBJECT LIST NAME OBJECT
+					rca.add( list.getAttrVal(
 								item,
-								attrName
+								Attribute.getValue( attrName ) // Expand: n='v' => v
 							).toString( Reply.andListFormat())
 					);
 						
@@ -461,9 +454,9 @@ public class List extends ArrayList<Item> {
 		l.append( new Item( "i need to go to the garage  cause='i need 3 eggs'"   ));
 		l.value.set( l.toXml() );
 		
-		test( 300, "attributeValue martin why name='cause' i need 3 eggs",              "i am baking a cake" );
-		test( 301, "attributeValue martin why name='cause' i need to go to the garage", "i need 3 eggs" );
-		//test( 302, "attributeValue martin why name='cause' i need to go to the garage" );
+		test( 300, "getAttrVal martin why name='cause' i need 3 eggs",              "i am baking a cake" );
+		test( 301, "getAttrVal martin why name='cause' i need to go to the garage", "i need 3 eggs" );
+		//test( 302, "getAttrVal martin why name='cause' i need to go to the garage" );
 		
 		audit.log( "All tests pass!" );
 }	}

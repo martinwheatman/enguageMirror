@@ -31,7 +31,7 @@ On "remove NUMERIC-QUANTITY UNIT of PHRASE-OBJECT               from SUBJECT LIS
 On "remove any                      PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list       removeAny SUBJECT LIST OBJECT".
 On "remove the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list removeAttribute SUBJECT LIST OBJECT NAME".
 
-On "get    the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list  attributeValue SUBJECT LIST NAME OBJECT".
+On "get    the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                    perform " list      getAttrVal SUBJECT LIST NAME OBJECT".
 On "get                                                              SUBJECT LIST list",                                    perform " list             get SUBJECT LIST".
 On "get                                                              SUBJECT LIST list where NAME equals PHRASE-VALUE",     perform " list        getWhere SUBJECT LIST NAME VALUE".
 

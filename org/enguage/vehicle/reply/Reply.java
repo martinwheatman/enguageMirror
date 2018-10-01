@@ -168,7 +168,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   rawAnswer( String rc, String method ) {
 		answer(  Moment.valid( rc ) ? // 88888888198888 -> 7pm
 				new When( rc ).rep( Reply.dnk() ).toString()
-				: (method.equals( "get" ) || method.equals( "attributeValue" ))
+				: (method.equals( "get" ) || method.equals( "getAttrVal" ))
 				  && (rc.equals( "" )) ?
 					Reply.dnk()
 					: rc.equals( Shell.FAIL ) ?
