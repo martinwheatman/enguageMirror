@@ -201,6 +201,26 @@ public class List extends ArrayList<Item> {
 					rc.add( t.attributes().get( name ));
 		return audit.out( rc );
 	}
+	private boolean isAttrVal( Strings descr, String name, String value ) {
+		/* Example:??? item = name = value =???
+		 * item  => <item cause="i am baking a cake">i need 3 eggs</item>
+		 * name  => 'cause'
+		 * value => i need 3 eggs.
+		 */
+		boolean rc = false;
+		audit.in( "isAttrVal", "descr='"+ descr +"', name='"+ name +"', value="+ value );
+		for (Item li : this) {
+			if (descr.equalsIgnoreCase( li.description())) {
+				String cause = li.attributes().get( name );
+				if (!cause.equals(""))
+					if (rc = cause.equals( value ))
+						break;
+					else
+						if (rc = isAttrVal( descr, name, cause ))
+							break;
+		}	}
+		return audit.out( rc );
+	}
 	/* this needs to include adjusting quantity downwards, as above in add()
 	 * i need coffee + I have 3 coffees = ???
 	 * Returns number removed: existing - to be removed.
@@ -351,6 +371,16 @@ public class List extends ArrayList<Item> {
 								item,
 								Attribute.getValue( attrName ) // Expand: n='v' => v
 							).toString( Reply.andListFormat())
+					);
+						
+				} else if (cmd.equals( "isAttrVal" )) {
+					// called in why.txt: [list isAttrVal SUBJECT LIST OBJECT] NAME VALUE
+					audit.log( "Item is: "+ item.toXml());
+					rca.add( list.isAttrVal(
+								new Strings( item.attribute( "object" )), // i need 3 eggs
+								item.description().toString(), // cause 
+								item.attribute( "value" )// value
+							) ? Shell.SUCCESS : Shell.FAIL
 					);
 						
 				} else if (cmd.equals( "quantity" )) {

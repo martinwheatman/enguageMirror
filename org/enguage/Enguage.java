@@ -247,9 +247,14 @@ public class Enguage extends Shell {
 			interpret( "i need to go to the shops because i need 3 eggs",
 					"ok, you need to go to the shops because you need 3 eggs" );
 			
-			// do i need to go to the shops because I am baking a cake...
-			//interpret( "do i need to go to the shops because i am baking a cake",
-			//		"yes, you need to go to the shops because you are baking a cake" );
+			interpret( "is i need 3 eggs the cause of i need to go to the shops",
+					   "yes, you need to go to the shops because you need 3 eggs" );
+			
+			interpret( "is i am baking a cake the cause of i need to go to the shops",
+					   "yes, you need to go to the shops because you're baking a cake" );
+			
+			interpret( "do i need to go to the shops because i am baking a cake",
+					   "yes, you need to go to the shops because you're baking a cake" );
 			
 			audit.title( "Why might.../abduction" );
 			interpret( "i am not baking a cake",  "ok, you're not baking a cake" );
