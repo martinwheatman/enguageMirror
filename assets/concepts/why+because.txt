@@ -26,10 +26,8 @@ On "why does SIGN-WHAT", why do WHAT.
 
 On "do SIGN-WHAT because SIGN-CAUSE":
 	does WHAT exist in _user whyBecause list;
-	#perform "list matches _user whyBecause WHAT";
 	if not, reply "no, it is not the case that EXT-WHAT";
 	#does CAUSE cause WHAT in _user whyBecause list;
-	#perform "list matches _user whyBecause WHAT CAUSE";
 	is CAUSE the cause of WHAT;
 	if not, reply "no, it is not the case EXT-WHAT because EXT-CAUSE";
 	then, reply "yes, EXT-WHAT because EXT-CAUSE".
