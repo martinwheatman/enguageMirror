@@ -179,9 +179,9 @@ public class List extends ArrayList<Item> {
 			list += item.toXml()+"\n      ";
 		return "<list>"+ list +"</list>";
 	}
-	private String removeAttribute( Item item, String name ) { // adjusts attributes, e.g. quantity
+	private String delAttr( Item item, String name ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
-		audit.in( "removeAttribute", "item:"+ item.toXml() +", name="+ name );
+		audit.in( "delAttr", "item:"+ item.toXml() +", name="+ name );
 		int n = index( item, false ); // exact match? No!
 		if (-1 != n) {
 			Item tmp = remove( n );
@@ -356,9 +356,9 @@ public class List extends ArrayList<Item> {
 							break;
 						}
 						
-				} else if (cmd.equals( "removeAttribute" )) {
-					// Typically: removeAttribute SUBJECT LIST OBJECT NAME
-					list.removeAttribute(
+				} else if (cmd.equals( "delAttr" )) {
+					// Typically: delAttr SUBJECT LIST OBJECT NAME
+					list.delAttr(
 							item,
 							new Attribute( sa.get( 1 )).value()
 					);
