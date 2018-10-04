@@ -1,3 +1,5 @@
+cause is transitive.
+
 On "SIGN-WHAT because SIGN-CAUSE":
 	CAUSE;
 	if not, reply "i do not think EXT-CAUSE";
@@ -27,14 +29,13 @@ On "why does SIGN-WHAT", why do WHAT.
 On "do SIGN-WHAT because SIGN-CAUSE":
 	does WHAT exist in _user whyBecause list;
 	if not, reply "no, it is not the case that EXT-WHAT";
-	#does CAUSE cause WHAT in _user whyBecause list;
 	is CAUSE the cause of WHAT;
 	if not, reply "no, it is not the case EXT-WHAT because EXT-CAUSE";
 	then, reply "yes, EXT-WHAT because EXT-CAUSE".
 On "does SIGN-WHAT because SIGN-CAUSE", do WHAT because CAUSE.
 
-On "is SIGN-VALUE the cause of SIGN-OBJECT":
-	perform "list isAttrVal SUBJECT whyBecause cause OBJECT VALUE";
-	if not, reply "no, EXT-OBJECT is not because EXT-VALUE";
-	then, reply "yes, EXT-OBJECT because EXT-VALUE".
+On "is SIGN-CAUSE the cause of SIGN-WHAT":
+	perform "list isAttrVal SUBJECT whyBecause cause WHAT CAUSE";
+	if not, reply "no, EXT-WHAT is not because EXT-CAUSE";
+	then, reply "yes, EXT-WHAT because EXT-CAUSE".
 

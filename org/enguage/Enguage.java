@@ -211,8 +211,6 @@ public class Enguage extends Shell {
 	}
 	public static void sanityCheck( boolean serverTest, String location ) {
 
-		//Audit.traceAll( true );
-
 		if (!serverTest)
 			Enguage.loadConfig( location );
 

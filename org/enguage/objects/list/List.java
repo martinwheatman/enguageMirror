@@ -207,17 +207,16 @@ public class List extends ArrayList<Item> {
 		 * name  => 'cause'
 		 * value => i need 3 eggs.
 		 */
-		boolean rc = false;
+		boolean rc = false,
+		   isTrans = Trans.isConcept( name );
 		audit.in( "isAttrVal", "descr='"+ descr +"', name='"+ name +"', value="+ value );
 		for (Item li : this) {
 			if (descr.equalsIgnoreCase( li.description())) {
 				String cause = li.attributes().get( name );
 				if (!cause.equals(""))
-					if (rc = cause.equals( value ))
+					if (           (rc = cause.equals( value )) ||
+					    isTrans && (rc = isAttrVal( descr, name, cause )))
 						break;
-					else
-						if (rc = isAttrVal( descr, name, cause ))
-							break;
 		}	}
 		return audit.out( rc );
 	}
@@ -374,12 +373,12 @@ public class List extends ArrayList<Item> {
 					);
 						
 				} else if (cmd.equals( "isAttrVal" )) {
-					// called in why.txt: [list isAttrVal SUBJECT LIST OBJECT] NAME VALUE
-					audit.log( "Item is: "+ item.toXml());
+					// called in why.txt: [list isAttrVal SUBJECT LIST cause] WHAT CAUSE
+					// audit.log( "Item is: "+ item.toXml());
 					rca.add( list.isAttrVal(
-								new Strings( item.attribute( "object" )), // i need 3 eggs
-								item.description().toString(), // cause 
-								item.attribute( "value" )// value
+								new Strings( item.attribute( "what" )), // i need 3 eggs
+								item.description().toString(), // cause - not description!
+								item.attribute( "cause" )      // i am baking a cake
 							) ? Shell.SUCCESS : Shell.FAIL
 					);
 						

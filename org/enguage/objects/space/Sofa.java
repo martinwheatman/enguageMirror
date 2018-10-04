@@ -10,6 +10,7 @@ import org.enguage.objects.Variable;
 import org.enguage.objects.expr.Function;
 import org.enguage.objects.list.Item;
 import org.enguage.objects.list.List;
+import org.enguage.objects.list.Trans;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -69,6 +70,7 @@ public class Sofa extends Shell {
 						type.equals(    Item.NAME ) ?        Item.interpret( a ) :
 						type.equals( Spatial.NAME ) ?     Spatial.interpret( a ) :
 						type.equals(Temporal.NAME ) ?    Temporal.interpret( a ) :
+						type.equals(   Trans.NAME ) ?       Trans.interpret( a ) :
 						type.equals(    Sign.NAME ) ?        Sign.interpret( a ) :
 						type.equals(Function.NAME ) ?    Function.interpret( a ) :
 						type.equals(   Every.NAME ) ?       Every.interpret( a ) :
