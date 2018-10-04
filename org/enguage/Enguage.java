@@ -211,8 +211,6 @@ public class Enguage extends Shell {
 	}
 	public static void sanityCheck( boolean serverTest, String location ) {
 
-		//Audit.traceAll( true );
-
 		if (!serverTest)
 			Enguage.loadConfig( location );
 
@@ -225,9 +223,8 @@ public class Enguage extends Shell {
 		int level = 0;
 
 		if (thisTest( level, 1 )) { // experimental
-			audit.title( "Simple action test" );
-			interpret( "i am not baking a cake" );  // TODO: create empty baking action?
-			interpret( "am i     baking a cake", "no,  you're not baking a cake", "i don't know" );
+			audit.title( "Simple action demo" );
+			interpret( "am i     baking a cake", null ); // "no,  you're not baking a cake", "i don't know" );
 			interpret( "i am     baking a cake", "ok,  you're     baking a cake" );
 			interpret( "am i     baking a cake", "yes, you're     baking a cake" );
 			interpret( "i am not baking a cake", "ok,  you're not baking a cake" );
@@ -770,5 +767,5 @@ public class Enguage extends Shell {
 //			 * Ask: what is your name?
 //			 */
 		}
-		audit.log( "+++ PASSED "+ (numberOfTests += 1) +" tests +++" );
+		audit.log( "+++ PASSED "+ numberOfTests +" tests +++" );
 }	}

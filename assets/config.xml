@@ -31,6 +31,7 @@
 			<concept id="engine"            op="load"/>
 			<concept id="plural"            op="load"/>
 			<concept id="temporal"          op="load"/>
+			<concept id="is_transitive"     op="load"/>
 			<concept id="spatial+spatially" op="load"/>
 			<concept id="set+get+unset"     op="load"/>
 			<concept id="arithmetic"        op="load"/>
