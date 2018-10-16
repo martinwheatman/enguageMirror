@@ -60,6 +60,8 @@ public class Enguage extends Shell {
 
 	public String interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
+		
+		if (Net.serverOn()) audit.log( "Server  given: " + utterance.toString() );
 
 		if (Reply.understood()) // from previous interpretation!
 			o.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
@@ -86,6 +88,8 @@ public class Enguage extends Shell {
 		// asymmetry: load as we go; tidy-up once finished
 		if (!Repertoire.isInducting() && !Autoload.ing()) Autoload.unload();
 
+		if (Net.serverOn()) audit.log( "Server replied: "+ reply );
+		
 		return audit.out( reply );
 	}
 	

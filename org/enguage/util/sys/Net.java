@@ -20,8 +20,12 @@ public class Net {
 
 	static private Audit audit = new Audit( "net" );
 	
+	static private boolean serverOn = false;
+	static public  boolean serverOn() { return serverOn; }
+	
 	static public void server( String port ) {
 		ServerSocket server = null;
+		serverOn = true;
 		try {
 			server = new ServerSocket( Integer.valueOf( port ));
 			audit.LOG( "Server listening on port: "+ port );
@@ -47,6 +51,7 @@ public class Net {
 			} catch (IOException e) {
 				audit.ERROR( "Engauge.main():IO error in closing TCP socket" );
 		}	}
+		serverOn = false;
 	}
 	static public String client( String addr, int port, String data ) {
 		audit.in( "tcpip", "addr="+ addr +", port="+ port +", value='"+ data +"', ["+ Context.valueOf() +"]" );
