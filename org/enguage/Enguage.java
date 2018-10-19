@@ -243,6 +243,10 @@ public class Enguage extends Shell {
 			interpret( "why do i need 3 eggs",    "because you're baking a cake" );
 			interpret( "do I need 3 eggs because I am baking a cake",
 				       "yes, you need 3 eggs because you're baking a cake" );
+
+			interpret( "i am baking a cake because i need 3 eggs",
+					   "ok, you're baking a cake because you need 3 eggs" );
+			interpret( "why am i baking a cake",  "because you need 3 eggs" );
 			
 			audit.title( "Transitivity" );
 			interpret( "i need to go to the shops because i need 3 eggs",

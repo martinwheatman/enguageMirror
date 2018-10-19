@@ -17,6 +17,12 @@ On "why do SIGN-WHAT":
 	then, if not, reply "it is not the case that EXT-WHAT".
 On "why does SIGN-WHAT", why do WHAT.
 
+On "why am I PHRASE-WHAT":
+	am i WHAT;
+	if not, reply "it anno the case that you are WHAT";
+	get the cause of i am WHAT from _user whyBecause list;
+	set cause to ...;
+	then, reply "because EXT-CAUSE".
 
 On "why might SIGN-WHAT":
 	get the cause of WHAT from _user whyBecause list;
