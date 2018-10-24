@@ -23,7 +23,8 @@ public class Net {
 	static private boolean serverOn = false;
 	static public  boolean serverOn() { return serverOn; }
 	
-	static public void server( String port ) {
+	static public void server( String port ) { server( port, "" );}
+	static public void server( String port, String prefix ) {
 		ServerSocket server = null;
 		serverOn = true;
 		try {
@@ -31,25 +32,40 @@ public class Net {
 			audit.LOG( "Server listening on port: "+ port );
 			while (true) {
 				
-				Socket connection = server.accept();
+				Socket    connection = server.accept();
+				BufferedReader   in  = null;
+				DataOutputStream out = null;
 				
-				BufferedReader in =
-				   new BufferedReader( new InputStreamReader( connection.getInputStream()));
-				DataOutputStream out = new DataOutputStream( connection.getOutputStream());
-				
-				out.writeBytes( Enguage.e.interpret( new Strings( in.readLine() )) + "\n" );
-
-				in.close();
-				out.close();
-				connection.close();
+				try {
+					in  = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+					out = new DataOutputStream( connection.getOutputStream());
+					out.writeBytes( prefix + Enguage.e.interpret( new Strings( in.readLine() )) + "\n" );
+				} catch (Exception e) {
+					audit.ERROR( "Error in child socket");
+				} finally {
+					try {
+						if (null != in) in.close();
+					} catch (IOException e) {
+						audit.ERROR( "Net.server():IO error in closing TCP child in socket" );
+					}
+					try {
+						if (null != out) out.close();
+					} catch (IOException e) {
+						audit.ERROR( "Net.server():IO error in closing TCP child out socket" );
+					}
+					try {
+						if (null != connection) connection.close();
+					} catch (IOException e) {
+						audit.ERROR( "Net.server():IO error in closing TCP child connection socket" );
+				}	}
 			}
 		} catch (IOException e) {
 			audit.ERROR( "Engauge.main():IO error in TCP socket operation" );
 		} finally {
 			try {
-				server.close();
+				if (null != server) server.close();
 			} catch (IOException e) {
-				audit.ERROR( "Engauge.main():IO error in closing TCP socket" );
+				audit.ERROR( "Net.server():IO error in closing TCP server socket" );
 		}	}
 		serverOn = false;
 	}
