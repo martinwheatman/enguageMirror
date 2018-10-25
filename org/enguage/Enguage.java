@@ -25,6 +25,7 @@ public class Enguage extends Shell {
 
 	/* Enguage is a singleton, so that its internals can refer
 	 * to the outer instance.
+	 * N.B. This is null as Android needs to renew it!
 	 */
 	static public  Enguage e = null;
 	static public  Enguage get() { return e; }
