@@ -2,7 +2,7 @@ package org.enguage.util.tag;
 
 /*import android.app.Activity;
  *import android.content.res.AssetManager;
- *import java.io.FileInputStream;
+ *
  *import java.io.IOException;
  *import java.io.InputStream;
  */
@@ -12,6 +12,7 @@ import java.util.Locale;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Plural;

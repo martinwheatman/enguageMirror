@@ -19,10 +19,10 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import org.enguage.Enguage;
-import org.enguage.object.space.Overlay;
-import org.enguage.sign.repertoire.Concepts;
+import org.enguage.objects.space.Overlay;
+import org.enguage.interp.repertoire.Concepts;
 import org.enguage.util.Audit;
-import org.enguage.util.Fs;
+import org.enguage.util.sys.Fs;
 import org.enguage.util.Strings;
 
 import java.io.InputStream;
