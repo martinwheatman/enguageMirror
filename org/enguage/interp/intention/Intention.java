@@ -274,7 +274,7 @@ public class Intention {
 		 */
 		r.format( value.equals( "" ) ? Reply.success() : value );
 		r.type( new Strings( value ));
-		r.doneIs( r.type() != Reply.DNU && r.type() != Reply.FAIL );
+		r.doneIs( r.type() != Reply.DNU );
 		return (Reply) audit.out( r );
 	}
 	

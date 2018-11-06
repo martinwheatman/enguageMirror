@@ -121,20 +121,24 @@ public class Sign {
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", pattern().toString() );
 		Iterator<Intention> ai = programme.iterator();
-		while (!r.isDone() && ai.hasNext()) {
+		while (ai.hasNext()) {
 			Intention in = ai.next();
-			switch (in.type()) {
-			case Intention.allop :
-				r = Engine.getReply( in, r );
-				break;
-			case Intention.create:
-			case Intention.prepend:
-			case Intention.append:
-				r = in.autopoiesis( r );
-				break;
-			default: // finally, think, do, say...
+			if (!r.isDone()) {
+				switch (in.type()) {
+					case Intention.allop :
+						r = Engine.getReply( in, r );
+						break;
+					case Intention.create:
+					case Intention.prepend:
+					case Intention.append:
+						r = in.autopoiesis( r );
+						break;
+					default: // thenFinally, think, do, say...
+						r = in.mediate( r );
+				}
+			} else if (Intention.thenFinally == in.type())
 				r = in.mediate( r );
-		}	}
+		}
 		return (Reply) audit.out( r );
 	}
 	// ---
