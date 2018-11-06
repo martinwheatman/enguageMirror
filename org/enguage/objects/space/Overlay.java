@@ -243,10 +243,9 @@ public class Overlay {
 			candidate = Series.DEFAULT;
 			if (!Series.existing( candidate ))
 				Series.create( candidate, new File( System.getProperty("user.dir")).getPath() );
-			rc = Series.attach( candidate );
+			if (!(rc = Series.attach( candidate )))
+				audit.log( "Unable to attach to "+ candidate );
 		}
-		if (!rc)
-			audit.log( "Unable to attach to "+ candidate );
 		return rc;
 	}
 	
