@@ -1,0 +1,44 @@
+#!/bin/sh
+# a simple and insecure test sql script
+#
+
+if [ $# -lt 6 -o $# -eq 7 ]; then
+	echo "Usage: DB USER PASSWD CMD TABLE COLUMN [ID VAL]\n  got: " $* &>2
+	exit
+fi
+
+export DB=$1;	 shift
+export USR=$1; shift
+export PWD=$1; shift
+export CMD=$1; shift
+export TBL=$1; shift
+export COL=$1; shift
+if [ $# -ge 2 ]; then
+	export ID=$1; shift
+	export VAL="$*"
+fi
+
+	case $CMD in
+	"select")
+		export COMMAND="use $DB; $CMD $COL from $TBL"
+		if [ ! -z "$ID" -a ! -z "$VAL" ]; then
+			export COMMAND="$COMMAND  where $ID = \"$VAL\""
+		fi
+		export COMMAND="$COMMAND ;"
+		;;
+	esac
+	
+sqlQuery () {
+	mysql -u$USR -p$PWD <<EOF
+	$COMMAND
+EOF
+}
+
+
+# in the following code, it calls the function above, and then
+# the sed turns field delimiting tabs into “, “
+# the tail removes line one (the column titles) from the output
+sqlQuery | \
+	tail --lines=+2  | \
+	tr '\n' ',' | sed 's/.$//' | sed 's/,/, /g'
+echo # add a newline

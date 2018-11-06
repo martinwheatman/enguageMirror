@@ -1,0 +1,11 @@
+On "show me all COLUMN":
+	what is the value of database;
+	if not, reply "sorry, i don't know the value of database";
+	
+	what is the value of table;
+	if not, reply "sorry, i don't know the value of table";
+	
+	run "squelch DATABASE martin secret select TABLE COLUMN";
+	
+	if not, reply "sorry, ...";
+	then, reply "ok, the COLUMN include ...".
