@@ -35,8 +35,6 @@ public class Enguage extends Shell {
 
 	public Enguage() {
 		super( "Enguage" );
-		Redo.spokenInit();
-		Repertoire.primeUsedInit();
 	}
 
 	/*
@@ -159,7 +157,6 @@ public class Enguage extends Shell {
 	public static void main( String args[] ) {
 
 		//Audit.startupDebug = true;
-
 		Strings cmds = new Strings( args );
 		String  cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 
@@ -177,6 +174,9 @@ public class Enguage extends Shell {
 		if (   (null == Enguage.e.o || !Enguage.e.o.attached())
 			&& !Overlay.autoAttach())
 			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
+
+		Redo.spokenInit();          // must follow o.attach()
+		Repertoire.primeUsedInit(); // must follow o.attach()
 
 		e.concepts( new File( location + "/concepts" ).list() );
 
