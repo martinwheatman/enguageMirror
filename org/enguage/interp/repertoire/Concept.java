@@ -23,10 +23,10 @@ public class Concept {
 		
 		Variable.set( LOADING, name );
 		
-		// silence on inner thought...
+		// silence inner thought...
 		if (!Audit.startupDebug) {
 			wasSilenced = true;
-			Audit.suspend(); // <<<<<<<<< comment this out for debugging
+			Audit.suspend();
 			e.aloudIs( false );
 		}
 		
