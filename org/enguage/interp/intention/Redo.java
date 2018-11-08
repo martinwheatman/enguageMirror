@@ -38,7 +38,7 @@ public class Redo {
 	static public        boolean spoken() { return spoken; }
 	static public        void    spoken( boolean spk ) {
 		//audit.traceIn( "spoken", spk ? Shell.SUCCESS : Shell.FAIL );
-		if (!Repertoire.isInducting() && !Autoload.ing() && spk != spoken) {
+		if (!Repertoire.induction() && !Autoload.ing() && spk != spoken) {
 			//audit.audit( "Allop.spoken(): remembering "+ spk );
 			Variable.set( spokenVar, spk ? Shell.SUCCESS : Shell.FAIL );
 			spoken = spk;

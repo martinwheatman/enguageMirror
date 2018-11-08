@@ -85,7 +85,7 @@ public class Enguage extends Shell {
 
 		// auto-unload here - autoloading() in Repertoire.interpret() 
 		// asymmetry: load as we go; tidy-up once finished
-		if (!Repertoire.isInducting() && !Autoload.ing()) Autoload.unload();
+		if (!Repertoire.induction() && !Autoload.ing()) Autoload.unload();
 
 		if (Net.serverOn()) audit.log( "Server replied: "+ reply );
 		

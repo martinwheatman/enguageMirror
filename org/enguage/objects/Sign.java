@@ -22,7 +22,7 @@ public class Sign {
 		audit.in( "interpret", argv.toString());
 		String rc = Shell.FAIL;
 		
-		if (Repertoire.isInducting() &&
+		if (Repertoire.induction() &&
 				argv.size() > 0)
 		{
 			String var1 = Variable.get( "prepending" ),

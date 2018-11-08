@@ -5,7 +5,7 @@ import org.enguage.interp.pattern.Phrase;
 import org.enguage.interp.pattern.Quote;
 import org.enguage.interp.sign.Sign;
 
-public class Autopoietic {
+public class Autopoiesis {
 
 	public static final Sign[] spoken = {
 	//		On "interpret PHRASE-X thus":

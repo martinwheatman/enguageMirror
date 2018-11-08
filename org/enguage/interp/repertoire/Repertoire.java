@@ -30,7 +30,7 @@ public class Repertoire {
 	 * in engine?
 	 */
 	static public Signs signs = new Signs("user" );
-	static public Signs autop = new Signs("autop" ).add( Autopoietic.written ).add( Autopoietic.spoken );
+	static public Signs autop = new Signs("autop" ).add( Autopoiesis.written ).add( Autopoiesis.spoken );
 	static public Signs allop = new Signs("allop" ).add( Engine.commands );
 	
 	// ----- read concepts used in main e
@@ -38,10 +38,10 @@ public class Repertoire {
 	private final static String FALSE = Boolean.toString( false );
 	private final static String  TRUE = Boolean.toString( true  );
 	static Variable induction = new Variable( "induction", FALSE );
-	static public  boolean isInducting() {
+	static public  boolean induction() {
 		return induction.get().equalsIgnoreCase( TRUE );
 	}
-	static public  boolean inductingIs( boolean b ) {
+	static public  boolean induction( boolean b ) {
 		induction.set( b ? TRUE : FALSE );
 		return b;
 	}
@@ -63,7 +63,7 @@ public class Repertoire {
 	static private       boolean primeUsed    = false;
 	static public        boolean primeUsed() { return primeUsed; }
 	static public        void    primeUsed( boolean spk ) {
-		if (!Repertoire.isInducting() && !Autoload.ing() && spk != primeUsed) {
+		if (!Repertoire.induction() && !Autoload.ing() && spk != primeUsed) {
 			Variable.set( primeUsedVar, spk ? Shell.SUCCESS : Shell.FAIL );
 			primeUsed = spk;
 	}	}
@@ -85,7 +85,7 @@ public class Repertoire {
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
 		Reply r = new Reply();
-		if (isInducting() || Autoload.ing()) {
+		if (induction() || Autoload.ing()) {
 			r = autop.interpret( u );
 			if (Reply.DNU == r.type()) {
 				r = signs.interpret( u );
