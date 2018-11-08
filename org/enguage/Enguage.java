@@ -366,8 +366,7 @@ public class Enguage extends Shell {
 			interpret( "the factorial of 1 is 1",          "ok, the factorial of 1 is 1" );
 			
 			// in longhand this is...
-			interpret( "to the phrase what is the factorial of 0 reply 1", "go on" );
-			interpret( "ok", "ok" );
+			interpret( "to the phrase what is the factorial of 0 reply 1", "ok" );
 			interpret( "what is the factorial of 0",  "1" );
 			
 			interpret( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
@@ -725,7 +724,7 @@ public class Enguage extends Shell {
 
 
 			//...or to put it another way
-			interpret( "to the phrase i am called phrase variable name reply hi whatever", "go on" );
+			interpret( "to the phrase i am called phrase variable name reply hi whatever", "ok" );
 			interpret( "this implies name gets set to variable name",   "go on" );
 			interpret( "this implies name is not set to variable name", "go on" );
 			interpret( "if not reply i already know this",              "go on" );
@@ -735,13 +734,13 @@ public class Enguage extends Shell {
 
 			// ...means.../...the means to...
 			// 1. from the-means-to repertoire
-			interpret( "to the phrase phrase variable x the means to phrase variable y reply i really do not understand", "go on" );
+			interpret( "to the phrase phrase variable x the means to phrase variable y reply i really do not understand", "ok" );
 			interpret( "ok", "ok" );
 
 			interpret( "do we have the means to become rich", "I really don't understand" );
 
 			// 2. could this be built thus?
-			interpret( "to phrase variable this means phrase variable that reply ok", "go on" );
+			interpret( "to phrase variable this means phrase variable that reply ok", "ok" );
 			interpret( "this implies ok set induction to false",                      "go on" );
 			interpret( "this implies perform sign think variable that",               "go on" );
 			interpret( "this implies perform sign create variable this",              "go on" );
