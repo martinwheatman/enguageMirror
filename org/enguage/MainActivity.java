@@ -1,6 +1,5 @@
+package org.enguage;
 /*
-package org.enguage.app;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
