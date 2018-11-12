@@ -36,6 +36,17 @@ public class Enguage extends Shell {
 	public Enguage() {
 		super( "Enguage" );
 	}
+	
+	public Enguage( String path, Object ctx, String[] concepts) {
+		this( path, path, ctx, concepts );
+	}
+	public Enguage( String location, String root, Object ctx, String[] concepts) {
+		this();
+		location( location ).root( root ).context( ctx ).concepts( concepts );
+
+		if ((null == o || !o.attached() ) && !Overlay.autoAttach())
+			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
+	}
 
 	/*
 	 * Enguage should be independent of Android, but...
@@ -74,7 +85,6 @@ public class Enguage extends Shell {
 		if (Reply.understood()) {
 			o.finishTxn( Redo.undoIsEnabled() );
 			Redo.disambOff();
-			Redo.spoken( true );
 		} else {
 			// really lost track?
 			audit.debug( "Enguage:interpret(): not understood, forgeting to ignore: "
@@ -153,32 +163,19 @@ public class Enguage extends Shell {
 								"alternately: '"+ unexpected +"'\n          "+
 								"(reason="+ Pattern.notMatched() +")" );
 	}	}	}	}	}
-	
 	public static void main( String args[] ) {
 
 		//Audit.startupDebug = true;
-		Strings cmds = new Strings( args );
-		String  cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
-
-		e = new Enguage();
 		
+		Strings    cmds = new Strings( args );
+		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String location = defLoc;
 		if (cmds.size() > 0 && cmd.equals( "-d" )) {
 			location = cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
-		e.location( location )
-		 .root( null )
-		 .context( null );
 
-		if (   (null == Enguage.e.o || !Enguage.e.o.attached())
-			&& !Overlay.autoAttach())
-			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
-
-		Redo.spokenInit();          // must follow o.attach()
-		Repertoire.primeUsedInit(); // must follow o.attach()
-
-		e.concepts( new File( location + "/concepts" ).list() );
+		e = new Enguage( location, null, null, new File( location + "/concepts" ).list());
 
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
 

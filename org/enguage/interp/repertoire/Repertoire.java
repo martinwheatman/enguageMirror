@@ -2,7 +2,6 @@ package org.enguage.interp.repertoire;
 
 import org.enguage.interp.sign.Signs;
 import org.enguage.objects.Variable;
-import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 
@@ -56,20 +55,6 @@ public class Repertoire {
 	static private       String prompt = "";
 	static public        void   prompt( String s ) { prompt = s; }
 	static public        String prompt() { return prompt; }
-	
-	// record whether the user has figured it out...
-	// run in conjunction with the main intepreter and the app...
-	static private final String  primeUsedVar = "PRIME_USED";
-	static private       boolean primeUsed    = false;
-	static public        boolean primeUsed() { return primeUsed; }
-	static public        void    primeUsed( boolean spk ) {
-		if (!Repertoire.induction() && !Autoload.ing() && spk != primeUsed) {
-			Variable.set( primeUsedVar, spk ? Shell.SUCCESS : Shell.FAIL );
-			primeUsed = spk;
-	}	}
-	static public  void    primeUsedInit() { // called after encaching vars
-		primeUsed = Variable.get( primeUsedVar, Shell.FAIL ).equals( Shell.SUCCESS );
-	}
 	
 	static private boolean loadedDefaultConcept = false;
 	static public  boolean defaultConceptIsLoaded() { return loadedDefaultConcept; }

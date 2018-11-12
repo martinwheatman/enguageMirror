@@ -1,11 +1,8 @@
 package org.enguage.interp.intention;
 
-import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Repertoire;
-import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 
@@ -30,24 +27,7 @@ public class Redo {
 	static private boolean helped = false;
 	static public  void    helped( boolean run ) { helped = run; }
 	static public  boolean helped() { return helped; }
-		
-	// record whether the user has figured it out...
-	// run in conjunction with the main intepreter and the app...
-	static private final String  spokenVar = "SPOKEN";
-	static private       boolean spoken    = false;
-	static public        boolean spoken() { return spoken; }
-	static public        void    spoken( boolean spk ) {
-		//audit.traceIn( "spoken", spk ? Shell.SUCCESS : Shell.FAIL );
-		if (!Repertoire.induction() && !Autoload.ing() && spk != spoken) {
-			//audit.audit( "Allop.spoken(): remembering "+ spk );
-			Variable.set( spokenVar, spk ? Shell.SUCCESS : Shell.FAIL );
-			spoken = spk;
-		}
-		//audit.traceOut();
-	}
-	static public  void    spokenInit() { // called after encaching vars
-		spoken = Variable.get( spokenVar, Shell.FAIL ).equals( Shell.SUCCESS );
-	}
+	
 	//
 	//
 	// redo ----------------------------------------------------

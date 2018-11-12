@@ -201,7 +201,7 @@ public class Pattern extends ArrayList<Patternette> {
 					out.append( "and" ).append( word );						
 
 			// ... "why sentence because reason sentence" ???
-// SIGN IS NOT YET SPOKEN! TODO:
+// SIGN IS NOT YET articulated! TODO:
 //			else if (word.equals( "sign" ))
 //				if (wi.hasNext() && null != (word = wi.next()) && word.equals( "list" ))
 //					if (wi.hasNext() && null != (word = wi.next()) && word.equals( "variable" ))

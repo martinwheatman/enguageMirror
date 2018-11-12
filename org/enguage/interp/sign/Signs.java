@@ -244,7 +244,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 					Context.pop();
 					
 					r.a.appendingIs( true );
-					 
 					
 					/* May have modified repertoire by autoloading.
 					 * ignores now works on key (complexity)
@@ -266,15 +265,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 						 */
 						s = reassign( here );
 					} else {
-						
-						// we've used the prime repertoire, successfully
-						// used by MainActivity on deciding to what help is said.
-						//audit.audit("signs - prime="+ Repertoires.prime());
-						if (    s.concept().equals( Repertoire.prime() )
-							&& !s.concept().equals( Repertoire.NO_PRIME ))
-							Repertoire.primeUsed( true );
-
-						//if (Audit.detailedDebug) audit.debug("understood resetting "+ i );
 						s.interpretation = noInterpretation; // tidy as we go
 						answer = r.a.toString();
 						done = true;

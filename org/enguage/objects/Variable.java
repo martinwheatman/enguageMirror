@@ -212,11 +212,11 @@ public class Variable {
 			Audit.detailedOn = true;
 			
 			printCache();
-			Variable spk = new Variable( "SPOKEN" );
+			Variable spk = new Variable( "NAME" );
 			String tmp = spk.get();
 			audit.log( "was="+ (tmp==null?"<null>":tmp));
 			if ( tmp.equals( "fred" ))
-				interpret( new Strings( "set SPOKEN billy boy" ));
+				interpret( new Strings( "set NAME billy boy" ));
 			else
 				spk.set( "fred" );
 			tmp = spk.get();
