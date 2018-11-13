@@ -27,21 +27,17 @@ public class Enguage extends Shell {
 	 * to the outer instance.
 	 * N.B. This is null as Android needs to renew it!
 	 */
-	static public  Enguage e = null;
-	static public  Enguage get() { return e; }
-
-	static private Config     config = new Config();
-	static public  int    loadConfig( String content ) { return Enguage.config.load( content ); }
+	static private Enguage e = null;
+	static public  Enguage get() { return e == null ? (e = new Enguage()) : e; }
 
 	public Enguage() {
 		super( "Enguage" );
 	}
 	
-	public Enguage( String path, Object ctx, String[] concepts) {
-		this( path, path, ctx, concepts );
+	public void init( String path, Object ctx, String[] concepts) {
+		init( path, path, ctx, concepts );
 	}
-	public Enguage( String location, String root, Object ctx, String[] concepts) {
-		this();
+	public void init( String location, String root, Object ctx, String[] concepts) {
 		location( location ).root( root ).context( ctx ).concepts( concepts );
 
 		if ((null == o || !o.attached() ) && !Overlay.autoAttach())
@@ -51,6 +47,9 @@ public class Enguage extends Shell {
 	/*
 	 * Enguage should be independent of Android, but...
 	 */
+	static private Config     config = new Config();
+	static public  int    loadConfig( String content ) { return Enguage.config.load( content ); }
+
 	private Object  context = null; // if null, not on Android
 	public  Object  context() { return context; }
 	public  Enguage context( Object activity ) { context = activity; return this; }
@@ -175,7 +174,8 @@ public class Enguage extends Shell {
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
 
-		e = new Enguage( location, null, null, new File( location + "/concepts" ).list());
+		Enguage e = get();
+		e.init( location, null, null, new File( location + "/concepts" ).list());
 
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
 
@@ -213,8 +213,8 @@ public class Enguage extends Shell {
 	}
 	public static void sanityCheck( boolean serverTest, String location ) {
 
-		if (!serverTest)
-			Enguage.loadConfig( location );
+		//if (!serverTest)
+		//	Enguage.loadConfig( location );
 
 		// ...useful ephemera...
 		//interpret( "detail on" );

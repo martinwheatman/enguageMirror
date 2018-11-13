@@ -101,7 +101,9 @@ public class Config {
 	}
 	
 	public static void main( String args[]) {
-		Enguage.e.location( "./src/assets" );
+		Overlay.Set( Overlay.Get());
+		if (!Overlay.autoAttach())
+			audit.ERROR( "Ouch!" );
 		Config c = new Config();
 		c.load( "" );
 }	}

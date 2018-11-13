@@ -1,6 +1,5 @@
 package org.enguage.vehicle;
 
-import org.enguage.Enguage;
 import org.enguage.interp.Context;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.pattern.Patternette;
@@ -116,9 +115,8 @@ public class Utterance {
 	
 	public static void main( String arg[]) {
 		
-		Enguage.e = new Enguage();
-		if ((null == Enguage.e.o || !Enguage.e.o.attached())
-			&& !Overlay.autoAttach())
+		Overlay.Set( Overlay.Get());
+		if (!Overlay.autoAttach())
 			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
 
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");

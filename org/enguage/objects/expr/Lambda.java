@@ -23,7 +23,7 @@ public class Lambda {
 	}
 	public Lambda( Function fn, Strings values ) { // existing/find
 		audit.in( "ctor", "finding: "+ fn +"( "+ values +" )" );
-		Strings onames = Enguage.e.o.list( "." );
+		Strings onames = Enguage.get().o.list( "." );
 		if (null != onames) for (String formals : onames) 
 			if (match( (signature = new Strings( formals, ',' )), values )
 				&& !(body = new Value( formals, fn.name() ).getAsString()).equals(""))
@@ -73,7 +73,6 @@ public class Lambda {
 		audit.out();
 	}
 	static public void main( String args[] ) {
-		Enguage.e = new Enguage();
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );

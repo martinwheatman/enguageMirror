@@ -2,7 +2,6 @@ package org.enguage.vehicle.number;
 
 import java.util.ListIterator;
 
-import org.enguage.Enguage;
 import org.enguage.objects.expr.Function;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
@@ -799,7 +798,6 @@ public class Number {
 		combineTest( "-~3", "-~3", "about 6 less", "-~6" );
 		Audit.decr();
 		
-		Enguage.e = new Enguage();
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );

@@ -2,7 +2,6 @@ package org.enguage.objects.expr;
 
 import java.util.ListIterator;
 
-import org.enguage.Enguage;
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
@@ -118,7 +117,6 @@ public class Function {
 			eval : "The "+ fn +" of "+ actuals +" is "+ eval +"\n" );
 	}
 	static public void main( String args[]) {
-		Enguage.e = new Enguage();
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch!" );
