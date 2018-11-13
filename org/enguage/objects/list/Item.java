@@ -1,5 +1,6 @@
 package org.enguage.objects.list;
 
+import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.enguage.util.Audit;
@@ -18,7 +19,7 @@ public class Item {
 	static private      Audit audit = new Audit("Item" );
 	static public final String NAME = "item";
 	
-	static private Strings format = new Strings(); // e.g. "cake slice", "2 cake slices" or "2 slices of cake"
+	static private Strings format = new Strings(); // e.g. "QUANTITY,UNIT of,,LOCATOR LOCATION"
 	static public  void    format( String csv ) { format = new Strings( csv, ',' ); }
 	static public  Strings format() { return format; }
 
@@ -34,6 +35,20 @@ public class Item {
 	private Strings descr = new Strings();
 	public  Strings description() { return descr;}
 	public  Item    description( Strings s ) { descr=s; return this;}
+	
+	static private ArrayList<Strings> isStuff = new ArrayList<Strings>();
+	static private boolean isStuff( Strings s ) {return isStuff.contains( Plural.singular( s ));}
+	static private void    stuffIs( Strings s ) {
+		areThings.remove( Plural.plural( s ));
+		isStuff.add( Plural.singular( s ));
+	}
+	
+	static private ArrayList<Strings> areThings = new ArrayList<Strings>();
+	static private boolean areThings( Strings s ) {return areThings.contains( Plural.plural( s ));}
+	static private void    thingsAre( Strings s ) {
+		isStuff.remove( Plural.singular( s ));
+		areThings.add( Plural.plural( s ));
+	}
 	
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
@@ -129,10 +144,17 @@ public class Item {
 	}
 	
 	// pluralise to the last number... e.g. n cups(s); NaN means no number found yet
-	private Float prevNum = Float.NaN;
+	private Float  prevNum = Float.NaN;
+	private boolean united = false;
 	private String counted( Float num, String val ) {
 		// N.B. val may be "wrong", e.g. num=1 and val="coffees"
 		if (val.equals("1")) return "a"; // English-ism!!!
+		return Plural.ise( num, val );
+	}
+	private final Strings unitary = new Strings( "1" );
+	private String counted( Float num, Strings val ) {
+		// N.B. val may be "wrong", e.g. num=1 and val="coffees"
+		if (val.equals( unitary )) return "a"; // English-ism!!!
 		return Plural.ise( num, val );
 	}
 	private Float getPrevNum( String val ) {
@@ -140,50 +162,69 @@ public class Item {
 		Float prevNum = Number.getNumber( si ).magnitude(); //Integer.valueOf( val );
 		return prevNum.isNaN() ? 1.0f : prevNum;
 	}
-	private Strings getFormatComponentValue( String composite ) { // e.g. from LOCATION
+	private Strings getFormatComponentValue( String composite ) { // e.g. "from LOCATION"
 		Strings value = new Strings();
 		for (String cmp : new Strings( composite ))
-			if ( Strings.isUpperCase( cmp )) { // variable e.g. UNIT
+			if ( Strings.isUpperCase( cmp )) { // variable e.g. "UNIT"
 				if (groupOn().contains( cmp )) { // ["LOC"].contains( "LOC" )
-					value=null; // IGNORE this component
+					value=null; // IGNORE this component, and finish
 					audit.debug( "toString(): ignoring:"+ cmp );
 					break;
-				} else {
+				} else { // cmp = "UNIT"
 					String val = attributes().get( cmp );
 					if (val.equals( "" )) {
 						value=null; // this component is undefined, IGNORE
 						break;
-					} else if (cmp.equals("WHEN")) {
+					} else if (cmp.equals(When.ID)) {
 						value.add( new When( new Moment( Long.valueOf( val ))).toString() );
 					} else if (cmp.equals(Where.LOCTN)
 							|| cmp.equals(Where.LOCTR)) {
 						value.add( val ); // don't count these!
-					} else { // 3 cupS -- pertains to unit/quantity only?
-						value.add( counted( prevNum, val ) );  // UNIT='cup(S)'
+					} else if (cmp.equals("QUANTITY")) {
+						value.add( counted( prevNum, val ));
 						prevNum = getPrevNum( val );
+					} else if (cmp.equals("UNIT")) { // UNIT='cup(S)'
+						value.add( counted( prevNum, val ));
+						prevNum = Float.NaN;
+						united = true;
+					} else { // something else?
+						value.add( val );  
 				}	}
 			} else // lower case -- constant
-				value.add( cmp ); // ...of...
+				value.add( cmp ); // e.g. "of"
 		return value;
 	}
-	public String toXml() { return "<"+name +attrs+">"+descr+"</"+name+">";}
+	public String toXml() { return "<"+name+attrs+">"+descr+"</"+name+">";}
 	public String toString() {
 		Strings rc = new Strings();
 		if (format.size() == 0)
-			rc.append( descr.toString() );
-		else
+			rc.appendAll( descr );
+		else {
+			united = false;
 			/* Read through the format string: ",from LOCATION"
 			 * ADDING attributes: u.c. VARIABLES OR l.c. CONSTANTS),
 			 * OR the description if blank string.
 			 */
 			for (String f : format) // e.g. f="from LOCATION"
-				if (f.equals("")) // main item: "black coffee"
-					rc.append( Plural.ise( prevNum, descr ));
-				else { // attributes: "UNIT of" + unit='cup' => "cups of"
+				if (f.equals("")) { // main item: "black coffee", "crisps"
+					if (united)
+						if (isStuff( descr )) // coffee
+							rc.appendAll( Plural.singular( descr ));
+						else if ( areThings( descr )) // biscuits
+							rc.appendAll( Plural.plural( descr ));
+						else
+							rc.appendAll( descr ); // get it wrong and hope user says no, X is stuff
+						
+					else
+						rc.append( counted( prevNum, descr )); // 2 beers
+					
+					prevNum = Float.NaN;
+				} else { // component, f, e.g. "UNIT of"
 					Strings subrc = getFormatComponentValue( f );
 					if (null != subrc) // ignore group name, and undefs
 						rc.addAll( subrc );
 				}
+		}
 		return rc.toString();
 	}
 	private Strings getFormatGroupValue( String f ) {
@@ -224,12 +265,26 @@ public class Item {
 	// ------------------------------------------------------------------------
 	static public String interpret( Strings cmd ) {
 		String rc = Shell.FAIL;
-		if (cmd.size() > 2
-				&& cmd.get( 0 ).equals( "set" )
-				&& cmd.get( 1 ).equals( "format" ))
-		{
-			Item.format( Strings.stripQuotes( cmd.get( 2 )));
+		if (cmd.size() > 2) {
 			rc = Shell.SUCCESS;
+			
+			if (cmd.get( 0 ).equals( "set" )
+			 && cmd.get( 1 ).equals( "format" ))
+			
+				format( Strings.stripQuotes( cmd.get( 2 )));
+				
+			else if (cmd.get( 0 ).equals( "things" )
+			      && cmd.get( 1 ).equals( "include" ))
+				
+				thingsAre( new Strings( Strings.stripQuotes( cmd.get( 2 ))));
+				
+			else if (cmd.get( 0 ).equals( "stuff" )
+			      && cmd.get( 1 ).equals( "includes" ))
+			
+				stuffIs( new Strings( Strings.stripQuotes( cmd.get( 2 ))));
+				
+			else
+				rc = Shell.FAIL;
 		}
 		return rc;
 	}
@@ -259,12 +314,24 @@ public class Item {
 		//Audit.traceAll( true );
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
+				"a cup of black coffees from Tesco in London" );
+		audit.log( "adding b/c: "+ interpret( new Strings( "stuff includes 'black coffee'" )));
+		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffee from Tesco in London" );
-		test( "black coffees quantity='2' unit='cup'", "2 cups of black coffee" );
-		test( "black coffees quantity='1'", "a black coffee" );
-		test( "black coffee quantity='2'", "2 black coffees" );
-		test( "black coffees quantity='5 more' when='20151125074225'" );
 		
+		test( "black coffee quantity='2' unit='cup'", "2 cups of black coffee" );
+		test( "black coffee quantity='1'", "a black coffee" );
+		test( "black coffee quantity='2'", "2 black coffees" );
+		test( "black coffee quantity='5 more' when='20151125074225'" );
+
+		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
+		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
+				"2 packets of crisp from Tesco in London" );
+		audit.log( "adding crisps: "+ interpret( new Strings( "things include crisps" )));
+		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
+				"2 packets of crisps from Tesco in London" );
+		
+
 		audit.title( "grouping" );
 		Item.groupOn( Where.LOCTN );
 		audit.debug("Using format:"+ Item.format.toString( Strings.CSV )
@@ -272,10 +339,12 @@ public class Item {
 		        		  ? ", not grouped."
 		                  : ", grouping on:"+ Item.groupOn() +"." ));
 
-		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
+		test( "black coffee quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffee from Tesco in London" );
-		test( "milk unit='pint' quantity=1 locator='from' location='the dairy aisle'",
-				"a pint of milk from the dairy aisle" );
+		test( "milk unit='pint' quantity=2 locator='from' location='the dairy aisle'",
+				"2 pints of milk from the dairy aisle" );
+		test( "crisps unit='packets' quantity=2 locator='from' location='the dairy aisle'",
+				"2 packets of crisps from the dairy aisle" );
 		//
 		testAdd( "unit='cup' quantity='1' locator='from' location='Sainsburys' coffee" ); // subrc?
 		testAdd( "quantity='1' locator='from' location='Sainsburys' biscuit" );

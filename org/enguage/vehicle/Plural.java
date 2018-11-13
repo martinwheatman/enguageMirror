@@ -78,7 +78,10 @@ public class Plural {
 		return p; // already singular
 	}
 	static public Strings singular( Strings s ) {
-		return new Strings( singular( s.toString() ));
+		return new Strings( singular( s.toString()));
+	}
+	static public Strings plural( Strings s ) {
+		return new Strings( plural( s.toString()));
 	}
 	static public String plural( String s ) {
 		// already plural

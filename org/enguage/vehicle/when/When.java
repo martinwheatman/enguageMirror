@@ -30,6 +30,7 @@ class Strings extends ArrayList<String> {
 // */
 public class When {
 	public static final String NAME = "when";
+	public static final String ID   = "WHEN";
 	// types - used in constructing When (FROM implies TO also)
 	public static final int   AT = 0; // inital type - a moment
 	public static final int FROM = 1;
