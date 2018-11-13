@@ -116,7 +116,7 @@ public class Concepts {
 							 id = concepts.content().get( j ).attribute( "id" );
 
 					// get default also from config file: ensure def is at least set to last rep name
-					audit.log( "id="+ id +", op="+ op );
+					//audit.log( "id="+ id +", op="+ op );
 					if (op.equals( "prime" )) {
 						audit.log( "Prime repertoire is '"+ id +"'" );
 						Repertoire.prime( id );

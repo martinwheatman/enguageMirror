@@ -62,7 +62,7 @@ public class Config {
 				else if (name.equals(      "NO" )) Reply.no(  value );
 				else if (name.equals(      "IK" )) Reply.ik(  value );
 				else {
-					audit.LOG( "Saving name='"+ name +"', value='"+ value +"'");
+					//audit.LOG( "Saving name='"+ name +"', value='"+ value +"'");
 					Variable.set( name,  value );
 				}
 	}	}	}
