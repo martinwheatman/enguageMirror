@@ -105,12 +105,12 @@ public class Item {
 	}
 	// -----------------------------------------
 	
-	public void updateAttributes( Item update ) {
-		// update quantity, then replace/add others/all?
-		audit.in( "updateAttributes", update.toXml());
-		for (Attribute a : update.attrs) {
-			String value = a.value(),
-					name = a.name();
+	public void updateAttributes( Attributes newValues ) {
+		// replace values with newValues, combining quantity
+		audit.in( "updateAttributes", newValues.toString() );
+		for (Attribute nval : newValues) {
+			String value = nval.value(),
+					name = nval.name();
 			if (name.equals( "quantity" )) {
 				Number n = new Number( value ),
 				       m = new Number( attribute( "quantity" ));

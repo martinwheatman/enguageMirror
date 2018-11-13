@@ -150,7 +150,7 @@ public class List extends ArrayList<Item> {
 			}
 		} else { // found so update item...
 			Item removedItemTag = remove( n );
-			removedItemTag.updateAttributes( item );
+			removedItemTag.updateAttributes( item.attributes() );
 			String quantity = removedItemTag.attribute( "quantity" );
 			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0f)
 				add( n, removedItemTag );
@@ -165,7 +165,7 @@ public class List extends ArrayList<Item> {
 		int n = index( item, false ); // exact match? No!
 		if (-1 != n) { 
 			Item removedItemTag = remove( n );
-			removedItemTag.updateAttributes( item );
+			removedItemTag.updateAttributes( item.attributes() );
 			String quantity = removedItemTag.attribute( "quantity" );
 			if (quantity.equals( "" ) || new Number( quantity ).magnitude() != 0.0F)
 				add( n, removedItemTag );
