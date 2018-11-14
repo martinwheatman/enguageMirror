@@ -391,8 +391,7 @@ public class List extends ArrayList<Item> {
 					
 				} else if (cmd.equals( "removeAny" )) {
 					while (-1 != list.index( item, false ))
-						list.removeQuantity( item, false );
-					rca.add( Shell.SUCCESS );
+						rca.add( list.removeQuantity( item, false ));
 					
 				} else if (cmd.equals( "add" )) {
 					rca.add( list.append( item ));
@@ -464,7 +463,7 @@ public class List extends ArrayList<Item> {
 		test( 110, "exists martin needs coffees quantity='any'", "TRUE" );
 		test( 111, "exists martin needs coffees quantity='1'",  "FALSE" );
 		
-		test( 112, "removeAny martin needs coffee", "TRUE" );
+		test( 112, "removeAny martin needs coffee", "coffee" );
 		test( 113, "get martin needs", "");
 		// END SHOPPING LIST TEST.
 		
@@ -477,6 +476,7 @@ public class List extends ArrayList<Item> {
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
 		// END Calendar list tests.
 
+		// BEGIN test why
 		l = new List( "martin", "why" );
 		
 		l.append( new Item( "i need 3 eggs               cause='i am baking a cake'"   ));
@@ -485,7 +485,7 @@ public class List extends ArrayList<Item> {
 		
 		test( 300, "getAttrVal martin why name='cause' i need 3 eggs",              "i am baking a cake" );
 		test( 301, "getAttrVal martin why name='cause' i need to go to the garage", "i need 3 eggs" );
-		//test( 302, "getAttrVal martin why name='cause' i need to go to the garage" );
+		// END test why
 		
 		audit.log( "All tests pass!" );
 }	}

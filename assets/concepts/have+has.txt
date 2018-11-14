@@ -8,6 +8,7 @@ On "I do not have to get  PHRASE-OBJECT", _user does not need OBJECT.
 
 On "I        have got     PHRASE-OBJECT", _user does not need OBJECT.
 On "I        have         PHRASE-OBJECT", _user does not need OBJECT.
+On "I        have the     PHRASE-OBJECT", _user does not need any OBJECT.
 
 On "I        have got        everything", _user has everything.
 On "I        have            everything", _user has everything.

@@ -300,7 +300,7 @@ public class Enguage extends Shell {
 			audit.title( "Semantic Thrust" );
 			interpret( "i need to go to town",       "ok, you need to go to town" );
 			interpret( "what do i need",             "you need a biscuit, and to go to town" );
-			interpret( "i have a biscuit",           "ok, you don't need a biscuit" );
+			interpret( "i have the biscuit",         "ok, you don't need any biscuit" );
 			interpret( "i have to go to town",       "I know" );
 			interpret( "i don't need to go to town", "ok, you don't need to go to town" );
 			interpret( "what do i need",             "you don't need anything" );
