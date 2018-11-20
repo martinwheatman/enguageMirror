@@ -24,15 +24,14 @@ public class Where {
 	// all possible locators: spatially something can be ... .
 	// e.g. [ ["in"], ["at"], ["in", "front", "of"], ...
 	static private ArrayList<Strings> locators = new ArrayList<Strings>();
-	static public  boolean isLocator( String l ) { return locators.contains( new Strings( l )); }
-	static public  Strings isLocator( ListIterator<String> li ) {
+	static private Strings isLocator( ListIterator<String> li ) {
 		Strings rc = new Strings();
 		for (Strings locator : locators)
 			if (0 != (rc = locator.extract( li )).size())
 				return rc;
 		return null;
 	}
-	static public  void    locatorIs( String l ) { locatorIs( new Strings( l )); }
+	static private void    locatorIs( String l ) { locatorIs( new Strings( l )); }
 	static public  void    locatorIs( Strings l ){ if (l.size() > 0) locators.add( l ); }
 
 	private boolean assigned = false;
