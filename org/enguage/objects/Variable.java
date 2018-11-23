@@ -136,20 +136,21 @@ public class Variable {
 		}	}
 		return out;
 	}
-
+	
+	static private Strings exceptions = new Strings();
+	static public  void exceptionAdd( Strings excepts ) {
+		for (String s : excepts ) if (!exceptions.contains( s )) exceptions.add( s );
+	}
+	static private void exceptionRemove( Strings excepts ) {
+		for (String s : excepts ) exceptions.remove( s );
+	}
+	
 	static private Strings deref( String name ) {
 		// must return strings for case where variable value is 'hello world'
 		// must contract( "=" ) for case where 'name' is "SUBJECT='fred'"
-		// this should ignore $SUBJECT
-		Strings rc = ( (null != name
-				&& !name.equals("")
-				&& !name.equals(",")
-				&& !name.equals("I") // TODO: register exceptional variable names
-				&& Strings.isUpperCaseWithHyphens( name )
-				&& name.charAt( 0 ) != intPrefix) ?
-						new Strings( get( name, "" )).replace( ",", "and" ) :
-						new Strings( name ));
-		return rc.contract( "=" );
+		return (!exceptions.contains( name ) && Strings.isUpperCaseWithHyphens( name )
+				 ?	new Strings( get( name, "" )).replace( ",", "and" )
+				 :	new Strings( name )).contract( "=" );
 	}
 	static public Strings deref( Strings a ) {
 		//audit.traceIn( "deref", a.toString());
@@ -173,7 +174,16 @@ public class Variable {
 					rc = set( name, args.toString() );
 				else if (cmd.equals( "equals" ))
 					rc = isSet( name, args.toString()) ? Shell.SUCCESS : Shell.FAIL;
-				else
+				else if (cmd.equals( "exception" )) {
+					
+					String direction = args.remove( 0 );
+					if (direction.equals( "add" ))
+						exceptionAdd( args );
+					else if (direction.equals( "remove" ))
+						exceptionRemove( args );
+					else
+						rc = Shell.FAIL;
+				} else
 					rc = Shell.FAIL;
 				
 			else { // sz == 1, name and no params

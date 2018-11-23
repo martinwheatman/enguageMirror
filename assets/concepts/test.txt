@@ -6,5 +6,3 @@ Then on "this is a test", reply "this reaches meaning two".
 
      On "this is a test", run "SOFA list add _user needs meaning three".
 Then on "this is a test", reply "this reaches meaning three".
-
-On "call test", run "echo HELLO=$CLASSPATH".
