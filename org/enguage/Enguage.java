@@ -7,6 +7,7 @@ import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
+import org.enguage.objects.Variable;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -15,6 +16,7 @@ import org.enguage.util.sys.Net;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.where.Where;
 
 public class Enguage extends Shell {
 
@@ -71,7 +73,11 @@ public class Enguage extends Shell {
 		audit.in( "interpret", utterance.toString() );
 		
 		if (Net.serverOn()) audit.log( "Server  given: " + utterance.toString() );
-
+		
+		// locations contextual per utterance
+		Variable.unset( Where.LOCTN );
+		Variable.unset( Where.LOCTR );
+		
 		if (Reply.understood()) // from previous interpretation!
 			o.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 
@@ -282,6 +288,9 @@ public class Enguage extends Shell {
 					                                 "you need biscuits, and coffee from sainsbury's" );
 			interpret( "what do i need from the dairy aisle",
 					                                 "you need a pint of milk, cheese, and eggs from the dairy aisle" );
+			interpret( "i don't need anything from the dairy aisle",
+					                                 "ok, you don't need anything from the dairy aisle" );
+			interpret( "what do i need",             "you need biscuits, and coffee from sainsbury's" );
 			interpret( "i need an apple" );
 			interpret( "how many apples do i need", "1, you need 1 apples" ); // <<<<<<<<< see this!
 			

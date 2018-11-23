@@ -415,7 +415,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return this;
 	}
 	public Strings appendAll( Strings sa ) {
-		if (null != sa) addAll( sa );
+		if (null != sa)
+			for( String s : sa )
+				append( s );
 		return this;
 	}
 	public Strings append( String s ) {

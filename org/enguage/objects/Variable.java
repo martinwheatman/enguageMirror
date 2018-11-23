@@ -144,8 +144,10 @@ public class Variable {
 		Strings rc = ( (null != name
 				&& !name.equals("")
 				&& !name.equals(",")
+				&& !name.equals("I") // TODO: register exceptional variable names
+				&& Strings.isUpperCaseWithHyphens( name )
 				&& name.charAt( 0 ) != intPrefix) ?
-						new Strings( get( name, name )).replace( ",", "and" ) :
+						new Strings( get( name, "" )).replace( ",", "and" ) :
 						new Strings( name ));
 		return rc.contract( "=" );
 	}
@@ -154,7 +156,7 @@ public class Variable {
 		Strings b = new Strings();
 		Iterator<String> ai = a.iterator();
 		while (ai.hasNext())
-			b.addAll( deref( ai.next() )); // preserve name='value'
+			b.appendAll( deref( ai.next() )); // preserve name='value'
 		//audit.traceOut( b );
 		return b;
 	}

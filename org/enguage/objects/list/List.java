@@ -261,6 +261,18 @@ public class List extends ArrayList<Item> {
 			value.set( toXml() ); // put list back...
 		return audit.out( rc );
 	}
+	public String removeAll( Item tbr ) {
+		audit.in( "removeAll", tbr==null?"<ALL>":tbr.toXml());
+		ArrayList<Item> reprieve = new ArrayList<Item>();
+		while (size() > 0) {
+			Item itm = remove( 0 );
+			if (tbr != null && !itm.attributes().matches( tbr.attributes() ))
+				reprieve.add( itm );
+		}
+		for (Item itm : reprieve) add( itm );
+		value.set( toXml() );
+		return audit.out( Shell.SUCCESS );
+	}
 	public boolean move(List l) {
 		/*
 		 * moves the content of one list to another.
@@ -324,6 +336,11 @@ public class List extends ArrayList<Item> {
 		} else if (sa.size() == 0) {
 			if (cmd.equals("get"))
 				rc = list.toString();
+			
+			else if (cmd.equals( "removeAll" )) {
+				list.removeAll( (Item)null );
+				rc = Shell.SUCCESS;
+			}
 			
 		} else {
 			Strings paramsList = new Strings( sa ),
@@ -392,6 +409,9 @@ public class List extends ArrayList<Item> {
 				} else if (cmd.equals( "removeAny" )) {
 					while (-1 != list.index( item, false ))
 						rca.add( list.removeQuantity( item, false ));
+					
+				} else if (cmd.equals( "removeAll" )) {
+					rca.add( list.removeAll( item ));
 					
 				} else if (cmd.equals( "add" )) {
 					rca.add( list.append( item ));
