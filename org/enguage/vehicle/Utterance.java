@@ -87,7 +87,7 @@ public class Utterance {
 		 && Language.isQuote( reply.get( reply.size() -1))))
 			reply.add( Shell.terminators().get( 0 ));
 		
-		reply = Variable.deref(reply);
+		reply = Variable.derefOrPop( reply.iterator());
 
 		// outbound and general colloquials
 		if (!verbatim)

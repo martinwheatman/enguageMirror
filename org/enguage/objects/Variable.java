@@ -149,8 +149,31 @@ public class Variable {
 		// must return strings for case where variable value is 'hello world'
 		// must contract( "=" ) for case where 'name' is "SUBJECT='fred'"
 		return (!exceptions.contains( name ) && Strings.isUpperCaseWithHyphens( name )
-				 ?	new Strings( get( name, "" )).replace( ",", "and" )
+				 ?	new Strings( get( name, name )).replace( ",", "and" )
 				 :	new Strings( name )).contract( "=" );
+	}
+	static public Strings derefOrPop( Iterator<String> ai ) {
+		// "QUANTITY='2' UNITS='cup' of" => "2 cups of"
+		// "LOCATION='here' LOCATOR=''"  => ""
+		Strings b = new Strings();
+		while (ai.hasNext()) {
+			String next = ai.next();
+			if (next.equals( "[" ))
+				b.appendAll( derefOrPop( ai ));
+			else if (next.equals( "]" ))
+				break;
+			else {
+				Strings c = deref( next ); // deref ...
+				for (String d : c)
+					if (!exceptions.contains( d )
+							&& Strings.isUpperCaseWithHyphens( d )) { // ... POP!
+						//audit.debug( "popping on "+ d );
+						while (ai.hasNext() && !ai.next().equals( "]" ));
+						return new Strings();  // or null?
+					}
+				b.appendAll( c );
+		}	}
+		return b;
 	}
 	static public Strings deref( Strings a ) {
 		//audit.traceIn( "deref", a.toString());
@@ -240,11 +263,20 @@ public class Variable {
 			printCache();
 			
 			//*		Static test, backwards compat...
-			test( "set hello there", Shell.SUCCESS );
+			test( "set hello there", "there" );
 			test( "get HELLO", "there" );
-			test( "exists HELLO there", Shell.SUCCESS );
+			test( "equals HELLO there", Shell.SUCCESS );
 			audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
-			test( "unset HELLO", "" );
+			test( "unset HELLO", Shell.SUCCESS );
 			test( "get HELLO", "" );
+			{	// derefOrPop test...
+				Variable.unset( "LOCATOR" );
+				Variable.set( "LOCATION", "Sainsburys" );
+				Strings b = new Strings( "where [LOCATOR LOCATION] to LOCATION" );
+				
+				b = derefOrPop( b.iterator() );
+
+				audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
+			}
 			audit.log( "PASSED" );
 }	}	}

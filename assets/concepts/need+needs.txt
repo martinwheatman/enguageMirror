@@ -71,7 +71,7 @@ On "SUBJECT does not need anything":
 	#answering yes or no ask i am about to delete the needs list is this ok;
 	#if not, reply "ok, let us leave things as they are";
 	remove everything from SUBJECT needs list;
-	then, reply "ok, SUBJECT does not need anything LOCATOR LOCATION".
+	then, reply "ok, SUBJECT does not need anything [LOCATOR LOCATION]".
 
 On "SUBJECT does not need PHRASE-OBJECTS":
 	OBJECTS exists in SUBJECT needs list;
@@ -151,7 +151,7 @@ On "I do not need to get  PHRASE-OBJECT", _user does not need OBJECT.
 
 On "I do not need         PHRASE-OBJECT", _user does not need OBJECT.
 On "I do not need any     PHRASE-OBJECT", _user does not need any OBJECT.
-On "I do not need anything",              _user does not need anything LOCATOR LOCATION.
+On "I do not need anything",              _user does not need anything.
 On "help", reply "to clear the list".
 
 On "what  do   I   need", what does _user need.
