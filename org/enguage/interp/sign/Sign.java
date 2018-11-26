@@ -123,22 +123,18 @@ public class Sign {
 		Iterator<Intention> ai = programme.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();
-			if (!r.isDone()) {
-				switch (in.type()) {
-					case Intention.allop :
-						r = Engine.getReply( in, r );
-						break;
-					case Intention.create:
-					case Intention.prepend:
-					case Intention.append:
-						r = in.autopoiesis( r );
-						break;
-					default: // thenFinally, think, do, say...
-						r = in.mediate( r );
-				}
-			} else if (Intention.thenFinally == in.type())
-				r = in.mediate( r );
-		}
+			switch (in.type()) {
+				case Intention.allop :
+					r = Engine.getReply( in, r );
+					break;
+				case Intention.create:
+				case Intention.prepend:
+				case Intention.append:
+					r = in.autopoiesis( r );
+					break;
+				default: // thenFinally, think, do, say...
+					r = in.mediate( r );
+		}	}
 		return (Reply) audit.out( r );
 	}
 	// ---
