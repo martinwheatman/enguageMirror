@@ -31,6 +31,7 @@ public class Enguage extends Shell {
 	 */
 	static private Enguage e = null;
 	static public  Enguage get() { return e == null ? (e = new Enguage()) : e; }
+	static public  void    set( Enguage eng ) { e = eng; }
 
 	public Enguage() {
 		super( "Enguage" );
