@@ -217,9 +217,10 @@ public class Intention {
 	}
 	private Reply think( Reply r ) {
 		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" );
-		Strings thought = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
+		boolean critical = Strings.isUpperCaseWithHyphens( value ); // and so is a single word!
+		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
+
 		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		
 		Reply tmpr = Repertoire.interpret( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
 		
 		if (r.a.isAppending())
@@ -231,7 +232,7 @@ public class Intention {
 		 .conclude( thought );
 		
 		// If we've returned DNU, we want to continue
-		r.doneIs( false );
+		r.doneIs( r.type() == Reply.FAIL && critical );
 
 		return (Reply) audit.out( r );
 	}

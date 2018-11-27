@@ -272,6 +272,11 @@ public class Enguage extends Shell {
 			interpret( "i do not need any eggs",  "ok, you don't need any eggs" );
 			interpret( "why do i need 3 eggs",    "It is not the case that you need 3 eggs" );
 			interpret( "why might i need 3 eggs", "because you're baking a cake" );
+			
+			interpret( "sophie needs dr martens because sophie is very fashionable",
+                    "I don't understand" );
+			interpret( "sophie is very fashionable because sophie needs dr martens",
+                    "I don't understand" );
 		}
 		if (thisTest( level, 2 )) {
 			clearTheNeedsList();
