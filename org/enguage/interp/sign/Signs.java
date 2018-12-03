@@ -51,7 +51,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		return this;
 	}
 	
-	static public String stats() { return clashes +" clashes in a total of "+ total; }
+	static public String stats() { return clashes +" clashes in a total of "+ total +" signs"; }
 	
 	private void swap( int a, int b) {
 		if (a<0 || b<0 || a>=size() || b>=size()) {

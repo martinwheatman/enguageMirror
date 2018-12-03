@@ -14,12 +14,12 @@ On "why do SIGN-WHAT":
 	if i know, get the cause of WHAT from _user whyBecause list;
 	set cause to ...;
 	reply "because EXT-CAUSE";
-	then, if not, reply "it is not the case that EXT-WHAT".
+	then, if not, reply "sorry, it is not the case that EXT-WHAT".
 On "why does SIGN-WHAT", why do WHAT.
 
 On "why am I PHRASE-WHAT":
 	am i WHAT;
-	if not, reply "it is not the case that you are WHAT";
+	if not, reply "sorry, it is not the case that you are WHAT";
 	get the cause of i am WHAT from _user whyBecause list;
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
@@ -34,9 +34,9 @@ On "why does SIGN-WHAT", why do WHAT.
 
 On "do SIGN-WHAT because SIGN-CAUSE":
 	does WHAT exist in _user whyBecause list;
-	if not, reply "no, it is not the case that EXT-WHAT";
+	if not, reply "sorry, it is not the case that EXT-WHAT";
 	is CAUSE the cause of WHAT;
-	if not, reply "no, it is not the case EXT-WHAT because EXT-CAUSE";
+	if not, reply "sorry, it is not the case EXT-WHAT because EXT-CAUSE";
 	then, reply "yes, EXT-WHAT because EXT-CAUSE".
 On "does SIGN-WHAT because SIGN-CAUSE", do WHAT because CAUSE.
 

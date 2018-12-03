@@ -21,7 +21,7 @@ public class Audit {
 
 	// === timestamp
 	static private long then = new GregorianCalendar().getTimeInMillis();
-	static  public long interval() {
+	static public  long interval() {
 		long now = new GregorianCalendar().getTimeInMillis();
 		long rc = now - then;
 		then = now;

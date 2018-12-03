@@ -233,8 +233,8 @@ public class Enguage extends Shell {
 
 		if (thisTest( level, 1 )) { // experimental
 			audit.title( "Simple action demo" );
-			interpret( "am i     baking a cake", null ); // "no,  you're not baking a cake", "i don't know" );
-			interpret( "i am     baking a cake", "ok,  you're     baking a cake" );
+			interpret( "am i     baking a cake", null );
+			interpret( "i am     baking a cake", "i know", "ok, you're baking a cake" );
 			interpret( "am i     baking a cake", "yes, you're     baking a cake" );
 			interpret( "i am not baking a cake", "ok,  you're not baking a cake" );
 			
@@ -253,6 +253,20 @@ public class Enguage extends Shell {
 					   "ok, you're baking a cake because you need 3 eggs" );
 			interpret( "why am i baking a cake",  "because you need 3 eggs" );
 			
+			audit.title( "Some harder cases" );
+			// I do understand, "sophie needs dr martens", but
+			// I don't understand, "sophie is very fashionable"
+			interpret( "sophie needs dr martens because sophie is very fashionable",
+                       "I don't understand" );
+			interpret( "sophie is very fashionable because sophie needs dr martens",
+                       "I don't understand" );
+			
+			interpret( "do i need 250 grams of flour because i am baking a cake",
+                       "Sorry, it is not the case that you need 250 grams of flour" );
+			interpret( "why am i heating the oven",
+					   "Sorry, it is not the case that you're heating the oven" );
+			
+			
 			audit.title( "Transitivity" );
 			interpret( "i need to go to the shops because i need 3 eggs",
 					   "ok, you need to go to the shops because you need 3 eggs" );
@@ -270,13 +284,8 @@ public class Enguage extends Shell {
 			interpret( "i am not baking a cake",  "ok, you're not baking a cake" );
 			interpret( "am i baking a cake",      "no, you're not baking a cake" );
 			interpret( "i do not need any eggs",  "ok, you don't need any eggs" );
-			interpret( "why do i need 3 eggs",    "It is not the case that you need 3 eggs" );
+			interpret( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
 			interpret( "why might i need 3 eggs", "because you're baking a cake" );
-			
-			interpret( "sophie needs dr martens because sophie is very fashionable",
-                    "I don't understand" );
-			interpret( "sophie is very fashionable because sophie needs dr martens",
-                    "I don't understand" );
 		}
 		if (thisTest( level, 2 )) {
 			clearTheNeedsList();
@@ -787,5 +796,5 @@ public class Enguage extends Shell {
 //			 * Ask: what is your name?
 //			 */
 		}
-		audit.log( "+++ PASSED "+ numberOfTests +" tests +++" );
+		audit.log( "+++ PASSED "+ numberOfTests +" tests in "+ Audit.interval()+"ms +++" );
 }	}
