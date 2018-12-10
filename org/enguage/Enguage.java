@@ -230,6 +230,7 @@ public class Enguage extends Shell {
 		//interpret( "tracing on" );
 
 		int level = 0;
+		Audit.interval(); // reset timer
 
 		if (thisTest( level, 1 )) { // experimental
 			audit.title( "Simple action demo" );
@@ -253,7 +254,7 @@ public class Enguage extends Shell {
 					   "ok, you're baking a cake because you need 3 eggs" );
 			interpret( "why am i baking a cake",  "because you need 3 eggs" );
 			
-			audit.title( "Some harder cases" );
+			audit.title( "Distinguishing negative responses" );
 			// I do understand, "sophie needs dr martens", but
 			// I don't understand, "sophie is very fashionable"
 			interpret( "sophie needs dr martens because sophie is very fashionable",
