@@ -1,0 +1,7 @@
+On "CITY is in COUNTRY":
+	perform "list add _user cityCountry CITY COUNTRY";
+	then, reply "ok, CITY is in COUNTRY".
+	
+On "I am in CITY":
+	get the country of CITY from _user cityCountry list;
+	then, reply "ok, you are in ...".

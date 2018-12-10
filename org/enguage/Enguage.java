@@ -232,7 +232,15 @@ public class Enguage extends Shell {
 		int level = 0;
 		Audit.interval(); // reset timer
 
-		if (thisTest( level, 1 )) { // experimental
+		if (thisTest( level, 1 )) { // james's experimental example
+			
+			//interpret( "england is a country",  "ok, england is a country" );
+			interpret( "preston is in england", "ok, preston is in england" );
+			interpret( "i am in preston",       "ok, you're in england" );
+		
+		}
+		if (thisTest( level, 2 )) {
+			// These tests were for JCSSA journal article
 			audit.title( "Simple action demo" );
 			interpret( "am i     baking a cake", null );
 			interpret( "i am     baking a cake", "i know", "ok, you're baking a cake" );
@@ -249,7 +257,7 @@ public class Enguage extends Shell {
 			interpret( "why do i need 3 eggs",    "because you're baking a cake" );
 			interpret( "do I need 3 eggs because I am baking a cake",
 				       "yes, you need 3 eggs because you're baking a cake" );
-
+			// simple check for infinite loops
 			interpret( "i am baking a cake because i need 3 eggs",
 					   "ok, you're baking a cake because you need 3 eggs" );
 			interpret( "why am i baking a cake",  "because you need 3 eggs" );
@@ -261,23 +269,19 @@ public class Enguage extends Shell {
                        "I don't understand" );
 			interpret( "sophie is very fashionable because sophie needs dr martens",
                        "I don't understand" );
-			
 			interpret( "do i need 250 grams of flour because i am baking a cake",
                        "Sorry, it is not the case that you need 250 grams of flour" );
 			interpret( "why am i heating the oven",
 					   "Sorry, it is not the case that you're heating the oven" );
 			
-			
 			audit.title( "Transitivity" );
 			interpret( "i need to go to the shops because i need 3 eggs",
 					   "ok, you need to go to the shops because you need 3 eggs" );
-			
 			interpret( "is i need 3 eggs the cause of i need to go to the shops",
 					   "yes, you need to go to the shops because you need 3 eggs" );
-			
 			interpret( "is i am baking a cake the cause of i need to go to the shops",
 					   "yes, you need to go to the shops because you're baking a cake" );
-			
+			// this test steps over one reason...
 			interpret( "do i need to go to the shops because i am baking a cake",
 					   "yes, you need to go to the shops because you're baking a cake" );
 			
@@ -288,7 +292,7 @@ public class Enguage extends Shell {
 			interpret( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
 			interpret( "why might i need 3 eggs", "because you're baking a cake" );
 		}
-		if (thisTest( level, 2 )) {
+		if (thisTest( level, 3 )) {
 			clearTheNeedsList();
 			audit.title( "Pronouns - see need+needs.txt" );
 			
@@ -329,8 +333,47 @@ public class Enguage extends Shell {
 			interpret( "i have to go to town",       "I know" );
 			interpret( "i don't need to go to town", "ok, you don't need to go to town" );
 			interpret( "what do i need",             "you don't need anything" );
+			
+			audit.title( "Numerical Context" );
+			clearTheNeedsList();
+			interpret( "i need a coffee",     "ok, you need a coffee" );
+			interpret( "and another",         "ok, you need another coffee" );
+			interpret( "how many coffees do i need", "2, you need 2 coffees" );
+			interpret( "i need a cup of tea", "ok, you need a cup of tea" );
+			interpret( "and another coffee",  "ok, you need another coffee" );
+			interpret( "what do i need",      "You need 3 coffees , and a cup of tea" );
+			
+			audit.title( "Correction" );
+			interpret( "i need another coffee", "ok, you need another coffee.");
+			interpret( "no i need another 3",   "ok, you need another 3 coffees.");
+			interpret( "what do i need",        "you need 6 coffees, and a cup of tea.");
+			interpret( "prime the answer yes",  "ok, the next answer will be yes" );
+			interpret( "i don't need anything", "ok, you don't need anything" );
+			
+			audit.title( "LBFQ" );
+			clearTheNeedsList();
+			
+			interpret( "i need biscuits",
+					   "ok, you need biscuits" );
+			
+			interpret( "i need milk from the dairy aisle",
+					   "ok, you need milk from the dairy aisle" );
+			
+			interpret( "what do i need",
+					   "you need biscuits; and, milk from the dairy aisle" );
+			
+			interpret( "from the dairy aisle what do i need",
+					   "you need milk from the dairy aisle" );
+
+			interpret( "what from the dairy aisle do i need",
+					   "you need milk from the dairy aisle" );
+			
+			interpret( "what do i need from the dairy aisle",
+					   "you need milk from the dairy aisle" );
+			
+			clearTheNeedsList();
 		}
-		if (thisTest( level, 3 )) {
+		if (thisTest( level, 4 )) {
 			audit.title( "Simple Variables" );
 			interpret( "the value of name is fred",       "ok, name is set to fred" );
 			interpret( "get the value of name",           "fred" );
@@ -419,25 +462,6 @@ public class Enguage extends Shell {
 			interpret( "ok", "ok" );
 			
 			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
-		}
-		if (thisTest( level, 4 )) {
-			
-			clearTheNeedsList();
-			
-			audit.title( "Numerical Context" );
-			interpret( "i need a coffee",     "ok, you need a coffee" );
-			interpret( "and another",         "ok, you need another coffee" );
-			interpret( "how many coffees do i need", "2, you need 2 coffees" );
-			interpret( "i need a cup of tea", "ok, you need a cup of tea" );
-			interpret( "and another coffee",  "ok, you need another coffee" );
-			interpret( "what do i need",      "You need 3 coffees , and a cup of tea" );
-			
-			audit.title( "Correction" );
-			interpret( "i need another coffee", "ok, you need another coffee.");
-			interpret( "no i need another 3",   "ok, you need another 3 coffees.");
-			interpret( "what do i need",        "you need 6 coffees, and a cup of tea.");
-			interpret( "prime the answer yes",  "ok, the next answer will be yes" );
-			interpret( "i don't need anything", "ok, you don't need anything" );
 		}
 		if (thisTest( level, 5 )) {
 			audit.title( "Annotation" ); // TODO: camelise attribute names
@@ -689,28 +713,6 @@ public class Enguage extends Shell {
 			interpret( "Where am I meeting my dad" ,
 					   "i don't know if you're meeting your dad" );
 			
-			audit.title( "LBFQ" );
-			clearTheNeedsList();
-			
-			interpret( "i need biscuits",
-					   "ok, you need biscuits" );
-			
-			interpret( "i need milk from the dairy aisle",
-					   "ok, you need milk from the dairy aisle" );
-			
-			interpret( "what do i need",
-					   "you need biscuits; and, milk from the dairy aisle" );
-			
-			interpret( "from the dairy aisle what do i need",
-					   "you need milk from the dairy aisle" );
-
-			interpret( "what from the dairy aisle do i need",
-					   "you need milk from the dairy aisle" );
-			
-			interpret( "what do i need from the dairy aisle",
-					   "you need milk from the dairy aisle" );
-			
-			clearTheNeedsList();
 		}
 		if (thisTest( level, 8 )) {
 			audit.title( "TCP/IP test" );
