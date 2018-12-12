@@ -129,50 +129,47 @@ public class Enguage extends Shell {
 		audit.LOG( "       -t, --test" );
 		audit.LOG( "          runs a sanity check" );
 	}
-	static int numberOfTests = 0;
 	static private void interpret( String cmd ) { interpret( cmd, "" );}
 	static private void interpret( String cmd, String expected ) { interpret( cmd, expected, "" ); }
 	static private void interpret( String cmd, String expected, String unexpected ) {
 		
-		numberOfTests++;
-		
 		// expected == null => silent!
-		if (expected != null) audit.log( "user> "+ cmd );
+		if (expected != null) {
+			audit.passed(); // don't count the ones we can't see!
+			audit.log( "user> "+ cmd );
+		}
 		
 		String reply = serverTest ?
 				Net.client( "localhost", portNumber, cmd )
 				: Enguage.e.interpret( new Strings( cmd ));
 
-		if (expected != null) {
-			if (!Reply.understood() && !Repertoire.prompt().equals( "" ))
-				audit.log( "Hint is:" + Repertoire.prompt() );
-			else if (!expected.equals( "" )) {
-				if (!expected.endsWith( "." )) expected += ".";
-				Strings replies = new Strings( reply );
-				if (replies.equalsIgnoreCase( new Strings( expected ))) // 1st success
-					audit.log( "enguage> "+ reply +"\n" );
-				else if (unexpected.equals( "" )) {                     // no second chance
+		if (expected != null && !expected.equals( "" )) {
+			if (!expected.endsWith( "." )) expected += ".";
+			Strings replies = new Strings( reply );
+			if (replies.equalsIgnoreCase( new Strings( expected ))) // 1st success
+				audit.log( "enguage> "+ reply +"\n" );
+			else if (unexpected.equals( "" )) {                     // no second chance
+				//Repertoire.signs.show();
+				audit.FATAL(
+						"reply: '"+ reply +"',\n             "+
+								"expected: '"+ expected +"' "+
+								"(reason="+ Pattern.notMatched() +")" );
+			} else {
+				if (!unexpected.endsWith( "." )) unexpected += ".";
+				if (replies.equalsIgnoreCase( new Strings( unexpected )))
+					audit.log( "enguage> "+ reply +"\n" );          // 2nd-ary success
+				else {                                              // second chance failed too!
 					//Repertoire.signs.show();
 					audit.FATAL(
-							"reply: '"+ reply +"',\n             "+
-									"expected: '"+ expected +"' "+
-									"(reason="+ Pattern.notMatched() +")" );
-				} else {
-					if (!unexpected.endsWith( "." )) unexpected += ".";
-					if (replies.equalsIgnoreCase( new Strings( unexpected )))
-						audit.log( "enguage> "+ reply +"\n" );          // 2nd-ary success
-					else {                                              // second chance failed too!
-						//Repertoire.signs.show();
-						audit.FATAL(
-								"reply: '"      + reply      +"'\n             "+
-								"expected: '"   + expected   +"'\n       "+
-								"alternately: '"+ unexpected +"'\n          "+
-								"(reason="+ Pattern.notMatched() +")" );
-	}	}	}	}	}
+							"reply: '"      + reply      +"'\n             "+
+							"expected: '"   + expected   +"'\n       "+
+							"alternately: '"+ unexpected +"'\n          "+
+							"(reason="+ Pattern.notMatched() +")" );
+	}	}	}	}
+	
 	public static void main( String args[] ) {
 
 		//Audit.startupDebug = true;
-		
 		Strings    cmds = new Strings( args );
 		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String location = defLoc;
@@ -210,24 +207,19 @@ public class Enguage extends Shell {
 	
 	// === test code ===
 	static private void clearTheNeedsList() {
-		//interpret( "prime the answer yes", "ok, the next answer will be yes" );
-		interpret( "I have everything",    "ok, you don't need anything" );
-		//numberOfTests -= 2;
-		numberOfTests--;
+		// Call this direct, so its not counted!
+		Enguage.e.interpret( new Strings( "I have everything" ));
 	}
 	static private boolean thisTest( int level, int test ) {
 		return level == 0 || level == test || (level < 0 && level != -test);
 	}
 	public static void sanityCheck( boolean serverTest, String location ) {
 
-		//if (!serverTest)
-		//	Enguage.loadConfig( location );
-
 		// ...useful ephemera...
 		//interpret( "detail on" );
-		//Audit.traceAll( true );
-		//Repertoire.signs.show( "OTF" );
 		//interpret( "tracing on" );
+		//Audit.allOn();
+		//Repertoire.signs.show( "OTF" );
 
 		int level = 0;
 		Audit.interval(); // reset timer
@@ -242,9 +234,8 @@ public class Enguage extends Shell {
 		if (thisTest( level, 2 )) {
 			// These tests were for JCSSA journal article
 			audit.title( "Simple action demo" );
-			interpret( "am i     baking a cake", null );
-			interpret( "i am     baking a cake", "i know", "ok, you're baking a cake" );
-			interpret( "am i     baking a cake", "yes, you're     baking a cake" );
+			interpret( "i am baking a cake",     "i know", "ok, you're baking a cake" );
+			interpret( "am i baking a cake",     "yes, you're     baking a cake" );
 			interpret( "i am not baking a cake", "ok,  you're not baking a cake" );
 			
 			audit.title( "Why/because" );
@@ -799,5 +790,5 @@ public class Enguage extends Shell {
 //			 * Ask: what is your name?
 //			 */
 		}
-		audit.log( "+++ PASSED "+ numberOfTests +" tests in "+ Audit.interval()+"ms +++" );
+		audit.PASSED();
 }	}

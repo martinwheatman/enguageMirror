@@ -52,10 +52,6 @@ public class Repertoire {
 	static public        void   prime( String name ) { prime = name; }
 	static public        String prime() { return prime; }
 	
-	static private       String prompt = "";
-	static public        void   prompt( String s ) { prompt = s; }
-	static public        String prompt() { return prompt; }
-	
 	static private boolean loadedDefaultConcept = false;
 	static public  boolean defaultConceptIsLoaded() { return loadedDefaultConcept; }
 	static public  void    defaultConceptLoadedIs(boolean c ) { loadedDefaultConcept = c; }

@@ -27,6 +27,11 @@ public class Audit {
 		then = now;
 		return rc;
 	}
+	
+	// test count
+	private int  numberOfTests = 0;
+	public  void passed() {numberOfTests++;}
+	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
 
 	// === debug and detail - "auditing"
 	static private int     suspended = 0; 
