@@ -16,7 +16,7 @@ public class Trans {
 
 	public static String list() { return concepts.toString( Strings.CSV );}
 	
-	static public String interpret( Strings args ) {
+	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String rc = Shell.IGNORE;
 		if (args.size() > 1) {
@@ -26,7 +26,7 @@ public class Trans {
 				addConcepts( args );
 				rc = Shell.SUCCESS;
 		}	}
-		return audit.out( rc );
+		return audit.out( new Strings( rc ));
 	}
 	public static void main( String args[] ) {
 		audit.log( interpret( new Strings( "add cause" )));

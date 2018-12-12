@@ -80,8 +80,8 @@ public class Function {
 		}
 		return audit.out( rc );
 	}
-	static public String interpret( String arg ) { return interpret( new Strings( arg ));}
-	static public String interpret( Strings argv ) {
+	static public Strings interpret( String arg ) { return interpret( new Strings( arg ));}
+	static public Strings interpret( Strings argv ) {
 		audit.in( "interpret", argv.toString( Strings.DQCSV ));
 		String  rc = Shell.FAIL;
 		if (argv.size() >= 2) {
@@ -100,7 +100,7 @@ public class Function {
 			else
 				audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}
-		return audit.out( rc );
+		return audit.out( new Strings( rc ));
 	}
 	// === test code below! ===
 	static private void testCreate( String fn, String formals, String body ) {
@@ -112,9 +112,9 @@ public class Function {
 	}
 	static private void testQuery( String fn, String actuals ) {
 		audit.log( "What is the "+ fn +" of "+ actuals );
-		String eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
-		audit.log( eval.equals( Reply.dnk()) ?
-			eval : "The "+ fn +" of "+ actuals +" is "+ eval +"\n" );
+		Strings eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
+		audit.log( eval.equals( new Strings( Reply.dnk())) ?
+			eval.toString() : "The "+ fn +" of "+ actuals +" is "+ eval.toString() +"\n" );
 	}
 	static public void main( String args[]) {
 		Overlay.Set( Overlay.Get());

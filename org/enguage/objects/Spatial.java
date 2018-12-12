@@ -19,7 +19,7 @@ public class Spatial {
 	
 	public static String list() { return concepts.toString( Strings.CSV );}
 	
-	static public String interpret( Strings args ) {
+	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String rc = Shell.IGNORE;
 		if (args.size() > 0) {
@@ -35,7 +35,7 @@ public class Spatial {
 				rc = Shell.FAIL;
 		}
 		audit.out( rc );
-		return rc;
+		return new Strings( rc );
 	}
 	public static void main( String args[] ) {
 		audit.log( interpret( new Strings( "add fred" )));

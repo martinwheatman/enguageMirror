@@ -134,14 +134,14 @@ public class Plural {
 		}
 		return s;
 	}
-	public static String interpret( Strings a ) {
+	public static Strings interpret( Strings a ) {
 		if (null == a)
-			return Shell.FAIL;
+			return Shell.Fail;
 		else if (a.get( 0 ).equals("exception") && a.size() == 3)
 			addException( a.get( 1 ), a.get( 2 ));
 		else if (a.get( 0 ).equals("rule") && a.size() == 3)
 			addRule( a.get( 1 ), a.get( 2 ));
-		return Shell.SUCCESS;
+		return Shell.Success;
 	/* Plurals:
 	 * colloquial <=> colloquia  : because it is an exception
 	 * princess   <=> princesses : *ss adds 'es'

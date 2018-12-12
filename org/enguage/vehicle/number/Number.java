@@ -515,7 +515,11 @@ public class Number {
 		return len;
 	}
 	private String numEval( String fn, Strings params ) {
-		String token = Function.interpret( "evaluate "+ fn +" "+ params.toString() );
+		Strings cmd = new Strings();
+		cmd.append( "evaluate" )
+		   .append( fn )
+		   .appendAll( params );
+		String token = Function.interpret( cmd ).toString();
 		return Numerals.isNumeric( token ) ? token : null;
 	}
 	private boolean appendFunction( ListIterator<String> si ) {

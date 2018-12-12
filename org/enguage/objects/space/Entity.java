@@ -11,7 +11,7 @@ import org.enguage.util.sys.Shell;
 
 class EntityShell extends Shell {
 	EntityShell() { super( "Entity" );}
-	public String interpret( Strings argv ) { return Entity.interpret( argv ); }
+	public Strings interpret( Strings argv ) { return Entity.interpret( argv ); }
 }
 
 public class Entity {
@@ -97,34 +97,29 @@ public class Entity {
 		return status;
 	}
 	
-	static public String interpret( Strings argv ) {
+	static public Strings interpret( Strings argv ) {
 		// N.B. argv[ 0 ]="create", argv[ 1 ]="martin wheatman"
-		String rc = Shell.FAIL;
-		if (argv.size() > 0) {
-			String cmd = argv.get( 0 );
-			//if (argv.size() == 1) {
-			//	if (argv.size() == 2 && cmd.equals("list"))
-			//		rc = list() ? Shell.SUCCESS : Shell.FAIL;
-			//	}
-			//} else {
-				String ent = argv.get( 1 );
-				if (argv.size() == 2 && cmd.equals("create"))
-					rc = create( ent )? Shell.SUCCESS : Shell.FAIL;
-				else if (argv.size() >= 3 && cmd.equals("component"))
-					rc = createComponent( argv.copyAfter( 1 ))? Shell.SUCCESS : Shell.FAIL;
-				else if (argv.size() == 2 && cmd.equals("delete"))
-					rc = delete( ent)? Shell.SUCCESS : Shell.FAIL;
-				else if (argv.size() == 2 && cmd.equals("exists"))
-					rc = exists( ent)? Shell.SUCCESS : Shell.FAIL;
-				else if (argv.size() == 2 && cmd.equals("ignore"))
-					rc = ignore( ent)? Shell.SUCCESS : Shell.FAIL;
-				else if (argv.size() == 2 && cmd.equals("restore"))
-					rc = restore( ent)? Shell.SUCCESS : Shell.FAIL;
-				else
-					System.err.println(
-							"Usage: entity [create|exists|ignore|delete] <entityName>\n"+
-							"Given: entity "+ argv.toString( Strings.SPACED ));
-		}	//}
+		Strings rc = Shell.Fail;
+		if (argv.size() > 1) {
+			String cmd = argv.remove( 0 ),
+			       ent = argv.remove( 0 );
+			if (cmd.equals( "create" ))
+				rc = create( ent ) ? Shell.Success : Shell.Fail;
+			else if (cmd.equals( "component" ))
+				rc = createComponent( argv )? Shell.Success : Shell.Fail;
+			else if (cmd.equals( "delete" ))
+				rc = delete( ent ) ? Shell.Success : Shell.Fail;
+			else if (cmd.equals( "exists" ))
+				rc = exists( ent ) ? Shell.Success : Shell.Fail;
+			else if (cmd.equals( "ignore" ))
+				rc = ignore( ent ) ? Shell.Success : Shell.Fail;
+			else if (cmd.equals( "restore" ))
+				rc = restore( ent ) ? Shell.Success : Shell.Fail;
+			else
+				System.err.println(
+						"Usage: entity [create|exists|ignore|delete] <entityName>\n"+
+						"Given: entity "+ argv.toString( Strings.SPACED ));
+		}
 		return rc;
 	}
 	

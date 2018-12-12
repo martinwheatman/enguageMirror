@@ -11,7 +11,7 @@ import org.enguage.util.sys.Shell;
 
 class ValuesTest extends Shell {
 	ValuesTest( Strings args ) { super( "ValuesTes", args ); }
-	public String interpret( Strings a ) { return Value.interpret( a ); }
+	public Strings interpret( Strings a ) { return Value.interpret( a ); }
 }
 
 public class Value {
@@ -80,7 +80,7 @@ public class Value {
 				"given: "+ a.toString( Strings.CSV ));
 		return Shell.FAIL;
 	}
-	static public String interpret( Strings a ) {
+	static public Strings interpret( Strings a ) {
 		// sa might be: [ "add", "_user", "need", "some", "beer", "+", "some crisps" ]
 		audit.in( "interpret", a.toString( Strings.CSV ));
 		a = a.normalise();
@@ -123,7 +123,7 @@ public class Value {
 		} else
 			rc = usage( a );
 		audit.out( rc );
-		return rc;
+		return new Strings( rc );
 	}
 	public static void main( String args[] ) {
 		Overlay.Set( Overlay.Get());

@@ -12,7 +12,7 @@ import org.enguage.util.sys.Shell;
 
 class LinkShell extends Shell {
 	LinkShell() { super( "LinkShell" );}
-	public String interpret( Strings a ) { return Link.interpret( a ); }
+	public Strings interpret( Strings a ) { return Link.interpret( a ); }
 }
 
 // we may have had: my car's colour is red. ==> martin/car/colour -> ../../red
@@ -205,7 +205,7 @@ public class Link {
 		return rc;
 	}
 	//---
-	static public String interpret( Strings a ) {
+	static public Strings interpret( Strings a ) {
 		//audit.traceIn( "interpret", "["+ Strings.toString( a, Strings.CSV ) +"]" );
 		String rc = Shell.SUCCESS;
 		int argc = a.size();
@@ -236,7 +236,7 @@ public class Link {
 					"Usage: link: [set|get|exists|transExists|transAttrExists|delete] <ent> <link> [<value>]\n"+
 					"given: "+ a.toString( Strings.SPACED ));
 		}
-		return rc; // audit.traceOut( rc );	
+		return new Strings( rc ); // audit.traceOut( rc );	
 	}
 	public static void main( String args[] ) {
 		if (!Overlay.autoAttach())

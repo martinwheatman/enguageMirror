@@ -17,7 +17,11 @@ abstract public class Shell {
 	public static final String FAIL    = "FALSE";
 	public static final String IGNORE  = "";
 		
-	abstract public String interpret( Strings argv ) ;
+	public static final Strings Success = new Strings( SUCCESS );	
+	public static final Strings Fail    = new Strings( FAIL );
+	public static final Strings Ignore  = new Strings( IGNORE );
+		
+	abstract public Strings interpret( Strings argv ) ;
 	
 	static public Strings terminators = new Strings( ". ? !" );
 	static public void    terminators( Strings a ){ terminators = a; }
@@ -110,7 +114,7 @@ abstract public class Shell {
 							ArrayList<Strings> sentenceList = expandSemicolonList( sentence );
 							for (Strings s : sentenceList ) {
 								interval();
-								String rc = interpret( s );
+								Strings rc = interpret( s );
 								if (aloud)
 									audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
 							}

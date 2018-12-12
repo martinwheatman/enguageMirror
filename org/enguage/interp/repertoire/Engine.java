@@ -239,7 +239,7 @@ public class Engine {
 		} else if (cmd.equals( "iknow" )) {
 			
 			Enguage e = Enguage.get();
-			String tmp = e.interpret( cmds );
+			String tmp = e.interpret( cmds ).toString();
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
@@ -371,7 +371,7 @@ public class Engine {
 				audit.log("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
 				r.format( Reply.repeatFormat());
-				r.answer( Reply.previous());
+				r.answer( Reply.previous().toString());
 			}
 			
 		} else if (cmd.equals( "help" )) {

@@ -185,7 +185,7 @@ public class Variable {
 		return b;
 	}
 	
-	static public String interpret( Strings args ) {
+	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String  rc = Shell.SUCCESS,
 		       cmd = args.remove( 0 );
@@ -225,14 +225,15 @@ public class Variable {
 			audit.log( "printed" );
 		} else
 			rc = Shell.FAIL;
-		return audit.out( rc = rc==null?"":rc );
+		audit.out( rc = rc==null?"":rc );
+		return new Strings( rc );
 	}
 	
 	// --
 	public static void test( String cmd, String expected ) {
-		String actual = interpret( new Strings( cmd ));
-		if (actual.equals( expected ))
-			if ( actual.equals( "" ))
+		Strings actual = interpret( new Strings( cmd ));
+		if (actual.equals( new Strings( expected )))
+			if ( actual.equals( Shell.Ignore ))
 				audit.log(   "PASS: "+ cmd );
 			else
 				audit.log(   "PASS: "+ cmd +" = '"+ actual +"'" );

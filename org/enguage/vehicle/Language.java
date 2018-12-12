@@ -32,7 +32,7 @@ public class Language {  // English-ism!
 		return (null!=a) && (a.equals( ""+Strings.SINGLE_QUOTE )
 				          || a.equals( ""+Strings.DOUBLE_QUOTE ));
 	}
-	static public String asString( Strings ans ) {
+	static private String asString( Strings ans ) {
 		String str = "";
 		ans = apostropheContraction( ans, "tag" );
 		ans = apostropheContraction( ans, "s" );
@@ -45,6 +45,9 @@ public class Language {  // English-ism!
 			str += ans.get( i );
 		}
 		return str;
+	}
+	static public Strings asStrings( Strings ans ) {
+		return new Strings( asString( ans ));
 	}
 	static public String capitalise( String a ) {
 		return a.length()>0 ? a.toUpperCase(Locale.getDefault()).charAt(0) + a.substring( 1 ) : "";

@@ -74,7 +74,7 @@ public class Net {
 		
 		// don't know why, but data needs to be stripped of single quotes???
 		data=Strings.trim( data, '\'' );
-		data=Utterance.externalise( new Strings( data ), false );
+		data=Utterance.externalise( new Strings( data ), false ).toString();
 		audit.debug( "data is: "+ data);
 		
 		String rc = Reply.failure();

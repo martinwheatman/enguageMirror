@@ -123,7 +123,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  String  say() { return say.toString( Strings.SPACED ); }
 	public  void    say( Strings sa ) { say.addAll( Shell.addTerminator( sa )); }
 	
-	private String cache = null;
+	private Strings cache = null;
 	
 	private int     type = DNU;
 	public  int     type() { return type; }
@@ -215,7 +215,7 @@ public class Reply { // a reply is basically a formatted answer
 			// ... then post-process:
 			cache = Utterance.externalise( reply, isVerbatim() );
 		}
-		return cache;
+		return cache.toString();
 	}
 	private void handleDNU( Strings utterance ) {
 		if (Audit.detailedOn) audit.in( "handleDNU", utterance.toString( Strings.CSV ));

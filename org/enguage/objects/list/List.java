@@ -299,7 +299,7 @@ public class List extends ArrayList<Item> {
 				!(lastParam.equals( "quantity='some'" )
 				||lastParam.equals( "quantity='any'" ))) != -1;
 	}
-	static public String interpret( Strings sa ) {
+	static public Strings interpret( Strings sa ) {
 		/* An item may be <item>black coffee</item>, or
 		 * <item unit="cup" quantity="1">black coffee</item>
 		 */
@@ -315,7 +315,7 @@ public class List extends ArrayList<Item> {
 		 * in it which means the first (or last) param of each component 
 		 * needs to be converted, and the operation called for each.
 		 */
-		String rc = Shell.FAIL;
+		Strings rc = Shell.Fail;
 		audit.in( "interpret", sa.toString());
 		
 		String	cmd = sa.remove( 0 ),
@@ -327,19 +327,19 @@ public class List extends ArrayList<Item> {
 		
 		if (cmd.equals( "delete" )) {
 			list.ignore();
-			rc = Shell.SUCCESS;
+			rc = Shell.Success;
 			
 		} else if (cmd.equals( "undelete" )) {
 			list.restore();
-			rc = Shell.SUCCESS;
+			rc = Shell.Success;
 				
 		} else if (sa.size() == 0) {
 			if (cmd.equals("get"))
-				rc = list.toString();
+				rc = new Strings( list.toString());
 			
 			else if (cmd.equals( "removeAll" )) {
 				list.removeAll( (Item)null );
-				rc = Shell.SUCCESS;
+				rc = Shell.Success;
 			}
 			
 		} else {
@@ -424,7 +424,7 @@ public class List extends ArrayList<Item> {
 			}
 			// some (e.g. get) may have m-values, some (e.g. exists) only one
 			rc = rca.size() == 0 ?
-					Shell.FAIL : rca.toString( Reply.andListFormat());
+					Shell.Fail : new Strings( rca.toString( Reply.andListFormat()));
 		}
 		return audit.out( rc );
 	}
@@ -434,8 +434,8 @@ public class List extends ArrayList<Item> {
 		return new Strings( s ).contract( "+=" ).contract( "-=" ).contract( "=" );
 	}
 	static public void test( int id, String cmd, String result ) {
-		String s = List.interpret( params( cmd ));
-		if (!result.equals( "" ) && !new Strings( s ).equals( new Strings( result )))
+		Strings s = List.interpret( params( cmd ));
+		if (!result.equals( "" ) && !s.equals( new Strings( result )))
 			audit.FATAL(
 					(id != -1 ? id +": " : "")+
 					cmd +", returns:\n"

@@ -70,7 +70,7 @@ public class Enguage extends Shell {
 		return this;
 	}
 
-	public String interpret( Strings utterance ) {
+	public Strings interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
 		
 		if (Net.serverOn()) audit.log( "Server  given: " + utterance.toString() );
@@ -87,7 +87,6 @@ public class Enguage extends Shell {
 		// once processed, keep a copy
 		Utterance.previous( utterance );
 
-		String reply = r.toString( utterance );
 		if (Reply.understood()) {
 			o.finishTxn( Redo.undoIsEnabled() );
 			Redo.disambOff();
@@ -103,8 +102,8 @@ public class Enguage extends Shell {
 		// asymmetry: load as we go; tidy-up once finished
 		if (!Repertoire.induction() && !Autoload.ing()) Autoload.unload();
 
+		Strings reply = new Strings( r.toString( utterance ));
 		if (Net.serverOn()) audit.log( "Server replied: "+ reply );
-		
 		return audit.out( reply );
 	}
 	
@@ -139,13 +138,13 @@ public class Enguage extends Shell {
 			audit.log( "user> "+ cmd );
 		}
 		
-		String reply = serverTest ?
-				Net.client( "localhost", portNumber, cmd )
+		Strings reply = serverTest ?
+				new Strings( Net.client( "localhost", portNumber, cmd ))
 				: Enguage.e.interpret( new Strings( cmd ));
 
 		if (expected != null && !expected.equals( "" )) {
 			if (!expected.endsWith( "." )) expected += ".";
-			Strings replies = new Strings( reply );
+			Strings replies = reply;
 			if (replies.equalsIgnoreCase( new Strings( expected ))) // 1st success
 				audit.log( "enguage> "+ reply +"\n" );
 			else if (unexpected.equals( "" )) {                     // no second chance

@@ -77,10 +77,10 @@ public class Utterance {
 	
 	// helpers
 	static public boolean sane( Utterance u ) {return u != null && u.representamen.size() > 0;	}
-	static public String  externalise( String  reply, boolean verbatim ) {
+	static public Strings  externalise( String  reply, boolean verbatim ) {
 		return externalise( new Strings( reply ), verbatim );
 	}
-	static public String  externalise( Strings reply, boolean verbatim ) {
+	static public Strings  externalise( Strings reply, boolean verbatim ) {
 		// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
 		if (!Shell.isTerminator( reply.get( reply.size() -1))
 		 && !((reply.size() > 1) && Shell.isTerminator( reply.get( reply.size() -2))
@@ -100,7 +100,7 @@ public class Utterance {
 						Language.sentenceCapitalisation( 
 							Language.pronunciation( reply )));
 		
-		return Language.asString( Numeric.deref( reply )).replace( " '' ", Language.APOSTROPHE );
+		return Language.asStrings( Numeric.deref( reply )).contract( Language.APOSTROPHE);
 	}
 
 	// test code...

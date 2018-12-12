@@ -263,7 +263,7 @@ public class Item {
 		return rc.toString( Strings.SPACED );
 	}
 	// ------------------------------------------------------------------------
-	static public String interpret( Strings cmd ) {
+	static public Strings interpret( Strings cmd ) {
 		String rc = Shell.FAIL;
 		if (cmd.size() > 2) {
 			rc = Shell.SUCCESS;
@@ -286,7 +286,7 @@ public class Item {
 			else
 				rc = Shell.FAIL;
 		}
-		return rc;
+		return new Strings( rc );
 	}
 	//
 	// --- test code ---

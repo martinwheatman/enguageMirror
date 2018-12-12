@@ -37,10 +37,10 @@ public class Every {
 				// re-issue rebuilt utterance
 				
 				// N.B. need to 'expandValues' here..
-				String reply = Enguage.get().interpret(  Attributes.expandValues( sa.reinsert( m, "{", "}" ) ) );
+				Strings reply = Enguage.get().interpret(  Attributes.expandValues( sa.reinsert( m, "{", "}" ) ) );
 				//audit.debug( "individual reply => "+ reply );
 				if (reply.equals( /*Enguage.DNU*/ "I don't understand" ) ||
-					reply.toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
+					reply.get(0).toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
 				{	rc = Shell.FAIL;
 					break;
 			}	}
@@ -53,7 +53,7 @@ public class Every {
 		//audit.out( rc );
 		return rc;
 	}
-	static public String interpret( Strings sa ) {
+	static public Strings interpret( Strings sa ) {
 		audit.in( "interpret", sa.toString());
-		return audit.out( forEvery( sa ) );
+		return audit.out( new Strings( forEvery( sa ) ));
 }	}

@@ -18,7 +18,7 @@ public class Sign {
 	/*
 	 * This will handle "sign create X", found in interpret.txt
 	 */
-	static public String interpret( Strings argv ) {
+	static public Strings interpret( Strings argv ) {
 		audit.in( "interpret", argv.toString());
 		String rc = Shell.FAIL;
 		
@@ -98,7 +98,7 @@ public class Sign {
 			} else {
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
 		}	}
-		return audit.out( rc );
+		return audit.out( new Strings( rc ));
 	}
 	public static void main( String args[]) {
 		interpret( new Strings( "this won't work!" ));

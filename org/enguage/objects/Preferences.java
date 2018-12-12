@@ -51,16 +51,16 @@ public class Preferences {
 		editor.putFloat( NAME, value );
 		editor.commit();
 }*/
-	static public String interpret( Strings a ) {
-		String rc = Shell.FAIL;
+	static public Strings interpret( Strings a ) {
+		Strings rc = Shell.Fail;
 		audit.in( "interpret", a.toString( Strings.CSV ));
 		if (preferences != null && null != a && a.size() >= 2) {
 			if (a.get( 0 ).equals( "set" )) {
 				preferences.set( a.get( 1 ), a.copyAfter( 1 ).toString( Strings.SPACED ) ); // default value?
-				rc = Shell.SUCCESS;
+				rc = Shell.Success;
 			} else if (a.get( 0 ).equals( "get" )) {
-				rc = preferences.get( a.get( 1 ), true ) ? Shell.SUCCESS : Shell.FAIL; // default value true?
+				rc = preferences.get( a.get( 1 ), true ) ? Shell.Success : Shell.Fail; // default value true?
 		}	}
 		audit.out( rc );
-		return rc;
+		return new Strings( rc );
 }	}

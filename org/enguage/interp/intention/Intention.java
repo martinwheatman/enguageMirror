@@ -263,7 +263,7 @@ public class Intention {
 			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
 		
 		audit.debug( "performing: "+ cmd.toString());
-		String rawAnswer = new Sofa().doCall( new Strings( cmd ));
+		String rawAnswer = new Sofa().doCall( new Strings( cmd )).toString();
 		if (!ignore) r.rawAnswer( rawAnswer, cmd.get( 1 ));
 
 		return (Reply) audit.out( r );

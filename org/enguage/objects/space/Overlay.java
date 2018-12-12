@@ -14,7 +14,7 @@ import org.enguage.util.sys.Shell;
 
 class OverlayShell extends Shell {
 	OverlayShell( Strings args ) { super( "Overlay", args ); }
-	public String interpret( Strings argv ) { return Overlay.interpret( argv ); }
+	public Strings interpret( Strings argv ) { return Overlay.interpret( argv ); }
 }
 
 /* The analysis of this file is all off following the port to Android
@@ -258,7 +258,7 @@ public class Overlay {
 	}
 	static public void Set( Overlay o ) { singletonO = o; }
 
-	static public String interpret( Strings argv ) {
+	static public Strings interpret( Strings argv ) {
 		String rc = Shell.FAIL;
 		int argc = argv.size();
 		Overlay o = Overlay.Get();
@@ -362,7 +362,7 @@ public class Overlay {
 			                 +"     : cd <pathname>\n"
 			                 +"     : ls <pathname>\n"
 			                 +"given: "+ argv.toString( Strings.CSV ));
-		return rc;
+		return new Strings( rc );
 	}
 	
 	/*

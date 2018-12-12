@@ -83,9 +83,9 @@ public class Colloquial {
 		return  user().internalise(       // user phrases expand
 		   symmetric().internalise( s )); // general expansion
 	}
-	static public String interpret( String  a ) { return interpret( new Strings( a )); }
-	static public String interpret( Strings a ) {
-		if (null == a) return Shell.FAIL;
+	static public Strings interpret( String  a ) { return interpret( new Strings( a )); }
+	static public Strings interpret( Strings a ) {
+		if (null == a) return Shell.Fail;
 		//audit.in( "interpret", a.toString( Strings.CSV ));
 		if (a.size() >= 3) {
 			
@@ -117,8 +117,8 @@ public class Colloquial {
 				audit.ERROR( "Colloquial.interpret(): unknown command: "+ a.toString( Strings.CSV ));
 		} else
 			audit.ERROR( "Colloquial.interpret(): wrong number of params: "+ a.toString( Strings.CSV ));
-		//return audit.out( Shell.SUCCESS );
-		return Shell.SUCCESS;
+		//return audit.out( Shell.Success );
+		return Shell.Success;
 	}
 	public static void main( String args[] ) {
 		Audit.allOn();

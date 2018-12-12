@@ -26,10 +26,10 @@ public class Sofa extends Shell {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch! in sofa" );
 	}
-	private static final String True  = SUCCESS;
-	private static final String False = FAIL;
+	private static final Strings True  = Shell.Success;
+	private static final Strings False = Shell.Fail;
 
-	public String doCall( Strings a ) {
+	public Strings doCall( Strings a ) {
 		//audit.in( "doCall", a.toString( Strings.CSV ));
 		if (null != a && a.size() > 1) {
 			/* Tags.matchValues() now produces:
@@ -74,26 +74,26 @@ public class Sofa extends Shell {
 						type.equals(    Sign.NAME ) ?        Sign.interpret( a ) :
 						type.equals(Function.NAME ) ?    Function.interpret( a ) :
 						type.equals(   Every.NAME ) ?       Every.interpret( a ) :
-									  FAIL; // );
+									  False; // );
 		}
 		audit.ERROR("doCall() fails - "+ (a==null?"no params":"not enough params: "+ a.toString()));
-		return FAIL; //audit.traceOut( FAIL ); //
+		return False; //audit.traceOut( FAIL ); //
 	}
 	
 	// perhaps need to re-think this? Do we need this stage - other than for relative concept???
-	private String doSofa( Strings prog ) {
-		String cmd = prog.get( 0 );
-		char firstCh = cmd.charAt( 0 );
-		return (Strings.DOUBLE_QUOTE == firstCh ||
-				Strings.SINGLE_QUOTE == firstCh) ?
-					Strings.stripQuotes( cmd )
-					: doCall( prog );
-	}
+//	private Strings xdoSofa( Strings prog ) {
+//		String cmd = prog.get( 0 );
+//		char firstCh = cmd.charAt( 0 );
+//		return (Strings.DOUBLE_QUOTE == firstCh ||
+//				Strings.SINGLE_QUOTE == firstCh) ?
+//					Strings.stripQuotes( cmd )
+//					: doCall( prog );
+//	}
 
-	private String doNeg( Strings prog ) {
+	private Strings doNeg( Strings prog ) {
 		//audit.traceIn( "doNeg", prog.toString( Strings.SPACED ));
 		boolean negated = prog.get( 0 ).equals( "!" );
-		String rc = doSofa( prog.copyAfter( negated ? 0 : -1 ) );
+		Strings rc = doCall( prog.copyAfter( negated ? 0 : -1 ) ); // was do sofa
 		if (negated) rc = rc.equals( True ) ? False : rc.equals( False ) ? True : rc;
 		return rc; // */audit.traceOut( rc );
 	}
@@ -129,9 +129,9 @@ public class Sofa extends Shell {
 }// */
 
 	// a b .. z {| a b .. z}
-	private String doOrList( Strings a ) {
+	private Strings doOrList( Strings a ) {
 		//audit.traceIn( "doOrList", a.toString( Strings.SPACED ));
-		String rc = False;
+		Strings rc = False;
 		for (int i = 0, sz = a.size(); i<sz; i++) {
 			Strings cmd = a.copyFromUntil( i, "||" );
 			i += cmd.size(); // left pointing at "|" or null
@@ -141,9 +141,9 @@ public class Sofa extends Shell {
 		return rc;
 	}
 
-	private String doAndList( Strings a ) {
+	private Strings doAndList( Strings a ) {
 		//audit.traceIn( "doAndList", a.toString( Strings.SPACED ));
-		String rc = True;
+		Strings rc = True;
 		for (int i=0, sz=a.size(); i<sz; i++) {
 			Strings cmd = a.copyFromUntil( i, "&&" );
 			//audit.debug( "cmd=" + cmd +", i="+ i );
@@ -153,24 +153,24 @@ public class Sofa extends Shell {
 		return rc; // */ audit.traceOut( rc );
 	}
 
-	private String doExpr( Strings a ) {
+	private Strings doExpr( Strings a ) {
 		//audit.traceIn( "doExpr", a.toString( Strings.SPACED ));
 		Strings cmd = new Strings(); // -- build a command...
 		while (0 < a.size() && !a.get( 0 ).equals( ")" )) {
 			if (a.get( 0 ).equals( "(" )) {
 				a.remove( 0 );
-				cmd.add( doExpr( a ));
+				cmd.addAll( doExpr( a ));
 			} else {
 				cmd.add( a.get( 0 ));
 				a.remove( 0 ); // KEEP_ITEMS!
 			}
 			//audit.debug( "a="+ a.toString() +", cmd+"+ cmd.toString() );
 		}
-		String rc = doAndList( cmd );
+		Strings rc = doAndList( cmd );
 		if ( 0 < a.size() ) a.remove( 0 ); // remove ")"
 		return rc; // */audit.traceOut( rc );
 	}
-	public String interpret( Strings sa ) {
+	public Strings interpret( Strings sa ) {
 		Strings a = new Strings( sa );
 		for (String s : sa) {
 			if (   s.equals("&&") 
@@ -178,9 +178,9 @@ public class Sofa extends Shell {
 				|| s.equals("(")
 				|| s.equals("!")
 			   ) {
-				return doSofa( a );
+				return doCall( a ); //doSofa( a );
 		}	}
-		return doExpr( a ); // still need to check if it is a constant
+		return new Strings( doExpr( a )); // still need to check if it is a constant
 	}
 	
 	public static void main( String[] argv ) { // sanity check...

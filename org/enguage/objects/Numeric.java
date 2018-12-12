@@ -80,7 +80,7 @@ public class Numeric extends Value {
 				"given: "+ a.toString( Strings.CSV ));
 		return Shell.FAIL;
 	}
-	static public String interpret( Strings a ) {
+	static public Strings interpret( Strings a ) {
 		// interpret( ["increase", "device", "textSize", "4"] )
 		audit.in( "interpret", a.toString( Strings.DQCSV ));
 		String rc = Shell.SUCCESS;
@@ -127,5 +127,5 @@ public class Numeric extends Value {
 		} else
 			rc = usage( a );
 		audit.out( rc );
-		return rc;
+		return new Strings( rc );
 }	}
