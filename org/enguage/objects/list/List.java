@@ -348,9 +348,12 @@ public class List extends ArrayList<Item> {
 			
 			for (Strings params : paramsList.divide( "and" )) {
 				
-				// Expand params, e.g. if param="OBJECT='black coffee'"
-				if (params.size() == 1)
-					params = Attribute.getValues( params.get( 0 ));
+				// Expand param 0 if attr, e.g. if param="OBJECT='black coffee'"
+				if (Attribute.isAttribute( params.get(0) )) {
+					Attribute a = new Attribute( params.get( 0 ));
+					if (!Strings.isUpperCaseWithHyphens( a.name() ))
+						params.set( 0, a.value() );
+				}
 				
 				Item item = new Item( params );
 				

@@ -6,6 +6,7 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.number.Number;
@@ -92,11 +93,18 @@ public class Numeric extends Value {
 				rc = firstChar == '-' || firstChar == '+' ? Shell.FAIL : Shell.SUCCESS;
 				
 			} else if (cmd.equals( "evaluate" )) {
+				// parameters no longer expanded in sofa...!
+				int i = 0;
+				for (String s : a) {
+					if (Attribute.isAttribute( s ))
+						a.set( i, new Attribute( s ).value()) ;
+					i++;
+				}
 				ListIterator<String> ai = a.normalise().listIterator();
 				if (ai.hasNext()) {
 					ai.next(); // read over command
 					Number number = Number.getNumber( ai );
-					rc = number.valueOf() + a.copyAfter( 1 + number.representamen().size()).toString( Strings.SPACED );
+					rc = number.valueOf() + a.copyAfter( 1 + number.representamen().size()).toString();
 				} else
 					rc = Shell.FAIL;
 				

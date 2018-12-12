@@ -2,10 +2,9 @@ package org.enguage.objects.space;
 
 import java.io.File;
 
-import org.enguage.objects.space.Value;
-import org.enguage.objects.space.ValuesTest;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 
@@ -74,10 +73,12 @@ public class Value {
 			deletedFile.renameTo( restoredFile );
 	}	}
 	
-	static private String usage( Strings a ) {
-		System.out.println(
-				"Usage: [set|get|add|removeFirst|removeAll|exists|equals|delete] <ent> <attr>[ / <attr> ...] [<values>...]\n"+
-				"given: "+ a.toString( Strings.CSV ));
+	static private String usage( String cmd, String entity, String attr, Strings a ) {
+		return usage( cmd +" "+ entity +" "+ attr +" "+ a.toString() );
+	}
+	static private String usage( String a ) {
+		audit.log( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
+				   "given: "+ a );
 		return Shell.FAIL;
 	}
 	static public Strings interpret( Strings a ) {
@@ -86,42 +87,46 @@ public class Value {
 		a = a.normalise();
 		String rc = Shell.SUCCESS;
 		if (null != a && a.size() > 2) {
-			int i = 2;
-			String cmd = a.get( 0 ), entity = a.get( 1 ), value = null, attribute = null;
-			if (i<a.size()) { // components? martin car / body / paint / colour red
-				attribute = a.get( i );
-				while (++i < a.size() && a.get( i ).equals( "/" ))
-					attribute += ( "/"+ a.get( i ));
+			String cmd = a.remove( 0 ), 
+			    entity = a.remove( 0 ),
+			 attribute = a.remove( 0 );
+			// components? martin car / body / paint / colour red
+			while (a.size()>1 && a.get( 0 ).equals( "/" )) {
+				a.remove( 0 );
+				attribute += ( "/"+ a.remove( 0 ));
 			}
-			//audit.debug( "entity => '"+ entity +"' " );
-			//audit.debug( "attr => '"+ attribute +"' " );
-			// [ "some", "beer", "+", "some crisps" ] => "some beer", "some crisps" ]
-			//Strings values = Strings.rejig( Strings.copyAfter( a, i-1 ), sep );
-			String val = a.copyAfter( i-1 ).toString( Strings.SPACED ); 
-			//audit.debug( "values => ["+ Strings.toString( values,  Strings.DQCSV ) +"]" );
+			Value v = new Value( entity, attribute ); //attribute needs to be composite: dir dir dir file values
 			
-			Value m = new Value( entity, attribute ); //attribute needs to be composite: dir dir dir file values
-			if (cmd.equals( "set" )) {
-				m.set( val );
-			} else if (null == value && cmd.equals( "get" )) {
-				rc = m.getAsString();
-			} else if (cmd.equals( "unset" )) {
-				rc = Shell.SUCCESS;
-				m.unset();
-			} else if (cmd.equals( "exists" )) {
-				rc = (null==val || 0 == val.length()) ?
-					m.exists() ? Shell.SUCCESS : Shell.FAIL :
-					m.contains( val ) ? Shell.SUCCESS : Shell.FAIL;
-			} else if (cmd.equals( "equals" )) {
-				rc = m.equals( val ) ? Shell.SUCCESS : Shell.FAIL;
-			} else if (cmd.equals( "delete" )) {
-				m.ignore();
-			} else if (cmd.equals( "undelete" )) {
-				m.restore();
-			} else
-				rc = usage( a );
+			if (a.size()>0) {
+				// [ "some", "beer", "+", "some crisps" ] => "some beer", "some crisps" ]
+				String value = a.contract("=").toString();
+				if (Attribute.isAttribute( value ))
+					value = new Attribute( value ).value();
+				
+				if (cmd.equals( "set" ))
+					v.set( value );
+				else if (cmd.equals( "exists" ))
+					rc = (null==value || 0 == value.length()) ?
+							v.exists() ? Shell.SUCCESS : Shell.FAIL :
+								v.contains( value ) ? Shell.SUCCESS : Shell.FAIL;
+				else if (cmd.equals( "equals" )) 
+					rc = v.equals( value ) ? Shell.SUCCESS : Shell.FAIL;
+				else
+					usage( cmd, entity, attribute, a );
+			} else {
+				if (cmd.equals( "get" ))
+					rc = v.getAsString();
+				else if (cmd.equals( "unset" ))
+					v.unset();
+				else if (cmd.equals( "delete" ))
+					v.ignore();
+				else if (cmd.equals( "undelete" ))
+					v.restore();
+				else 
+					rc = usage( cmd, entity, attribute, a );
+			}
 		} else
-			rc = usage( a );
+			rc = usage( a.toString() );
 		audit.out( rc );
 		return new Strings( rc );
 	}

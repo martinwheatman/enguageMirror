@@ -215,7 +215,6 @@ public class Enguage {
 			//interpret( "england is a country",  "ok, england is a country" );
 			interpret( "preston is in england", "ok, preston is in england" );
 			interpret( "i am in preston",       "ok, you're in england" );
-		
 		}
 		if (thisTest( level, 2 )) {
 			// These tests were for JCSSA journal article
@@ -281,12 +280,16 @@ public class Enguage {
 					                                 "ok, you need cheese and eggs" );
 			interpret( "group by",                   "sorry, i need to know what to group by" );
 			interpret( "group by location",          "ok" );
+			
 			interpret( "what do i need from sainsbury's",
-					                                 "you need biscuits, and coffee from sainsbury's" );
+					   "you need biscuits, and coffee from sainsbury's" );
+			
 			interpret( "what do i need from the dairy aisle",
-					                                 "you need a pint of milk, cheese, and eggs from the dairy aisle" );
+					   "you need a pint of milk, cheese, and eggs from the dairy aisle" );
+			
 			interpret( "i don't need anything from the dairy aisle",
-					                                 "ok, you don't need anything from the dairy aisle" );
+					   "ok, you don't need anything from the dairy aisle" );
+			
 			interpret( "what do i need",             "you need biscuits, and coffee from sainsbury's" );
 			interpret( "i need an apple" );
 			interpret( "how many apples do i need", "1, you need 1 apples" ); // <<<<<<<<< see this!

@@ -13,7 +13,6 @@ import org.enguage.objects.list.List;
 import org.enguage.objects.list.Trans;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Colloquial;
 import org.enguage.vehicle.Plural;
@@ -41,14 +40,7 @@ public class Sofa extends Shell {
 			 * Needs to be done here, as call() will be called independently
 			 * May need to be selective on how this is done, depending on sofa 
 			 * package class requirements...?
-			 */
-			for (int i=0; i<5 && i<a.size(); i++)
-				if (a.get( i ).equals( ":" )) {
-					a.remove( i );
-					break;
-				} else
-					a.set( i, Attribute.getValue( a.get( i ) ));
-			
+			 */			
 			String  type = a.remove( 0 );
 			return //audit.out(
 			    a.size() == 0 && type.equals( Shell.SUCCESS  ) ? Shell.Success :

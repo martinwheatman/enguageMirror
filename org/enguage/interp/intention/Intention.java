@@ -253,16 +253,23 @@ public class Intention {
 			if (!locator.equals("")) {
 				String location = Context.get( Where.LOCTN );
 				if (!location.equals("")) {
-					if (cmd.size() < 5) cmd.append( ":" ); // TODO: fix SOFA & scripts to accept n='v'
-					cmd.append( Attribute.asString( Where.LOCTR,  locator  ));
+					cmd.append( Attribute.asString( Where.LOCTR, locator  ));
 					cmd.append( Attribute.asString( Where.LOCTN, location ));
 		}	}	}
 
 		// In the case of vocal perform, value="args='<commands>'" - expand!
-		if (cmd.size()== 1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
+		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
 		
 		audit.debug( "performing: "+ cmd.toString());
+		// deref first 4 params before sofa
+		for (int i=0; i<4 && i<cmd.size(); i++)
+			if (cmd.get( i ).equals( ":" )) {
+				cmd.remove( i );
+				break;
+			} else
+				cmd.set( i, Attribute.getValue( cmd.get( i ) ));
+
 		String rawAnswer = new Sofa().doCall( new Strings( cmd )).toString();
 		if (!ignore) r.rawAnswer( rawAnswer, cmd.get( 1 ));
 

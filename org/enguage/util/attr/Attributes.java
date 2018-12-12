@@ -162,12 +162,12 @@ public class Attributes extends ArrayList<Attribute> {
 	// => martin needs a coffee.
 	private String derefName( String name, boolean expand ) { // hopefully non-blank string
 		String value = null;
-		if (null != name && name.length() > 0 ) {
+		//if (null != name && name.length() > 0 ) {
 			String orig = name;
 			// if we have QUOTED-X, retrieve X and leave answer QUOTED
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
 			boolean quoted = name.contains( Pattern.quotedPrefix ),
-					plural = name.contains( Pattern.pluralPrefix ),
+					plural  = name.contains( Pattern.pluralPrefix ),
 					external = name.contains( Pattern.externPrefix );
 			
 			// remove all prefixes...
@@ -194,7 +194,7 @@ public class Attributes extends ArrayList<Attribute> {
 				//but returning below is not a good idea.
 				//value = name +"='"+ value +"' ";
 				// Look to sofa to expand WHOM WHERE
-		}	}
+		}	//}
 		return value;
 	}
 	public Strings deref( Strings ans ) { return deref( ans, false ); } // backward compatible
