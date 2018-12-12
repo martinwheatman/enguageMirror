@@ -18,59 +18,48 @@ import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
-public class Enguage extends Shell {
+public class Enguage {
 
 	static public final String    DNU = "DNU";
 	static public final String defLoc = "./src/assets";
 
 	static private  Audit audit = new Audit( "Enguage" );
 
-	/* Enguage is a singleton, so that its internals can refer
-	 * to the outer instance.
-	 * N.B. This is null as Android needs to renew it!
-	 */
-	static private Enguage e = null;
-	static public  Enguage get() { return e == null ? (e = new Enguage()) : e; }
-	static public  void    set( Enguage eng ) { e = eng; }
-
-	public Enguage() {
-		super( "Enguage" );
-	}
+	static private Shell shell = new Shell( "Enguage" );
+	static public  Shell shell() {return shell;}
 	
-	public void init( String path, Object ctx, String[] concepts) {
-		init( path, path, ctx, concepts );
-	}
-	public void init( String location, String root, Object ctx, String[] concepts) {
-		location( location ).root( root ).context( ctx ).concepts( concepts );
+	/*
+	 * Enguage should be independent of Android, but...
+	 */
+	static private Config   config = new Config();
+	static public  int  loadConfig( String content ) { return Enguage.config.load( content ); }
+
+	static private Object  context = null; // if null, not on Android
+	static public  Object  context() { return context; }
+	static public  void    context( Object activity ) { context = activity; }
+
+	static public  Overlay o = Overlay.Get();
+
+	static public  void concepts( String[] names ) { Concepts.names( names );}
+
+	static public  void   root( String rt ) { Fs.root( rt ); }
+	static public  String root() { return Fs.root();}
+
+	static public  void location( String loc ) {if(!Fs.location( loc )) audit.FATAL(loc +": not found");}
+
+	static public void init( String pth, Object ctx, String[] cncpts) {init( pth, pth, ctx, cncpts );}
+	static public void init( String loc, String root, Object ctx, String[] concepts) {
+		location( loc );
+		root( root );
+		context( ctx );
+		concepts( concepts );
 
 		if ((null == o || !o.attached() ) && !Overlay.autoAttach())
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
 	}
 
-	/*
-	 * Enguage should be independent of Android, but...
-	 */
-	static private Config     config = new Config();
-	static public  int    loadConfig( String content ) { return Enguage.config.load( content ); }
 
-	private Object  context = null; // if null, not on Android
-	public  Object  context() { return context; }
-	public  Enguage context( Object activity ) { context = activity; return this; }
-
-	public  Overlay o = Overlay.Get();
-
-	public  Enguage concepts( String[] names ) { Concepts.names( names ); return this; }
-
-	public  Enguage root( String rt ) { Fs.root( rt ); return this; }
-	public  String  root() { return Fs.root();}
-
-	public  Enguage location( String location ) {
-		if(!Fs.location( location ))
-			audit.FATAL(location +": not found");
-		return this;
-	}
-
-	public Strings interpret( Strings utterance ) {
+	static public Strings interpret( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
 		
 		if (Net.serverOn()) audit.log( "Server  given: " + utterance.toString() );
@@ -95,7 +84,7 @@ public class Enguage extends Shell {
 			audit.debug( "Enguage:interpret(): not understood, forgeting to ignore: "
 			             +Repertoire.signs.ignore().toString() );
 			Repertoire.signs.ignoreNone();
-			aloudIs( true ); // sets aloud for whole session if reading from fp
+			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
 		}
 
 		// auto-unload here - autoloading() in Repertoire.interpret() 
@@ -140,7 +129,7 @@ public class Enguage extends Shell {
 		
 		Strings reply = serverTest ?
 				new Strings( Net.client( "localhost", portNumber, cmd ))
-				: Enguage.e.interpret( new Strings( cmd ));
+				: Enguage.interpret( new Strings( cmd ));
 
 		if (expected != null && !expected.equals( "" )) {
 			if (!expected.endsWith( "." )) expected += ".";
@@ -167,7 +156,6 @@ public class Enguage extends Shell {
 	}	}	}	}
 	
 	public static void main( String args[] ) {
-
 		//Audit.startupDebug = true;
 		Strings    cmds = new Strings( args );
 		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
@@ -177,8 +165,7 @@ public class Enguage extends Shell {
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
 
-		Enguage e = get();
-		e.init( location, null, null, new File( location + "/concepts" ).list());
+		Enguage.init( location, null, null, new File( location + "/concepts" ).list());
 
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
 
@@ -192,7 +179,7 @@ public class Enguage extends Shell {
 		}
 				
 		if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
-			e.aloudIs( true ).run();
+			Enguage.shell.aloudIs( true ).run();
 		
 		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
 			Net.server( cmds.remove( 0 ));
@@ -200,14 +187,14 @@ public class Enguage extends Shell {
 		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ))
 			sanityCheck( serverTest, location );
 		
-		else
-			usage();
+		else usage();
 	}
 	
 	// === test code ===
+	final static private Strings ihe = new Strings( "I have everything" );
 	static private void clearTheNeedsList() {
 		// Call this direct, so its not counted!
-		Enguage.e.interpret( new Strings( "I have everything" ));
+		Enguage.interpret( ihe );
 	}
 	static private boolean thisTest( int level, int test ) {
 		return level == 0 || level == test || (level < 0 && level != -test);

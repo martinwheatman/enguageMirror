@@ -62,10 +62,8 @@ public class Config {
 				else if (name.equals(     "YES" )) Reply.yes( value );
 				else if (name.equals(      "NO" )) Reply.no(  value );
 				else if (name.equals(      "IK" )) Reply.ik(  value );
-				else {
-					//audit.LOG( "Saving name='"+ name +"', value='"+ value +"'");
+				else
 					Variable.set( name,  value );
-				}
 	}	}	}
 
 	public int load( String content ) {
@@ -79,7 +77,7 @@ public class Config {
 		
 		audit.log(
 				welcome(
-					Enguage.get().copyright() +
+					Enguage.shell().copyright() +
 					"\nEnguage main(): overlay is: " + Overlay.Get().toString()
 			)	);
 

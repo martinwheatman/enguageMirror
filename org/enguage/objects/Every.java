@@ -37,9 +37,9 @@ public class Every {
 				// re-issue rebuilt utterance
 				
 				// N.B. need to 'expandValues' here..
-				Strings reply = Enguage.get().interpret(  Attributes.expandValues( sa.reinsert( m, "{", "}" ) ) );
+				Strings reply = Enguage.interpret(  Attributes.expandValues( sa.reinsert( m, "{", "}" ) ) );
 				//audit.debug( "individual reply => "+ reply );
-				if (reply.equals( /*Enguage.DNU*/ "I don't understand" ) ||
+				if (reply.equals( /*Enguage.DNU*/ new Strings( "I don't understand" )) ||
 					reply.get(0).toLowerCase( Locale.getDefault()).startsWith( "sorry" ))
 				{	rc = Shell.FAIL;
 					break;

@@ -26,8 +26,8 @@ public class Sofa extends Shell {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch! in sofa" );
 	}
-	private static final Strings True  = Shell.Success;
-	private static final Strings False = Shell.Fail;
+//	private static final Strings True  = Shell.Success;
+//	private static final Strings False = Shell.Fail;
 
 	public Strings doCall( Strings a ) {
 		//audit.in( "doCall", a.toString( Strings.CSV ));
@@ -43,7 +43,7 @@ public class Sofa extends Shell {
 			 * package class requirements...?
 			 */
 			for (int i=0; i<5 && i<a.size(); i++)
-				if (a.get( i ).equals( ":")) {
+				if (a.get( i ).equals( ":" )) {
 					a.remove( i );
 					break;
 				} else
@@ -51,8 +51,8 @@ public class Sofa extends Shell {
 			
 			String  type = a.remove( 0 );
 			return //audit.out(
-			    a.size() == 0 && type.equals(         True ) ? True :
-				 a.size() == 0 && type.equals(        False ) ? False :
+			    a.size() == 0 && type.equals( Shell.SUCCESS  ) ? Shell.Success :
+				 a.size() == 0 && type.equals( Shell.FAIL ) ? Shell.Fail :
 						type.equals(     "entity" ) ?      Entity.interpret( a ) :
 						type.equals(       "link" ) ?        Link.interpret( a ) :
 						type.equals(   Value.NAME ) ?       Value.interpret( a ) :
@@ -74,10 +74,10 @@ public class Sofa extends Shell {
 						type.equals(    Sign.NAME ) ?        Sign.interpret( a ) :
 						type.equals(Function.NAME ) ?    Function.interpret( a ) :
 						type.equals(   Every.NAME ) ?       Every.interpret( a ) :
-									  False; // );
+							Fail; // );
 		}
 		audit.ERROR("doCall() fails - "+ (a==null?"no params":"not enough params: "+ a.toString()));
-		return False; //audit.traceOut( FAIL ); //
+		return Fail; //audit.traceOut( FAIL ); //
 	}
 	
 	// perhaps need to re-think this? Do we need this stage - other than for relative concept???
@@ -94,7 +94,7 @@ public class Sofa extends Shell {
 		//audit.traceIn( "doNeg", prog.toString( Strings.SPACED ));
 		boolean negated = prog.get( 0 ).equals( "!" );
 		Strings rc = doCall( prog.copyAfter( negated ? 0 : -1 ) ); // was do sofa
-		if (negated) rc = rc.equals( True ) ? False : rc.equals( False ) ? True : rc;
+		if (negated) rc = rc.equals( Success ) ? Fail : rc.equals( Fail ) ? Success : rc;
 		return rc; // */audit.traceOut( rc );
 	}
 
@@ -131,11 +131,11 @@ public class Sofa extends Shell {
 	// a b .. z {| a b .. z}
 	private Strings doOrList( Strings a ) {
 		//audit.traceIn( "doOrList", a.toString( Strings.SPACED ));
-		Strings rc = False;
+		Strings rc = Fail;
 		for (int i = 0, sz = a.size(); i<sz; i++) {
 			Strings cmd = a.copyFromUntil( i, "||" );
 			i += cmd.size(); // left pointing at "|" or null
-			if (rc.equals( False )) rc = doNeg( cmd ); // only do if not yet succeeded -- was doAssign()
+			if (rc.equals( Fail )) rc = doNeg( cmd ); // only do if not yet succeeded -- was doAssign()
 		}
 		//return audit.traceOut( rc );
 		return rc;
@@ -143,12 +143,12 @@ public class Sofa extends Shell {
 
 	private Strings doAndList( Strings a ) {
 		//audit.traceIn( "doAndList", a.toString( Strings.SPACED ));
-		Strings rc = True;
+		Strings rc = Success;
 		for (int i=0, sz=a.size(); i<sz; i++) {
 			Strings cmd = a.copyFromUntil( i, "&&" );
 			//audit.debug( "cmd=" + cmd +", i="+ i );
 			i += cmd == null ? 0 : cmd.size();
-			if (rc.equals( True )) rc = doOrList( cmd );
+			if (rc.equals( Success )) rc = doOrList( cmd );
 		}
 		return rc; // */ audit.traceOut( rc );
 	}

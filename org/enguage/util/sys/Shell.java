@@ -6,10 +6,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import org.enguage.Enguage;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
-abstract public class Shell {
+public class Shell {
 
 	static  Audit audit = new Audit( "Shell" );
 	
@@ -21,7 +22,7 @@ abstract public class Shell {
 	public static final Strings Fail    = new Strings( FAIL );
 	public static final Strings Ignore  = new Strings( IGNORE );
 		
-	abstract public Strings interpret( Strings argv ) ;
+	//public Strings interpret( Strings argv ) ;
 	
 	static public Strings terminators = new Strings( ". ? !" );
 	static public void    terminators( Strings a ){ terminators = a; }
@@ -114,7 +115,7 @@ abstract public class Shell {
 							ArrayList<Strings> sentenceList = expandSemicolonList( sentence );
 							for (Strings s : sentenceList ) {
 								interval();
-								Strings rc = interpret( s );
+								Strings rc = Enguage.interpret( s );
 								if (aloud)
 									audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
 							}

@@ -39,7 +39,7 @@ public class Net {
 				try {
 					in  = new BufferedReader( new InputStreamReader( connection.getInputStream()));
 					out = new DataOutputStream( connection.getOutputStream());
-					out.writeBytes( prefix + Enguage.get().interpret( new Strings( in.readLine() )) + "\n" );
+					out.writeBytes( prefix + Enguage.interpret( new Strings( in.readLine() )) + "\n" );
 				} catch (Exception e) {
 					audit.ERROR( "Error in child socket");
 				} finally {

@@ -23,7 +23,7 @@ public class Lambda {
 	}
 	public Lambda( Function fn, Strings values ) { // existing/find
 		audit.in( "ctor", "finding: "+ fn +"( "+ values +" )" );
-		Strings onames = Enguage.get().o.list( "." );
+		Strings onames = Enguage.o.list( "." );
 		if (null != onames) for (String formals : onames) 
 			if (match( (signature = new Strings( formals, ',' )), values )
 				&& !(body = new Value( formals, fn.name() ).getAsString()).equals(""))

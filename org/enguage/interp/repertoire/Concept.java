@@ -16,10 +16,9 @@ import org.enguage.util.Audit;
 public class Concept {
 	static public final String LOADING = "CONCEPT";
 	static public boolean load( String name ) {
-		Enguage e = Enguage.get();
-		boolean wasLoaded = false,
+		boolean wasLoaded   = false,
 		        wasSilenced = false,
-		        wasAloud = e.isAloud();
+		        wasAloud    = Enguage.shell().isAloud();
 		
 		Variable.set( LOADING, name );
 		
@@ -27,7 +26,7 @@ public class Concept {
 		if (!Audit.startupDebug) {
 			wasSilenced = true;
 			Audit.suspend();
-			e.aloudIs( false );
+			Enguage.shell().aloudIs( false );
 		}
 		
 		Intention.concept( name );
@@ -42,7 +41,7 @@ public class Concept {
 					/*a == null ?*/
 							new FileInputStream( Ospace.location() + fname )
 					/*      : a.getAssets().open( fname )*/;
-			e.interpret( is );
+			Enguage.shell().interpret( is );
 			is.close();
 			
 			wasLoaded = true;
@@ -52,7 +51,7 @@ public class Concept {
 		//...un-silence after inner thought
 		if (wasSilenced) {
 			Audit.resume();
-			e.aloudIs( wasAloud );
+			Enguage.shell().aloudIs( wasAloud );
 		}
 		
 		Variable.unset( LOADING );

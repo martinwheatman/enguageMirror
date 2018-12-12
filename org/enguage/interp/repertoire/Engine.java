@@ -180,19 +180,18 @@ public class Engine {
 				r.format( Reply.failure() +", i need to know what to group by" );
 			
 		} else if ( cmd.equals( "undo" )) {
-			Enguage e = Enguage.get();
 			r.format( Reply.success() );
 			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
 				Redo.undoEnabledIs( true );
 			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
 				Redo.undoEnabledIs( false );
 			else if (cmds.size() == 0 && Redo.undoIsEnabled()) {
-				if (e.o.count() < 2) { // if there isn't an overlay to be removed
-					audit.debug( "overlay count( "+ e.o.count() +" ) < 2" ); // audit
+				if (Enguage.o.count() < 2) { // if there isn't an overlay to be removed
+					audit.debug( "overlay count( "+ Enguage.o.count() +" ) < 2" ); // audit
 					r.answer( Reply.no() );
 				} else {
 					audit.debug("ok - restarting transaction");
-					e.o.reStartTxn();
+					Enguage.o.reStartTxn();
 				}
 			} else if (!Redo.undoIsEnabled())
 				r.format( Reply.dnu() );
@@ -238,8 +237,7 @@ public class Engine {
 			
 		} else if (cmd.equals( "iknow" )) {
 			
-			Enguage e = Enguage.get();
-			String tmp = e.interpret( cmds ).toString();
+			String tmp = Enguage.interpret( cmds ).toString();
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
