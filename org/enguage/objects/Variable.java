@@ -20,8 +20,9 @@ public class Variable {
 	 * Because $ has special significance in the filesystem/shell
 	 * prefix variables with '_'
 	 */
-	static private Audit   audit = new Audit( "Variable" );
-	static public  String   NAME = "variable";
+	static public  final String NAME = "variable";
+	static public  final long     id = Strings.hash( NAME );
+	static private       Audit audit = new Audit( "Variable" );
 	
 	static private char intPrefix = '$';
 	static public  void intPrefix( char s ) { intPrefix = s; }

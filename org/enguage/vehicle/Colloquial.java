@@ -11,7 +11,9 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Shell;
 
 public class Colloquial {
-	static private Audit audit = new Audit( "Colloquial" );
+	static public  final String NAME = "colloquial";
+	static public  final long     id = Strings.hash( NAME );
+	static private       Audit audit = new Audit( "Colloquial" );
 	
 	private TreeMap<Strings,Strings> intl;
 	private TreeMap<Strings,Strings> extl;

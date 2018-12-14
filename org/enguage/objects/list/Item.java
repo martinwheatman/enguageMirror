@@ -18,6 +18,7 @@ public class Item {
 
 	static private      Audit audit = new Audit("Item" );
 	static public final String NAME = "item";
+	static public final long     id = Strings.hash( NAME );
 	
 	static private Strings format = new Strings(); // e.g. "QUANTITY,UNIT of,,LOCATOR LOCATION"
 	static public  void    format( String csv ) { format = new Strings( csv, ',' ); }

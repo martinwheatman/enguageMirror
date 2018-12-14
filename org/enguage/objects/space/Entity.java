@@ -15,7 +15,8 @@ class EntityShell extends Shell {
 }
 
 public class Entity {
-	static private Audit audit = new Audit( "Entity" );
+	static private       Audit audit = new Audit( "Entity" );
+	static public  final long id = Strings.hash( "entity" );
 	
 	public static String name( String entity, String rw ) {
 		return Overlay.fsname( entity, rw );

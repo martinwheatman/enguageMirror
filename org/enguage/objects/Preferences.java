@@ -12,6 +12,7 @@ import org.enguage.util.sys.Shell;
  */
 public class Preferences {
 	static private Audit audit = new Audit( "Preferences" );
+	static public  final long       id = Strings.hash( "preferences" );
 	
 //	static SharedPreferences shPref = null; // can't set yet -- causes null ptr exception
 //	public Preferences( SharedPreferences s ) { shPref = s; }

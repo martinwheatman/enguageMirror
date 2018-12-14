@@ -16,6 +16,7 @@ public class List extends ArrayList<Item> {
 	static final long serialVersionUID = 0L;
 	static       private Audit   audit = new Audit( "List" );
 	static final public  String   NAME = "list";
+	static final public  long       id = Strings.hash( NAME );
 	
 	Value value; // instead of extending this class...
 	public void ignore() {value.ignore();}
@@ -208,7 +209,7 @@ public class List extends ArrayList<Item> {
 		 * value => i need 3 eggs.
 		 */
 		boolean rc = false,
-		   isTrans = Trans.isConcept( name );
+		   isTrans = Transitive.isConcept( name );
 		audit.in( "isAttrVal", "descr='"+ descr +"', name='"+ name +"', value="+ value );
 		for (Item li : this) {
 			if (descr.equalsIgnoreCase( li.description())) {

@@ -2,7 +2,6 @@ package org.enguage.objects.space;
 
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
-import org.enguage.objects.Preferences;
 import org.enguage.objects.Sign;
 import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
@@ -10,7 +9,7 @@ import org.enguage.objects.Variable;
 import org.enguage.objects.expr.Function;
 import org.enguage.objects.list.Item;
 import org.enguage.objects.list.List;
-import org.enguage.objects.list.Trans;
+import org.enguage.objects.list.Transitive;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -25,51 +24,52 @@ public class Sofa extends Shell {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch! in sofa" );
 	}
-//	private static final Strings True  = Shell.Success;
-//	private static final Strings False = Shell.Fail;
+	private static final long lSuccess  = Strings.hash( Shell.SUCCESS );
+	private static final long lFail     = Strings.hash( Shell.FAIL );
 
 	public Strings doCall( Strings a ) {
 		//audit.in( "doCall", a.toString( Strings.CSV ));
-		if (null != a && a.size() > 1) {
+		if (a.size() > 1) {
 			/* Tags.matchValues() now produces:
 			 * 		["a", "b", "c='d'", "e", "f='g'"]
 			 * Sofa.interpret() typically deals with:
 			 * 		["string", "get", "martin", "name"]
 			 * 		["colloquial", "both", "'I have'", "'I've'"]
-			 * Need to ensure first 4? name/value pairs are dereferenced
-			 * Needs to be done here, as call() will be called independently
-			 * May need to be selective on how this is done, depending on sofa 
-			 * package class requirements...?
 			 */			
 			String  type = a.remove( 0 );
-			return //audit.out(
-			    a.size() == 0 && type.equals( Shell.SUCCESS  ) ? Shell.Success :
-				 a.size() == 0 && type.equals( Shell.FAIL ) ? Shell.Fail :
-						type.equals(     "entity" ) ?      Entity.interpret( a ) :
-						type.equals(       "link" ) ?        Link.interpret( a ) :
-						type.equals(   Value.NAME ) ?       Value.interpret( a ) :
-						type.equals(    List.NAME ) ?        List.interpret( a ) :
-						type.equals( "preferences") ? Preferences.interpret( a ) :
-						type.equals( Numeric.NAME ) ?     Numeric.interpret( a ) :
-						// TODO:
-						// in prep. for removing 'variable' from perform utterance: default class!
-						//type.equals(        "set" ) ?    Variable.interpret( a.prepend( "get" ) ) :
-						//type.equals(        "get" ) ?    Variable.interpret( a.prepend( "set" ) ) :
-						type.equals( Variable.NAME) ?    Variable.interpret( a ) :
-						type.equals(    "overlay" ) ?     Overlay.interpret( a ) :
-						type.equals( "colloquial" ) ?  Colloquial.interpret( a ) :
-						type.equals(  Plural.NAME ) ?      Plural.interpret( a ) :
-						type.equals(    Item.NAME ) ?        Item.interpret( a ) :
-						type.equals( Spatial.NAME ) ?     Spatial.interpret( a ) :
-						type.equals(Temporal.NAME ) ?    Temporal.interpret( a ) :
-						type.equals(   Trans.NAME ) ?       Trans.interpret( a ) :
-						type.equals(    Sign.NAME ) ?        Sign.interpret( a ) :
-						type.equals(Function.NAME ) ?    Function.interpret( a ) :
-						type.equals(   Every.NAME ) ?       Every.interpret( a ) :
-							Fail; // );
-		}
+			long  typeId = Strings.hash( type );
+			if (a.size() == 0 && typeId == lSuccess) return Shell.Success;
+			if (a.size() == 0 && typeId ==  lFail) return Shell.Fail;
+			return (typeId == Plural.id) ?  Plural.interpret( a )
+				: typeId < Plural.id ?
+					typeId ==  Sign.id ?  Sign.interpret( a )
+						: typeId<Sign.id ?
+							typeId == Link.id ? Link.interpret( a )
+							: typeId < Link.id ?
+								typeId == Item.id ? Item.interpret( a ) : Fail
+								: typeId == List.id ? List.interpret( a ) : Fail
+						// >Sign
+						: (typeId == Value.id) ? Value.interpret( a )
+							: (typeId < Value.id) ?
+								typeId ==  Every.id ? Every.interpret( a ) : Fail
+								: typeId == Entity.id ? Entity.interpret( a ) : Fail
+					// > Plural
+					: typeId == Temporal.id ? Temporal.interpret( a )
+						: typeId < Temporal.id ?
+							typeId == Spatial.id ? Spatial.interpret( a )
+								: typeId < Spatial.id ?
+									typeId == Numeric.id ? Numeric.interpret( a )
+										: typeId == Overlay.id ? Overlay.interpret( a ) : Fail
+									// > Spatial
+									: typeId == Function.id ? Function.interpret( a ) : Fail
+							// > Temporal
+							: typeId == Colloquial.id ?	Colloquial.interpret( a )
+								: typeId < Colloquial.id ?
+									typeId == Variable.id ? Variable.interpret( a ) : Fail
+										: typeId == Transitive.id ? Transitive.interpret( a ) : Fail;
+			}
 		audit.ERROR("doCall() fails - "+ (a==null?"no params":"not enough params: "+ a.toString()));
-		return Fail; //audit.traceOut( FAIL ); //
+		return Fail;
 	}
 	
 	// perhaps need to re-think this? Do we need this stage - other than for relative concept???

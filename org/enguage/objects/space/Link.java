@@ -28,7 +28,8 @@ class LinkShell extends Shell {
 // Sooooo..... the number of parents "../" is dependent on the number of "levels/" in entity string!!!
 // this has so far only been 1! e.g. entity="martin", attribute="attr" => link="../attr"
 public class Link {
-	static private Audit audit = new Audit( "Link" );
+	static public  final long     id = Strings.hash( "link" );
+	static private       Audit audit = new Audit( "Link" );
 	
 	public static String get( String entity, String attribute ) {
 		//audit.traceIn( "get", "entity='"+ entity +"', attribute='"+ attribute +"' " );

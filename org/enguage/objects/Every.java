@@ -11,8 +11,9 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 
 public class Every {
-	public  static final String        NAME = "every";
-	private static       Audit        audit = new Audit( "Every" );
+	static public  final String NAME = "every";
+	static public  final long     id = Strings.hash( NAME );
+	static private       Audit audit = new Audit( "Every" );
 	
 	static private String forEvery( Strings sa ) {
 		String rc = Shell.FAIL;

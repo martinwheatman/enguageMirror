@@ -8,8 +8,9 @@ import org.enguage.vehicle.where.Where;
 
 public class Spatial {
 	
-	public final static String NAME="spatial";
-	static Audit audit = new Audit( NAME );
+	static public final String NAME = "spatial";
+	static public final long     id = Strings.hash( NAME );
+	static private      Audit audit = new Audit( NAME );
 	
 	private static Strings concepts = new Strings();
 	public  static boolean isConcept(  String s) {return concepts.contains( s );}

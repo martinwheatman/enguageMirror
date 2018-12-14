@@ -6,10 +6,25 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeSet;
 
+import org.enguage.objects.Every;
+import org.enguage.objects.Numeric;
+import org.enguage.objects.Sign;
+import org.enguage.objects.Spatial;
+import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
+import org.enguage.objects.expr.Function;
+import org.enguage.objects.list.Item;
+import org.enguage.objects.list.List;
+import org.enguage.objects.list.Transitive;
+import org.enguage.objects.space.Entity;
+import org.enguage.objects.space.Link;
+import org.enguage.objects.space.Overlay;
+import org.enguage.objects.space.Value;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
+import org.enguage.vehicle.Colloquial;
 import org.enguage.vehicle.Language;
+import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.number.Numerals;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
@@ -958,7 +973,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]
 		Strings output = new Strings(),
 				tmp    = new Strings();
-		for (String s : this )
+		for (String s : this)
 			if (s.equals( sep )) {
 				if (tmp.size() > 0) output.add( tmp.toString());
 				tmp = new Strings();
@@ -966,6 +981,18 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				tmp.add( s );
 		if (tmp.size() > 0) output.add( tmp.toString());
 		return output;
+	}
+	
+	static public long hash( String s ) {
+		final char upper = 'z', lower = 'a';
+		long hash  = 0;
+		char ch;
+		int rng = upper - lower + 1,
+		    len = s.length();
+		for (int i=0; i<len; i++)
+			if ((ch = s.charAt( i ))>=lower && ch<=upper)
+				hash = hash*rng + ch - lower + 1;
+		return hash;
 	}
 	// -- static Algorithm helpers ABOVE
 	// ---------------------------------------------------------
@@ -977,7 +1004,6 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 //		new Strings( "a + b" ).substitute( new Strings("a b"), new Strings( "1 2"));
 //		System.exit( 0 );
 		
-		audit.log( "hello, world" );
 
 
 		
@@ -1123,4 +1149,20 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		//audit.audit( Strings.toString( Strings.fromString( "failure won't 'do' 'don't'" ), Strings.DQCSV ));
 		//audit.audit( Strings.toString( Strings.insertAt( Strings.fromString( "is the greatest" ), -1, "martin" ), Strings.SPACED ));
 		//audit.audit( "" );
+		audit.log( "Item:       "+       Item.id);
+		audit.log( "Link:       "+       Link.id);
+		audit.log( "List:       "+       List.id);
+		audit.log( "Sign:       "+       Sign.id);
+		audit.log( "Every:      "+      Every.id);
+		audit.log( "Value:      "+      Value.id);
+		audit.log( "Entity:     "+     Entity.id);
+		audit.log( "Plural:     "+     Plural.id);
+		audit.log( "Numeric:    "+    Numeric.id);
+		audit.log( "Overlay:    "+    Overlay.id);
+		audit.log( "Spatial:    "+    Spatial.id);
+		audit.log( "Function:   "+   Function.id);
+		audit.log( "Temporal:   "+   Temporal.id);
+		audit.log( "Variable:   "+   Variable.id);
+		audit.log( "Colloquial: "+ Colloquial.id);
+		audit.log( "Transitive: "+ Transitive.id);
 }	}

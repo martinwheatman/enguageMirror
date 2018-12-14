@@ -8,8 +8,9 @@ import org.enguage.vehicle.when.When;
 
 public class Temporal {
 	
-	public final static String NAME="temporal";
-	static Audit audit = new Audit( NAME );
+	static public final String NAME = "temporal";
+	static public final long     id = Strings.hash( NAME );
+	static private      Audit audit = new Audit( NAME );
 	
 	private static Strings concepts = new Strings();
 	public  static boolean isConcept( String s) { return concepts.contains( s ); }

@@ -4,9 +4,10 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
 
-public class Trans {
+public class Transitive {
 	
-	public final static String NAME="transitive";
+	public final static  String NAME = "transitive";
+	static public  final long     id = Strings.hash( NAME );
 	static Audit audit = new Audit( NAME );
 	
 	private static Strings    concepts = new Strings();

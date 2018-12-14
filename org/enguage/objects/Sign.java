@@ -12,8 +12,9 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Reply;
 
 public class Sign {
-	static public  String  NAME = "sign";
-	static private Audit  audit = new Audit( "Sign" );
+	static public  final String  NAME = "sign";
+	static public  final long      id = Strings.hash( NAME );
+	static private       Audit  audit = new Audit( "Sign" );
 	
 	/*
 	 * This will handle "sign create X", found in interpret.txt

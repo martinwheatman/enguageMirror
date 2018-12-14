@@ -13,8 +13,9 @@ import org.enguage.vehicle.reply.Reply;
 
 public class Function {
 	
-	static public  String  NAME = "function";
-	static private Audit  audit = new Audit( "Function" );
+	static public  final String NAME = "function";
+	static public  final long     id = Strings.hash( NAME );
+	static private       Audit audit = new Audit( "Function" );
 	
 	public Function( String nm ) { name = nm; } // find
 	public Function( String nm, Strings params, String body ) {

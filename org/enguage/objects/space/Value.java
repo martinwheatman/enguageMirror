@@ -16,8 +16,9 @@ class ValuesTest extends Shell {
 public class Value {
 	static private Audit audit = new Audit( "Value" );
 	
-	public  static final String   NAME = "value";
-	private static       boolean debug = false; // Enguage.runtimeDebugging;
+	static public  final String   NAME = "value";
+	static public  final long       id = Strings.hash( NAME );
+	static private       boolean debug = false; // Enguage.runtimeDebugging;
 	
 	protected String ent, attr;
 	public String name() { return attr; }

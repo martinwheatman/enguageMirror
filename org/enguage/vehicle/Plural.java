@@ -11,8 +11,9 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Plural;
 
 public class Plural {
-	static Audit audit = new Audit( "Plural" );
-	public static final String NAME = "plural";
+	static public  final String NAME = "plural";
+	static public  final long     id = Strings.hash( NAME );
+	static private       Audit audit = new Audit( "Plural" );
 	
 	// these hold full exceptions, not endings e.g. "colloquial" -> "colloquia"
 	private static TreeMap<String,String> singularExceptions = new TreeMap<String,String>();

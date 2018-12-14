@@ -12,9 +12,9 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.number.Number;
 
 public class Numeric extends Value {
-	static private Audit audit = new Audit( "Numeric" );
-	//static private boolean debug = false;
-	public static final String NAME = "numeric";
+	public static  final String NAME = "numeric";
+	static public  final long     id = Strings.hash( NAME );
+	static private       Audit audit = new Audit( "Numeric" );
 	
 	public Numeric( String e, String a ) { super( e, a ); }
 	
