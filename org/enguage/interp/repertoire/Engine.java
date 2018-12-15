@@ -17,6 +17,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Net;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Question;
+import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 
 public class Engine {
@@ -237,7 +238,7 @@ public class Engine {
 			
 		} else if (cmd.equals( "iknow" )) {
 			
-			String tmp = Enguage.interpret( cmds ).toString();
+			String tmp = Repertoire.interpret( new Utterance( cmds )).toString();
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );

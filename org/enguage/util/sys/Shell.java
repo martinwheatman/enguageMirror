@@ -6,9 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import org.enguage.Enguage;
+import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Utterance;
 
 public class Shell {
 
@@ -115,7 +116,7 @@ public class Shell {
 							ArrayList<Strings> sentenceList = expandSemicolonList( sentence );
 							for (Strings s : sentenceList ) {
 								interval();
-								Strings rc = Enguage.interpret( s );
+								String rc = Repertoire.interpret( new Utterance( s )).toString();
 								if (aloud)
 									audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
 							}

@@ -59,7 +59,7 @@ public class Enguage {
 	}
 
 
-	static public Strings interpret( Strings utterance ) {
+	static public Strings mediate( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
 		
 		if (Net.serverOn()) audit.log( "Server  given: " + utterance.toString() );
@@ -117,9 +117,9 @@ public class Enguage {
 		audit.LOG( "       -t, --test" );
 		audit.LOG( "          runs a sanity check" );
 	}
-	static private void interpret( String cmd ) { interpret( cmd, "" );}
-	static private void interpret( String cmd, String expected ) { interpret( cmd, expected, "" ); }
-	static private void interpret( String cmd, String expected, String unexpected ) {
+	static private void mediate( String cmd ) { mediate( cmd, "" );}
+	static private void mediate( String cmd, String expected ) { mediate( cmd, expected, "" ); }
+	static private void mediate( String cmd, String expected, String unexpected ) {
 		
 		// expected == null => silent!
 		if (expected != null) {
@@ -129,7 +129,7 @@ public class Enguage {
 		
 		Strings reply = serverTest ?
 				new Strings( Net.client( "localhost", portNumber, cmd ))
-				: Enguage.interpret( new Strings( cmd ));
+				: Enguage.mediate( new Strings( cmd ));
 
 		if (expected != null && !expected.equals( "" )) {
 			if (!expected.endsWith( "." )) expected += ".";
@@ -194,7 +194,7 @@ public class Enguage {
 	final static private Strings ihe = new Strings( "I have everything" );
 	static private void clearTheNeedsList() {
 		// Call this direct, so its not counted!
-		Enguage.interpret( ihe );
+		Enguage.mediate( ihe );
 	}
 	static private boolean thisTest( int level, int test ) {
 		return level == 0 || level == test || (level < 0 && level != -test);
@@ -213,166 +213,166 @@ public class Enguage {
 		if (thisTest( level, 1 )) { // james's experimental example
 			
 			//interpret( "england is a country",  "ok, england is a country" );
-			interpret( "preston is in england", "ok, preston is in england" );
-			interpret( "i am in preston",       "ok, you're in england" );
+			mediate( "preston is in england", "ok, preston is in england" );
+			mediate( "i am in preston",       "ok, you're in england" );
 		}
 		if (thisTest( level, 2 )) {
 			// These tests were for JCSSA journal article
 			audit.title( "Simple action demo" );
-			interpret( "i am baking a cake",     "i know", "ok, you're baking a cake" );
-			interpret( "am i baking a cake",     "yes, you're     baking a cake" );
-			interpret( "i am not baking a cake", "ok,  you're not baking a cake" );
+			mediate( "i am baking a cake",     "i know", "ok, you're baking a cake" );
+			mediate( "am i baking a cake",     "yes, you're     baking a cake" );
+			mediate( "i am not baking a cake", "ok,  you're not baking a cake" );
 			
 			audit.title( "Why/because" );
-			interpret( "i need 3 eggs because i am baking a cake",
+			mediate( "i need 3 eggs because i am baking a cake",
 					   "ok, you need 3 eggs because you're baking a cake" );
 			
-			interpret( "am i baking a cake",      "yes, you're baking a cake" );
-			interpret( "how many eggs do i need", "3, you need 3 eggs" );
+			mediate( "am i baking a cake",      "yes, you're baking a cake" );
+			mediate( "how many eggs do i need", "3, you need 3 eggs" );
 			
-			interpret( "why do i need 3 eggs",    "because you're baking a cake" );
-			interpret( "do I need 3 eggs because I am baking a cake",
+			mediate( "why do i need 3 eggs",    "because you're baking a cake" );
+			mediate( "do I need 3 eggs because I am baking a cake",
 				       "yes, you need 3 eggs because you're baking a cake" );
 			// simple check for infinite loops
-			interpret( "i am baking a cake because i need 3 eggs",
+			mediate( "i am baking a cake because i need 3 eggs",
 					   "ok, you're baking a cake because you need 3 eggs" );
-			interpret( "why am i baking a cake",  "because you need 3 eggs" );
+			mediate( "why am i baking a cake",  "because you need 3 eggs" );
 			
 			audit.title( "Distinguishing negative responses" );
 			// I do understand, "sophie needs dr martens", but
 			// I don't understand, "sophie is very fashionable"
-			interpret( "sophie needs dr martens because sophie is very fashionable",
+			mediate( "sophie needs dr martens because sophie is very fashionable",
                        "I don't understand" );
-			interpret( "sophie is very fashionable because sophie needs dr martens",
+			mediate( "sophie is very fashionable because sophie needs dr martens",
                        "I don't understand" );
-			interpret( "do i need 250 grams of flour because i am baking a cake",
+			mediate( "do i need 250 grams of flour because i am baking a cake",
                        "Sorry, it is not the case that you need 250 grams of flour" );
-			interpret( "why am i heating the oven",
+			mediate( "why am i heating the oven",
 					   "Sorry, it is not the case that you're heating the oven" );
 			
 			audit.title( "Transitivity" );
-			interpret( "i need to go to the shops because i need 3 eggs",
+			mediate( "i need to go to the shops because i need 3 eggs",
 					   "ok, you need to go to the shops because you need 3 eggs" );
-			interpret( "is i need 3 eggs the cause of i need to go to the shops",
+			mediate( "is i need 3 eggs the cause of i need to go to the shops",
 					   "yes, you need to go to the shops because you need 3 eggs" );
-			interpret( "is i am baking a cake the cause of i need to go to the shops",
+			mediate( "is i am baking a cake the cause of i need to go to the shops",
 					   "yes, you need to go to the shops because you're baking a cake" );
 			// this test steps over one reason...
-			interpret( "do i need to go to the shops because i am baking a cake",
+			mediate( "do i need to go to the shops because i am baking a cake",
 					   "yes, you need to go to the shops because you're baking a cake" );
 			
 			audit.title( "Why might.../abduction" );
-			interpret( "i am not baking a cake",  "ok, you're not baking a cake" );
-			interpret( "am i baking a cake",      "no, you're not baking a cake" );
-			interpret( "i do not need any eggs",  "ok, you don't need any eggs" );
-			interpret( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
-			interpret( "why might i need 3 eggs", "because you're baking a cake" );
+			mediate( "i am not baking a cake",  "ok, you're not baking a cake" );
+			mediate( "am i baking a cake",      "no, you're not baking a cake" );
+			mediate( "i do not need any eggs",  "ok, you don't need any eggs" );
+			mediate( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
+			mediate( "why might i need 3 eggs", "because you're baking a cake" );
 		}
 		if (thisTest( level, 3 )) {
 			clearTheNeedsList();
 			audit.title( "Pronouns - see need+needs.txt" );
 			
-			interpret( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
-			interpret( "they are from Sainsbury's",  "ok, they are from sainsbury's" );
-			interpret( "i need a pint of milk",      "ok, you need a pint of milk" );
-			interpret( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
-			interpret( "i need cheese and eggs from the dairy aisle",
+			mediate( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
+			mediate( "they are from Sainsbury's",  "ok, they are from sainsbury's" );
+			mediate( "i need a pint of milk",      "ok, you need a pint of milk" );
+			mediate( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
+			mediate( "i need cheese and eggs from the dairy aisle",
 					                                 "ok, you need cheese and eggs" );
-			interpret( "group by",                   "sorry, i need to know what to group by" );
-			interpret( "group by location",          "ok" );
+			mediate( "group by",                   "sorry, i need to know what to group by" );
+			mediate( "group by location",          "ok" );
 			
-			interpret( "what do i need from sainsbury's",
+			mediate( "what do i need from sainsbury's",
 					   "you need biscuits, and coffee from sainsbury's" );
 			
-			interpret( "what do i need from the dairy aisle",
+			mediate( "what do i need from the dairy aisle",
 					   "you need a pint of milk, cheese, and eggs from the dairy aisle" );
 			
-			interpret( "i don't need anything from the dairy aisle",
+			mediate( "i don't need anything from the dairy aisle",
 					   "ok, you don't need anything from the dairy aisle" );
 			
-			interpret( "what do i need",             "you need biscuits, and coffee from sainsbury's" );
-			interpret( "i need an apple" );
-			interpret( "how many apples do i need", "1, you need 1 apples" ); // <<<<<<<<< see this!
+			mediate( "what do i need",             "you need biscuits, and coffee from sainsbury's" );
+			mediate( "i need an apple" );
+			mediate( "how many apples do i need", "1, you need 1 apples" ); // <<<<<<<<< see this!
 			
 			clearTheNeedsList();
 			audit.title( "The Non-Computable concept of NEED" );
 			
-			interpret( "what do i need",	         "you don't need anything" );
-			interpret( "i need 2 cups of coffee and a biscuit",
+			mediate( "what do i need",	         "you don't need anything" );
+			mediate( "i need 2 cups of coffee and a biscuit",
 					                                 "ok, you need 2 cups of coffee and a biscuit.");
-			interpret( "what do i need",             "you need 2 cups of coffee, and a biscuit.");
-			interpret( "how many coffees do i need", "2, you need 2 coffees" );
-			interpret( "i need 2 coffees",           "i know" );
-			interpret( "i don't need any coffee",    "ok, you don't need any coffee" );
-			interpret( "what do i need",             "you need a biscuit" );
+			mediate( "what do i need",             "you need 2 cups of coffee, and a biscuit.");
+			mediate( "how many coffees do i need", "2, you need 2 coffees" );
+			mediate( "i need 2 coffees",           "i know" );
+			mediate( "i don't need any coffee",    "ok, you don't need any coffee" );
+			mediate( "what do i need",             "you need a biscuit" );
 
 			audit.title( "Semantic Thrust" );
-			interpret( "i need to go to town",       "ok, you need to go to town" );
-			interpret( "what do i need",             "you need a biscuit, and to go to town" );
-			interpret( "i have the biscuit",         "ok, you don't need any biscuit" );
-			interpret( "i have to go to town",       "I know" );
-			interpret( "i don't need to go to town", "ok, you don't need to go to town" );
-			interpret( "what do i need",             "you don't need anything" );
+			mediate( "i need to go to town",       "ok, you need to go to town" );
+			mediate( "what do i need",             "you need a biscuit, and to go to town" );
+			mediate( "i have the biscuit",         "ok, you don't need any biscuit" );
+			mediate( "i have to go to town",       "I know" );
+			mediate( "i don't need to go to town", "ok, you don't need to go to town" );
+			mediate( "what do i need",             "you don't need anything" );
 			
 			audit.title( "Numerical Context" );
 			clearTheNeedsList();
-			interpret( "i need a coffee",     "ok, you need a coffee" );
-			interpret( "and another",         "ok, you need another coffee" );
-			interpret( "how many coffees do i need", "2, you need 2 coffees" );
-			interpret( "i need a cup of tea", "ok, you need a cup of tea" );
-			interpret( "and another coffee",  "ok, you need another coffee" );
-			interpret( "what do i need",      "You need 3 coffees , and a cup of tea" );
+			mediate( "i need a coffee",     "ok, you need a coffee" );
+			mediate( "and another",         "ok, you need another coffee" );
+			mediate( "how many coffees do i need", "2, you need 2 coffees" );
+			mediate( "i need a cup of tea", "ok, you need a cup of tea" );
+			mediate( "and another coffee",  "ok, you need another coffee" );
+			mediate( "what do i need",      "You need 3 coffees , and a cup of tea" );
 			
 			audit.title( "Correction" );
-			interpret( "i need another coffee", "ok, you need another coffee.");
-			interpret( "no i need another 3",   "ok, you need another 3 coffees.");
-			interpret( "what do i need",        "you need 6 coffees, and a cup of tea.");
-			interpret( "prime the answer yes",  "ok, the next answer will be yes" );
-			interpret( "i don't need anything", "ok, you don't need anything" );
+			mediate( "i need another coffee", "ok, you need another coffee.");
+			mediate( "no i need another 3",   "ok, you need another 3 coffees.");
+			mediate( "what do i need",        "you need 6 coffees, and a cup of tea.");
+			mediate( "prime the answer yes",  "ok, the next answer will be yes" );
+			mediate( "i don't need anything", "ok, you don't need anything" );
 			
 			audit.title( "LBFQ" );
 			clearTheNeedsList();
 			
-			interpret( "i need biscuits",
+			mediate( "i need biscuits",
 					   "ok, you need biscuits" );
 			
-			interpret( "i need milk from the dairy aisle",
+			mediate( "i need milk from the dairy aisle",
 					   "ok, you need milk from the dairy aisle" );
 			
-			interpret( "what do i need",
+			mediate( "what do i need",
 					   "you need biscuits; and, milk from the dairy aisle" );
 			
-			interpret( "from the dairy aisle what do i need",
+			mediate( "from the dairy aisle what do i need",
 					   "you need milk from the dairy aisle" );
 
-			interpret( "what from the dairy aisle do i need",
+			mediate( "what from the dairy aisle do i need",
 					   "you need milk from the dairy aisle" );
 			
-			interpret( "what do i need from the dairy aisle",
+			mediate( "what do i need from the dairy aisle",
 					   "you need milk from the dairy aisle" );
 			
 			clearTheNeedsList();
 		}
 		if (thisTest( level, 4 )) {
 			audit.title( "Simple Variables" );
-			interpret( "the value of name is fred",       "ok, name is set to fred" );
-			interpret( "get the value of name",           "fred" );
-			interpret( "set the value of name to fred bloggs", "ok, name is set to fred bloggs" );
-			interpret( "what is the value of name",       "fred bloggs, the value of name is fred bloggs" );
+			mediate( "the value of name is fred",       "ok, name is set to fred" );
+			mediate( "get the value of name",           "fred" );
+			mediate( "set the value of name to fred bloggs", "ok, name is set to fred bloggs" );
+			mediate( "what is the value of name",       "fred bloggs, the value of name is fred bloggs" );
 			
 			audit.title( "Simple Numerics" );
-			interpret( "set the weight of martin to 104", "ok" );
-			interpret( "get the weight of martin",        "Ok, the weight of martin is 104.");
+			mediate( "set the weight of martin to 104", "ok" );
+			mediate( "get the weight of martin",        "Ok, the weight of martin is 104.");
 			
 			// non-numerical values
 			audit.title( "Simply ent/attr model" );
-			interpret( "the height of martin is 194",  "Ok,  the height of martin is 194" );
-			interpret( "what is the height of martin", "194, the height of martin is 194" );
+			mediate( "the height of martin is 194",  "Ok,  the height of martin is 194" );
+			mediate( "what is the height of martin", "194, the height of martin is 194" );
 
 			audit.title( "Apostrophe's ;-)" );
-			interpret( "what is martin's height", "194, martin's height is 194" );
-			interpret( "martin's height is 195",  "Ok,  martin's height is 195" );
-			interpret( "what is the height of martin", "195, the height of martin is 195" );
+			mediate( "what is martin's height", "194, martin's height is 194" );
+			mediate( "martin's height is 195",  "Ok,  martin's height is 195" );
+			mediate( "what is the height of martin", "195, the height of martin is 195" );
 
 			// TODO:
 			// who-.txt
@@ -388,231 +388,231 @@ public class Enguage {
 			// what is my age [in <epoch default="years"/>]
 
 			audit.title( "Verbal Arithmetic" );
-			interpret( "what is 1 + 2",                    "1 plus 2 is 3.");
-			interpret( "times 2 all squared",              "times 2 all squared makes 36.");
-			interpret( "what is 36 + 4     divided by 2",  "36 plus 4     divided by 2 is 38" );
-			interpret( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
+			mediate( "what is 1 + 2",                    "1 plus 2 is 3.");
+			mediate( "times 2 all squared",              "times 2 all squared makes 36.");
+			mediate( "what is 36 + 4     divided by 2",  "36 plus 4     divided by 2 is 38" );
+			mediate( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
 			
 			audit.title( "Simple Functions" );
-			interpret( "the sum of x and y is x plus y",  "ok, the sum of x and y is x plus y" );
-			interpret( "what is the sum of 3 and 2",      "the sum of 3 and 2 is 5 " );
-			interpret( "set x to 3",                      "ok, x is set to 3" );
-			interpret( "set y to 4",                      "ok, y is set to 4" );
-			interpret( "what is the value of x",          "3, the value of x is 3" );
-			interpret( "what is the sum of x and y",      "the sum of x and y is 7" );
+			mediate( "the sum of x and y is x plus y",  "ok, the sum of x and y is x plus y" );
+			mediate( "what is the sum of 3 and 2",      "the sum of 3 and 2 is 5 " );
+			mediate( "set x to 3",                      "ok, x is set to 3" );
+			mediate( "set y to 4",                      "ok, y is set to 4" );
+			mediate( "what is the value of x",          "3, the value of x is 3" );
+			mediate( "what is the sum of x and y",      "the sum of x and y is 7" );
 			
 			audit.title( "Factorial Description" );
-			interpret( "what is the factorial of 4",       "I don't know" );
+			mediate( "what is the factorial of 4",       "I don't know" );
 			/* Ideally, we want:
 			 * - the factorial of 1 is 1;
 			 * - the factorial of n is n times the factorial of n - 1;
 			 * - what is the factorial of 3.
 			 */
-			interpret( "the factorial of 1 is 1",          "ok, the factorial of 1 is 1" );
+			mediate( "the factorial of 1 is 1",          "ok, the factorial of 1 is 1" );
 			
 			// in longhand this is...
-			interpret( "to the phrase what is the factorial of 0 reply 1", "ok" );
-			interpret( "what is the factorial of 0",  "1" );
+			mediate( "to the phrase what is the factorial of 0 reply 1", "ok" );
+			mediate( "what is the factorial of 0",  "1" );
 			
-			interpret( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
-			interpret( "first perform numeric evaluate variable a times variable b",       "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
+			mediate( "first perform numeric evaluate variable a times variable b",       "go on" );
+			mediate( "ok", "ok" );
 			
-			interpret( "the product of x and y is x times y" );
-			interpret( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
+			mediate( "the product of x and y is x times y" );
+			mediate( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
 			//TODO:
 			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
-			interpret( "the square of x is x times x",    "Ok, the square of x is x times x" );
-			interpret( "what is 2 times the square of 2", "2 times the square of 2 is 8" );
+			mediate( "the square of x is x times x",    "Ok, the square of x is x times x" );
+			mediate( "what is 2 times the square of 2", "2 times the square of 2 is 8" );
 			
 			// again, in longhand this is...
-			interpret( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
-			interpret( "first perform numeric evaluate variable d minus variable c",         "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
+			mediate( "first perform numeric evaluate variable d minus variable c",         "go on" );
+			mediate( "ok", "ok" );
 			
-			interpret( "subtract 2 from 3", "1" );
+			mediate( "subtract 2 from 3", "1" );
 			
 			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
 			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
-			interpret( "interpret what is the factorial of numeric variable n thus",  "go on" );
-			interpret( "first subtract 1 from variable n",                            "go on" );
-			interpret( "then what is the factorial of whatever",                      "go on" );
-			interpret( "then multiply whatever by variable n",  "go on" );
-			interpret( "then reply whatever the factorial of variable n is whatever", "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret what is the factorial of numeric variable n thus",  "go on" );
+			mediate( "first subtract 1 from variable n",                            "go on" );
+			mediate( "then what is the factorial of whatever",                      "go on" );
+			mediate( "then multiply whatever by variable n",  "go on" );
+			mediate( "then reply whatever the factorial of variable n is whatever", "go on" );
+			mediate( "ok", "ok" );
 			
-			interpret( "what is the factorial of 4", "24 the factorial of 4 is 24" );
+			mediate( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 		}
 		if (thisTest( level, 5 )) {
 			audit.title( "Annotation" ); // TODO: camelise attribute names
-			interpret( "delete martin was       list", "ok" );
-			interpret( "delete martin wasNot    list", "ok" );
-			interpret( "delete i      am        list", "ok" );
-			interpret( "delete i      amNot     list", "ok" );
-			interpret( "delete martin is        list", "ok" );
-			interpret( "delete martin isNot     list", "ok" );
-			interpret( "delete i      willBe    list", "ok" );
-			interpret( "delete i      willNotBe list", "ok" );
-			interpret( "delete martin willBe    list", "ok" );
-			interpret( "delete martin willNotBe list", "ok" );
+			mediate( "delete martin was       list", "ok" );
+			mediate( "delete martin wasNot    list", "ok" );
+			mediate( "delete i      am        list", "ok" );
+			mediate( "delete i      amNot     list", "ok" );
+			mediate( "delete martin is        list", "ok" );
+			mediate( "delete martin isNot     list", "ok" );
+			mediate( "delete i      willBe    list", "ok" );
+			mediate( "delete i      willNotBe list", "ok" );
+			mediate( "delete martin willBe    list", "ok" );
+			mediate( "delete martin willNotBe list", "ok" );
 			
 			/*
 			 * Test 5.1 - IS
 			 */
 			// e.g. i am alive - 5.1
-			interpret( "interpret i am variable state thus",         "go on" );
-			interpret( "first add    variable state to   i am list", "go on" );
-			interpret( "then  remove variable state from i amNot list", "go on" );
-			interpret( "then whatever reply ok",                     "ok" );
+			mediate( "interpret i am variable state thus",         "go on" );
+			mediate( "first add    variable state to   i am list", "go on" );
+			mediate( "then  remove variable state from i amNot list", "go on" );
+			mediate( "then whatever reply ok",                     "ok" );
 			
 			// e.g. i am not alive - 5.1
-			interpret( "interpret i am not variable state thus",        "go on" );
-			interpret( "first add    variable state to   i amNot list", "go on" );
-			interpret( "then  remove variable state from i am    list", "go on" );
-			interpret( "then whatever reply ok",                        "ok" );
+			mediate( "interpret i am not variable state thus",        "go on" );
+			mediate( "first add    variable state to   i amNot list", "go on" );
+			mediate( "then  remove variable state from i am    list", "go on" );
+			mediate( "then whatever reply ok",                        "ok" );
 			
 			// e.g. am i alive? - 5.1
-			interpret( "interpret am i variable state thus",                "go on" );
-			interpret( "first variable state exists in i am list",          "go on" );
-			interpret( "then reply yes i am variable state",                "go on" );
-			interpret( "then if not variable state exists in i amNot list", "go on" );
-			interpret( "then if not reply i do not know",                   "go on" );
-			interpret( "then reply no i am not variable state",             "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret am i variable state thus",                "go on" );
+			mediate( "first variable state exists in i am list",          "go on" );
+			mediate( "then reply yes i am variable state",                "go on" );
+			mediate( "then if not variable state exists in i amNot list", "go on" );
+			mediate( "then if not reply i do not know",                   "go on" );
+			mediate( "then reply no i am not variable state",             "go on" );
+			mediate( "ok", "ok" );
 			
 			//  e.g. martin is alive - 5.1
-			interpret( "interpret variable entity is variable state thus",            "go on" );
-			interpret( "first add    variable state to   variable entity is    list", "go on" );
-			interpret( "then  remove variable state from variable entity isNot list", "go on" );
-			interpret( "then whatever reply ok",                                      "ok" );
+			mediate( "interpret variable entity is variable state thus",            "go on" );
+			mediate( "first add    variable state to   variable entity is    list", "go on" );
+			mediate( "then  remove variable state from variable entity isNot list", "go on" );
+			mediate( "then whatever reply ok",                                      "ok" );
 			
 			// e.g. martin is not alive - 5.1
-			interpret( "interpret variable entity is not variable state thus",       "go on" );
-			interpret( "first add   variable state to   variable entity isNot list", "go on" );
-			interpret( "then remove variable state from variable entity is    list", "go on" );
-			interpret( "then whatever reply ok",                                     "ok" );
+			mediate( "interpret variable entity is not variable state thus",       "go on" );
+			mediate( "first add   variable state to   variable entity isNot list", "go on" );
+			mediate( "then remove variable state from variable entity is    list", "go on" );
+			mediate( "then whatever reply ok",                                     "ok" );
 			
 			// e.g. is martin alive - 5.1
-			interpret( "interpret is variable entity variable state thus",        "go on" );
-			interpret( "first variable state  exists in variable entity is list", "go on" );
-			interpret( "then reply yes variable entity is variable state",        "go on" );
-			interpret( "then if not variable state exists in variable entity isNot list", "go on" );
-			interpret( "then reply no variable entity is not variable state",     "go on" );
-			interpret( "then if not reply i do not know",                         "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret is variable entity variable state thus",        "go on" );
+			mediate( "first variable state  exists in variable entity is list", "go on" );
+			mediate( "then reply yes variable entity is variable state",        "go on" );
+			mediate( "then if not variable state exists in variable entity isNot list", "go on" );
+			mediate( "then reply no variable entity is not variable state",     "go on" );
+			mediate( "then if not reply i do not know",                         "go on" );
+			mediate( "ok", "ok" );
 
 			// e.g. is martin not alive - 5.1
-			interpret( "interpret is variable entity not variable state thus",       "go on" );
-			interpret( "first variable state  exists in variable entity isNot list", "go on" );
-			interpret( "then reply yes variable entity is not variable state",        "go on" );
-			interpret( "then if not variable state exists in variable entity is list", "go on" );
-			interpret( "then reply no variable entity is variable state",             "go on" );
-			interpret( "then if not reply i do not know",                            "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret is variable entity not variable state thus",       "go on" );
+			mediate( "first variable state  exists in variable entity isNot list", "go on" );
+			mediate( "then reply yes variable entity is not variable state",        "go on" );
+			mediate( "then if not variable state exists in variable entity is list", "go on" );
+			mediate( "then reply no variable entity is variable state",             "go on" );
+			mediate( "then if not reply i do not know",                            "go on" );
+			mediate( "ok", "ok" );
 
 			// test 5.1
-			interpret( "am i alive",     "i don't know" );
-			interpret( "i am alive",     "ok" );
-			interpret( "am i alive",     "yes i'm alive" );
-			interpret( "i am not alive", "ok" );
-			interpret( "am i alive",     "no i'm not alive" );
+			mediate( "am i alive",     "i don't know" );
+			mediate( "i am alive",     "ok" );
+			mediate( "am i alive",     "yes i'm alive" );
+			mediate( "i am not alive", "ok" );
+			mediate( "am i alive",     "no i'm not alive" );
 			
 			// test 5.1
-			interpret( "is martin alive", "i don't know" );
-			interpret( "martin is alive", "ok" );
-			interpret( "is martin alive", "yes martin is alive" );
-			interpret( "martin is not alive", "ok" );
-			interpret( "is martin alive",     "no martin is not alive" );
-			interpret( "is martin not alive", "yes martin is not alive" );
+			mediate( "is martin alive", "i don't know" );
+			mediate( "martin is alive", "ok" );
+			mediate( "is martin alive", "yes martin is alive" );
+			mediate( "martin is not alive", "ok" );
+			mediate( "is martin alive",     "no martin is not alive" );
+			mediate( "is martin not alive", "yes martin is not alive" );
 			
 			/*
 			 *  Test 5.2 was/was not
 			 */
 			//  e.g. martin was alive - 5.2
-			interpret( "interpret variable entity was variable state thus",            "go on" );
-			interpret( "first add    variable state to   variable entity was    list", "go on" );
-			interpret( "then  remove variable state from variable entity wasNot list", "go on" );
-			interpret( "then whatever reply ok",                                       "ok" );
+			mediate( "interpret variable entity was variable state thus",            "go on" );
+			mediate( "first add    variable state to   variable entity was    list", "go on" );
+			mediate( "then  remove variable state from variable entity wasNot list", "go on" );
+			mediate( "then whatever reply ok",                                       "ok" );
 			
 			// e.g. martin was not alive - 5.2
-			interpret( "interpret variable entity was not variable state thus",       "go on" );
-			interpret( "first add   variable state to   variable entity wasNot list", "go on" );
-			interpret( "then remove variable state from variable entity was    list", "go on" );
-			interpret( "then whatever reply ok",                                      "ok" );
+			mediate( "interpret variable entity was not variable state thus",       "go on" );
+			mediate( "first add   variable state to   variable entity wasNot list", "go on" );
+			mediate( "then remove variable state from variable entity was    list", "go on" );
+			mediate( "then whatever reply ok",                                      "ok" );
 			
 			// e.g. was martin alive - 5.2
-			interpret( "interpret was variable entity variable state thus",        "go on" );
-			interpret( "first variable state  exists in variable entity was list", "go on" );
-			interpret( "then reply yes variable entity was variable state",        "go on" );
-			interpret( "then if not variable state exists in variable entity wasNot list", "go on" );
-			interpret( "then reply no variable entity was not variable state",     "go on" );
-			interpret( "then if not reply i do not know",                          "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret was variable entity variable state thus",        "go on" );
+			mediate( "first variable state  exists in variable entity was list", "go on" );
+			mediate( "then reply yes variable entity was variable state",        "go on" );
+			mediate( "then if not variable state exists in variable entity wasNot list", "go on" );
+			mediate( "then reply no variable entity was not variable state",     "go on" );
+			mediate( "then if not reply i do not know",                          "go on" );
+			mediate( "ok", "ok" );
 
 			// e.g. was martin not alive - 5.2
-			interpret( "interpret was variable entity not variable state thus",       "go on" );
-			interpret( "first variable state  exists in variable entity wasNot list", "go on" );
-			interpret( "then reply yes variable entity was not variable state",       "go on" );
-			interpret( "then if not variable state exists in variable entity was list", "go on" );
-			interpret( "then reply no variable entity was variable state",            "go on" );
-			interpret( "then if not reply i do not know",                             "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret was variable entity not variable state thus",       "go on" );
+			mediate( "first variable state  exists in variable entity wasNot list", "go on" );
+			mediate( "then reply yes variable entity was not variable state",       "go on" );
+			mediate( "then if not variable state exists in variable entity was list", "go on" );
+			mediate( "then reply no variable entity was variable state",            "go on" );
+			mediate( "then if not reply i do not know",                             "go on" );
+			mediate( "ok", "ok" );
 
 			// test 5.2
-			interpret( "was martin alive",     "i don't know" );
-			interpret( "martin was alive",     "ok" );
-			interpret( "was martin alive",     "yes martin was alive" );
-			interpret( "martin was not alive", "ok" );
-			interpret( "was martin alive",     "no martin was not alive" );
-			interpret( "was martin not alive", "yes martin was not alive" );
+			mediate( "was martin alive",     "i don't know" );
+			mediate( "martin was alive",     "ok" );
+			mediate( "was martin alive",     "yes martin was alive" );
+			mediate( "martin was not alive", "ok" );
+			mediate( "was martin alive",     "no martin was not alive" );
+			mediate( "was martin not alive", "yes martin was not alive" );
 			
 			/*
 			 *  Test 5.3 will be/will not be
 			 */
 			//  e.g. martin will be alive - 5.3
-			interpret( "interpret variable entity will be variable state thus",           "go on" );
-			interpret( "first add    variable state to   variable entity willBe    list", "go on" );
-			interpret( "then  remove variable state from variable entity willNotBe list", "go on" );
-			interpret( "then whatever reply ok",                                          "ok" );
+			mediate( "interpret variable entity will be variable state thus",           "go on" );
+			mediate( "first add    variable state to   variable entity willBe    list", "go on" );
+			mediate( "then  remove variable state from variable entity willNotBe list", "go on" );
+			mediate( "then whatever reply ok",                                          "ok" );
 			
 			// e.g. martin will not be alive - 5.3
-			interpret( "interpret variable entity will not be variable state thus",      "go on" );
-			interpret( "first add   variable state to   variable entity willNotBe list", "go on" );
-			interpret( "then remove variable state from variable entity willBe    list", "go on" );
-			interpret( "then whatever reply ok",                                         "ok" );
+			mediate( "interpret variable entity will not be variable state thus",      "go on" );
+			mediate( "first add   variable state to   variable entity willNotBe list", "go on" );
+			mediate( "then remove variable state from variable entity willBe    list", "go on" );
+			mediate( "then whatever reply ok",                                         "ok" );
 			
 			// e.g. will martin be alive - 5.3
-			interpret( "interpret will variable entity be variable state thus",      "go on" );
-			interpret( "first variable state exists in variable entity willBe list", "go on" );
-			interpret( "then reply yes variable entity will be variable state",      "go on" );
-			interpret( "then if not variable state exists in variable entity willNotBe list", "go on" );
-			interpret( "then reply no variable entity will not be variable state",   "go on" );
-			interpret( "then if not reply i do not know",                            "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret will variable entity be variable state thus",      "go on" );
+			mediate( "first variable state exists in variable entity willBe list", "go on" );
+			mediate( "then reply yes variable entity will be variable state",      "go on" );
+			mediate( "then if not variable state exists in variable entity willNotBe list", "go on" );
+			mediate( "then reply no variable entity will not be variable state",   "go on" );
+			mediate( "then if not reply i do not know",                            "go on" );
+			mediate( "ok", "ok" );
 
 			// e.g. will martin not be alive - 5.3
-			interpret( "interpret will variable entity not be variable state thus",      "go on" );
-			interpret( "first variable state  exists in variable entity willNotBe list", "go on" );
-			interpret( "then reply yes variable entity will not be variable state",      "go on" );
-			interpret( "then if not variable state exists in variable entity willBe list", "go on" );
-			interpret( "then reply no variable entity will be variable state",           "go on" );
-			interpret( "then if not reply i do not know",                                "go on" );
-			interpret( "ok", "ok" );
+			mediate( "interpret will variable entity not be variable state thus",      "go on" );
+			mediate( "first variable state  exists in variable entity willNotBe list", "go on" );
+			mediate( "then reply yes variable entity will not be variable state",      "go on" );
+			mediate( "then if not variable state exists in variable entity willBe list", "go on" );
+			mediate( "then reply no variable entity will be variable state",           "go on" );
+			mediate( "then if not reply i do not know",                                "go on" );
+			mediate( "ok", "ok" );
 
 			// test 5.3
-			interpret( "will i be alive",     "i don't know" );
-			interpret( "i will be alive",     "ok" );
-			interpret( "will i be alive",     "yes you'll be alive" );
-			interpret( "i will not be alive", "ok" );
-			interpret( "will i be alive",     "no you'll not be alive" );
-			interpret( "will i not be alive", "yes you'll not be alive" );
+			mediate( "will i be alive",     "i don't know" );
+			mediate( "i will be alive",     "ok" );
+			mediate( "will i be alive",     "yes you'll be alive" );
+			mediate( "i will not be alive", "ok" );
+			mediate( "will i be alive",     "no you'll not be alive" );
+			mediate( "will i not be alive", "yes you'll not be alive" );
 
-			interpret( "will martin be alive",     "i don't know" );
-			interpret( "martin will be alive",     "ok" );
-			interpret( "will martin be alive",     "yes martin will be alive" );
-			interpret( "martin will not be alive", "ok" );
-			interpret( "will martin be alive",     "no martin will not be alive" );
-			interpret( "will martin not be alive", "yes martin will not be alive" );
+			mediate( "will martin be alive",     "i don't know" );
+			mediate( "martin will be alive",     "ok" );
+			mediate( "will martin be alive",     "yes martin will be alive" );
+			mediate( "martin will not be alive", "ok" );
+			mediate( "will martin be alive",     "no martin will not be alive" );
+			mediate( "will martin not be alive", "yes martin will not be alive" );
 
 			// Test
 			// Event: to move is to was (traverse time quanta)
@@ -639,22 +639,22 @@ public class Enguage {
 			 *  she died in 1603
 			 *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
 			 */
-			interpret( "a queen is a monarch", "ok, a queen is a monarch" );
+			mediate( "a queen is a monarch", "ok, a queen is a monarch" );
 			// my name is martin
 			// my name is martin wheatman
 		}
 		if (thisTest( level, 6 )) {
 			audit.title( "Disambiguation" );
-			interpret( "the eagle has landed" //,
+			mediate( "the eagle has landed" //,
 						   //"Are you an ornithologist."
 					);
-			interpret( "no the eagle has landed" //,
+			mediate( "no the eagle has landed" //,
 						   //"So , you're talking about the novel."
 					);
-			interpret( "no the eagle has landed" //, 
+			mediate( "no the eagle has landed" //, 
 						   //"So you're talking about Apollo 11."
 					);
-			interpret( "no the eagle has landed" //,
+			mediate( "no the eagle has landed" //,
 						   //"I don't understand"
 					);
 			// Issue here: on DNU, we need to advance this on "the eagle has landed"
@@ -662,7 +662,7 @@ public class Enguage {
 		}
 		if (thisTest( level, 7 )) {
 			audit.title( "Temporal interpret" );
-			interpret( "what day is christmas day" );
+			mediate( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
 
 			audit.title( "Temporospatial concept MEETING" );
@@ -673,24 +673,24 @@ public class Enguage {
 			 * then  set the context of the variable entity to a variable entity // ln -s pub/the pub/a
 			 * ok.
 			 */
-			interpret( "I'm not meeting anybody",
+			mediate( "I'm not meeting anybody",
 					   "Ok , you're not meeting anybody" );
-			interpret( "At 7 I'm meeting my brother at the pub",
+			mediate( "At 7 I'm meeting my brother at the pub",
 					   "Ok , you're meeting your brother at 7 at the pub" );
-			interpret( "When  am I meeting my brother",
+			mediate( "When  am I meeting my brother",
 					   "You're meeting your brother at 7" );
-			interpret( "Where am I meeting my brother",
+			mediate( "Where am I meeting my brother",
 					   "You're meeting your brother at the pub" );
-			interpret( "Am I meeting my brother",
+			mediate( "Am I meeting my brother",
 					   "Yes , you're meeting your brother" );
 			
-			interpret( "I'm meeting my sister at the pub" );
-			interpret( "When am I meeting my sister",
+			mediate( "I'm meeting my sister at the pub" );
+			mediate( "When am I meeting my sister",
 					   "I don't know when you're meeting your sister" );
 			
-			interpret( "When am I meeting my dad",
+			mediate( "When am I meeting my dad",
 					   "i don't know if you're meeting your dad" );
-			interpret( "Where am I meeting my dad" ,
+			mediate( "Where am I meeting my dad" ,
 					   "i don't know if you're meeting your dad" );
 			
 		}
@@ -698,9 +698,9 @@ public class Enguage {
 			audit.title( "TCP/IP test" );
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
 			// config port get chosen over this one???
-			interpret( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
-			interpret( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
-			interpret( "simon says put your hands on your head" ); //, "ok, success" );
+			mediate( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
+			mediate( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
+			mediate( "simon says put your hands on your head" ); //, "ok, success" );
 		}
 		if (thisTest( level, 9 )) {
 			audit.title( "On-the-fly Langauge Learning" );
@@ -712,54 +712,54 @@ public class Enguage {
 			 */
 
 			// First, what we can't say yet...
-			interpret( "my name is martin",                 "I don't understand" );
-			interpret( "if not  reply i already know this", "I don't understand" );
-			interpret( "unset the value of name",           "ok" );
+			mediate( "my name is martin",                 "I don't understand" );
+			mediate( "if not  reply i already know this", "I don't understand" );
+			mediate( "unset the value of name",           "ok" );
 
 			// build-a-program...
-			interpret( "interpret my name is phrase variable name thus", "go on" );
-			interpret( "first set name to variable name",                "go on" );
-			interpret( "then get the value of name",                     "go on" ); // not strictly necessary!
-			interpret( "then reply hello whatever",                      "go on" );
-			interpret( "ok",                                             "ok"    );
+			mediate( "interpret my name is phrase variable name thus", "go on" );
+			mediate( "first set name to variable name",                "go on" );
+			mediate( "then get the value of name",                     "go on" ); // not strictly necessary!
+			mediate( "then reply hello whatever",                      "go on" );
+			mediate( "ok",                                             "ok"    );
 
-			interpret( "my name is ruth",   "hello   ruth" );
-			interpret( "my name is martin", "hello martin" );
+			mediate( "my name is ruth",   "hello   ruth" );
+			mediate( "my name is martin", "hello martin" );
 
 
 			//...or to put it another way
-			interpret( "to the phrase i am called phrase variable name reply hi whatever", "ok" );
-			interpret( "this implies name gets set to variable name",   "go on" );
-			interpret( "this implies name is not set to variable name", "go on" );
-			interpret( "if not reply i already know this",              "go on" );
-			interpret( "ok", "ok" );
+			mediate( "to the phrase i am called phrase variable name reply hi whatever", "ok" );
+			mediate( "this implies name gets set to variable name",   "go on" );
+			mediate( "this implies name is not set to variable name", "go on" );
+			mediate( "if not reply i already know this",              "go on" );
+			mediate( "ok", "ok" );
 
-			interpret( "i am called martin", "i already know this" );
+			mediate( "i am called martin", "i already know this" );
 
 			// ...means.../...the means to...
 			// 1. from the-means-to repertoire
-			interpret( "to the phrase phrase variable x the means to phrase variable y reply i really do not understand", "ok" );
-			interpret( "ok", "ok" );
+			mediate( "to the phrase phrase variable x the means to phrase variable y reply i really do not understand", "ok" );
+			mediate( "ok", "ok" );
 
-			interpret( "do we have the means to become rich", "I really don't understand" );
+			mediate( "do we have the means to become rich", "I really don't understand" );
 
 			// 2. could this be built thus?
-			interpret( "to phrase variable this means phrase variable that reply ok", "ok" );
-			interpret( "this implies ok set induction to false",                      "go on" );
-			interpret( "this implies perform sign think variable that",               "go on" );
-			interpret( "this implies perform sign create variable this",              "go on" );
-			interpret( "this implies ok set induction to true",                       "go on" );
-			interpret( "ok", "ok" );
+			mediate( "to phrase variable this means phrase variable that reply ok", "ok" );
+			mediate( "this implies ok set induction to false",                      "go on" );
+			mediate( "this implies perform sign think variable that",               "go on" );
+			mediate( "this implies perform sign create variable this",              "go on" );
+			mediate( "this implies ok set induction to true",                       "go on" );
+			mediate( "ok", "ok" );
 
-			interpret( "just call me phrase variable name means i am called variable name", "ok" );
-			interpret( "just call me martin", "i already know this" );
+			mediate( "just call me phrase variable name means i am called variable name", "ok" );
+			mediate( "just call me martin", "i already know this" );
 		}
 
 		if (thisTest( level, 10 )) {
 			audit.title( "Light bins" );
-			interpret( "there are 6 light bins",        "ok, there are 6 light bins" );
-			interpret( "how many light bins are there", "6,  there are 6 light bins" );
-			interpret( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
+			mediate( "there are 6 light bins",        "ok, there are 6 light bins" );
+			mediate( "how many light bins are there", "6,  there are 6 light bins" );
+			mediate( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
 			
 //			audit.title( "Ask: Confirmation" );
 //

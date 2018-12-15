@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.enguage.Enguage;
 import org.enguage.interp.Context;
+import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Utterance;
@@ -39,7 +39,7 @@ public class Net {
 				try {
 					in  = new BufferedReader( new InputStreamReader( connection.getInputStream()));
 					out = new DataOutputStream( connection.getOutputStream());
-					out.writeBytes( prefix + Enguage.interpret( new Strings( in.readLine() )) + "\n" );
+					out.writeBytes( prefix + Repertoire.interpret( new Utterance( new Strings( in.readLine() ))) + "\n" );
 				} catch (Exception e) {
 					audit.ERROR( "Error in child socket");
 				} finally {
