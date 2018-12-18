@@ -12,7 +12,6 @@ import org.enguage.objects.space.Sofa;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
-import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Proc;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
@@ -152,7 +151,6 @@ public class Intention {
 	
 	public Reply autopoiesis( Reply r ) {
 		//audit.in( "autopoiesis", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
-		Strings sa = Context.deref( new Strings( value ));
 		
 		switch (intent) { // manually adding a sign
 		case  create:
@@ -163,49 +161,42 @@ public class Intention {
 			);
 			break;
 		case append:
-			if (null != s) s.append( new Intention( type, Pattern.toPattern( value )));
+			if (null != s) s.append( new Intention( type, Pattern.toPattern( new Strings( value ))));
 			break;
 		case prepend :
-			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( value )));
+			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( new Strings( value ))));
 			break;
 		case headAppend:
-			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( value )));
-			
+			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( new Strings( value ))));
+			break;
 		// following these are trad. autopoiesis...this need updating as above!!!
 		default:
+			Strings sa = Context.deref( new Strings( value ));
 			switch (type) {
+			case create: {
+				String attr    = sa.remove( 0 ),
+				       pattern = sa.remove( 0 ),
+					   val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
+				Repertoire.signs.insert(
+						s = new Sign()
+						.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+						.concept( concept() )
+						.append( new Intention( Intention.nameToType( attr ), val )));
+				break;
+			}
 			case append :
 			case prepend:
 				if (null == s)
 					// this should return DNU...
-					audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
+					audit.ERROR( "adding to sign before creation" );
 				else {
-					String attr = sa.get( 0 ),
-						    val = Strings.trim( sa.get( 1 ), Strings.DOUBLE_QUOTE );
+					String attr = sa.remove( 0 ),
+					       val = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 					if (type == append )
 						s.append( new Intention( nameToType(  attr ), val ));
 					else
 						s.prepend( new Intention( nameToType( attr ), val ));
-				}
-				break;
-			case create: // autopoeisis?
-				String attr    = sa.remove( 0 ),
-				       pattern = sa.remove( 0 ),
-				       val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-				/* TODO: need to differentiate between
-				 * "X is X" and "X is Y" -- same shape, different usage.
-				 * At least need to avoid this (spot when "X is X" happens)
-				 */
-				//audit.debug( "Adding >"+ value +"< ["+ sa.toString( Strings.CSV )+"]");
-				if ( pattern.equals( "help" ))
-					s.help( val ); // add: help="text" to cached sign
-				else // create then add a new cached sign into the list of signs
-					Repertoire.signs.insert(
-						s = new Sign()
-							.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
-							.concept( concept() )
-							.append( new Intention( Intention.nameToType( attr ), val )));
-		}	}
+		}	}	}
 		//return (Reply) audit.out( r.answer( Reply.yes().toString() ));
 		return r.answer( Reply.yes().toString() );
 	}
@@ -219,8 +210,7 @@ public class Intention {
 				)	);
 	}
 	private Reply think( Reply r ) {
-		audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" );
-		boolean critical = Strings.isUpperCaseWithHyphens( value ); // and so is a single word!
+		//audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" );
 		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
 		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
@@ -235,16 +225,17 @@ public class Intention {
 		 .conclude( thought );
 		
 		// If we've returned DNU, we want to continue
-		r.doneIs( r.type() == Reply.FAIL && critical );
+		r.doneIs( Strings.isUpperCaseWithHyphens( value ) // critical!
+		          && r.type() == Reply.FAIL );
 
-		return (Reply) audit.out( r );
+		return r; //(Reply) audit.out( r );
 	}
 	
 	private Reply perform( Reply r ) { return perform( r, false ); }
 	private Reply andFinally( Reply r ) { return perform( r, true ); }
 	
 	private Reply perform( Reply r, boolean ignore ) {
-		audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"));
+		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"));
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
 		
@@ -262,7 +253,7 @@ public class Intention {
 
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
-			cmd=new Strings( new Attributes( cmd.get(0) ).get( "args" ));
+			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
 		audit.debug( "performing: "+ cmd.toString());
 		// deref first 4 params before sofa
@@ -273,20 +264,20 @@ public class Intention {
 			} else
 				cmd.set( i, Attribute.getValue( cmd.get( i ) ));
 
-		String rawAnswer = new Sofa().doCall( new Strings( cmd )).toString();
-		if (!ignore) r.rawAnswer( rawAnswer, cmd.get( 1 ));
+		Strings rawAnswer = new Sofa().doCall( new Strings( cmd ));
+		if (!ignore) r.rawAnswer( rawAnswer.toString(), cmd.get( 1 ));
 
-		return (Reply) audit.out( r );
+		return r; //(Reply) audit.out( r );
 	}
 	private Reply reply( Reply r ) {
-		audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
+		//audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		/* TODO: 
 		 * if reply on its own, return reply from previous/inner reply -- imagination!
 		 */
-		r.format( value.equals( "" ) ? Reply.success() : value );
+		r.format( value.equals( "" ) ? Reply.successStr() : value );
 		r.type( new Strings( value ));
 		r.doneIs( r.type() != Reply.DNU );
-		return (Reply) audit.out( r );
+		return r; //(Reply) audit.out( r );
 	}
 	
 	public Reply mediate( Reply r ) {

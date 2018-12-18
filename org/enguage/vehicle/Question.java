@@ -43,7 +43,7 @@ public class Question {
 	public String ask() {
 		audit.LOG( question() + prompt());
 		Question.logPrimedAns();
-		return primedAnswer != null ? primedAnswer() : getLine( Reply.dnu());
+		return primedAnswer != null ? primedAnswer() : getLine( Reply.dnuStr());
 	}
 	
 	// helper functions...

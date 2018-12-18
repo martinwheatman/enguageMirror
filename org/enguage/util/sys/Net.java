@@ -77,10 +77,10 @@ public class Net {
 		data=Utterance.externalise( new Strings( data ), false ).toString();
 		audit.debug( "data is: "+ data);
 		
-		String rc = Reply.failure();
+		String rc = Reply.failureStr();
 		
 		if (port == TestPort) { // test value
-			rc = Reply.success(); // assume we've stuffed the server intentionally
+			rc = Reply.successStr(); // assume we've stuffed the server intentionally
 			
 		} else if (port > 1024 && port < 65536) {
 			addr = addr==null || addr.equals( "" ) ? "localhost" : addr;

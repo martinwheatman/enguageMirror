@@ -34,13 +34,13 @@ public class Answer {
 	private String setType( String s ) {
 		// This sets type to first non-NK type
 		if (type == Reply.NK) {
-			     if (s.equalsIgnoreCase( Reply.yes()    )) type = Reply.YES;
-			else if (s.equalsIgnoreCase( Reply.success())) type = Reply.YES;
-			else if (s.equalsIgnoreCase( Reply.no()     )) type = Reply.NO;
-			else if (s.equalsIgnoreCase( Reply.dnu()    )) type = Reply.DNU;
-			else if (s.equalsIgnoreCase( Reply.failure())) type = Reply.FAIL;
-			else if (s.equalsIgnoreCase( Reply.ik()     )) type = Reply.IK;
-			else if (s.equalsIgnoreCase( Reply.dnk()    )) type = Reply.NK;
+			     if (s.equalsIgnoreCase( Reply.yesStr()    )) type = Reply.YES;
+			else if (s.equalsIgnoreCase( Reply.successStr())) type = Reply.YES;
+			else if (s.equalsIgnoreCase( Reply.noStr()     )) type = Reply.NO;
+			else if (s.equalsIgnoreCase( Reply.dnuStr()    )) type = Reply.DNU;
+			else if (s.equalsIgnoreCase( Reply.failureStr())) type = Reply.FAIL;
+			else if (s.equalsIgnoreCase( Reply.ikStr()     )) type = Reply.IK;
+			else if (s.equalsIgnoreCase( Reply.dnkStr()    )) type = Reply.NK;
 			else type = Reply.CHS;
 		}	
 		return s;

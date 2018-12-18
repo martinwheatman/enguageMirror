@@ -72,12 +72,12 @@ public class Function {
 	}
 	static private String evaluate( String name, Strings argv ) {
 		audit.in(  "evaluate", name +":"+ argv.toString( Strings.DQCSV ));
-		String  rc = Reply.dnk();
+		String  rc = Reply.dnkStr();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {
 			rc = Number.getNumber( ss.listIterator()).valueOf();
 			if (rc.equals( Number.NotANumber ))
-				rc = Reply.dnk();
+				rc = Reply.dnkStr();
 		}
 		return audit.out( rc );
 	}

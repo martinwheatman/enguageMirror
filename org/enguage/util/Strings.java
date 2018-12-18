@@ -664,11 +664,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return true;
 	}
 	public static boolean isUpperCaseWithHyphens( String a ) {
+		char ch;
 		int len=a.length();
 		for (int i=0; i<len; i++) {
-			char ch = a.charAt( i );
 			// TODO: l'eau
-			if (ch == Language.APOSTROPHE_CH && i == len-2)
+			if ((ch = a.charAt( i )) == Language.APOSTROPHE_CH && i == len-2)
 				return a.endsWith( Language.Apostrophed() );
 			if (!Character.isUpperCase( ch ) && ch != '-' )
 				return false;
@@ -1165,4 +1165,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		audit.log( "Variable:   "+   Variable.id);
 		audit.log( "Colloquial: "+ Colloquial.id);
 		audit.log( "Transitive: "+ Transitive.id);
+		
+		Strings tmp2 = new Strings( "..., ENT''s ATTR is ..." );
+		audit.log( "tmp2: "+ tmp2.toString() );
 }	}

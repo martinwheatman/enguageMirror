@@ -38,13 +38,13 @@ public class Proc {
 	}
 	private String deconceptualise( String rawAns ) {
 	 	return Moment.valid( rawAns ) ?                 // 88888888198888 -> 7pm
-			new When( rawAns ).rep( Reply.dnk() ).toString()
+			new When( rawAns ).rep( Reply.dnkStr() ).toString()
 			: rawAns.equals( "" ) ? // silence is golden :-)
-				Reply.success() // Reply.dnk() ?
+				Reply.successStr() // Reply.dnk() ?
 				: rawAns.equals( Shell.FAIL ) ?        // FALSE
-					Reply.no()                     //   --> no
+					Reply.noStr()                     //   --> no
 					: rawAns.equals( Shell.SUCCESS ) ? // TRUE
-						Reply.success()            //   --> ok
+						Reply.successStr()            //   --> ok
 						: rawAns;                      // chs
 	}
 	private Process run( String cmdline ) throws Exception {

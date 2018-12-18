@@ -37,34 +37,48 @@ public class Reply { // a reply is basically a formatted answer
 	static public  void   strangeThought( String thought ) { strangeThought = thought; }
 	static public  String strangeThought(){ return strangeThought; }
 
-	static private String dnu = Enguage.DNU;
-	static public  void   dnu( String s ) { dnu = s; }
-	static public  String dnu(){ return dnu; }
+	static private Strings dnu = new Strings( Enguage.DNU );
+	static private String  dnuStr = Enguage.DNU;
+	static public  void    dnu( String s ) { dnu = new Strings( s ); dnuStr = s; }
+	static public  Strings dnu(){ return dnu; }
+	static public  String  dnuStr(){ return dnuStr; }
+
+	static private Strings dnk = new Strings( "DNK" );
+	static private String  dnkStr = "DNK";
+	static public  void    dnk( String s ) { dnk = new Strings( s ); dnkStr = s; }
+	static public  Strings  dnk() { return dnk; }
+	static public  String  dnkStr() { return dnkStr; }
+
+	static private Strings ik = new Strings( "IK" );
+	static private String  ikStr = "IK";
+	static public  void    ik( String s ) { ik = new Strings( s ); ikStr = s; }
+	static public  Strings ik() { return ik; }
+	static public  String  ikStr() { return ikStr; }
 
 	// TODO: these need to be Strings
-	static private String dnk = "DNK";
-	static public  void   dnk( String s ) { dnk = s; }
-	static public  String dnk() { return dnk; }
-
-	static private String ik = "IK";
-	static public  void   ik( String s ) { ik = s; }
-	static public  String ik() { return ik; }
-
-	static private String no = "no";
-	static public  void   no(  String s ) { no = s; }
-	static public  String no() { return no; }
+	static private Strings no = new Strings( "no" );
+	static private String noStr = "no";
+	static public  void   no(  String s ) { no = new Strings( s ); noStr = s; }
+	static public  Strings no() { return no; }
+	static public  String noStr() { return noStr; }
 	
-	static private String yes = "yes";
-	static public  void   yes( String s ) { yes = s; }
-	static public  String yes() { return yes; }
+	static private Strings yes    = new Strings( "yes" );
+	static private String  yesStr = "yes";
+	static public  void    yes( String s ) { yes = new Strings( s ); yesStr = s; }
+	static public  Strings yes() { return yes; }
+	static public  String  yesStr() { return yesStr; }
 
-	static private String failure = Shell.FAIL;
-	static public  void   failure(  String s ) { failure = s; }
-	static public  String failure() { return failure; }
+	static private Strings failure   = new Strings( Shell.FAIL );
+	static private String  failureStr = Shell.FAIL;
+	static public  void    failure(  String s ) { failure = new Strings( s ); failureStr = s; }
+	static public  Strings failure() { return failure; }
+	static public  String  failureStr() { return failureStr; }
 	
-	static private String success = Shell.SUCCESS;
-	static public  void   success( String s ) { success = s; }
-	static public  String success() { return success; }
+	static private Strings success    = new Strings( Shell.SUCCESS );
+	static private String  successStr = Shell.SUCCESS;
+	static public  void    success( String s ) { success = new Strings( s ); successStr = s; }
+	static public  Strings success() { return success; }
+	static public  String  successStr() { return successStr; }
 
 	static private String repeatFormat = "I said, ... .";
 	static public  void   repeatFormat( String s ) { repeatFormat = s; }
@@ -125,21 +139,23 @@ public class Reply { // a reply is basically a formatted answer
 	
 	private Strings cache = null;
 	
+	private static final Strings FUDG1 = new Strings( "I don't know" );
+	private static final Strings FUDG2 = new Strings( "I don't understand" );
 	private int     type = DNU;
 	public  int     type() { return type; }
 	public  Reply   type( Strings response ) {
 		
 		if (type == UDU) return this;
 
-		     if (response.beginsIgnoreCase( new Strings(   yes ))) type = YES;
-		else if (response.beginsIgnoreCase( new Strings(success))) type = YES;
-		else if (response.beginsIgnoreCase( new Strings(    no ))) type =  NO;
-		else if (response.beginsIgnoreCase( new Strings(failure))) type =FAIL;
-		else if (response.beginsIgnoreCase( new Strings(    ik ))) type =  IK;
-		else if (response.beginsIgnoreCase( new Strings(   dnk ))) type =  NK;
-		else if (response.beginsIgnoreCase( new Strings( "I don't know" ))) type = NK;
-		else if (response.beginsIgnoreCase( new Strings(   dnu ))) type = DNU;
-		else if (response.beginsIgnoreCase( new Strings( "I don't understand" ))) type = DNU;
+		     if (response.beginsIgnoreCase(    yes )) type = YES;
+		else if (response.beginsIgnoreCase( success)) type = YES;
+		else if (response.beginsIgnoreCase(     no )) type =  NO;
+		else if (response.beginsIgnoreCase( failure)) type =FAIL;
+		else if (response.beginsIgnoreCase(     ik )) type =  IK;
+		else if (response.beginsIgnoreCase(    dnk )) type =  NK;
+		else if (response.beginsIgnoreCase(  FUDG1 )) type =  NK;
+		else if (response.beginsIgnoreCase(    dnu )) type = DNU;
+		else if (response.beginsIgnoreCase(  FUDG2 )) type = DNU;
 		else type = CHS;
 		return this;
 	}
@@ -166,16 +182,17 @@ public class Reply { // a reply is basically a formatted answer
 		return this;
 	}
 	public  Reply   rawAnswer( String rc, String method ) {
-		answer(  Moment.valid( rc ) ? // 88888888198888 -> 7pm
-				new When( rc ).rep( Reply.dnk() ).toString()
-				: (method.equals( "get" ) || method.equals( "getAttrVal" ))
-				  && (rc.equals( "" )) ?
-					Reply.dnk()
-					: rc.equals( Shell.FAIL ) ?
-						Reply.failure()
-						:	rc.equals( Shell.SUCCESS ) ?
-								Reply.success()
-								: rc );
+		answer( Moment.valid( rc ) ? // 88888888198888 -> 7pm
+					new When( rc ).rep( Reply.dnkStr() ).toString()
+					: rc.equals( "" ) &&
+					  (method.equals( "get" ) ||
+				       method.equals( "getAttrVal" )) ?
+						Reply.dnkStr()
+						: rc.equals( Shell.FAIL ) ?
+							Reply.failureStr()
+							:	rc.equals( Shell.SUCCESS ) ?
+									Reply.successStr()
+									: rc );
 		return this;
 	}
 	
@@ -266,8 +283,8 @@ public class Reply { // a reply is basically a formatted answer
 			}
 			type = FAIL;
 		
-		} else if ( NO == type() && a.toString().equalsIgnoreCase( ik()))
-			answer( yes());
+		} else if ( NO == type() && a.toString().equalsIgnoreCase( ikStr()))
+			answer( yesStr());
 	}
 	public static void main( String args[] ) {
 		Audit.allOn();

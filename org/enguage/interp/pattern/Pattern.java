@@ -126,7 +126,7 @@ public class Pattern extends ArrayList<Patternette> {
 	// if variable x do phrase variable y => if X do PHRASE-Y
 	// i need numeric variable quantity variable units of phrase variable needs.
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
-	public Pattern( String str ) { this( toPattern( str )); }
+	public Pattern( String str ) { this( toPattern( new Strings( str ))); }
 	
 	// TODO: not quite right, what about "l'eau" - the water
 	// want to move to u.c. but preserve l.c. apostrophe...
@@ -136,10 +136,9 @@ public class Pattern extends ArrayList<Patternette> {
 		uppers.set( 0, uppers.get( 0 ).toUpperCase( locale ));
 		return uppers.toString( Strings.CONCAT );
 	}
-	static public Strings toPattern( String u ) {
+	static public Strings toPattern( Strings in ) {
 		// my name is variable name => my name is NAME
-		Strings in  = new Strings( u ),
-				out = new Strings();
+		Strings out = new Strings();
 		Iterator<String> wi = in.iterator();
 		while ( wi.hasNext() ) {
 			String word = wi.next();
@@ -376,8 +375,7 @@ public class Pattern extends ArrayList<Patternette> {
 						break;
 					} else
 						vals.add( u );
-				}
-		}	}
+		}	}	}
 		String val = vals.toString();
 		// TODO: ...again "l'eau"
 		if (t.isApostrophed())
@@ -610,7 +608,7 @@ public class Pattern extends ArrayList<Patternette> {
 		audit.out();
 	}
 	static private void complexityTest( String str ) {
-		Pattern patt = new Pattern( toPattern( str ));
+		Pattern patt = new Pattern( toPattern( new Strings( str )));
 		audit.LOG( "pattern: "+ patt );
 		//audit.LOG( "    Xml: "+ patt.toXml() );
 		audit.LOG( " cmplxy: "+ patt.cplex() );

@@ -100,7 +100,7 @@ public class Utterance {
 						Language.sentenceCapitalisation( 
 							Language.pronunciation( reply )));
 		
-		return Language.asStrings( Numeric.deref( reply )).contract( Language.APOSTROPHE);
+		return Language.asStrings( Numeric.deref( reply )).contract( Language.APOSTROPHE );
 	}
 
 	// test code...
