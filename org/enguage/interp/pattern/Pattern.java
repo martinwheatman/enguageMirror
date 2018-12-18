@@ -257,7 +257,7 @@ public class Pattern extends ArrayList<Patternette> {
 	private static final int LARGE = RANGE*RANGE;
 	private static final int SMALL = RANGE;
 	
-	public int complexity() {
+	public int cplex() {
 		boolean infinite = false;
 		int cons = 0,
 		    vars = 0,
@@ -613,7 +613,7 @@ public class Pattern extends ArrayList<Patternette> {
 		Pattern patt = new Pattern( toPattern( str ));
 		audit.LOG( "pattern: "+ patt );
 		//audit.LOG( "    Xml: "+ patt.toXml() );
-		audit.LOG( " cmplxy: "+ patt.complexity() );
+		audit.LOG( " cmplxy: "+ patt.cplex() );
 
 	}
 	static public void main(String args[]) {

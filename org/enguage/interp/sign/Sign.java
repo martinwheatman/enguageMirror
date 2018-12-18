@@ -100,7 +100,7 @@ public class Sign {
 	 */
 	public int interpretation = Signs.noInterpretation;
 	
-	public int complexity() { return pattern().complexity(); }
+	public int cplex() { return pattern().cplex(); }
 	
 	public String toXml( int n, long complexity ) {
 		
@@ -141,7 +141,7 @@ public class Sign {
 	public static void complexityTest( Pattern t ) {
 		Sign container = new Sign();
 		container.pattern( t );
-		audit.log( "Complexity of "+ container.toXml( 0, container.complexity() ) +"\n" );
+		audit.log( "Complexity of "+ container.toXml( 0, container.cplex() ) +"\n" );
 	}
 	public static void main( String argv[]) {
 		Sign p = new Sign();

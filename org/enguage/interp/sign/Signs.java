@@ -36,7 +36,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	private String name = "";
 	
 	public Signs insert( Sign insertMe ) {
-		int c = insertMe.complexity(),
+		int c = insertMe.cplex(),
 			i = 0;
 		while (i < 99 && containsKey( c + i )) {
 			//audit.log( "Signs:insert()>>>>>>CLASH: "+ insertMe.toLine());

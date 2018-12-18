@@ -63,6 +63,7 @@ public class Intention {
 	public static final int  headAppend   =  0xd;
 
 	public Intention( int type, String value, int intnt ) { this( type, value ); intent = intnt;}	
+	public Intention( int nm, Strings vals ) { this( nm, vals.toString()); }
 	public Intention( int nm, String val ) { type=nm; value = val; }
 	public Intention( Intention in, boolean temp, boolean spatial ) {
 		this( in.type(), in.value() );
@@ -150,7 +151,7 @@ public class Intention {
 	static public  String concept() { return concept; }
 	
 	public Reply autopoiesis( Reply r ) {
-		audit.in( "autopoiesis", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
+		//audit.in( "autopoiesis", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
 		Strings sa = Context.deref( new Strings( value ));
 		
 		// needs to switch on type (intent)
@@ -164,13 +165,13 @@ public class Intention {
 			);
 			
 		} else if (intent == append ) { // add intent to end of interpretant
-			if (null != s) s.append( new Intention( type, Pattern.toPattern( value ).toString()));
+			if (null != s) s.append( new Intention( type, Pattern.toPattern( value )));
 			
 		} else if (intent == prepend ) { // add intent to start of interpretant
-			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( value ).toString() ));
+			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( value )));
 			
 		} else if (intent == headAppend ) { // add intent to first but one...  
-			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( value ).toString() ));
+			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( value )));
 			
 		// following these are trad. autopoiesis...this need updating as above!!!
 		} else if (type == append || type == prepend ) {
@@ -194,7 +195,7 @@ public class Intention {
 			 * "X is X" and "X is Y" -- same shape, different usage.
 			 * At least need to avoid this (spot when "X is X" happens)
 			 */
-			audit.debug( "Adding >"+ value +"< ["+ sa.toString( Strings.CSV )+"]");
+			//audit.debug( "Adding >"+ value +"< ["+ sa.toString( Strings.CSV )+"]");
 			if ( pattern.equals( "help" ))
 				s.help( val ); // add: help="text" to cached sign
 			else // create then add a new cached sign into the list of signs
@@ -204,7 +205,8 @@ public class Intention {
 						.concept( concept() )
 						.append( new Intention( Intention.nameToType( attr ), val )));
 		}
-		return (Reply) audit.out( r.answer( Reply.yes().toString() ));
+		//return (Reply) audit.out( r.answer( Reply.yes().toString() ));
+		return r.answer( Reply.yes().toString() );
 	}
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
