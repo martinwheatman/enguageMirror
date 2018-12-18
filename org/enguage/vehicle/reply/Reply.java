@@ -55,7 +55,6 @@ public class Reply { // a reply is basically a formatted answer
 	static public  Strings ik() { return ik; }
 	static public  String  ikStr() { return ikStr; }
 
-	// TODO: these need to be Strings
 	static private Strings no = new Strings( "no" );
 	static private String noStr = "no";
 	static public  void   no(  String s ) { no = new Strings( s ); noStr = s; }
@@ -268,10 +267,6 @@ public class Reply { // a reply is basically a formatted answer
 		strangeThought("");
 
 		if ( DNU == type()) {
-			/* TODO: At this point do I want to cancel all skipped signs? 
-			 * Or just check if we've skipped any signs and thus report 
-			 * this as simply a warning not an ERROR?
-			 */
 			// put this into reply via Reply.strangeThought()
 			audit.ERROR( "Strange thought: I don't understand: '"+ thought.toString() +"'" );
 			strangeThought( thought.toString() );
