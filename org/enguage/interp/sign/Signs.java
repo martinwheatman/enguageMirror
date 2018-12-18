@@ -14,7 +14,6 @@ import org.enguage.interp.pattern.Patternette;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
@@ -276,43 +275,43 @@ public class Signs extends TreeMap<Integer,Sign> {
 		return (Reply) audit.out( r.answer( answer ));
 	}	
 	// help...
-	static public String help = "to get help, just say help";
-	static public void   help(String msg ) { help = msg; }
-	static public String help() { return help; }
+//	static public String help = "to get help, just say help";
+//	static public void   help(String msg ) { help = msg; }
+//	static public String help() { return help; }
 
-	private Strings helpedItems( String name, boolean html ) {
-		Strings items = new Strings();
-		Set<Map.Entry<Integer,Sign>> set = entrySet();
-		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
-		while (i.hasNext()) {
-			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
-			Sign s = me.getValue();
-		
-			if (null != s.help() &&
-				(s.concept().equals("") || s.concept().equalsIgnoreCase( name )))
-			{	String helpDesc = s.help();
-				items.add( (html?"<b><i>":"")
-						+ s.pattern().toText()
-						+ (html?"</i></b> ":" ") +
-						(helpDesc.equals("") ? "" : ", " + helpDesc));
-		}	}
-		return items;
-	}
-	private String helpedToString( String name, String fore, String aft, boolean html ) {
-		Strings ss = helpedItems( name, html );
-		return ss.size() > 0 ? fore + " " + ss.toString( Reply.andListFormat() ) + aft : "";
-	}
-	public String helpedToHtml( String name ) {
-		return helpedItems( name, true ).toString( "", "<br/>", "" );
-	}
-	public String helpedToString() { return helpedToString( Repertoire.prime() ); }
-	public String helpedToString( String name ) {
-		String output = helpedToString( name, Repertoire.PREFIX, ".", false );
-		return output != "" ? output :
-				name.equals( Repertoire.prime() ) ? 
-					"sorry, aural help is not yet configured" :
-					"sorry, there appears to be no aural help for "+name ;
-	}
+//	private Strings helpedItems( String name, boolean html ) {
+//		Strings items = new Strings();
+//		Set<Map.Entry<Integer,Sign>> set = entrySet();
+//		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
+//		while (i.hasNext()) {
+//			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
+//			Sign s = me.getValue();
+//		
+//			if (null != s.help() &&
+//				(s.concept().equals("") || s.concept().equalsIgnoreCase( name )))
+//			{	String helpDesc = s.help();
+//				items.add( (html?"<b><i>":"")
+//						+ s.pattern().toText()
+//						+ (html?"</i></b> ":" ") +
+//						(helpDesc.equals("") ? "" : ", " + helpDesc));
+//		}	}
+//		return items;
+//	}
+//	private String helpedToString( String name, String fore, String aft, boolean html ) {
+//		Strings ss = helpedItems( name, html );
+//		return ss.size() > 0 ? fore + " " + ss.toString( Reply.andListFormat() ) + aft : "";
+//	}
+//	public String helpedToHtml( String name ) {
+//		return helpedItems( name, true ).toString( "", "<br/>", "" );
+//	}
+//	public String helpedToString() { return helpedToString( Repertoire.prime() ); }
+//	public String helpedToString( String name ) {
+//		String output = helpedToString( name, Repertoire.PREFIX, ".", false );
+//		return output != "" ? output :
+//				name.equals( Repertoire.prime() ) ? 
+//					"sorry, aural help is not yet configured" :
+//					"sorry, there appears to be no aural help for "+name ;
+//	}
 
 	public static void main( String[] args ) {
 		// help test...
@@ -335,6 +334,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 				.append( new Intention( Intention.allop, "list repertoires" ))
 				.help( "" )
 		);
-		audit.log( r.helpedToString( "test" ));
-		audit.log( r.helpedToHtml(   "test" ));
+//		audit.log( r.helpedToString( "test" ));
+//		audit.log( r.helpedToHtml(   "test" ));
 }	}

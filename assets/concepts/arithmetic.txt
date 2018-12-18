@@ -9,7 +9,7 @@ On "what is NUMERIC-X":
 	perform "variable set subtotal ...";
 	reply "X is ...";
 	then, if not, reply "i did not get that".
-On "help", reply "to calculate a numeric phrase".
+#On "help", reply "to calculate a numeric phrase".
 
 ## Running total...
 On "NUMERIC-X", perform "variable set subtotal X".
@@ -20,7 +20,7 @@ On "+ NUMERIC-X":
 	then, reply "plus X makes SUBTOTAL".
 
 On "add NUMERIC-X", + X.
-On "help", reply "and so on, to keep a running total".
+#On "help", reply "and so on, to keep a running total".
      
 ##
 On "minus NUMERIC-X":

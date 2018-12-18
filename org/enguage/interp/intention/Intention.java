@@ -154,57 +154,58 @@ public class Intention {
 		//audit.in( "autopoiesis", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
 		Strings sa = Context.deref( new Strings( value ));
 		
-		// needs to switch on type (intent)
-		if (intent == create ) { // manually adding a sign
-			
-			//audit.debug( "autop: creating new sign: ["+ value +"]");
+		switch (intent) { // manually adding a sign
+		case  create:
 			Repertoire.signs.insert(
 				s = new Sign()
-					.pattern( new Pattern( value )) // manual Pattern
+					.pattern( new Pattern( value ))
 					.concept( Repertoire.AUTOPOIETIC )
 			);
-			
-		} else if (intent == append ) { // add intent to end of interpretant
+			break;
+		case append:
 			if (null != s) s.append( new Intention( type, Pattern.toPattern( value )));
-			
-		} else if (intent == prepend ) { // add intent to start of interpretant
+			break;
+		case prepend :
 			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( value )));
-			
-		} else if (intent == headAppend ) { // add intent to first but one...  
+			break;
+		case headAppend:
 			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( value )));
 			
 		// following these are trad. autopoiesis...this need updating as above!!!
-		} else if (type == append || type == prepend ) {
-			if (null == s)
-				// this should return DNU...
-				audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
-			else {
-				String attr = sa.get( 0 ),
-					    val = Strings.trim( sa.get( 1 ), Strings.DOUBLE_QUOTE );
-				if (type == append )
-					s.append( new Intention( nameToType(  attr ), val ));
-				else
-					s.prepend( new Intention( nameToType( attr ), val ));
-			}
-			
-		} else if (type == create ) { // autopoeisis?
-			String attr    = sa.get( 0 ),
-			       pattern = sa.get( 1 ),
-			       val     = Strings.trim( sa.get( 2 ), Strings.DOUBLE_QUOTE );
-			/* TODO: need to differentiate between
-			 * "X is X" and "X is Y" -- same shape, different usage.
-			 * At least need to avoid this (spot when "X is X" happens)
-			 */
-			//audit.debug( "Adding >"+ value +"< ["+ sa.toString( Strings.CSV )+"]");
-			if ( pattern.equals( "help" ))
-				s.help( val ); // add: help="text" to cached sign
-			else // create then add a new cached sign into the list of signs
-				Repertoire.signs.insert(
-					s = new Sign()
-						.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
-						.concept( concept() )
-						.append( new Intention( Intention.nameToType( attr ), val )));
-		}
+		default:
+			switch (type) {
+			case append :
+			case prepend:
+				if (null == s)
+					// this should return DNU...
+					audit.ERROR( "adding to non existent concept: ["+ sa.toString( Strings.CSV )+"]");
+				else {
+					String attr = sa.get( 0 ),
+						    val = Strings.trim( sa.get( 1 ), Strings.DOUBLE_QUOTE );
+					if (type == append )
+						s.append( new Intention( nameToType(  attr ), val ));
+					else
+						s.prepend( new Intention( nameToType( attr ), val ));
+				}
+				break;
+			case create: // autopoeisis?
+				String attr    = sa.remove( 0 ),
+				       pattern = sa.remove( 0 ),
+				       val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
+				/* TODO: need to differentiate between
+				 * "X is X" and "X is Y" -- same shape, different usage.
+				 * At least need to avoid this (spot when "X is X" happens)
+				 */
+				//audit.debug( "Adding >"+ value +"< ["+ sa.toString( Strings.CSV )+"]");
+				if ( pattern.equals( "help" ))
+					s.help( val ); // add: help="text" to cached sign
+				else // create then add a new cached sign into the list of signs
+					Repertoire.signs.insert(
+						s = new Sign()
+							.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+							.concept( concept() )
+							.append( new Intention( Intention.nameToType( attr ), val )));
+		}	}
 		//return (Reply) audit.out( r.answer( Reply.yes().toString() ));
 		return r.answer( Reply.yes().toString() );
 	}
@@ -326,8 +327,6 @@ public class Intention {
 	public static void main( String argv[]) {
 		Reply r = new Reply().answer( "world" );
 		audit.log( new Intention( thenReply, "hello ..." ).mediate( r ).toString() );
-		//Audit.allOn();
-		//audit.trace( true );
 		
 		audit.title( "trad autopoiesis... add to a list and then add that list" );
 		r = new Reply();

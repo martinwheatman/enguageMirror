@@ -3,7 +3,7 @@ Then on "verbose",         perform "preferences set verbose false".
 Then on "verbose", if not, perform "preferences set verbose true".
 
 On "verbose on",                  perform "preferences set verbose true".
-On "help",                        reply   "to be more verbose".
+#On "help",                        reply   "to be more verbose".
 On "verbose off",                 perform "preferences set verbose false".
-On "help",                        reply   "to be less verbose".
+#On "help",                        reply   "to be less verbose".
 

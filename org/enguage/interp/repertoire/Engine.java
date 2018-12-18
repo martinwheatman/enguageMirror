@@ -9,7 +9,6 @@ import org.enguage.interp.intention.Redo;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.pattern.Patternette;
 import org.enguage.interp.sign.Sign;
-import org.enguage.interp.sign.Signs;
 import org.enguage.objects.Variable;
 import org.enguage.objects.list.Item;
 import org.enguage.util.Audit;
@@ -373,14 +372,14 @@ public class Engine {
 				r.answer( Reply.previous().toString());
 			}
 			
-		} else if (cmd.equals( "help" )) {
-			Redo.helped( true );
-			r.format( Repertoire.allop.helpedToString( Repertoire.ALLOP ));
+//		} else if (cmd.equals( "help" )) {
+//			Redo.helped( true );
+//			r.format( Repertoire.allop.helpedToString( Repertoire.ALLOP ));
 
 		} else if (cmd.equals( "welcome" )) {
 			Redo.helped( true );
 			r.say( new Strings( "welcome" ));
-			r.format( Signs.help());
+//			r.format( Signs.help());
 
 		} else if ( cmd.equals( "list" )) {
 			//Strings reps = Enguage.e.signs.toIdList();
@@ -390,14 +389,14 @@ public class Engine {
 			 */
 			r.format( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() ));
 			
-		} else if ( cmd.equals( "describe" ) && cmds.size() >= 2) {
-			
-			String name = cmds.toString( Strings.CONCAT );
-			r.format( Repertoire.signs.helpedToString( name ));
-			
-		} else if ( cmd.equals( "repertoire" )) {
-			r.format( Repertoire.signs.helpedToString());
-			
+//		} else if ( cmd.equals( "describe" ) && cmds.size() >= 2) {
+//			
+//			String name = cmds.toString( Strings.CONCAT );
+//			r.format( Repertoire.signs.helpedToString( name ));
+//			
+//		} else if ( cmd.equals( "repertoire" )) {
+//			r.format( Repertoire.signs.helpedToString());
+//			
 		} else {
 			
 			r = Redo.unknownCommand( r, cmd, cmds );
