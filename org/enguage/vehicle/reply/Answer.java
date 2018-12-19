@@ -13,10 +13,9 @@ public class Answer {
 	 */
 	static private Strings placeholderAsStrings = new Strings( defaultPlaceholder );
 	static public  Strings placeholderAsStrings() { return placeholderAsStrings; }
-	static private String placeholder = defaultPlaceholder;
-	static public  String placeholder() { return placeholder; }
-	static public  void   placeholder( String ph ) {
-		placeholderAsStrings = new Strings( placeholder = ph );
+	static private String  placeholder = defaultPlaceholder;
+	static public  String  placeholder() { return placeholder; }
+	static public  void    placeholder( String ph ) {placeholderAsStrings = new Strings( placeholder = ph );
 	}
 
 	private boolean appending = false;
@@ -28,19 +27,32 @@ public class Answer {
 	public  Strings valueOf() {return answers;}
 	public  void    add( String s ) { answers.add( setType( s ));}
 	public  boolean none() { return answers.size() == 0; }
-
-	private int    type = Reply.NK;
+	
+	public Strings injectAnswer( Strings reply ) {
+		if (0 == reply.size())
+			reply = new Strings( answers ); // use the raw answer
+		
+		if (reply.size() == 0) // so a was equal to ""
+			reply = Reply.dnu();
+		else if (reply.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
+			reply.replace( Strings.ellipsis, answers );
+		else if (reply.contains( Answer.placeholder() ))
+			reply.replace( Answer.placeholderAsStrings(), answers );
+		return reply;
+	}
+	
+	private int    type = Reply.DNK;
 	public  int    type() { return type; }
 	private String setType( String s ) {
 		// This sets type to first non-NK type
-		if (type == Reply.NK) {
+		if (type == Reply.DNK) {
 			     if (s.equalsIgnoreCase( Reply.yesStr()    )) type = Reply.YES;
 			else if (s.equalsIgnoreCase( Reply.successStr())) type = Reply.YES;
 			else if (s.equalsIgnoreCase( Reply.noStr()     )) type = Reply.NO;
 			else if (s.equalsIgnoreCase( Reply.dnuStr()    )) type = Reply.DNU;
 			else if (s.equalsIgnoreCase( Reply.failureStr())) type = Reply.FAIL;
 			else if (s.equalsIgnoreCase( Reply.ikStr()     )) type = Reply.IK;
-			else if (s.equalsIgnoreCase( Reply.dnkStr()    )) type = Reply.NK;
+			else if (s.equalsIgnoreCase( Reply.dnkStr()    )) type = Reply.DNK;
 			else type = Reply.CHS;
 		}	
 		return s;

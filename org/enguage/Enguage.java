@@ -68,7 +68,7 @@ public class Enguage {
 		Variable.unset( Where.LOCTN );
 		Variable.unset( Where.LOCTR );
 		
-		if (Reply.understood()) // from previous interpretation!
+		if (Reply.isUnderstood()) // from previous interpretation!
 			o.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 
 		Reply r = Repertoire.interpret( new Utterance( utterance ));
@@ -76,7 +76,7 @@ public class Enguage {
 		// once processed, keep a copy
 		Utterance.previous( utterance );
 
-		if (Reply.understood()) {
+		if (Reply.isUnderstood()) {
 			o.finishTxn( Redo.undoIsEnabled() );
 			Redo.disambOff();
 		} else {
@@ -91,7 +91,7 @@ public class Enguage {
 		// asymmetry: load as we go; tidy-up once finished
 		if (!Repertoire.induction() && !Autoload.ing()) Autoload.unload();
 
-		Strings reply = new Strings( r.toString( utterance ));
+		Strings reply = new Strings( r.toStrings( utterance ));
 		if (Net.serverOn()) audit.log( "Server replied: "+ reply );
 		return audit.out( reply );
 	}

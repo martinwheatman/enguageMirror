@@ -20,7 +20,7 @@ public class Reply { // a reply is basically a formatted answer
 	static public final int   NO =  0; // FALSE -- -ve
 	static public final int  YES =  1; // TRUE  -- +ve
 	static public final int  DNU =  2; // DO NOT UNDERSTAND
-	static public final int   NK =  3; // NOT KNOWN -- init
+	static public final int  DNK =  3; // NOT KNOWN -- init
 	static public final int   IK =  4; // I know, silly!
 	static public final int  CHS =  5; // use stored expression
 	static public final int  UDU =  6; // user does not understand
@@ -30,8 +30,8 @@ public class Reply { // a reply is basically a formatted answer
 	static public  void    verbatimIs( boolean val ) { verbatim = val; }
 	
 	static private boolean understood = false;
-	static public  boolean understood( boolean was ) { return understood = was;}
-	static public  boolean understood() { return Reply.understood; }
+	static public  boolean understoodIs( boolean was ) { return understood = was;}
+	static public  boolean isUnderstood() { return Reply.understood; }
 	
 	static private String strangeThought = "DNU";
 	static public  void   strangeThought( String thought ) { strangeThought = thought; }
@@ -39,43 +39,43 @@ public class Reply { // a reply is basically a formatted answer
 
 	static private Strings dnu = new Strings( Enguage.DNU );
 	static private String  dnuStr = Enguage.DNU;
-	static public  void    dnu( String s ) { dnu = new Strings( s ); dnuStr = s; }
+	static public  void    dnu( String s ) { dnu = new Strings( dnuStr = s ); }
 	static public  Strings dnu(){ return dnu; }
 	static public  String  dnuStr(){ return dnuStr; }
 
 	static private Strings dnk = new Strings( "DNK" );
 	static private String  dnkStr = "DNK";
-	static public  void    dnk( String s ) { dnk = new Strings( s ); dnkStr = s; }
+	static public  void    dnk( String s ) { dnk = new Strings( dnkStr = s ); }
 	static public  Strings  dnk() { return dnk; }
 	static public  String  dnkStr() { return dnkStr; }
 
 	static private Strings ik = new Strings( "IK" );
 	static private String  ikStr = "IK";
-	static public  void    ik( String s ) { ik = new Strings( s ); ikStr = s; }
+	static public  void    ik( String s ) { ik = new Strings( ikStr = s ); }
 	static public  Strings ik() { return ik; }
 	static public  String  ikStr() { return ikStr; }
 
 	static private Strings no = new Strings( "no" );
-	static private String noStr = "no";
-	static public  void   no(  String s ) { no = new Strings( s ); noStr = s; }
+	static private String  noStr = "no";
+	static public  void    no(  String s ) { no = new Strings( noStr = s ); }
 	static public  Strings no() { return no; }
-	static public  String noStr() { return noStr; }
+	static public  String  noStr() { return noStr; }
 	
 	static private Strings yes    = new Strings( "yes" );
 	static private String  yesStr = "yes";
-	static public  void    yes( String s ) { yes = new Strings( s ); yesStr = s; }
+	static public  void    yes( String s ) { yes = new Strings( yesStr = s ); }
 	static public  Strings yes() { return yes; }
 	static public  String  yesStr() { return yesStr; }
 
 	static private Strings failure   = new Strings( Shell.FAIL );
 	static private String  failureStr = Shell.FAIL;
-	static public  void    failure(  String s ) { failure = new Strings( s ); failureStr = s; }
+	static public  void    failure(  String s ) { failure = new Strings( failureStr = s ); }
 	static public  Strings failure() { return failure; }
 	static public  String  failureStr() { return failureStr; }
 	
 	static private Strings success    = new Strings( Shell.SUCCESS );
 	static private String  successStr = Shell.SUCCESS;
-	static public  void    success( String s ) { success = new Strings( s ); successStr = s; }
+	static public  void    success( String s ) { success = new Strings( successStr = s ); }
 	static public  Strings success() { return success; }
 	static public  String  successStr() { return successStr; }
 
@@ -116,18 +116,14 @@ public class Reply { // a reply is basically a formatted answer
 	 * we need the reply from that session. Was implemented with the equiv 
 	 * intention in previous C incarnation.
 	 */
-	static private String previous = "";
-	static public  String previous( String rep ) { return previous = rep; }
-	static public  String previous() { return previous; }
+	static private Strings previous = new Strings( "" );
+	static public  Strings previous( Strings rep ) { return previous = rep; }
+	static public  Strings previous() { return previous; }
 
 	private boolean repeated = false;
 	public  void    repeated( boolean s ) { repeated = s; }
 	public  boolean repeated() { return repeated; }
 	
-	//static private String lastOutput = null;
-	//static public  String lastOutput() { return lastOutput; }
-	//static public  String lastOutput( String l ) { return lastOutput = l; }
-
 	private boolean done = false;
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
@@ -135,9 +131,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  Strings say = new Strings();
 	public  String  say() { return say.toString( Strings.SPACED ); }
 	public  void    say( Strings sa ) { say.addAll( Shell.addTerminator( sa )); }
-	
-	private Strings cache = null;
-	
+		
 	private static final Strings FUDG1 = new Strings( "I don't know" );
 	private static final Strings FUDG2 = new Strings( "I don't understand" );
 	private int     type = DNU;
@@ -148,20 +142,21 @@ public class Reply { // a reply is basically a formatted answer
 
 		     if (response.beginsIgnoreCase(    yes )) type = YES;
 		else if (response.beginsIgnoreCase( success)) type = YES;
-		else if (response.beginsIgnoreCase(     no )) type =  NO;
 		else if (response.beginsIgnoreCase( failure)) type =FAIL;
-		else if (response.beginsIgnoreCase(     ik )) type =  IK;
-		else if (response.beginsIgnoreCase(    dnk )) type =  NK;
-		else if (response.beginsIgnoreCase(  FUDG1 )) type =  NK;
 		else if (response.beginsIgnoreCase(    dnu )) type = DNU;
+		else if (response.beginsIgnoreCase(     no )) type =  NO;
 		else if (response.beginsIgnoreCase(  FUDG2 )) type = DNU;
+		else if (response.beginsIgnoreCase(  FUDG1 )) type = DNK;
+		else if (response.beginsIgnoreCase(    dnk )) type = DNK;
+		else if (response.beginsIgnoreCase(     ik )) type =  IK;
 		else type = CHS;
 		return this;
 	}
-	public  boolean negative() {return  FAIL == type || NO == type ||  NK == type || type == UDU; } // != !positive() !!!!!
+	public  boolean negative() {return  FAIL == type || NO == type ||  DNK == type || type == UDU; } // != !positive() !!!!!
 	public  void userDNU() { type = UDU; }// forces us out to I don't know?
 
 
+	private Strings cache = null;
 	/** Answer:
 	 * Multiple answers should now be implemented in a Replies class!
 	 *                                     or in List class, below.
@@ -210,28 +205,21 @@ public class Reply { // a reply is basically a formatted answer
 		if (new Strings( s ).areLowerCase() &&
 			 a.none() &&
 			 !s.contains("...")) {
-			audit.debug( "overwriting answer with "+ s );
+			//audit.debug( "overwriting answer with "+ s );
 			answer( s ); // overwrite answer!
 		}
 		return this;
 	}
-	private String encache() {
+	private Strings encache() {
 		if (null == cache) {
-			Strings reply = new Strings( say() ).appendAll( f.ormat());
-			if (0 == reply.size())
-				reply = new Strings( a.valueOf() ); // use the raw answer
-
-			if (reply.size() == 0) // was: a.toString().equals( "" )
-				reply = new Strings( dnu() );
-			else if (reply.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
-				reply.replace( Strings.ellipsis, new Strings( a.toString() ));
-			else if (reply.contains( Answer.placeholder() ))
-				reply.replace( Answer.placeholderAsStrings(), new Strings( a.toString() ));
-
-			// ... then post-process:
-			cache = Utterance.externalise( reply, isVerbatim() );
+			cache = Utterance.externalise(
+						a.injectAnswer(
+								new Strings( say() ).appendAll( f.ormat())
+						),
+						isVerbatim()
+					);
 		}
-		return cache.toString();
+		return cache;
 	}
 	private void handleDNU( Strings utterance ) {
 		if (Audit.detailedOn) audit.in( "handleDNU", utterance.toString( Strings.CSV ));
@@ -251,9 +239,9 @@ public class Reply { // a reply is basically a formatted answer
 		verbatimIs( false );
 		if (Audit.detailedOn) audit.out();
 	}
-	public String toString( Strings utterance ) {
-		String reply = encache();
-		if (understood( Reply.DNU != type() )) {
+	public Strings toStrings( Strings utterance ) {
+		Strings reply = encache();
+		if (understoodIs( Reply.DNU != type() )) {
 			if (!repeated())
 				previous( reply ); // never used
 			;
@@ -261,7 +249,7 @@ public class Reply { // a reply is basically a formatted answer
 			handleDNU( Utterance.previous() );
 		return reply;
 	}
-	public String toString() { return encache(); }
+	public String toString() { return encache().toString(); }
 	
 	public void conclude( Strings thought ) {
 		strangeThought("");

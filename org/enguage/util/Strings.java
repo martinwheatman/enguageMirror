@@ -25,7 +25,9 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Colloquial;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.number.Numerals;
+import org.enguage.vehicle.reply.Answer;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
@@ -1166,6 +1168,13 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		audit.log( "Colloquial: "+ Colloquial.id);
 		audit.log( "Transitive: "+ Transitive.id);
 		
+		Variable.set( "ENT",  "martin" );
+		Variable.set( "ATTR", "height" );
+		Answer answer = new Answer();
+		answer.add( "194" );
+		
 		Strings tmp2 = new Strings( "..., ENT''s ATTR is ..." );
-		audit.log( "tmp2: "+ tmp2.toString() );
+		audit.log( "tmp2: "+ tmp2.toString( DQCSV ));
+		tmp2 = Utterance.externalise( tmp2, false );
+		audit.log( "tmp2: "+ tmp2.toString( DQCSV ));
 }	}
