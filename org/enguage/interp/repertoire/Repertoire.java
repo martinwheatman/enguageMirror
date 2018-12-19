@@ -32,8 +32,8 @@ public class Repertoire {
 	static public Signs autop = new Signs("autop" ).add( Autopoiesis.written ).add( Autopoiesis.spoken );
 	static public Signs allop = new Signs("allop" ).add( Engine.commands );
 	
-	// ----- read concepts used in main e
-	//static private boolean initialising = false;
+	/* A persistent Induction is used in the repertoire.
+	 */
 	private final static String FALSE = Boolean.toString( false );
 	private final static String  TRUE = Boolean.toString( true  );
 	static Variable induction = new Variable( "induction", FALSE );
@@ -45,33 +45,22 @@ public class Repertoire {
 		return b;
 	}
 
-	static public  final String  DEFAULT_PRIME = "need";
-	static public  final String       NO_PRIME = "";
-	
-	static private       String prime = NO_PRIME;
-	static public        void   prime( String name ) { prime = name; }
-	static public        String prime() { return prime; }
-	
-	static private boolean loadedDefaultConcept = false;
-	static public  boolean defaultConceptIsLoaded() { return loadedDefaultConcept; }
-	static public  void    defaultConceptLoadedIs(boolean c ) { loadedDefaultConcept = c; }
-
 	//
 	// Repertoire Management -- above
 	// *********************************************************** 
 
 	// entry point for Enguage, re-entry point for Intention
-	static public Reply interpret( Utterance u ) {
+	static public Reply mediate( Utterance u ) {
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
 		Reply r = new Reply();
 		if (induction() || Autoload.ing()) {
-			r = autop.interpret( u );
+			r = autop.mediate( u );
 			if (Reply.DNU == r.type()) {
-				r = signs.interpret( u );
+				r = signs.mediate( u );
 				if (Reply.DNU == r.type())
-					r = allop.interpret( u );
+					r = allop.mediate( u );
 			}
 		} else {
 			Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
@@ -82,11 +71,11 @@ public class Repertoire {
 			 */
 			u = new Utterance( u.expanded() );
 			
-			r = signs.interpret( u );
+			r = signs.mediate( u );
 			if (Reply.DNU == r.type()) {
-				r = allop.interpret( u );
+				r = allop.mediate( u );
 				if (Reply.DNU == r.type())
-					r = autop.interpret( u );
+					r = autop.mediate( u );
 		}	}
 		return r;
 }	}

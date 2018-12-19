@@ -30,8 +30,6 @@ public class Concept {
 		}
 		
 		Intention.concept( name );
-		if (name.equals( Repertoire.DEFAULT_PRIME ))
-			Repertoire.defaultConceptLoadedIs( true );
 		
 		// ...add content from file/asset...
 		try {

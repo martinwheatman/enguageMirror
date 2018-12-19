@@ -21,15 +21,14 @@ public class Format {
 	
 	private Strings format = new Strings();
 	public  Strings ormat() { return format; }
-	public  void    ormat(String s) {
-		format = new Strings( s );
-		if (format.size() > 0 && format.get(0).equals( Strings.ELLIPSIS )) variable = true;
+	public  void    ormat( Strings sa ) {
+		variable = sa.size() > 0 && sa.get(0).equals( Strings.ELLIPSIS );
 		// Decontextualise format, while we're in the moment!
-		format = Context.deref( format );
+		format = Context.deref( sa );
 	}
 	static public void main( String args[] ) {
 		Format f = new Format();
 		Variable.set( "FMTEST", "martin" );
-		f.ormat( "FMTEST needs "+ Strings.ELLIPSIS );
+		f.ormat( new Strings( "FMTEST needs "+ Strings.ELLIPSIS ));
 		audit.log( "fmt: "+ f.ormat());
 }	}

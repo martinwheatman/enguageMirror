@@ -28,10 +28,8 @@ public class Function {
 	
 	private Lambda lambda = null;
 	
-	static private String create( String name, Strings args ) {
+	static private Strings create( String name, Strings args ) {
 		// args=[ "x and y", "/", "body='x + y'" ]
-		audit.in( "create", "name="+ name +", args="+ args.toString( Strings.DQCSV ));
-		
 		Strings params = new Strings();
 		ListIterator<String> si = args.listIterator();
 		
@@ -41,14 +39,12 @@ public class Function {
 		if (params.size() > 2)
 			params.remove( params.size()-2 ); // remove 'and'
 		
-		audit.debug( "creating: "+ params +"/"+ name );
 		new Function( name, params, Attribute.getAttribute( si ).value() );
 		
-		return audit.out( Shell.SUCCESS );
+		return Shell.Success;
 	}
-	public String toString() {
-		return name + (lambda == null ? "<noLambda/>" : lambda.toString());
-	}
+	public String toString() {return name + (lambda==null ? "<noLambda/>" : lambda.toString());}
+	
 	static private Function getFunction( String name, Strings actuals ) {
 		audit.in( "getFunction", name +", "+ actuals.toString("[", ", ", "]"));
 		Function fn = new Function( name );
@@ -70,21 +66,20 @@ public class Function {
 						actuals.derefVariables() );
 		return audit.out( ss );
 	}
-	static private String evaluate( String name, Strings argv ) {
-		audit.in(  "evaluate", name +":"+ argv.toString( Strings.DQCSV ));
-		String  rc = Reply.dnkStr();
+	static private Strings evaluate( String name, Strings argv ) {
+		Strings  rc = Reply.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {
-			rc = Number.getNumber( ss.listIterator()).valueOf();
+			rc = Number.getNumber( ss.listIterator() ).valueOf();
 			if (rc.equals( Number.NotANumber ))
-				rc = Reply.dnkStr();
+				rc = Reply.dnk();
 		}
-		return audit.out( rc );
+		return rc;
 	}
 	static public Strings interpret( String arg ) { return interpret( new Strings( arg ));}
 	static public Strings interpret( Strings argv ) {
-		audit.in( "interpret", argv.toString( Strings.DQCSV ));
-		String  rc = Shell.FAIL;
+		//audit.in( "interpret", argv.toString( Strings.DQCSV ));
+		Strings rc = Shell.Fail;
 		if (argv.size() >= 2) {
 			String      cmd = argv.remove( 0 ),
 			       function = argv.remove( 0 );
@@ -101,7 +96,7 @@ public class Function {
 			else
 				audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}
-		return audit.out( new Strings( rc ));
+		return rc; //audit.out( rc );
 	}
 	// === test code below! ===
 	static private void testCreate( String fn, String formals, String body ) {

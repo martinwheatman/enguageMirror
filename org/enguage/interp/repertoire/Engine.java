@@ -167,20 +167,20 @@ public class Engine {
 			String answer = new Question( question ).ask();
 			Question.primedAnswer( null ); // tidy up any primed answer...
 			
-			r.format( answer );
+			r.format( new Strings( answer ));
 			if (!answers.contains( answer ))
 				r.userDNU();
 			
 		} else if ( cmd.equals( "groupby" )) {
 			
-			r.format( Reply.successStr());
+			r.format( Reply.success());
 			if (cmds.size() > 0 && !cmds.get( 0 ).equals( "X" ))
 				Item.groupOn( cmds.get( 0 ).toUpperCase( Locale.getDefault()));
 			else
-				r.format( Reply.failure() +", i need to know what to group by" );
+				r.format( new Strings( Reply.failure() +", i need to know what to group by" ));
 			
 		} else if ( cmd.equals( "undo" )) {
-			r.format( Reply.successStr() );
+			r.format( Reply.success() );
 			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
 				Redo.undoEnabledIs( true );
 			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
@@ -194,7 +194,7 @@ public class Engine {
 					Enguage.o.reStartTxn();
 				}
 			} else if (!Redo.undoIsEnabled())
-				r.format( Reply.dnuStr() );
+				r.format( Reply.dnu() );
 			else
 				r = Redo.unknownCommand( r, cmd, cmds );
 			
@@ -233,11 +233,11 @@ public class Engine {
 			}
 */
 		} else if (cmd.equals( "spell" )) {
-			r.format( Language.spell( cmds.get( 0 ), true ));
+			r.format( new Strings( Language.spell( cmds.get( 0 ), true )));
 			
 		} else if (cmd.equals( "iknow" )) {
 			
-			String tmp = Repertoire.interpret( new Utterance( cmds )).toString();
+			String tmp = Repertoire.mediate( new Utterance( cmds )).toString();
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
@@ -279,7 +279,7 @@ public class Engine {
 				Audit.detailedOn = true;
 				Audit.timings = true;
 			}
-			r.format( Reply.successStr() );
+			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "tracing" )) {
 			audit.log( cmd +" "+ cmds.toString());
@@ -293,7 +293,7 @@ public class Engine {
 				Audit.runtimeDebug = true;
 				Audit.allTracing = true;
 			}
-			r.format( Reply.successStr() );
+			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "detailed" )) {
 			
@@ -309,7 +309,7 @@ public class Engine {
 				Audit.allTracing = true;
 				Audit.detailedOn = true;
 			}
-			r.format( Reply.successStr() );
+			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "debug" )) {
 			
@@ -327,7 +327,7 @@ public class Engine {
 				Audit.allOn();
 				Audit.runtimeDebug = true;
 			}
-			r.format( Reply.successStr() );
+			r.format( Reply.success() );
 			
 			
 		} else if (cmd.equals( "show" )) {
@@ -337,38 +337,38 @@ public class Engine {
 				String option = cmds.get( 0 ).substring(0,4);
 				if (option.equals( "auto" )) {
 					Repertoire.autop.show();
-					r.format( Reply.successStr() );
+					r.format( Reply.success() );
 				} else if (   option.equals( "sign" )
 				           || option.equals( "user" )) {
 					Repertoire.signs.show();
-					r.format( Reply.successStr() );
+					r.format( Reply.success() );
 				} else if (option.equals( "engi" )) {
 					Repertoire.allop.show();
-					r.format( Reply.successStr() );
+					r.format( Reply.success() );
 				} else if (option.equals( "all" )) {
 					Repertoire.autop.show();
 					Repertoire.allop.show();
 					Repertoire.signs.show();
-					r.format( Reply.successStr() );
+					r.format( Reply.success() );
 				} else if (option.equals( "vari" )) {
 					Variable.interpret( new Strings( "show" ));
-					r.format( Reply.successStr());
+					r.format( Reply.success());
 				} else
 					audit.ERROR( "option: "+ option +" doesn't match anything" );
 			} else {
 				Repertoire.signs.show();
-				r.format( Reply.successStr() );
+				r.format( Reply.success() );
 			}
 
 
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
 				audit.log("Allop:repeating dnu");
-				r.format( Reply.dnuStr());
+				r.format( Reply.dnu());
 			} else {
 				audit.log("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
-				r.format( Reply.repeatFormat());
+				r.format( new Strings( Reply.repeatFormat()));
 				r.answer( Reply.previous().toString());
 			}
 			
@@ -387,7 +387,7 @@ public class Engine {
 			 * Don't want to list all repertoires once the repertoire base begins to grow?
 			 * May want to ask "is there a repertoire for needs" ?
 			 */
-			r.format( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() ));
+			r.format( new Strings( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() )));
 			
 //		} else if ( cmd.equals( "describe" ) && cmds.size() >= 2) {
 //			

@@ -292,7 +292,7 @@ public class Pattern extends ArrayList<Patternette> {
 	
 	private String doNumeric( ListIterator<String> ui ) {
 		String toString = Number.getNumber( ui ).toString();
-		return toString.equals( Number.NotANumber ) ? null : toString;
+		return toString.equals( Number.NOT_A_NUMBER ) ? null : toString;
 	}
 	private String doExpr( ListIterator<String> ui ) {
 		Strings rep = Expression.getExpr( ui, new Strings() );

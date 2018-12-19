@@ -190,7 +190,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	}
 
 	// a simple cognitive model ?
-	public Reply interpret( Utterance u ) {
+	public Reply mediate( Utterance u ) {
 		//*
 			audit.in( "interpret",
 				" ("+ name +"="+ size() +") "
@@ -239,7 +239,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					r = new Reply();
 					
 					Context.push( match );
-					r = s.mediate( r ); // may pass back DNU
+					r = s.interpret( r ); // may pass back DNU
 					Context.pop();
 					
 					r.a.appendingIs( true );

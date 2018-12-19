@@ -120,7 +120,7 @@ public class Numeric extends Value {
 
 				// [ "4", "+", "3" ] => [ "7" ] ???? at some point!
 				ListIterator<String> ai = a.listIterator();
-				String value = Number.getNumber( ai ).valueOf(); /* <<<< this could 
+				String value = Number.getNumber( ai ).valueOf().toString(); /* <<<< this could 
 				 * have "another", coz it has context. In practice, this is a single figure for 
 				 * increase or decrease.
 				 */

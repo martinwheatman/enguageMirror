@@ -71,7 +71,7 @@ public class Enguage {
 		if (Reply.isUnderstood()) // from previous interpretation!
 			o.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 
-		Reply r = Repertoire.interpret( new Utterance( utterance ));
+		Reply r = Repertoire.mediate( new Utterance( utterance ));
 
 		// once processed, keep a copy
 		Utterance.previous( utterance );
@@ -91,7 +91,7 @@ public class Enguage {
 		// asymmetry: load as we go; tidy-up once finished
 		if (!Repertoire.induction() && !Autoload.ing()) Autoload.unload();
 
-		Strings reply = new Strings( r.toStrings( utterance ));
+		Strings reply = r.toStrings();
 		if (Net.serverOn()) audit.log( "Server replied: "+ reply );
 		return audit.out( reply );
 	}

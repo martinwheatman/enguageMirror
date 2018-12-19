@@ -87,19 +87,19 @@ public class Concepts {
 
 	// backwards compatibility... STATICally load a repertoire file
 	static public void load( String name ) {
-		audit.in( "load", "name="+ name );
+		//audit.in( "load", "name="+ name );
 		// add in name as to what is loaded.
 		if (!loaded.contains( name )) {
 			// loading repertoires won't use undo - disable
 			Redo.undoEnabledIs( false );
 			if ( Concept.load( name )) {
 				loaded.add( name );
-				audit.debug( "LOADED>>>>>>>>>>>>:"+ name );
-			} else
-				audit.debug( "LOAD skipping already loaded:"+ name );
+				//audit.debug( "LOADED>>>>>>>>>>>>:"+ name );
+			} //else
+				//audit.debug( "LOAD skipping already loaded:"+ name );
 			Redo.undoEnabledIs( true );
 		}
-		audit.out();
+		//audit.out();
 	}
 
 	/* This is the STATIC loading of concepts at app startup -- read
@@ -115,20 +115,11 @@ public class Concepts {
 					String op = concepts.content().get( j ).attribute( "op" ),
 							 id = concepts.content().get( j ).attribute( "id" );
 
-					// get default also from config file: ensure def is at least set to last rep name
-					//audit.log( "id="+ id +", op="+ op );
-					if (op.equals( "prime" )) {
-						audit.log( "Prime repertoire is '"+ id +"'" );
-						Repertoire.prime( id );
-					}
-
 					if (!Audit.startupDebug) Audit.suspend();
 
-					if (op.equals( "load" ) || op.equals( "prime" ))
+					if (!op.equals( "ignore" ))
 						load( id ); // using itself!!
-					else if (!op.equals( "ignore" ))
-						audit.ERROR( "unknown op "+ op +" on reading concept "+ name );
-
+					
 					if (!Audit.startupDebug) Audit.resume();
 			}	}
 			Repertoire.induction( false );

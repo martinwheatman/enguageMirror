@@ -214,7 +214,7 @@ public class Intention {
 		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
 		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		Reply tmpr = Repertoire.interpret( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
+		Reply tmpr = Repertoire.mediate( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
 		
 		if (r.a.isAppending())
 			r.a.add( tmpr.a.toString() );
@@ -274,7 +274,7 @@ public class Intention {
 		/* TODO: 
 		 * if reply on its own, return reply from previous/inner reply -- imagination!
 		 */
-		r.format( value.equals( "" ) ? Reply.successStr() : value );
+		r.format( value.equals( "" ) ? Reply.success() : new Strings( value ));
 		r.type( new Strings( value ));
 		r.doneIs( r.type() != Reply.DNU );
 		return r; //(Reply) audit.out( r );

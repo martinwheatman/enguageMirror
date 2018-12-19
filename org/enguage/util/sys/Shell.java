@@ -116,7 +116,7 @@ public class Shell {
 							ArrayList<Strings> sentenceList = expandSemicolonList( sentence );
 							for (Strings s : sentenceList ) {
 								interval();
-								String rc = Repertoire.interpret( new Utterance( s )).toString();
+								String rc = Repertoire.mediate( new Utterance( s )).toString();
 								if (aloud)
 									audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
 							}

@@ -22,23 +22,23 @@ public class Answer {
 	public  boolean isAppending() { return appending; }
 	public  void    appendingIs( boolean b ) { appending = b; }
 	
+	// [ "black coffee", "eggs", "Taj Mahal" ];
 	private Strings answers = new Strings();
 	
 	public  Strings valueOf() {return answers;}
 	public  void    add( String s ) { answers.add( setType( s ));}
 	public  boolean none() { return answers.size() == 0; }
 	
-	public Strings injectAnswer( Strings reply ) {
-		if (0 == reply.size())
-			reply = new Strings( answers ); // use the raw answer
-		
-		if (reply.size() == 0) // so a was equal to ""
-			reply = Reply.dnu();
-		else if (reply.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
-			reply.replace( Strings.ellipsis, answers );
-		else if (reply.contains( Answer.placeholder() ))
-			reply.replace( Answer.placeholderAsStrings(), answers );
-		return reply;
+	public Strings injectAnswer( Strings sa ) {
+		if (0 == sa.size()) {
+			sa = new Strings( answers ); // use the raw answer
+			if (sa.size() == 0) // so a was equal to ""
+				sa = Reply.dnu();
+		} else if (sa.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
+			sa.replace( Strings.ellipsis, answers );
+		else if (sa.contains( Answer.placeholder() ))
+			sa.replace( Answer.placeholderAsStrings(), answers );
+		return sa;
 	}
 	
 	private int    type = Reply.DNK;
@@ -59,5 +59,5 @@ public class Answer {
 	}
 
 	@Override
-	public  String  toString() { return answers.toString( Reply.andListFormat() ); }
+	public  String toString() { return answers.toString( Reply.andListFormat() ); }
 }

@@ -15,7 +15,7 @@ public class Redo {
 	// needs "command //delete "...". -- to remove a tag, to support '"X" is meaningless.'
 	static public Reply unknownCommand( Reply r, String cmd, Strings args ) {
 		audit.ERROR( "Unknown command "+ cmd +" "+ args.toString( Strings.CSV ));
-		return r.format( Reply.dnuStr() );
+		return r.format( Reply.dnu() );
 	}
 		
 	// are we taking the hit of creating / deleting overlays

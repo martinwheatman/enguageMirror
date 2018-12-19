@@ -128,9 +128,9 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
 	
-	public  Strings say = new Strings();
-	public  String  say() { return say.toString( Strings.SPACED ); }
-	public  void    say( Strings sa ) { say.addAll( Shell.addTerminator( sa )); }
+	private  Strings say = new Strings();
+	private  Strings say() { return say; }
+	public   void    say( Strings sa ) { say.addAll( Shell.addTerminator( sa )); }
 		
 	private static final Strings FUDG1 = new Strings( "I don't know" );
 	private static final Strings FUDG2 = new Strings( "I don't understand" );
@@ -198,27 +198,24 @@ public class Reply { // a reply is basically a formatted answer
 	public  boolean verbose() { return !f.shrt(); }
 	public  void    verbose( boolean v ) { f.shrt( v );}
 
-	public  Reply   format( String s ) {
+	public static boolean isLiteral( Strings sa ) { return sa.areLowerCase() && !sa.contains( Strings.ELLIPSIS );}
+	public  Reply   format( Strings format ) {
 		cache = null; //de-cache any previous reply
-		f.ormat( s );
+		//Strings format = new Strings( sa );
+		f.ormat( format );
 
-		if (new Strings( s ).areLowerCase() &&
-			 a.none() &&
-			 !s.contains("...")) {
-			//audit.debug( "overwriting answer with "+ s );
-			answer( s ); // overwrite answer!
-		}
+		if (isLiteral( format ) && a.none()) // remove a.none?
+			answer( format.toString() ); // overwrite answer!
 		return this;
 	}
 	private Strings encache() {
-		if (null == cache) {
+		if (null == cache)
 			cache = Utterance.externalise(
 						a.injectAnswer(
 								new Strings( say() ).appendAll( f.ormat())
 						),
 						isVerbatim()
 					);
-		}
 		return cache;
 	}
 	private void handleDNU( Strings utterance ) {
@@ -228,7 +225,7 @@ public class Reply { // a reply is basically a formatted answer
 			utterance = Shell.stripTerminator( utterance );
 		
 		// Construct the DNU format
-		format( Reply.dnu() + ", ..." );
+		format( new Strings( Reply.dnu() + ", ..." ));
 		answer( utterance.toString());
 		
 		/* Take this out for the moment... ...needs more thought:
@@ -239,7 +236,7 @@ public class Reply { // a reply is basically a formatted answer
 		verbatimIs( false );
 		if (Audit.detailedOn) audit.out();
 	}
-	public Strings toStrings( Strings utterance ) {
+	public Strings toStrings() {
 		Strings reply = encache();
 		if (understoodIs( Reply.DNU != type() )) {
 			if (!repeated())
@@ -249,7 +246,7 @@ public class Reply { // a reply is basically a formatted answer
 			handleDNU( Utterance.previous() );
 		return reply;
 	}
-	public String toString() { return encache().toString(); }
+	public String toString() {return encache().toString();}
 	
 	public void conclude( Strings thought ) {
 		strangeThought("");
@@ -279,14 +276,14 @@ public class Reply { // a reply is basically a formatted answer
 		
 		Reply r = new Reply();
 		audit.log( "Initially: "+ r.toString());
-		r.format( "ok" );
+		r.format( new Strings( "ok" ));
 		audit.log( "Initially2: "+ r.toString());
 		r.answer( "42" );
 		audit.log( "THEN: "+ r.toString());
 		r.answer( "53" );
 		audit.log( "W/no format:"+ r.toString());
 		
-		r.format( "The answer to X is ..." );
+		r.format( new Strings( "The answer to X is ..." ));
 		
 		Attributes attrs = new Attributes();
 		attrs.add( new Attribute( "x", "life the universe and everything" ));
