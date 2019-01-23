@@ -210,8 +210,9 @@ public class Enguage {
 		int level = 0;
 		Audit.interval(); // reset timer
 
-		if (thisTest( level, 1 )) { // james's experimental example
+		if (thisTest( level, 1 )) {
 			
+			// james's experimental example
 			//interpret( "england is a country",  "ok, england is a country" );
 			mediate( "preston is in england", "ok, preston is in england" );
 			mediate( "i am in preston",       "ok, you're in england" );

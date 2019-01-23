@@ -29,9 +29,10 @@ public class Audit {
 	}
 	
 	// test count
-	private int  numberOfTests = 0;
-	public  void passed() {numberOfTests++;}
-	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
+	private int  passes = 0;
+	public  void passed() {passes++;}
+	public  void passed( String info ) {passed(); log(info);}
+	public  void PASSED() {log( "+++ PASSED "+ passes +" tests in "+ interval()+"ms +++" );}
 
 	// === debug and detail - "auditing"
 	static private int     suspended = 0; 
@@ -91,9 +92,9 @@ public class Audit {
 		log( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
 		indent.incr();
 	}
-
-    public String OUT( String result ) {
-    	indent.decr();
+	public void OUT() {OUT( (String)null );}
+	public String OUT( String result ) {
+		indent.decr();
 		log( "OUT "+ name
 				+ (stack.size()>1?"."+ stack.get( 0 ) +"()" : "")
 				+ (result==null ? "" : " => "+ result)
@@ -121,12 +122,14 @@ public class Audit {
 	static public  void    allOn() {  allOn = true; allTracing = true; }
 	static public  boolean allAreOn() { return allOn; }
 	
-	// === title
-	public void title( String title ) {
-		String underline = "";
-		log( "\n" );
+	// === title/underline
+	public void title( String title ) { log( "\n" ); underline( title, '=' );}
+	public void subtitle( String title ) { log( "" ); underline( title, '+' );}
+	public void underline( String title ) { underline( title, '-' );}
+	public void underline( String title, char ch ) {
 		log( title );
-		for (int i = 0; i < title.length(); i++) underline += "=";
+		String underline = "";
+		for (int i = 0; i < title.length(); i++) underline += ch;
 		log( underline );
 	}
 
