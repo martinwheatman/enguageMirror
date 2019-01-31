@@ -38,14 +38,23 @@ public class Pronoun {
 	
 	// gender...
 	static Strings masculines = new Strings();
-	static Boolean isMasculine( String word ) { return masculines.contains( word ); }
+	static Boolean isMasculine( String word ) {
+		return masculines.contains( word )
+		    && !feminines.contains( word ); }
 	static void    masculineIs( String word ) {
-		audit.debug("setting "+ word +" m");
+		feminines.remove( word );
 		masculines.prepend( word );
 	}
+	
 	static Strings feminines = new Strings();
-	static Boolean isFeminine( String word ) { return feminines.contains( word ); }
-	static void    feminineIs( String word ) { feminines.prepend( word );}
+	static Boolean isFeminine( String word ) {
+		return feminines.contains( word )
+		    && !masculines.contains( word ); }
+	static void    feminineIs( String word ) {
+		masculines.remove( word );
+		feminines.prepend( word );
+	}
+	
 	static Boolean isNeutral( String word ) { // both male and female
 		return masculines.contains( word ) &&
 				feminines.contains( word );

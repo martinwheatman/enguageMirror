@@ -225,13 +225,13 @@ public class Enguage {
 			mediate( "i am not baking a cake", "ok,  you're not baking a cake" );
 			
 			audit.title( "Why/because" );
-			mediate( "i need 3 eggs because i am baking a cake",
+			mediate( "i am baking a cake so i need 3 eggs",
 					   "ok, you need 3 eggs because you're baking a cake" );
 			
 			mediate( "am i baking a cake",      "yes, you're baking a cake" );
 			mediate( "how many eggs do i need", "3, you need 3 eggs" );
 			
-			mediate( "why do i need 3 eggs",    "because you're baking a cake" );
+			mediate( "so why do i need 3 eggs", "because you're baking a cake" );
 			mediate( "do I need 3 eggs because I am baking a cake",
 				       "yes, you need 3 eggs because you're baking a cake" );
 			// simple check for infinite loops

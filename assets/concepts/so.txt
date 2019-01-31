@@ -1,0 +1,10 @@
+# so - all part of why
+# e.g. i am baking a cake so i need 3 eggs
+
+On "SIGN-CAUSE so SIGN-WHAT":
+	CAUSE;
+	if not, reply "i do not think EXT-CAUSE";
+	WHAT;
+	if not, reply "i do not think EXT-WHAT";
+	perform "list add _user whyBecause WHAT CAUSE";
+	then, reply "ok, EXT-WHAT because EXT-CAUSE".
