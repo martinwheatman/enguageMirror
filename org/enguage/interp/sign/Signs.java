@@ -214,8 +214,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 				//TODO: removed noInter check -- need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
 				if (null == match) {
-					if (!Pattern.notMatched().equals("prefixa"))
-						audit.debug( "NO match: "+ s.toString() +" ("+ Pattern.notMatched() +")");
+					//if (!Pattern.notMatched().equals("prefixa"))
+						; //audit.debug( "NO match: "+ s.toString() +" ("+ Pattern.notMatched() +")");
 				} else { // we have found a meaning! So I do understand...!
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
 					audit.debug( "matched '"+ s +"' with: "+ match.toString() +":"+ Context.valueOf());

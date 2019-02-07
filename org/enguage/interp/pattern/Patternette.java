@@ -9,6 +9,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.reply.Reply;
 
 public class Patternette {
 	private static Audit audit = new Audit( "Patternette" );
@@ -84,6 +85,10 @@ public class Patternette {
 	public  boolean     isPhrased() { return isPhrased; }
 	public  Patternette phrasedIs() { isPhrased = true; return this; }
 	
+	private boolean     isGrouped = false;
+	public  boolean     isGrouped() { return isGrouped; }
+	public  Patternette groupedIs() { isGrouped = true; return this; }
+	
 	private boolean     isSign = false;
 	public  boolean     isSign() { return isSign; }
 	public  Patternette signIs() { isSign = true; return this; }
@@ -137,11 +142,13 @@ public class Patternette {
 		return s;
 	}
 	public String toString() {
-		return prefix().toString() 
-				+" "+ 
-				(name.equals( "" ) ? "" :
+		String prefix = prefix().toString();
+		return prefix + (prefix.equals( "" ) ? "" : " ")
+				+(name.equals( "" ) ? "" :
 					(isNumeric()? Pattern.numericPrefix : "")
 					+ (isPhrased()? Pattern.phrasePrefix : "")
+					+ (isList()? Reply.andConjunction().toUpperCase( Locale.getDefault())
+							+"-"+ Pattern.list.toUpperCase( Locale.getDefault()) +"-" : "")
 					+ name.toUpperCase( Locale.getDefault()) +" ")
 				+ postfix().toString();
 	}

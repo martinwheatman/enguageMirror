@@ -6,11 +6,47 @@ This concept is spatial.
 When host says "_user needs"         host means "you need".
 When host says "_user does not need" host means "you do not need".
 
-On "SUBJECTS needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
-	perform "every : { SUBJECTS } needs { OBJECTS }";
+###############################################################################
+# Multiple singular additions
+On "SUBJECT needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
+	perform "every : SUBJECT needs { OBJECTS }";
 	if not, reply "i do not understand";
-	then, reply "ok, SUBJECTS needs OBJECTS".
+	then, reply "ok, SUBJECT needs OBJECTS".
 
+###############################################################################
+# GROUP additions - singular group
+# martin and ruth need a coffee and a tea
+On "AND-LIST-SUBJECTS need PHRASE-OBJECTS":
+	GROUPED-SUBJECTS needs OBJECTS;
+	then, reply "ok, SUBJECTS need OBJECTS".
+
+On "what do AND-LIST-SUBJECTS need":
+	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
+	get GROUPED-SUBJECTS needs list;
+	if not, reply "SUBJECTS do not need anything";
+	then, reply "SUBJECTS need ...".
+
+On "AND-LIST-SUBJECTS do not need PHRASE-OBJECTS":
+	OBJECTS exists in GROUPED-SUBJECTS needs list;
+	if not, reply "I know";
+	remove OBJECTS from GROUPED-SUBJECTS needs list;
+	then, reply "ok, SUBJECTS do not need ...".
+
+###############################################################################
+# Combinations - multiple single subjects, phrased objects
+# martin and james and ruth all need a coffee and a tea.
+On "AND-LIST-SUBJECTS all need PHRASE-OBJECTS":
+	perform "every : { SUBJECTS } needs OBJECTS";
+	if not, reply "i do not understand";
+	then, reply "ok, SUBJECTS all need OBJECTS".
+
+# martin and ruth both need a coffee and a tea.
+On "AND-LIST-SUBJECTS both need PHRASE-OBJECTS":
+	SUBJECTS all need OBJECTS;
+	then, reply "ok, SUBJECTS both need OBJECTS".
+
+###############################################################################
+# Various singular additions
 On "SUBJECT needs PHRASE-OBJECTS":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	OBJECTS exists in SUBJECT needs list;
@@ -66,7 +102,7 @@ On "they are":
 	the OBJECTS are;
 	then, reply "ok, they are LOCATOR LOCATION".
 	
-### does not need...
+### does not need... removals
 On "SUBJECT does not need anything":
 	#answering yes or no ask i am about to delete the needs list is this ok;
 	#if not, reply "ok, let us leave things as they are";

@@ -27,6 +27,10 @@ public class Pattern extends ArrayList<Patternette> {
 	static public  final String  quoted        = "quoted";
 	static public  final String  list          = "list";
 	static public  final String  quotedPrefix  = quoted.toUpperCase( locale ) + "-";
+	static public  final String  grouped       = "grouped";
+	static public  final String  groupedPrefix = grouped.toUpperCase( locale ) + "-";
+	static public  final String  ungrouped     = "ungrouped";
+	static public  final String  ungrpedPrefix = grouped.toUpperCase( locale ) + "-";
 	static public  final String  phrase        = "phrase";
 	static public  final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
 	static public  final String  numeric       = "numeric";

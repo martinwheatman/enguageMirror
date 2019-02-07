@@ -166,9 +166,10 @@ public class Attributes extends ArrayList<Attribute> {
 			String orig = name;
 			// if we have QUOTED-X, retrieve X and leave answer QUOTED
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
-			boolean quoted = name.contains( Pattern.quotedPrefix ),
-					plural  = name.contains( Pattern.pluralPrefix ),
-					external = name.contains( Pattern.externPrefix );
+			boolean quoted   = name.contains( Pattern.quotedPrefix ),
+					plural   = name.contains( Pattern.pluralPrefix ),
+					external = name.contains( Pattern.externPrefix ),
+					grouped  = name.contains( Pattern.groupedPrefix );
 			
 			// remove all prefixes...
 			name = name.substring( name.lastIndexOf( "-" )+1 );
@@ -186,6 +187,7 @@ public class Attributes extends ArrayList<Attribute> {
 								Attribute.isAttribute( value ) ? new Attribute( value ).value() : value
 							)).toString();
 				
+				if (grouped)  value = Strings.toCamelCase( value );
 				if (plural)   value = Plural.plural( value );
 				if (quoted)   value = Attribute.DEF_QUOTE_CH+ value +Attribute.DEF_QUOTE_CH;
 				if (Audit.detailedOn) audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
