@@ -150,7 +150,7 @@ public class Enguage {
 					//Repertoire.signs.show();
 					audit.FATAL(
 							"reply: '"      + reply      +"'\n             "+
-							"expected: '"   + expected   +"'\n       "+
+							"expected: '"   + expected   +"'\n          "+
 							"alternately: '"+ unexpected +"'\n          "+
 							"(reason="+ Pattern.notMatched() +")" );
 	}	}	}	}
@@ -191,10 +191,11 @@ public class Enguage {
 	}
 	
 	// === test code ===
-	final static private Strings ihe = new Strings( "I have everything" );
-	static private void clearTheNeedsList() {
+	static private final String ihe =  "I have everything";
+	static private void clearTheNeedsList() { clearTheNeedsList( ihe );}
+	static private void clearTheNeedsList( String s ) {
 		// Call this direct, so its not counted!
-		Enguage.mediate( ihe );
+		Enguage.mediate( new Strings( s ));
 	}
 	static private boolean thisTest( int level, int test ) {
 		return level == 0 || level == test || (level < 0 && level != -test);
@@ -212,10 +213,36 @@ public class Enguage {
 
 		if (thisTest( level, 1 )) {
 			
-			// james's experimental example
-			//interpret( "england is a country",  "ok, england is a country" );
-			mediate( "preston is in england", "ok, preston is in england" );
-			mediate( "i am in preston",       "ok, you're in england" );
+			audit.title( "Group-as-entity");
+			clearTheNeedsList( "MartinAndRuth does not need anything" );
+			
+			mediate( "martin and ruth need a coffee and a tea",
+			         "ok, martin and ruth need a coffee and a tea" );
+			
+			mediate( "what do martin and ruth need",
+			         "martin and ruth need a coffee , and a tea" );
+			
+			mediate( "martin and ruth do not need a tea", 
+			         "ok, martin and ruth don't need a tea" );
+			
+			mediate( "what do martin and ruth need",
+			         "martin and ruth need a coffee" );
+			
+			mediate( "martin and ruth need some biscuits",
+			         "ok, martin and ruth need some biscuits" );
+			
+			mediate( "what do martin and ruth need",
+			         "martin and ruth need a coffee, and some biscuits" );
+			
+			audit.title( "Combos, multiple singular entities");
+			mediate( "james and martin and ruth all need a chocolate biscuit",
+			         "ok, james and martin and ruth all need a chocolate biscuit" );
+			
+			mediate( "martin and ruth both need a cocoa and a chocolate biscuit",
+			         "ok, martin and ruth both need a cocoa and a chocolate biscuit" );
+			
+			mediate( "what does martin need",
+					 "martin needs a chocolate biscuit, and a cocoa" );
 		}
 		if (thisTest( level, 2 )) {
 			// These tests were for JCSSA journal article
@@ -331,7 +358,7 @@ public class Enguage {
 			mediate( "prime the answer yes",  "ok, the next answer will be yes" );
 			mediate( "i don't need anything", "ok, you don't need anything" );
 			
-			audit.title( "LBFQ" );
+			audit.title( "Late Binding Floating Qualifiers" );
 			clearTheNeedsList();
 			
 			mediate( "i need biscuits",
@@ -355,6 +382,11 @@ public class Enguage {
 			clearTheNeedsList();
 		}
 		if (thisTest( level, 4 )) {
+			audit.title( "james's experimental example" );
+			//interpret( "england is a country",  "ok, england is a country" );
+			mediate( "preston is in england", "ok, preston is in england" );
+			mediate( "i am in preston",       "ok, you're in england" );
+			
 			audit.title( "Simple Variables" );
 			mediate( "the value of name is fred",       "ok, name is set to fred" );
 			mediate( "get the value of name",           "fred" );

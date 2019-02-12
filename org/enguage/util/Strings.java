@@ -4,6 +4,7 @@ package org.enguage.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Locale;
 import java.util.TreeSet;
 
 import org.enguage.objects.Every;
@@ -952,6 +953,14 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			rep.add( term );
 		}
 		return sa;
+	}
+	public static String toCamelCase( String in ) {
+		String out = "";
+		Strings tmp = new Strings( in );
+		for( String s : tmp ) // "camel" + "C" + "ase";
+			out += Character.toUpperCase( s.charAt( 0 ))
+			       + s.substring( 1 ).toLowerCase( Locale.getDefault());
+		return out;
 	}
 	public Strings extract( ListIterator<String> ui ) {
 		ListIterator<String> loci = listIterator();
