@@ -212,40 +212,10 @@ public class Enguage {
 		Audit.interval(); // reset timer
 
 		if (thisTest( level, 1 )) {
-			
-			audit.title( "Group-as-entity");
-			clearTheNeedsList( "MartinAndRuth does not need anything" );
-			
-			mediate( "martin and ruth need a coffee and a tea",
-			         "ok, martin and ruth need a coffee and a tea" );
-			
-			mediate( "what do martin and ruth need",
-			         "martin and ruth need a coffee , and a tea" );
-			
-			mediate( "martin and ruth do not need a tea", 
-			         "ok, martin and ruth don't need a tea" );
-			
-			mediate( "what do martin and ruth need",
-			         "martin and ruth need a coffee" );
-			
-			mediate( "martin and ruth need some biscuits",
-			         "ok, martin and ruth need some biscuits" );
-			
-			mediate( "what do martin and ruth need",
-			         "martin and ruth need a coffee, and some biscuits" );
-			
-			audit.title( "Combos, multiple singular entities");
-			mediate( "james and martin and ruth all need a chocolate biscuit",
-			         "ok, james and martin and ruth all need a chocolate biscuit" );
-			
-			mediate( "martin and ruth both need a cocoa and a chocolate biscuit",
-			         "ok, martin and ruth both need a cocoa and a chocolate biscuit" );
-			
-			mediate( "what does martin need",
-					 "martin needs a chocolate biscuit, and a cocoa" );
+			//Audit.allOn();
+			//mediate( "", "" );
 		}
-		if (thisTest( level, 2 )) {
-			// These tests were for JCSSA journal article
+		if (thisTest( level, 2 )) { // WHY - These tests were for JCSSA journal article
 			audit.title( "Simple action demo" );
 			mediate( "i am baking a cake",     "i know", "ok, you're baking a cake" );
 			mediate( "am i baking a cake",     "yes, you're     baking a cake" );
@@ -296,9 +266,41 @@ public class Enguage {
 			mediate( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
 			mediate( "why might i need 3 eggs", "because you're baking a cake" );
 		}
-		if (thisTest( level, 3 )) {
-			clearTheNeedsList();
+		if (thisTest( level, 3 )) { // need+needs test
+			
+			audit.title( "Group-as-entity");
+			clearTheNeedsList( "MartinAndRuth does not need anything" );
+			
+			mediate( "martin and ruth need a coffee and a tea",
+			         "ok, martin and ruth need a coffee and a tea" );
+			
+			mediate( "what do martin and ruth need",
+			         "martin and ruth need a coffee , and a tea" );
+			
+			mediate( "martin and ruth do not need a tea", 
+			         "ok, martin and ruth don't need a tea" );
+			
+			mediate( "what do martin and ruth need",
+			         "martin and ruth need a coffee" );
+			
+			mediate( "martin and ruth need some biscuits",
+			         "ok, martin and ruth need some biscuits" );
+			
+			mediate( "what do martin and ruth need",
+			         "martin and ruth need a coffee, and some biscuits" );
+			
+			audit.title( "Combos, multiple singular entities");
+			mediate( "james and martin and ruth all need a chocolate biscuit",
+			         "ok, james and martin and ruth all need a chocolate biscuit" );
+			
+			mediate( "martin and ruth both need a cocoa and a chocolate biscuit",
+			         "ok, martin and ruth both need a cocoa and a chocolate biscuit" );
+			
+			mediate( "what does martin need",
+					 "martin needs a chocolate biscuit, and a cocoa" );
+			
 			audit.title( "Pronouns - see need+needs.txt" );
+			clearTheNeedsList();
 			
 			mediate( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
 			mediate( "they are from Sainsbury's",  "ok, they are from sainsbury's" );
@@ -320,14 +322,14 @@ public class Enguage {
 			
 			mediate( "what do i need",             "you need biscuits, and coffee from sainsbury's" );
 			mediate( "i need an apple" );
-			mediate( "how many apples do i need", "1, you need 1 apples" ); // <<<<<<<<< see this!
+			mediate( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
 			
-			clearTheNeedsList();
 			audit.title( "The Non-Computable concept of NEED" );
+			clearTheNeedsList();
 			
-			mediate( "what do i need",	         "you don't need anything" );
+			mediate( "what do i need",	           "you don't need anything" );
 			mediate( "i need 2 cups of coffee and a biscuit",
-					                                 "ok, you need 2 cups of coffee and a biscuit.");
+					                               "ok, you need 2 cups of coffee and a biscuit.");
 			mediate( "what do i need",             "you need 2 cups of coffee, and a biscuit.");
 			mediate( "how many coffees do i need", "2, you need 2 coffees" );
 			mediate( "i need 2 coffees",           "i know" );
@@ -360,28 +362,14 @@ public class Enguage {
 			
 			audit.title( "Late Binding Floating Qualifiers" );
 			clearTheNeedsList();
-			
-			mediate( "i need biscuits",
-					   "ok, you need biscuits" );
-			
-			mediate( "i need milk from the dairy aisle",
-					   "ok, you need milk from the dairy aisle" );
-			
-			mediate( "what do i need",
-					   "you need biscuits; and, milk from the dairy aisle" );
-			
-			mediate( "from the dairy aisle what do i need",
-					   "you need milk from the dairy aisle" );
-
-			mediate( "what from the dairy aisle do i need",
-					   "you need milk from the dairy aisle" );
-			
-			mediate( "what do i need from the dairy aisle",
-					   "you need milk from the dairy aisle" );
-			
-			clearTheNeedsList();
+			mediate( "i need biscuits",       "ok, you need biscuits" );
+			mediate( "i need milk from the dairy aisle", "ok, you need milk from the dairy aisle" );
+			mediate( "what do i need",        "you need biscuits; and, milk from the dairy aisle" );
+			mediate( "from the dairy aisle what do i need",  "you need milk from the dairy aisle" );
+			mediate( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );
+			mediate( "what do i need from the dairy aisle",  "you need milk from the dairy aisle" );
 		}
-		if (thisTest( level, 4 )) {
+		if (thisTest( level, 4 )) { // variables, arithmetic and lambda tests
 			audit.title( "james's experimental example" );
 			//interpret( "england is a country",  "ok, england is a country" );
 			mediate( "preston is in england", "ok, preston is in england" );
