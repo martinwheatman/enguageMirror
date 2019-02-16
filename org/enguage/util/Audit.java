@@ -16,8 +16,8 @@ public class Audit {
 	
  	// === indent
  	static private Indent indent = new Indent();
- 	static  public void   incr() { indent.incr(); }
- 	static  public void   decr() { indent.decr(); }
+ 	static public  void   incr() { indent.incr(); }
+ 	static public  void   decr() { indent.decr(); }
 
 	// === timestamp
 	static private long then = new GregorianCalendar().getTimeInMillis();
@@ -53,12 +53,16 @@ public class Audit {
 	public void   FATAL( String msg ) { LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 ); }
 	public void   FATAL( String phrase, String msg ) { FATAL( phrase +": "+ msg ); }
 	public void   ERROR( String info ) {
-		System.err.println( "ERROR: " + name +(stack.size()>1?"."+ stack.get( 0 ) +"()" : "")+": "+ info);
+		System.err.println(
+			"ERROR: "+ name +(stack.size()>1?"."+ stack.get( 0 ) +"()" : "")+": "+ info
+		);
+		System.err.flush();
 	}
 	public int    log( int    info ) { log( ""+ info ); return info; }
 	public String LOG( String info ) { // ignores suspended value
 		indent.print( System.out );
 		System.out.println( info + (timings ? " -- "+interval()+"ms" : ""));
+		System.out.flush();
 		return info;
 	}
 	public String log( Strings info ) { return log( info.toString()); }

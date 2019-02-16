@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import org.enguage.objects.space.Link;
 import org.enguage.util.Strings;
 
 public class Path {
@@ -124,8 +125,8 @@ public class Path {
 							if (opts.equals( OPT_X )) {
 								if (flist.isFile()) // TTD: move this to String - newCharsFromFilePreview()
 									value = filter( Fs.stringFromFile( flist.getPath()));
-								else if (Fs.isLink( name ))
-									value = filter( Fs.stringFromLink( name));
+								else if (Link.isLink( name ))
+									value = filter( Link.toString( name));
 								else if (flist.isDirectory())
 									value = "<"+ filter(name) +"/>";
 							}

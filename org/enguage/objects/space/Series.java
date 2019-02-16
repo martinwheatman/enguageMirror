@@ -3,13 +3,11 @@ package org.enguage.objects.space;
 import java.io.File;
 import java.io.IOException;
 
-import org.enguage.objects.space.Series;
 import org.enguage.util.Audit;
 import org.enguage.util.sys.Fs;
 
 public class Series { // relates to hypothetical attachment of series of overlays to fs 
 	static private Audit audit = new Audit( "Series" );
-	private static boolean debug = false ; //Enguage.runtimeDebugging || Enguage.startupDebugging;
 
 	static public  final String DETACHED="";
 	static private final String basePointer = File.separator + "reuse";
@@ -23,7 +21,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		//audit.in( "base", nm );
 		if (nm==null || nm.equals( DETACHED )) return DETACHED;
 		//audit.out( Filesystem.stringFromLink( baseName( nm )));
-		return Fs.stringFromLink( baseName( nm ));
+		return Link.toString( baseName( nm ));
 	}
 	static public boolean existing( String nm ) {
 		//audit.log( "Series.existing(): basename is "+ baseName( nm ));
@@ -33,7 +31,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		//audit.in( "create", "name="+name+", whence="+whr );
 		boolean rc = true;
 		try {
-			Fs.stringToLink( baseName( name ), new File( whr ).getCanonicalPath());
+			Link.fromString( baseName( name ), new File( whr ).getCanonicalPath());
 		} catch (IOException e) {
 			audit.ERROR( "Series.create(): error in canonical path!" );
 			rc = false;
@@ -102,8 +100,71 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		}
 		//audit.out();
 	}
+	public static void moveFile( File src, File dest ) {
+		//audit.in( "moveFile", "moving folder: "+ src.toString() +" to "+ dest.toString());
+		/* only called from combineUnderlays()
+		 * so we're not propagating !files
+		 */
+    	if (src.isDirectory()) {
+    		//audit.debug( "moving folder: "+ src.toString() +" to "+ dest.toString());
+    		if (!dest.exists()) dest.mkdir();
+    		//list all the directory contents
+    		String files[] = src.list();
+    		//audit.debug( "moving src of number:"+ src.listFiles().length );
+    		for (String file : files) {
+	    		//construct the src and dest file structure
+	    		File srcFile = new File(src, file);
+	    		File destFile = new File(dest, file);
+	    		//recursive copy
+	    		moveFile( srcFile, destFile );
+    		}
+    		//audit.debug( "deleting "+src.toString()+" of number:"+ src.listFiles().length );
+    		if (!src.delete()) audit.ERROR( "folder move DELETE failed" );
+    	} else {
+    		/* was...
+    		 *   if (dest.exists()) dest.delete();
+             *	 src.renameTo( dest );
+             */
+    		// Of source files, if...
+    		if (!Entity.isDeleteName( src.toString()) //  ...we have filename...
+    				&& new File( Entity.deleteName( src.toString() )).exists()) // ...and !filename exists
+    		{	//// remove !filename
+        		//audit.debug( "a-delete !filename "+ Entity.deleteName( src.toString() ));
+    			new File( Entity.deleteName( src.toString() )).delete();
+    			//// move file across as before
+        		//audit.debug( "a-move file across "+ src.toString() );
+        		if (dest.exists()) dest.delete();
+        		src.renameTo( dest );
+    		} else if ( Entity.isDeleteName( src.toString()) // ...we have !filename
+    				&& new File( Entity.nonDeleteName( src.toString() )).exists())  // ...and filename exists
+    		{	//// just remove !filename (filename will be dealt with when we get there!)
+        		//audit.debug( "b-deleting files "+ src.toString() );
+        		src.delete();
+    			if (src.exists()) audit.ERROR( "b) deleting !filename, with filename ("+ src.toString() +") FAILED" );
+    		} else if (!Entity.isDeleteName( src.toString()) // we have filename..
+    				&& !new File( Entity.deleteName( src.toString() )).exists()) // but not !filename
+    		{	//// move file across - as before
+        		//audit.debug( "c-move file across: "+ src.toString() +" to "+ dest.toString());
+        		if (dest.exists()) if (!dest.delete()) audit.ERROR( "c) DELETE failed: "+ dest.toString() );
+        		if (!src.renameTo( dest ))  audit.ERROR( "c) RENAME of "+ src.toString() +" to "+ dest.toString() +" failed" );
+    		} else if (Entity.isDeleteName( src.toString()) // we have !filename 
+    				&& !new File( Entity.nonDeleteName( src.toString() )).exists()) // but not filename
+    		{	//// remove !filename...
+        		//audit.debug( "d-remove !filename... "+ src.toString() );
+    			//if (!
+    					src.delete()
+    					//) audit.ERROR( "deleting "+ src.toString() +" failed" )
+    					;
+    			//// and delete underlying file
+        		//audit.debug( "d-...and delete underlying file "+ dest.toString());
+    			new File( Entity.nonDeleteName( dest.toString() )).delete();
+    		} else
+    			audit.ERROR( "Fs.moveFile(): fallen off end moving "+ src.toString() );
+    	}
+    	//audit.out();
+	}	
 	static public boolean compact( /* int targetNumber */) {
-		if (debug) audit.in( "compact", "combining "+ (number()-1) +" underlays" );
+		//audit.in( "compact", "combining "+ (number()-1) +" underlays" );
 		/*
 		 * For expediency's sake, this function combines all underlaid  (i.e. protected) overlays
 		 */
@@ -119,7 +180,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 					if (dst.exists()) {
 						// move all new files into old overlay
 						//audit.debug( "dst exist: moving overlay "+ src.toString() +" to "+ dst.toString());
-		    			Fs.moveFile( src, dst );
+		    			moveFile( src, dst );
 		    			if (src.exists()) audit.ERROR( src.toString() +" still exists - after MOVE ;(" );
 					} else {
 						//audit.debug( "dst not existing: renaming overlay "+ src.toString() +" to "+ dst.toString());
@@ -143,12 +204,11 @@ public class Series { // relates to hypothetical attachment of series of overlay
 			//audit.debug( "count really is: "+ number() );
 			rc = true;
 		}
-		if (debug) audit.out( "combine "+ (rc?"done":"failed") +", count="+ number() +", highest="+ highest() );
+		//audit.out( "combine "+ (rc?"done":"failed") +", count="+ number() +", highest="+ highest() );
 		return rc;
 	}
-	public String toString() {
-		return name();
-	}
+	public String toString() { return name();}
+	
 	public static void main( String argv[] ) {
 		Audit.allOn();
 		Series s = new Series();

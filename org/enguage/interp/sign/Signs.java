@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
-import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.pattern.Patternette;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Repertoire;

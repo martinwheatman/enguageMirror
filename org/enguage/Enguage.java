@@ -197,7 +197,7 @@ public class Enguage {
 		// Call this direct, so its not counted!
 		Enguage.mediate( new Strings( s ));
 	}
-	static private boolean thisTest( int level, int test ) {
+	static private boolean testThisLevel( int level, int test ) {
 		return level == 0 || level == test || (level < 0 && level != -test);
 	}
 	public static void sanityCheck( boolean serverTest, String location ) {
@@ -208,14 +208,24 @@ public class Enguage {
 		//Audit.allOn();
 		//Repertoire.signs.show( "OTF" );
 
-		int level = 0;
+		int level = 0; // 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
 
-		if (thisTest( level, 1 )) {
+		if (testThisLevel( level, 1 )) {
 			//Audit.allOn();
+			mediate( "demonstrators fear violence",        "ok, demonstrators fear violence" );
+			mediate( "demonstrators advocate violence",    "no, demonstrators fear violence" );
+			mediate( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
+			mediate( "demonstrators advocate violence",        "ok, demonstrators advocate violence" );
+			mediate( "demonstrators fear violence",            "no, demonstrators advocate violence" );
+			mediate( "demonstrators do not advocate violence", "ok, demonstrators don't advocate violence" );
+
+			mediate( "councillors fear violence",        "ok, councillors fear violence" );
+			mediate( "councillors advocate violence",    "no, councillors fear violence" );
+			mediate( "councillors do not fear violence", "ok, councillors don't fear violence" );
 			//mediate( "", "" );
 		}
-		if (thisTest( level, 2 )) { // WHY - These tests were for JCSSA journal article
+		if (testThisLevel( level, 2 )) { // WHY - These tests were for JCSSA journal article
 			audit.title( "Simple action demo" );
 			mediate( "i am baking a cake",     "i know", "ok, you're baking a cake" );
 			mediate( "am i baking a cake",     "yes, you're     baking a cake" );
@@ -266,7 +276,7 @@ public class Enguage {
 			mediate( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
 			mediate( "why might i need 3 eggs", "because you're baking a cake" );
 		}
-		if (thisTest( level, 3 )) { // need+needs test
+		if (testThisLevel( level, 3 )) { // need+needs test
 			
 			audit.title( "Group-as-entity");
 			clearTheNeedsList( "MartinAndRuth does not need anything" );
@@ -369,7 +379,7 @@ public class Enguage {
 			mediate( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );
 			mediate( "what do i need from the dairy aisle",  "you need milk from the dairy aisle" );
 		}
-		if (thisTest( level, 4 )) { // variables, arithmetic and lambda tests
+		if (testThisLevel( level, 4 )) { // variables, arithmetic and lambda tests
 			audit.title( "james's experimental example" );
 			//interpret( "england is a country",  "ok, england is a country" );
 			mediate( "preston is in england", "ok, preston is in england" );
@@ -464,7 +474,7 @@ public class Enguage {
 			
 			mediate( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 		}
-		if (thisTest( level, 5 )) {
+		if (testThisLevel( level, 5 )) {
 			audit.title( "Annotation" ); // TODO: camelise attribute names
 			mediate( "delete martin was       list", "ok" );
 			mediate( "delete martin wasNot    list", "ok" );
@@ -664,7 +674,7 @@ public class Enguage {
 			// my name is martin
 			// my name is martin wheatman
 		}
-		if (thisTest( level, 6 )) {
+		if (testThisLevel( level, 6 )) {
 			audit.title( "Disambiguation" );
 			mediate( "the eagle has landed" //,
 						   //"Are you an ornithologist."
@@ -681,7 +691,7 @@ public class Enguage {
 			// Issue here: on DNU, we need to advance this on "the eagle has landed"
 			// i.e. w/o "no ..."
 		}
-		if (thisTest( level, 7 )) {
+		if (testThisLevel( level, 7 )) {
 			audit.title( "Temporal interpret" );
 			mediate( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
@@ -715,7 +725,7 @@ public class Enguage {
 					   "i don't know if you're meeting your dad" );
 			
 		}
-		if (thisTest( level, 8 )) {
+		if (testThisLevel( level, 8 )) {
 			audit.title( "TCP/IP test" );
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
 			// config port get chosen over this one???
@@ -723,7 +733,7 @@ public class Enguage {
 			mediate( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
 			mediate( "simon says put your hands on your head" ); //, "ok, success" );
 		}
-		if (thisTest( level, 9 )) {
+		if (testThisLevel( level, 9 )) {
 			audit.title( "On-the-fly Langauge Learning" );
 			/* TODO: create filename from pattern:
 			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)
@@ -776,7 +786,7 @@ public class Enguage {
 			mediate( "just call me martin", "i already know this" );
 		}
 
-		if (thisTest( level, 10 )) {
+		if (testThisLevel( level, 10 )) {
 			audit.title( "Light bins" );
 			mediate( "there are 6 light bins",        "ok, there are 6 light bins" );
 			mediate( "how many light bins are there", "6,  there are 6 light bins" );
