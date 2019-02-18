@@ -2,28 +2,28 @@
 ### ADVOCATE
 On "PHRASE-WHOM advocate violence":
 	# check for a contradiction...
-	perform "link exists WHOM fear violence";
+	WHOM exists in violence fear list;
 	reply "no, WHOM fear violence";
-	if not, perform "link create WHOM advocate violence";
+	if not, add WHOM to violence advocate list;
 	then, reply "ok, WHOM advocate violence".
 
 On "PHRASE-WHOM do not advocate violence":
-	perform "link exists WHOM advocate violence";
-	if not, reply "i know";
-	perform "link delete WHOM advocate violence";
+	WHOM exists in violence fear list;
+	reply "i know";
+	if not, remove WHOM from violence advocate list;
 	then, reply "ok, WHOM do not advocate violence".
 	
 ### FEAR
 On "PHRASE-WHOM fear violence":
 	# check for a contradiction...
-	perform "link exists WHOM advocate violence";
+	WHOM exists in violence advocate list;
 	reply "no, WHOM advocate violence";
-	if not, perform "link create WHOM fear violence";
+	if not, add WHOM to violence fear list;
 	then, reply "ok, WHOM fear violence".
 
 On "PHRASE-WHOM do not fear violence":
-	perform "link exists WHOM advocate violence";
+	WHOM exists in violence advocate list;
 	reply "i know";
-	if not, perform "link delete WHOM fear violence";
+	if not, remove WHOM from violence fear list;
 	if not, reply "no, they do not";
 	then, reply "ok, WHOM do not fear violence".	
