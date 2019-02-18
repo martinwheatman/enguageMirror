@@ -42,7 +42,7 @@ public class Value {
 	public void    unset() {            Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
 	public String  getAsString(){return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ )); }
 	
-	private boolean equals( String val ) { return getAsString().equals( val ); }
+	public  boolean equals( String val ) { return getAsString().equals( val ); }
 	private boolean contains( String val ) { return getAsString().contains( val ); }
 	
 	// this works..

@@ -1,0 +1,29 @@
+# fear and advocacy - alternative states
+### ADVOCATE
+On "PHRASE-WHOM advocate violence":
+	# check for a contradiction...
+	perform "link exists WHOM fear violence";
+	reply "no, WHOM fear violence";
+	if not, perform "link create WHOM advocate violence";
+	then, reply "ok, WHOM advocate violence".
+
+On "PHRASE-WHOM do not advocate violence":
+	perform "link exists WHOM advocate violence";
+	if not, reply "i know";
+	perform "link delete WHOM advocate violence";
+	then, reply "ok, WHOM do not advocate violence".
+	
+### FEAR
+On "PHRASE-WHOM fear violence":
+	# check for a contradiction...
+	perform "link exists WHOM advocate violence";
+	reply "no, WHOM advocate violence";
+	if not, perform "link create WHOM fear violence";
+	then, reply "ok, WHOM fear violence".
+
+On "PHRASE-WHOM do not fear violence":
+	perform "link exists WHOM advocate violence";
+	reply "i know";
+	if not, perform "link delete WHOM fear violence";
+	if not, reply "no, they do not";
+	then, reply "ok, WHOM do not fear violence".	
