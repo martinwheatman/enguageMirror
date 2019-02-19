@@ -13,7 +13,6 @@ import org.enguage.objects.space.Sofa;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
-import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Answer;
 import org.enguage.vehicle.when.When;
 import org.enguage.vehicle.where.Where;
