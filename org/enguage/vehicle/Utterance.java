@@ -81,11 +81,6 @@ public class Utterance {
 		return externalise( new Strings( reply ), verbatim );
 	}
 	static public Strings  externalise( Strings reply, boolean verbatim ) {
-		// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
-		if (!Shell.isTerminator( reply.get( reply.size() -1))
-		 && !((reply.size() > 1) && Shell.isTerminator( reply.get( reply.size() -2))
-		 && Language.isQuote( reply.get( reply.size() -1))))
-			reply.add( Shell.terminators().get( 0 ));
 		
 		reply = Variable.derefOrPop( reply.iterator());
 
