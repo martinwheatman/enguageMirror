@@ -166,7 +166,7 @@ public class Shell {
 		} else {
 			// remove connector from last in list
 			int rcSz = rc.size();
-			String connector = "";
+			String connector = "then"; // default: this is the only one used!
 			Strings lastList = rc.get( rcSz-1 );
 			if ( lastList.size() > 2 && lastList.get( 1 ).equals( ",") ) {
 				connector=lastList.remove( 0 ); // remove connector
@@ -199,4 +199,8 @@ public class Shell {
 				+"	if Y exists in X needs list, reply \"I know\";"
 				+"	if not, add Y to X needs list;"
 				+"	then, reply \"ok, X needs Y\"." );
+		test( "On \"X needs PHRASE-Y\":"
+				+"	if Y exists in X needs list, reply \"I know\";"
+				+"	if not, add Y to X needs list;"
+				+"	reply \"ok, X needs Y\"." );
 }	}
