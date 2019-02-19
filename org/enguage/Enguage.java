@@ -117,43 +117,41 @@ public class Enguage {
 		audit.LOG( "       -t, --test" );
 		audit.LOG( "          runs a sanity check" );
 	}
-	static private void mediate( String cmd ) { mediate( cmd, "" );}
-	static private void mediate( String cmd, String expected ) { mediate( cmd, expected, "" ); }
+	static private void mediate( String cmd ) { mediate( cmd, null );}
+	static private void mediate( String cmd, String expected ) { mediate( cmd, expected, null ); }
 	static private void mediate( String cmd, String expected, String unexpected ) {
 		
 		// expected == null => silent!
-		if (expected != null) {
-			audit.passed(); // don't count the ones we can't see!
+		if (expected != null)
 			audit.log( "user> "+ cmd );
-		}
 		
 		Strings reply = serverTest ?
 				new Strings( Net.client( "localhost", portNumber, cmd ))
 				: Enguage.mediate( new Strings( cmd ));
 
-		if (expected != null && !expected.equals( "" )) {
-			if (!expected.endsWith( "." )) expected += ".";
-			Strings replies = reply;
-			if (replies.equalsIgnoreCase( new Strings( expected ))) // 1st success
-				audit.log( "enguage> "+ reply +"\n" );
-			else if (unexpected.equals( "" )) {                     // no second chance
+		if (expected != null) {
+			
+			if (reply.equalsIgnoreCase( new Strings( expected )))
+				audit.passed( "enguage> "+ reply +"\n" );      // 1st success
+			
+			else if (unexpected == null)                       // no second chance
 				//Repertoire.signs.show();
 				audit.FATAL(
 						"reply: '"+ reply +"',\n             "+
 								"expected: '"+ expected +"' "+
 								"(reason="+ Pattern.notMatched() +")" );
-			} else {
-				if (!unexpected.endsWith( "." )) unexpected += ".";
-				if (replies.equalsIgnoreCase( new Strings( unexpected )))
-					audit.log( "enguage> "+ reply +"\n" );          // 2nd-ary success
-				else {                                              // second chance failed too!
-					//Repertoire.signs.show();
-					audit.FATAL(
-							"reply: '"      + reply      +"'\n             "+
-							"expected: '"   + expected   +"'\n          "+
-							"alternately: '"+ unexpected +"'\n          "+
-							"(reason="+ Pattern.notMatched() +")" );
-	}	}	}	}
+			
+			else if (reply.equalsIgnoreCase( new Strings( unexpected )))
+				audit.passed( "enguage> "+ reply +"\n" );
+			
+			else                                             // second chance failed too!
+				//Repertoire.signs.show();
+				audit.FATAL(
+						"reply: '"      + reply      +"'\n             "+
+						"expected: '"   + expected   +"'\n          "+
+						"alternately: '"+ unexpected +"'\n          "+
+						"(reason="+ Pattern.notMatched() +")" );
+	}	}
 	
 	public static void main( String args[] ) {
 		//Audit.startupDebug = true;
@@ -213,16 +211,70 @@ public class Enguage {
 
 		if (testThisLevel( level, 1 )) {
 			//Audit.allOn();
+			// Test for contradiction... can't swap between states directly:
 			mediate( "demonstrators fear violence",        "ok, demonstrators fear violence" );
 			mediate( "demonstrators advocate violence",    "no, demonstrators fear violence" );
 			mediate( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
-			mediate( "demonstrators advocate violence",        "ok, demonstrators advocate violence" );
-			mediate( "demonstrators fear violence",            "no, demonstrators advocate violence" );
-			mediate( "demonstrators do not advocate violence", "ok, demonstrators don't advocate violence" );
+			mediate( "demonstrators advocate violence",       "ok, demonstrators advocate violence" );
+			mediate( "demonstrators fear violence",           "no, demonstrators advocate violence" );
+			mediate( "demonstrators don't advocate violence", "ok, demonstrators don't advocate violence" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
+			
+			
+			audit.title( "Common sense: opposing views" );
+			mediate( "the councillors   fear     violence", "ok, the councillors       fear violence" );
+			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
+			// test 1
+			mediate( "the councillors refused the demonstrators a permit because they fear violence",
+					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
+			mediate( "who are they", "they are the councillors" );
+			// test 2
+			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
+					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
+			mediate( "who are they", "they are the demonstrators" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
 
-			mediate( "councillors fear violence",        "ok, councillors fear violence" );
-			mediate( "councillors advocate violence",    "no, councillors fear violence" );
-			mediate( "councillors do not fear violence", "ok, councillors don't fear violence" );
+			
+			audit.title( "Common sense: aligned views - advocate" );
+			mediate( "the councillors   advocate violence", "ok, the councillors   advocate violence" );
+			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
+			// test  1
+			mediate( "the councillors refused the demonstrators a permit because they fear violence",
+					 "I don't think they fear violence" );
+			mediate( "who are they", "I don't know" );
+			// test 2
+			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
+					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
+			mediate( "who are they", "they are the councillors , and the demonstrators" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
+			
+			
+			audit.title( "Common sense: aligned views - fear" );
+			mediate( "the councillors fear violence because the voters fear violence",
+					"ok, the councillors fear violence because the voters fear violence" );
+			mediate( "the demonstrators fear violence", "ok, the demonstrators fear violence" );
+			// test 1
+			mediate( "the councillors refused the demonstrators a permit because they fear violence",
+					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
+			mediate( "who are they", "they are the voters, the councillors , and the demonstrators" );
+			// test 2
+			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
+					 "I don't think they advocate violence" );
+			mediate( "who are they", "i don't know" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
+
 			//mediate( "", "" );
 		}
 		if (testThisLevel( level, 2 )) { // WHY - These tests were for JCSSA journal article
@@ -339,8 +391,8 @@ public class Enguage {
 			
 			mediate( "what do i need",	           "you don't need anything" );
 			mediate( "i need 2 cups of coffee and a biscuit",
-					                               "ok, you need 2 cups of coffee and a biscuit.");
-			mediate( "what do i need",             "you need 2 cups of coffee, and a biscuit.");
+					                               "ok, you need 2 cups of coffee and a biscuit");
+			mediate( "what do i need",             "you need 2 cups of coffee, and a biscuit");
 			mediate( "how many coffees do i need", "2, you need 2 coffees" );
 			mediate( "i need 2 coffees",           "i know" );
 			mediate( "i don't need any coffee",    "ok, you don't need any coffee" );
@@ -364,9 +416,9 @@ public class Enguage {
 			mediate( "what do i need",      "You need 3 coffees , and a cup of tea" );
 			
 			audit.title( "Correction" );
-			mediate( "i need another coffee", "ok, you need another coffee.");
-			mediate( "no i need another 3",   "ok, you need another 3 coffees.");
-			mediate( "what do i need",        "you need 6 coffees, and a cup of tea.");
+			mediate( "i need another coffee", "ok, you need another coffee" );
+			mediate( "no i need another 3",   "ok, you need another 3 coffees" );
+			mediate( "what do i need",        "you need 6 coffees, and a cup of tea" );
 			mediate( "prime the answer yes",  "ok, the next answer will be yes" );
 			mediate( "i don't need anything", "ok, you don't need anything" );
 			
@@ -393,7 +445,7 @@ public class Enguage {
 			
 			audit.title( "Simple Numerics" );
 			mediate( "set the weight of martin to 104", "ok" );
-			mediate( "get the weight of martin",        "Ok, the weight of martin is 104.");
+			mediate( "get the weight of martin",        "Ok, the weight of martin is 104" );
 			
 			// non-numerical values
 			audit.title( "Simply ent/attr model" );
@@ -419,8 +471,8 @@ public class Enguage {
 			// what is my age [in <epoch default="years"/>]
 
 			audit.title( "Verbal Arithmetic" );
-			mediate( "what is 1 + 2",                    "1 plus 2 is 3.");
-			mediate( "times 2 all squared",              "times 2 all squared makes 36.");
+			mediate( "what is 1 + 2",                    "1 plus 2 is 3" );
+			mediate( "times 2 all squared",              "times 2 all squared makes 36" );
 			mediate( "what is 36 + 4     divided by 2",  "36 plus 4     divided by 2 is 38" );
 			mediate( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
 			

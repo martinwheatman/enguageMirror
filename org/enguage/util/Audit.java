@@ -29,10 +29,11 @@ public class Audit {
 	}
 	
 	// test count
-	private int  passes = 0;
-	public  void passed() {passes++;}
-	public  void passed( String info ) {passed(); log(info);}
-	public  void PASSED() {log( "+++ PASSED "+ passes +" tests in "+ interval()+"ms +++" );}
+
+	private int  numberOfTests = 0;
+	public  void passed() { numberOfTests++;}
+	public  void passed( String msg ) { log( msg ); passed(); }
+	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
 
 	// === debug and detail - "auditing"
 	static private int     suspended = 0; 
