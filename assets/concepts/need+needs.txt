@@ -11,26 +11,26 @@ When host says "_user does not need" host means "you do not need".
 On "SUBJECT needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
 	perform "every : SUBJECT needs { OBJECTS }";
 	if not, reply "i do not understand";
-	then, reply "ok, SUBJECT needs OBJECTS".
+	reply "ok, SUBJECT needs OBJECTS".
 
 ###############################################################################
 # GROUP additions - singular group
 # martin and ruth need a coffee and a tea
 On "AND-LIST-SUBJECTS need PHRASE-OBJECTS":
 	GROUPED-SUBJECTS needs OBJECTS;
-	then, reply "ok, SUBJECTS need OBJECTS".
+	reply "ok, SUBJECTS need OBJECTS".
 
 On "what do AND-LIST-SUBJECTS need":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	get GROUPED-SUBJECTS needs list;
 	if not, reply "SUBJECTS do not need anything";
-	then, reply "SUBJECTS need ...".
+	reply "SUBJECTS need ...".
 
 On "AND-LIST-SUBJECTS do not need PHRASE-OBJECTS":
 	OBJECTS exists in GROUPED-SUBJECTS needs list;
 	if not, reply "I know";
 	remove OBJECTS from GROUPED-SUBJECTS needs list;
-	then, reply "ok, SUBJECTS do not need ...".
+	reply "ok, SUBJECTS do not need ...".
 
 ###############################################################################
 # Combinations - multiple single subjects, phrased objects
@@ -38,12 +38,12 @@ On "AND-LIST-SUBJECTS do not need PHRASE-OBJECTS":
 On "AND-LIST-SUBJECTS all need PHRASE-OBJECTS":
 	perform "every : { SUBJECTS } needs OBJECTS";
 	if not, reply "i do not understand";
-	then, reply "ok, SUBJECTS all need OBJECTS".
+	reply "ok, SUBJECTS all need OBJECTS".
 
 # martin and ruth both need a coffee and a tea.
 On "AND-LIST-SUBJECTS both need PHRASE-OBJECTS":
 	SUBJECTS all need OBJECTS;
-	then, reply "ok, SUBJECTS both need OBJECTS".
+	reply "ok, SUBJECTS both need OBJECTS".
 
 ###############################################################################
 # Various singular additions
@@ -53,123 +53,123 @@ On "SUBJECT needs PHRASE-OBJECTS":
 	reply "I know";
 	if not, add OBJECTS to SUBJECT needs list;
 	if not, append OBJECTS onto SUBJECT needs list;
-	then, reply "ok, SUBJECT needs ...".
+	reply "ok, SUBJECT needs ...".
 
 On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY OBJECT exists in SUBJECT needs list;
 	reply "I know";
 	if not, add QUANTITY OBJECT to SUBJECT needs list;
-	then, reply "ok, SUBJECT needs ... ".
+	reply "ok, SUBJECT needs ... ".
 
 On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY UNIT of OBJECT exists in SUBJECT needs list;
 	reply "I know";
 	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
-	then, reply "ok, SUBJECT needs ...".
+	reply "ok, SUBJECT needs ...".
 
 ## Elaboration of subsequent utterances
 On "and NUMERIC-QUANTITY":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	SUBJECT needs QUANTITY OBJECT;
-	then, reply "ok, SUBJECT needs ...".
+	reply "ok, SUBJECT needs ...".
 
 On "and NUMERIC-QUANTITY OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	SUBJECT needs QUANTITY OBJECT;
-	then, reply "ok, SUBJECT needs ...".
+	reply "ok, SUBJECT needs ...".
 
 On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	SUBJECT needs QUANTITY UNITS of OBJECT;
-	then, reply "ok, SUBJECT needs ...".
+	reply "ok, SUBJECT needs ...".
 
 ###### Pronoun ancillaries - it is/they are from X #######
 On "the PHRASE-OBJECT is": #  LOCATOR LOCATION are implied anyway!
 	perform "list update SUBJECT needs OBJECT";
-	then, reply "ok, OBJECT is LOCATOR LOCATION".
+	reply "ok, OBJECT is LOCATOR LOCATION".
 
 On "it is":
 	the OBJECT is;
-	then, reply "ok, it is LOCATOR LOCATION".
+	reply "ok, it is LOCATOR LOCATION".
 
 On "the PHRASE-OBJECTS are":
 	perform "every : the {OBJECTS} is";
-	then, reply "ok, OBJECTS are LOCATOR LOCATION".
+	reply "ok, OBJECTS are LOCATOR LOCATION".
 	
 On "they are":
 	the OBJECTS are;
-	then, reply "ok, they are LOCATOR LOCATION".
+	reply "ok, they are LOCATOR LOCATION".
 	
 ### does not need... removals
 On "SUBJECT does not need anything":
 	#answering yes or no ask i am about to delete the needs list is this ok;
 	#if not, reply "ok, let us leave things as they are";
 	remove everything from SUBJECT needs list;
-	then, reply "ok, SUBJECT does not need anything [LOCATOR LOCATION]".
+	reply "ok, SUBJECT does not need anything [LOCATOR LOCATION]".
 
 On "SUBJECT does not need PHRASE-OBJECTS":
 	OBJECTS exists in SUBJECT needs list;
 	if not, reply "I know";
 	remove OBJECTS from SUBJECT needs list;
 	if not, reply "ok, SUBJECT does not need OBJECTS";
-	then, reply "ok, SUBJECT does not need ...".
+	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need NUMERIC-QUANTITY PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
 	if not, reply "I know";
 	remove QUANTITY OBJECT from SUBJECT needs list;
 	if not, reply "sorry, SUBJECT does not need QUANTITY OBJECT";
-	then, reply "ok, SUBJECT does not need ...".
+	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
 	if not, reply "I know";
 	remove QUANTITY UNIT of OBJECT from SUBJECT needs list;
 	if not, reply "sorry, SUBJECT does not need QUANTITY UNIT of OBJECT";
-	then, reply "ok, SUBJECT does not need ...".
+	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need any PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
 	if not, reply "I know";
 	remove any OBJECT from SUBJECT needs list;
 	if not, reply "sorry, SUBJECT does not need any OBJECT";
-	then, reply "ok, SUBJECT does not need any OBJECT".
+	reply "ok, SUBJECT does not need any OBJECT".
 
 ### does X need .../how many
 On "what does SUBJECT need":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	get SUBJECT needs list;
 	if not, reply "SUBJECT does not need anything";
-	then, reply "SUBJECT needs ...".
+	reply "SUBJECT needs ...".
 
 On "does SUBJECT need PHRASE-OBJECT":
 	perform "list exists SUBJECT needs OBJECT";
 	if not, reply "no, SUBJECT does not need OBJECT";
-	then, reply "yes, SUBJECT needs OBJECT".
+	reply "yes, SUBJECT needs OBJECT".
 
 On "does SUBJECT need NUMERIC-QUANTITY PHRASE-OBJECT":
 	perform "list exists SUBJECT needs OBJECT QUANTITY";
 	if not, reply "no, SUBJECT does not need QUANTITY OBJECT";
-	then, reply "yes, SUBJECT needs QUANTITY OBJECT".
+	reply "yes, SUBJECT needs QUANTITY OBJECT".
 
 On "does SUBJECT need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	perform "list exists SUBJECT needs OBJECT QUANTITY UNIT";
 	if not, reply "no, SUBJECT does not need QUANTITY UNIT of OBJECT";
-	then, reply "yes, SUBJECT needs QUANTITY UNIT of OBJECT".
+	reply "yes, SUBJECT needs QUANTITY UNIT of OBJECT".
 
 On "how many UNIT of PHRASE-OBJECT does SUBJECT need":
 	perform "list exists SUBJECT needs OBJECT";
 	if not, reply "SUBJECT does not need OBJECT";
 	how many UNIT of OBJECT in SUBJECT needs list;
-	then, reply "..., SUBJECT needs ... UNIT of OBJECT".
+	reply "..., SUBJECT needs ... UNIT of OBJECT".
 
 On "how many PHRASE-OBJECT does SUBJECT need":
 	perform "list exists SUBJECT needs OBJECT";
 	if not, reply "SUBJECT does not need OBJECT";
 	how many OBJECT in SUBJECT needs list;
-	then, reply "..., SUBJECT needs ... OBJECT".
+	reply "..., SUBJECT needs ... OBJECT".
 
 ######################################
 # First person utterances

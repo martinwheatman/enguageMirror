@@ -13,7 +13,6 @@ import org.enguage.objects.space.Sofa;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
-import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Answer;
 import org.enguage.vehicle.when.When;
 import org.enguage.vehicle.where.Where;
@@ -81,11 +80,6 @@ public class Utterance {
 		return externalise( new Strings( reply ), verbatim );
 	}
 	static public Strings  externalise( Strings reply, boolean verbatim ) {
-		// if not terminated, add first terminator -- see Tag.c::newTagsFromDescription()
-		if (!Shell.isTerminator( reply.get( reply.size() -1))
-		 && !((reply.size() > 1) && Shell.isTerminator( reply.get( reply.size() -2))
-		 && Language.isQuote( reply.get( reply.size() -1))))
-			reply.add( Shell.terminators().get( 0 ));
 		
 		reply = Variable.derefOrPop( reply.iterator());
 
