@@ -30,7 +30,8 @@ public class Audit {
 	
 	// test count
 	private int  numberOfTests = 0;
-	public  void passed() {numberOfTests++;}
+	public  void passed() { numberOfTests++;}
+	public  void passed( String msg ) { log( msg ); passed(); }
 	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
 
 	// === debug and detail - "auditing"
