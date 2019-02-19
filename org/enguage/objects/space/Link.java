@@ -28,12 +28,13 @@ public class Link {
 		return isLink( name ) ? name : name + symLinkExtension;
 	}
 	static public boolean fromString( String nm, String val ) {
-		audit.in( "fromString", "rawName="+ nm +", value="+ val );
-		return audit.out( Fs.stringToFile( Overlay.fsname( linkName( nm ), Overlay.MODE_WRITE ), val ));
+		//audit.in( "fromString", "rawName="+ nm +", value="+ val );
+		//return audit.out( Fs.stringToFile( Overlay.fsname( linkName( nm ), Overlay.MODE_WRITE ), val ));
+		return Fs.stringToFile( Overlay.fsname( linkName( nm ), Overlay.MODE_WRITE ), val );
 	}
-	static public String toString( String nm ){
-		audit.in( "toString", "rawName="+ nm );
-		return audit.out( Fs.stringFromFile( linkName( nm )));
+	static public String toString( String nm ) {
+		//audit.in( "toString", "rawName="+ nm );
+		return Fs.stringFromFile( linkName( nm )); //audit.out( Fs.stringFromFile( linkName( nm )));
 	}
 	
 	static private String extrd( String e, String a ) {
