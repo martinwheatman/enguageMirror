@@ -27,3 +27,19 @@ On "PHRASE-WHOM do not fear violence":
 	if not, remove WHOM from violence fear list;
 	if not, reply "no, they do not";
 	then, reply "ok, WHOM do not fear violence".	
+	
+### Building the test...
+On "the councillors refused the demonstrators a permit",
+	reply "ok".
+
+On "they STATE violence":
+	get violence STATE list;
+	set the value of they to ... ;
+	reply "ok, they are ...";
+	if not, unset the value of they;
+	then, reply "i don't know".
+	
+On "who are they":
+	get the value of they;
+	if not, reply "i don't know";
+	then, reply "they are ...".
