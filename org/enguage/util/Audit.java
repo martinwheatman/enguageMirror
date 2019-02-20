@@ -129,7 +129,7 @@ public class Audit {
 	
 	// === title/underline
 	public void title( String title ) { log( "\n" ); underline( title, '=' );}
-	public void subtitle( String title ) { log( "" ); underline( title, '+' );}
+	public void subtl( String title ) { log( "" ); underline( title, '+' );}
 	public void underline( String title ) { underline( title, '-' );}
 	public void underline( String title, char ch ) {
 		log( title );
