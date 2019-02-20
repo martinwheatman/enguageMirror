@@ -205,11 +205,22 @@ public class Enguage {
 		//Audit.allOn();
 		//Repertoire.signs.show( "OTF" );
 
-		int level = 0; // 0 = every level, -n = ignore level n
+		int level = 1; // 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
 
-		if (testThisLevel( level, 1 )) {
+		if (testThisLevel( level, 1 )) { // is like - polymorphism
 			//Audit.allOn();
+			mediate( "want is like need",   "ok, want is like need" );
+			mediate( "what do i want",      "you don't want anything" );
+			mediate( "i want another pony", "ok, you want another pony" );
+			mediate( "what do i want",      "you want another pony" );
+			clearTheNeedsList( "i don't want anything" );
+			File f = new File( "src/assets/concepts/want+wants.txt" );
+			if (f.exists()) {
+				audit.log( "Tidied up example concept want" );
+				f.delete();
+			} else
+				audit.FATAL( "not found file just created!" );
 			//mediate( "", "" );
 		}
 		if (testThisLevel( level, 2 )) { // WHY - These tests were for JCSSA journal article
