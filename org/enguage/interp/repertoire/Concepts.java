@@ -9,27 +9,60 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.tag.Tag;
 
+/** Concepts is: the list of concept names;
+ *               the list of loaded concepts; and,
+ *               a name-to-concept function.
+ */
 public class Concepts {
-	/* Concepts is a list of names, TODO: pre-processed into a list of Concept(pattern+name)
-	 * and the list of concepts currently loaded
-	 * and a name-to-concept function.
-	 */
 	static private Audit audit = new Audit( "Concepts" );
 
 	static private TreeSet<String> names = new TreeSet<String>();
-	static public             void names( String[] dirList ) {
+	static public  void            name( String name ) { names.add( name );}
+	static public  void            names( String[] dirList ) {
 		audit.in( "names", new Strings( dirList ).toString( Strings.CSV ));
 		for ( String fname : dirList ) {
 			String[] components = fname.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt")) {
 				audit.debug( "adding concept: "+ components[ 0 ]);
-				names.add( components[ 0 ]);
+				name( components[ 0 ]);
 		}	}
 		audit.out("["+ new Strings( names ).toString( Strings.CSV ) +"]");
 	}
 
+	/* This is the STATIC loading of concepts at app startup -- read
+	 * from the config.xml file.
+	 */
 	static private TreeSet<String> loaded = new TreeSet<String>();
 	static public  TreeSet<String> loaded() { return loaded; }
+	static public void load( String name ) {
+		if (!loaded.contains( name )) {
+			// loading won't use undo - disable
+			Redo.undoEnabledIs( false );
+			if ( Concept.load( name ))
+				loaded.add( name );
+			Redo.undoEnabledIs( true );
+	}	}
+	static public void load( Tag concepts ) {
+		if (null != concepts) {
+			Repertoire.induction( true );
+			audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
+			for (int j=0; j<concepts.content().size(); j++) {
+				String name = concepts.content().get( j ).name();
+				if (name.equals( "concept" )) {
+					String op = concepts.content().get( j ).attribute( "op" ),
+							 id = concepts.content().get( j ).attribute( "id" );
+
+					if (!Audit.startupDebug) Audit.suspend();
+
+					if (!op.equals( "ignore" ))
+						load( id ); // using itself!!
+					
+					if (!Audit.startupDebug) Audit.resume();
+			}	}
+			Repertoire.induction( false );
+		} else
+			audit.ERROR( "Concepts tag not found!" );
+	}
 	
 	static private boolean matchesHyphenatedPattern( Strings s, String pattern ) {
 		// where pattern may be "to_the_phrase-reply_with"
@@ -69,7 +102,6 @@ public class Concepts {
 		
 		return true;
 	}
-
 	public static Strings matches( Strings utterance ) {
 		//audit.in( "matches", utterance.toString() );
 		// matches: utt=[martin is a wally], candiates=[ "is_a+has_a" ] => add( is_a+has_a )
@@ -85,47 +117,9 @@ public class Concepts {
 		return matches;
 	}
 
-	// backwards compatibility... STATICally load a repertoire file
-	static public void load( String name ) {
-		//audit.in( "load", "name="+ name );
-		// add in name as to what is loaded.
-		if (!loaded.contains( name )) {
-			// loading repertoires won't use undo - disable
-			Redo.undoEnabledIs( false );
-			if ( Concept.load( name )) {
-				loaded.add( name );
-				//audit.debug( "LOADED>>>>>>>>>>>>:"+ name );
-			} //else
-				//audit.debug( "LOAD skipping already loaded:"+ name );
-			Redo.undoEnabledIs( true );
-		}
-		//audit.out();
-	}
-
-	/* This is the STATIC loading of concepts at app startup -- read
-	 * from the config.xml file.
+	/*
+	 *  --- test code
 	 */
-	static public void load( Tag concepts ) {
-		if (null != concepts) {
-			Repertoire.induction( true );
-			audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
-			for (int j=0; j<concepts.content().size(); j++) {
-				String name = concepts.content().get( j ).name();
-				if (name.equals( "concept" )) {
-					String op = concepts.content().get( j ).attribute( "op" ),
-							 id = concepts.content().get( j ).attribute( "id" );
-
-					if (!Audit.startupDebug) Audit.suspend();
-
-					if (!op.equals( "ignore" ))
-						load( id ); // using itself!!
-					
-					if (!Audit.startupDebug) Audit.resume();
-			}	}
-			Repertoire.induction( false );
-		} else
-			audit.ERROR( "Concepts tag not found!" );
-	}
 	private static void test( String s, boolean matchesToReply ) {
 		Strings sa = matches( new Strings( s ));
 		audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");

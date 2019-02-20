@@ -29,6 +29,12 @@ public class Engine {
 			 * interpretations and so are built here alongside those interpretations.
 			 */
 			new Sign()
+				.pattern( new Patternette( "", "new" ))
+				.pattern( new Patternette( "is like", "old" ))
+	          		.appendIntention( Intention.allop, "copy OLD NEW" )
+	          		.concept( NAME ),
+	          	
+   			new Sign()
 				.pattern( new Patternette( "remove the primed answer ", "" ))
 	          		.appendIntention( Intention.allop, "removePrimedAnswer" )
 	          		.concept( NAME ),
@@ -56,15 +62,15 @@ public class Engine {
 	          		.concept( NAME )
 					.help( "" ),
 			new Sign()
-					.pattern( new Patternette(           "help", "" ))
+					.pattern( new Patternette(         "help", "" ))
 					.appendIntention( Intention.allop, "help" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Patternette(          "hello", "" ))
+					.pattern( new Patternette(         "hello", "" ))
 					.appendIntention( Intention.allop, "hello")
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Patternette(        "welcome", "" ))
+					.pattern( new Patternette(         "welcome", "" ))
 					.appendIntention( Intention.allop, "welcome")
 			  		.concept( NAME ),
 			new Sign().pattern( new Patternette( "what can i say", "" ))
@@ -73,7 +79,7 @@ public class Engine {
 					 .help( "" ),
 			new Sign()
 					.pattern( new Patternette(   "load ", "NAME" ))
-					.appendIntention( Intention.allop,   "load NAME" )
+					.appendIntention( Intention.allop,    "load NAME" )
 			  		.concept( NAME ),
 	/*		new Sign().concept( NAME ).content( new Patternette( "unload ", "NAME" )).attribute( new Intention( Intention.allop, "unload NAME" ),
 			new Sign().concept( NAME ).content( new Patternette( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
@@ -137,14 +143,22 @@ public class Engine {
 						.appendIntention( Intention.allop,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
 						.appendIntention( Intention.thenThink,  "X"    )
 		 };
-	static public Reply getReply( Intention in, Reply r ) {
+	
+	static public Reply interp( Intention in, Reply r ) {
 		r.answer( Reply.yesStr()); // bland default reply to stop debug output look worrying
 		
-		Strings cmds = Context.deref( new Strings( in.value() ));
-		cmds = cmds.normalise();
-		String cmd = cmds.remove( 0 );
+		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
+		String  cmd  = cmds.remove( 0 );
 
-		if ( cmd.equals( "primeAnswer" )) {
+		if ( cmd.equals( "copy" )) {
+			String src  = cmds.remove( 0 ),
+				    dest = cmds.remove( 0 );
+			r.format( new Strings( Concept.copy( src, dest ) ? 
+										Reply.success() +", "+ dest +" is like "+ src
+										: Reply.failure() +", "+src+" doesn't seem to exist"
+					)			 );
+			
+		} else if ( cmd.equals( "primeAnswer" )) {
 			
 			Question.primedAnswer( cmds.toString() ); // needs to be tidied up...
 			
