@@ -210,70 +210,6 @@ public class Enguage {
 
 		if (testThisLevel( level, 1 )) {
 			//Audit.allOn();
-			// Test for contradiction... can't swap between states directly:
-			mediate( "demonstrators fear violence",        "ok, demonstrators fear violence" );
-			mediate( "demonstrators advocate violence",    "no, demonstrators fear violence" );
-			mediate( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
-			mediate( "demonstrators advocate violence",    "ok, demonstrators advocate violence" );
-			mediate( "demonstrators fear violence",        "no, demonstrators advocate violence" );
-			mediate( "demonstrators don't advocate violence", "ok, demonstrators don't advocate violence" );
-			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
-			
-			
-			audit.title( "Common sense: opposing views" );
-			mediate( "the councillors   fear     violence", "ok, the councillors       fear violence" );
-			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
-			// test 1
-			mediate( "the councillors refused the demonstrators a permit because they fear violence",
-					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
-			mediate( "who are they", "they are the councillors" );
-			// test 2
-			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
-					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
-			mediate( "who are they", "they are the demonstrators" );
-			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
-
-			
-			audit.title( "Common sense: aligned views - advocate" );
-			mediate( "the councillors   advocate violence", "ok, the councillors   advocate violence" );
-			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
-			// test  1
-			mediate( "the councillors refused the demonstrators a permit because they fear violence",
-					 "I don't think they fear violence" );
-			mediate( "who are they", "I don't know" );
-			// test 2
-			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
-					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
-			mediate( "who are they", "they are the councillors , and the demonstrators" );
-			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
-			
-			
-			audit.title( "Common sense: aligned views - fear" );
-			mediate( "the councillors fear violence because the voters fear violence",
-					"ok, the councillors fear violence because the voters fear violence" );
-			mediate( "the demonstrators fear violence", "ok, the demonstrators fear violence" );
-			// test 1
-			mediate( "the councillors refused the demonstrators a permit because they fear violence",
-					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
-			mediate( "who are they", "they are the voters, the councillors , and the demonstrators" );
-			// test 2
-			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
-					 "I don't think they advocate violence" );
-			mediate( "who are they", "i don't know" );
-			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
-
 			//mediate( "", "" );
 		}
 		if (testThisLevel( level, 2 )) { // WHY - These tests were for JCSSA journal article
@@ -297,7 +233,7 @@ public class Enguage {
 					   "ok, you're baking a cake because you need 3 eggs" );
 			mediate( "why am i baking a cake",  "because you need 3 eggs" );
 			
-			audit.title( "Distinguishing negative responses" );
+			audit.subtl( "Distinguishing negative responses" );
 			// I do understand, "sophie needs dr martens", but
 			// I don't understand, "sophie is very fashionable"
 			mediate( "sophie needs dr martens because sophie is very fashionable",
@@ -309,7 +245,7 @@ public class Enguage {
 			mediate( "why am i heating the oven",
 					   "Sorry, it is not the case that you're heating the oven" );
 			
-			audit.title( "Transitivity" );
+			audit.subtl( "Transitivity" );
 			mediate( "i need to go to the shops because i need 3 eggs",
 					   "ok, you need to go to the shops because you need 3 eggs" );
 			mediate( "is i need 3 eggs the cause of i need to go to the shops",
@@ -320,7 +256,7 @@ public class Enguage {
 			mediate( "do i need to go to the shops because i am baking a cake",
 					   "yes, you need to go to the shops because you're baking a cake" );
 			
-			audit.title( "Why might.../abduction" );
+			audit.subtl( "Why might.../abduction" );
 			mediate( "i am not baking a cake",  "ok, you're not baking a cake" );
 			mediate( "am i baking a cake",      "no, you're not baking a cake" );
 			mediate( "i do not need any eggs",  "ok, you don't need any eggs" );
@@ -442,7 +378,7 @@ public class Enguage {
 			mediate( "set the value of name to fred bloggs", "ok, name is set to fred bloggs" );
 			mediate( "what is the value of name",       "fred bloggs, the value of name is fred bloggs" );
 			
-			audit.title( "Simple Numerics" );
+			audit.subtl( "Simple Numerics" );
 			mediate( "set the weight of martin to 104", "ok" );
 			mediate( "get the weight of martin",        "Ok, the weight of martin is 104" );
 			
@@ -456,74 +392,83 @@ public class Enguage {
 			mediate( "martin's height is 195",  "Ok,  martin's height is 195" );
 			mediate( "what is the height of martin", "195, the height of martin is 195" );
 
-			// TODO:
-			// who-.txt
-			// who is
-			// who is the
-			// + sets HE/SHE/HIM/HIS/HER/THEY/THEM
-			// what is
-			// + sets IT/THEY/THEM
+			// WSC - alternative states tests
+			// dead is the opposite of alive, no
+			// dead and alive are mutually exclusive
+			// fat and thin and athletic are mutually exclusive.
+			// I am fat.     Am I thin. No
+			// I am not fat. Am i thin. I don't know
 			
-			// age is the given date minus the date of inception
-			// if no date given, use the current date.
-			// persons age given in years
-			// what is my age [in <epoch default="years"/>]
+			// i am martin            - ok
+			// i am martin wheatman   - ok
+			// i am martin            - I know
+			// i am harvey wallbanger - no you're martin
+			// i've changed my name to harvey wallbanger - ok
 
-			audit.title( "Verbal Arithmetic" );
-			mediate( "what is 1 + 2",                    "1 plus 2 is 3" );
-			mediate( "times 2 all squared",              "times 2 all squared makes 36" );
-			mediate( "what is 36 + 4     divided by 2",  "36 plus 4     divided by 2 is 38" );
-			mediate( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
+			audit.title( "WSC - advocacy and fear");
+			audit.subtl( "contradiction test... can't swap between states directly");
+			mediate( "demonstrators fear violence",        "ok, demonstrators fear violence" );
+			mediate( "demonstrators advocate violence",    "no, demonstrators fear violence" );
+			mediate( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
+			mediate( "demonstrators advocate violence",    "ok, demonstrators advocate violence" );
+			mediate( "demonstrators fear violence",        "no, demonstrators advocate violence" );
+			mediate( "demonstrators don't advocate violence", "ok, demonstrators don't advocate violence" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
 			
-			audit.title( "Simple Functions" );
-			mediate( "the sum of x and y is x plus y",  "ok, the sum of x and y is x plus y" );
-			mediate( "what is the sum of 3 and 2",      "the sum of 3 and 2 is 5 " );
-			mediate( "set x to 3",                      "ok, x is set to 3" );
-			mediate( "set y to 4",                      "ok, y is set to 4" );
-			mediate( "what is the value of x",          "3, the value of x is 3" );
-			mediate( "what is the sum of x and y",      "the sum of x and y is 7" );
 			
-			audit.title( "Factorial Description" );
-			mediate( "what is the factorial of 4",       "I don't know" );
-			/* Ideally, we want:
-			 * - the factorial of 1 is 1;
-			 * - the factorial of n is n times the factorial of n - 1;
-			 * - what is the factorial of 3.
-			 */
-			mediate( "the factorial of 1 is 1",          "ok, the factorial of 1 is 1" );
+			audit.subtl( "Common sense: opposing views" );
+			mediate( "the councillors   fear     violence", "ok, the councillors       fear violence" );
+			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
+			// test 1
+			mediate( "the councillors refused the demonstrators a permit because they fear violence",
+					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
+			mediate( "who are they", "they are the councillors" );
+			// test 2
+			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
+					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
+			mediate( "who are they", "they are the demonstrators" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
+
 			
-			// in longhand this is...
-			mediate( "to the phrase what is the factorial of 0 reply 1", "ok" );
-			mediate( "what is the factorial of 0",  "1" );
+			audit.subtl( "Common sense: aligned views - advocate" );
+			mediate( "the councillors   advocate violence", "ok, the councillors   advocate violence" );
+			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
+			// test  1
+			mediate( "the councillors refused the demonstrators a permit because they fear violence",
+					 "I don't think they fear violence" );
+			mediate( "who are they", "I don't know" );
+			// test 2
+			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
+					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
+			mediate( "who are they", "they are the councillors , and the demonstrators" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
 			
-			mediate( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
-			mediate( "first perform numeric evaluate variable a times variable b",       "go on" );
-			mediate( "ok", "ok" );
 			
-			mediate( "the product of x and y is x times y" );
-			mediate( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
-			//TODO:
-			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
-			mediate( "the square of x is x times x",    "Ok, the square of x is x times x" );
-			mediate( "what is 2 times the square of 2", "2 times the square of 2 is 8" );
-			
-			// again, in longhand this is...
-			mediate( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
-			mediate( "first perform numeric evaluate variable d minus variable c",         "go on" );
-			mediate( "ok", "ok" );
-			
-			mediate( "subtract 2 from 3", "1" );
-			
-			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
-			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
-			mediate( "interpret what is the factorial of numeric variable n thus",  "go on" );
-			mediate( "first subtract 1 from variable n",                            "go on" );
-			mediate( "then what is the factorial of whatever",                      "go on" );
-			mediate( "then multiply whatever by variable n",  "go on" );
-			mediate( "then reply whatever the factorial of variable n is whatever", "go on" );
-			mediate( "ok", "ok" );
-			
-			mediate( "what is the factorial of 4", "24 the factorial of 4 is 24" );
+			audit.subtl( "Common sense: aligned views - fear" );
+			mediate( "the councillors fear violence because the voters fear violence",
+					"ok, the councillors fear violence because the voters fear violence" );
+			mediate( "the demonstrators fear violence", "ok, the demonstrators fear violence" );
+			// test 1
+			mediate( "the councillors refused the demonstrators a permit because they fear violence",
+					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
+			mediate( "who are they", "they are the voters, the councillors , and the demonstrators" );
+			// test 2
+			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
+					 "I don't think they advocate violence" );
+			mediate( "who are they", "i don't know" );
+			// tidy up
+			mediate( "delete violence advocate list", "ok" );
+			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
 		}
 		if (testThisLevel( level, 5 )) {
 			audit.title( "Annotation" ); // TODO: camelise attribute names
@@ -699,55 +644,76 @@ public class Enguage {
 			// Test
 			// Event: to move is to was (traverse time quanta)
 			// interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
-			
-			
-			// dead is the opposite of alive
-			// dead and alive are mutually exclusive
-			// fat and thin and athletic are mutually exclusive.
-			// I am fat.     Am I thin. No
-			// I am not fat. Am i thin. I don't know
-			
-			// i am martin            - ok
-			// i am martin wheatman   - ok
-			// i am martin            - I know
-			// i am harvey wallbanger - no you're martin
-			// i've changed my name to harvey wallbanger - ok
-			
-			// my date of birth is
-			// how old am i.
-			
-			/* TODO:
-			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
-			 *  she died in 1603
-			 *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
-			 */
-			mediate( "a queen is a monarch", "ok, a queen is a monarch" );
-			// my name is martin
-			// my name is martin wheatman
 		}
 		if (testThisLevel( level, 6 )) {
-			audit.title( "Disambiguation" );
-			mediate( "the eagle has landed" //,
-						   //"Are you an ornithologist."
-					);
-			mediate( "no the eagle has landed" //,
-						   //"So , you're talking about the novel."
-					);
-			mediate( "no the eagle has landed" //, 
-						   //"So you're talking about Apollo 11."
-					);
-			mediate( "no the eagle has landed" //,
-						   //"I don't understand"
-					);
-			// Issue here: on DNU, we need to advance this on "the eagle has landed"
-			// i.e. w/o "no ..."
+			audit.title( "Verbal Arithmetic" );
+			mediate( "what is 1 + 2",                    "1 plus 2 is 3" );
+			mediate( "times 2 all squared",              "times 2 all squared makes 36" );
+			mediate( "what is 36 + 4     divided by 2",  "36 plus 4     divided by 2 is 38" );
+			mediate( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
+			
+			audit.title( "Simple Functions" );
+			mediate( "the sum of x and y is x plus y",  "ok, the sum of x and y is x plus y" );
+			mediate( "what is the sum of 3 and 2",      "the sum of 3 and 2 is 5 " );
+			mediate( "set x to 3",                      "ok, x is set to 3" );
+			mediate( "set y to 4",                      "ok, y is set to 4" );
+			mediate( "what is the value of x",          "3, the value of x is 3" );
+			mediate( "what is the sum of x and y",      "the sum of x and y is 7" );
+			
+			audit.title( "Factorial Description" );
+			mediate( "what is the factorial of 4",       "I don't know" );
+			/* Ideally, we want:
+			 * - the factorial of 1 is 1;
+			 * - the factorial of n is n times the factorial of n - 1;
+			 * - what is the factorial of 3.
+			 */
+			mediate( "the factorial of 1 is 1",          "ok, the factorial of 1 is 1" );
+			
+			// in longhand this is...
+			mediate( "to the phrase what is the factorial of 0 reply 1", "ok" );
+			mediate( "what is the factorial of 0",  "1" );
+			
+			mediate( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
+			mediate( "first perform numeric evaluate variable a times variable b",       "go on" );
+			mediate( "ok", "ok" );
+			
+			mediate( "the product of x and y is x times y" );
+			mediate( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
+			//TODO:
+			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
+			mediate( "the square of x is x times x",    "Ok, the square of x is x times x" );
+			mediate( "what is 2 times the square of 2", "2 times the square of 2 is 8" );
+			
+			// again, in longhand this is...
+			mediate( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
+			mediate( "first perform numeric evaluate variable d minus variable c",         "go on" );
+			mediate( "ok", "ok" );
+			
+			mediate( "subtract 2 from 3", "1" );
+			
+			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
+			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
+			mediate( "interpret what is the factorial of numeric variable n thus",  "go on" );
+			mediate( "first subtract 1 from variable n",                            "go on" );
+			mediate( "then what is the factorial of whatever",                      "go on" );
+			mediate( "then multiply whatever by variable n",  "go on" );
+			mediate( "then reply whatever the factorial of variable n is whatever", "go on" );
+			mediate( "ok", "ok" );
+			
+			mediate( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 		}
 		if (testThisLevel( level, 7 )) {
 			audit.title( "Temporal interpret" );
 			mediate( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
+			// my date of birth is
+			// how old am i.
+			// age is the given date minus the date of inception
+			// if no date given, use the current date.
+			// persons age given in years
+			// what is my age [in <epoch default="years"/>]
 
-			audit.title( "Temporospatial concept MEETING" );
+			audit.subtl( "Temporospatial concept MEETING" );
 			
 			/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
 			 * first create a class variable entity.             // mkdir pub; touch pub/isa 
@@ -776,8 +742,23 @@ public class Enguage {
 					   "i don't know if you're meeting your dad" );
 			
 		}
-		if (testThisLevel( level, 8 )) {
-			audit.title( "TCP/IP test" );
+		if (testThisLevel( level, 8 )) { // Language features Link
+			/* TODO:
+			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
+			 *  she died in 1603
+			 *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
+			 */
+			mediate( "a queen is a monarch", "ok, a queen is a monarch" );
+			
+			audit.subtl( "Disambiguation" );
+			mediate( "the eagle has landed"    /* "Are you an ornithologist" */);
+			mediate( "no the eagle has landed" /* "So , you're talking about the novel" */ );
+			mediate( "no the eagle has landed" /*"So you're talking about Apollo 11" */	);
+			mediate( "no the eagle has landed" /* "I don't understand" */ );
+			// Issue here: on DNU, we need to advance this on "the eagle has landed"
+			// i.e. w/o "no ..."
+
+			audit.subtl( "TCP/IP test" );
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
 			// config port get chosen over this one???
 			mediate( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
