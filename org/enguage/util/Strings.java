@@ -35,6 +35,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public static final long serialVersionUID = 0;
 	static private Audit audit = new Audit( "Strings" );
 	
+	public final static int MAXWORD = 1024;
+	
 	public final static int     CSV = 0;
 	public final static int   SQCSV = 1;
 	public final static int   DQCSV = 2;
@@ -43,7 +45,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public final static int   LINES = 5;
 	public final static int  CONCAT = 6;
 	public final static int ABSPATH = 7;
-	public final static int   OUTERSP = 8;
+	public final static int OUTERSP = 8;
 	
 	public final static String      lineTerm = "\n";
 	public final static String           AND = "&&";
@@ -112,7 +114,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				if (Character.isWhitespace( buffer[ i ]))
 					i++;
 				else {
-					StringBuilder word = new StringBuilder( 32 );
+					StringBuilder word = new StringBuilder( MAXWORD );
 					if (Character.isLetter( buffer[ i ])
 						|| (   ('_' == buffer[ i ] || '$' == buffer[ i ])
 							&& 1+i<sz && Character.isLetter( buffer[ 1+i ])))
@@ -172,7 +174,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 						if (i+1<sz && buffer[ i+1 ] == SINGLE_QUOTE) {
 							i+=2;
 							append( word.toString() );
-							word = new StringBuilder( 32 );
+							word = new StringBuilder( MAXWORD );
 							word.append( "'" );
 						} else {
 							// embedded apostrophes: check "def'def", " 'def" or "...def'[ ,.?!]" 
@@ -214,7 +216,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 					String tmp = word.toString();
 					if (!tmp.equals( "" )) {
 						add( tmp );
-						word = new StringBuilder( 32 );
+						word = new StringBuilder( MAXWORD );
 					}
 		}	}	}
 	}
@@ -225,7 +227,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			int  i = 0, sz = buffer.length;
 			while (i<sz) {
 				while (i < sz && Character.isWhitespace( buffer[ i ])) i++;
-				StringBuilder word = new StringBuilder( 32 );
+				StringBuilder word = new StringBuilder( MAXWORD );
 				while (i < sz && !Character.isWhitespace( buffer[ i ]))
 					word.append( buffer[ i++ ]);
 				if (!word.toString().equals( "" )) ss.add( word.toString() );

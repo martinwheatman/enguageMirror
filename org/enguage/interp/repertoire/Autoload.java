@@ -24,6 +24,7 @@ public class Autoload {
 	 */
 	private static int  ttl = 5;
 	public  static void ttl( String age ) {try {ttl = Integer.valueOf( age );} catch (Exception e){}}
+	public  static int ttl() { return ttl;}
 	
 	/**
 	 * autoloading - Simple flag to prevent autoloading when autoloading.
@@ -52,6 +53,8 @@ public class Autoload {
 							audit.ERROR( "failed to autoload" );
 				}
 			
+			Synonyms.autoload( utterance );			
+				
 			Redo.undoEnabledIs( true );
 			Autoload.ing( false );
 	}	}
@@ -78,7 +81,9 @@ public class Autoload {
 				String repertoire = ri.next();
 				Repertoire.signs.remove( repertoire );
 				autoloaded.remove( repertoire );
-	}	}	}
+			}
+			Synonyms.unload();
+	}	}
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Audit.allTracing = true;

@@ -125,7 +125,7 @@ public class Sign {
 			Intention in = ai.next();
 			switch (in.type()) {
 				case Intention.allop :
-					r = Engine.getReply( in, r );
+					r = Engine.interp( in, r );
 					break;
 				case Intention.create:
 				case Intention.prepend:

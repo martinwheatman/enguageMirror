@@ -2,8 +2,6 @@ package org.enguage.objects;
 
 import java.io.IOException;
 
-import org.enguage.objects.Activity;
-
 public class Activity {
 
 	public Activity () {};

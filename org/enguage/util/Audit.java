@@ -97,6 +97,7 @@ public class Audit {
 		indent.incr();
 	}
 
+    public String OUT() { return OUT( "" ); }
     public String OUT( String result ) {
     	indent.decr();
 		log( "OUT "+ name

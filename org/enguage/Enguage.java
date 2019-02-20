@@ -208,8 +208,13 @@ public class Enguage {
 		int level = 0; // 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
 
-		if (testThisLevel( level, 1 )) {
+		if (testThisLevel( level, 1 )) { // is like - polymorphism
 			//Audit.allOn();
+			mediate( "want is like need",   "ok, want is like need" );
+			mediate( "what do i want",      "you don't want anything" );
+			mediate( "i want another pony", "ok, you want another pony" );
+			mediate( "what do i want",      "you want another pony" );
+			clearTheNeedsList( "i don't want anything" );
 			//mediate( "", "" );
 		}
 		if (testThisLevel( level, 2 )) { // WHY - These tests were for JCSSA journal article

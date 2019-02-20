@@ -43,17 +43,14 @@ public class Fs {
 	}
 	static public boolean stringToFile( String fname, String value ) {
 		boolean rc = true;
-		//audit.in("stringToFile", "name="+fname+", value="+value);
-		create( new File( fname ).getParent()); // just in case?
+		create( new File( fname ).getParent());
 		try {
 			PrintWriter pw = new PrintWriter( fname );
 			pw.println( value );
 			pw.close();
 		} catch (FileNotFoundException e ) {
 			rc = false;
-			//audit.log( "Fs::stringToFile(): File "+ fname +" not found: "+ e );	
 		}
-		//audit.out();
 		return rc;
 	}
 	static public String stringFromFile( String fname ) {

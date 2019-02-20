@@ -5,7 +5,6 @@ package org.enguage.objects;
 
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.repertoire.Repertoire;
-import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;

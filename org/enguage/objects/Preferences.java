@@ -1,6 +1,5 @@
 package org.enguage.objects;
 
-import org.enguage.objects.Preferences;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
