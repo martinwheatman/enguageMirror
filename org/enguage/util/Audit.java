@@ -126,15 +126,16 @@ public class Audit {
 	static public  void    allOn() {  allOn = true; allTracing = true; }
 	static public  boolean allAreOn() { return allOn; }
 	
-	// === titles
-	public void underline( String title, String ch ) {
-		String underline = "";
+	// === title/underline
+	public void title( String title ) { log( "\n" ); underline( title, '=' );}
+	public void subtl( String title ) { log( "" ); underline( title, '+' );}
+	public void underline( String title ) { underline( title, '-' );}
+	public void underline( String title, char ch ) {
 		log( title );
+		String underline = "";
 		for (int i = 0; i < title.length(); i++) underline += ch;
 		log( underline );
 	}
-	public void title( String title ) { log( "\n" ); underline( title, "=" );}
-	public void subtl( String title ) { underline( title, "-" );}
 
 	// -- test code...
 	public static void main( String[] agrs ) {
