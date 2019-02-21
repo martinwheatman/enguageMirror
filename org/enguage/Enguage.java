@@ -205,7 +205,7 @@ public class Enguage {
 		//Audit.allOn();
 		//Repertoire.signs.show( "OTF" );
 
-		int level = 0; // 0 = every level, -n = ignore level n
+		int level = 1; // 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
 
 		if (testThisLevel( level, 1 )) { // is like - polymorphism
