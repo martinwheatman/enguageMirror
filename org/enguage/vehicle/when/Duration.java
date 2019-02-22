@@ -171,7 +171,7 @@ public class Duration {
 	private static void durationTest( long from, long to ) {
 		Duration d = new Duration( from==0? null : new Moment( from ),
 				                     to==0? null : new Moment(   to ) );
-		audit.log( d.valueOf() +", this duration is "+ d.toString() +"." );
+		Audit.log( d.valueOf() +", this duration is "+ d.toString() +"." );
 	}
 	public static void main( String args[] ) {
 		/* This class contains a few bugs - see tests below.

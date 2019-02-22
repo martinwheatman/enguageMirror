@@ -38,7 +38,7 @@ public class Colloquial {
 		Iterator<Map.Entry<Strings,Strings>> i = set.iterator();
 		while(i.hasNext()) {
 			Map.Entry<Strings,Strings> me = (Map.Entry<Strings,Strings>)i.next();
-			//audit.log("Coll: externalising:"+ me.getValue() +":with"+ me.getKey() +":");
+			//Audit.log("Coll: externalising:"+ me.getValue() +":with"+ me.getKey() +":");
 			a.replace( me.getValue(), me.getKey());
 		}
 		return a;
@@ -129,9 +129,9 @@ public class Colloquial {
 		c.add( new Strings( "This" ), new Strings( "Hello" ));
 		c.add( new Strings( "test passes" ), new Strings( "world" ));
 		a = c.externalise( a );
-		audit.log( a );
+		Audit.log( a );
 		a = c.internalise( a );
-		audit.log( a );
+		Audit.log( a );
 		
 		interpret( "both \"do not\" \"don't\"" );
 		interpret( "both \"does not\"  \"doesn't\"" );
@@ -152,11 +152,11 @@ public class Colloquial {
 		interpret( "host \"_user does not need\" \"you do not need\"" );
 		interpret( "host \"_user\" \"you\"" );
 
-		audit.log( applyIncoming( "I do not need anything" ));
+		Audit.log( applyIncoming( "I do not need anything" ));
 		
-		audit.log(
+		Audit.log(
 			applyOutgoing(
 				"_user needs: i do not understand, i do not need anything, _user does not need anything."
 			));
-		audit.log( "PASSED" );
+		Audit.log( "PASSED" );
 }	}

@@ -299,16 +299,16 @@ public class Item {
 	}
 	private static void test( String s ) { test( s, null );}
 	private static void test( String descr, String expected ) {
-		audit.log( ">>>>>>>"+ descr +"<<<<" );
+		Audit.log( ">>>>>>>"+ descr +"<<<<" );
 		Item   item  = new Item( new Strings( descr ).contract( "=" ));
 		String group = item.group(),
 		       ans   = item.toString() + (group.equals("") ? "" : " "+ group);
 		if (expected != null && !expected.equals( ans ))
 			audit.FATAL( "the item: '" + ans +"'\n  is not the expected: '"+ expected +"'");
 		else if (expected == null)
-			audit.log( "is ===> "+ ans );
+			Audit.log( "is ===> "+ ans );
 		else
-			audit.log( " PASSED: "+ ans );
+			Audit.log( " PASSED: "+ ans );
 	}
 	public static void main( String args[] ) {
 		//Audit.allOn();
@@ -316,7 +316,7 @@ public class Item {
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffees from Tesco in London" );
-		audit.log( "adding b/c: "+ interpret( new Strings( "stuff includes 'black coffee'" )));
+		Audit.log( "adding b/c: "+ interpret( new Strings( "stuff includes 'black coffee'" )));
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffee from Tesco in London" );
 		
@@ -328,7 +328,7 @@ public class Item {
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
 				"2 packets of crisp from Tesco in London" );
-		audit.log( "adding crisps: "+ interpret( new Strings( "things include crisps" )));
+		Audit.log( "adding crisps: "+ interpret( new Strings( "things include crisps" )));
 		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
 				"2 packets of crisps from Tesco in London" );
 		
@@ -355,6 +355,6 @@ public class Item {
 		testAdd( "toothpaste" );
 		
 		audit.title( "Groups" );
-		audit.log( groups.toString() +"." );
-		audit.log( "PASSED" );
+		Audit.log( groups.toString() +"." );
+		Audit.log( "PASSED" );
 }	}

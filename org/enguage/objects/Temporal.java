@@ -47,5 +47,5 @@ public class Temporal {
 		return audit.out( new Strings( rc ));
 	}
 	public static void main( String args[] ) {
-		audit.log( interpret( new Strings( "dayOfWeek 1225" )));
+		Audit.log( interpret( new Strings( "dayOfWeek 1225" )));
 }	}

@@ -1,5 +1,6 @@
 package org.enguage.objects.space;
 
+import org.enguage.interp.repertoire.Synonyms;
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Sign;
@@ -51,13 +52,14 @@ public class Sofa extends Shell {
 				case Spatial.id :   return Spatial.interpret( a );
 				case Numeric.id  :  return Numeric.interpret( a );
 				case Overlay.id  :  return Overlay.interpret( a );
+				case Synonyms.id :  return Synonyms.interpret( a );
 				case Temporal.id  : return Temporal.interpret( a );
 				case Function.id  : return Function.interpret( a );
 				case Variable.id  : return Variable.interpret( a );
 				case Colloquial.id:	return Colloquial.interpret( a );
 				case Transitive.id: return Transitive.interpret( a );
 				default :
-					audit.ERROR( "Sofa.hash(): "+ type +" doesn't work at: "+ Strings.hash( type ));
+					audit.ERROR( "Sofa.hash(): "+ type +".id should be: "+ Strings.hash( type ));
 					return Fail;
 		}	}
 		audit.ERROR("doCall() fails - "+ (a==null?"no params":"not enough params: "+ a.toString()));
@@ -174,6 +176,6 @@ public class Sofa extends Shell {
 		} else {
 			Audit.allOn();
 			Audit.traceAll( true );
-			audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
+			Audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
 			cmd.run();
 }	}	}

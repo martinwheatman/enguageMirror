@@ -39,5 +39,5 @@ public class Spatial {
 		return new Strings( rc );
 	}
 	public static void main( String args[] ) {
-		audit.log( interpret( new Strings( "add fred" )));
+		Audit.log( interpret( new Strings( "add fred" )));
 }	}

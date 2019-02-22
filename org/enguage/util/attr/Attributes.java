@@ -59,6 +59,15 @@ public class Attributes extends ArrayList<Attribute> {
 		for (Attribute m : this)
 			Variable.set( m.name(), m.value());
 	}
+	public Strings matchNames( Strings utterance ) {
+		//[want="need"].matchNames(["i","want","a","pony"])=>["want"]
+		Strings matches = new Strings();
+		Strings synonyms  = names();
+		for (String uttered : utterance )
+			if (synonyms.contains( uttered ))
+				matches.add( uttered );
+		return matches;
+	}
 	public boolean matches( Attributes pattern ) {
 		// Sanity check: pattern will have less content than target.
 		if (pattern.size() > size()) return false;
@@ -257,22 +266,22 @@ public class Attributes extends ArrayList<Attribute> {
 		Attributes b, a = new Attributes();
 		a.add( new Attribute( "martin", "heroic" ));
 		a.add( new Attribute( "ruth", "fab" ));
-		audit.log( "Initial test: "+ a.toString());
-		audit.log( "\tmartin is "+  a.get( "martin" ));
-		audit.log( "\truth is "+   a.get( "ruth" ));
-		audit.log( "\tjames is "+  a.get( "james" ));
-		audit.log( "\tderef martin is "+  a.deref( "what is MARTIN" ));
+		Audit.log( "Initial test: "+ a.toString());
+		Audit.log( "\tmartin is "+  a.get( "martin" ));
+		Audit.log( "\truth is "+   a.get( "ruth" ));
+		Audit.log( "\tjames is "+  a.get( "james" ));
+		Audit.log( "\tderef martin is "+  a.deref( "what is MARTIN" ));
 		
-		audit.log( "\tremoving "+ a.remove( new Attribute( "martin" )));
-		audit.log( "\ta is now:"+ a.toString());
-		audit.log( "\tshould be just ruth='fab'" );
+		Audit.log( "\tremoving "+ a.remove( new Attribute( "martin" )));
+		Audit.log( "\ta is now:"+ a.toString());
+		Audit.log( "\tshould be just ruth='fab'" );
 		
 		a = new Attributes();
 		a.add( new Attribute( "X", "3" ));
 		b = new Attributes();
 		a.add( new Attribute( "X", "3" ));
 		if (a.matches( b ))
-			audit.log( "matched" );
+			Audit.log( "matched" );
 		else
-			audit.log( "not mathing" );
+			Audit.log( "not mathing" );
 }	}

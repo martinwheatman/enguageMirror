@@ -50,7 +50,7 @@ public class Variable {
 		Audit.incr();
 		while (ei.hasNext()) {
 			Map.Entry<String,String> e = ei.next();
-			audit.log( e.getKey()  +"='"+  e.getValue()  +"'" );
+			Audit.log( e.getKey()  +"='"+  e.getValue()  +"'" );
 		}
 		Audit.decr();
 	}
@@ -221,9 +221,9 @@ public class Variable {
 					rc = Shell.FAIL;
 			}
 		} else if (cmd.equals( "show" )) {
-			audit.log( "printing cache" );
+			Audit.log( "printing cache" );
 			printCache();
-			audit.log( "printed" );
+			Audit.log( "printed" );
 		} else
 			rc = Shell.FAIL;
 		audit.out( rc = rc==null?"":rc );
@@ -235,9 +235,9 @@ public class Variable {
 		Strings actual = interpret( new Strings( cmd ));
 		if (actual.equals( new Strings( expected )))
 			if ( actual.equals( Shell.Ignore ))
-				audit.log(   "PASS: "+ cmd );
+				Audit.log(   "PASS: "+ cmd );
 			else
-				audit.log(   "PASS: "+ cmd +" = '"+ actual +"'" );
+				Audit.log(   "PASS: "+ cmd +" = '"+ actual +"'" );
 		else
 			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
@@ -251,24 +251,24 @@ public class Variable {
 			printCache();
 			Variable spk = new Variable( "NAME" );
 			String tmp = spk.get();
-			audit.log( "was="+ (tmp==null?"<null>":tmp));
+			Audit.log( "was="+ (tmp==null?"<null>":tmp));
 			if ( tmp.equals( "fred" ))
 				interpret( new Strings( "set NAME billy boy" ));
 			else
 				spk.set( "fred" );
 			tmp = spk.get();
-			audit.log( "now="+ (tmp==null?"<null>":tmp));
+			Audit.log( "now="+ (tmp==null?"<null>":tmp));
 			if ( spk.isSet( "fred" ))
-				audit.log( "spk set to Fred" );
+				Audit.log( "spk set to Fred" );
 			else
-				audit.log( "spk is set to Bill" );
+				Audit.log( "spk is set to Bill" );
 			printCache();
 			
 			//*		Static test, backwards compat...
 			test( "set hello there", "there" );
 			test( "get HELLO", "there" );
 			test( "equals HELLO there", Shell.SUCCESS );
-			audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
+			Audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
 			test( "unset HELLO", Shell.SUCCESS );
 			test( "get HELLO", "" );
 			{	// derefOrPop test...
@@ -278,7 +278,7 @@ public class Variable {
 				
 				b = derefOrPop( b.iterator() );
 
-				audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
+				Audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
 			}
-			audit.log( "PASSED" );
+			Audit.log( "PASSED" );
 }	}	}

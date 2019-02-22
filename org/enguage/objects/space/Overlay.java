@@ -245,7 +245,7 @@ public class Overlay {
 			if (!Series.existing( candidate ))
 				Series.create( candidate, new File( System.getProperty("user.dir")).getPath() );
 			if (!(rc = Series.attach( candidate )))
-				audit.log( "Unable to attach to "+ candidate );
+				Audit.log( "Unable to attach to "+ candidate );
 		}
 		return rc;
 	}
@@ -325,25 +325,25 @@ public class Overlay {
 			if ( o.path( argv.get( 1 )))
 				rc = Shell.SUCCESS;
 			else
-				audit.log( cmd +": Cannot cd to "+ argv.get( 1 ));
+				Audit.log( cmd +": Cannot cd to "+ argv.get( 1 ));
 		
 		} else if (cmd.equals( "pwd" ) && (1 == argc)) {
 			rc = Shell.SUCCESS;
-			audit.log( o.path());
+			Audit.log( o.path());
 
 		} else if (cmd.equals( "write" )) {
 			rc = Shell.SUCCESS;
-			audit.log( "New file would be '"+ Overlay.fsname( value, "w" ) +"'" ); // last param ignored
+			Audit.log( "New file would be '"+ Overlay.fsname( value, "w" ) +"'" ); // last param ignored
 			
 		} else if (cmd.equals( "mkdir" ) && (2 == argc)) {
 			rc = Shell.SUCCESS;
 			String fname = Overlay.fsname( argv.get( 1 ), "w" );
-			audit.log( "Fname is "+ fname );
-			audit.log( ">>>mkdir("+ fname +") => "+ (new File( fname ).mkdirs()?"Ok":"Error"));
+			Audit.log( "Fname is "+ fname );
+			Audit.log( ">>>mkdir("+ fname +") => "+ (new File( fname ).mkdirs()?"Ok":"Error"));
 			
 		} else if (cmd.equals( "read" ) && (2 == argc)) {
 			rc = Shell.SUCCESS;
-			audit.log( "File found? is '"+ Overlay.fsname( argv.get( 1 ), "r" )+"'" );
+			Audit.log( "File found? is '"+ Overlay.fsname( argv.get( 1 ), "r" )+"'" );
 			
 		} else if (cmd.equals( "ls" )) {
 			rc = Shell.SUCCESS;
@@ -393,10 +393,10 @@ public class Overlay {
 	public static void main (String args []) {
 		Audit.allOn();
 		if (!autoAttach())
-			audit.log( "Ouch! Can't auto attach" );
+			Audit.log( "Ouch! Can't auto attach" );
 		else {
-			audit.log( "osroot="+ Ospace.root() );
-			audit.log( "base="+ Series.name()+", n=" + Series.number() );
+			Audit.log( "osroot="+ Ospace.root() );
+			Audit.log( "base="+ Series.name()+", n=" + Series.number() );
 			OverlayShell os = new OverlayShell( new Strings( args ));
 			os.run();
 }	}	}

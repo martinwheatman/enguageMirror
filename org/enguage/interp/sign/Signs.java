@@ -37,7 +37,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		int c = insertMe.cplex(),
 			i = 0;
 		while (i < 99 && containsKey( c + i )) {
-			//audit.log( "Signs:insert()>>>>>>CLASH: "+ insertMe.toLine());
+			//Audit.log( "Signs:insert()>>>>>>CLASH: "+ insertMe.toLine());
 			clashes++;
 			i++;
 		}
@@ -111,7 +111,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		while( i.hasNext()) {
 			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
 			Sign s = me.getValue();
-			audit.LOG( s.toXml( n++, me.getKey() ));
+			Audit.LOG( s.toXml( n++, me.getKey() ));
 	}	}
 	public void show( String simpleFilter ) {
 		int n=0;
@@ -121,7 +121,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
 			Sign s = me.getValue();
 			if (s.concept().equals(simpleFilter))
-				audit.LOG( s.toXml( n++, me.getKey() ));
+				Audit.LOG( s.toXml( n++, me.getKey() ));
 	}	}
 	/*
 	 * remember which sign we interpreted last
@@ -333,6 +333,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 				.append( new Intention( Intention.allop, "list repertoires" ))
 				.help( "" )
 		);
-//		audit.log( r.helpedToString( "test" ));
-//		audit.log( r.helpedToHtml(   "test" ));
+//		Audit.log( r.helpedToString( "test" ));
+//		Audit.log( r.helpedToHtml(   "test" ));
 }	}

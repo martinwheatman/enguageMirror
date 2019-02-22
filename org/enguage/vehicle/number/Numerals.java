@@ -50,5 +50,5 @@ public class Numerals {
 	
 	public static void main(String args []) {
 		Audit.allOn();
-		audit.log( "PASSED." );
+		Audit.log( "PASSED." );
 }	}

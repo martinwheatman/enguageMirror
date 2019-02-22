@@ -14,7 +14,7 @@ public class Attribute {
 	static public final char   ALT_QUOTE_CH  = '"'; // '\''; //
 	static public final String ALT_QUOTE_STR = "\""; //  "'";  //
 	
-	static private      Audit  audit         = new Audit( "Attribute" );
+	//static private      Audit  audit         = new Audit( "Attribute" );
 	
 	private static String valueFromAttribute( String s ) {
 		// takes value from name='value' -- 
@@ -114,21 +114,21 @@ public class Attribute {
 	}
 	static public void main( String argv[]) {
 		//Audit.turnOn();
-		audit.log( attrTest( "fred=bill" ));
-		audit.log( attrTest( "fred='bill'" ));
+		Audit.log( attrTest( "fred=bill" ));
+		Audit.log( attrTest( "fred='bill'" ));
 		Attribute a = new Attribute( "fred=\"bill\"" );
-		audit.log( "a is "+ a.toString());
+		Audit.log( "a is "+ a.toString());
 		a = new Attribute( "fred='bill'" );
-		audit.log( "a is "+ a.toString());
+		Audit.log( "a is "+ a.toString());
 		a = new Attribute( "fred=bi'll" );
-		audit.log( "a is "+ a.toString());
+		Audit.log( "a is "+ a.toString());
 		Strings sa = new Strings("list get user='martin' attr='needs to x=\"go to town\" y=\"for martin's coffee\"\'");
 		sa.contract( "=" );
-		audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		for (int i=0; i<4 && i<sa.size(); i++)
 			sa.set( i, Attribute.getValues( sa.get( i )).toString( Strings.SPACED ));
-		audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		sa = sa.normalise();
-		audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		
 }	}

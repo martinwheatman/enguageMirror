@@ -395,7 +395,7 @@ public class List extends ArrayList<Item> {
 						
 				} else if (cmd.equals( "isAttrVal" )) {
 					// called in why.txt: [list isAttrVal SUBJECT LIST cause] WHAT CAUSE
-					// audit.log( "Item is: "+ item.toXml());
+					// Audit.log( "Item is: "+ item.toXml());
 					rca.add( list.isAttrVal(
 								new Strings( item.attribute( "what" )), // i need 3 eggs
 								item.description().toString(), // cause - not description!
@@ -464,11 +464,11 @@ public class List extends ArrayList<Item> {
 		l.append( new Item( "coffee   unit='cup' quantity='1' locator='from' location='Sainsburys'"   ));
 		l.append( new Item( "biscuits            quantity='1' locator='from' location='Sainsburys'"   ));
 		l.append( new Item( "locator='from' unit='pint' quantity='1' location='the dairy aisle' milk" ));
-		audit.log( "martin needs: "+ l.toString());
+		Audit.log( "martin needs: "+ l.toString());
 		
 		Item.format( "QUANTITY,UNIT of,,"+ Where.LOCTR +" "+ Where.LOCTN );
 		Item.groupOn( Where.LOCTN );
-		audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
+		Audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
 		
 		// BEGIN SHOPPING LIST TESTS...
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
@@ -511,5 +511,5 @@ public class List extends ArrayList<Item> {
 		test( 301, "getAttrVal martin why name='cause' i need to go to the garage", "i need 3 eggs" );
 		// END test why
 		
-		audit.log( "All tests pass!" );
+		Audit.log( "All tests pass!" );
 }	}

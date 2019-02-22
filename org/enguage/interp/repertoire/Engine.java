@@ -27,20 +27,7 @@ public class Engine {
 	public static final Sign commands[] = {
 			/* These could be accompanied in a repertoire, but they have special 
 			 * interpretations and so are built here alongside those interpretations.
-			 */
-			new Sign()
-				.pattern( new Patternette( "", "new" ))
-				.pattern( new Patternette( "is like", "existing" ))
-	          		.appendIntention( Intention.allop, "copy NEW EXISTING" )
-	          		.concept( NAME ),
-
-	    	new Sign()
-				.pattern( new Patternette( "", "new" ))
-				.pattern( new Patternette( "is unlike", "existing" ))
-	          		.appendIntention( Intention.allop, "uncopy NEW EXISTING" )
-	          		.concept( NAME ),
-		          	
-	          		
+			 */	
    			new Sign()
 				.pattern( new Patternette( "remove the primed answer ", "" ))
 	          		.appendIntention( Intention.allop, "removePrimedAnswer" )
@@ -155,23 +142,9 @@ public class Engine {
 		r.answer( Reply.yesStr()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
-		String  cmd  = cmds.remove( 0 ), src, dest;
+		String  cmd  = cmds.remove( 0 );
 
-		if ( cmd.equals( "copy" )) {
-			src  = cmds.remove( 0 );
-			dest = cmds.remove( 0 );
-
-			Synonyms.list( src, dest );
-			r.format( new Strings( Reply.success() +", "+ src +" is like "+ dest ));
-
-		} else if ( cmd.equals( "uncopy" )) {
-			src  = cmds.remove( 0 );
-			dest = cmds.remove( 0 );
-			
-			Synonyms.list( src, "" ); // unset this synonym
-			r.format( new Strings(Reply.success() +", "+ dest +" is unlike "+ src));
-				
-		} else if ( cmd.equals( "primeAnswer" )) {
+		if ( cmd.equals( "primeAnswer" )) {
 			
 			Question.primedAnswer( cmds.toString() ); // needs to be tidied up...
 			
@@ -295,7 +268,7 @@ public class Engine {
 				r.answer( ans );
 			}
 		} else if (cmd.equals( "timing" )) {
-			audit.log( cmd +" "+ cmds.toString());
+			Audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
 				Audit.timings = false;
@@ -309,7 +282,7 @@ public class Engine {
 			r.format( Reply.success() );
 			
 		} else if (cmd.equals( "tracing" )) {
-			audit.log( cmd +" "+ cmds.toString());
+			Audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
 				Audit.timings = false;
@@ -324,7 +297,7 @@ public class Engine {
 			
 		} else if (cmd.equals( "detailed" )) {
 			
-			audit.log( cmds.toString());
+			Audit.log( cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
 				Audit.timings = false;
@@ -390,10 +363,10 @@ public class Engine {
 
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
-				audit.log("Allop:repeating dnu");
+				Audit.log("Allop:repeating dnu");
 				r.format( Reply.dnu());
 			} else {
-				audit.log("Allop:repeating: "+ Reply.previous());
+				Audit.log("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
 				r.format( new Strings( Reply.repeatFormat()));
 				r.answer( Reply.previous().toString());

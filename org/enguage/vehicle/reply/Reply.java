@@ -275,20 +275,20 @@ public class Reply { // a reply is basically a formatted answer
 		Reply.yes( "Yes" );
 		
 		Reply r = new Reply();
-		audit.log( "Initially: "+ r.toString());
+		Audit.log( "Initially: "+ r.toString());
 		r.format( new Strings( "ok" ));
-		audit.log( "Initially2: "+ r.toString());
+		Audit.log( "Initially2: "+ r.toString());
 		r.answer( "42" );
-		audit.log( "THEN: "+ r.toString());
+		Audit.log( "THEN: "+ r.toString());
 		r.answer( "53" );
-		audit.log( "W/no format:"+ r.toString());
+		Audit.log( "W/no format:"+ r.toString());
 		
 		r.format( new Strings( "The answer to X is ..." ));
 		
 		Attributes attrs = new Attributes();
 		attrs.add( new Attribute( "x", "life the universe and everything" ));
 		Context.push( attrs );
-		audit.log( "Context is: "+ Context.valueOf());
+		Audit.log( "Context is: "+ Context.valueOf());
 		
-		audit.log( "Finally:"+ r.toString());
+		Audit.log( "Finally:"+ r.toString());
 }	}

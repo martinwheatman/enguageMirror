@@ -320,5 +320,5 @@ public class Tag {
 			"   </concepts>\n"+
 	        "   </config>\n"+
 	        "   </xml>"        );
-		audit.log( "tag:"+ t.toXml());
+		Audit.log( "tag:"+ t.toXml());
 }	}

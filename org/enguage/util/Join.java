@@ -10,7 +10,7 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 
 public class Join {
-	private static       Audit           audit = new Audit( "Join" );
+	//private static       Audit           audit = new Audit( "Join" );
 	
 	static private boolean on = false;
 	static public  void    on( boolean j ) { on = j; }
@@ -124,15 +124,15 @@ public class Join {
 		match.add( new Attribute( "SUBJECT", "martin" ));
 		match.add( new Attribute(  "OBJECT", "2 coffees, a pot of tea and biscuits" ));
 		
-		audit.log( "Context is:\n\t"+ match );
+		Audit.log( "Context is:\n\t"+ match );
 		ArrayList<Attributes> ala = join( match, "and" );
-		audit.log( "Combinations of which are:\n\t"+ ala.toString() );
+		Audit.log( "Combinations of which are:\n\t"+ ala.toString() );
 		
 		match = new Attributes();
 		match.add( new Attribute( "SUBJECTS", "martin and ruth" ));
 		match.add( new Attribute(  "OBJECTS", "2 coffees and a pot of tea and biscuits" ));
 		
-		audit.log( "Context is:\n\t"+ match );
+		Audit.log( "Context is:\n\t"+ match );
 		ala = join( match, "and" );
-		audit.log( "Combinations of which are:\n\t"+ ala.toString() );
+		Audit.log( "Combinations of which are:\n\t"+ ala.toString() );
 }	}

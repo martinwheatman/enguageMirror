@@ -100,16 +100,16 @@ public class Function {
 	}
 	// === test code below! ===
 	static private void testCreate( String fn, String formals, String body ) {
-		audit.log( "The "+ fn +" of "+ formals +" is "+ body );
+		Audit.log( "The "+ fn +" of "+ formals +" is "+ body );
 		interpret(
 					new Strings( "create "+ fn +" "+ formals +" / "+
 							     Attribute.asString( "body", body )
 				 )			   );
 	}
 	static private void testQuery( String fn, String actuals ) {
-		audit.log( "What is the "+ fn +" of "+ actuals );
+		Audit.log( "What is the "+ fn +" of "+ actuals );
 		Strings eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
-		audit.log( eval.equals( new Strings( Reply.dnk())) ?
+		Audit.log( eval.equals( new Strings( Reply.dnk())) ?
 			eval.toString() : "The "+ fn +" of "+ actuals +" is "+ eval.toString() +"\n" );
 	}
 	static public void main( String args[]) {
@@ -126,14 +126,14 @@ public class Function {
 			testCreate( "sum", "a b c and d", "a + b + c + d" );
 			testQuery(  "sum", "4 and 3 and 2 and 1" );
 			
-			audit.log( "setting x to 1" );
+			Audit.log( "setting x to 1" );
 			Variable.set( "x", "1" );
-			audit.log( "setting y to 2" );
+			Audit.log( "setting y to 2" );
 			Variable.set( "y", "2" );
 			testQuery(  "sum", "x and y" );
 			
 			testCreate( "factorial", "1", "1" );
 			testQuery(  "factorial", "1" );
 			//testQuery(  "factorial", "4" );
-			audit.log( "PASSED" );
+			Audit.log( "PASSED" );
 }	}	}

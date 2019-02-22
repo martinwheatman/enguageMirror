@@ -123,7 +123,7 @@ public class Shell {
 								interval();
 								String rc = Repertoire.mediate( new Utterance( s )).toString();
 								if (aloud)
-									audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
+									Audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
 							}
 							// ...expand sentence here.
 					}	}
@@ -193,9 +193,9 @@ public class Shell {
 	private static void test( String string ) {
 		Strings list = new Strings( string );
 		ArrayList<Strings> listOfLists = expandSemicolonList( list );
-		audit.log("expanded list is:");
+		Audit.log("expanded list is:");
 		for (Strings s : listOfLists ) {
-			audit.log( ">>>"+ s.toString( Strings.SPACED ) );
+			Audit.log( ">>>"+ s.toString( Strings.SPACED ) );
 	}	}
 	public static void main( String args[]) {
 		test( "I need coffee" );
