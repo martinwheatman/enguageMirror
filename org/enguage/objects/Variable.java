@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.objects.space.Ospace;
+import org.enguage.interp.pattern.Pattern;
 import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
@@ -35,12 +35,12 @@ public class Variable {
 	private static TreeMap<String,String> cache = encache();
 	private static TreeMap<String,String> encache() { return encache( Overlay.Get() );}
 	private static TreeMap<String,String> encache( Overlay o ) {
-		audit.in( "encache", Ospace.location());
+		//audit.in( "encache", Ospace.location());
 		cache = new TreeMap<String,String>();
 		for( String name : o.list( NAME ))
 			if (name.equals( externalise( name ) )) // if valid variable name
 				cache.put( name, new Value( NAME, name ).getAsString());
-		audit.out();
+		//audit.out();
 		return cache;
 	}
 	static private void printCache() {
@@ -106,9 +106,9 @@ public class Variable {
 	static public void unset( String name ) { new Variable( name ).unset(); }
 	static public String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
 	static public String get( String name, String def ) {
-		boolean reflectValue = name.startsWith( "EXT-" );
+		boolean reflectValue = name.startsWith( Pattern.externPrefix );
 		if (reflectValue)
-			name = name.substring( "EXT-".length() );
+			name = name.substring( Pattern.externPrefix.length() );
 		String value = cache.get( name );   // raw name, so "compass" not set, but "COMPASS" is
 		if (reflectValue)
 			value = Attributes.reflect( new Strings( value )).toString();
