@@ -115,7 +115,7 @@ public class Link {
 	static private void usage( Strings a ) { usage( a.toString());}
 	static private void usage( String a ) {
 		audit.ERROR(
-				"Usage: link: [set|get|exists|transExists|transAttrExists|delete] <ent> <link> [<value>]\n"+
+				"Usage: link: [set|get|exists|attribute|destroy|delete] <ent> <link> [<value>]\n"+
 				"given: "+ a );
 	}
 	static public Strings interpret( Strings args ) {

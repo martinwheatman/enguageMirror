@@ -766,8 +766,8 @@ public class Enguage {
 			mediate( "simon says put your hands on your head" ); //, "ok, success" );
 		}
 		if (testThisLevel( level, 9 )) { // is like - Polymorphism?
-			//Audit.allOn();
-			audit.title( "setup new idea and save" );
+			
+			audit.title( "Polymorphism - setup new idea and save" );
 			mediate( "want is like need",   "ok, want is like need" );
 			Synonyms.interpret( new Strings( "save" ));
 			
