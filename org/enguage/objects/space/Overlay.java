@@ -28,7 +28,7 @@ class OverlayShell extends Shell {
 //-- BEGIN Overlay
 public class Overlay {
 	static private       Audit   audit = new Audit( "Overlay" );
-	static public  final long       id = Strings.hash( "overlay" );
+	static public  final int        id = 188374473; //Strings.hash( "overlay" );
 	static private       boolean debug = false; //Enguage.runtimeDebugging || Enguage.startupDebugging;
 	
 	public static final String DEFAULT = "default";

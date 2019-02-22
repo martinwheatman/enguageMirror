@@ -12,7 +12,7 @@ import org.enguage.util.sys.Shell;
 
 public class Every {
 	static public  final String NAME = "every";
-	static public  final long     id = Strings.hash( NAME );
+	static public  final int      id = 2675425; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Every" );
 	
 	static private String forEvery( Strings sa ) {

@@ -21,7 +21,7 @@ public class Variable {
 	 * prefix variables with '_'
 	 */
 	static public  final String NAME = "variable";
-	static public  final long     id = Strings.hash( NAME );
+	static public  final int      id = 262169728; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Variable" );
 	
 	static private char intPrefix = '$';

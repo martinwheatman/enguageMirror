@@ -14,7 +14,7 @@ import org.enguage.vehicle.reply.Reply;
 public class Function {
 	
 	static public  final String NAME = "function";
-	static public  final long     id = Strings.hash( NAME );
+	static public  final int      id = 81133373; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Function" );
 	
 	public Function( String nm ) { name = nm; } // find

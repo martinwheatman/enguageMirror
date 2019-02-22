@@ -12,7 +12,7 @@ import org.enguage.util.sys.Shell;
 
 public class Colloquial {
 	static public  final String NAME = "colloquial";
-	static public  final long     id = Strings.hash( NAME );
+	static public  final int      id = 42718199; // Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Colloquial" );
 	
 	private TreeMap<Strings,Strings> intl;

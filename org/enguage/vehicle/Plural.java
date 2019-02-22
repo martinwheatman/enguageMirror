@@ -12,7 +12,7 @@ import org.enguage.vehicle.Plural;
 
 public class Plural {
 	static public  final String NAME = "plural";
-	static public  final long     id = Strings.hash( NAME );
+	static public  final int      id = 195967030; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Plural" );
 	
 	// these hold full exceptions, not endings e.g. "colloquial" -> "colloquia"

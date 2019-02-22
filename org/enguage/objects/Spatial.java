@@ -9,7 +9,7 @@ import org.enguage.vehicle.where.Where;
 public class Spatial {
 	
 	static public final String NAME = "spatial";
-	static public final long     id = Strings.hash( NAME );
+	static public final int      id = 233089091; //Strings.hash( NAME );
 	static private      Audit audit = new Audit( NAME );
 	
 	private static Strings concepts = new Strings();

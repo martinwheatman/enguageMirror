@@ -996,16 +996,29 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return output;
 	}
 	
-	static public long hash( String s ) {
+	static public long lash( String s ) {
 		final char upper = 'z', lower = 'a';
-		long hash  = 0;
+		long lhsh  = 0;
 		char ch;
 		int rng = upper - lower + 1,
 		    len = s.length();
 		for (int i=0; i<len; i++)
 			if ((ch = s.charAt( i ))>=lower && ch<=upper)
-				hash = hash*rng + ch - lower + 1;
-		return hash;
+				lhsh = lhsh*rng + ch - lower + 1;
+		return lhsh;
+	}
+	static public int hash( String s ) {
+		//final int MAXINT = 2147483647;
+		final char upper = 'z', lower = 'a';
+		int ihsh  = 0;
+		char ch;
+		int rng = upper - lower + 1,
+		    len = s.length();
+		for (int i=0; i<len && i<6; i++)
+			if ((ch = Character.toLowerCase( s.charAt( i )))>=lower &&
+			     ch                                         <=upper    )
+				ihsh = ihsh*rng + ch - lower + 1;
+		return ihsh;
 	}
 	// -- static Algorithm helpers ABOVE
 	// ---------------------------------------------------------

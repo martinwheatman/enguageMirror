@@ -9,7 +9,7 @@ import org.enguage.vehicle.when.When;
 public class Temporal {
 	
 	static public final String NAME = "temporal";
-	static public final long     id = Strings.hash( NAME );
+	static public final int      id = 240152112; //Strings.hash( NAME );
 	static private      Audit audit = new Audit( NAME );
 	
 	private static Strings concepts = new Strings();

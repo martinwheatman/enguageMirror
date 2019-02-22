@@ -7,7 +7,7 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Reply;
 
 public class Link {
-	static public  final long     id = Strings.hash( "link" );
+	static public  final int     id = 217371; //Strings.hash( "link" );
 	static private       Audit audit = new Audit( "Link" );
 	
 	/* Need to support:

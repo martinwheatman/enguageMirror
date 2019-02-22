@@ -6,9 +6,9 @@ import org.enguage.util.sys.Shell;
 
 public class Transitive {
 	
-	public final static  String NAME = "transitive";
-	static public  final long     id = Strings.hash( NAME );
-	static Audit audit = new Audit( NAME );
+	public  static final String NAME = "transitive";
+	public  static final int      id = 245880631; //Strings.hash( NAME );
+	private static       Audit audit = new Audit( NAME );
 	
 	private static Strings    concepts = new Strings();
 	public  static boolean  isConcept(  String   s ) { return concepts.contains( s ); }
