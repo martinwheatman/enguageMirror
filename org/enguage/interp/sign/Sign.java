@@ -141,7 +141,7 @@ public class Sign {
 	public static void complexityTest( Pattern t ) {
 		Sign container = new Sign();
 		container.pattern( t );
-		audit.log( "Complexity of "+ container.toXml( 0, container.cplex() ) +"\n" );
+		Audit.log( "Complexity of "+ container.toXml( 0, container.cplex() ) +"\n" );
 	}
 	public static void main( String argv[]) {
 		Sign p = new Sign();
@@ -150,7 +150,7 @@ public class Sign {
 		Reply r = new Reply();
 		Intention intent = new Intention( Intention.thenReply, "hello world" );
 		r = intent.mediate( r );
-		audit.log( "r="+ r.toString());
+		Audit.log( "r="+ r.toString());
 		
 		Pattern ts = new Pattern();
 		ts.add( new Patternette( "one small step for man", "" ));

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import org.enguage.interp.repertoire.Concept;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -84,7 +85,7 @@ public class Shell {
 		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-18" );
 	}
 	public Shell( String name, Strings args ) { this( name ); }
-	public void interpret( InputStream fp ) { // reads file stream and "interpret()"s it
+	public void interpret( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
 		if (fp==System.in) System.err.print( name() + prompt());
 		BufferedReader br = null;
 		try {
@@ -101,6 +102,10 @@ public class Shell {
 					// truncate comment -- only in real files
 					int i = line.indexOf( '#' );
 					if (-1 != i) line = line.substring( 0, i );
+					
+					// if we're converting on the fly, e.g. want -> need
+					if (!from.equals( "" )) line = Concept.convertContent( line, from, to );
+					
 					// will return "cd .." as ["cd", ".", "."], not ["cd" ".."] -- "cd.." is meaningless!
 					// need new stage of non-sentence sign processing
 					stream.addAll( new Strings( line ));
@@ -118,7 +123,7 @@ public class Shell {
 								interval();
 								String rc = Repertoire.mediate( new Utterance( s )).toString();
 								if (aloud)
-									audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
+									Audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
 							}
 							// ...expand sentence here.
 					}	}
@@ -133,7 +138,7 @@ public class Shell {
 				br.close();
 			} catch (java.io.IOException e ) { //ignore?
 	}	}	}
-	public void run() { interpret( System.in ); }
+	public void run() { interpret( System.in, "", "" ); } // we're not converting on-the-fly!
 	
 	public static ArrayList<Strings> expandSemicolonList( Strings sentence ) {
 		/*  "on one: do two; do three; and, do four." =>
@@ -188,9 +193,9 @@ public class Shell {
 	private static void test( String string ) {
 		Strings list = new Strings( string );
 		ArrayList<Strings> listOfLists = expandSemicolonList( list );
-		audit.log("expanded list is:");
+		Audit.log("expanded list is:");
 		for (Strings s : listOfLists ) {
-			audit.log( ">>>"+ s.toString( Strings.SPACED ) );
+			Audit.log( ">>>"+ s.toString( Strings.SPACED ) );
 	}	}
 	public static void main( String args[]) {
 		test( "I need coffee" );

@@ -17,7 +17,7 @@ public class Value {
 	static private Audit audit = new Audit( "Value" );
 	
 	static public  final String   NAME = "value";
-	static public  final long       id = Strings.hash( NAME );
+	static public  final int        id = 10079711; //Strings.hash( NAME );
 	static private       boolean debug = false; // Enguage.runtimeDebugging;
 	
 	protected String ent, attr;
@@ -78,7 +78,7 @@ public class Value {
 		return usage( cmd +" "+ entity +" "+ attr +" "+ a.toString() );
 	}
 	static private String usage( String a ) {
-		audit.log( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
+		Audit.log( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
 				   "given: "+ a );
 		return Shell.FAIL;
 	}

@@ -314,7 +314,7 @@ public class Pattern extends ArrayList<Patternette> {
 			// peek at terminator
 			String terminator = patti.next().prefix().get( 0 );
 			patti.previous();
-			//audit.log( "Terminator is "+ terminator );
+			//Audit.log( "Terminator is "+ terminator );
 			
 			words.add( word );  // add at least one val!
 			if (utti.hasNext()) word = utti.next();
@@ -346,7 +346,7 @@ public class Pattern extends ArrayList<Patternette> {
 		if (words.size() > 0) vals.add( words.toString());
 		if (vals.size() <= 1) return null;
 		// remove "and"s from AND-LIST, replacing with ","
-		//audit.log( "P::doList(): "+ vals.toString("", " and ", ""));
+		//Audit.log( "P::doList(): "+ vals.toString("", " and ", ""));
 		return vals.toString("", " and ", "");
 	}
 	private String getNextBoilerplate( Patternette t, ListIterator<Patternette> ti ) {
@@ -578,17 +578,17 @@ public class Pattern extends ArrayList<Patternette> {
 		Attributes values = interpretant.matchValues( new Strings( phrase ), true );
 		
 		if (values == null)
-			audit.log( "no match" );
+			Audit.log( "no match" );
 		else {
 			// de-reference values...
 			String vals = values.toString();
 			if (null == expected)
-				audit.log( "values => ["+ vals +"]" );
+				Audit.log( "values => ["+ vals +"]" );
 			else if (values != null && values.matches( expected ))
-				audit.log( "PASSED => ["+ vals +"]" );
+				Audit.log( "PASSED => ["+ vals +"]" );
 			else {
-				audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
-				audit.log( "      :       got: "+ vals );
+				Audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
+				Audit.log( "      :       got: "+ vals );
 		}	}
 		audit.out();
 	}
@@ -599,23 +599,23 @@ public class Pattern extends ArrayList<Patternette> {
 //		String patt = toPattern( utt ).toString();
 //		if (answer != null && !answer.equals( patt ))
 //			audit.FATAL( "answer '"+ patt +"' doesn't equal expected: '" + answer +"'" );
-//		audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
+//		Audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
 //	}
 	private void newTest( String utterance ) {
 		audit.in( "newTest", utterance );
 		Attributes as;
-		audit.log( "Utterance: "+ utterance );
+		Audit.log( "Utterance: "+ utterance );
 		if (null != (as = matchValues( new Strings( utterance ), true )))
-			audit.log( "  matches: "+ as.toString());
+			Audit.log( "  matches: "+ as.toString());
 		else
-			audit.log( "notMatched (="+ notMatched +")" );
+			Audit.log( "notMatched (="+ notMatched +")" );
 		audit.out();
 	}
 	static private void complexityTest( String str ) {
 		Pattern patt = new Pattern( toPattern( new Strings( str )));
-		audit.LOG( "pattern: "+ patt );
+		Audit.LOG( "pattern: "+ patt );
 		//audit.LOG( "    Xml: "+ patt.toXml() );
-		audit.LOG( " cmplxy: "+ patt.cplex() );
+		Audit.LOG( " cmplxy: "+ patt.cplex() );
 
 	}
 	static public void main(String args[]) {
@@ -661,7 +661,7 @@ public class Pattern extends ArrayList<Patternette> {
 //
 //		toPatternTest( "the sum of and list variable params is blah", "the sum of PARAMS-AND-LIST is blah" );
 
-//		audit.log( "First: martin is alive" );
+//		Audit.log( "First: martin is alive" );
 //		Audit.incr();
 //		printTagsAndValues( new Pattern(
 //				"first phrase variable x" ),
@@ -679,7 +679,7 @@ public class Pattern extends ArrayList<Patternette> {
 //		);
 //		Audit.decr();
 		
-//		audit.log( "Second: i am alive" );
+//		Audit.log( "Second: i am alive" );
 //		Audit.incr();
 //		printTagsAndValues( new Pattern(
 //				"phrase variable object exists in variable subject variable list list" ),
@@ -708,7 +708,7 @@ public class Pattern extends ArrayList<Patternette> {
 		
 		Where.doLocators("at/from/in");
 		Pattern p = new Pattern( "i need PHRASE-OBJECTS" );
-		audit.log( "sign is: "+ p.toXml());
+		Audit.log( "sign is: "+ p.toXml());
 		
 		p.newTest( "i need milk" );
 		p.newTest( "i need milk from the dairy aisle" );
@@ -720,20 +720,20 @@ public class Pattern extends ArrayList<Patternette> {
 		//Audit.traceAll( true );		
 		
 		p = new Pattern( "help" );
-		audit.log( "sign is now: "+ p.toXml());
+		Audit.log( "sign is now: "+ p.toXml());
 		p.newTest( "at the pub i am meeting my brother" );
 		
 		p.newTest( "doesnt match at all" );
 
 		// -- expr
 		p = new Pattern( "the FUNCITON of LIST-FNAME is EXPR-VAL" );
-		audit.log( "sign is: "+ p.toXml());
+		Audit.log( "sign is: "+ p.toXml());
 		
 		p.newTest( "the sum of x is x plus y" );
 
 		// pronouns test...
 		p = new Pattern( "they are" );
-		audit.log( "sign is: "+ p.toXml());
+		Audit.log( "sign is: "+ p.toXml());
 		p.newTest( "they are from sainsburys" );
 
 		complexityTest(	"i am legend" );
@@ -744,5 +744,5 @@ public class Pattern extends ArrayList<Patternette> {
 		complexityTest(	"i am     variable action phrase variable value" );
 		complexityTest(	"set value of variable x to phrase variable y" );
 		complexityTest(	"set variable attribute of variable x to phrase variable y" );
-		audit.log( "PASSED" );
+		Audit.log( "PASSED" );
 }	}

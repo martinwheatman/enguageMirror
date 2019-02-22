@@ -29,7 +29,7 @@ public class Net {
 		serverOn = true;
 		try {
 			server = new ServerSocket( Integer.valueOf( port ));
-			audit.LOG( "Server listening on port: "+ port );
+			Audit.LOG( "Server listening on port: "+ port );
 			while (true) {
 				
 				Socket    connection = server.accept();
@@ -127,5 +127,5 @@ public class Net {
 		if (args.length == 1)
 			server( args[ 0 ]);
 		else
-			audit.log( "output: "+ client( "localhost", 8080, "'put your hands on your head'" ));
+			Audit.log( "output: "+ client( "localhost", 8080, "'put your hands on your head'" ));
 }	}

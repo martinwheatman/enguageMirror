@@ -51,13 +51,13 @@ public class Algorithm {
 		ListIterator<String> si = new Strings( s ).listIterator();
 		if (a.getAlgorithm( si )) {
 			Algorithm.save( a );
-			audit.log( a.toString() );
+			Audit.log( a.toString() );
 			if (!pass) {
 				audit.out();
 				audit.FATAL( "Should've failed!" );
 			}
 		} else {
-			//audit.log("li="+ peek(si) +", rep="+ a.representamen().toString());
+			//Audit.log("li="+ peek(si) +", rep="+ a.representamen().toString());
 			Strings.unload( si, a.representamen );
 			String err = "(";
 			for (int i=0; i<3; i++) {
@@ -65,7 +65,7 @@ public class Algorithm {
 				if (si.hasNext()) err += " ";
 			}
 			err += (si.hasNext() ? "..." : ".") + ")";
-			audit.log( "FAILED: "+ err );
+			Audit.log( "FAILED: "+ err );
 			if (pass) {
 				audit.out();
 				audit.FATAL( "Should've passed!" + algFail );
@@ -87,5 +87,5 @@ public class Algorithm {
 		algorithmTest( "the product   of x and y is x times y", true );
 		// See Expression test code...
 		// algorithmTest( "the factorial of n is n times the factorial of n minus 1", true );
-		audit.LOG( "+++ PASSES +++" );
+		Audit.LOG( "+++ PASSES +++" );
 }	}

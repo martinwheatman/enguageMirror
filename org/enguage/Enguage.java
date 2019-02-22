@@ -7,6 +7,7 @@ import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
+import org.enguage.interp.repertoire.Synonyms;
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
@@ -62,7 +63,7 @@ public class Enguage {
 	static public Strings mediate( Strings utterance ) {
 		audit.in( "interpret", utterance.toString() );
 		
-		if (Net.serverOn()) audit.log( "Server  given: " + utterance.toString() );
+		if (Net.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
 		
 		// locations contextual per utterance
 		Variable.unset( Where.LOCTN );
@@ -92,7 +93,7 @@ public class Enguage {
 		if (!Repertoire.induction() && !Autoload.ing()) Autoload.unload();
 
 		Strings reply = r.toStrings();
-		if (Net.serverOn()) audit.log( "Server replied: "+ reply );
+		if (Net.serverOn()) Audit.log( "Server replied: "+ reply );
 		return audit.out( reply );
 	}
 	
@@ -103,19 +104,19 @@ public class Enguage {
 	static private void      portNumber( String pn ) { portNumber = Integer.parseInt( pn );}
 
 	private static void usage() {
-		audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server <port>] -t ]" );
-		audit.LOG( "where: -d <configDir>" );
-		audit.LOG( "          config directory, default=\""+ defLoc +"\"\n" );
-		audit.LOG( "       -p <port>, --port <port>" );
-		audit.LOG( "          listens on local TCP/IP port number\n" );
-		audit.LOG( "       -c, --client" );
-		audit.LOG( "          runs Engauge as a shell\n" );
-		audit.LOG( "       -s, --server <port>" );
-		audit.LOG( "          switch to send test commands to a server." );
-		audit.LOG( "          This is only a test, and is on localhost." );
-		audit.LOG( "          (Needs to be initialised with -p nnnn)\n" );
-		audit.LOG( "       -t, --test" );
-		audit.LOG( "          runs a sanity check" );
+		Audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server <port>] -t ]" );
+		Audit.LOG( "where: -d <configDir>" );
+		Audit.LOG( "          config directory, default=\""+ defLoc +"\"\n" );
+		Audit.LOG( "       -p <port>, --port <port>" );
+		Audit.LOG( "          listens on local TCP/IP port number\n" );
+		Audit.LOG( "       -c, --client" );
+		Audit.LOG( "          runs Engauge as a shell\n" );
+		Audit.LOG( "       -s, --server <port>" );
+		Audit.LOG( "          switch to send test commands to a server." );
+		Audit.LOG( "          This is only a test, and is on localhost." );
+		Audit.LOG( "          (Needs to be initialised with -p nnnn)\n" );
+		Audit.LOG( "       -t, --test" );
+		Audit.LOG( "          runs a sanity check" );
 	}
 	static private void mediate( String cmd ) { mediate( cmd, null );}
 	static private void mediate( String cmd, String expected ) { mediate( cmd, expected, null ); }
@@ -123,7 +124,7 @@ public class Enguage {
 		
 		// expected == null => silent!
 		if (expected != null)
-			audit.log( "user> "+ cmd );
+			Audit.log( "user> "+ cmd );
 		
 		Strings reply = serverTest ?
 				new Strings( Net.client( "localhost", portNumber, cmd ))
@@ -205,25 +206,13 @@ public class Enguage {
 		//Audit.allOn();
 		//Repertoire.signs.show( "OTF" );
 
-		int level = 1; // 0 = every level, -n = ignore level n
+		int level = 0; // 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
 
-		if (testThisLevel( level, 1 )) { // is like - polymorphism
-			//Audit.allOn();
-			mediate( "want is like need",   "ok, want is like need" );
-			mediate( "what do i want",      "you don't want anything" );
-			mediate( "i want another pony", "ok, you want another pony" );
-			mediate( "what do i want",      "you want another pony" );
-			clearTheNeedsList( "i don't want anything" );
-			File f = new File( "src/assets/concepts/want+wants.txt" );
-			if (f.exists()) {
-				audit.log( "Tidied up example concept want" );
-				f.delete();
-			} else
-				audit.FATAL( "not found file just created!" );
+		if (testThisLevel( level, 1 )) {
 			//mediate( "", "" );
 		}
-		if (testThisLevel( level, 2 )) { // WHY - These tests were for JCSSA journal article
+		if (testThisLevel( level, 2 )) { // WHY - These tests were for IJCSSA journal article
 			audit.title( "Simple action demo" );
 			mediate( "i am baking a cake",     "i know", "ok, you're baking a cake" );
 			mediate( "am i baking a cake",     "yes, you're     baking a cake" );
@@ -776,7 +765,22 @@ public class Enguage {
 			mediate( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
 			mediate( "simon says put your hands on your head" ); //, "ok, success" );
 		}
-		if (testThisLevel( level, 9 )) {
+		if (testThisLevel( level, 9 )) { // is like - Polymorphism?
+			//Audit.allOn();
+			audit.title( "setup new idea and save" );
+			mediate( "want is like need",   "ok, want is like need" );
+			Synonyms.interpret( new Strings( "save" ));
+			
+			audit.subtl( "unset synonyms" );
+			mediate( "want is unlike need",   "ok, want is unlike need" );
+			
+			audit.title( "Recall values and use" );
+			Synonyms.interpret( new Strings( "recall" ));
+			mediate( "what do i want",      "you don't want anything" );
+			mediate( "i want another pony", "ok, you want another pony" );
+			mediate( "what do i want",      "you want another pony" );
+			clearTheNeedsList( "i don't want anything" );
+
 			audit.title( "On-the-fly Langauge Learning" );
 			/* TODO: create filename from pattern:
 			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)

@@ -5,7 +5,6 @@ package org.enguage.objects;
 
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.repertoire.Repertoire;
-import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -13,7 +12,7 @@ import org.enguage.vehicle.reply.Reply;
 
 public class Sign {
 	static public  final String  NAME = "sign";
-	static public  final long      id = Strings.hash( NAME );
+	static public  final int       id = 340224; //Strings.hash( NAME );
 	static private       Audit  audit = new Audit( "Sign" );
 	
 	/*

@@ -18,7 +18,8 @@ import org.enguage.vehicle.Plural;
 
 public class Concept {
 	static public final String LOADING = "CONCEPT";
-	static public boolean load( String name ) {
+	static public boolean load( String name ) {return load( name, "", "" );}
+	static public boolean load( String name, String from, String to ) {
 		boolean wasLoaded   = false,
 		        wasSilenced = false,
 		        wasAloud    = Enguage.shell().isAloud();
@@ -42,7 +43,7 @@ public class Concept {
 					/*a == null ?*/
 							new FileInputStream( Ospace.location() + fname )
 					/*      : a.getAssets().open( fname )*/;
-			Enguage.shell().interpret( is );
+			Enguage.shell().interpret( is, from, to );
 			is.close();
 			
 			wasLoaded = true;

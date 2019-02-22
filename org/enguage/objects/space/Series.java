@@ -24,7 +24,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		return Link.toString( baseName( nm ));
 	}
 	static public boolean existing( String nm ) {
-		//audit.log( "Series.existing(): basename is "+ baseName( nm ));
+		//Audit.log( "Series.existing(): basename is "+ baseName( nm ));
 		return null != nm && !nm.equals( DETACHED ) && Fs.exists( baseName( nm ) + ".symlink" );
 	}
 	static public boolean create( String name, String whr ) {
@@ -79,7 +79,7 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		if (!count())
 			try {
 				Series.create( series, new File( "." ).getCanonicalPath() ); // we are attached - it may not exist!
-			} catch(IOException e) {audit.log("excception:"+ e.toString());}
+			} catch(IOException e) {Audit.log("excception:"+ e.toString());}
 		return Series.attached();
 	}
 	static public void detach() {
@@ -213,6 +213,6 @@ public class Series { // relates to hypothetical attachment of series of overlay
 		Audit.allOn();
 		Series s = new Series();
 		attach( "enguage" );
-		audit.log( "Series is "+ s.toString());
+		Audit.log( "Series is "+ s.toString());
 }	}
 

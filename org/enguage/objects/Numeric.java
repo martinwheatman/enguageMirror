@@ -13,7 +13,7 @@ import org.enguage.vehicle.number.Number;
 
 public class Numeric extends Value {
 	public static  final String NAME = "numeric";
-	static public  final long     id = Strings.hash( NAME );
+	static public  final int      id = 176168105; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Numeric" );
 	
 	public Numeric( String e, String a ) { super( e, a ); }

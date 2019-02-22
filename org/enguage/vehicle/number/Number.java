@@ -699,7 +699,7 @@ public class Number {
 	static private void evaluationTest( String term, String ans ) {
 		ListIterator<String> si = new Strings( term ).listIterator();
 		Number n = Number.getNumber( si );
-		audit.log( "n is '"+ n.toString()
+		Audit.log( "n is '"+ n.toString()
 				+"' ("+ ans +"=="+ n.valueOf() +")" 
 				+" sz="+ n.representamen().size() );
 	}
@@ -710,7 +710,7 @@ public class Number {
 		ListIterator<String> si = orig.listIterator();
 		Number n = Number.getNumber( si );
 		Strings val = n.valueOf(), strg = n.valueOf();
-		audit.log(
+		Audit.log(
 				s +": toString=>"+ strg +"<"
 				+" rep=>"+ n.representamen() +"<"
 				+" valueOf=>"+ val +"<"
@@ -724,7 +724,7 @@ public class Number {
 	static private void combineTest( String number, String with, String expected, String expValue ) {
 		Number m = new Number( number );
 		m.combine( new Number( with ));
-		audit.log( "m="+ m.toString() +"("+ m.valueOf() +")");
+		Audit.log( "m="+ m.toString() +"("+ m.valueOf() +")");
 		if (!expValue.equals( "" ) && !expValue.equals( m.valueOf().toString()))
 			audit.FATAL( "Values not equal: "+ expValue +" != "+ m.valueOf() );
 		if (!expected.equals( "" ) && !expected.equals( m.toString()))
@@ -735,10 +735,10 @@ public class Number {
 		//audit.on();
 	
 		Number n = new Number( "+=6" );
-		audit.log( "n="+ n.toString() +"("+ n.valueOf() +")" );
+		Audit.log( "n="+ n.toString() +"("+ n.valueOf() +")" );
 		
-		audit.log( "3.0  -> "+ floatToString( 3.0f  ));
-		audit.log( "3.25 -> "+ floatToString( 3.25f ));
+		Audit.log( "3.0  -> "+ floatToString( 3.0f  ));
+		Audit.log( "3.25 -> "+ floatToString( 3.25f ));
 		
 		audit.title( "evaluation test:");
 		evaluationTest(  "this is not a number",  "5" );
@@ -819,5 +819,5 @@ public class Number {
 			Audit.decr();
 		}
 		
-		audit.log( "PASSED." );
+		Audit.log( "PASSED." );
 }	}

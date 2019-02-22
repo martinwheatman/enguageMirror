@@ -223,7 +223,7 @@ public class Day {
 				w.anniversary( Integer.valueOf( sa.get( 0 )));
 				When.audit.debug("w="+w.toString());
 			} catch( Exception e ) {
-				When.audit.log( "When.day(): exception: "+ e.toString() );
+				Audit.log( "When.day(): exception: "+ e.toString() );
 		}	}
 		return w;
 	}
@@ -232,11 +232,11 @@ public class Day {
 		return (day == Time.unassigned) ? "" : String.format( "the %d%s ", day, Language.nthEnding( day ));
 	}
 	public static void main( String args[]) {
-		//audit.log("days to end of year: "+ daysToEndOfYear( 20161231000000L ));
+		//Audit.log("days to end of year: "+ daysToEndOfYear( 20161231000000L ));
 		//audit.tracing = true;
-		audit.log("day of year: "+ dayOfYear( 20160227000000L ));
-		audit.log("day of year: "+ dayOfYear( 20160228000000L ));
-		audit.log("day of year: "+ dayOfYear( 20160229000000L ));
-		audit.log("day of year: "+ dayOfYear( 20160301000000L ));
-		audit.log("day of year: "+ dayOfYear( 20160302000000L ));
+		Audit.log("day of year: "+ dayOfYear( 20160227000000L ));
+		Audit.log("day of year: "+ dayOfYear( 20160228000000L ));
+		Audit.log("day of year: "+ dayOfYear( 20160229000000L ));
+		Audit.log("day of year: "+ dayOfYear( 20160301000000L ));
+		Audit.log("day of year: "+ dayOfYear( 20160302000000L ));
 }	}

@@ -44,9 +44,9 @@ public class Context {
 		return s;
 	}
 	public static void main( String args[]) {
-		audit.log( "hello there, "+ get( "martin" ) );
+		Audit.log( "hello there, "+ get( "martin" ) );
 		push( new Attributes().add( "martin", "world" ));
-		audit.log( "hello there, "+ get( "martin" ) );
+		Audit.log( "hello there, "+ get( "martin" ) );
 		push( new Attributes().add( "hello", "there" ));
-		audit.log( "ctx>>>"+ valueOf() );
+		Audit.log( "ctx>>>"+ valueOf() );
 }	}

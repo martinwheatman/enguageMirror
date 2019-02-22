@@ -12,8 +12,8 @@ import org.enguage.vehicle.Plural;
 
 public class Plural {
 	static public  final String NAME = "plural";
-	static public  final long     id = Strings.hash( NAME );
-	static private       Audit audit = new Audit( "Plural" );
+	static public  final int      id = 195967030; //Strings.hash( NAME );
+	//static private       Audit audit = new Audit( "Plural" );
 	
 	// these hold full exceptions, not endings e.g. "colloquial" -> "colloquia"
 	private static TreeMap<String,String> singularExceptions = new TreeMap<String,String>();
@@ -177,9 +177,9 @@ public class Plural {
 		
 		Strings s = new Strings("4 , you need 4 cup of black coffee" );
 		s = ise( s );
-		audit.log( "s is "+ s.toString());
+		Audit.log( "s is "+ s.toString());
 
 		s = new Strings("you/need/2/yellow coffee", '/' );
 		s = ise( s );
-		audit.log( "s is "+ s.toString());
+		Audit.log( "s is "+ s.toString());
 }	}

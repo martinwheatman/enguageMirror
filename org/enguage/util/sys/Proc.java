@@ -99,8 +99,8 @@ public class Proc {
 		Reply r = new Reply();
 
 		r = new Proc( "pwd" ).run( r );
-		audit.log( r.toString());
+		Audit.log( r.toString());
 
 		r = new Proc( "SOFA run" ).run( r );
-		audit.log( r.toString());
+		Audit.log( r.toString());
 }	}

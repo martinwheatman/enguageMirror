@@ -102,7 +102,7 @@ public class Utterance {
 	public static void test( Sign s, String utterance, Strings prevAns ) {
 		Utterance u = new Utterance( new Strings( utterance ), prevAns );
 		Attributes a = u.match(s);
-		audit.log( "utterance is: "
+		Audit.log( "utterance is: "
 				+ u.toString() +"\n"
 				+ (null == a ? "NOT matched." : "matched attrs is: "+ a ));
 	}
@@ -116,7 +116,7 @@ public class Utterance {
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");
 		Where.doLocators( "behind/in/on/under/underneath/over/at" );
 		
-		audit.log("Creating a pub:" +
+		Audit.log("Creating a pub:" +
 						new Sofa().interpret(new Strings("entity create pub"))
 		);
 

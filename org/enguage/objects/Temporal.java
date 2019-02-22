@@ -9,7 +9,7 @@ import org.enguage.vehicle.when.When;
 public class Temporal {
 	
 	static public final String NAME = "temporal";
-	static public final long     id = Strings.hash( NAME );
+	static public final int      id = 240152112; //Strings.hash( NAME );
 	static private      Audit audit = new Audit( NAME );
 	
 	private static Strings concepts = new Strings();
@@ -47,5 +47,5 @@ public class Temporal {
 		return audit.out( new Strings( rc ));
 	}
 	public static void main( String args[] ) {
-		audit.log( interpret( new Strings( "dayOfWeek 1225" )));
+		Audit.log( interpret( new Strings( "dayOfWeek 1225" )));
 }	}

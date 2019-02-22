@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.objects.space.Ospace;
+import org.enguage.interp.pattern.Pattern;
 import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
@@ -21,26 +21,18 @@ public class Variable {
 	 * prefix variables with '_'
 	 */
 	static public  final String NAME = "variable";
-	static public  final long     id = Strings.hash( NAME );
+	static public  final int      id = 262169728; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Variable" );
 	
-	static private char intPrefix = '$';
-	static public  void intPrefix( char s ) { intPrefix = s; }
-	static public  char intPrefix( ) { return intPrefix; }
-	
-	static private char extPrefix = '_';
-	static public  void extPrefix( char s ) { extPrefix = s; }
-	static public  char extPrefix( ) { return extPrefix; }
-
 	private static TreeMap<String,String> cache = encache();
 	private static TreeMap<String,String> encache() { return encache( Overlay.Get() );}
 	private static TreeMap<String,String> encache( Overlay o ) {
-		audit.in( "encache", Ospace.location());
+		//audit.in( "encache", Ospace.location());
 		cache = new TreeMap<String,String>();
 		for( String name : o.list( NAME ))
-			if (name.equals( externalise( name ) )) // if valid variable name
+			if (name.equals( name.toUpperCase( Locale.getDefault()) )) // if valid variable name
 				cache.put( name, new Value( NAME, name ).getAsString());
-		audit.out();
+		//audit.out();
 		return cache;
 	}
 	static private void printCache() {
@@ -50,38 +42,21 @@ public class Variable {
 		Audit.incr();
 		while (ei.hasNext()) {
 			Map.Entry<String,String> e = ei.next();
-			audit.log( e.getKey()  +"='"+  e.getValue()  +"'" );
+			Audit.log( e.getKey()  +"='"+  e.getValue()  +"'" );
 		}
 		Audit.decr();
 	}
 
-	static private String externalise( String name ) {
-		/* Variable should only attempt to set UPPERCASE values
-		 * so normal lower case boilerplate does not get dereffed by mistake.
-		 * JIC set to upper case anyway!
-		 */
-		/* This used to be prefixed by "_" 
-		 *  if (name.charAt( 0 ) == intPrefix ) // if prefixed
-		 *  	name = extPrefix + name.substring( 1 );   // $NAME -> _NAME
-		 *  else if (extPrefix != name.charAt( 0 ))
-		 *  	name = extPrefix + name;                  //  NAME -> _NAME
-		 * to uppercase will do
-		 */
-		// to prevent $SUBJECT being created
-		if (name.charAt( 0 ) == intPrefix) name = name.substring( 1 );
-		return name.toUpperCase( Locale.getDefault());
-	}
-	
 	String name;
 	Value  value;
 	
 	public Variable( String nm ) {
-		name = externalise( nm );
+		name = nm.toUpperCase( Locale.getDefault());
 		value = new Value( NAME, name );
 		cache.put( name, value.getAsString());
 	}
 	public Variable( String nm, String val ) {
-		name = externalise( nm );
+		name = nm.toUpperCase( Locale.getDefault());
 		value = new Value( NAME, name );
 		set( val );
 	}
@@ -106,9 +81,9 @@ public class Variable {
 	static public void unset( String name ) { new Variable( name ).unset(); }
 	static public String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
 	static public String get( String name, String def ) {
-		boolean reflectValue = name.startsWith( "EXT-" );
+		boolean reflectValue = name.startsWith( Pattern.externPrefix );
 		if (reflectValue)
-			name = name.substring( "EXT-".length() );
+			name = name.substring( Pattern.externPrefix.length() );
 		String value = cache.get( name );   // raw name, so "compass" not set, but "COMPASS" is
 		if (reflectValue)
 			value = Attributes.reflect( new Strings( value )).toString();
@@ -221,9 +196,9 @@ public class Variable {
 					rc = Shell.FAIL;
 			}
 		} else if (cmd.equals( "show" )) {
-			audit.log( "printing cache" );
+			Audit.log( "printing cache" );
 			printCache();
-			audit.log( "printed" );
+			Audit.log( "printed" );
 		} else
 			rc = Shell.FAIL;
 		audit.out( rc = rc==null?"":rc );
@@ -235,9 +210,9 @@ public class Variable {
 		Strings actual = interpret( new Strings( cmd ));
 		if (actual.equals( new Strings( expected )))
 			if ( actual.equals( Shell.Ignore ))
-				audit.log(   "PASS: "+ cmd );
+				Audit.log(   "PASS: "+ cmd );
 			else
-				audit.log(   "PASS: "+ cmd +" = '"+ actual +"'" );
+				Audit.log(   "PASS: "+ cmd +" = '"+ actual +"'" );
 		else
 			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
@@ -251,24 +226,24 @@ public class Variable {
 			printCache();
 			Variable spk = new Variable( "NAME" );
 			String tmp = spk.get();
-			audit.log( "was="+ (tmp==null?"<null>":tmp));
+			Audit.log( "was="+ (tmp==null?"<null>":tmp));
 			if ( tmp.equals( "fred" ))
 				interpret( new Strings( "set NAME billy boy" ));
 			else
 				spk.set( "fred" );
 			tmp = spk.get();
-			audit.log( "now="+ (tmp==null?"<null>":tmp));
+			Audit.log( "now="+ (tmp==null?"<null>":tmp));
 			if ( spk.isSet( "fred" ))
-				audit.log( "spk set to Fred" );
+				Audit.log( "spk set to Fred" );
 			else
-				audit.log( "spk is set to Bill" );
+				Audit.log( "spk is set to Bill" );
 			printCache();
 			
 			//*		Static test, backwards compat...
 			test( "set hello there", "there" );
 			test( "get HELLO", "there" );
 			test( "equals HELLO there", Shell.SUCCESS );
-			audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
+			Audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
 			test( "unset HELLO", Shell.SUCCESS );
 			test( "get HELLO", "" );
 			{	// derefOrPop test...
@@ -278,7 +253,7 @@ public class Variable {
 				
 				b = derefOrPop( b.iterator() );
 
-				audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
+				Audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
 			}
-			audit.log( "PASSED" );
+			Audit.log( "PASSED" );
 }	}	}

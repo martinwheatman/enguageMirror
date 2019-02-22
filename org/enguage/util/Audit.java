@@ -28,29 +28,41 @@ public class Audit {
 		return rc;
 	}
 	
-	// test count
-
-	private int  numberOfTests = 0;
-	public  void passed() { numberOfTests++;}
-	public  void passed( String msg ) { log( msg ); passed(); }
-	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
-
 	// === debug and detail - "auditing"
 	static private int     suspended = 0; 
 	static public  void    suspend() { suspended++; }
 	static public  void    resume() {  if (suspended()) suspended--;  }
 	static public  boolean suspended() { return suspended > 0; }
 	
+	public Audit( String nm ) { name = Character.toUpperCase( nm.charAt(0)) + nm.substring(1); }
+	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
+	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; auditOn = d;}
+	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; auditOn = d; detailedRegis = detail;}
+	
+	static public int    log( int    info ) { log( ""+ info ); return info; }
+	static public String LOG( String info ) { // ignores suspended value
+		indent.print( System.out );
+		System.out.println( info + (timings ? " -- "+interval()+"ms" : ""));
+		System.out.flush();
+		return info;
+	}
+	static public String log( Strings info ) { return log( info.toString()); }
+	static public String log( String info ) {
+		if (!suspended()) LOG( info );
+		return info;
+	}
+	
+	// test count
+	private int  numberOfTests = 0;
+	public  void passed() { numberOfTests++;}
+	public  void passed( String msg ) { log( msg ); passed(); }
+	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
+	
 	private boolean auditOn = false;
 	public  void    off() { auditOn = false; }
 	public  void    on() {  auditOn = true; }
 	public  void    on(boolean b) {  auditOn = b; }
 	public  boolean isOn() { return auditOn; }
-	
-	public Audit( String nm ) { name = Character.toUpperCase( nm.charAt(0)) + nm.substring(1); }
-	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
-	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; auditOn = d;}
-	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; auditOn = d; detailedRegis = detail;}
 	
 	public void   FATAL( String msg ) { LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 ); }
 	public void   FATAL( String phrase, String msg ) { FATAL( phrase +": "+ msg ); }
@@ -59,19 +71,6 @@ public class Audit {
 			"ERROR: "+ name +(stack.size()>1?"."+ stack.get( 0 ) +"()" : "")+": "+ info
 		);
 		System.err.flush();
-	}
-	public int    log( int    info ) { log( ""+ info ); return info; }
-	public String LOG( String info ) { // ignores suspended value
-		indent.print( System.out );
-		System.out.println( info + (timings ? " -- "+interval()+"ms" : ""));
-		System.out.flush();
-		return info;
-	}
-	public String log( Strings info ) { return log( info.toString()); }
-
-	public String log( String info ) {
-		if (!suspended()) LOG( info );
-		return info;
 	}
 	public  void   detail( String info ) { if (detailedOn && detailedRegis) log( info ); }
 	public  void   debug( String info ) { if (auditOn != allOn) log( info ); }
@@ -97,9 +96,10 @@ public class Audit {
 		log( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
 		indent.incr();
 	}
-	public void OUT() {OUT( (String)null );}
-	public String OUT( String result ) {
-		indent.decr();
+
+    public String OUT() { return OUT( "" ); }
+    public String OUT( String result ) {
+    	indent.decr();
 		log( "OUT "+ name
 				+ (stack.size()>1?"."+ stack.get( 0 ) +"()" : "")
 				+ (result==null ? "" : " => "+ result)

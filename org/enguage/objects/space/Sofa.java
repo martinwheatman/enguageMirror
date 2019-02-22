@@ -1,5 +1,6 @@
 package org.enguage.objects.space;
 
+import org.enguage.interp.repertoire.Synonyms;
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Sign;
@@ -24,12 +25,12 @@ public class Sofa extends Shell {
 		if (!Overlay.autoAttach())
 			audit.ERROR( "Ouch! in sofa" );
 	}
-	private static final long lSuccess  = Strings.hash( Shell.SUCCESS );
-	private static final long lFail     = Strings.hash( Shell.FAIL );
+	private static final int lSuccess  = 235397545; //Strings.hash( Shell.SUCCESS );
+	private static final int lFail     = 106378;    //Strings.hash( Shell.FAIL );
 
 	public Strings doCall( Strings a ) {
 		//audit.in( "doCall", a.toString( Strings.CSV ));
-		if (a.size() > 1) {
+		if (a.size() > 0) {
 			/* Tags.matchValues() now produces:
 			 * 		["a", "b", "c='d'", "e", "f='g'"]
 			 * Sofa.interpret() typically deals with:
@@ -37,37 +38,30 @@ public class Sofa extends Shell {
 			 * 		["colloquial", "both", "'I have'", "'I've'"]
 			 */			
 			String  type = a.remove( 0 );
-			long  typeId = Strings.hash( type );
-			if (a.size() == 0 && typeId == lSuccess) return Shell.Success;
-			if (a.size() == 0 && typeId ==  lFail) return Shell.Fail;
-			return (typeId == Plural.id) ?  Plural.interpret( a )
-				: typeId < Plural.id ?
-					typeId ==  Sign.id ?  Sign.interpret( a )
-						: typeId<Sign.id ?
-							typeId == Link.id ? Link.interpret( a )
-							: typeId < Link.id ?
-								typeId == Item.id ? Item.interpret( a ) : Fail
-								: typeId == List.id ? List.interpret( a ) : Fail
-						// >Sign
-						: (typeId == Value.id) ? Value.interpret( a )
-							: (typeId < Value.id) ?
-								typeId ==  Every.id ? Every.interpret( a ) : Fail
-								: typeId == Entity.id ? Entity.interpret( a ) : Fail
-					// > Plural
-					: typeId == Temporal.id ? Temporal.interpret( a )
-						: typeId < Temporal.id ?
-							typeId == Spatial.id ? Spatial.interpret( a )
-								: typeId < Spatial.id ?
-									typeId == Numeric.id ? Numeric.interpret( a )
-										: typeId == Overlay.id ? Overlay.interpret( a ) : Fail
-									// > Spatial
-									: typeId == Function.id ? Function.interpret( a ) : Fail
-							// > Temporal
-							: typeId == Colloquial.id ?	Colloquial.interpret( a )
-								: typeId < Colloquial.id ?
-									typeId == Variable.id ? Variable.interpret( a ) : Fail
-										: typeId == Transitive.id ? Transitive.interpret( a ) : Fail;
-			}
+			switch (Strings.hash( type )) {
+				case lFail    :     return Shell.Fail;
+				case lSuccess :     return Shell.Success;
+				case Sign.id  :     return Sign.interpret( a );
+				case Link.id  :     return Link.interpret( a );
+				case Item.id  :     return Item.interpret( a );
+				case List.id  :     return List.interpret( a );
+				case Value.id :     return Value.interpret( a );
+				case Every.id :     return Every.interpret( a );
+				case Plural.id :    return Plural.interpret( a );
+				case Entity.id :    return Entity.interpret( a );
+				case Spatial.id :   return Spatial.interpret( a );
+				case Numeric.id  :  return Numeric.interpret( a );
+				case Overlay.id  :  return Overlay.interpret( a );
+				case Synonyms.id :  return Synonyms.interpret( a );
+				case Temporal.id  : return Temporal.interpret( a );
+				case Function.id  : return Function.interpret( a );
+				case Variable.id  : return Variable.interpret( a );
+				case Colloquial.id:	return Colloquial.interpret( a );
+				case Transitive.id: return Transitive.interpret( a );
+				default :
+					audit.ERROR( "Sofa.hash(): "+ type +".id should be: "+ Strings.hash( type ));
+					return Fail;
+		}	}
 		audit.ERROR("doCall() fails - "+ (a==null?"no params":"not enough params: "+ a.toString()));
 		return Fail;
 	}
@@ -182,6 +176,6 @@ public class Sofa extends Shell {
 		} else {
 			Audit.allOn();
 			Audit.traceAll( true );
-			audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
+			Audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
 			cmd.run();
 }	}	}

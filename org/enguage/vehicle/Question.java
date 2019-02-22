@@ -24,7 +24,7 @@ public class Question {
 	static private String primedAnswer = null;
 	static public  String primedAnswer() { return primedAnswer;}
 	static public  void   primedAnswer( String a ) { primedAnswer = null==a || a.equals("") ? null : a;}
-	static public  void   logPrimedAns() { if (primedAnswer != null) audit.LOG( "> "+ primedAnswer );}
+	static public  void   logPrimedAns() { if (primedAnswer != null) Audit.LOG( "> "+ primedAnswer );}
 
 	public Question( String q ) { question( q ); }
 
@@ -41,7 +41,7 @@ public class Question {
 	}
 	
 	public String ask() {
-		audit.LOG( question() + prompt());
+		Audit.LOG( question() + prompt());
 		Question.logPrimedAns();
 		return primedAnswer != null ? primedAnswer() : getLine( Reply.dnuStr());
 	}
@@ -80,16 +80,16 @@ public class Question {
 		
 		Question q = new Question( "why do birds suddenly appear" );
 		primedAnswer( "they long to be close to you!" );
-		audit.log( q.ask());
+		Audit.log( q.ask());
 		
 		q = new Question( "is it safe" );
 		primedAnswer( "yes, it is" );
-		audit.log( q.ask( ));
+		Audit.log( q.ask( ));
 		
 		primedAnswer("no, it isn't");
-		audit.log( q.ask( ));
+		Audit.log( q.ask( ));
 		
 		primedAnswer( null );
-		audit.log( q.ask() );
-		audit.log( q.ask() );
+		Audit.log( q.ask() );
+		Audit.log( q.ask() );
 }	}

@@ -143,7 +143,7 @@ public class Intention {
 	public  int intent() { return intent;}
 	
 	static private Sign s = null;
-	static public  void printSign() { audit.LOG( "Autop().printSign:\n"+ s.pattern().toXml()); }
+	static public  void printSign() { Audit.LOG( "Autop().printSign:\n"+ s.pattern().toXml()); }
 	
 	static private String concept = "";
 	static public    void concept( String name ) { concept = name; }
@@ -310,14 +310,14 @@ public class Intention {
 		Iterator<Intention> ins = intents.iterator();
 		while (!r.isDone() && ins.hasNext()) {
 			Intention in = ins.next();
-			audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
+			Audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
 			r = new Intention( in, false, false ).autopoiesis( r );
 		}
 		return r;
 	}
 	public static void main( String argv[]) {
 		Reply r = new Reply().answer( "world" );
-		audit.log( new Intention( thenReply, "hello ..." ).mediate( r ).toString() );
+		Audit.log( new Intention( thenReply, "hello ..." ).mediate( r ).toString() );
 		
 		audit.title( "trad autopoiesis... add to a list and then add that list" );
 		r = new Reply();
@@ -326,8 +326,8 @@ public class Intention {
 		a.add( new Intention( append, ELSE_REPLY +" \"two three four\""   ));
 		a.add( new Intention( append, REPLY      +" \"three four\"" ));
 		test( r, a );
-		audit.log( Repertoire.signs.toString() );
-		audit.log( r.toString());
+		Audit.log( Repertoire.signs.toString() );
+		Audit.log( r.toString());
 		
 		audit.title( "manual sign creation... add each intention individually" );
 		r = new Reply();
@@ -335,8 +335,8 @@ public class Intention {
 		r = new Intention( thenThink, "one two three four"  , append ).autopoiesis( r );
 		r = new Intention( elseReply, "two three four"      , append ).autopoiesis( r );
 		r = new Intention( thenReply, "three four"          , append ).autopoiesis( r );
-		audit.log( Repertoire.signs.toString() );
-		audit.log( r.toString());
+		Audit.log( Repertoire.signs.toString() );
+		Audit.log( r.toString());
 		
 		
 		audit.title( "sign self-build II... add pairs of attributes" );
@@ -357,6 +357,6 @@ public class Intention {
 		r.answer( Reply.yes().toString() );
 
 		
-		audit.log( Repertoire.signs.toString() );
-		audit.log( r.toString());
+		Audit.log( Repertoire.signs.toString() );
+		Audit.log( r.toString());
 }	}

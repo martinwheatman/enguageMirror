@@ -75,7 +75,7 @@ public class Config {
 		long then = new GregorianCalendar().getTimeInMillis();
 		Redo.undoEnabledIs( false );
 		
-		audit.log(
+		Audit.log(
 				welcome(
 					Enguage.shell().copyright() +
 					"\nEnguage main(): overlay is: " + Overlay.Get().toString()
@@ -91,8 +91,8 @@ public class Config {
 		Redo.undoEnabledIs( true );
 		long now = new GregorianCalendar().getTimeInMillis();
 		
-		audit.log( "Initialisation in: " + (now - then) + "ms" );
-		audit.log( Signs.stats() );
+		Audit.log( "Initialisation in: " + (now - then) + "ms" );
+		Audit.log( Signs.stats() );
 
 		Audit.allOff();
 		if (Audit.runtimeDebug) Audit.allOn();

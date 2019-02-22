@@ -45,7 +45,7 @@ public class Concepts {
 	static public void load( Tag concepts ) {
 		if (null != concepts) {
 			Repertoire.induction( true );
-			audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
+			Audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
 			for (int j=0; j<concepts.content().size(); j++) {
 				String name = concepts.content().get( j ).name();
 				if (name.equals( "concept" )) {
@@ -122,7 +122,7 @@ public class Concepts {
 	 */
 	private static void test( String s, boolean matchesToReply ) {
 		Strings sa = matches( new Strings( s ));
-		audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
+		Audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
 	}
 	public static void main( String args[]) {
 		names( new File( "./src/assets/concepts" ).list() );
