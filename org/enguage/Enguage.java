@@ -209,24 +209,10 @@ public class Enguage {
 		int level = 0; // 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
 
-		if (testThisLevel( level, 1 )) { // is like - polymorphism
-			//Audit.allOn();
-			audit.title( "setup new idea and save" );
-			mediate( "want is like need",   "ok, want is like need" );
-			Synonyms.interpret( new Strings( "save" ));
-			
-			audit.subtl( "unset synonyms" );
-			mediate( "want is unlike need",   "ok, want is unlike need" );
-			
-			audit.title( "Recall values and use" );
-			Synonyms.interpret( new Strings( "recall" ));
-			mediate( "what do i want",      "you don't want anything" );
-			mediate( "i want another pony", "ok, you want another pony" );
-			mediate( "what do i want",      "you want another pony" );
-			clearTheNeedsList( "i don't want anything" );
+		if (testThisLevel( level, 1 )) {
 			//mediate( "", "" );
 		}
-		if (testThisLevel( level, 2 )) { // WHY - These tests were for JCSSA journal article
+		if (testThisLevel( level, 2 )) { // WHY - These tests were for IJCSSA journal article
 			audit.title( "Simple action demo" );
 			mediate( "i am baking a cake",     "i know", "ok, you're baking a cake" );
 			mediate( "am i baking a cake",     "yes, you're     baking a cake" );
@@ -779,7 +765,22 @@ public class Enguage {
 			mediate( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
 			mediate( "simon says put your hands on your head" ); //, "ok, success" );
 		}
-		if (testThisLevel( level, 9 )) {
+		if (testThisLevel( level, 9 )) { // is like - Polymorphism?
+			//Audit.allOn();
+			audit.title( "setup new idea and save" );
+			mediate( "want is like need",   "ok, want is like need" );
+			Synonyms.interpret( new Strings( "save" ));
+			
+			audit.subtl( "unset synonyms" );
+			mediate( "want is unlike need",   "ok, want is unlike need" );
+			
+			audit.title( "Recall values and use" );
+			Synonyms.interpret( new Strings( "recall" ));
+			mediate( "what do i want",      "you don't want anything" );
+			mediate( "i want another pony", "ok, you want another pony" );
+			mediate( "what do i want",      "you want another pony" );
+			clearTheNeedsList( "i don't want anything" );
+
 			audit.title( "On-the-fly Langauge Learning" );
 			/* TODO: create filename from pattern:
 			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)

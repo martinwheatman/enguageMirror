@@ -24,21 +24,13 @@ public class Variable {
 	static public  final int      id = 262169728; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Variable" );
 	
-	static private char intPrefix = '$';
-	static public  void intPrefix( char s ) { intPrefix = s; }
-	static public  char intPrefix( ) { return intPrefix; }
-	
-	static private char extPrefix = '_';
-	static public  void extPrefix( char s ) { extPrefix = s; }
-	static public  char extPrefix( ) { return extPrefix; }
-
 	private static TreeMap<String,String> cache = encache();
 	private static TreeMap<String,String> encache() { return encache( Overlay.Get() );}
 	private static TreeMap<String,String> encache( Overlay o ) {
 		//audit.in( "encache", Ospace.location());
 		cache = new TreeMap<String,String>();
 		for( String name : o.list( NAME ))
-			if (name.equals( externalise( name ) )) // if valid variable name
+			if (name.equals( name.toUpperCase( Locale.getDefault()) )) // if valid variable name
 				cache.put( name, new Value( NAME, name ).getAsString());
 		//audit.out();
 		return cache;
@@ -55,33 +47,16 @@ public class Variable {
 		Audit.decr();
 	}
 
-	static private String externalise( String name ) {
-		/* Variable should only attempt to set UPPERCASE values
-		 * so normal lower case boilerplate does not get dereffed by mistake.
-		 * JIC set to upper case anyway!
-		 */
-		/* This used to be prefixed by "_" 
-		 *  if (name.charAt( 0 ) == intPrefix ) // if prefixed
-		 *  	name = extPrefix + name.substring( 1 );   // $NAME -> _NAME
-		 *  else if (extPrefix != name.charAt( 0 ))
-		 *  	name = extPrefix + name;                  //  NAME -> _NAME
-		 * to uppercase will do
-		 */
-		// to prevent $SUBJECT being created
-		if (name.charAt( 0 ) == intPrefix) name = name.substring( 1 );
-		return name.toUpperCase( Locale.getDefault());
-	}
-	
 	String name;
 	Value  value;
 	
 	public Variable( String nm ) {
-		name = externalise( nm );
+		name = nm.toUpperCase( Locale.getDefault());
 		value = new Value( NAME, name );
 		cache.put( name, value.getAsString());
 	}
 	public Variable( String nm, String val ) {
-		name = externalise( nm );
+		name = nm.toUpperCase( Locale.getDefault());
 		value = new Value( NAME, name );
 		set( val );
 	}
