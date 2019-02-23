@@ -14,8 +14,8 @@ import org.enguage.vehicle.where.Where;
 
 public class List extends ArrayList<Item> {
 	static final long serialVersionUID = 0L;
-	static       private Audit   audit = new Audit( "List" );
 	static final public  String   NAME = "list";
+	static       private Audit   audit = new Audit( NAME );
 	static final public  int        id = 217510; //Strings.hash( NAME );
 	
 	Value value; // instead of extending this class...
