@@ -19,14 +19,14 @@ public class Concepts {
 	static private TreeSet<String> names = new TreeSet<String>();
 	static public  void            name( String name ) { names.add( name );}
 	static public  void            names( String[] dirList ) {
-		audit.in( "names", new Strings( dirList ).toString( Strings.CSV ));
+		//audit.in( "names", new Strings( dirList ).toString( Strings.CSV ));
 		for ( String fname : dirList ) {
 			String[] components = fname.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt")) {
-				audit.debug( "adding concept: "+ components[ 0 ]);
+				//audit.debug( "adding concept: "+ components[ 0 ]);
 				name( components[ 0 ]);
 		}	}
-		audit.out("["+ new Strings( names ).toString( Strings.CSV ) +"]");
+		//audit.out("["+ new Strings( names ).toString( Strings.CSV ) +"]");
 	}
 
 	/* This is the STATIC loading of concepts at app startup -- read

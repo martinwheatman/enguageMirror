@@ -8,11 +8,6 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 
-class ValuesTest extends Shell {
-	ValuesTest( Strings args ) { super( "ValuesTes", args ); }
-	public Strings interpret( Strings a ) { return Value.interpret( a ); }
-}
-
 public class Value {
 	static private Audit audit = new Audit( "Value" );
 	
@@ -37,9 +32,9 @@ public class Value {
 	// members
 	// TODO: cache items[]? Lock file - this code is not suitable for IPC? Exists in constructor?
 	// set() methods return change in number of items
-	public boolean exists() {    return Fs.exists(         name( ent, attr, Overlay.MODE_READ )); }
-	public void    set( String val ) {  Fs.stringToFile(   name( ent, attr, Overlay.MODE_WRITE ), val ); }
-	public void    unset() {            Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
+	public boolean exists() {    return Fs.exists(       name( ent, attr, Overlay.MODE_READ )); }
+	public boolean set( String val ){return Fs.stringToFile( name( ent, attr, Overlay.MODE_WRITE ), val ); }
+	public void    unset() {               Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
 	public String  getAsString(){return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ )); }
 	
 	public  boolean equals( String val ) { return getAsString().equals( val ); }
@@ -131,10 +126,19 @@ public class Value {
 		audit.out( rc );
 		return new Strings( rc );
 	}
-	public static void main( String args[] ) {
+	static private void test( String cmd, String expected ) {
+		Strings answer = interpret( new Strings( cmd ));
+		if (!answer.equals( new Strings( expected )))
+			audit.ERROR( "expecting:"+ expected +", but got: "+ answer );
+		else
+			audit.passed();
+	}
+ 	public static void main( String args[] ) {
 		Overlay.Set( Overlay.Get());
 		if (!Overlay.autoAttach())
 			System.out.println( "Ouch!" );
-		else
-			new ValuesTest( new Strings( args )).run();
-}	}
+		else {
+			test( "set martin name martin j wheatman", "TRUE" );
+			test( "get martin name",      "martin j wheatman" );
+			audit.PASSED();
+}	}	}

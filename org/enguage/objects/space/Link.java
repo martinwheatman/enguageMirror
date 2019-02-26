@@ -16,106 +16,42 @@ public class Link {
 	 */
 
 	// **************
-	// ************** FS Helpers
+	// ************** FS Helpers - java fs model is s...  symlink-less!
 	// **************
-	// java fs model is s...  symlink-less!
-	static private final String symLinkExtension = ".symlink" ;
+	static private final String EXT = ".symlink" ;
 	static public boolean isLink( String s ) {
-		return	s.length() > symLinkExtension.length()
-				&& s.substring( s.length() - symLinkExtension.length()).equals( symLinkExtension );
+		return	s.length() > EXT.length()
+				&& s.substring( s.length() - EXT.length()).equals( EXT );
 	}
-	static public String linkName( String name ) {
-		return isLink( name ) ? name : name + symLinkExtension;
-	}
+	static public String linkName( String name ) {return isLink( name ) ? name : name + EXT;}
 	static public boolean fromString( String nm, String val ) {
-		//audit.in( "fromString", "rawName="+ nm +", value="+ val );
-		//return audit.out( Fs.stringToFile( Overlay.fsname( linkName( nm ), Overlay.MODE_WRITE ), val ));
 		return Fs.stringToFile( Overlay.fsname( linkName( nm ), Overlay.MODE_WRITE ), val );
 	}
-	static public String toString( String nm ) {
-		//audit.in( "toString", "rawName="+ nm );
-		return Fs.stringFromFile( linkName( nm )); //audit.out( Fs.stringFromFile( linkName( nm )));
-	}
+	static public String toString( String nm ) { return Fs.stringFromFile( linkName( nm ));}
 	
-	static private String extrd( String e, String a ) {
-		return Overlay.fsname( e +"/"+ a, Overlay.MODE_READ );
-	}
-	static private String extwr( String e, String a ) {
-		return Overlay.fsname( e +"/"+ a, Overlay.MODE_WRITE );
-	}
+//	static private String extrd( String e, String a ) {return Overlay.fsname( e +"/"+ a, Overlay.MODE_READ );}
+//	static private String extwr( String e, String a ) {return Overlay.fsname( e +"/"+ a, Overlay.MODE_WRITE );}
 
 	// **************
-	// ************** Link commands:
+	// ************** two recursive Link commands:
 	// **************
 
-	static private String get( String entity, String attr ) {
-		return (String) 
-			audit.info( "get", 
-						"entity='"+ entity +"', attribute='"+ attr +"' ",
-						toString( extrd( entity, attr )));
-	}
-	static private boolean create( String from, String name, String to ) { return set( from, name, to );}
-	static private boolean set( String from, String name, String to ) {
-		boolean rc = false;
-		audit.in( "set", "from='"+ from +"', name='"+ name +"', to=["+ to +"]" );
-		
-		if (from.equals("") || name.equals("") || to.equals(""))
-			audit.ERROR( "set: null param: from='"+ from +"', name='"+ name +"', to=["+ to +"]" );
-		else if (rc = fromString( from+"/"+name, to ))
-			audit.debug( "Ok, created: "+ Value.name( from, name, Overlay.MODE_WRITE ));
-
-		return audit.out( rc );
-	}
-
-	static private boolean delete( String entity, String attribute ) {
-		boolean status = false;
-		audit.in( "delete", "entity="+ entity +", attribute="+ attribute );
-		String  read   = extrd( entity, linkName( attribute )),
-		        write  = extwr( entity, linkName( attribute )),
-		        delete = Entity.deleteName( write );
-		if (Fs.exists( read )) // ignore otherwise
-			status = Fs.exists( write ) ?
-					 Fs.rename( write, delete )
-					 : Fs.stringToFile( delete, "" );
-		return audit.out( status );
-	}
-	static private boolean destroy( String entity, String attr ) {
-		return (boolean)
-			audit.info( "destroy",
-						"e='"+ entity+"', a='"+attr+"' ",
-						Fs.destroy( extwr( entity, linkName( attr )))
-					  );
-	}
-	static private boolean exists( String entity, String link ) {
-		return (boolean)
-			audit.info( "exists",
-						"entity="+ entity +", link="+ link,
-						Fs.exists( extrd( entity, linkName( link ))));
-	}
 	static private boolean exists(String entity, String attr, String value ) {
-		String buffer = toString( extrd( entity, attr ));
-		audit.debug( "exists: buffer is '"+ buffer +"'" );
-		return (buffer == null || buffer.equals( "" )) ? // not found OR buffer too small
-			false
-			: null == value || buffer.equals( value ) ?
-					true
-					: exists( buffer, attr, value );
+		Value  v   = new Value( entity, attr );
+		String val = v.getAsString();
+		return v.exists() && (val.equals( value ) || exists( val, attr, value ));
 	}
 	static private boolean attribute(String e, String l, String a, String val ) {
 		Value v;
-		return (boolean)
-			audit.info( "attribute", "ent="+e+", link="+l+", attr="+a+", value="+val,
-						!e.equals( "" ) &&
-							(( (v = new Value( e, a )).exists() && val.equals(""))
-								|| v.equals( val )
-								|| attribute( toString( extrd( e, l )), l, a, val )
-					  )		);
+		return !e.equals( "" ) &&
+				(((v = new Value( e, a     )).exists() && v.equals( val )) ||
+				 ((v = new Value( e, l+EXT )).exists() && attribute( v.getAsString(), l, a, val )));
 	}
 	//---
 	static private void usage( Strings a ) { usage( a.toString());}
 	static private void usage( String a ) {
 		audit.ERROR(
-				"Usage: link: [set|get|exists|transExists|transAttrExists|delete] <ent> <link> [<value>]\n"+
+				"Usage: link: [set|get|exists|attribute|destroy|delete] <ent> <link> [<value>]\n"+
 				"given: "+ a );
 	}
 	static public Strings interpret( Strings args ) {
@@ -123,29 +59,31 @@ public class Link {
 		String rc = Shell.FAIL;
 		int argc = args.size();
 		if (argc >= 3 || argc <= 5) {
+			rc = Shell.SUCCESS;
 			String	cmd    = args.remove( 0 ),
 					entity = args.remove( 0 ),
 					attr   = args.remove( 0 ),
 					target = argc > 3 ? args.remove( 0 ) : "",
 					value  = argc > 4 ? args.remove( 0 ) : "";
 			
-			if (cmd.equals("set") || cmd.equals( "create" )) {
-				rc = create( entity, attr, target ) ? Shell.SUCCESS : Shell.FAIL;
-			} else if (cmd.equals("get")) {
-				rc = get( entity, attr );
-			} else if (cmd.equals("exists")) {
-				rc = exists( entity, attr ) ? Reply.yesStr() : Reply.noStr();
-			} else if( cmd.equals("destroy")) {
-				if (exists( entity, attr ))
-					rc = destroy( entity, attr ) ? Shell.SUCCESS : Shell.FAIL;
-			} else if(cmd.equals("delete")) { // args[3] == target
-				rc = (argc == 3 || exists( entity, attr, target )) && delete( entity, attr ) ?
-					  Shell.SUCCESS : Shell.FAIL;
-			} else if (cmd.equals( "exists" )) {
-				rc = exists( entity, attr, target ) ? Shell.SUCCESS : Shell.FAIL;
-			} else if (cmd.equals("attribute")) {
+			if (cmd.equals("set") || cmd.equals( "create" ))
+				rc = new Value( entity, attr+EXT ).set( target ) ? Shell.SUCCESS : Shell.FAIL;
+				
+			else if (cmd.equals("get"))
+				rc = new Value( entity, attr+EXT ).getAsString();
+				
+			else if (cmd.equals("exists"))
+				rc = target.equals( "" ) ?
+						new Value( entity, attr+EXT ).exists() ? Reply.yesStr() : Reply.noStr()
+						: exists( entity, attr+EXT, target ) ? Reply.yesStr() : Reply.noStr();
+				
+			else if (cmd.equals("delete"))
+				new Value( entity, attr+EXT ).ignore();
+				
+			else if (cmd.equals("attribute"))
 				rc = attribute( entity, attr, target, value ) ? Shell.SUCCESS : Shell.FAIL;
-			} else
+			
+			else
 				usage( "cmd="+ cmd +", ent="+ entity +", attr="+ attr +", [ "+ args +" ]" );
 		} else
 			usage( args );
@@ -172,7 +110,7 @@ public class Link {
 			//Audit.allOn();
 			test( "create martin loves ruth",   Shell.SUCCESS );
 			test( "create martin hates ruth",   Shell.SUCCESS );
-			test( "destroy martin hates ruth",  Shell.SUCCESS );
+			test( "delete martin hates ruth",  Shell.SUCCESS );
 			test( "exists martin hates",        "no" );
 			test( "exists martin hates ruth",   "no" );
 			test( "exists martin loves",        "yes" );

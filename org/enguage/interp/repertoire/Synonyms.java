@@ -8,35 +8,39 @@ import java.util.TreeMap;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.reply.Reply;
 
 public class Synonyms {
-	static public    final String NAME = "synonyms";
-	//static private       Audit audit = new Audit( NAME );
-	static public    final int      id = 237427137; //Strings.hash( "synonyms" );
+	static public final String NAME = "synonyms";
+	static private      Audit audit = new Audit( NAME );
+	static public final int      id = 237427137; //Strings.hash( "synonyms" );
 
 	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
 	
-	static private Attributes list = new Attributes();
+	static private Attributes synonyms = new Attributes();
 	
-	private static boolean load( String name, String load, String existing, String synonym ) {
-		if (null != autoloaded.get( name ) || Concept.load( load, existing, synonym )) {
+	private static boolean attempt( String name, String load, String from, String to ) {
+		audit.in( "load", "name="+ name +", load="+ load +", fr="+ from +", to="+ to );
+		//boolean rc = false;
+		if (null != autoloaded.get( name ) || Concept.load( load, from, to )) {
 			autoloaded.put( name, 0 );
-			return true;
+			//Audit.log( "loaded "+ name );
+			return true; //rc = true;
 		}
-		return false;
+		return false; //audit.out( rc );
 	}
 	public static void autoload( Strings utterance ) {
 		//audit.in( "autoload", ""+utterance );
-		// utterance="i want a coffee" => load( "want+want.txt", "need+needs.txt", "need", "want" )
-		for (String synonym : list.matchNames( utterance )) {
-			String existing = list.get( synonym );
-			if (!load( synonym, existing, existing, synonym )                       &&
-				!load( synonym+"+"+Plural.plural( synonym ),
+		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
+		for (String synonym : synonyms.matchNames( utterance )) {
+			String existing = synonyms.get( synonym );
+			if (!attempt( synonym, existing, existing, synonym )                    &&
+				!attempt( synonym+"+"+Plural.plural( synonym ),
 					   existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
-				!load( Plural.plural(  synonym )+"+"+synonym,
+				!attempt( Plural.plural(  synonym )+"+"+synonym,
 					   Plural.plural( existing )+"+"+existing, existing, synonym ));
 		}
 		//audit.out();
@@ -72,17 +76,21 @@ public class Synonyms {
 			String cmd = cmds.remove( 0 );
 			rc = Reply.success();
 			
-			if (cmd.equals( "create" ) && sz==3) 
-				list.add( cmds.remove( 0 ), cmds.remove( 0 ));
+			if (cmd.equals( "create" ) && sz>3) {
+				// e.g. "create want / need"
+				Audit.log( "creating: "+ cmds.toString( Strings.DQCSV ));
+				synonyms.add( Attribute.value( cmds.getUntil( "/" )).toString( Strings.UNDERSC ), //from
+						  Attribute.value( cmds                ).toString( Strings.UNDERSC ));//to
 				
-			else if (cmd.equals( "destroy" ) && sz==2)
-				list.remove( cmds.remove( 0 ));
+			} else if (cmd.equals( "destroy" ) && sz==2) {
+				Audit.log( "destroying: "+ cmds );
+				synonyms.remove( cmds.toString( Strings.UNDERSC ));
 			
-			else if (cmd.equals( "save" ))
-				Variable.set( NAME, list.toString());
+			} else if (cmd.equals( "save" ))
+				Variable.set( NAME, synonyms.toString());
 			
 			else if (cmd.equals( "recall" ))
-				list = new Attributes( Variable.get( NAME ));
+				synonyms = new Attributes( Variable.get( NAME ));
 			
 			else rc = Reply.failure();				
 		}
@@ -93,7 +101,7 @@ public class Synonyms {
 	}
 	public static void main( String args[]) {
 		Audit.allOn();
-		test( "create want need" );
+		test( "create want / need" );
 		test( "save" );
 //		autoload( w/"I want a coffee" ); // -->loads need+needs, with need="want"
 //		//...

@@ -46,7 +46,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public final static int  CONCAT = 6;
 	public final static int ABSPATH = 7;
 	public final static int OUTERSP = 8;
-	
+	public final static int UNDERSC = 9;
+		
 	public final static String      lineTerm = "\n";
 	public final static String           AND = "&&";
 	public final static String            OR = "||";
@@ -256,6 +257,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			( n ==    PATH ) ? toString(   "",      "/",   "" ) :
 			( n ==   LINES ) ? toString(   "",     "\n",   "" ) :
 			( n == ABSPATH ) ? toString(   "/",     "/",   "" ) :
+			( n == UNDERSC ) ? toString(   "",      "_",   "" ) :
 			"Strings.toString( "+ toString( CSV ) +", n="+ n +"? )";
 	}
 	public String toString() { return toString( SPACED ); }
@@ -308,6 +310,13 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			if (si.hasNext())
 				sa.add( si.next());
 		return sa.toString( Strings.SPACED );
+	}
+	public Strings getUntil( String term ) {
+		Strings from = new Strings();
+		String tmp;
+		while (!(tmp = remove( 0 )).equals( term ))
+			from.add( tmp );
+		return from;
 	}
 	public Strings filter() {
 		// remove any [ superfluous ] stuff

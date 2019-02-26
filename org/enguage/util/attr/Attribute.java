@@ -52,6 +52,14 @@ public class Attribute {
 		quote( quote( value )); // set the quote value against the content
 		return this;
 	}
+	// this retrieves a parameter value from a name parameter
+	// e.g. parameter="value" => "value"
+	//      value             => "value"
+	static public Strings value( Strings from ) {
+		if (from.size() == 1 && Attribute.isAttribute( from.get( 0 ) ))
+			from = new Strings( new Attribute( from.get( 0 )).value() );
+		return from;
+	}
 	
 	public Attribute( String nm, String val ) { name( nm ).value( val ); }
 	public Attribute( String s ) { this( getName( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}

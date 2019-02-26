@@ -62,10 +62,14 @@ public class Attributes extends ArrayList<Attribute> {
 	public Strings matchNames( Strings utterance ) {
 		//[want="need"].matchNames(["i","want","a","pony"])=>["want"]
 		Strings matches = new Strings();
-		Strings synonyms  = names();
-		for (String uttered : utterance )
-			if (synonyms.contains( uttered ))
-				matches.add( uttered );
+//		Strings synonyms = names();
+//		for (String uttered : utterance )
+//			if (synonyms.contains( uttered ))
+//				matches.add( uttered );
+		Strings synonyms = names();
+		for (String name : synonyms )
+			if (utterance.contains( new Strings( name, '_' )))
+				matches.add( name );
 		return matches;
 	}
 	public boolean matches( Attributes pattern ) {

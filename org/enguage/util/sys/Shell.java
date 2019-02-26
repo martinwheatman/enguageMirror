@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import org.enguage.interp.repertoire.Concept;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -82,7 +81,7 @@ public class Shell {
 	}
 	
 	public Shell( String name ) {
-		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-18" );
+		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-19" );
 	}
 	public Shell( String name, Strings args ) { this( name ); }
 	public void interpret( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
@@ -104,7 +103,7 @@ public class Shell {
 					if (-1 != i) line = line.substring( 0, i );
 					
 					// if we're converting on the fly, e.g. want -> need
-					if (!from.equals( "" )) line = Concept.convertContent( line, from, to );
+					if (from != null) line = line.replace( from, to );
 					
 					// will return "cd .." as ["cd", ".", "."], not ["cd" ".."] -- "cd.." is meaningless!
 					// need new stage of non-sentence sign processing
@@ -138,7 +137,7 @@ public class Shell {
 				br.close();
 			} catch (java.io.IOException e ) { //ignore?
 	}	}	}
-	public void run() { interpret( System.in, "", "" ); } // we're not converting on-the-fly!
+	public void run() { interpret( System.in, null, null ); } // we're not converting on-the-fly!
 	
 	public static ArrayList<Strings> expandSemicolonList( Strings sentence ) {
 		/*  "on one: do two; do three; and, do four." =>
