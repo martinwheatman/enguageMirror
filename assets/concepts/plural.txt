@@ -4,6 +4,7 @@ On "X is the plural ending of words ending in Y",  perform "plural rule Y X".
 colloquia is the plural of colloquial.
 Cookies is the plural of cookie.
 Pies    is the plural of pie.
+must    is the plural of must.
 
 sses is the plural ending of words ending in ss.
 ia   is the plural ending of words ending in ium.
