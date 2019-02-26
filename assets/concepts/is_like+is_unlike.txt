@@ -1,10 +1,10 @@
 # synonyms: "want it like need"
 #
-On "SYNONYM is like EXISTING":
-	perform "synonyms create SYNONYM EXISTING";
+On "PHRASE-SYNONYM is like PHRASE-EXISTING":
+	perform "synonyms create SYNONYM / EXISTING";
 	reply "ok, SYNONYM is like EXISTING".
 
-On "SYNONYM is unlike EXISTING":
+On "PHRASE-SYNONYM is unlike PHRASE-EXISTING":
 	perform "synonyms destroy SYNONYM";
 	reply "ok, SYNONYM is unlike EXISTING".
 			
