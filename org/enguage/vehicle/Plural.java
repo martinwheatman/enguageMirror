@@ -104,6 +104,11 @@ public class Plural {
 				return s.substring( 0, len-engingLen ) + pluralEnding;
 		}
 		if (s.length() == 1) return s;
+		
+		// added for concept file names
+		Strings sa = new Strings( s, '_' );
+		if (sa.size() == 2 && sa.get( 1 ).equals( "to" )) return plural( sa.get( 0 )) + "_to";
+		
 		return s + "s"; // rough and ready!
 	}
 	public static String ise( int i, String s ) {
