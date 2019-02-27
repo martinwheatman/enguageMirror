@@ -3,9 +3,9 @@ package org.enguage.vehicle;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.interp.Context;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 
@@ -35,12 +35,7 @@ public class Pronoun {
 	static public final String subjective = "subjective";
 	static public final String  objective = "objective";
 	static public final String possessive = "possessive";
-	
-	// to switch pronouns on and off
-	static private boolean using = false;
-	static public  boolean using() {return using;}
-	static public  void    using( boolean u ) {using = u;}
-	
+		
 	// ////////////////////////////////////////////////////////////////////////
 	// gender...
 	//
@@ -50,8 +45,31 @@ public class Pronoun {
 		private String name;
 		public  String name() { return name;}
 	}
-	static ArrayList<Gendered> gendered = new ArrayList<Gendered>();
-	static public boolean isGendered( String name, int gender ) {
+	static class Genders extends ArrayList<Gendered> {
+		public static final long serialVersionUID = 0l;
+		public Genders append( Gendered g ) {
+			add( g );
+			return this;
+	}	}
+	static Genders gendered = new Genders()
+			.append( new Gendered( "he",  MASCULINE ))
+			.append( new Gendered( "his", MASCULINE ))
+			.append( new Gendered( "him", MASCULINE ))
+			.append( new Gendered( "she", FEMININE  ))
+			.append( new Gendered( "her", FEMININE  ))
+			.append( new Gendered( "she", FEMININE  ))
+			.append( new Gendered( "i",   PERSONAL  ))
+			.append( new Gendered( "me",  PERSONAL  ))
+			.append( new Gendered( "my",  PERSONAL  ))
+			.append( new Gendered( "it",   UNGENDERED  ))
+			.append( new Gendered( "they",  UNGENDERED  ))
+			.append( new Gendered( "them",  UNGENDERED  ))
+			.append( new Gendered( "he or she",  NEUTRAL  ))
+			.append( new Gendered( "him or her",  NEUTRAL  ))
+			.append( new Gendered( "his or her",  NEUTRAL  ))
+			.append( new Gendered( "their",  NEUTRAL  ));
+	
+	static private boolean isGendered( String name, int gender ) {
 		ListIterator<Gendered> gi = gendered.listIterator();
 		while (gi.hasNext()) {
 			Gendered g = gi.next();
@@ -60,40 +78,41 @@ public class Pronoun {
 		}
 		return false;
 	}
-	static public void removeAll( String name ) {
+	static private void removeAll( String name ) {
 		ListIterator<Gendered> gi = gendered.listIterator();
 		while (gi.hasNext())
 			if (gi.next().name().equals( name )) 
 				gi.remove();
 	}
-	static public boolean isPersonal( String wd ) { return isGendered( wd, PERSONAL );}
-	static public void    personalIs( String wd ) {
+	static private boolean isPersonal( String wd ) { return isGendered( wd, PERSONAL );}
+	static private void    personalIs( String wd ) {
 		removeAll( wd );
 		gendered.add( new Gendered( wd, PERSONAL ));
 	}
-	static public boolean isMasculine( String wd ) { return isGendered( wd, MASCULINE );}
-	static public void    masculineIs( String wd ) {
+	static private boolean isMasculine( String wd ) { return isGendered( wd, MASCULINE );}
+	static private void    masculineIs( String wd ) {
 		removeAll( wd );
 		gendered.add( new Gendered( wd, MASCULINE ));
 	}
-	static public boolean isFeminine(  String wd ) { return isGendered( wd, FEMININE );}
-	static public void    feminineIs(  String wd ) {
+	static private boolean isFeminine(  String wd ) { return isGendered( wd, FEMININE );}
+	static private void    feminineIs(  String wd ) {
 		removeAll( wd );
 		gendered.add( new Gendered( wd, FEMININE ));
 	}
-	static public boolean isNeutral(   String wd ) { return isGendered( wd, NEUTRAL );}
-	static public void    neutralIs(   String wd ) {
+	static private boolean isNeutral(   String wd ) { return isGendered( wd, NEUTRAL );}
+	static private void    neutralIs(   String wd ) {
 		removeAll( wd );
 		gendered.add( new Gendered( wd, NEUTRAL ));
 	}
 	static private int valueMfn( String s ) {
+		if (possessive( s )) s = s.substring( 0, s.length()-possession.length());
 		return isNeutral(      s ) ? UNGENDERED
 				: isPersonal(  s ) ? PERSONAL
 				: isMasculine( s ) ? MASCULINE
 				: isFeminine(  s ) ? FEMININE : NEUTRAL ;
 	}
 	static private int valuePl( String name ) {
-		return Plural.isPlural( name ) ? PLURAL : SINGULAR;
+		return !possessive( name ) && Plural.isPlural( name ) ? PLURAL : SINGULAR;
 	}
 	// ////////////////////////////////////////////////////////////////////////
 	
@@ -101,47 +120,43 @@ public class Pronoun {
 			{{"i",   "he",    "she",   "it",    "he or she"  },   // singular subjective
 			 {"we",  "they",  "they",  "they",  "they"       }},  // plural
 			{{"me",  "him",   "her",   "it",    "him or her" },   // singular objective
-			 {"us",  "them",  "them",  "them",  "then"       }},  // plural
+			 {"us",  "them",  "them",  "them",  "them"       }},  // plural
 			{{"my",  "his",   "her",   "its",   "his or her" },   // singular possessive
 			 {"our", "their", "their", "their", "their"      }} };// plural
 		
-	static private String[][][] values = {
-			{{"0", "A", "B", "C", "D" },   // singular subjective
-			 {"1", "E", "F", "G", "H" }},  // plural
-			{{"2", "I", "J", "K", "L" },   // singular objective
-			 {"3", "M", "N", "O", "P" }},  // plural
-			{{"4", "Q", "R", "R", "T" },   // singular possessive
-			 {"5", "U", "V", "W", "X" }} };// plural
+	static private String[][][] values = { // initialise to names!
+			{{"",   "",    "",   "",    ""  },   // singular subjective
+			 {"",   "",    "",   "",    ""  }},  // plural
+			{{"",   "",    "",   "",    ""  },   // singular objective
+			 {"",   "",    "",   "",    ""  }},  // plural
+			{{"",   "",    "",   "",    ""  },   // singular possessive
+			 {"",   "",    "",   "",    ""  }} };// plural
 	
 	static private boolean possessivePn( String s ) {
-		if (using)
-			for (int j=SINGULAR; j<=PLURAL; j++)
-				for (int k=PERSONAL; k<=UNGENDERED; k++)
-					if (s.equals( pronouns[POSSESSIVE][j][k])) return true;
+		for (int j=SINGULAR; j<=PLURAL; j++)
+			for (int k=PERSONAL; k<=UNGENDERED; k++)
+				if (s.equals( pronouns[POSSESSIVE][j][k])) return true;
 		return false;
 	}
 	static private int type( String s ) {
-		if (using)
-			for (int i=SUBJECTIVE; i<=POSSESSIVE; i++)
-				for (int j=SINGULAR; j<=PLURAL; j++)
-					for (int k=PERSONAL; k<=UNGENDERED; k++)
-						if (s.equals( pronouns[i][j][k])) return i;
+		for (int i=SUBJECTIVE; i<=POSSESSIVE; i++)
+			for (int j=SINGULAR; j<=PLURAL; j++)
+				for (int k=PERSONAL; k<=UNGENDERED; k++)
+					if (s.equals( pronouns[i][j][k])) return i;
 		return -1;
 	}
 	static private int snglPlIs( String s ) {
-		if (using)
-			for (int i=SUBJECTIVE; i<=POSSESSIVE; i++)
-				for (int j=SINGULAR; j<=PLURAL; j++)
-					for (int k=PERSONAL; k<=UNGENDERED; k++)
-						if (s.equals( pronouns[i][j][k])) return j;
+		for (int i=SUBJECTIVE; i<=POSSESSIVE; i++)
+			for (int j=SINGULAR; j<=PLURAL; j++)
+				for (int k=PERSONAL; k<=UNGENDERED; k++)
+					if (s.equals( pronouns[i][j][k])) return j;
 		return -1;
 	}
 	static private int gend( String s ) {
-		if (using)
-			for (int i=SUBJECTIVE; i<=POSSESSIVE; i++)
-				for (int j=SINGULAR; j<=PLURAL; j++)
-					for (int k=PERSONAL; k<=UNGENDERED; k++)
-						if (s.equals( pronouns[i][j][k])) return k;
+		for (int i=SUBJECTIVE; i<=POSSESSIVE; i++)
+			for (int j=SINGULAR; j<=PLURAL; j++)
+				for (int k=PERSONAL; k<=UNGENDERED; k++)
+					if (s.equals( pronouns[i][j][k])) return k;
 		return -1;
 	}
 	static private boolean isPronoun( String s ) { return type( s ) != -1;}
@@ -152,7 +167,7 @@ public class Pronoun {
 		       name.equals(   object   ) ? OBJECTIVE  :
 		       name.equals( possession ) ? POSSESSIVE : -1; 
 	}
-	static private String subject = "SUBJECT";
+	static private String subject = "subject";
 	static public  void   subjective( String nm ) { subject = nm; }
 	static public  String subjective() { return subject; }
 	
@@ -164,11 +179,11 @@ public class Pronoun {
 	static public  void   possession( String nm ) { possession = nm; }
 	static public  String possession() { return possession; }
 	static public boolean possessive( String word ) {
-		String poss = get( subject, "" );
-		poss = appended ? poss + possession : possession + poss;
-		return word.equals( poss );
+		return appended ?
+				word.endsWith( possession )
+				: word.startsWith( possession );
 	}
-	static public  boolean appended = false;
+	static private boolean appended = true;
 	static public  boolean appended() { return appended;}
 	static public  void    appended(boolean b) { appended = b;}
 	
@@ -214,7 +229,6 @@ public class Pronoun {
 	}
 	static private Strings add (Strings sa) {
 		// e.g. add masculine martin feminine ruth
-		audit.in( "add", ""+ sa );
 		Strings rc = Shell.Success;
 		while (rc.equals( Shell.Success ) && sa.size() > 1) {
 			String gender = sa.remove( 0 );
@@ -223,16 +237,17 @@ public class Pronoun {
 				masculineIs( sa.remove( 0 ));
 			else if (gender.equals( feminine ))
 				feminineIs( sa.remove( 0 ));
-			else if (gender.equals( "unknown" ))
+			else if (gender.equals( personal ))
+				personalIs( sa.remove( 0 ));
+			else if (gender.equals( neutral ))
 				neutralIs( sa.remove( 0 ));
 			else
 				rc = Shell.Fail;
 		}
-		return audit.out( rc );
+		return rc;
 	}
 	static private Strings name (String name, String value) {
 		// e.g. add masculine martin feminine ruth
-		audit.in( "name", "name="+ name +", value="+ value );
 		Strings rc = Shell.Success;
 		if (name.equals( subjective ))
 			subjective( value );
@@ -246,7 +261,7 @@ public class Pronoun {
 		else
 			rc = Shell.Fail;
 
-		return audit.out( rc );
+		return rc;
 	}
 	static private Strings name (String name) {
 		// e.g. return possessive variable name
@@ -263,7 +278,6 @@ public class Pronoun {
 	static public Strings interpret( Strings sa ) {
 		// e.g. (pronoun) add masculine martin
 		//      (pronoun) set OBJECTIVE PLURAL MASCULINE him
-		//      (pronoun) [start|stop]
 		audit.in( "interpret", ""+ sa );
 		Strings rc = Shell.Fail;
 		int sz = sa.size();
@@ -274,10 +288,6 @@ public class Pronoun {
 				rc = set( sa );
 			else if (cmd.equals( "add" ))
 				rc = add( sa );
-			else if (cmd.equals("start"))
-				using( true );
-			else if (cmd.equals( "stop" ))
-				using( false );
 			else if (cmd.equals( "name" ))
 				if (sa.size() > 1)
 					name( sa.get( 0 ), sa.get( 1 ));
@@ -295,80 +305,66 @@ public class Pronoun {
 		// set SUBJECT he     -> ignore
 		//     SUBJECT martin => values[s][s][m]="martin", SUBJECT="martin"
 		//     UNIT    cup    => unit="cup"
-		audit.in( "set", name +" is >"+ value +"<" );
 		
 		int os = nameOs( name );
-		if (!using) {
-			//ctx.remove( name );
-			Context.push( new Attributes().add( name, value ));
-		} else if (os == -1 || !isPronoun( value )) { 
-			if (os != -1)
-				values[os][valuePl( value )][valueMfn( value )] = new String( value );
-			// always keep a copy in ctx
-			//ctx.remove( name );
-			Context.push( new Attributes().add( name, value ));
-		} // else ignore setting pronouns, e.g. he, she, it etc., while using them.
-
-		audit.out();
+		if (!isPronoun( value ) && os != -1)
+			values[os][valuePl( value )][valueMfn( value )] = new String( value );
 	}
 	static private String get( String name, String value ) {
 		// N.B value is only used in get to deref pronoun table!
 		//audit.in( "get", name + (isPronoun(value)?" (pronoun="+ value +")":""));
 		int os = nameOs( name );
-		return //audit.out( 
-				using && os != -1 && isPronoun( value ) ?
-							values[os][valuePl( value )][gend( value )]
-							: Context.get( name )
-				//			)
-				;
+		return os != -1 && isPronoun( value ) ?
+				values[os][valuePl( value )][valueMfn( value )]
+				: value;
 	}
+	static private String update( String name, String value ) {
+		String first = value;
+		set( name, value );
+		String last = get( name, value );
+		return last.equals( "" ) ? first : last;
+	}
+	static private void deref( Attribute a ) {a.value( update( a.name(), a.value() ));}
+	static public Attributes deref( Attributes as ) { for (Attribute a : as) deref( a ); return as;}
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// -- test code
 	//
 	static private void test( String name, String value, String expected ) {
-		audit.IN( "test", "var="+ name +", value="+ value );
-		audit.log( "Currently "+  name +" is >"+ Context.get( name ) +"/"+ get( name, value ) +"<)");
-		set( name, value );
-		if (!expected.equals( "" )) {
-			value = get( name, value );
-			if (expected.equals( "" ) || value.equals( expected ))
-				audit.passed();
-			else
-				audit.FATAL( "answer is '"+ value +"',\n\t\tbut should be '"+ expected +"'" );
-		}
-		audit.OUT( value );
+		Audit.log( "Currently "+  name +" is >"+ get( name, value ) +"<)");
+		
+		value = update( name, value );
+		
+		if (expected.equals( "" ) || value.equals( expected ))
+			audit.passed();
+		else
+			audit.FATAL( "answer is '"+ value +"',\n\t\tbut should be '"+ expected +"'" );
 	}
 	static private void possessiveOutbound( String value ) {
-		if (using) {
-			String subj = Context.get( subject );
-			if ((subj+possession()).equals( value ))
-				audit.passed( "passes: "+ value +" => "+
-						pronouns[POSSESSIVE][valuePl( subj )][valueMfn( subj )]);
-			else
-				audit.log( "failed: "+ Context.get( subject )+possession() +" != "+ value );
-		} else
-			audit.ERROR( "Possession test, but not using!" );
+		String subj = get( subject, value );
+		if (possessive( value ))
+			audit.passed( "passes: "+ value +" => "+
+					pronouns[POSSESSIVE][valuePl( subj )][valueMfn( subj )]);
+		else
+			Audit.log( "failed: "+ value +" != possessive"  );
 	}
 	static private void possessiveInbound( String pn ) {
 		audit.in(  "possInternalising", pn );
 		String ans = "internalising failed";
 		// e.g. "his"->SUBJECT/"her"->SUBJECT/"its"->OBJECT/"their"
-		if (using)
-			if (possessivePn( pn ))
-				audit.passed( "Passed: "+ pn +" => "+
-						(ans = values[SUBJECTIVE][snglPlIs( pn )][gend( pn )]));
-			else
-				audit.passed( "Test fails: Pronoun type not possessive ("+
-						type( pn ) +"!="+ POSSESSIVE +")" );
+		if (possessivePn( pn ))
+			audit.passed( "Passed: "+ pn +" => "+
+					(ans = values[SUBJECTIVE][snglPlIs( pn )][gend( pn )]));
 		else
-			audit.passed( "Test fails: Possession test, but not using!" );
+			audit.passed( "Test fails: Pronoun type not possessive ("+
+					type( pn ) +"!="+ POSSESSIVE +")" );
 		audit.out( ans );
 	}
 	static private void testInterpret( String u ) { interpret( new Strings( u ));}
 	
 	static public void main( String args[]) {
 		testInterpret( "set singular subjective neutral they" );
-		audit.log( "pronoun: "+ pronouns[SUBJECTIVE][SINGULAR][NEUTRAL]);
+		Audit.log( "pronoun: "+ pronouns[SUBJECTIVE][SINGULAR][NEUTRAL]);
 		
 		testInterpret( "add masculine marv" );
 		testInterpret( "add feminine  ruth" );
@@ -376,9 +372,6 @@ public class Pronoun {
 
 		test( subject, "he",  "he"  );
 		test( subject, "she", "she" );
-		
-		audit.title( "start using pronouns" );
-		testInterpret( "start" );
 		
 		// setting and getting subject
 		test( subject, "marv", "marv" );
@@ -395,17 +388,23 @@ public class Pronoun {
 		testInterpret( "add masculine martin" );
 		set( subject, "martin" );
 		
-		audit.subtitle( "Outbound Test" );
+		audit.subtl( "Outbound Test" );
 		possessiveOutbound( "martin" );
 		possessiveOutbound( "ruth's" );
 		possessiveOutbound( "martin's" );
 		
-		audit.subtitle( "Inbound Test" );
+		audit.subtl( "Inbound Test" );
 		possessiveInbound( "him" );
 		possessiveInbound( "her" );
 		possessiveInbound( "his" );
 		
-		audit.log( subject+"/he => "+ get( subject, "he" ));
-		audit.log( "FRED/he => "+ get( "FRED", "he" ));
+		Audit.log( subject+"/he => "+ update( subject, "he" ));
+		Audit.log( "FRED/he => "+ update( "FRED", "he" ));
+		
+		Attributes a = new Attributes();
+		a.add( new Attribute( subject, "martin" ));
+		a.add( new Attribute( subject, "he" ));
+		Audit.log( "a="+ a );
+		Audit.log( "a="+ deref( a ));
 		audit.PASSED();
 }	}

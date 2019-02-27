@@ -15,6 +15,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Net;
 import org.enguage.util.sys.Shell;
+import org.enguage.vehicle.Pronoun;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
@@ -190,7 +191,7 @@ public class Enguage {
 	}
 	
 	// === test code ===
-	// Call this direct, so its not counted!
+	// Call this direct, so it's not counted!
 	static private final String ihe =  "I have everything";
 	static private void clearTheNeedsList() { clearTheNeedsList( ihe );}
 	static private void clearTheNeedsList( String s ) { Enguage.mediate( new Strings( s ));	}
@@ -208,6 +209,9 @@ public class Enguage {
 
 		int level = 0; // 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
+		Pronoun.interpret( new Strings( "add masculine martin" ));
+		Pronoun.interpret( new Strings( "add masculine james" ));
+		Pronoun.interpret( new Strings( "add feminine ruth" ));
 
 		if (testThisLevel( level, 1 )) {
 			//mediate( "", "" );
@@ -742,7 +746,14 @@ public class Enguage {
 					   "i don't know if you're meeting your dad" );
 			
 		}
-		if (testThisLevel( level, 8 )) { // Language features Link
+		if (testThisLevel( level, 8 )) { // Language features
+			
+			audit.title( "Generic Pronouns" );
+			clearTheNeedsList( "martin doesn't need anything" );
+			mediate( "martin needs a coffee", "ok, martin needs a coffee" );
+			mediate( "what does he need",     "martin needs a coffee" );
+			clearTheNeedsList( "martin doesn't need anything" );
+			
 			/* TODO:
 			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
 			 *  she died in 1603
@@ -765,7 +776,7 @@ public class Enguage {
 			mediate( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
 			mediate( "simon says put your hands on your head" ); //, "ok, success" );
 		}
-		if (testThisLevel( level, 9 )) { // is like - Polymorphism?
+		if (testThisLevel( level, 9 )) { // code generation features
 			
 			audit.title( "Polymorphism - setup new idea and save" );
 			mediate( "want is like need",   "ok, want is like need" );

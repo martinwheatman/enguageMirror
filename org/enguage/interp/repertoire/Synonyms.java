@@ -76,17 +76,15 @@ public class Synonyms {
 			String cmd = cmds.remove( 0 );
 			rc = Reply.success();
 			
-			if (cmd.equals( "create" ) && sz>3) {
+			if (cmd.equals( "create" ) && sz>3)
 				// e.g. "create want / need"
-				Audit.log( "creating: "+ cmds.toString( Strings.DQCSV ));
 				synonyms.add( Attribute.value( cmds.getUntil( "/" )).toString( Strings.UNDERSC ), //from
 						  Attribute.value( cmds                ).toString( Strings.UNDERSC ));//to
 				
-			} else if (cmd.equals( "destroy" ) && sz==2) {
-				Audit.log( "destroying: "+ cmds );
+			else if (cmd.equals( "destroy" ) && sz==2)
 				synonyms.remove( cmds.toString( Strings.UNDERSC ));
 			
-			} else if (cmd.equals( "save" ))
+			else if (cmd.equals( "save" ))
 				Variable.set( NAME, synonyms.toString());
 			
 			else if (cmd.equals( "recall" ))
