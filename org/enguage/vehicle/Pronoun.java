@@ -289,10 +289,11 @@ public class Pronoun {
 			else if (cmd.equals( "add" ))
 				rc = add( sa );
 			else if (cmd.equals( "name" ))
-				if (sa.size() > 1)
-					name( sa.get( 0 ), sa.get( 1 ));
-				else
-					rc = sa.size() == 1 ? name( sa.get( 0 )): Shell.Fail;
+				switch (sa.size()) {
+					case 0: rc = Shell.Fail; break;
+					case 1: rc = name( sa.get( 0 )); break;
+					default: name( sa.get( 0 ), sa.get( 1 ));
+				}
 			else
 				rc = Shell.Fail;
 		}
