@@ -15,8 +15,8 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Net;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Pronoun;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
@@ -214,6 +214,15 @@ public class Enguage {
 		Pronoun.interpret( new Strings( "add feminine ruth" ));
 
 		if (testThisLevel( level, 1 )) {
+			audit.title( "Group-as-entity");
+			clearTheNeedsList( "MartinAndRuth does not need anything" );
+			//Audit.allOn();
+			mediate( "martin and ruth need a coffee and a tea",
+			         "ok, martin and ruth need a coffee and a tea" );
+			
+			mediate( "what do they need",
+			         "martin and ruth need a coffee , and a tea" );
+			
 			//mediate( "", "" );
 		}
 		if (testThisLevel( level, 2 )) { // WHY - These tests were for IJCSSA journal article

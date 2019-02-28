@@ -14,8 +14,8 @@ import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attributes;
-import org.enguage.vehicle.Pronoun;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 
 public class Signs extends TreeMap<Integer,Sign> {
@@ -218,7 +218,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 						; //audit.debug( "NO match: "+ s.toString() +" ("+ Pattern.notMatched() +")");
 				} else { // we have found a meaning! So I do understand...!
 					
-					Pronoun.deref( match );
+					Pronoun.update( match );
 					
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
 					audit.debug( "matched '"+ s +"', of "+s.concept()+", with "+ match.toString() +", and "+ Context.valueOf());
