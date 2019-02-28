@@ -15,8 +15,8 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Net;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Pronoun;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 

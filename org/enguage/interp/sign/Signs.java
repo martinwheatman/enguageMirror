@@ -14,8 +14,8 @@ import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attributes;
-import org.enguage.vehicle.Pronoun;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 
 public class Signs extends TreeMap<Integer,Sign> {
