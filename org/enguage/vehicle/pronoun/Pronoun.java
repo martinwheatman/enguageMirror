@@ -1,5 +1,6 @@
 package org.enguage.vehicle.pronoun;
 
+import org.enguage.interp.pattern.Pattern;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -39,7 +40,28 @@ public class Pronoun {
 			 {"us",  "them"                            }},  // plural
 			{{"my",  "its", "his", "her", "his or her" },   // singular possessive
 			 {"our", "their"                           }} };// plural
-		
+	// TODO: these are unsafe - check parameter!!!
+	static public String pronoun(int os, int ps, int mf) { return pronouns[os][ps][mf];}
+	static private void set(int os, int ps, int mf, String val) {
+		pronouns [os][ps][mf] = val;
+		if (ps == PLURAL) {
+			if (os == SUBJECTIVE) {
+				if (mf == Gendered.PERSONAL)
+					Pattern.subjGroup( val );
+				else if (mf == Gendered.NEUTRAL)
+					Pattern.subjOther( val );
+			} else if (os == OBJECTIVE) {
+				if (mf == Gendered.PERSONAL)
+					Pattern.objGroup( val );
+				else if (mf == Gendered.NEUTRAL)
+					Pattern.objOther( val );
+			} else if (os == POSSESSIVE) {
+				if (mf == Gendered.PERSONAL)
+					Pattern.possGroup( val );
+				else if (mf == Gendered.NEUTRAL)
+					Pattern.possOther( val );
+	}	}	}
+	
 	static private String[][][] values = { // initialise to names!
 			{{"",   "",    "",   "",    ""  },   // singular subjective
 			 {"",   "",    "",   "",    ""  }},  // plural
@@ -86,27 +108,24 @@ public class Pronoun {
 
 	// ------------------------------------------------------------------------
 	static private int nameOs( String name ) {
-		return name.equals(  subject   ) ? SUBJECTIVE :
-		       name.equals(   object   ) ? OBJECTIVE  :
-		       name.equals( possession ) ? POSSESSIVE : -1; 
+		// TODO: equals and check pluraled
+		return name.startsWith(  subject   ) ? SUBJECTIVE :
+		       name.startsWith(   object   ) ? OBJECTIVE  :
+		       name.startsWith( possession ) ? POSSESSIVE : -1; 
 	}
 	static private String subject = "subject";
 	static public  void   subjective( String nm ) { subject = nm; }
-	static public  String subjective() { return subject; }
 	
 	static private String subjects = "subjects";
 	static public  void   subjectives( String nm ) { subjects = nm; }
-	static public  String subjectives() { return subjects; }
 	
 	static private String object = "object";
 	static public  void   objective( String nm ) { object = nm; }
-	static public  String objective() { return object; }
 	
 	static private String objects = "objects";
 	static public  void   objectives( String nm ) { objects = nm; }
-	static public  String objectives() { return objects; }
 	
-	static String possession = "'s";
+	static private String possession = "'s";
 	static public  void   possession( String nm ) { possession = nm; }
 	static public  String possession() { return possession; }
 	static public boolean possessive( String word ) {
@@ -152,7 +171,7 @@ public class Pronoun {
 					rc = Shell.Fail;
 			}
 			if (rc.equals( Shell.Success ) && so != -1 && sp != -1 && mfn != -1)
-				pronouns [so][sp][mfn] = sa.remove( 0 );
+				set( so, sp, mfn, sa.remove( 0 ));
 		}
 		return rc;
 	}
@@ -179,14 +198,6 @@ public class Pronoun {
 
 		return rc;
 	}
-	static private Strings name (String name) {
-		// e.g. return possessive variable name
-		return name.equals( subjectives  ) ? new Strings( subjectives())
-				: name.equals( subjective ) ? new Strings( subjective() )
-				: name.equals( objective  ) ? new Strings( objective()  )
-				: name.equals( objectives ) ? new Strings( objectives() )
-				: name.equals( possessive ) ? new Strings( possession() ) : Shell.Fail;
-	}
 	static public Strings interpret( Strings sa ) {
 		// e.g. (pronoun) add masculine martin
 		//      (pronoun) set OBJECTIVE PLURAL MASCULINE him
@@ -202,11 +213,10 @@ public class Pronoun {
 			else if (cmd.equals( "add" ))
 				rc = Gendered.add( sa );
 			else if (cmd.equals( "name" ))
-				switch (sz) { // original size!
-					case 1: rc = Shell.Fail; break; // just cmd
-					case 2: rc = name( sa.get( 0 )); break;
-					default: name( sa.get( 0 ), sa.get( 1 ));
-				}
+				if (1==sz) // original size!
+					rc = Shell.Fail; // just cmd
+				else
+					name( sa.get( 0 ), sa.get( 1 ));
 			else
 				rc = Shell.Fail;
 		}

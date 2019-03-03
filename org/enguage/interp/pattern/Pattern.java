@@ -12,6 +12,8 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.number.Number;
+import org.enguage.vehicle.pronoun.Gendered;
+import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 import org.enguage.util.Audit;
@@ -30,7 +32,7 @@ public class Pattern extends ArrayList<Patternette> {
 	static public  final String  grouped       = "grouped";
 	static public  final String  groupedPrefix = grouped.toUpperCase( locale ) + "-";
 	static public  final String  ungrouped     = "ungrouped";
-	static public  final String  ungrpedPrefix = grouped.toUpperCase( locale ) + "-";
+	static public  final String  ungrpedPrefix = ungrouped.toUpperCase( locale ) + "-";
 	static public  final String  phrase        = "phrase";
 	static public  final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
 	static public  final String  numeric       = "numeric";
@@ -277,6 +279,20 @@ public class Pattern extends ArrayList<Patternette> {
 				                : LARGE*vars - SMALL*cons);
 	}
 	
+	// initialise with values from Pronoun, provide functions to update from pronoun...
+	static private String subjGroup = Pronoun.pronoun(Pronoun.SUBJECTIVE, Pronoun.PLURAL, Gendered.PERSONAL); // i.e. local copy of "they"
+	static public  void   subjGroup( String pl ) { subjGroup = pl;}
+	static private String objGroup = Pronoun.pronoun(Pronoun.OBJECTIVE, Pronoun.PLURAL, Gendered.PERSONAL); // i.e. local copy of "they"
+	static public  void   objGroup( String pl ) { objGroup = pl;}
+	static private String possGroup = Pronoun.pronoun(Pronoun.SUBJECTIVE, Pronoun.PLURAL, Gendered.PERSONAL); // i.e. local copy of "they"
+	static public  void   possGroup( String pl) { possGroup = pl;}
+	static private String subjOther = Pronoun.pronoun(Pronoun.SUBJECTIVE, Pronoun.PLURAL, Gendered.NEUTRAL); // i.e. local copy of "they"
+	static public  void   subjOther( String pl ) { subjOther = pl;}
+	static private String objOther = Pronoun.pronoun(Pronoun.OBJECTIVE, Pronoun.PLURAL, Gendered.NEUTRAL); // i.e. local copy of "they"
+	static public  void   objOther( String pl ) { objOther = pl;}
+	static private String possOther = Pronoun.pronoun(Pronoun.SUBJECTIVE, Pronoun.PLURAL, Gendered.NEUTRAL); // i.e. local copy of "they"
+	static public  void   possOther( String pl) { possOther = pl;}
+	
 	static private       boolean debug = false;
 	static public        boolean debug() { return debug; }
 	static public        void    debug( boolean b ) { debug = b; }
@@ -344,9 +360,18 @@ public class Pattern extends ArrayList<Patternette> {
 					words.add( word );
 		}	}
 		if (words.size() > 0) vals.add( words.toString());
-		if (vals.size() <= 1) return null;
-		// remove "and"s from AND-LIST, replacing with ","
-		//Audit.log( "P::doList(): "+ vals.toString("", " and ", ""));
+		int sz = vals.size();
+		if (sz == 0) return null;
+		// deal with "they", "our", "we" etc as a list
+		if (sz == 1) {
+			String val = vals.get( 0 );
+			if (!val.equals( subjGroup )
+				&& !val.equals( objGroup  )
+				&& !val.equals( possGroup )
+				&& !val.equals( subjOther )
+				&& !val.equals( objOther  )
+				&& !val.equals( possOther )) return null;
+		}
 		return vals.toString("", " and ", "");
 	}
 	private String getNextBoilerplate( Patternette t, ListIterator<Patternette> ti ) {

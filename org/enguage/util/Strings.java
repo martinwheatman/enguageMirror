@@ -973,6 +973,25 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			       + s.substring( 1 ).toLowerCase( Locale.getDefault());
 		return out;
 	}
+	// TODO: tidyup as non-static!
+	public static String fromCamelCase( String in ) {
+		String out = "";
+		int sz = in.length();
+		char ch;
+		for (int i=0; i<sz; i++)
+			out += Character.isUpperCase( ch = in.charAt( i ) ) ?
+					 (" " + Character.toLowerCase( ch )) : ch;
+		return out;
+	}
+	public static boolean isCamelCase( String in ) {
+		int sz = in.length();
+		for (int i=0; i<sz; i++) {
+			char ch = in.charAt( i );
+			if (!Character.isLowerCase( ch ) && !Character.isUpperCase( ch ))
+				return false;
+		}
+		return true;
+	}
 	public Strings extract( ListIterator<String> ui ) {
 		ListIterator<String> loci = listIterator();
 		Strings rc = new Strings();

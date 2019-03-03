@@ -91,8 +91,13 @@ public class Utterance {
 		
 		// English-dependent processing...
 		reply = Language.indefiniteArticleVowelSwap(
-						Language.sentenceCapitalisation( 
-							Language.pronunciation( reply )));
+					Language.pronunciation( reply ));
+		
+		// TODO: to Strings, or move up into derefOrPop?
+		Strings tmp = new Strings();
+		for (String r : reply)
+			tmp.add( Strings.fromCamelCase( r ));
+		reply = tmp;
 		
 		return Language.asStrings( Numeric.deref( reply )).contract( Language.APOSTROPHE );
 	}

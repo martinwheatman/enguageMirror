@@ -32,6 +32,10 @@ On "AND-LIST-SUBJECTS do not need PHRASE-OBJECTS":
 	remove OBJECTS from GROUPED-SUBJECTS needs list;
 	reply "ok, SUBJECTS do not need ...".
 
+On "AND-LIST-SUBJECTS do not need anything":
+	remove everything from GROUPED-SUBJECTS needs list;
+	reply "ok, SUBJECTS do not need anything [LOCATOR LOCATION]".
+
 ###############################################################################
 # Combinations - multiple single subjects, phrased objects
 # martin and james and ruth all need a coffee and a tea.

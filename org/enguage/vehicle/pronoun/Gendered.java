@@ -9,7 +9,7 @@ import org.enguage.util.sys.Shell;
 // ////////////////////////////////////////////////////////////////////////
 // gender...
 //
-class Gendered {
+public class Gendered {
 	// neutral is second to hold all plural pronouns...
 	static public final    int   PERSONAL = 0;
 	static public final    int    NEUTRAL = 1;
@@ -74,7 +74,7 @@ class Gendered {
 	
 	
 	static int valueMfn( String s ) {
-		if (Pronoun.possessive( s )) s = s.substring( 0, s.length()-Pronoun.possession.length());
+		if (Pronoun.possessive( s )) s = s.substring( 0, s.length()-Pronoun.possession().length());
 		return isNeutral(      s ) ? Gendered.UNGENDERED
 				: isPersonal(  s ) ? PERSONAL
 				: isMasculine( s ) ? Gendered.MASCULINE

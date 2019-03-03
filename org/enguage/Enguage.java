@@ -207,22 +207,13 @@ public class Enguage {
 		//Audit.allOn();
 		//Repertoire.signs.show( "OTF" );
 
-		int level = 0; // 0 = every level, -n = ignore level n
+		int level = 0; // TODO: 0 = every level, -n = ignore level n
 		Audit.interval(); // reset timer
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine ruth" ));
 
 		if (testThisLevel( level, 1 )) {
-			audit.title( "Group-as-entity");
-			clearTheNeedsList( "MartinAndRuth does not need anything" );
-			//Audit.allOn();
-			mediate( "martin and ruth need a coffee and a tea",
-			         "ok, martin and ruth need a coffee and a tea" );
-			
-			mediate( "what do they need",
-			         "martin and ruth need a coffee , and a tea" );
-			
 			//mediate( "", "" );
 		}
 		if (testThisLevel( level, 2 )) { // WHY - These tests were for IJCSSA journal article
@@ -298,7 +289,9 @@ public class Enguage {
 			
 			mediate( "what do martin and ruth need",
 			         "martin and ruth need a coffee, and some biscuits" );
-			
+			// Tidy up
+			mediate( "martin and ruth do not need anything", "ok , martin and ruth don't need anything" );
+
 			audit.title( "Combos, multiple singular entities");
 			mediate( "james and martin and ruth all need a chocolate biscuit",
 			         "ok, james and martin and ruth all need a chocolate biscuit" );
@@ -308,6 +301,9 @@ public class Enguage {
 			
 			mediate( "what does martin need",
 					 "martin needs a chocolate biscuit, and a cocoa" );
+			clearTheNeedsList( "james  doesn't need anything" );
+			clearTheNeedsList( "martin doesn't need anything" );
+			clearTheNeedsList( "ruth   doesn't need anything" );
 			
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
@@ -762,6 +758,16 @@ public class Enguage {
 			mediate( "martin needs a coffee", "ok, martin needs a coffee" );
 			mediate( "what does he need",     "martin needs a coffee" );
 			clearTheNeedsList( "martin doesn't need anything" );
+			
+			mediate( "ruth needs a tea",      "ok, ruth needs a tea" );
+			mediate( "what does she need",    "ruth needs a tea" );
+			clearTheNeedsList( "ruth   doesn't need anything" );
+			
+			mediate( "laurel and hardy need a coffee and a tea",
+			         "ok, laurel and hardy need a coffee and a tea" );
+			
+			mediate( "what do they need",     "laurel and hardy need a coffee , and a tea" );
+			clearTheNeedsList( "MartinAndRuth does not need anything" );
 			
 			/* TODO:
 			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
