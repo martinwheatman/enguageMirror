@@ -16,6 +16,7 @@ class Gendered {
 	static public final    int  MASCULINE = 2;
 	static public final    int   FEMININE = 3;
 	static public final    int UNGENDERED = 4;
+
 	
 	static public final String    neutral = "neutral";
 	static public final String   feminine = "feminine";
@@ -33,7 +34,6 @@ class Gendered {
 	
 	private String name;
 	public  String name() { return name;}
-	
 	
 	static Strings add (Strings sa) {
 		// e.g. add masculine martin feminine ruth
