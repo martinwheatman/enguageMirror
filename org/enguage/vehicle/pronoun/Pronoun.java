@@ -12,9 +12,9 @@ public class Pronoun {
 	static private Audit audit = new Audit( "Pronoun" );
 	
 	// hard-coded three dimensions...
-	static public final    int SUBJECTIVE = 0;
-	static public final    int  OBJECTIVE = 1;
-	static public final    int POSSESSIVE = 2;
+	static public final    int SUBJECTIVE  = 0;
+	static public final    int  OBJECTIVE  = 1;
+	static public final    int POSSESSIVE  = 2;
 	
 	static public final    int   SINGULAR = 0;
 	static public final    int     PLURAL = 1;
@@ -40,6 +40,7 @@ public class Pronoun {
 			 {"us",  "them"                            }},  // plural
 			{{"my",  "its", "his", "her", "his or her" },   // singular possessive
 			 {"our", "their"                           }} };// plural
+	
 	// TODO: these are unsafe - check parameter!!!
 	static public String pronoun(int os, int ps, int mf) { return pronouns[os][ps][mf];}
 	static private void set(int os, int ps, int mf, String val) {
@@ -109,22 +110,26 @@ public class Pronoun {
 	// ------------------------------------------------------------------------
 	static private int nameOs( String name ) {
 		// TODO: equals and check pluraled
-		return name.startsWith(  subject   ) ? SUBJECTIVE :
-		       name.startsWith(   object   ) ? OBJECTIVE  :
-		       name.startsWith( possession ) ? POSSESSIVE : -1; 
+		return name.startsWith( subject   ) ? SUBJECTIVE  :
+		       name.startsWith(   object   ) ? OBJECTIVE   :
+		   	   name.equals( possession ) ? POSSESSIVE  : -1; 
 	}
 	static private String subject = "subject";
 	static public  void   subjective( String nm ) { subject = nm; }
 	
-	static private String subjects = "subjects";
-	static public  void   subjectives( String nm ) { subjects = nm; }
-	
 	static private String object = "object";
 	static public  void   objective( String nm ) { object = nm; }
 	
+	// These are the names of the parameters to use with plural
+	// objective and subjective pronouns ("they" and "them")
+	static private String subjects = "subjects";
+	static public  void   subjectives( String nm ) { subjects = nm; }
+	static public  String subjectives() { return subjects; }
 	static private String objects = "objects";
 	static public  void   objectives( String nm ) { objects = nm; }
+	static public  String objectives() { return objects; }
 	
+	// TODO: needs plural possessive, e.g. "s'"
 	static private String possession = "'s";
 	static public  void   possession( String nm ) { possession = nm; }
 	static public  String possession() { return possession; }

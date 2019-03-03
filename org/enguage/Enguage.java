@@ -196,11 +196,10 @@ public class Enguage {
 	static private void clearTheNeedsList() { clearTheNeedsList( ihe );}
 	static private void clearTheNeedsList( String s ) { Enguage.mediate( new Strings( s ));	}
 	
-	static private boolean testThisLevel( int level, int test ) {
+	static private boolean runThisTest( int level, int test ) {
 		return level == 0 || level == test || (level < 0 && level != -test);
 	}
 	public static void sanityCheck( boolean serverTest, String location ) {
-
 		// ...useful ephemera...
 		//interpret( "detail on" );
 		//interpret( "tracing on" );
@@ -208,15 +207,18 @@ public class Enguage {
 		//Repertoire.signs.show( "OTF" );
 
 		int level = 0; // TODO: 0 = every level, -n = ignore level n
+		int testNo = 0;
+		
 		Audit.interval(); // reset timer
+
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine ruth" ));
 
-		if (testThisLevel( level, 1 )) {
-			//mediate( "", "" );
-		}
-		if (testThisLevel( level, 2 )) { // WHY - These tests were for IJCSSA journal article
+		//if (runThisTest( level, ++testNo )) {
+		//	mediate( "", "" );
+		//}
+		if (runThisTest( level, ++testNo )) { // WHY - These tests were for IJCSSA journal article
 			audit.title( "Simple action demo" );
 			mediate( "i am baking a cake",     "i know", "ok, you're baking a cake" );
 			mediate( "am i baking a cake",     "yes, you're     baking a cake" );
@@ -267,8 +269,7 @@ public class Enguage {
 			mediate( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
 			mediate( "why might i need 3 eggs", "because you're baking a cake" );
 		}
-		if (testThisLevel( level, 3 )) { // need+needs test
-			
+		if (runThisTest( level, ++testNo )) { // need+needs test			
 			audit.title( "Group-as-entity");
 			clearTheNeedsList( "MartinAndRuth does not need anything" );
 			
@@ -304,7 +305,8 @@ public class Enguage {
 			clearTheNeedsList( "james  doesn't need anything" );
 			clearTheNeedsList( "martin doesn't need anything" );
 			clearTheNeedsList( "ruth   doesn't need anything" );
-			
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			audit.title( "Pronouns - see need+needs.txt" );
 			clearTheNeedsList();
 			
@@ -325,11 +327,13 @@ public class Enguage {
 			
 			mediate( "i don't need anything from the dairy aisle",
 					   "ok, you don't need anything from the dairy aisle" );
-			
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			mediate( "what do i need",             "you need biscuits, and coffee from sainsbury's" );
 			mediate( "i need an apple" );
 			mediate( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
-			
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			audit.title( "The Non-Computable concept of NEED" );
 			clearTheNeedsList();
 			
@@ -375,12 +379,13 @@ public class Enguage {
 			mediate( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );
 			mediate( "what do i need from the dairy aisle",  "you need milk from the dairy aisle" );
 		}
-		if (testThisLevel( level, 4 )) { // variables, arithmetic and lambda tests
+		if (runThisTest( level, ++testNo )) { // variables, arithmetic and lambda tests
 			audit.title( "james's experimental example" );
 			//interpret( "england is a country",  "ok, england is a country" );
 			mediate( "preston is in england", "ok, preston is in england" );
 			mediate( "i am in preston",       "ok, you're in england" );
-			
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			audit.title( "Simple Variables" );
 			mediate( "the value of name is fred",       "ok, name is set to fred" );
 			mediate( "get the value of name",           "fred" );
@@ -400,7 +405,8 @@ public class Enguage {
 			mediate( "what is martin's height", "194, martin's height is 194" );
 			mediate( "martin's height is 195",  "Ok,  martin's height is 195" );
 			mediate( "what is the height of martin", "195, the height of martin is 195" );
-
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			// WSC - alternative states tests
 			// dead is the opposite of alive, no
 			// dead and alive are mutually exclusive
@@ -413,7 +419,6 @@ public class Enguage {
 			// i am martin            - I know
 			// i am harvey wallbanger - no you're martin
 			// i've changed my name to harvey wallbanger - ok
-
 			audit.title( "WSC - advocacy and fear");
 			audit.subtl( "contradiction test... can't swap between states directly");
 			mediate( "demonstrators fear violence",        "ok, demonstrators fear violence" );
@@ -479,7 +484,7 @@ public class Enguage {
 			mediate( "delete violence fear     list", "ok" );
 			mediate( "unset the value of they" );
 		}
-		if (testThisLevel( level, 5 )) {
+		if (runThisTest( level, ++testNo )) {
 			audit.title( "Annotation" ); // TODO: camelise attribute names
 			mediate( "delete martin was       list", "ok" );
 			mediate( "delete martin wasNot    list", "ok" );
@@ -654,7 +659,7 @@ public class Enguage {
 			// Event: to move is to was (traverse time quanta)
 			// interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
 		}
-		if (testThisLevel( level, 6 )) {
+		if (runThisTest( level, ++testNo )) {
 			audit.title( "Verbal Arithmetic" );
 			mediate( "what is 1 + 2",                    "1 plus 2 is 3" );
 			mediate( "times 2 all squared",              "times 2 all squared makes 36" );
@@ -711,7 +716,7 @@ public class Enguage {
 			
 			mediate( "what is the factorial of 4", "24 the factorial of 4 is 24" );
 		}
-		if (testThisLevel( level, 7 )) {
+		if (runThisTest( level, ++testNo )) {
 			audit.title( "Temporal interpret" );
 			mediate( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
@@ -721,7 +726,8 @@ public class Enguage {
 			// if no date given, use the current date.
 			// persons age given in years
 			// what is my age [in <epoch default="years"/>]
-
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			audit.subtl( "Temporospatial concept MEETING" );
 			
 			/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
@@ -751,7 +757,7 @@ public class Enguage {
 					   "i don't know if you're meeting your dad" );
 			
 		}
-		if (testThisLevel( level, 8 )) { // Language features
+		if (runThisTest( level, ++testNo )) { // Language features
 			
 			audit.title( "Generic Pronouns" );
 			clearTheNeedsList( "martin doesn't need anything" );
@@ -768,14 +774,16 @@ public class Enguage {
 			
 			mediate( "what do they need",     "laurel and hardy need a coffee , and a tea" );
 			clearTheNeedsList( "MartinAndRuth does not need anything" );
-			
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			/* TODO:
 			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
 			 *  she died in 1603
 			 *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
 			 */
 			mediate( "a queen is a monarch", "ok, a queen is a monarch" );
-			
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			audit.subtl( "Disambiguation" );
 			mediate( "the eagle has landed"    /* "Are you an ornithologist" */);
 			mediate( "no the eagle has landed" /* "So , you're talking about the novel" */ );
@@ -783,7 +791,8 @@ public class Enguage {
 			mediate( "no the eagle has landed" /* "I don't understand" */ );
 			// Issue here: on DNU, we need to advance this on "the eagle has landed"
 			// i.e. w/o "no ..."
-
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			audit.subtl( "TCP/IP test" );
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
 			// config port get chosen over this one???
@@ -791,7 +800,7 @@ public class Enguage {
 			mediate( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
 			mediate( "simon says put your hands on your head" ); //, "ok, success" );
 		}
-		if (testThisLevel( level, 9 )) { // code generation features
+		if (runThisTest( level, ++testNo )) { // code generation features
 			
 			audit.title( "Polymorphism - setup new idea and save" );
 			mediate( "want is like need",   "ok, want is like need" );
@@ -806,7 +815,8 @@ public class Enguage {
 			mediate( "i want another pony", "ok, you want another pony" );
 			mediate( "what do i want",      "you want another pony" );
 			clearTheNeedsList( "i don't want anything" );
-
+		}
+		if (runThisTest( level, ++testNo )) { // 
 			audit.title( "On-the-fly Langauge Learning" );
 			/* TODO: create filename from pattern:
 			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)
@@ -858,13 +868,13 @@ public class Enguage {
 			mediate( "just call me phrase variable name means i am called variable name", "ok" );
 			mediate( "just call me martin", "i already know this" );
 		}
-
-		if (testThisLevel( level, 10 )) {
+		if (runThisTest( level, ++testNo )) {
 			audit.title( "Light bins" );
 			mediate( "there are 6 light bins",        "ok, there are 6 light bins" );
 			mediate( "how many light bins are there", "6,  there are 6 light bins" );
 			mediate( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
-			
+		}
+//		if (runThisTest( level, ++testNo )) { // 
 //			audit.title( "Ask: Confirmation" );
 //
 //			//interpret( "prime the answer yes", "ok, the next answer will be yes" );
@@ -882,6 +892,7 @@ public class Enguage {
 //			 *                p v name            => set user name NAME
 //			 * Ask: what is your name?
 //			 */
-		}
+//		}
+		Audit.log( testNo +" test group(s) completed" );
 		audit.PASSED();
 }	}
