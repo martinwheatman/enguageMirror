@@ -151,14 +151,12 @@ public class Variable {
 		}	}
 		return b;
 	}
-	static public Strings deref( Strings a ) {
-		//audit.traceIn( "deref", a.toString());
-		Strings b = new Strings();
-		Iterator<String> ai = a.iterator();
-		while (ai.hasNext())
-			b.appendAll( deref( ai.next() )); // preserve name='value'
-		//audit.traceOut( b );
-		return b;
+	static public Strings deref( Strings in ) {
+		Strings out = new Strings();
+		Iterator<String> it = in.iterator();
+		while (it.hasNext())
+			out.appendAll( deref( it.next() )); // preserve name='value'
+		return out;
 	}
 	
 	static public Strings interpret( Strings args ) {

@@ -406,19 +406,18 @@ public class Enguage {
 			mediate( "martin's height is 195",  "Ok,  martin's height is 195" );
 			mediate( "what is the height of martin", "195, the height of martin is 195" );
 		}
-		if (runThisTest( level, ++testNo )) { // 
-			// WSC - alternative states tests
-			// dead is the opposite of alive, no
-			// dead and alive are mutually exclusive
+		if (runThisTest( level, ++testNo )) {
+			// TODO: WSC - alternative states tests
+			// mut ex: dead is the opposite of alive, no?
+			//         dead and alive are mutually exclusive
+			// mut ex: i am martin            - ok
+			//         i am martin wheatman   - ok
+			//         i am martin            - I know
+			//         i am harvey wallbanger - no you're martin
+			//         i've changed my name to harvey wallbanger - ok
 			// fat and thin and athletic are mutually exclusive.
-			// I am fat.     Am I thin. No
-			// I am not fat. Am i thin. I don't know
-			
-			// i am martin            - ok
-			// i am martin wheatman   - ok
-			// i am martin            - I know
-			// i am harvey wallbanger - no you're martin
-			// i've changed my name to harvey wallbanger - ok
+			//         I am fat.     Am I thin. No
+			//         I am not fat. Am i thin. I don't know
 			audit.title( "WSC - advocacy and fear");
 			audit.subtl( "contradiction test... can't swap between states directly");
 			mediate( "demonstrators fear violence",        "ok, demonstrators fear violence" );
