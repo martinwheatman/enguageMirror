@@ -128,9 +128,9 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
 	
-	private  Strings say = new Strings();
-	private  Strings say() { return say; }
-	public   void    say( Strings sa ) { say.addAll( Shell.addTerminator( sa )); }
+	static public  Strings say = new Strings(); // public to reset it!
+	static private Strings say() { return say; }
+	static public  void    say( Strings sa ) {say.addAll( Shell.addTerminator( sa ));}
 		
 	private static final Strings FUDG1 = new Strings( "I don't know" );
 	private static final Strings FUDG2 = new Strings( "I don't understand" );

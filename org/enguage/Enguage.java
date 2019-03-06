@@ -94,6 +94,7 @@ public class Enguage {
 		if (!Repertoire.induction() && !Autoload.ing()) Autoload.unload();
 
 		Strings reply = r.toStrings();
+		Reply.say = new Strings();
 		if (Net.serverOn()) Audit.log( "Server replied: "+ reply );
 		return audit.out( reply );
 	}

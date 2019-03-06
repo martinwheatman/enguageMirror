@@ -64,8 +64,8 @@ public class Engine {
 					.appendIntention( Intention.allop, "hello")
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Patternette(         "welcome", "" ))
-					.appendIntention( Intention.allop, "welcome")
+					.pattern( new Patternette(         "say", "SAID" ).phrasedIs() /*.quotedIs()*/ )
+					.appendIntention( Intention.allop, "say SAID")
 			  		.concept( NAME ),
 			new Sign().pattern( new Patternette( "what can i say", "" ))
 					 .appendIntention( Intention.allop, "repertoire"  )
@@ -376,10 +376,8 @@ public class Engine {
 //			Redo.helped( true );
 //			r.format( Repertoire.allop.helpedToString( Repertoire.ALLOP ));
 
-		} else if (cmd.equals( "welcome" )) {
-			Redo.helped( true );
-			r.say( new Strings( "welcome" ));
-//			r.format( Signs.help());
+		} else if (cmd.equals( "say" )) {
+			Reply.say( cmds );
 
 		} else if ( cmd.equals( "list" )) {
 			//Strings reps = Enguage.e.signs.toIdList();
