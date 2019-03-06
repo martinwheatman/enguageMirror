@@ -312,28 +312,28 @@ public class Moment {
 	}
 
 	private String dateToString( String prefix ) {
-			String rc = "";
-			long dval = date();
-			if (dval != Absolute.unassignedDate && dval != 0) {
-				long today     = dateValue( getNow().moment() ),
-					 tomorrow  = dateValue( getNow().nextDay().moment() ),
-					 yesterday = dateValue( getNow().prevDay().moment() );
-				if (dval == today ) {
-					rc = "today";
-				} else if (dval == tomorrow ) {
-					rc = "tomorrow";
-				} else if (dval == yesterday ) {
-					rc = "yesterday";
-				} else {
-					String	day = Day.toString( moment ),
-							month = Month.toString( moment ),
-							date = day + (month.equals("") || day.equals("")?"":"of ") + month;
-					if (prefix==null) // obtain default
-						prefix = day.equals( "" ) ? Absolute.approxPrefix() : Absolute.exactPrefix();
-					if (!prefix.equals("")) prefix += " ";
-					rc = String.format( prefix +"%s%s%d ", date, (date.equals("") ? "" : ", "), year());
-			}	}
-			return rc;
+		String rc = "";
+		long dval = date();
+		if (dval != Absolute.unassignedDate && dval != 0) {
+			long today     = dateValue( getNow().moment() ),
+				 tomorrow  = dateValue( getNow().nextDay().moment() ),
+				 yesterday = dateValue( getNow().prevDay().moment() );
+			if (dval == today ) {
+				rc = "today";
+			} else if (dval == tomorrow ) {
+				rc = "tomorrow";
+			} else if (dval == yesterday ) {
+				rc = "yesterday";
+			} else {
+				String	day = Day.toString( moment ),
+						month = Month.toString( moment ),
+						date = day + (month.equals("") || day.equals("")?"":"of ") + month;
+				if (prefix==null) // obtain default
+					prefix = day.equals( "" ) ? Absolute.approxPrefix() : Absolute.exactPrefix();
+				if (!prefix.equals("")) prefix += " ";
+				rc = String.format( prefix +"%s%s%d ", date, (date.equals("") ? "" : ", "), year());
+		}	}
+		return rc;
 	}
 	private static String minutesToString( int mins ) {
 		return mins == Time.unassigned || mins == 0 ? "" : String.format( locale(), " %02d", mins );

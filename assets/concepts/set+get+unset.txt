@@ -15,6 +15,11 @@ On "set   the value of VAR to PHRASE-VALUE", set VAR to VALUE.
 On "get   the value of VAR", perform "variable get VAR".
 On "unset the value of VAR", perform "variable unset VAR".
 
+On "is VAR set":
+	perform "variable exists VAR";
+	reply "yes";
+	if not, reply "no".
+	
 On "is VAR not set to PHRASE-VALUE":
 	perform "variable equals VAR VALUE";
 	reply "no, VAR is set to VALUE";

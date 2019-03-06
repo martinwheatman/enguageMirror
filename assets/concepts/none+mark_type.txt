@@ -1,0 +1,12 @@
+# DVI prototype...
+
+On "none":
+	is nine_lines set to mark_type;
+	if not, reply "i do not understand";
+	set the value of mark_type to none;
+	set the value of nine_lines to friendlies;
+	reply "ok, mark type is none".
+	
+On "what is the mark type":
+	get the value of mark_type;
+	reply "...".

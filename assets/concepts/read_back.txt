@@ -1,0 +1,41 @@
+# DVI prototype...
+
+On "read back":
+	what is the initial point;
+	say initial point is ...;             # must try positive first!
+	if not, say line 1 is not applicable; # this will regain +ve felicity
+	
+	what is the heading;
+	say heading is ...;
+	if not, say line 2 is not applicable;
+	
+	what is the distance;
+	say distance is ...;
+	if not, say line 3 is not applicable;
+	
+	what is the target elevation;
+	say target elevation is ...;
+	if not, say line 4 is not applicable;
+
+	what is the target description;
+	say target description is ...;
+	if not, say line 5 is not applicable;
+
+	what is the target location;
+	say target location is ...;
+	if not, say line 6 is not applicable;
+
+	what is the mark type;
+	say ...;
+	if not, say line 7 is not applicable;
+
+	where are friendlies;
+	say friendlies are ...;
+	if not, say line 8 is not applicable;
+
+	what is egress;
+	say egress is ...;
+	if not, say line 9 is not applicable;
+
+	reply "ok".
+

@@ -31,7 +31,7 @@ public class Time {
 	public static int time( long t ) {return (int)(t % Time.DAY); }
 	
 	static boolean doHour( When w, ListIterator<String> si ) {
-		audit.in( "doHour", "w="+ w.toString() +", si="+ si.nextIndex() );
+		//audit.in( "doHour", "w="+ w.toString() +", si="+ si.nextIndex() );
 		boolean rc = false;
 		if (si.hasNext())
 			try {
@@ -65,11 +65,11 @@ public class Time {
 			} catch (NumberFormatException nfe) {
 				si.previous();
 			}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 
 	static boolean doMinute( When w, ListIterator<String> si ) {
-		audit.in( "doMinute", "w="+ w.toString() +", si="+ si.nextIndex() );
+		//audit.in( "doMinute", "w="+ w.toString() +", si="+ si.nextIndex() );
 		boolean rc = false;
 		if (si.hasNext())
 			try {
@@ -90,11 +90,11 @@ public class Time {
 			} catch (NumberFormatException nfe) {
 				si.previous();
 			}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 
 	static boolean doSecond( When w, ListIterator<String> si ) {
-		audit.in( "doSecond", "w="+ w.toString() +", si="+ si.nextIndex() );
+		//audit.in( "doSecond", "w="+ w.toString() +", si="+ si.nextIndex() );
 		boolean rc = false;
 		if (si.hasNext())
 			try {
@@ -116,11 +116,11 @@ public class Time {
 			} catch (NumberFormatException nfe) {
 				si.previous();
 			}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 
 	static boolean doTime( When w, ListIterator<String> si ) {
-		audit.in( "doTime", ""+ si.nextIndex() );
+		//audit.in( "doTime", ""+ si.nextIndex() );
 		boolean rc = false;
 		if (doHour( w, si )) {
 			rc = true;
@@ -133,10 +133,10 @@ public class Time {
 				} else
 					si.previous(); // replace ":" after hour
 		}	}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	static boolean doAt( When w, ListIterator<String> si ) {
-		Relative.audit.in( "doAt", "w="+ w.toString() +", si="+ si.nextIndex());
+		//Relative.audit.in( "doAt", "w="+ w.toString() +", si="+ si.nextIndex());
 		boolean rc = false;
 		// at already found
 		if (doTime( w, si )) { // optional -- scale <- month
@@ -150,7 +150,7 @@ public class Time {
 			} else
 				Relative.doRelativeDay( w, si );
 		}
-		return Relative.audit.out( rc );
+		return rc; //Relative.audit.out( rc );
 	}
 
 	// --

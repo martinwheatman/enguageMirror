@@ -1,0 +1,14 @@
+# DVI prototype...
+
+On "the distance is PHRASE-X":
+	is nine_lines set to distance;
+	if not, reply "i do not understand";
+	set the value of distance to X;
+	set the value of nine_lines to target_elevation;
+	reply "ok, the distance is X".
+
+on "what is the distance":
+	is distance set;
+	if not, reply "sorry, i don't know";
+	get the value of distance;
+	reply "the distance is ...".

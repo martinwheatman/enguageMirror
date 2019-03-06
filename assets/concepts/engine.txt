@@ -7,7 +7,7 @@ On "no",          undo.
 On "Forget that", undo.
 
 On "so     PHRASE-X", X.
-On "ok     PHRASE-X", X.
 On "and    PHRASE-X", X.
 On "now    PHRASE-X", X.
 On "please PHRASE-X", X.
+On "ok     PHRASE-X", X.

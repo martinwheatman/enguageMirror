@@ -21,7 +21,7 @@ public class Indent {
 	public  void incr() { level++; setIndentStr();}
 	public  void decr() { if (level>0) level--; setIndentStr(); }
 	
-	public  void print( PrintStream out ) { out.print( indentStr ); }
+	public  void print( PrintStream out ) { out.append( indentStr ); }
 	public  String toString() { return indentStr; }
 	public static void main(String args[]) {
 		Indent indent = new Indent();

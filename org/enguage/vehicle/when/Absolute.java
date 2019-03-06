@@ -23,7 +23,7 @@ public class Absolute {
 	
 	static boolean doDate( When w, ListIterator<String> si ) {
 		// remove "...on the] 25th December 2015..." and return When
-		audit.in( "doDate", "w="+ w.toString() +", si="+ si.nextIndex());
+		//audit.in( "doDate", "w="+ w.toString() +", si="+ si.nextIndex());
 		boolean rc = false;
 		if (si.hasNext()) {
 			try {
@@ -42,10 +42,10 @@ public class Absolute {
 			if (rc && w.scale() > Time.DAY ) {
 				w.scale( Time.DAY );
 		}	}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	static boolean doYear( When w, ListIterator<String> si ) {
-		audit.in( "doYear", "w="+ w.toString() +", si="+ si.nextIndex());
+		//audit.in( "doYear", "w="+ w.toString() +", si="+ si.nextIndex());
 		boolean rc = false;
 		if ( si.hasNext()) {
 			try {
@@ -57,11 +57,11 @@ public class Absolute {
 			} catch (NumberFormatException nfe) {
 				si.previous();
 		}	}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	static boolean doFullDate( When w, ListIterator<String> si ) {
 		boolean rc = false;
-		audit.in( "doDate", "w="+ w.toString() +", si="+ si.nextIndex());
+		//audit.in( "doDate", "w="+ w.toString() +", si="+ si.nextIndex());
 		if (doDate( w, si )) {
 			rc = true; // done enough, following here is speculative
 			if (Strings.doString( "of", si ))
@@ -70,5 +70,5 @@ public class Absolute {
 				else
 					si.previous(); // replace "of"
 		}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}	}

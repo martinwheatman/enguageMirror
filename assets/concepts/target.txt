@@ -1,0 +1,58 @@
+# DVI prototype...
+
+## Elevation
+On "target elevation is PHRASE-X":
+	is nine_lines set to target_elevation;
+	if not, reply "i do not understand";
+	set target_elevation to X;
+	set the value of nine_lines to target_description;
+	reply "ok, target elevation is X".
+
+On "target elevation PHRASE-X":
+	is nine_lines set to target_elevation;
+	if not, reply "i do not understand";
+	set target_elevation to X;
+	set the value of nine_lines to target_description;
+	reply "ok, target elevation is X".
+
+On "what is the target elevation":
+	get the value of target_elevation;
+	reply "target elevation is ...".
+
+## Description
+On "target description is PHRASE-X":
+	is nine_lines set to target_description;
+	if not, reply "i do not understand";
+	set target_description to X;
+	set the value of nine_lines to target_location;
+	reply "ok, target description is X".
+
+On "target description PHRASE-X":
+	is nine_lines set to target_description;
+	if not, reply "i do not understand";
+	set target_description to X;
+	set the value of nine_lines to target_location;
+	reply "ok, target description is X".
+
+On "what is the target description":
+	get the value of target_description;
+	reply "target description is ...".
+
+##
+On "target location is PHRASE-X":
+	is nine_lines set to target_location;
+	if not, reply "i do not understand";
+	set target_location to X;
+	set the value of nine_lines to mark_type;
+	reply "ok, target location is X".
+
+On "target location PHRASE-X":
+	is nine_lines set to target_location;
+	if not, reply "i do not understand";
+	set target_location to X;
+	set the value of nine_lines to mark_type;
+	reply "ok, target location is X".
+
+On "what is the target location":
+	get the value of target_location;
+	reply "target location is ...".

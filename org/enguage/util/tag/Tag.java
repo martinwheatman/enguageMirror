@@ -1,11 +1,12 @@
 package org.enguage.util.tag;
 
-/* import android.app.Activity;
- * import android.content.res.AssetManager;
- * import java.io.IOException;
- * import java.io.InputStream;
- * import org.enguage.util.sys.Fs;
- */
+/* ANDROID --
+import android.app.Activity;
+import android.content.res.AssetManager;
+import java.io.IOException;
+import java.io.InputStream;
+import org.enguage.util.sys.Fs;
+// */
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -275,22 +276,22 @@ public class Tag {
 				+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
-	/*
-	 * public static Tag fromAsset( String fname, Activity ctx ) {
-	 * 	audit.in( "fromAsset", fname );
-	 * 	Tag t = null;
-	 * 	AssetManager am = ctx.getAssets();
-	 * 	try {
-	 * 		InputStream is = am.open( fname );
-	 * 		t = new Tag( Fs.stringFromStream( is ));
-	 * 		is.close();
-	 * 	} catch (IOException e) {
-	 * 		audit.ERROR( "no tag found in asset "+ fname );
-	 * 	}
-	 * 	audit.out();
-	 * 	return t;
-	 *}
-	*/
+	/* ANDROID --
+	public static Tag fromAsset( String fname, Activity ctx ) {
+	 	audit.in( "fromAsset", fname );
+	 	Tag t = null;
+	 	AssetManager am = ctx.getAssets();
+	 	try {
+	 		InputStream is = am.open( fname );
+	 		t = new Tag( Fs.stringFromStream( is ));
+	 		is.close();
+	 	} catch (IOException e) {
+	 		audit.ERROR( "no tag found in asset "+ fname );
+	 	}
+	 	audit.out();
+	 	return t;
+	}
+	// */
 	public Tag findByName( String nm ) {
 		Tag rc = null;
 		if (name().equals( nm ))

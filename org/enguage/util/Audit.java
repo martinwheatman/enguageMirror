@@ -1,5 +1,7 @@
 package org.enguage.util;
 
+import java.io.File;
+import java.io.PrintStream;
 import java.util.GregorianCalendar;
 
 public class Audit {
@@ -18,6 +20,17 @@ public class Audit {
  	static private Indent indent = new Indent();
  	static public  void   incr() { indent.incr(); }
  	static public  void   decr() { indent.decr(); }
+ 	
+ 	// === logfile - write-only
+ 	static private String fname = "." + File.separator+"audit.log";
+ 	static public  void delete() {
+ 		File f = new File( fname );
+ 		if (f.exists()) f.delete();
+ 	}
+ 	static public  void location( String l ) {
+ 		delete();
+ 		fname = l + File.separator+"audit.log";
+ 	}
 
 	// === timestamp
 	static private long then = new GregorianCalendar().getTimeInMillis();
@@ -39,18 +52,23 @@ public class Audit {
 	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; auditOn = d;}
 	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; auditOn = d; detailedRegis = detail;}
 	
-	static public int    log( int    info ) { log( ""+ info ); return info; }
-	static public String LOG( String info ) { // ignores suspended value
-		indent.print( System.out );
-		System.out.println( info + (timings ? " -- "+interval()+"ms" : ""));
-		System.out.flush();
+	static private String LOG( PrintStream ps, String info ) { // ignores suspended value
+		indent.print( ps );
+		ps.append( info + (timings ? " -- "+interval()+"ms" : "") +"\n" );
 		return info;
 	}
-	static public String log( Strings info ) { return log( info.toString()); }
 	static public String log( String info ) {
-		if (!suspended()) LOG( info );
+		if (!suspended()) {
+			LOG( info );
+			try {
+				;//LOG( new PrintStream( new FileOutputStream( fname, true )), info );
+			} catch (Exception e) { LOG( System.out, info ); }
+		}
 		return info;
 	}
+	static public int    log( int     info ) { log( ""+ info ); return info; }
+	static public String LOG( String  info ) { return LOG( System.out, info );}
+	static public String log( Strings info ) { return log( info.toString()); }
 	
 	// test count
 	private int  numberOfTests = 0;

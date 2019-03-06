@@ -70,19 +70,19 @@ public class When {
 
 	// helper ("non-static factory") methods
 	public When today() {
-		audit.in( "today", "w="+ toString());
+		//audit.in( "today", "w="+ toString());
 		long today = (Moment.getNow().moment() / Time.DAY ); // * Moment.DAY;
 		
 		if (type == TO) to().date( today ); else from().date( today );
 		
 		scale( Time.DAY );
-		audit.out( toString());
+		//audit.out( toString());
 		return this;
 	}
 	public When yesterday() { return today().prevDay();}
 	public When tomorrow()  { return today().nextDay();}
 	public When thisWeek( String requiredDay ) {
-		audit.in( "thisWeek", "w="+ toString() +", req="+ requiredDay );
+		//audit.in( "thisWeek", "w="+ toString() +", req="+ requiredDay );
 		today();
 		int actualDoW = type == TO ?
 				Day.dayInWeek( Day.name( to().moment() )) :
@@ -90,7 +90,7 @@ public class When {
 		int reqireDoW = Day.dayInWeek( requiredDay );
 		dayShift( reqireDoW - actualDoW );
 		shift();
-		audit.out( toString());
+		//audit.out( toString());
 		return this;
 	}
 	// apply
@@ -164,7 +164,7 @@ public class When {
 	public  void yearShift( long l ) { audit.debug("ys="+l); yearShift += l; }
 	
 	public When shift() {
-		audit.in( "shift", toString() +", y="+ yearShift +", m="+monthShift +", d="+ dayShift );
+		//audit.in( "shift", toString() +", y="+ yearShift +", m="+monthShift +", d="+ dayShift );
 		
 		if (isUnassigned()) today();
 		
@@ -177,7 +177,7 @@ public class When {
 		               else while (  dayShift-- != 0) nextDay();
 		// ... and, reset shifts
 		dayShift = monthShift = yearShift = 0;
-		audit.out( toString() );
+		//audit.out( toString() );
 		return this;
 	}
 	/* ++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -286,7 +286,7 @@ public class When {
 	}
 
 	private static boolean interpret( When w, ListIterator<String> si ) {
-		audit.in( "interpret", "" );
+		//audit.in( "interpret", "" );
 		boolean rc = false; // if false the caller will rewind si
 		w.type( AT );
 		if ((Strings.doString( "on", si ) && !(rc = Relative.doOn( w, si ))) ||
@@ -316,7 +316,7 @@ public class When {
 			 && !(rc = Moment.doMoment( w.type( TO ), si )))
 				si.previous(); // replace until/to
 	
-		return audit.out( rc );
+		return rc; // audit.out( rc );
 	}
 	// --
 	public static When getWhen( Strings sa ) { return getWhen( new When(), sa ); }

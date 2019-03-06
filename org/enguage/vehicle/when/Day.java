@@ -7,11 +7,6 @@ import java.util.ListIterator;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Language;
-import org.enguage.vehicle.when.Day;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.Relative;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
 
 public class Day {
 
@@ -103,7 +98,7 @@ public class Day {
 			return "" ;
 	}	}
 	static boolean doDayName( When w, ListIterator<String> si ) {
-		Relative.audit.in( "doDayName", "w="+ w.toString() +", si="+ si.nextIndex());
+		//Relative.audit.in( "doDayName", "w="+ w.toString() +", si="+ si.nextIndex());
 		// adjusts w to the given day, e.g. "Thursday" of this week
 		boolean found = false;
 		if (si.hasNext()) {
@@ -132,11 +127,11 @@ public class Day {
 			} else
 				si.previous();
 		}
-		Relative.audit.out( found );
+		//Relative.audit.out( found );
 		return found;
 	}
 	static boolean doToday( When w, ListIterator<String> si ) {
-		Relative.audit.in( "doToday", "w="+ w.toString() );
+		//Relative.audit.in( "doToday", "w="+ w.toString() );
 		boolean found = false;
 		if (si.hasNext()) {
 			if (si.next().equals( "today" )) {
@@ -146,7 +141,7 @@ public class Day {
 			} else
 				si.previous();
 		}
-		return Relative.audit.out( found );
+		return found; //Relative.audit.out( found );
 	}
 
 	static boolean doMornAftEve( When w, ListIterator<String> si ) {

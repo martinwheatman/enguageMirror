@@ -22,7 +22,7 @@ public class Relative {
 	static Audit audit = new Audit( "Relative" );
 
 	static boolean doThisLastNext( When w, ListIterator<String> si ) {
-		audit.in( "doThisLastNext",", w="+ w.toString() +", <si>" );
+		//audit.in( "doThisLastNext",", w="+ w.toString() +", <si>" );
 		boolean found = false;
 		if (si.hasNext()) {
 			String s = si.next();
@@ -39,10 +39,10 @@ public class Relative {
 			} else
 				si.previous();
 		}
-		return audit.out( found );
+		return found; // audit.out( found );
 	}
 	static boolean doWmy( When w, ListIterator<String> si ) {
-		audit.in( "doWmy", "" );
+		//audit.in( "doWmy", "" );
 		boolean rc = false;
 		if (si.hasNext()) {
 			String s = Plural.singular( si.next());
@@ -63,14 +63,14 @@ public class Relative {
 				rc = false;
 				si.previous();
 		}	}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	static boolean doAwmyAgo( When w, ListIterator<String> si ) {
 		// removes "...a week ago..."
 		/* 
 		 * [[NUMBER w|m|y [ago]] last|next|this]
 		 */
-		audit.in( "doAwmyAgo", "<si>" );
+		//audit.in( "doAwmyAgo", "<si>" );
 		boolean found = false;
 		int shift = 0, start = si.nextIndex();
 		Number number = Number.getNumber( si );
@@ -127,10 +127,10 @@ public class Relative {
 				found = false; // we've not found anything significant
 		}
 		if (!found) while (si.previousIndex() >= start) si.previous();
-		return audit.out( found );
+		return found; // audit.out( found );
 	}
 	static boolean doOn( When w, ListIterator<String> si ) {
-		audit.in( "doOn", "w="+ w.toString() +", si="+ si.nextIndex());
+		//audit.in( "doOn", "w="+ w.toString() +", si="+ si.nextIndex());
 		boolean rc = false;
 		// on already found
 		if (Day.doDayName( w, si ))
@@ -142,10 +142,10 @@ public class Relative {
 		if (Strings.doString( "at", si) && !Time.doTime( w, si ))
 			si.previous(); // replace "at"
 			
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	static boolean doIn( When w, ListIterator<String> si ) {
-		audit.in( "doIn", "w="+ w.toString() +", si="+ si.nextIndex());
+		//audit.in( "doIn", "w="+ w.toString() +", si="+ si.nextIndex());
 		boolean rc = false;
 		// in already found
 		if (Month.doMonth( w, si )) { // optional -- scale <- month
@@ -154,7 +154,7 @@ public class Relative {
 		} else if( Absolute.doYear( w, si )) { // scale <- year
 			rc = true;
 		}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	static boolean doRelativeDay( When w, ListIterator<String> si ) {
 		audit.in( "doRelativeDay", "w="+ w.toString() +", si="+ si.nextIndex());

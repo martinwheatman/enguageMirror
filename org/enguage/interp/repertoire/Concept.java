@@ -1,6 +1,8 @@
 package org.enguage.interp.repertoire;
 
-/*import android.app.Activity;*/
+/* ANDROID --
+import android.app.Activity;
+// */
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,11 +37,12 @@ public class Concept {
 		// ...add content from file/asset...
 		try {
 			String fname = "concepts"+ File.separator + name + ".txt";
-			/*Activity a = (Activity) Enguage.e.context();*/
+			// ANDROID --
+			//Activity a = (Activity) Enguage.context(); //*/
 			InputStream is =
-					/*a == null ?*/
+					//a == null ?//*/
 							new FileInputStream( Ospace.location() + fname )
-					/*      : a.getAssets().open( fname )*/;
+					/*      : a.getAssets().open( fname ); //*/ ;
 			Enguage.shell().interpret( is, from, to );
 			is.close();
 			
