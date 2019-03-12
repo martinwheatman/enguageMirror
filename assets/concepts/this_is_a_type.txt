@@ -1,7 +1,0 @@
-# DVI prototype...
-
-On "PHRASE-NAME this is a type NUMERIC-TYPE control":
-	set the value of control_type to TYPE;
-	set the value of pilot_name  to NAME;
-	set the value of nine_lines to initial_point;
-	reply "ok, go ahead".
