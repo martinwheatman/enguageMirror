@@ -83,7 +83,7 @@ public class Enguage {
 			Redo.disambOff();
 		} else {
 			// really lost track?
-			audit.debug( "Enguage:interpret(): not understood, forgeting to ignore: "
+			audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
 			             +Repertoire.signs.ignore().toString() );
 			Repertoire.signs.ignoreNone();
 			shell.aloudIs( true ); // sets aloud for whole session if reading from fp

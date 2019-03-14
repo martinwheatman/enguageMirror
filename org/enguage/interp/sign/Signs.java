@@ -192,7 +192,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	// a simple cognitive model ?
 	public Reply mediate( Utterance u ) {
 		//*
-			audit.in( "interpret",
+			audit.in( "mediate",
 				" ("+ name +"="+ size() +") "
 				+ " '"+ u.toString() +"' "
 		 		+ (ignore.size()==0?"":("avoiding "+ignore)));
@@ -274,8 +274,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 					r.a.appendingIs( false );
 				} // matched	
 			}	
-		} // while more signs and not done		
-		return (Reply) audit.out( r.answer( answer ));
+		} // while more signs and not done
+		return (Reply) audit.out( r.answer( answer )); // r.answer( answer ); //
 	}	
 	// help...
 //	static public String help = "to get help, just say help";

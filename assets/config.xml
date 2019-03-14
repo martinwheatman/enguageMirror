@@ -2,18 +2,18 @@
 	<config
 			CLASSPATH="/home/martin/ws/Enguage/bin"
 			SOFA="java com.yagadi.enguage.object.Sofa"
-			DNU="I don't understand"
-			DNK="I do not know"
+			DNU="i don't understand"
+			DNK="i don't know"
 			SUCCESS="ok"
 			FAILURE="sorry"
 			ANSWER="whatever"
-			NOTVARS="I , ."
-			IK="I know"
+			NOTVARS="I"
+			IK="i know"
 			TTL="5"
 			TERMS=". ? !"
 			VALUESEP="+"
 			APOSTROPHES="true"
-			REPEATFORMAT="I said, ... ."
+			REPEATFORMAT="i said, ... ."
 			ANDCONJUNCTIONS="and"
 			 ORCONJUNCTIONS="or"
 			REFERENCERS="the any"
@@ -23,7 +23,7 @@
 			SERVER="localhost"
 			PORT="8080"
 			XXMLPOST="</SOAP-ENV:Body></SOAP-ENV:Envelope>"
-			XXMLPRE='<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:example="http://ws.cdyne.com/"><SOAP-ENV:Header/><SOAP-ENV:Body>'>
+			XXMLPRE='<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:example="http://ws.cdyne.com/"><SOAP-ENV:Header/><SOAP-ENV:Body>'
 			XMLPOST=""
 			XMLPRE="">
 			

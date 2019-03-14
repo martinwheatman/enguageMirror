@@ -1,6 +1,7 @@
 package org.enguage.objects;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -128,7 +129,7 @@ public class Variable {
 				 ?	new Strings( get( name, name )).replace( ",", "and" )
 				 :	new Strings( name )).contract( "=" );
 	}
-	static public Strings derefOrPop( Iterator<String> ai ) {
+	static public Strings derefOrPop( ListIterator<String> ai ) {
 		// "QUANTITY='2' UNITS='cup' of" => "2 cups of"
 		// "LOCATION='here' LOCATOR=''"  => ""
 		Strings b = new Strings();
@@ -249,7 +250,7 @@ public class Variable {
 				Variable.set( "LOCATION", "Sainsburys" );
 				Strings b = new Strings( "where [LOCATOR LOCATION] to LOCATION" );
 				
-				b = derefOrPop( b.iterator() );
+				b = derefOrPop( b.listIterator() );
 
 				Audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
 			}

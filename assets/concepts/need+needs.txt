@@ -28,7 +28,7 @@ On "what do AND-LIST-SUBJECTS need":
 
 On "AND-LIST-SUBJECTS do not need PHRASE-OBJECTS":
 	OBJECTS exists in GROUPED-SUBJECTS needs list;
-	if not, reply "I know";
+	if not, reply "i know";
 	remove OBJECTS from GROUPED-SUBJECTS needs list;
 	reply "ok, SUBJECTS do not need ...".
 
@@ -54,7 +54,7 @@ On "AND-LIST-SUBJECTS both need PHRASE-OBJECTS":
 On "SUBJECT needs PHRASE-OBJECTS":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	OBJECTS exists in SUBJECT needs list;
-	reply "I know";
+	reply "i know";
 	if not, add OBJECTS to SUBJECT needs list;
 	if not, append OBJECTS onto SUBJECT needs list;
 	reply "ok, SUBJECT needs ...".
@@ -62,14 +62,14 @@ On "SUBJECT needs PHRASE-OBJECTS":
 On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY OBJECT exists in SUBJECT needs list;
-	reply "I know";
+	reply "i know";
 	if not, add QUANTITY OBJECT to SUBJECT needs list;
 	reply "ok, SUBJECT needs ... ".
 
 On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
 	QUANTITY UNIT of OBJECT exists in SUBJECT needs list;
-	reply "I know";
+	reply "i know";
 	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
 	reply "ok, SUBJECT needs ...".
 
@@ -115,28 +115,28 @@ On "SUBJECT does not need anything":
 
 On "SUBJECT does not need PHRASE-OBJECTS":
 	OBJECTS exists in SUBJECT needs list;
-	if not, reply "I know";
+	if not, reply "i know";
 	remove OBJECTS from SUBJECT needs list;
 	if not, reply "ok, SUBJECT does not need OBJECTS";
 	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need NUMERIC-QUANTITY PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
-	if not, reply "I know";
+	if not, reply "i know";
 	remove QUANTITY OBJECT from SUBJECT needs list;
 	if not, reply "sorry, SUBJECT does not need QUANTITY OBJECT";
 	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
-	if not, reply "I know";
+	if not, reply "i know";
 	remove QUANTITY UNIT of OBJECT from SUBJECT needs list;
 	if not, reply "sorry, SUBJECT does not need QUANTITY UNIT of OBJECT";
 	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need any PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
-	if not, reply "I know";
+	if not, reply "i know";
 	remove any OBJECT from SUBJECT needs list;
 	if not, reply "sorry, SUBJECT does not need any OBJECT";
 	reply "ok, SUBJECT does not need any OBJECT".

@@ -46,7 +46,7 @@ public class Reply { // a reply is basically a formatted answer
 	static private Strings dnk = new Strings( "DNK" );
 	static private String  dnkStr = "DNK";
 	static public  void    dnk( String s ) { dnk = new Strings( dnkStr = s ); }
-	static public  Strings  dnk() { return dnk; }
+	static public  Strings dnk() { return dnk; }
 	static public  String  dnkStr() { return dnkStr; }
 
 	static private Strings ik = new Strings( "IK" );
@@ -137,8 +137,8 @@ public class Reply { // a reply is basically a formatted answer
 			say.addAll( Shell.addTerminator( sa ));
 	}
 		
-	private static final Strings FUDG1 = new Strings( "I don't know" );
-	private static final Strings FUDG2 = new Strings( "I don't understand" );
+	//private static final Strings FUDG1 = new Strings( "i don't know" );
+	//private static final Strings FUDG2 = new Strings( "i don't understand" );
 	private int     type = DNU;
 	public  int     type() { return type; }
 	public  Reply   type( Strings response ) {
@@ -150,11 +150,12 @@ public class Reply { // a reply is basically a formatted answer
 		else if (response.beginsIgnoreCase( failure)) type =FAIL;
 		else if (response.beginsIgnoreCase(    dnu )) type = DNU;
 		else if (response.beginsIgnoreCase(     no )) type =  NO;
-		else if (response.beginsIgnoreCase(  FUDG2 )) type = DNU;
-		else if (response.beginsIgnoreCase(  FUDG1 )) type = DNK;
+		//else if (response.beginsIgnoreCase(  FUDG2 )) type = DNU;
+		//else if (response.beginsIgnoreCase(  FUDG1 )) type = DNK;
 		else if (response.beginsIgnoreCase(    dnk )) type = DNK;
 		else if (response.beginsIgnoreCase(     ik )) type =  IK;
 		else type = CHS;
+
 		return this;
 	}
 	public  boolean negative() {return  FAIL == type || NO == type ||  DNK == type || type == UDU; } // != !positive() !!!!!
@@ -272,12 +273,14 @@ public class Reply { // a reply is basically a formatted answer
 	public static void main( String args[] ) {
 		Audit.allOn();
 
+		Reply r = new Reply();
+		Audit.log( "Initially: "+ r.toString());
+
 		Reply.dnu( "Pardon?" );
 		Reply.dnk( "Dunno" );
 		Reply.no(  "No" );
 		Reply.yes( "Yes" );
 		
-		Reply r = new Reply();
 		Audit.log( "Initially: "+ r.toString());
 		r.format( new Strings( "ok" ));
 		Audit.log( "Initially2: "+ r.toString());

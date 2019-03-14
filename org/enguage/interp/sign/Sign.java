@@ -119,7 +119,7 @@ public class Sign {
 	public String toString() {return pattern().toString();}
 	
 	public Reply interpret( Reply r ) {
-		audit.in( "mediate", pattern().toString() );
+		audit.in( "interpret", pattern().toString() );
 		Iterator<Intention> ai = programme.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();

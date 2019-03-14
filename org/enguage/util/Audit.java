@@ -59,10 +59,12 @@ public class Audit {
 	}
 	static public String log( String info ) {
 		if (!suspended()) {
-			LOG( info );
-			try {
-				;//LOG( new PrintStream( new FileOutputStream( fname, true )), info );
+			LOG( System.out, info );
+			/*
+			 try {
+				LOG( new PrintStream( new FileOutputStream( Overlay.fsname("audit.log", Overlay.MODE_APPEND), true )), info );
 			} catch (Exception e) { LOG( System.out, info ); }
+			// */
 		}
 		return info;
 	}
