@@ -12,6 +12,8 @@ import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
 
+import java.util.Locale;
+
 public class Reply { // a reply is basically a formatted answer
 	
 	static private Audit audit = new Audit( "Reply" );
@@ -39,56 +41,56 @@ public class Reply { // a reply is basically a formatted answer
 
 	static private Strings dnu = new Strings( Enguage.DNU );
 	static private String  dnuStr = Enguage.DNU;
-	static public  void    dnu( String s ) { dnu = new Strings( dnuStr = s ); }
+	static public  void    dnu( String s ) { dnu = new Strings( dnuStr = s.toLowerCase( Locale.getDefault() )); }
 	static public  Strings dnu(){ return dnu; }
 	static public  String  dnuStr(){ return dnuStr; }
 
 	static private Strings dnk = new Strings( "DNK" );
 	static private String  dnkStr = "DNK";
-	static public  void    dnk( String s ) { dnk = new Strings( dnkStr = s ); }
+	static public  void    dnk( String s ) { dnk = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() )); }
 	static public  Strings dnk() { return dnk; }
 	static public  String  dnkStr() { return dnkStr; }
 
 	static private Strings ik = new Strings( "IK" );
 	static private String  ikStr = "IK";
-	static public  void    ik( String s ) { ik = new Strings( ikStr = s ); }
+	static public  void    ik( String s ) { ik = new Strings( ikStr = s.toLowerCase( Locale.getDefault()));}
 	static public  Strings ik() { return ik; }
 	static public  String  ikStr() { return ikStr; }
 
 	static private Strings no = new Strings( "no" );
 	static private String  noStr = "no";
-	static public  void    no(  String s ) { no = new Strings( noStr = s ); }
+	static public  void    no(  String s ) { no = new Strings( noStr = s.toLowerCase( Locale.getDefault() )); }
 	static public  Strings no() { return no; }
 	static public  String  noStr() { return noStr; }
 	
 	static private Strings yes    = new Strings( "yes" );
 	static private String  yesStr = "yes";
-	static public  void    yes( String s ) { yes = new Strings( yesStr = s ); }
+	static public  void    yes( String s ) { yes = new Strings( yesStr = s.toLowerCase( Locale.getDefault() )); }
 	static public  Strings yes() { return yes; }
 	static public  String  yesStr() { return yesStr; }
 
 	static private Strings failure   = new Strings( Shell.FAIL );
 	static private String  failureStr = Shell.FAIL;
-	static public  void    failure(  String s ) { failure = new Strings( failureStr = s ); }
+	static public  void    failure(  String s ) { failure = new Strings( failureStr = s.toLowerCase( Locale.getDefault() )); }
 	static public  Strings failure() { return failure; }
 	static public  String  failureStr() { return failureStr; }
 	
 	static private Strings success    = new Strings( Shell.SUCCESS );
 	static private String  successStr = Shell.SUCCESS;
-	static public  void    success( String s ) { success = new Strings( successStr = s ); }
+	static public  void    success( String s ) { success = new Strings( successStr = s.toLowerCase( Locale.getDefault() )); }
 	static public  Strings success() { return success; }
 	static public  String  successStr() { return successStr; }
 
-	static private String repeatFormat = "I said, ... .";
-	static public  void   repeatFormat( String s ) { repeatFormat = s; }
+	static private String repeatFormat = "i said, ... .";
+	static public  void   repeatFormat( String s ) { repeatFormat = s.toLowerCase( Locale.getDefault() ); }
 	static public  String repeatFormat() { return repeatFormat; }
 
 	static private String helpPrefix = "you can say, ";
-	static public  void   helpPrefix( String s ) { helpPrefix = s; }
+	static public  void   helpPrefix( String s ) { helpPrefix = s.toLowerCase( Locale.getDefault() ); }
 	static public  String helpPrefix() { return helpPrefix; }
 
 	static private String  andConjunction = new String( "and" );
-	static public  void    andConjunction( String s ) { andConjunction = s; }
+	static public  void    andConjunction( String s ) { andConjunction = s.toLowerCase( Locale.getDefault() ); }
 	static public  String  andConjunction() { return andConjunction; }
 
 	static private Strings andListFormat = new Strings( ", /, and ", '/' );
@@ -136,9 +138,7 @@ public class Reply { // a reply is basically a formatted answer
 		else
 			say.addAll( Shell.addTerminator( sa ));
 	}
-		
-	//private static final Strings FUDG1 = new Strings( "i don't know" );
-	//private static final Strings FUDG2 = new Strings( "i don't understand" );
+	
 	private int     type = DNU;
 	public  int     type() { return type; }
 	public  Reply   type( Strings response ) {
@@ -150,8 +150,6 @@ public class Reply { // a reply is basically a formatted answer
 		else if (response.beginsIgnoreCase( failure)) type =FAIL;
 		else if (response.beginsIgnoreCase(    dnu )) type = DNU;
 		else if (response.beginsIgnoreCase(     no )) type =  NO;
-		//else if (response.beginsIgnoreCase(  FUDG2 )) type = DNU;
-		//else if (response.beginsIgnoreCase(  FUDG1 )) type = DNK;
 		else if (response.beginsIgnoreCase(    dnk )) type = DNK;
 		else if (response.beginsIgnoreCase(     ik )) type =  IK;
 		else type = CHS;
@@ -171,7 +169,7 @@ public class Reply { // a reply is basically a formatted answer
 	public Answer a = new Answer();
 	
 	public  Reply   answer( String ans ) {
-		if (ans != null && !ans.equals( Shell.IGNORE )) {
+		if (ans != null && !ans.equals( "" ) && !ans.equals( Shell.IGNORE )) {
 			if (!a.isAppending())
 				a = new Answer(); // a.nswer = new Strings();
 			a.add( ans );

@@ -3,17 +3,18 @@ package org.enguage.interp.repertoire;
 /* ANDROID --
 import android.app.Activity;
 // */
+import org.enguage.Enguage;
+import org.enguage.interp.intention.Intention;
+import org.enguage.objects.Variable;
+import org.enguage.objects.space.Ospace;
+import org.enguage.util.Audit;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.enguage.Enguage;
-import org.enguage.interp.intention.Intention;
-import org.enguage.objects.Variable;
-import org.enguage.objects.space.Ospace;
-import org.enguage.util.Audit;
+
 
 public class Concept {
 	static public final String LOADING = "CONCEPT";

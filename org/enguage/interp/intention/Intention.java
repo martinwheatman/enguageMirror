@@ -1,8 +1,5 @@
 package org.enguage.interp.intention;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.enguage.interp.Context;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Repertoire;
@@ -16,6 +13,9 @@ import org.enguage.util.sys.Proc;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Intention {
 	
@@ -267,7 +267,7 @@ public class Intention {
 		Strings rawAnswer = new Sofa().doCall( new Strings( cmd ));
 		if (!ignore) r.rawAnswer( rawAnswer.toString(), cmd.get( 1 ));
 
-		return r; //(Reply) audit.out( r );
+		return r; //(Reply) audit.out( r ); //
 	}
 	private Reply reply( Reply r ) {
 		//audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );

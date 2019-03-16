@@ -22,7 +22,7 @@ public class Answer {
 	public  boolean isAppending() { return appending; }
 	public  void    appendingIs( boolean b ) { appending = b; }
 	
-	// [ "black coffee", "eggs", "Taj Mahal" ];
+	// [ "black coffee", "eggs", "Taj Mahal" ]; w/embedded spaces!
 	private Strings answers = new Strings();
 	
 	public  Strings valueOf() {return answers;}

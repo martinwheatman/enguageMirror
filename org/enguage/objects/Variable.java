@@ -129,19 +129,20 @@ public class Variable {
 				 ?	new Strings( get( name, name )).replace( ",", "and" )
 				 :	new Strings( name )).contract( "=" );
 	}
-	static public Strings derefOrPop( ListIterator<String> ai ) {
+	static public Strings derefOrPop( ListIterator<String> ai ) { return derefOrPop( ai, false ); }
+	static public Strings derefOrPop( ListIterator<String> ai, boolean internal ) {
 		// "QUANTITY='2' UNITS='cup' of" => "2 cups of"
 		// "LOCATION='here' LOCATOR=''"  => ""
 		Strings b = new Strings();
 		while (ai.hasNext()) {
 			String next = ai.next();
 			if (next.equals( "[" ))
-				b.appendAll( derefOrPop( ai ));
+				b.appendAll( derefOrPop( ai, true ));
 			else if (next.equals( "]" ))
 				break;
 			else {
 				Strings c = deref( next ); // deref ...
-				for (String d : c)
+				if (internal) for (String d : c)
 					if (!exceptions.contains( d )
 							&& Strings.isUpperCaseWithHyphens( d )) { // ... POP!
 						//audit.debug( "popping on "+ d );
