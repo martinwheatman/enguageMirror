@@ -77,8 +77,15 @@ public class Engine {
 			  		.concept( NAME ),
 	/*		new Sign().concept( NAME ).content( new Patternette( "unload ", "NAME" )).attribute( new Intention( Intention.allop, "unload NAME" ),
 			new Sign().concept( NAME ).content( new Patternette( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
-	// */	//new Sign().concept( NAME ).attribute( NAME, "save"    ).content( new Patternette( "save", "", "" ) ),
-			//new Sign().concept( NAME ).attribute( NAME, "saveas $NAME" ).content( new Patternette("saveas ", "NAME", ".")),
+	// */ new Sign()
+				.concept( NAME )
+				.appendIntention( Intention.allop, "saveAs NAME" )
+				.pattern( new Patternette( "save spoken concepts as ", "NAME", "" ).phrasedIs()),
+																 		
+			new Sign()
+				.concept( NAME )
+				.appendIntention( Intention.allop, "delete NAME" )
+				.pattern( new Patternette( "delete spoken concept ", "NAME", "" ).phrasedIs()),
 																 		
 			new Sign().pattern( new Patternette(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
 			new Sign().pattern( new Patternette(        "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
@@ -219,19 +226,28 @@ public class Engine {
 			Strings files = cmds.copyAfter( 0 );
 			for(int i=0; i<files.size(); i++) Concept.unload( files.get( i ));
 			for(int i=0; i<files.size(); i++) Concept.load( files.get( i ));
-/*
-		} else if (e.get( 0 ).equals( "save" ) || e.get( 0 ).equalsIgnoreCase( "saveAs" )) {
-			if (e.get( 0 ).equalsIgnoreCase( "saveAs" ) && ( e.size() != 2))
-				System.err.println( e.get( 0 ) +": NAME required." );
-			else {
-				if (e.get( 0 ).equalsIgnoreCase( "saveAs" )) {
-					//(re)NAME concept
-					System.out.println( "renaming concept" );
-				}
-				//save concept
-				System.out.println( "Saving concept" );
-			}
 */
+
+		} else if (cmd.equals( "saveAs" )) {
+			
+			audit.debug( "Saving concepts as "+ cmds.toString( Strings.UNDERSC ) );
+			Concepts.name( cmds.toString( Strings.UNDERSC ));
+			r.format( Repertoire.signs.saveAs(
+							Repertoire.AUTOPOIETIC,
+							cmds.toString( Strings.UNDERSC )
+					  ) ?
+						Reply.success() : Reply.failure()
+					);
+
+		} else if (cmd.equals( "delete" )) {
+			 
+			String concept = cmds.toString( Strings.UNDERSC );
+			audit.debug( "Deleting "+ concept +" concept");
+			Concepts.remove( concept );
+			Concept.delete( "concepts/"+ concept );
+			Repertoire.signs.remove( concept );
+			r.format( Reply.success() );
+
 		} else if (cmd.equals( "spell" )) {
 			r.format( new Strings( Language.spell( cmds.get( 0 ), true )));
 			

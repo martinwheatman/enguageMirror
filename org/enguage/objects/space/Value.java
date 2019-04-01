@@ -42,19 +42,21 @@ public class Value {
 	
 	// this works..
 	private static final String marker = "this is a marker file";
-	public void  ignore() {
+	public  boolean  ignore() {
+		boolean rc = false;
 		if (Fs.exists( name( ent, attr, Overlay.MODE_READ ))) {
+			rc = true;
 			String writeName = name( ent, attr, Overlay.MODE_WRITE );
 			String deleteName = Entity.deleteName( writeName );
 			if ( Fs.exists( writeName )) { // rename
 				File oldFile = new File( writeName ),
 				     newFile = new File( deleteName );
-				if (debug) audit.debug( "Value.ignore(): Moving "+ oldFile.toString() +" to "+ deleteName );
 				oldFile.renameTo( newFile );
 			} else { // create
-				if (debug) audit.debug( "Value.ignore(): Creating marker file "+ deleteName );
 				Fs.stringToFile( deleteName, marker );
-	}	}	}
+		}	}
+		return rc;
+	}
 	public void restore() {
 		String writeName = name( ent, attr, Overlay.MODE_WRITE ); // if not overlayed - simply delete!?!
 		String deletedName = Entity.deleteName( writeName );

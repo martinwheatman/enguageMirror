@@ -22,8 +22,8 @@ import org.enguage.vehicle.where.Where;
 
 public class Enguage {
 
-	static public final String    DNU = "DNU";
-	static public final String defLoc = "./src/assets";
+	static public final String       DNU = "DNU";
+	static public final String assetsLoc = "src"+ File.separator +"assets" + File.separator;
 
 	static private  Audit audit = new Audit( "Enguage" );
 
@@ -42,7 +42,10 @@ public class Enguage {
 
 	static public  Overlay o = Overlay.Get();
 
-	static public  void concepts( String[] names ) { Concepts.names( names );}
+	static public  void concepts( String[] names ) { 
+		for ( String nm : names ) Concepts.dirName( nm );
+		//Concepts.names( names );
+	}
 
 	static public  void   root( String rt ) { Fs.root( rt ); }
 	static public  String root() { return Fs.root();}
@@ -108,7 +111,7 @@ public class Enguage {
 	private static void usage() {
 		Audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server <port>] -t ]" );
 		Audit.LOG( "where: -d <configDir>" );
-		Audit.LOG( "          config directory, default=\""+ defLoc +"\"\n" );
+		Audit.LOG( "          config directory, default=\""+ assetsLoc +"\"\n" );
 		Audit.LOG( "       -p <port>, --port <port>" );
 		Audit.LOG( "          listens on local TCP/IP port number\n" );
 		Audit.LOG( "       -c, --client" );
@@ -160,13 +163,14 @@ public class Enguage {
 		//Audit.startupDebug = true;
 		Strings    cmds = new Strings( args );
 		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
-		String location = defLoc;
+		String location = assetsLoc;
 		if (cmds.size() > 0 && cmd.equals( "-d" )) {
 			location = cmds.remove(0);
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
 
 		Enguage.init( location, null, null, new File( location + "/concepts" ).list());
+		for (String nm : o.list( "/concepts" )) Concepts.dirName( nm );
 
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
 
@@ -219,6 +223,19 @@ public class Enguage {
 		//if (runThisTest( level, ++testNo )) {
 		//	mediate( "", "" );
 		//}
+		if (runThisTest( level, ++testNo )) {
+			mediate( "hello", "I don't understand" );
+			mediate( "to the phrase hello reply hello to you too", "ok" );
+			mediate( "ok", "ok" );
+			mediate( "hello",                                      "hello to you too" );
+			mediate( "to the phrase my name is variable name reply hello variable name", "ok" );
+			mediate( "ok", "ok" );
+			mediate( "save  spoken concepts as hello",             "ok" );
+			Repertoire.signs.remove( "hello" );
+			mediate( "hello",                       "hello to you too" );
+			mediate( "delete spoken concept hello", "ok" );
+			mediate( "hello",                       "i don't understand" );
+		}
 		if (runThisTest( level, ++testNo )) {
 			mediate( "havoc 1 this is a Type II control",  "ok, go ahead" );
 			mediate( "lines 1 through 3 are not applicable",
@@ -786,7 +803,6 @@ public class Enguage {
 					   "i don't know if you're meeting your dad" );
 			mediate( "Where am I meeting my dad" ,
 					   "i don't know if you're meeting your dad" );
-			
 		}
 		if (runThisTest( level, ++testNo )) { // Language features
 			
@@ -904,6 +920,10 @@ public class Enguage {
 			mediate( "there are 6 light bins",        "ok, there are 6 light bins" );
 			mediate( "how many light bins are there", "6,  there are 6 light bins" );
 			mediate( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
+		}
+		if (runThisTest( level, ++testNo )) {
+			// see if we've remembered hello...
+			mediate( "hello", "i don't understand" );
 		}
 //		if (runThisTest( level, ++testNo )) { // 
 //			audit.title( "Ask: Confirmation" );

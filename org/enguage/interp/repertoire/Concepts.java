@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.enguage.interp.intention.Redo;
+import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.tag.Tag;
@@ -14,21 +15,23 @@ import org.enguage.util.tag.Tag;
  *               a name-to-concept function.
  */
 public class Concepts {
-	static private Audit audit = new Audit( "Concepts" );
+	static private String NAME = "concepts";
+	static private Audit audit = new Audit( NAME );
 
-	static private TreeSet<String> names = new TreeSet<String>();
-	static public  void            name( String name ) { names.add( name );}
-	static public  void            names( String[] dirList ) {
-		//audit.in( "names", new Strings( dirList ).toString( Strings.CSV ));
-		for ( String fname : dirList ) {
-			String[] components = fname.split( "\\." );
-			if (components.length > 1 && components[ 1 ].equals("txt")) {
-				//audit.debug( "adding concept: "+ components[ 0 ]);
-				name( components[ 0 ]);
-		}	}
-		//audit.out("["+ new Strings( names ).toString( Strings.CSV ) +"]");
+	static public String location() {
+		return Overlay.fsname( NAME, Overlay.MODE_WRITE )+ File.separator;
 	}
-
+	
+	static private TreeSet<String> names = new TreeSet<String>();
+	static public  void  remove( String name ) { names.remove( name );}
+	static public  void    name( String name ) { names.add( name );}
+	static public  void dirName( String name ) {
+		// e.g. name="hello.txt"
+		String[] components = name.split( "\\." );
+		if (components.length > 1 && components[ 1 ].equals("txt"))
+			name( components[ 0 ]);
+	}
+	
 	/* This is the STATIC loading of concepts at app startup -- read
 	 * from the config.xml file.
 	 */
@@ -125,7 +128,8 @@ public class Concepts {
 		Audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
 	}
 	public static void main( String args[]) {
-		names( new File( "./src/assets/concepts" ).list() );
+		for ( String nm : new File( "./src/assets/concepts" ).list() )
+			dirName( nm );
 		test( "i need a coffee",false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );

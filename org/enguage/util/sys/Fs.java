@@ -1,8 +1,10 @@
 package org.enguage.util.sys;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -51,6 +53,16 @@ public class Fs {
 		} catch (FileNotFoundException e ) {
 			rc = false;
 		}
+		return rc;
+	}
+	static public boolean stringAppendFile( String fname, String value ) {
+		boolean rc = true;
+		create( new File( fname ).getParent());
+		try {
+			BufferedWriter pw = new BufferedWriter( new FileWriter( fname, true ));
+			pw.append( value );
+			pw.close();
+		} catch (IOException e) {rc = false;}
 		return rc;
 	}
 	static public String stringFromFile( String fname ) {

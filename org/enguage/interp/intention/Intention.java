@@ -305,6 +305,19 @@ public class Intention {
 			}
 		return (Reply) audit.out( r );
 	}
+	public String toString() {
+		String type = Intention.typeToString( type() );
+		if (type.equals(      REPLY )) return         "reply \""+   value +"\"";
+		if (type.equals( ELSE_REPLY )) return "if not, reply \""+   value +"\"";
+		if (type.equals(      DO    )) return         "perform \""+ value +"\"";
+		if (type.equals( ELSE_DO    )) return "if not, perform \""+ value +"\"";
+		if (type.equals(      RUN   )) return         "run \""+     value +"\"";
+		if (type.equals( ELSE_RUN   )) return "if not, run \""+     value +"\"";
+		if (type.equals(      THINK )) return                       value;
+		if (type.equals( ELSE_THINK )) return "if not, "+           value;
+		if (type.equals(    FINALLY )) return "finally, "+          value;
+		return Attribute.asString( type, value() );
+	}
 	// ---
 	public static Reply test(Reply r, ArrayList<Intention> intents) {
 		Iterator<Intention> ins = intents.iterator();

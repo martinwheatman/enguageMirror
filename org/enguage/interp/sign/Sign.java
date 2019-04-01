@@ -9,9 +9,11 @@ import org.enguage.interp.pattern.Patternette;
 import org.enguage.interp.repertoire.Engine;
 import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
+import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.sys.Fs;
 import org.enguage.vehicle.reply.Reply;
 
 public class Sign {
@@ -116,7 +118,26 @@ public class Sign {
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">"
 				+ "\n";
 	}
-	public String toString() {return pattern().toString();}
+	public String toString() {
+		String sign = "";
+		int sz = programme.size();
+		if (sz > 0) {
+			sign = "On \""+ pattern().toString() +"\"";
+			if (sz == 1)
+				sign += ", "+ programme.get(0);
+			else {
+				int line = 0;
+				for (Intention in : programme)
+					sign += (line++ == 0 ? ":" : ";") + "\n" + indent + in;
+		}	}	
+		return sign +".\n\n";
+	}
+	public boolean toFile( String loc, String name ){
+		//Audit.log( "creating: "+ loc + pattern.toFilename() +".txt" );
+		return Fs.stringAppendFile( loc + name, toString());
+	}
+	public void toFile() {Fs.stringToFile( pattern.toFilename(), toString());}
+	public void toVariable() {Variable.set( pattern.toFilename(), toString());}
 	
 	public Reply interpret( Reply r ) {
 		audit.in( "interpret", pattern().toString() );
@@ -137,24 +158,27 @@ public class Sign {
 		}	}
 		return (Reply) audit.out( r );
 	}
-	// ---
+	// --- test code below
 	public static void complexityTest( Pattern t ) {
 		Sign container = new Sign();
 		container.pattern( t );
 		Audit.log( "Complexity of "+ container.toXml( 0, container.cplex() ) +"\n" );
 	}
 	public static void main( String argv[]) {
-		Sign p = new Sign();
-		p.append( new Intention( Intention.thenReply, "hello world" ));
-		p.pattern( new Patternette().prefix( new Strings( "hello" )));
+		Sign s = new Sign();
+		s.append( new Intention( Intention.thenDo, "person create martin" ));
+		s.append( new Intention( Intention.elseReply, "no, somethings gone wrong" ));
+		s.append( new Intention( Intention.thenReply, "ok, thank goodness" ));
+		s.pattern( new Patternette().prefix( new Strings( "hello" )));
 		Reply r = new Reply();
 		Intention intent = new Intention( Intention.thenReply, "hello world" );
 		r = intent.mediate( r );
 		Audit.log( "r="+ r.toString());
 		
 		Pattern ts = new Pattern();
-		ts.add( new Patternette( "one small step for man", "" ));
+		ts.add( new Patternette( "this is a", "x" ).phrasedIs() );
 		complexityTest( ts );
+		s.pattern( new Patternette( "this is a", "x" ).phrasedIs() );
 		
 		ts = new Pattern();
 		ts.add( new Patternette( "this is a", "test" ));
@@ -165,6 +189,16 @@ public class Sign {
 		complexityTest( ts );
 		
 		ts = new Pattern();
-		ts.add( new Patternette( "this is a", "x" ).phrasedIs() );
+		ts.add( new Patternette( "one small step for man", "" ));
 		complexityTest( ts );
+		
+		Audit.log( s.toString());
+		s.toFile();
+		
+		Sign s2 = new Sign();
+		s2.pattern( ts );
+		s2.append( new Intention( Intention.thenReply, "ok, thank goodness" ));
+		Audit.log( s2.toString());
+		s2.toVariable();
+		
 }	}

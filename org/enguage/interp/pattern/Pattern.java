@@ -567,12 +567,19 @@ public class Pattern extends ArrayList<Patternette> {
 		return str;
 	}
 	public String toString() {
-		String str="";
+		String tmp, str="";
 		Iterator<Patternette> ti = iterator();
-		while (ti.hasNext()) {
-			str += ti.next().toString();
-			if (ti.hasNext()) str += " ";
-		}
+		while (ti.hasNext())
+			if (!(tmp = ti.next().toString()).equals(""))
+				str += tmp +(ti.hasNext() ? " " : "");
+		return str;
+	}
+	public String toFilename() {
+		String tmp, str="";
+		Iterator<Patternette> ti = iterator();
+		while (ti.hasNext())
+			if (!(tmp = ti.next().toPattern()).equals(""))
+				str += tmp +(ti.hasNext() ? "_" : "");
 		return str;
 	}
 	public String toText() {

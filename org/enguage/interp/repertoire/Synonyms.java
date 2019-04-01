@@ -15,7 +15,7 @@ import org.enguage.vehicle.reply.Reply;
 
 public class Synonyms {
 	static public final String NAME = "synonyms";
-	static private      Audit audit = new Audit( NAME );
+	//static private      Audit audit = new Audit( NAME );
 	static public final int      id = 237427137; //Strings.hash( "synonyms" );
 
 	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
@@ -23,7 +23,7 @@ public class Synonyms {
 	static private Attributes synonyms = new Attributes();
 	
 	private static boolean attempt( String name, String load, String from, String to ) {
-		audit.in( "load", "name="+ name +", load="+ load +", fr="+ from +", to="+ to );
+		//audit.in( "load", "name="+ name +", load="+ load +", fr="+ from +", to="+ to );
 		//boolean rc = false;
 		if (null != autoloaded.get( name ) || Concept.load( load, from, to )) {
 			autoloaded.put( name, 0 );

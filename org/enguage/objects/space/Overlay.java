@@ -312,8 +312,10 @@ public class Overlay {
 		           && (1 == argc) ) {
 			rc = o.combineUnderlays() ? Shell.SUCCESS : Shell.FAIL;
 			
-		//} else if (0 == cmd.equals( "rm" ) && (2 == argc) ) {
-		//	if (!entityIgnore( argv.get( 1 ))) rc =  argv.get( 1 ) +" doesn't exists" );
+		} else if (cmd.equals( "rm" )) {
+			argv.remove( 0 );
+			String fname = argv.remove( argv.size()-1 );
+			rc = new Value( argv.toString( Strings.CONCAT ), fname ).ignore() ? Shell.SUCCESS : Shell.FAIL;
 		
 		} else if ((1 == argc) && cmd.equals( "up" )) {
 			if ( o.path( ".." ))

@@ -11,6 +11,7 @@ import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.pattern.Patternette;
 import org.enguage.interp.repertoire.Autoload;
+import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attributes;
@@ -124,6 +125,22 @@ public class Signs extends TreeMap<Integer,Sign> {
 			if (s.concept().equals(simpleFilter))
 				Audit.LOG( s.toXml( n++, me.getKey() ));
 	}	}
+	public boolean save( String simpleFilter ) {return saveAs( simpleFilter, null );}
+	public boolean saveAs( String simpleFilter, String cname ) {
+		boolean rc = false;
+		Set<Map.Entry<Integer,Sign>> set = entrySet();
+		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
+		while( i.hasNext()) {
+			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
+			Sign s = me.getValue();
+			if (s.concept().equals(simpleFilter)) {
+				String fname = cname==null ? s.pattern().toFilename() : cname;
+				if (s.toFile( Concepts.location(), fname +".txt" )) {
+					s.concept( fname );
+					rc = true;
+		}	}	}
+		return rc;
+	}	
 	/*
 	 * remember which sign we interpreted last
 	 */
@@ -215,7 +232,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				Attributes match = u.match( s );
 				if (null == match) {
 					//if (!Pattern.notMatched().equals("prefixa"))
-						; //audit.debug( "NO match: "+ s.toString() +" ("+ Pattern.notMatched() +")");
+						; //audit.debug( "NO match: "+ s.pattern().toString() +" ("+ Pattern.notMatched() +")");
 				} else { // we have found a meaning! So I do understand...!
 					
 					Pronoun.update( match );

@@ -141,16 +141,22 @@ public class Patternette {
 		indent.decr();
 		return s;
 	}
+	public String toPattern() {
+		return prefix().toString( Strings.UNDERSC )
+				+(name.equals( "" ) ? (postSz == 0?"":"_") : "-")
+				+(postfix().toString( Strings.UNDERSC ));
+	}
 	public String toString() {
 		String prefix = prefix().toString();
-		return prefix + (prefix.equals( "" ) ? "" : " ")
+		String postfix = postfix().toString();
+		return prefix + (prefix.equals( "" ) ? "" : name.equals( "" ) ? "" : " ")
 				+(name.equals( "" ) ? "" :
 					(isNumeric()? Pattern.numericPrefix : "")
 					+ (isPhrased()? Pattern.phrasePrefix : "")
 					+ (isList()? Reply.andConjunction().toUpperCase( Locale.getDefault())
 							+"-"+ Pattern.list.toUpperCase( Locale.getDefault()) +"-" : "")
-					+ name.toUpperCase( Locale.getDefault()) +" ")
-				+ postfix().toString();
+					+ name.toUpperCase( Locale.getDefault()) ) 
+				+ (postfix.equals( "" ) ? "" : " ") + postfix();
 	}
 	public String toText() {
 		return prefix().toString()
