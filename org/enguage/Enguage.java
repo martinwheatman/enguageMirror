@@ -243,37 +243,6 @@ public class Enguage {
 			// ...and its gone. We're clean again!
 			mediate( "hello",                          "i don't understand" );
 		}
-		if (runThisTest( level, ++testNo )) {
-			mediate( "havoc 1 this is a Type II control",  "ok, go ahead" );
-			mediate( "lines 1 through 3 are not applicable",
-					 "ok, lines 1 through 3 are not applicable" );
-			mediate( "target elevation is 142 feet",      "ok, target elevation is 142 feet" );
-			mediate( "target description is vehicle in the open",
-					 "ok, target description is vehicle in the open" );
-			mediate( "target location is three zero uniform, whiskey Foxtrot, 15933 13674",
-					 "ok, target location is three zero uniform, whiskey Foxtrot, 15933 13674" );
-			mediate( "none",                              "ok, mark type is none" );
-			mediate( "friendlies are 30 clicks east of target",
-					 "ok, friendlies are present" );
-			mediate( "egress back into the wheel",        "ok, egress back into the wheel" );
-			
-			mediate( "read back",
-					"line 1 is not applicable . "+
-					"line 2 is not applicable . "+
-					"line 3 is not applicable . "+
-					"target elevation is 142 feet . "+
-					"target description is vehicle in the open . "+
-					"target location is three zero uniform , whiskey foxtrot , 15933 13674 . "+
-					"none . "+
-					"friendlies are 30 clicks east of target . "+
-					"egress is back into the wheel . "+
-					"ok" );
-			
-//			mediate( "no friendlies",                "ok, no friendlies are present" );
-//			mediate( "where are friendlies",         "no friendlies are present" );
-			mediate( "what is the target elevation", "target elevation is 142 feet"     );
-			mediate( "where are friendlies",         "friendlies are 30 clicks east of target" );
-		}
 		if (runThisTest( level, ++testNo )) { // WHY - These tests were for IJCSSA journal article
 			audit.title( "Simple action demo" );
 			mediate( "i am baking a cake",     "i know", "ok, you're baking a cake" );
@@ -921,6 +890,38 @@ public class Enguage {
 
 			mediate( "just call me phrase variable name means i am called variable name", "ok" );
 			mediate( "just call me martin", "i already know this" );
+		}
+		if (runThisTest( level, ++testNo )) {
+			audit.title( "Test "+ testNo +": Example: 9-line input" );
+			mediate( "havoc 1 this is a Type II control",  "ok, go ahead" );
+			mediate( "lines 1 through 3 are not applicable",
+					 "ok, lines 1 through 3 are not applicable" );
+			mediate( "target elevation is 142 feet",      "ok, target elevation is 142 feet" );
+			mediate( "target description is vehicle in the open",
+					 "ok, target description is vehicle in the open" );
+			mediate( "target location is three zero uniform, whiskey Foxtrot, 15933 13674",
+					 "ok, target location is three zero uniform, whiskey Foxtrot, 15933 13674" );
+			mediate( "none",                              "ok, mark type is none" );
+			mediate( "friendlies are 30 clicks east of target",
+					 "ok, friendlies are present" );
+			mediate( "egress back into the wheel",        "ok, egress back into the wheel" );
+			
+			mediate( "read back",
+					"line 1 is not applicable . "+
+					"line 2 is not applicable . "+
+					"line 3 is not applicable . "+
+					"target elevation is 142 feet . "+
+					"target description is vehicle in the open . "+
+					"target location is three zero uniform , whiskey foxtrot , 15933 13674 . "+
+					"none . "+
+					"friendlies are 30 clicks east of target . "+
+					"egress is back into the wheel . "+
+					"ok" );
+			
+//			mediate( "no friendlies",                "ok, no friendlies are present" );
+//			mediate( "where are friendlies",         "no friendlies are present" );
+			mediate( "what is the target elevation", "target elevation is 142 feet"     );
+			mediate( "where are friendlies",         "friendlies are 30 clicks east of target" );
 		}
 		if (runThisTest( level, ++testNo )) {
 			audit.title( "Light bins" );
