@@ -224,17 +224,24 @@ public class Enguage {
 		//	mediate( "", "" );
 		//}
 		if (runThisTest( level, ++testNo )) {
-			mediate( "hello", "I don't understand" );
+			// First, check we're clean!
+			mediate( "hello",                          "I don't understand" );
+			// Build a repertoire...
 			mediate( "to the phrase hello reply hello to you too", "ok" );
-			mediate( "ok", "ok" );
-			mediate( "hello",                                      "hello to you too" );
+			mediate( "ok",                             "ok" );
+			mediate( "hello",                          "hello to you too" );
 			mediate( "to the phrase my name is variable name reply hello variable name", "ok" );
 			mediate( "ok", "ok" );
-			mediate( "save  spoken concepts as hello",             "ok" );
+			// OK, now save this...
+			mediate( "save  spoken concepts as hello", "ok" );
+			// then remove the sign...
 			Repertoire.signs.remove( "hello" );
-			mediate( "hello",                       "hello to you too" );
-			mediate( "delete spoken concept hello", "ok" );
-			mediate( "hello",                       "i don't understand" );
+			// So, this will reload the newly created repertoire
+			mediate( "hello",                          "hello to you too" );
+			// OK, now delete the repertoire (and the sign)
+			mediate( "delete spoken concept hello",    "ok" );
+			// ...and its gone. We're clean again!
+			mediate( "hello",                          "i don't understand" );
 		}
 		if (runThisTest( level, ++testNo )) {
 			mediate( "havoc 1 this is a Type II control",  "ok, go ahead" );
