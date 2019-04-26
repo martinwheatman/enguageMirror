@@ -38,11 +38,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public Signs insert( Sign insertMe ) {
 		int c = insertMe.cplex(),
 			i = 0;
-		while (i < 99 && containsKey( c + i )) {
-			//Audit.log( "Signs:insert()>>>>>>CLASH: "+ insertMe.toLine());
-			clashes++;
-			i++;
-		}
+		while (i < 99 && containsKey( c + i )) {clashes++; i++;}
 		if (i < 99) {
 			total++;
 			put( c + i, insertMe );
