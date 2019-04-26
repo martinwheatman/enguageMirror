@@ -23,7 +23,8 @@ import org.enguage.vehicle.where.Where;
 public class Enguage {
 
 	static public final String       DNU = "DNU";
-	static public final String assetsLoc = "src"+ File.separator +"assets" + File.separator;
+	static public final String assetsLoc = //"src"+ File.separator +
+			"assets" + File.separator;
 
 	static private  Audit audit = new Audit( "Enguage" );
 
