@@ -227,6 +227,7 @@ public class Enguage {
 		//if (runThisTest( level, ++testNo )) {
 		//	mediate( "", "" );
 		//}
+		
 		if (runThisTest()) {
 			// First, check we're clean!
 			mediate( "hello",                          "I don't understand" );
