@@ -13,6 +13,20 @@ On "PHRASE-WHOM do not advocate violence":
 	if not, remove WHOM from violence advocate list;
 	reply "ok, WHOM do not advocate violence".
 	
+# common sense ADVOCATE
+On "common sense would suggest PHRASE-WHOM advocate violence":
+	# check for a contradiction...
+	WHOM exists in csviolence fear list;
+	reply "no, common sense would suggest WHOM fear violence";
+	if not, add WHOM to csviolence advocate list;
+	reply "ok, common sense would suggest WHOM advocate violence".
+
+On "common sense would suggest PHRASE-WHOM do not advocate violence":
+	WHOM exists in csviolence fear list;
+	reply "i know";
+	if not, remove WHOM from csviolence advocate list;
+	reply "ok, common sense would suggest WHOM do not advocate violence".
+	
 ### FEAR
 On "PHRASE-WHOM fear violence":
 	# check for a contradiction...
@@ -27,6 +41,21 @@ On "PHRASE-WHOM do not fear violence":
 	if not, remove WHOM from violence fear list;
 	if not, reply "no, they do not";
 	reply "ok, WHOM do not fear violence".	
+
+# common sense FEAR	
+On "common sense would suggest PHRASE-WHOM fear violence":
+	# check for a contradiction...
+	WHOM exists in csviolence advocate list;
+	reply "no, common sense would suggest WHOM advocate violence";
+	if not, add WHOM to csviolence fear list;
+	reply "ok, common sense would suggest WHOM fear violence".
+
+On "common sense would suggest PHRASE-WHOM do not fear violence":
+	WHOM exists in csviolence advocate list;
+	reply "i know";
+	if not, remove WHOM from csviolence fear list;
+	if not, reply "no, common sense would suggest they do not";
+	reply "ok, common sense would suggest WHOM do not fear violence".	
 	
 ### Building the test...
 On "the councillors refused the demonstrators a permit",
@@ -34,6 +63,7 @@ On "the councillors refused the demonstrators a permit",
 
 On "they STATE violence":
 	get violence STATE list;
+	if not, get csviolence STATE list;
 	set the value of they to ... ;
 	reply "ok, they are ...";
 	if not, unset the value of they;

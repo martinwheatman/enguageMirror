@@ -253,7 +253,7 @@ public class Enguage {
 			mediate( "unset the value of they" );
 			
 			// ----------------------------------------------------------------
-			audit.subtl( "Common sense: opposing views" );
+			audit.subtl( "Openly stated: opposing views" );
 			mediate( "the councillors   fear     violence", "ok, the councillors       fear violence" );
 			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
 			// test 1
@@ -270,7 +270,7 @@ public class Enguage {
 			mediate( "unset the value of they" );
 			
 			// ----------------------------------------------------------------
-			audit.subtl( "Common sense: aligned views - advocate" );
+			audit.subtl( "Openly stated: aligned views - advocate" );
 			mediate( "the councillors   advocate violence", "ok, the councillors   advocate violence" );
 			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
 			
@@ -290,7 +290,7 @@ public class Enguage {
 			mediate( "unset the value of they" );
 			
 			// ----------------------------------------------------------------
-			audit.subtl( "Common sense: aligned views - fear" );
+			audit.subtl( "Openly stated: aligned views - fear" );
 			mediate( "the councillors fear violence because the voters fear violence",
 					 "ok, the councillors fear violence because the voters fear violence" );
 			mediate( "the demonstrators fear violence", "ok, the demonstrators fear violence" );
@@ -308,6 +308,21 @@ public class Enguage {
 			// tidy up
 			mediate( "delete violence advocate list", "ok" );
 			mediate( "delete violence fear     list", "ok" );
+			mediate( "unset the value of they" );
+			
+			// ----------------------------------------------------------------
+			audit.subtl( "the common sense view" );
+			// This should be configured within the repertoire...
+			mediate( "common sense would suggest the councillors fear violence",
+					 "ok, common sense would suggest the councillors fear violence" );
+			
+			mediate( "the councillors refused the demonstrators a permit because they fear violence",
+					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
+			mediate( "who are they", "they are the councillors" );
+			
+			// tidy up - N.B. these will affect previous tests on re-running them
+			mediate( "delete csviolence advocate list", "ok" );
+			mediate( "delete csviolence fear     list", "ok" );
 			mediate( "unset the value of they" );
 		}
 		if (runThisTest( "Saving spoken concepts" )) {
