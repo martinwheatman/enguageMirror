@@ -240,7 +240,7 @@ public class Enguage {
 			// fat and thin and athletic are mutually exclusive.
 			//         I am fat.     Am I thin. No
 			//         I am not fat. Am i thin. I don't know
-			audit.subtl( "contradiction test... can't swap between states directly");
+			audit.subtl( "Contradiction test... can't swap between states directly");
 			mediate( "demonstrators fear violence",        "ok, demonstrators fear violence" );
 			mediate( "demonstrators advocate violence",    "no, demonstrators fear violence" );
 			mediate( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
@@ -252,6 +252,7 @@ public class Enguage {
 			mediate( "delete violence fear     list", "ok" );
 			mediate( "unset the value of they" );
 			
+			// ----------------------------------------------------------------
 			audit.subtl( "Common sense: opposing views" );
 			mediate( "the councillors   fear     violence", "ok, the councillors       fear violence" );
 			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
@@ -268,34 +269,42 @@ public class Enguage {
 			mediate( "delete violence fear     list", "ok" );
 			mediate( "unset the value of they" );
 			
+			// ----------------------------------------------------------------
 			audit.subtl( "Common sense: aligned views - advocate" );
 			mediate( "the councillors   advocate violence", "ok, the councillors   advocate violence" );
 			mediate( "the demonstrators advocate violence", "ok, the demonstrators advocate violence" );
+			
 			// test  1
 			mediate( "the councillors refused the demonstrators a permit because they fear violence",
 					 "I don't think they fear violence" );
 			mediate( "who are they", "I don't know" );
+			
 			// test 2
 			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
 					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
 			mediate( "who are they", "they are the councillors , and the demonstrators" );
+			
 			// tidy up
 			mediate( "delete violence advocate list", "ok" );
 			mediate( "delete violence fear     list", "ok" );
 			mediate( "unset the value of they" );
 			
+			// ----------------------------------------------------------------
 			audit.subtl( "Common sense: aligned views - fear" );
 			mediate( "the councillors fear violence because the voters fear violence",
-					"ok, the councillors fear violence because the voters fear violence" );
+					 "ok, the councillors fear violence because the voters fear violence" );
 			mediate( "the demonstrators fear violence", "ok, the demonstrators fear violence" );
+			
 			// test 1
 			mediate( "the councillors refused the demonstrators a permit because they fear violence",
 					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
 			mediate( "who are they", "they are the voters, the councillors , and the demonstrators" );
+			
 			// test 2
 			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
 					 "I don't think they advocate violence" );
 			mediate( "who are they", "i don't know" );
+			
 			// tidy up
 			mediate( "delete violence advocate list", "ok" );
 			mediate( "delete violence fear     list", "ok" );
