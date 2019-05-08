@@ -12,18 +12,21 @@ import org.enguage.Enguage;
 import org.enguage.interp.intention.Intention;
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.Ospace;
-import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 
 public class Concept {
 	static public final String LOADING = "CONCEPT";
-	static private Audit audit = new Audit( LOADING );
+	static private       Audit   audit = new Audit( LOADING );
 	
 	static public void delete( String cname ) {
-		if (cname != null)
-			Overlay.interpret( new Strings( "rm "+ cname +".txt" ));
-	}
+		if (cname != null) {
+			File oldFile = new File( name( cname )),
+			     newFile = new File( name( cname, "del" ));
+			if (!oldFile.renameTo( newFile ))
+				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
+	}	}
+	static public String name( String name, String ext ) {return Concepts.location() + name +"."+ ext;}
+	static public String name( String name ) {return name( name, "txt" );}
 	
 	static public boolean load( String name ) {return load( name, null, null );}
 	static public boolean load( String name, String from, String to ) {
@@ -44,15 +47,13 @@ public class Concept {
 		InputStream  is = null;
 		// ...add content from file...
 		try {
-			String fname = Overlay.fsname("concepts"+ File.separator + name + ".txt", Overlay.MODE_READ);
-			if (fname == null) fname = "";
-			is = new FileInputStream( fname );
+			is = new FileInputStream( name( name ));
 			Enguage.shell().interpret( is, from, to );
 			wasLoaded = true;
 		} catch (IOException e1) {
 			InputStream is2 = null;
 			try { // ...or add content from asset...
-				String fname = "concepts"+ File.separator + name + ".txt";
+				String fname = name( name );
 				// ANDROID --
 				//Activity a = (Activity) Enguage.context(); //*/
 				is2 =   //a == null ?//*/

@@ -230,13 +230,13 @@ public class Engine {
 
 		} else if (cmd.equals( "saveAs" )) {
 			
-			audit.debug( "Saving concepts as "+ cmds.toString( Strings.UNDERSC ) );
-			Concepts.name( cmds.toString( Strings.UNDERSC ));
-			r.format( Repertoire.signs.saveAs(
-							Repertoire.AUTOPOIETIC,
-							cmds.toString( Strings.UNDERSC )
-					  ) ?
-						Reply.success() : Reply.failure()
+			String nm = cmds.toString( Strings.UNDERSC );
+			audit.debug( "Saving concepts as "+ nm );
+			Concepts.name( nm );
+			r.format(	Repertoire.signs.saveAs(
+								Repertoire.AUTOPOIETIC,
+								nm
+						) ? Reply.success() : Reply.failure()
 					);
 
 		} else if (cmd.equals( "delete" )) {
@@ -244,7 +244,7 @@ public class Engine {
 			String concept = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Deleting "+ concept +" concept");
 			Concepts.remove( concept );
-			Concept.delete( "concepts/"+ concept );
+			Concept.delete( concept );
 			Repertoire.signs.remove( concept );
 			r.format( Reply.success() );
 

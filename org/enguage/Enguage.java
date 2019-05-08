@@ -201,7 +201,7 @@ public class Enguage {
 	static private void clearTheNeedsList() { clearTheNeedsList( ihe );}
 	static private void clearTheNeedsList( String s ) { Enguage.mediate( new Strings( s ));	}
 	
-	static private int level = 0; // TODO: 0 = every level, -n = ignore level n
+	static private int level  = 0; // TODO: 0 = every level, -n = ignore level n
 	static private int testNo = 0;
 	static private boolean runThisTest() {return runThisTest( null );}
 	static private boolean runThisTest( String title ) {

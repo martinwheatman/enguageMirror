@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.enguage.interp.intention.Redo;
-import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.tag.Tag;
@@ -15,12 +14,10 @@ import org.enguage.util.tag.Tag;
  *               a name-to-concept function.
  */
 public class Concepts {
-	static private String NAME = "concepts";
+	static public  String NAME = "concepts";
 	static private Audit audit = new Audit( NAME );
 
-	static public String location() {
-		return Overlay.fsname( NAME, Overlay.MODE_WRITE )+ File.separator;
-	}
+	static public String location() { return NAME + File.separator; }
 	
 	static private TreeSet<String> names = new TreeSet<String>();
 	static public  void  remove( String name ) { names.remove( name );}

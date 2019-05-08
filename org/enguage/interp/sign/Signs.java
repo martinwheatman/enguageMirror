@@ -11,7 +11,7 @@ import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.pattern.Patternette;
 import org.enguage.interp.repertoire.Autoload;
-import org.enguage.interp.repertoire.Concepts;
+import org.enguage.interp.repertoire.Concept;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attributes;
@@ -131,7 +131,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			Sign s = me.getValue();
 			if (s.concept().equals(simpleFilter)) {
 				String fname = cname==null ? s.pattern().toFilename() : cname;
-				if (s.toFile( Concepts.location(), fname +".txt" )) {
+				if (s.toFile( Concept.name( fname ))) {
 					s.concept( fname );
 					rc = true;
 		}	}	}

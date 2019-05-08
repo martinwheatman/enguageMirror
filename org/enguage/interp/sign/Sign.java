@@ -132,9 +132,9 @@ public class Sign {
 		}	}	
 		return sign +".\n\n";
 	}
-	public boolean toFile( String loc, String name ){
+	public boolean toFile( String fname ){
 		//Audit.log( "creating: "+ loc + pattern.toFilename() +".txt" );
-		return Fs.stringAppendFile( loc + name, toString());
+		return Fs.stringAppendFile( fname, toString());
 	}
 	public void toFile() {Fs.stringToFile( pattern.toFilename(), toString());}
 	public void toVariable() {Variable.set( pattern.toFilename(), toString());}
