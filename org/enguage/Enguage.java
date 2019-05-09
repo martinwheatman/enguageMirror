@@ -43,21 +43,19 @@ public class Enguage {
 
 	static public  Overlay o = Overlay.Get();
 
-	static public  void concepts( String[] names ) { 
-		for ( String nm : names ) Concepts.dirName( nm );
-	}
-
+	
 	static public  void   root( String rt ) { Fs.root( rt ); }
 	static public  String root() { return Fs.root();}
 
 	static public  void location( String loc ) {if(!Fs.location( loc )) audit.FATAL(loc +": not found");}
 
-	static public void init( String pth, Object ctx, String[] cncpts) {init( pth, pth, ctx, cncpts );}
-	static public void init( String loc, String root, Object ctx, String[] concepts) {
+	static public  void init( String pth, Object ctx ) {init( pth, pth, ctx );}
+	static public  void init( String loc, String root, Object ctx ) {
 		location( loc );
 		root( root );
 		context( ctx );
-		concepts( concepts );
+		Concepts.location( loc + Concepts.NAME );
+		Concepts.location(       Concepts.NAME );
 
 		if ((null == o || !o.attached() ) && !Overlay.autoAttach())
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
@@ -169,8 +167,7 @@ public class Enguage {
 			cmd = cmds.size()==0 ? "":cmds.remove(0);
 		}
 
-		Enguage.init( location, null, null, new File( location + "/concepts" ).list());
-		for (String nm : o.list( "/concepts" )) Concepts.dirName( nm );
+		Enguage.init( location, null, null );
 
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
 

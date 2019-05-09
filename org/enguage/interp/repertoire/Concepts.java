@@ -21,13 +21,14 @@ public class Concepts {
 	
 	static private TreeSet<String> names = new TreeSet<String>();
 	static public  void  remove( String name ) { names.remove( name );}
-	static public  void    name( String name ) { names.add( name );}
-	static public  void dirName( String name ) {
-		// e.g. name="hello.txt"
-		String[] components = name.split( "\\." );
-		if (components.length > 1 && components[ 1 ].equals("txt"))
-			name( components[ 0 ]);
-	}
+	static public  void     add( String name ) { names.add( name );}
+	static public  void location( String location ) {
+		String[] names = new File( location ).list();
+		for ( String name : names ) { // e.g. name="hello.txt"
+			String[] components = name.split( "\\." );
+			if (components.length > 1 && components[ 1 ].equals("txt"))
+				add( components[ 0 ]);
+	}	}
 	
 	/* This is the STATIC loading of concepts at app startup -- read
 	 * from the config.xml file.
@@ -125,8 +126,7 @@ public class Concepts {
 		Audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
 	}
 	public static void main( String args[]) {
-		for ( String nm : new File( "./src/assets/concepts" ).list() )
-			dirName( nm );
+		location( "./src/assets/concepts"  );
 		test( "i need a coffee",false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );

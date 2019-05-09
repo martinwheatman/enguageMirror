@@ -230,12 +230,12 @@ public class Engine {
 
 		} else if (cmd.equals( "saveAs" )) {
 			
-			String nm = cmds.toString( Strings.UNDERSC );
-			audit.debug( "Saving concepts as "+ nm );
-			Concepts.name( nm );
+			String name = cmds.toString( Strings.UNDERSC );
+			audit.debug( "Saving concepts as "+ name );
+			Concepts.add( name );
 			r.format(	Repertoire.signs.saveAs(
 								Repertoire.AUTOPOIETIC,
-								nm
+								name
 						) ? Reply.success() : Reply.failure()
 					);
 
