@@ -47,7 +47,7 @@ public class Enguage {
 	static public  void   root( String rt ) { Fs.root( rt ); }
 	static public  String root() { return Fs.root();}
 
-	static public  void location( String loc ) {if(!Fs.location( loc )) audit.FATAL(loc +": not found");}
+	static public  void location( String loc ) {if (!Fs.location( loc )) audit.FATAL(loc +": not found");}
 
 	static public  void init( String pth, Object ctx ) {init( pth, pth, ctx );}
 	static public  void init( String loc, String root, Object ctx ) {

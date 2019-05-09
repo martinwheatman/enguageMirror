@@ -25,7 +25,21 @@ public class Concept {
 			if (!oldFile.renameTo( newFile ))
 				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
 	}	}
-	static public String name( String name, String ext ) {return Concepts.location() + name +"."+ ext;}
+	static public String name( String name, String ext ) {
+		// would just return "concepts"/name.ext
+		String fname = Concepts.LOCATION + name +"."+ ext;
+		if (new File( fname ).exists())
+			return fname; // found, return existing
+		else {
+			String[] names = new File( Concepts.LOCATION ).list();
+			for ( String dir : names ) { // e.g. name="hello.txt"
+				String[] components = dir.split( "\\." );
+				if (components.length == 1 && new File( Concepts.LOCATION + components[ 0 ]+"/"+name+"."+ ext ).exists())
+					return Concepts.LOCATION + components[ 0 ]+"/"+name+"."+ ext; // found, return existing component
+		}	}
+		return fname; // not found, new filename
+	}	
+	
 	static public String name( String name ) {return name( name, "txt" );}
 	
 	static public boolean load( String name ) {return load( name, null, null );}
@@ -45,14 +59,14 @@ public class Concept {
 		
 		Intention.concept( name );
 		InputStream  is = null;
-		// ...add content from file...
-		try {
+		
+		try { // ...add concept from user space...
 			is = new FileInputStream( name( name ));
 			Enguage.shell().interpret( is, from, to );
 			wasLoaded = true;
 		} catch (IOException e1) {
 			InputStream is2 = null;
-			try { // ...or add content from asset...
+			try { // ...or add concept from asset...
 				String fname = name( name );
 				// ANDROID --
 				//Activity a = (Activity) Enguage.context(); //*/

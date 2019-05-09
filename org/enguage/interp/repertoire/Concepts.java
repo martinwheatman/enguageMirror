@@ -14,10 +14,9 @@ import org.enguage.util.tag.Tag;
  *               a name-to-concept function.
  */
 public class Concepts {
-	static public  String NAME = "concepts";
-	static private Audit audit = new Audit( NAME );
-
-	static public String location() { return NAME + File.separator; }
+	static public  final String     NAME = "concepts";
+	static public  final String LOCATION = NAME + File.separator;
+	static private       Audit     audit = new Audit( NAME );
 	
 	static private TreeSet<String> names = new TreeSet<String>();
 	static public  void  remove( String name ) { names.remove( name );}
@@ -28,6 +27,8 @@ public class Concepts {
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))
 				add( components[ 0 ]);
+			else if (components.length == 1)
+				location( location+"/"+components[ 0 ]);
 	}	}
 	
 	/* This is the STATIC loading of concepts at app startup -- read
