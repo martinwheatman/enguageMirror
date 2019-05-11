@@ -142,7 +142,7 @@ public class Intention {
 	private int intent = undef;
 	public  int intent() { return intent;}
 	
-	static private Sign s = null;
+	static private Sign s = null, voiced = null;
 	static public  void printSign() { Audit.LOG( "Autop().printSign:\n"+ s.pattern().toXml()); }
 	
 	static private String concept = "";
@@ -155,19 +155,22 @@ public class Intention {
 		switch (intent) { // manually adding a sign
 		case  create:
 			Repertoire.signs.insert(
-				s = new Sign()
+				voiced = new Sign()
 					.pattern( new Pattern( value ))
 					.concept( Repertoire.AUTOPOIETIC )
 			);
 			break;
 		case append:
-			if (null != s) s.append( new Intention( type, Pattern.toPattern( new Strings( value ))));
+			if (null != voiced)
+				voiced.append( new Intention( type, Pattern.toPattern( new Strings( value ))));
 			break;
 		case prepend :
-			if (null != s) s.prepend( new Intention( type, Pattern.toPattern( new Strings( value ))));
+			if (null != voiced)
+				voiced.prepend( new Intention( type, Pattern.toPattern( new Strings( value ))));
 			break;
 		case headAppend:
-			if (null != s) s.insert( 1, new Intention( type, Pattern.toPattern( new Strings( value ))));
+			if (null != voiced) 
+				voiced.insert( 1, new Intention( type, Pattern.toPattern( new Strings( value ))));
 			break;
 		// following these are trad. autopoiesis...this need updating as above!!!
 		default:
@@ -179,9 +182,9 @@ public class Intention {
 					   val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 				Repertoire.signs.insert(
 						s = new Sign()
-						.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
-						.concept( concept() )
-						.append( new Intention( Intention.nameToType( attr ), val )));
+								.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+								.concept( concept() )
+								.append( new Intention( Intention.nameToType( attr ), val )));
 				break;
 			}
 			case append :
@@ -198,7 +201,7 @@ public class Intention {
 						s.prepend( new Intention( nameToType( attr ), val ));
 		}	}	}
 		//return (Reply) audit.out( r.answer( Reply.yes().toString() ));
-		return r.answer( Reply.yes().toString() );
+		return r.answer( "go on"/*Reply.yes().toString()*/ );
 	}
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee

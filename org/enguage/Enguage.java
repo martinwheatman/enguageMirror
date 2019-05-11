@@ -92,7 +92,10 @@ public class Enguage {
 
 		// auto-unload here - autoloading() in Repertoire.interpret() 
 		// asymmetry: load as we go; tidy-up once finished
-		if (!Repertoire.induction() && !Autoload.ing()) Autoload.unload();
+		if (!Repertoire.transformation() &&
+			 !Repertoire.translation() && // shouldn't be true?
+			 !Autoload.ing())
+			Autoload.unload();
 
 		Strings reply = Reply.say().appendAll( r.toStrings());
 		Reply.say( null );
@@ -886,10 +889,10 @@ public class Enguage {
 
 			// 2. could this be built thus?
 			mediate( "to phrase variable this means phrase variable that reply ok", "ok" );
-			mediate( "this implies ok set induction to false",                      "go on" );
-			mediate( "this implies perform sign think variable that",               "go on" );
-			mediate( "this implies perform sign create variable this",              "go on" );
-			mediate( "this implies ok set induction to true",                       "go on" );
+			mediate( "this implies set transformation to false",                 "go on" );
+			mediate( "this implies ok perform sign think variable that",               "go on" );
+			mediate( "this implies ok perform sign create variable this",              "go on" );
+			mediate( "this implies set transformation to true",                  "go on" );
 			mediate( "ok", "ok" );
 
 			mediate( "just call me phrase variable name means i am called variable name", "ok" );

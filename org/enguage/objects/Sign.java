@@ -4,7 +4,6 @@
 package org.enguage.objects;
 
 import org.enguage.interp.intention.Intention;
-import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -22,11 +21,9 @@ public class Sign {
 		audit.in( "interpret", argv.toString());
 		String rc = Shell.FAIL;
 		
-		if (Repertoire.induction() &&
-				argv.size() > 0)
-		{
+		if (argv.size() > 0) {
 			String var1 = Variable.get( "prepending" ),
-					var2 = Variable.get( "headAppending" );
+			       var2 = Variable.get( "headAppending" );
 			boolean prepending    = var1 != null && var1.equals( "true" ),
 					headAppending = var2 != null && var2.equals( "true" );
 			
@@ -77,8 +74,9 @@ public class Sign {
 									Intention.headAppend :
 									Intention.append
 					  ).autopoiesis( r ).toString();
+				
 			} else if (cmd.equals( "imply" )) {
-				audit.debug( "Sign: prepending an implication '"+ argv.toString() +"'");
+				audit.debug( "prepending an implication '"+ argv.toString() +"'");
 				rc = new Intention(
 						isElse? Intention.elseThink : Intention.thenThink,
 						argv.toString(),
@@ -95,9 +93,9 @@ public class Sign {
 				else
 					rc = new Intention( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Intention.append ).autopoiesis( r ).toString();
 			
-			} else {
+			} else
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
-		}	}
+		}
 		return audit.out( new Strings( rc ));
 	}
 	public static void main( String args[]) {

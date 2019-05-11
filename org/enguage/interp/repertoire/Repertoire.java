@@ -28,20 +28,31 @@ public class Repertoire {
 	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 
 	 * in engine?
 	 */
-	static public Signs signs = new Signs("user" );
-	static public Signs autop = new Signs("autop" ).add( Autopoiesis.written ).add( Autopoiesis.spoken );
-	static public Signs allop = new Signs("allop" ).add( Engine.commands );
+	static public Signs signs = new Signs( "user"  );
+	static public Signs autop = new Signs( "autop" ).add( Autopoiesis.written )
+			                                        .add( Autopoiesis.spoken );
+	static public Signs allop = new Signs( "allop" ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
 	 */
 	private final static String FALSE = Boolean.toString( false );
 	private final static String  TRUE = Boolean.toString( true  );
-	static Variable induction = new Variable( "induction", FALSE );
-	static public  boolean induction() {
-		return induction.get().equalsIgnoreCase( TRUE );
+	
+	static private Variable transformation = new Variable( "transformation", FALSE );
+	static public  boolean  transformation() {
+		return transformation.get().equalsIgnoreCase( TRUE );
 	}
-	static public  boolean induction( boolean b ) {
-		induction.set( b ? TRUE : FALSE );
+	static public  boolean transformation( boolean b ) {
+		transformation.set( b ? TRUE : FALSE );
+		return b;
+	}
+
+	static private Variable translation = new Variable( "translation", FALSE );
+	static public  boolean  translation() {
+		return translation.get().equalsIgnoreCase( TRUE );
+	}
+	static public  boolean translation( boolean b ) {
+		translation.set( b ? TRUE : FALSE );
 		return b;
 	}
 
@@ -55,7 +66,7 @@ public class Repertoire {
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
 		Reply r = new Reply();
-		if (induction() || Autoload.ing()) {
+		if (transformation() || translation() || Autoload.ing()) {
 			r = autop.mediate( u );
 			if (Reply.DNU == r.type()) {
 				r = signs.mediate( u );

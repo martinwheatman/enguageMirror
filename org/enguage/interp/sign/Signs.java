@@ -247,7 +247,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 					//audit.debug( "Found@ "+ i +":"+ get( complexity ).content().toLine() +":"+ match.toString() +")");
 
 					//save the context here, for future use... before interp
-					if (!Autoload.ing() && !Repertoire.induction())
+					if (!Autoload.ing() &&
+						 !Repertoire.translation() &&
+						 !Repertoire.transformation())
 						match.toVariables();
 					
 					// TODO: No need for context, now? read from (cached) variables?
