@@ -246,7 +246,8 @@ public class Enguage {
 			mediate( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
 			mediate( "demonstrators advocate violence",    "ok, demonstrators advocate violence" );
 			mediate( "demonstrators fear violence",        "no, demonstrators advocate violence" );
-			mediate( "demonstrators don't advocate violence", "ok, demonstrators don't advocate violence" );
+			mediate( "demonstrators don't advocate violence", 
+					 "ok, demonstrators don't advocate violence" );
 			// tidy up
 			mediate( "delete violence advocate list", "ok" );
 			mediate( "delete violence fear     list", "ok" );
@@ -395,6 +396,10 @@ public class Enguage {
 			mediate( "i do not need any eggs",  "ok, you don't need any eggs" );
 			mediate( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
 			mediate( "why might i need 3 eggs", "because you're baking a cake" );
+			
+			// This needs a fix - generic pronouns
+			//mediate( "james needs 3 eggs because he is baking a cake",
+			//		"ok, james needs three eggs because he is baking a cake" );
 		}
 		if (runThisTest( "The Non-Computable concept of NEED" )) { // 
 			clearTheNeedsList();
@@ -934,8 +939,8 @@ public class Enguage {
 			mediate( "how many light bins are there", "6,  there are 6 light bins" );
 			mediate( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
 		}
-		if (runThisTest()) {
-			// see if we've remembered hello...
+		if (runThisTest( "Checking spoken concepts - have we remembered Hello" )) {
+			// see if we've remembered hello... shouldn't have
 			mediate( "hello", "i don't understand" );
 		}
 //		if (runThisTest( level, ++testNo )) { // 
