@@ -94,14 +94,14 @@ public class Engine {
 			new Sign().concept( NAME ).pattern( new Patternette(          "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
 			new Sign().concept( NAME ).pattern( new Patternette( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
 			new Sign().concept( NAME ).pattern( new Patternette( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
-			new Sign().concept( NAME ).pattern( new Patternette( "group by",  "x" )).appendIntention( Intention.allop, "groupby X" ),
+			new Sign().concept( NAME ).pattern( new Patternette(    "group by", "x" )).appendIntention( Intention.allop, "groupby X" ),
 						
-			new Sign().concept( NAME ).pattern( new Patternette(         "timing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
-			new Sign().concept( NAME ).pattern( new Patternette(         "timing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
-			new Sign().concept( NAME ).pattern( new Patternette(        "tracing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
-			new Sign().concept( NAME ).pattern( new Patternette(        "tracing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
-			new Sign().concept( NAME ).pattern( new Patternette(         "detail  on",  "" )).appendIntention( Intention.allop, "detailed on" ),
-			new Sign().concept( NAME ).pattern( new Patternette(         "detail off",  "" )).appendIntention( Intention.allop, "detailed off" ),
+			new Sign().concept( NAME ).pattern( new Patternette(  "timing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
+			new Sign().concept( NAME ).pattern( new Patternette(  "timing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
+			new Sign().concept( NAME ).pattern( new Patternette( "tracing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
+			new Sign().concept( NAME ).pattern( new Patternette( "tracing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
+			new Sign().concept( NAME ).pattern( new Patternette(  "detail  on",  "" )).appendIntention( Intention.allop, "detailed on" ),
+			new Sign().concept( NAME ).pattern( new Patternette(  "detail off",  "" )).appendIntention( Intention.allop, "detailed off" ),
 			new Sign().concept( NAME )
 					.pattern( new Patternette( "tcpip ",  "address" ))
 					.pattern( new Patternette(      " ",  "port" ))

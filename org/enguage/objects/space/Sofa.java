@@ -39,25 +39,26 @@ public class Sofa extends Shell {
 			 */			
 			String  type = a.remove( 0 );
 			switch (Strings.hash( type )) {
-				case lFail    :     return Shell.Fail;
-				case lSuccess :     return Shell.Success;
-				case Sign.id  :     return Sign.interpret( a );
-				case Link.id  :     return Link.interpret( a );
-				case Item.id  :     return Item.interpret( a );
-				case List.id  :     return List.interpret( a );
-				case Value.id :     return Value.interpret( a );
-				case Every.id :     return Every.interpret( a );
-				case Plural.id :    return Plural.interpret( a );
-				case Entity.id :    return Entity.interpret( a );
-				case Spatial.id :   return Spatial.interpret( a );
-				case Numeric.id  :  return Numeric.interpret( a );
-				case Overlay.id  :  return Overlay.interpret( a );
-				case Synonyms.id :  return Synonyms.interpret( a );
-				case Temporal.id  : return Temporal.interpret( a );
-				case Function.id  : return Function.interpret( a );
-				case Variable.id  : return Variable.interpret( a );
-				case Colloquial.id:	return Colloquial.interpret( a );
-				case Transitive.id: return Transitive.interpret( a );
+				case lFail    :      return Shell.Fail;
+				case lSuccess :      return Shell.Success;
+				case Sign.id  :      return Sign.interpret( a );
+				case Link.id  :      return Link.interpret( a );
+				case Item.id  :      return Item.interpret( a );
+				case List.id  :      return List.interpret( a );
+				case Value.id :      return Value.interpret( a );
+				case Every.id :      return Every.interpret( a );
+				case Plural.id :     return Plural.interpret( a );
+				case Entity.id :     return Entity.interpret( a );
+				case Spatial.id :    return Spatial.interpret( a );
+				case Numeric.id  :   return Numeric.interpret( a );
+				case Overlay.id  :   return Overlay.interpret( a );
+				case Synonyms.id :   return Synonyms.interpret( a );
+				case Temporal.id  :  return Temporal.interpret( a );
+				case Function.id  :  return Function.interpret( a );
+				case Variable.id  :  return Variable.interpret( a );
+				case Colloquial.id:	 return Colloquial.interpret( a );
+				case Transitive.id:  return Transitive.interpret( a );
+				case Transaction.id: return Transaction.interpret( a );
 				default :
 					audit.ERROR( "Sofa.hash(): "+ type +".id should be: "+ Strings.hash( type ));
 					return Fail;

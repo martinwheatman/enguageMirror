@@ -93,9 +93,11 @@ public class Enguage {
 		// auto-unload here - autoloading() in Repertoire.interpret() 
 		// asymmetry: load as we go; tidy-up once finished
 		if (!Repertoire.transformation() &&
-			 !Repertoire.translation() && // shouldn't be true?
-			 !Autoload.ing())
+			!Repertoire.translation()    && // shouldn't be true?
+			!Autoload.ing())
+		{
 			Autoload.unload();
+		}
 
 		Strings reply = Reply.say().appendAll( r.toStrings());
 		Reply.say( null );
@@ -299,7 +301,7 @@ public class Enguage {
 			// test 1
 			mediate( "the councillors refused the demonstrators a permit because they fear violence",
 					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
-			mediate( "who are they", "they are the voters, the councillors , and the demonstrators" );
+			mediate( "who are they", "they are the councillors , the voters , and the demonstrators" );
 			
 			// test 2
 			mediate( "the councillors refused the demonstrators a permit because they advocate violence",
