@@ -28,7 +28,7 @@ public class Pronoun {
 	static public final String  objectives = "objectives";
 	static public final String  possessive = "possessive";
 		
-	static private int valuePl( String name ) {
+	static private int plurality( String name ) {
 		return !possessive( name ) && !Plural.isSingular( name ) ? PLURAL : SINGULAR;
 	}
 	// ////////////////////////////////////////////////////////////////////////
@@ -41,8 +41,12 @@ public class Pronoun {
 			{{"my",  "its", "his", "her", "his or her" },   // singular possessive
 			 {"our", "their"                           }} };// plural
 	
-	// TODO: these are unsafe - check parameter!!!
-	static public String pronoun(int os, int ps, int mf) { return pronouns[os][ps][mf];}
+	static public String pronoun(int os, int ps, int mf) {
+		if (os < SUBJECTIVE   || os > POSSESSIVE)   audit.FATAL( "pronoun - SUBJECTIVE fail" );
+		if (ps < SINGULAR     || ps > PLURAL)       audit.FATAL( "pronoun - SNG/PLURAL fail" );
+		if (mf < Gendered.MIN || mf > Gendered.MAX) audit.FATAL( "pronoun - GENDERED fail" );
+		return pronouns[os][ps][mf];
+	}
 	static private void set(int os, int ps, int mf, String val) {
 		pronouns [os][ps][mf] = val;
 		if (ps == PLURAL) {
@@ -110,10 +114,13 @@ public class Pronoun {
 	// ------------------------------------------------------------------------
 	static private int nameOs( String name ) {
 		// TODO: equals and check pluraled
-		return name.startsWith( subject   ) ? SUBJECTIVE  :
-		       name.startsWith(   object   ) ? OBJECTIVE   :
-		   	   name.equals( possession ) ? POSSESSIVE  : -1; 
+		return name.startsWith( subject ) ? SUBJECTIVE  :
+		       name.startsWith(  object ) ? OBJECTIVE   :
+		   	   name.equals(  possession ) ? POSSESSIVE  : -1; 
 	}
+	
+	/////////////////// VARIABLE NAMES applicable to pronouns /////////////////
+	///
 	static private String subject = "subject";
 	static public  void   subjective( String nm ) { subject = nm; }
 	
@@ -138,6 +145,8 @@ public class Pronoun {
 				word.endsWith( possession )
 				: word.startsWith( possession );
 	}
+	///
+	//// VARIABLE NAMES applicable to pronouns ////////////////////////////////
 	static private boolean appended = true;
 	static public  boolean appended() { return appended;}
 	static public  void    appended(boolean b) { appended = b;}
@@ -172,9 +181,10 @@ public class Pronoun {
 					mfn = Gendered.FEMININE;
 				else if (s.equals( Gendered.neutral ))
 					mfn = Gendered.NEUTRAL;
-				else
+				else {
 					rc = Shell.Fail;
-			}
+					break;
+			}	}
 			if (rc.equals( Shell.Success ) && so != -1 && sp != -1 && mfn != -1)
 				set( so, sp, mfn, sa.remove( 0 ));
 		}
@@ -236,14 +246,14 @@ public class Pronoun {
 		//     UNIT    cup    => unit="cup"
 		int os = nameOs( name );
 		if (!isPronoun( value ) && os != -1)
-			values[os][valuePl( value )][Gendered.valueMfn( value )] = new String( value );
+			values[os][plurality( value )][Gendered.valueMfn( value )] = new String( value );
 	}
 	static private String get( String name, String value ) {
 		// N.B value is only used in get to deref pronoun table!
 		//audit.in( "get", name + (isPronoun(value)?" (pronoun="+ value +")":""));
 		int os = nameOs( name );
 		return os != -1 && isPronoun( value ) ?
-				values[os][valuePl( value )][Gendered.valueMfn( value )]
+				values[os][plurality( value )][Gendered.valueMfn( value )]
 				: value;
 	}
 	static private String update( String name, String value ) {
@@ -258,21 +268,11 @@ public class Pronoun {
 	// ////////////////////////////////////////////////////////////////////////
 	// -- test code
 	//
-	static private void test( String name, String value, String expected ) {
-		Audit.log( "Currently "+  name +" is >"+ get( name, value ) +"<)");
-		
-		value = update( name, value );
-		
-		if (expected.equals( "" ) || value.equals( expected ))
-			audit.passed();
-		else
-			audit.FATAL( "answer is '"+ value +"',\n\t\tbut should be '"+ expected +"'" );
-	}
 	static private void possessiveOutbound( String value ) {
 		String subj = get( subject, value );
 		if (possessive( value ))
 			audit.passed( "passes: "+ value +" => "+
-					pronouns[POSSESSIVE][valuePl( subj )][Gendered.valueMfn( subj )]);
+					pronouns[POSSESSIVE][plurality( subj )][Gendered.valueMfn( subj )]);
 		else
 			Audit.log( "failed: "+ value +" != possessive"  );
 	}
@@ -295,23 +295,10 @@ public class Pronoun {
 		testInterpret( "set singular subjective neutral they" );
 		Audit.log( "pronoun: "+ pronouns[SUBJECTIVE][SINGULAR][Gendered.NEUTRAL]);
 		
-		testInterpret( "add masculine marv" );
+		testInterpret( "add masculine martin" );
+		testInterpret( "add masculine jamie" );
 		testInterpret( "add feminine  ruth" );
-		//testInterpret( "name subjective SUBJECT" );
-
-		test( subject, "he",  "he"  );
-		test( subject, "she", "she" );
-		
-		// setting and getting subject
-		test( subject, "marv", "marv" );
-		test( subject, "he",   "marv" );
-		test( subject, "ruth", "ruth" );
-		test( subject, "he",   "marv" );
-		test( subject, "she",  "ruth" );
-		test( subject, "yota", "yota" );
-		test( subject, "it",   "yota" );
-		test( subject, "she",  "ruth" );
-		test( subject, "he",   "marv" );
+		testInterpret( "name subjective SUBJECT" );
 		
 		audit.title( "Possession Test" );
 		testInterpret( "add masculine martin" );

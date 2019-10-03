@@ -11,12 +11,13 @@ import org.enguage.util.sys.Shell;
 //
 public class Gendered {
 	// neutral is second to hold all plural pronouns...
-	static public final    int   PERSONAL = 0;
-	static public final    int    NEUTRAL = 1;
-	static public final    int  MASCULINE = 2;
-	static public final    int   FEMININE = 3;
-	static public final    int UNGENDERED = 4;
-
+	static public final    int         PERSONAL = 0;
+	static public final    int MIN =   PERSONAL;
+	static public final    int          NEUTRAL = 1;
+	static public final    int        MASCULINE = 2;
+	static public final    int         FEMININE = 3;
+	static public final    int       UNGENDERED = 4;
+	static public final    int MAX = UNGENDERED;
 	
 	static public final String    neutral = "neutral";
 	static public final String   feminine = "feminine";
