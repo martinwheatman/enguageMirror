@@ -224,7 +224,7 @@ public class Enguage {
 
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
-		Pronoun.interpret( new Strings( "add feminine ruth" ));
+		Pronoun.interpret( new Strings( "add feminine  ruth" ));
 
 		//if (runThisTest( level, ++testNo )) {
 		//	mediate( "", "" );
@@ -399,9 +399,6 @@ public class Enguage {
 			mediate( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
 			mediate( "why might i need 3 eggs", "because you're baking a cake" );
 			
-			// This needs a fix - generic pronouns
-			//mediate( "james needs 3 eggs because he is baking a cake",
-			//		"ok, james needs three eggs because he is baking a cake" );
 		}
 		if (runThisTest( "The Non-Computable concept of NEED" )) { // 
 			clearTheNeedsList();
@@ -816,6 +813,9 @@ public class Enguage {
 			
 			mediate( "what do they need",     "laurel and hardy need a coffee , and a tea" );
 			clearTheNeedsList( "MartinAndRuth does not need anything" );
+			// This needs a fix - generic pronouns
+			mediate( "james needs 3 eggs because he is baking a cake",
+					 "ok, james needs 3 eggs because he is baking a cake" );
 		}
 		if (runThisTest()) { // 
 			/* TODO:

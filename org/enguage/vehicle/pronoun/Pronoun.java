@@ -29,7 +29,7 @@ public class Pronoun {
 	static public final String  possessive = "possessive";
 		
 	static private int valuePl( String name ) {
-		return !possessive( name ) && Plural.isPlural( name ) ? PLURAL : SINGULAR;
+		return !possessive( name ) && !Plural.isSingular( name ) ? PLURAL : SINGULAR;
 	}
 	// ////////////////////////////////////////////////////////////////////////
 	

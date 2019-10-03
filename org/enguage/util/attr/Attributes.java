@@ -248,11 +248,11 @@ public class Attributes extends ArrayList<Attribute> {
 		for (Attribute a : this ) {
 			Strings ss = new Strings( a.value());
 			ArrayList<Strings> als ;
-			if (Plural.isPlural( a.name().toLowerCase( Locale.getDefault()) )) {
-				als = ss.divide( sep, false ); // seps are "," and "and" -- not too interesting!
-			} else {
+			if (Plural.isSingular( a.name().toLowerCase( Locale.getDefault()) )) {
 				als = new ArrayList<Strings>();
 				als.add( ss );
+			} else {
+				als = ss.divide( sep, false ); // seps are "," and "and" -- not too interesting!
 			}
 			
 			rc.add( als );

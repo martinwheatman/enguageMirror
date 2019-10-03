@@ -122,7 +122,7 @@ public class Patternette {
 		if (ui.hasNext()) {
 			String candidate = ui.next();
 			rc = (  quoted() && !Language.isQuoted( candidate ))
-			  || (isPlural() && !Plural.isPlural(   candidate ));
+			  || (isPlural() && Plural.isSingular(  candidate ));
 			if (ui.hasPrevious()) ui.previous();
 		}
 		return rc;

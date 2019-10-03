@@ -30,7 +30,7 @@ public class Plural {
 		pluralEndings.add( p );
 	}
 	
-	static public boolean isPlural(String p ) {
+	static private boolean isPlural( String p ) {
 		// first check exceptions
 		if (pluralExceptions.containsKey( p )) return true;
 		
@@ -50,6 +50,9 @@ public class Plural {
 		
 		// its not a plural
 		return false;
+	}
+	static public boolean isSingular( String p ) {
+		return singularExceptions.containsKey( p ) || !isPlural( p );
 	}
 	static public String singular( String p ) {
 		// check if already singular
@@ -165,6 +168,7 @@ public class Plural {
 		Plural.addRule(  "y",  "ies" );
 		Plural.addRule( "ss", "sses" );
 		Plural.addException( "colloquial", "colloquia" ); // the plural of X is Y
+		Plural.addException( "james",      "jameses" );   // the plural of X is Y
 
 		System.out.println( " ==== Plural tests:" );
 		ptest( "colloquial" );
@@ -172,6 +176,7 @@ public class Plural {
 		ptest( "queeny" );
 		ptest( "princess" );
 		ptest( "prince" );
+		ptest( "james" );
 		
 		System.out.println( " ==== Singular tests:" );
 		stest( "colloquia" );
@@ -179,6 +184,7 @@ public class Plural {
 		stest( "queenies" );
 		stest( "princesses" );
 		stest( "princes" );
+		stest( "james" );
 		
 		Strings s = new Strings("4 , you need 4 cup of black coffee" );
 		s = ise( s );
