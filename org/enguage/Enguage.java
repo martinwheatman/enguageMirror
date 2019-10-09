@@ -202,6 +202,12 @@ public class Enguage {
 	static private final String ihe =  "I have everything";
 	static private void clearTheNeedsList() { clearTheNeedsList( ihe );}
 	static private void clearTheNeedsList( String s ) { Enguage.mediate( new Strings( s ));	}
+	static private void tidyUpViolenceTest( String fname ) {
+		Enguage.mediate( new Strings( "delete "+ fname +" advocate list" ));
+		Enguage.mediate( new Strings( "delete "+ fname +" fear     list" ));
+		Enguage.mediate( new Strings( "unset the value of they" ));
+	}
+	static private void tidyUpViolenceTest() { tidyUpViolenceTest( "violence" ); }
 	
 	static private int level  = 0; // TODO: 0 = every level, -n = ignore level n
 	static private int testNo = 0;
@@ -251,9 +257,7 @@ public class Enguage {
 			mediate( "demonstrators don't advocate violence", 
 					 "ok, demonstrators don't advocate violence" );
 			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
+			tidyUpViolenceTest();
 			
 			// ----------------------------------------------------------------
 			audit.subtl( "Openly stated: opposing views" );
@@ -268,9 +272,7 @@ public class Enguage {
 					 "ok, the councillors refused the demonstrators a permit because they advocate violence" );
 			mediate( "who are they", "they are the demonstrators" );
 			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
+			tidyUpViolenceTest();
 			
 			// ----------------------------------------------------------------
 			audit.subtl( "Openly stated: aligned views - advocate" );
@@ -288,9 +290,7 @@ public class Enguage {
 			mediate( "who are they", "they are the councillors , and the demonstrators" );
 			
 			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
+			tidyUpViolenceTest();
 			
 			// ----------------------------------------------------------------
 			audit.subtl( "Openly stated: aligned views - fear" );
@@ -309,9 +309,7 @@ public class Enguage {
 			mediate( "who are they", "i don't know" );
 			
 			// tidy up
-			mediate( "delete violence advocate list", "ok" );
-			mediate( "delete violence fear     list", "ok" );
-			mediate( "unset the value of they" );
+			tidyUpViolenceTest();
 			
 			// ----------------------------------------------------------------
 			audit.subtl( "the common sense view" );
@@ -324,9 +322,7 @@ public class Enguage {
 			mediate( "who are they", "they are the councillors" );
 			
 			// tidy up - N.B. these will affect previous tests on re-running them
-			mediate( "delete csviolence advocate list", "ok" );
-			mediate( "delete csviolence fear     list", "ok" );
-			mediate( "unset the value of they" );
+			tidyUpViolenceTest( "csviolence" );
 		}
 		if (runThisTest( "Saving spoken concepts" )) {
 			// First, check we're clean!

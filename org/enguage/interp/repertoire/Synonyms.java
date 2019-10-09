@@ -19,32 +19,25 @@ public class Synonyms {
 	static public final int      id = 237427137; //Strings.hash( "synonyms" );
 
 	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
-	
-	static private Attributes synonyms = new Attributes();
+	static private Attributes                synonyms = new Attributes();
 	
 	private static boolean attempt( String name, String load, String from, String to ) {
-		//audit.in( "load", "name="+ name +", load="+ load +", fr="+ from +", to="+ to );
-		//boolean rc = false;
 		if (null != autoloaded.get( name ) || Concept.load( load, from, to )) {
 			autoloaded.put( name, 0 );
-			//Audit.log( "loaded "+ name );
-			return true; //rc = true;
+			return true;
 		}
-		return false; //audit.out( rc );
+		return false;
 	}
 	public static void autoload( Strings utterance ) {
-		//audit.in( "autoload", ""+utterance );
 		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
 		for (String synonym : synonyms.matchNames( utterance )) {
 			String existing = synonyms.get( synonym );
 			if (!attempt( synonym, existing, existing, synonym )                    &&
 				!attempt( synonym+"+"+Plural.plural( synonym ),
-					   existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
+				         existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
 				!attempt( Plural.plural(  synonym )+"+"+synonym,
-					   Plural.plural( existing )+"+"+existing, existing, synonym ));
-		}
-		//audit.out();
-	}
+				          Plural.plural( existing )+"+"+existing, existing, synonym ));
+	}	}
 	static public void unload() {
 		Strings removals = new Strings();
 		
@@ -79,7 +72,7 @@ public class Synonyms {
 			if (cmd.equals( "create" ) && sz>3)
 				// e.g. "create want / need"
 				synonyms.add( Attribute.value( cmds.getUntil( "/" )).toString( Strings.UNDERSC ), //from
-						  Attribute.value( cmds                ).toString( Strings.UNDERSC ));//to
+				              Attribute.value( cmds                ).toString( Strings.UNDERSC ));//to
 				
 			else if (cmd.equals( "destroy" ) && sz==2)
 				synonyms.remove( cmds.toString( Strings.UNDERSC ));
