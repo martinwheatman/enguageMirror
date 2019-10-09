@@ -321,7 +321,7 @@ public class Enguage {
 					 "ok, the councillors refused the demonstrators a permit because they fear violence" );
 			mediate( "who are they", "they are the councillors" );
 			
-			// tidy up - N.B. these will affect previous tests on re-running them
+			// tidy up - N.B. these will affect previous tests on re-runs
 			tidyUpViolenceTest( "csviolence" );
 		}
 		if (runThisTest( "Saving spoken concepts" )) {
