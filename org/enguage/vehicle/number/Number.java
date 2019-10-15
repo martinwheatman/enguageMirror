@@ -136,7 +136,7 @@ public class Number {
 							} else
 								params.add( got );
 							
-							number = numEval( fnName, params );
+							number = funcEval( fnName, params );
 				}	}	}
 			} else {
 				if (got.equals( "plus" )) {
@@ -152,12 +152,12 @@ public class Number {
 					idx++;
 				}
 				number = representamen.get( idx++ );
-				if (number.contains(".")) integer = false;
+				if (number.contains(".")) isInteger = false;
 				if (idx < representamen.size()) {
 					if ( representamen.get( idx ).equals( "point" )) {
 						number += ".";
 						idx++;
-						integer = false;
+						isInteger = false;
 					}
 					while ( idx < representamen.size()) {
 						String tmp = representamen.get( idx );
@@ -195,7 +195,7 @@ public class Number {
 					value *= value;
 				} else if (op.equals( "factorial" )) {
 					op = ""; // consumed!
-					value = (Float.isNaN( value ) || !integer) ? Float.NaN
+					value = (Float.isNaN( value ) || !isInteger) ? Float.NaN
 							 : (float)factorial( Math.round( value ));  // simple factorial?
 				} else if (op.equals( "to the power of" )) {
 					op = ""; // consumed!
@@ -262,6 +262,10 @@ public class Number {
 				} else if (op.equals( "all" )) {
 					op = ""; // consumed!
 					value = doProduct( value );
+				} else if (op.equals( "close" )) {
+					op = ""; // consumed!
+					//value = value;
+					break;
 				} else {
 					value = doProduct( doPower( getNumber() ));
 					nextOp = op;
@@ -330,22 +334,22 @@ public class Number {
 			char sign;
 			if (s.length() > 1 && ((sign = s.charAt( 1 )) == '=' || sign == '~')) {
 				//audit.debug( "number from value" );
-				relative( true );
-				ascending( s.charAt( 0 ) == '+' );
-				exact( sign == '=' );
+				isRelative( true );
+				isAscending( s.charAt( 0 ) == '+' );
+				isExact( sign == '=' );
 				magnitude( Float.valueOf( s.substring( 2 )));
 				// create representamen
-				if (!exact()) append( "about" );
+				if (!isExact()) append( "about" );
 				append( s.substring( 2 ));
-				append( ascending() ? MORE : FEWER );
+				append( isAscending() ? MORE : FEWER );
 			} else {
 				//audit.debug( "number from string" );
-				Number n = getNumber( s );
-				relative(  n.relative );
-				ascending( n.ascending );
+				Number n = new Number( new Strings( s ).listIterator()); // getNumber( s );
+				isRelative(  n.isRelative );
+				isAscending( n.isAscending );
 				magnitude( n.magnitude );
-				exact(     n.exact );
-				integer(   n.integer );
+				isExact(     n.isExact );
+				isInteger(   n.isInteger );
 				representamen( n.representamen );
 		}	}
 		//audit.out( this.toString() );
@@ -354,60 +358,60 @@ public class Number {
 	//
 	public Number combine( Number n ) {
 		audit.in( "combine", "'"+ toString() + "' with '" + n.toString() +"'" );
-		if (n.relative()) {
-			audit.debug( "rel="+ relative +" && n.rel="+ n.relative );
+		if (n.isRelative()) {
+			audit.debug( "rel="+ isRelative +" && n.rel="+ n.isRelative );
 			// relative 
-			relative( relative && n.relative ); // need to set rel before magnitude!
-			exact(     exact &&   n.exact ); // lowest common denominator
-			integer( integer && n.integer ); // lowest common denominator
-			Float valueToSet = (ascending ? magnitude : -magnitude) + (n.ascending ? n.magnitude() : -n.magnitude()); 
-			ascending( valueToSet >= 0.0F );
+			isRelative( isRelative && n.isRelative ); // need to set rel before magnitude!
+			isExact(     isExact &&   n.isExact ); // lowest common denominator
+			isInteger( isInteger && n.isInteger ); // lowest common denominator
+			Float valueToSet = (isAscending ? magnitude : -magnitude) + (n.isAscending ? n.magnitude() : -n.magnitude()); 
+			isAscending( valueToSet >= 0.0F );
 			magnitude( valueToSet );
 			
 			// this = 3 && n -= 6,  this = -3
 			// recreate representamen
 			representamen = new Strings();
-			if (!exact()) append( "about" );
+			if (!isExact()) append( "about" );
 			String tmp = String.valueOf( magnitude() );
-			if (integer()) tmp = tmp.substring( 0, tmp.length() - 2 );
+			if (isInteger()) tmp = tmp.substring( 0, tmp.length() - 2 );
 			append( tmp );
-			if (relative) append( ascending ? MORE : FEWER );
+			if (isRelative) append( isAscending ? MORE : FEWER );
 
 		} else {
 			audit.debug( "n is abs" );
 			// replace this with n
-			relative(  false ); // need to set rel before magnitude!
-			ascending(  n.ascending );
+			isRelative(  false ); // need to set rel before magnitude!
+			isAscending(  n.isAscending );
 			magnitude( n.magnitude );
-			exact(     n.exact );
-			integer(   n.integer );
+			isExact(     n.isExact );
+			isInteger(   n.isInteger );
 			representamen( n.representamen );
 		}
 		return (Number) audit.out( this );
 	}
 	
 	// properties of a number...
-	private boolean relative = false;
-	public  boolean relative() { return relative; }
-	public  Number  relative( boolean b ) { relative = b; return this; }
+	private boolean isRelative = false;
+	public  boolean isRelative() { return isRelative; }
+	public  Number  isRelative( boolean b ) { isRelative = b; return this; }
 	
-	private boolean ascending = true;
-	public  boolean ascending() { return ascending; }
-	public  Number  ascending( boolean b ) { ascending = b; return this; }
+	private boolean isAscending = true;
+	public  boolean isAscending() { return isAscending; }
+	public  Number  isAscending( boolean b ) { isAscending = b; return this; }
 	
-	private boolean exact = true;
-	public  boolean exact() { return exact; }
-	public  Number  exact( boolean b ) { exact = b; return this; }
+	private boolean isExact = true;
+	public  boolean isExact() { return isExact; }
+	public  Number  isExact( boolean b ) { isExact = b; return this; }
 	
-	private boolean integer = true;
-	public  boolean integer() { return integer; }
-	public  Number  integer( boolean b ) { integer = b; return this; }
+	private boolean isInteger = true;
+	public  boolean isInteger() { return isInteger; }
+	public  Number  isInteger( boolean b ) { isInteger = b; return this; }
 	
 	private Float   magnitude = Float.NaN;
 	public  Float   magnitude() { return magnitude; }
 	public  Number  magnitude( Float valueToSet ) {
 		if (!valueToSet.isNaN()) // <<< TODO: take this out?
-			magnitude = relative() ? Math.abs( valueToSet ) : valueToSet;
+			magnitude = isRelative() ? Math.abs( valueToSet ) : valueToSet;
 		return this;
 	}
 	
@@ -425,7 +429,7 @@ public class Number {
 		else {
 			rc = floatToString( magnitude() );
 			if (!rc.equals(Number.NOT_A_NUMBER))
-				rc = (relative ? (ascending ? "+" : "-" ) + (exact ? "=" : "~") : "") + rc;
+				rc = (isRelative ? (isAscending ? "+" : "-" ) + (isExact ? "=" : "~") : "") + rc;
 		}	
 		//return audit.out( rc );
 		return new Strings().append( rc );
@@ -468,6 +472,7 @@ public class Number {
 		} while (++x<10 && oplen > 0);
 	}
 	private int appendOp( ListIterator<String> si) {
+		// creating representamen - appending an op, e.g. "plus"|"all multiplied by"
 		int len = 0;
 		if (si.hasNext()) {
 			String op = si.next();
@@ -502,45 +507,14 @@ public class Number {
 		}
 		return len;
 	}
-	private String numEval( String fn, Strings params ) {
+	private static String funcEval( String fn, Strings params ) {
+		// fn="product", params=["a","b"]
 		Strings cmd = new Strings();
 		cmd.append( "evaluate" )
 		   .append( fn )
 		   .appendAll( params );
 		String token = Function.interpret( cmd ).toString();
 		return Numerals.isNumeric( token ) ? token : null;
-	}
-	private boolean appendFunction( ListIterator<String> si ) {
-		//audit.in( "doFunction", Strings.peek( si ));
-		boolean rc = false;
-		if (si.hasNext()) {
-			String token = si.next();
-			if (token.equals( "the" ) && si.hasNext()) {
-				// could this be: the <FUNCTION/> of <PARAMS/> ?
-				String fn = si.next();
-				if (si.hasNext()) {
-					Strings params = null;
-					if (si.next().equals( "of" ) && 
-						null != (params = Numerals.getParams( si )) &&
-						null != (token  = numEval( fn, params ))) // 5 = sum, [ 2,  3 ]
-					{	
-						rc = true;
-						append( "the" ).append(fn).append("of").append( params );
-					} else {
-						//remove/replace all params
-						if (params !=null) for (int sz = params.size(); sz > 0; sz--) {
-							si.previous();
-							params.remove( sz - 1 );
-						}
-						Strings.previous( si, 3 ); // "the fname of ... and ...".
-					}
-				} else
-					Strings.previous( si, 2 ); // "the fname." 
-			} else
-				si.previous(); // "the." 
-		}
-		//return audit.out( rc );
-		return rc;
 	}
 	private boolean appendNumeral( ListIterator<String> si ) {
 		//audit.in( "doNumeral", Strings.peek( si ));
@@ -554,7 +528,7 @@ public class Number {
 		}
 		return rc; //audit.out( rc );
 	}
-	private boolean doNum( ListIterator<String> si ) {
+	private boolean appendNum( ListIterator<String> si ) {
 		//audit.in( "doNum", Strings.peek( si ));
 		boolean rc = false;
 		if (si.hasNext()) {
@@ -567,23 +541,6 @@ public class Number {
 		}
 		//return audit.out( rc );
 		return rc;
-	}
-	// used in getNumber() factory method...
-	private void appendExpr( ListIterator<String> si ) {
-		//audit.in( "doExpr", Strings.peek( si ));
-		// ...read into the array a succession of ops and numerals 
-		int done;
-		do {
-			// optional, so ignore any return code
-			appendPostOp( si ); // [all] squared|cubed|to the power of
-			if (   0 < (done = appendOp( si )) // ... times
-				&& !(appendNumeral( si ) || appendFunction( si )))
-			{ // if done op but not numeral remove op..
-				remove( si, done );
-				done = 0;
-			}
-		} while (si.hasNext() && done > 0);
-		//audit.out();
 	}
 	/* getNumber() identifies how many items in the array, from the index are numeric
 	 *   [..., "68",    "guns", ...]         => 1 //  9
@@ -598,15 +555,15 @@ public class Number {
 		if (si.hasNext() && Numerals.aImpliesNumeric()) {
 			if (si.next().equals( "a" )) { // ascending only valid if relative!
 				// need to set rel before magnitude!
-				relative( false )/*.ascending( true )*/.magnitude( 1F ).append( "a" );
+				isRelative( false )/*.ascending( true )*/.magnitude( 1F ).append( "a" );
 				
 				if (si.hasNext()) {
 					String tmp = si.next();
 					if (tmp.equals( "few"))
-						append( "few" ).exact( false ).magnitude( 3.0f );
+						append( "few" ).isExact( false ).magnitude( 3.0f );
 						
 					else if (tmp.equals( "couple")) {
-						append( "couple" ).exact( false ).magnitude( 2.0f );
+						append( "couple" ).isExact( false ).magnitude( 2.0f );
 						if (si.hasNext())
 							if (si.next().equals( "of" ))
 								append( "of" );
@@ -630,7 +587,7 @@ public class Number {
 		boolean rc = false;
 		if (si.hasNext())
 			if (rc = si.next().equals( "about"))
-				exact( false ).append( "about" );
+				isExact( false ).append( "about" );
 			else
 				si.previous();
 		//return audit.out( false );
@@ -641,9 +598,9 @@ public class Number {
 		boolean rc = false;
 		if (si.hasNext())
 			if (rc = si.next().equals( "another" )) {
-				relative( true );  // need to set rel before magnitude!
-				ascending( true );
-				exact( true );
+				isRelative( true );  // need to set rel before magnitude!
+				isAscending( true );
+				isExact( true );
 				magnitude( 1.0f );
 				append( "another" );
 			} else
@@ -658,57 +615,128 @@ public class Number {
 			String token = si.next();
 			if (token.equals( MORE )) {
 				audit.debug( "found more" );
-				relative( true ).ascending(  true );
+				isRelative( true ).isAscending(  true );
 				append( MORE );
 			} else if (token.equals( FEWER )) {
 				audit.debug( "found less" );
-				relative( true ).ascending( false );
+				isRelative( true ).isAscending( false );
 				append( FEWER );
 			} else
 				si.previous();
 		}
 		//audit.out();
 	}
+	private static Strings getActualParams( ListIterator<String> si ) {
+		audit.in( "getActualParams", Strings.peek( si ));
+		Strings params = null;
+		boolean andRead = false;
+		
+		while (si.hasNext()) {
+			Number n = new Number( si );
+			if (n.toString().equals(NOT_A_NUMBER))
+				break;
+			else {
+				if (null == params) params = new Strings();
+				params.add( n.toString());
+				if (Strings.peek( si ).equals( "and" )) {
+					andRead = true;
+					params.add( si.next());
+				} else {
+					andRead = false;
+					break;
+		}	}	}
+		if (andRead) si.previous();
+		return audit.out( params ); // returns null or param list
+	}
+	private boolean appendFunction( ListIterator<String> si ) {
+		//audit.in( "doFunction", Strings.peek( si ));
+		boolean rc = false;
+		if (si.hasNext()) {
+			String token = si.next();
+			if (token.equals( "the" ) && si.hasNext()) {
+				// could this be: the <FUNCTION/> of <PARAMS/> ?
+				String fn = si.next();
+				if (si.hasNext()) {
+					Strings params = null;
+					if (si.next().equals( "of" ) && 
+						null != (params = getActualParams( si )) //&&      // ["2",  "3"] <= getActualParams( "2 and 3" );
+						//null != (token  = funcEval( fn, params ))) // "5" <= numEval("sum", ["2",  "3"] )
+					){	
+						rc = true;
+						append( "the" ).append(fn).append("of").append( params );
+					} else {
+						//remove/replace all params
+//						if (params !=null) for (int sz = params.size(); sz > 0; sz--) {
+//							si.previous();
+//							params.remove( sz - 1 );
+//						}
+						Strings.previous( si, 3 ); // "the fname of ... and ...".
+					}
+				} else
+					Strings.previous( si, 2 ); // "the fname." 
+			} else
+				si.previous(); // "the." 
+		}
+		//return audit.out( rc );
+		return rc;
+	}
+	private void appendExpr( ListIterator<String> si ) {
+		//audit.in( "appendExpr", Strings.peek( si ));
+		// ...read into the array a succession of ops and numerals 
+		int done;
+		do {
+			// optional, so ignore any return code
+			appendPostOp( si ); // [all] squared|cubed|to the power of
+			if (   0 < (done = appendOp( si )) // ... times
+				&& !(appendNumeral( si ) || appendFunction( si )))
+			{ // if done op but not numeral remove op..
+				remove( si, done );
+				done = 0;
+			}
+		} while (si.hasNext() && done > 0);
+		//audit.out();
+	}
 	private Number doNumerical( ListIterator<String> si ) {
-		//audit.in( "doNumerical", Strings.peek( si ));
-		if (doNum( si ) || appendFunction( si )) {
+		audit.in( "doNumerical", Strings.peek( si ));
+		if (appendNum( si ) || appendFunction( si )) {
 			appendExpr( si );
 			magnitude( doTerms()); // need to do this before more or less
 			doMoreOrLess( si );
 		}		
-		//return (Number) audit.out( this );
-		return this;
+		return (Number) audit.out( this );
+		//return this;
 	}
-	static public Number getNumber( ListIterator<String> si ) {
+	public Number( ListIterator<String> si ) {
 		//audit.in( "getNumbr", "si.next="+ Strings.peek( si ));
-		Number number = new Number();
+		//Numb number = new Numb();
+		this();
 		if (si.hasNext()) {
-			if (number.doA(       si ) ||
-				number.doAbout(   si ) ||
-				number.doAnother( si )   );
+			if (doA(       si ) ||
+				doAbout(   si ) ||
+				doAnother( si )   );
 			
-			number.doNumerical( si ); //.doMoreOrLess( si );
+			doNumerical( si ); //.doMoreOrLess( si );
 		}
 		//return (Number) audit.out( number );
-		return number;
+		//return number;
 	}
-	static public Number getNumber( String s ) {
-		return getNumber( new Strings( s ).listIterator());
-	}
+//	static private Number getNumber( String s ) {
+//		return new Number( new Strings( s ).listIterator());
+//	}
 	//* ===== test code ====
 	static private void evaluationTest( String term, String ans ) {
 		ListIterator<String> si = new Strings( term ).listIterator();
-		Number n = Number.getNumber( si );
-		Audit.log( "n is '"+ n.toString()
-				+"' ("+ ans +"=="+ n.valueOf() +")" 
-				+" sz="+ n.representamen().size() );
+		Number n = new Number( si );
+		Audit.log( "n is '"+ n.toString() +"' ( '"+ ans +"' == '"+ n.valueOf() +"' ) sz="+ n.representamen().size() );
+		if (!ans .equals( n.valueOf().toString() ))
+			audit.FATAL( "Doh!" );
 	}
 	static private void getNumberTest( String s ) { getNumberTest( s, "" ); }
 	static private void getNumberTest( String s, String expected ) {
 		//audit.in( "getNumberTest", s );
 		Strings orig = new Strings( s );
 		ListIterator<String> si = orig.listIterator();
-		Number n = Number.getNumber( si );
+		Number n = new Number( si );
 		Strings val = n.valueOf(), strg = n.valueOf();
 		Audit.log(
 				s +": toString=>"+ strg +"<"
@@ -718,7 +746,7 @@ public class Number {
 				+ (si.hasNext() ? ", nxt token is >>>"+ si.next() + "<<<" : "")
 		);
 		if (!expected.equals( "" ) && !expected.equals( n.valueOf().toString() ))
-			audit.FATAL( "getNumberTest(): "+ val +" is not ("+ expected +")");
+			audit.FATAL( "getNumberTest(): "+ s +": "+  val +" != expected("+ expected +")");
 		//audit.out();
 	}
 	static private void combineTest( String number, String with, String expected, String expValue ) {
@@ -741,7 +769,7 @@ public class Number {
 		Audit.log( "3.25 -> "+ floatToString( 3.25f ));
 		
 		audit.title( "evaluation test:");
-		evaluationTest(  "this is not a number",  "5" );
+		evaluationTest(  "this is not a number",  NOT_A_NUMBER );
 		evaluationTest(  "3 plus 2",              "5" );
 		evaluationTest(  "3 x    2",              "6" );
 		evaluationTest(  "3 squared",             "9" );
@@ -813,9 +841,8 @@ public class Number {
 			//TODO:
 			//getNumberTest( "the square of x",  "the product of x and x" );
 			
-			//Audit.allOn();
-			//Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
-			//getNumberTest( "2 times the factorial of 4",   "48" );
+			Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
+			getNumberTest( "2 times the factorial of 4",   "48" );
 			Audit.decr();
 		}
 		

@@ -716,7 +716,8 @@ public class Enguage {
 			mediate( "what is the sum of x and y",      "the sum of x and y is 7" );
 			
 			audit.title( "Factorial Description" );
-			mediate( "what is the factorial of 4",       "I don't know" );
+			//Audit.allOn();
+			//mediate( "what is the factorial of 4",       "I don't know" );
 			/* Ideally, we want:
 			 * - the factorial of 1 is 1;
 			 * - the factorial of n is n times the factorial of n - 1;
@@ -748,14 +749,16 @@ public class Enguage {
 			
 			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
 			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
-			mediate( "interpret what is the factorial of numeric variable n thus",  "go on" );
-			mediate( "first subtract 1 from variable n",                            "go on" );
-			mediate( "then what is the factorial of whatever",                      "go on" );
-			mediate( "then multiply whatever by variable n",  "go on" );
-			mediate( "then reply whatever the factorial of variable n is whatever", "go on" );
-			mediate( "ok", "ok" );
+//			mediate( "interpret what is the factorial of numeric variable n thus",  "go on" );
+//			mediate( "first subtract 1 from variable n",                            "go on" );
+//			mediate( "then what is the factorial of whatever",                      "go on" );
+//			mediate( "then multiply whatever by variable n",  "go on" );
+//			mediate( "then reply whatever the factorial of variable n is whatever", "go on" );
+//			mediate( "ok", "ok" );
 			
-			mediate( "what is the factorial of 4", "24 the factorial of 4 is 24" );
+			mediate( "the factorial of n is n times the factorial of n minus 1",
+					"ok, the factorial of n is n times the factorial of n minus 1" );
+			mediate( "what is the factorial of 4", "the factorial of 4 is 24" );
 		}
 		if (runThisTest( "Temporal interpret" )) {
 			mediate( "what day is christmas day" );

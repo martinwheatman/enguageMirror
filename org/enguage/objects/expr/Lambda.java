@@ -13,6 +13,28 @@ import org.enguage.vehicle.number.Numerals;
 public class Lambda {
 	static private Audit audit = new Audit( "Lambda" );
 
+	private static boolean match( Strings names, Strings values ) {
+		boolean rc = false;
+		audit.in( "match", "names="+ names +", values="+ values.toString( Strings.DQCSV ) );
+		if (names.size() == values.size()) {
+			rc = true;
+			ListIterator<String> ni = names.listIterator(),
+			                     vi = values.listIterator();
+			while (rc && ni.hasNext()) {
+				String n = ni.next(),
+				       v = vi.next();
+				// if name is numeric we must match this value
+				audit.debug( "Matching "+ n +", "+ v );
+				rc = Numerals.isNumeric( n ) ? // name=1 => value=1 !
+						n.equals( v ) :
+						     Numerals.isNumeric( v ) ? // value = xxx, deref
+								null == Variable.get( v ) : true;
+			}
+		} else
+			audit.debug( "Lambda: name/val mis-match in params: "+ names +"/"+ values.toString( Strings.DQCSV ));
+		return audit.out( rc );
+	}
+
 	public Lambda( Function f, Strings params, String body ) { // new/create
 		signature = params;
 		audit.debug( "creating: "+ signature.toString( Strings.CSV ) +"/"+ f.name());
@@ -29,7 +51,7 @@ public class Lambda {
 				&& !(body = new Value( formals, fn.name() ).getAsString()).equals(""))
 				break; // bingo! (can we revisit if this ain't right?)
 		if (body.equals(""))
-			Audit.log( "Lambda: "+ values.toString( Strings.CSV ) +"/"+ fn +" not found" );
+			Audit.log( "Lambda: "+ fn +"/"+ values.toString( Strings.CSV ) +" not found" );
 		audit.out();
 	}
 	
@@ -41,27 +63,6 @@ public class Lambda {
 	
 	public String toString() { return "( "+ signature.toString( Strings.CSV ) +" ): {"+ body +"}";}
 	
-	private static boolean match( Strings names, Strings values ) {
-		boolean rc = false;
-		audit.in( "match", "names="+ names +", values="+ values.toString( Strings.DQCSV ) );
-		if (names.size() == values.size()) {
-			rc = true;
-			ListIterator<String> ni = names.listIterator(),
-			                     vi = values.listIterator();
-			while (rc && ni.hasNext()) {
-				String n = ni.next(),
-				       v = vi.next();
-				// if name is numeric we must match this value
-				audit.debug( "matching "+ n +", "+ v );
-				rc = Numerals.isNumeric( n ) ? // name=1 => value=1 !
-						n.equals( v ) :
-						     Numerals.isNumeric( v ) ? // value = xxx, deref
-								null == Variable.get( v ) : true;
-			}
-		} else
-			audit.debug( "Lambda: name/val mis-match in params: "+ names +"/"+ values.toString( Strings.DQCSV ));
-		return audit.out( rc );
-	}
 	//
 	// === test code ===
 	private static void matchTest( String names, String values, boolean pass ) {

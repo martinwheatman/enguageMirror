@@ -143,8 +143,8 @@ public class List extends ArrayList<Item> {
 			if (quantity.equals( "" ) || number.magnitude() != 0.0f) {
 				// combining nothing with a relative number
 				// in case: quantity='+= 37' => set it to '37'
-				if (number.relative()) {
-					number.relative( false );
+				if (number.isRelative()) {
+					number.isRelative( false );
 					item.replace( "quantity", number.toString() );
 				}
 				add( item );

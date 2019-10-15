@@ -311,7 +311,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	
 	private String doNumeric( ListIterator<String> ui ) {
-		String toString = Number.getNumber( ui ).toString();
+		String toString = new Number( ui ).toString();
 		return toString.equals( Number.NOT_A_NUMBER ) ? null : toString;
 	}
 	private String doExpr( ListIterator<String> ui ) {

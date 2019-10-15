@@ -139,7 +139,7 @@ public class Item {
 	public Item removeQuantity( Number removed ) {
 		audit.in( "removeQuantity", removed.toString());
 		Number quantity = new Number( attribute( "quantity" ));
-		removed.magnitude( -removed.magnitude()).relative( true );
+		removed.magnitude( -removed.magnitude()).isRelative( true );
 		replace( "quantity", quantity.combine( removed ).toString() );
 		return (Item) audit.out( this );
 	}
@@ -160,7 +160,7 @@ public class Item {
 	}
 	private Float getPrevNum( String val ) {
 		ListIterator<String> si = new Strings( val ).listIterator();
-		Float prevNum = Number.getNumber( si ).magnitude(); //Integer.valueOf( val );
+		Float prevNum = new Number( si ).magnitude(); //Integer.valueOf( val );
 		return prevNum.isNaN() ? 1.0f : prevNum;
 	}
 	private Strings getFormatComponentValue( String composite ) { // e.g. "from LOCATION"

@@ -30,7 +30,7 @@ public class Numeric extends Value {
 					Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ ))
 			);
 		} catch (Exception e) {
-			set( val ); // set a default
+			set( def ); // set a default
 		}
 		return val;
 	}
@@ -103,7 +103,7 @@ public class Numeric extends Value {
 				ListIterator<String> ai = a.normalise().listIterator();
 				if (ai.hasNext()) {
 					ai.next(); // read over command
-					Number number = Number.getNumber( ai );
+					Number number = new Number( ai );
 					rc = number.valueOf() + a.copyAfter( 1 + number.representamen().size()).toString();
 				} else
 					rc = Shell.FAIL;
@@ -120,7 +120,7 @@ public class Numeric extends Value {
 
 				// [ "4", "+", "3" ] => [ "7" ] ???? at some point!
 				ListIterator<String> ai = a.listIterator();
-				String value = Number.getNumber( ai ).valueOf().toString(); /* <<<< this could 
+				String value = new Number( ai ).valueOf().toString(); /* <<<< this could 
 				 * have "another", coz it has context. In practice, this is a single figure for 
 				 * increase or decrease.
 				 */

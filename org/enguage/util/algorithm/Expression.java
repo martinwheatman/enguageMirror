@@ -12,7 +12,7 @@ public class Expression {
 	static private Audit audit = new Audit( "Expression" );
 
 	static private String getNumber( ListIterator<String> li, Strings rep ) {
-		String n = Number.getNumber( li ).toString();
+		String n = new Number( li ).toString();
 		if (n.equals( Number.NOT_A_NUMBER ))
 			n = null;
 		else

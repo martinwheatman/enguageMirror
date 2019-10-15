@@ -73,7 +73,7 @@ public class Relative {
 		//audit.in( "doAwmyAgo", "<si>" );
 		boolean found = false;
 		int shift = 0, start = si.nextIndex();
-		Number number = Number.getNumber( si );
+		Number number = new Number( si );
 		if (number.representamen().size() > 0 && si.hasNext()) {
 			shift = Math.round( number.magnitude());
 			audit.debug( "found shift="+ shift );
