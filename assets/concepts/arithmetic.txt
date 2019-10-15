@@ -1,7 +1,8 @@
 ## Simple calculation
-On "calculate PHRASE-X":
+On "evaluate NUMERIC-X":
 	perform "numeric evaluate X";
 	then, if not, reply "i did not get that".
+On "calculate NUMERIC-X", evaluate X.
 
 ## Typical description
 On "what is NUMERIC-X":

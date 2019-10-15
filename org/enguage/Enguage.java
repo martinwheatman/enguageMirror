@@ -729,7 +729,7 @@ public class Enguage {
 			mediate( "what is the factorial of 0",  "1" );
 			
 			mediate( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
-			mediate( "first perform numeric evaluate variable a times variable b",       "go on" );
+			mediate( "first evaluate variable a times variable b",                       "go on" );
 			mediate( "ok", "ok" );
 			
 			mediate( "the product of x and y is x times y" );
@@ -741,7 +741,7 @@ public class Enguage {
 			
 			// again, in longhand this is...
 			mediate( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
-			mediate( "first perform numeric evaluate variable d minus variable c",         "go on" );
+			mediate( "first evaluate variable d minus variable c",                         "go on" );
 			mediate( "ok", "ok" );
 			
 			mediate( "subtract 2 from 3", "1" );
