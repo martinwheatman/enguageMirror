@@ -47,7 +47,7 @@ public class Number {
 	static public  final String NOT_A_NUMBER = "not a number";
 	static public  final String         MORE = "more";
 	static public  final String        FEWER = "less";
-
+	
 	// ===== getNumber(): a Number representamen Factory
 	static private final Strings        All = new Strings(             "all" );
 	static private final Strings      Cubed = new Strings(           "cubed" );
@@ -57,6 +57,32 @@ public class Number {
 	static public  final Strings NotANumber = new Strings(    "not a number" );
 	
 	
+	// properties of a number...
+	private boolean isRelative = false;
+	public  boolean isRelative() { return isRelative; }
+	public  Number  isRelative( boolean b ) { isRelative = b; return this; }
+	
+	private boolean isAscending = true;
+	public  boolean isAscending() { return isAscending; }
+	public  Number  isAscending( boolean b ) { isAscending = b; return this; }
+	
+	private boolean isExact = true;
+	public  boolean isExact() { return isExact; }
+	public  Number  isExact( boolean b ) { isExact = b; return this; }
+	
+	private boolean isInteger = true;
+	public  boolean isInteger() { return isInteger; }
+	public  Number  isInteger( boolean b ) { isInteger = b; return this; }
+	
+	private Float   magnitude = Float.NaN;
+	public  Float   magnitude() { return magnitude; }
+	public  Number  magnitude( Float valueToSet ) {
+		if (!valueToSet.isNaN()) // <<< TODO: take this out?
+			magnitude = isRelative() ? Math.abs( valueToSet ) : valueToSet;
+		return this;
+	}
+
+
 	// ==============================
 	//  representamen Number parsing 
 	// ==============================
@@ -71,10 +97,29 @@ public class Number {
 	 *      
 	 * E.g. expr = 1 plus 2 squared plus 3 squared plus 4 all squared. 
 	 */
-	private int    idx;
-	private String op;
-	private String nextOp;
-
+	private int    idx = 0;
+	private String op  = "";
+	private String nextOp = "";
+	
+	private Strings representamen = new Strings();
+	public  Strings representamen() { return representamen; }
+	public  void    representamen( Strings s ) { representamen=s; }
+	public  Number  append( String s ) {
+		representamen.add( s );
+		return this;
+	}
+	private  Number  append( Strings sa ) {
+		representamen.addAll( sa );
+		return this;
+	}
+	private void remove( ListIterator<String> si, int n ) {
+		int sz = representamen.size();
+		int req = sz - n;
+		while (req<sz) {
+			si.previous();
+			representamen.remove( --sz );
+	}	}
+	
 	//retrieves an op from the array and adjusts idx appropriately
 	private String getOp() {
 		// e.g. x divided by ...
@@ -262,10 +307,6 @@ public class Number {
 				} else if (op.equals( "all" )) {
 					op = ""; // consumed!
 					value = doProduct( value );
-				} else if (op.equals( "close" )) {
-					op = ""; // consumed!
-					//value = value;
-					break;
 				} else {
 					value = doProduct( doPower( getNumber() ));
 					nextOp = op;
@@ -302,34 +343,7 @@ public class Number {
 		return value;
 	}
 
-	private Strings representamen = new Strings();
-	public  Strings representamen() { return representamen; }
-	public  void    representamen( Strings s ) { representamen=s; }
-	
-	public  Number  append( String s ) {
-		representamen.add( s );
-		return this;
-	}
-	private  Number  append( Strings sa ) {
-		representamen.addAll( sa );
-		return this;
-	}
-	private void remove( ListIterator<String> si, int n ) {
-		int sz = representamen.size();
-		int req = sz - n;
-		while (req<sz) {
-			si.previous();
-			representamen.remove( --sz );
-	}	}
-	
-	public Number() {
-		representamen = new Strings();
-		idx = 0;
-		op = nextOp = "";
-	}
 	public   Number( String s ) {  // e.g. +=6
-		this();
-		//audit.in( "Number", "s="+ s );
 		if (s != null && s.length() > 0) {
 			char sign;
 			if (s.length() > 1 && ((sign = s.charAt( 1 )) == '=' || sign == '~')) {
@@ -351,11 +365,8 @@ public class Number {
 				isExact(     n.isExact );
 				isInteger(   n.isInteger );
 				representamen( n.representamen );
-		}	}
-		//audit.out( this.toString() );
-	}
+	}	}	}
 
-	//
 	public Number combine( Number n ) {
 		audit.in( "combine", "'"+ toString() + "' with '" + n.toString() +"'" );
 		if (n.isRelative()) {
@@ -389,32 +400,7 @@ public class Number {
 		}
 		return (Number) audit.out( this );
 	}
-	
-	// properties of a number...
-	private boolean isRelative = false;
-	public  boolean isRelative() { return isRelative; }
-	public  Number  isRelative( boolean b ) { isRelative = b; return this; }
-	
-	private boolean isAscending = true;
-	public  boolean isAscending() { return isAscending; }
-	public  Number  isAscending( boolean b ) { isAscending = b; return this; }
-	
-	private boolean isExact = true;
-	public  boolean isExact() { return isExact; }
-	public  Number  isExact( boolean b ) { isExact = b; return this; }
-	
-	private boolean isInteger = true;
-	public  boolean isInteger() { return isInteger; }
-	public  Number  isInteger( boolean b ) { isInteger = b; return this; }
-	
-	private Float   magnitude = Float.NaN;
-	public  Float   magnitude() { return magnitude; }
-	public  Number  magnitude( Float valueToSet ) {
-		if (!valueToSet.isNaN()) // <<< TODO: take this out?
-			magnitude = isRelative() ? Math.abs( valueToSet ) : valueToSet;
-		return this;
-	}
-	
+		
 	public String toString() {
 		// e.g. "another 10"
 		return representamen.size() == 0 ? NOT_A_NUMBER : representamen.toString();
@@ -680,49 +666,39 @@ public class Number {
 		//return audit.out( rc );
 		return rc;
 	}
-	private void appendExpr( ListIterator<String> si ) {
-		//audit.in( "appendExpr", Strings.peek( si ));
-		// ...read into the array a succession of ops and numerals 
-		int done;
-		do {
-			// optional, so ignore any return code
-			appendPostOp( si ); // [all] squared|cubed|to the power of
-			if (   0 < (done = appendOp( si )) // ... times
-				&& !(appendNumeral( si ) || appendFunction( si )))
-			{ // if done op but not numeral remove op..
-				remove( si, done );
-				done = 0;
-			}
-		} while (si.hasNext() && done > 0);
-		//audit.out();
-	}
-	private Number doNumerical( ListIterator<String> si ) {
-		audit.in( "doNumerical", Strings.peek( si ));
+	private boolean appendExpr( ListIterator<String> si ) {
+		audit.in( "appendExpr", Strings.peek( si ));
+		boolean rc = false;
 		if (appendNum( si ) || appendFunction( si )) {
-			appendExpr( si );
+			rc = true;
+			int done;
+			do {
+				// optional, so ignore any return code
+				appendPostOp( si ); // [all] squared|cubed|to the power of
+				if (   0 < (done = appendOp( si )) // ... times
+					&& !(appendNumeral( si ) || appendFunction( si )))
+				{ // if done op but not numeral remove op..
+					remove( si, done );
+					done = 0;
+				}
+			} while (si.hasNext() && done > 0);
+			
 			magnitude( doTerms()); // need to do this before more or less
 			doMoreOrLess( si );
 		}		
-		return (Number) audit.out( this );
-		//return this;
+		return audit.out( rc );
 	}
 	public Number( ListIterator<String> si ) {
-		//audit.in( "getNumbr", "si.next="+ Strings.peek( si ));
-		//Numb number = new Numb();
-		this();
 		if (si.hasNext()) {
+			boolean aDone = false;
 			if (doA(       si ) ||
 				doAbout(   si ) ||
-				doAnother( si )   );
+				doAnother( si )   ) aDone = true;
 			
-			doNumerical( si ); //.doMoreOrLess( si );
-		}
-		//return (Number) audit.out( number );
-		//return number;
-	}
-//	static private Number getNumber( String s ) {
-//		return new Number( new Strings( s ).listIterator());
-//	}
+			if (!appendExpr( si ) && aDone)
+				si.previous();
+	}	}
+
 	//* ===== test code ====
 	static private void evaluationTest( String term, String ans ) {
 		ListIterator<String> si = new Strings( term ).listIterator();
