@@ -56,6 +56,10 @@ public class Number {
 	static private final Strings  Factorial = new Strings(       "factorial" );
 	static public  final Strings NotANumber = new Strings(    "not a number" );
 	
+
+	static private boolean aImpliesNumeric = true;
+	static public  void    aImpliesNumeric( boolean b ) {aImpliesNumeric = b;}
+	static public  boolean aImpliesNumeric() { return aImpliesNumeric;}
 	
 	// properties of a number...
 	private boolean isRelative = false;
@@ -220,7 +224,7 @@ public class Number {
 					n+=x;  // add len "to the..."
 					
 					if (si.hasNext())
-						if (!Numerals.isNumeric( power = si.next() )) {
+						if (!Strings.isNumeric( power = si.next() )) {
 							si.previous();
 							power = ""; // reset tmp!
 						} else
@@ -273,7 +277,7 @@ public class Number {
 		boolean rc = false;
 		if (si.hasNext()) {
 			String token = si.next();
-			if (rc = Numerals.isNumeric( token ))
+			if (rc = Strings.isNumeric( token ))
 				append( token );
 			else
 				si.previous(); // not numeric and not "the" and not "the."
@@ -285,8 +289,8 @@ public class Number {
 		boolean rc = false;
 		if (si.hasNext()) {
 			String token = si.next();
-			if (rc = Numerals.isNumeric( token )) {
-				magnitude( Numerals.valueOf( token ));
+			if (rc = Strings.isNumeric( token )) {
+				magnitude( Strings.valueOf( token ));
 				append( token );
 			} else 
 				si.previous();
@@ -304,7 +308,7 @@ public class Number {
 	 *   [..., "a",      "gun", ...]         => 1 // 1
 	 */
 	private boolean doA( ListIterator<String> si ) {
-		if (si.hasNext() && Numerals.aImpliesNumeric()) {
+		if (si.hasNext() && aImpliesNumeric()) {
 			if (si.next().equals( "a" )) { // ascending only valid if relative!
 				// need to set rel before magnitude!
 				isRelative( false )/*.ascending( true )*/.magnitude( 1F ).append( "a" );

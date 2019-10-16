@@ -5,7 +5,6 @@ import java.util.ListIterator;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.number.Number;
-import org.enguage.vehicle.number.Numerals;
 
 public class Expression {
 	
@@ -106,7 +105,7 @@ public class Expression {
 		audit.out();
 	}
 	static public void main( String[] args) {
-		Numerals.aImpliesNumeric( false ); // prevent a being seen as implying 1
+		Number.aImpliesNumeric( false ); // prevent a being seen as implying 1
 		expressionTest( "1" );
 		expressionTest( "fred" );
 		expressionTest( "fred bill steve" );

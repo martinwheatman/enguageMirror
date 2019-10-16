@@ -27,7 +27,6 @@ import org.enguage.vehicle.Colloquial;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.number.Numerals;
 import org.enguage.vehicle.reply.Answer;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
@@ -293,6 +292,19 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		Strings a = new Strings( buf );
 		return Strings.fromArrayList( a );
 	}*/
+	static public boolean isNumeric( String s ) {
+		try {
+			return !Float.isNaN( Float.parseFloat( s ));
+		} catch (NumberFormatException nfe) {
+			return false;
+	}	}
+	static public Float valueOf( String s ) {
+		try {
+			return Float.parseFloat( s );
+		} catch (NumberFormatException nfe) {
+			return Float.NaN;
+	}	}
+
 	public int peekwals( ListIterator<String> si ) {
 		boolean rc = true;
 		ListIterator<String> sai = listIterator();
@@ -877,7 +889,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public Strings derefVariables() {
 		Strings actuals = new Strings();
 		for (String a : this )  //  why isNumeric + getVar = a if not found???
-			actuals.add( Numerals.isNumeric( a ) ? a:Variable.get( a ));
+			actuals.add( isNumeric( a ) ? a:Variable.get( a ));
 		return actuals;
 	}
 	// -- static Algorithm helpers here...

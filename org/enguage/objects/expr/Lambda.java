@@ -8,7 +8,6 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.number.Numerals;
 
 public class Lambda {
 	static private Audit audit = new Audit( "Lambda" );
@@ -25,9 +24,9 @@ public class Lambda {
 				       v = vi.next();
 				// if name is numeric we must match this value
 				audit.debug( "Matching "+ n +", "+ v );
-				rc = Numerals.isNumeric( n ) ? // name=1 => value=1 !
+				rc = Strings.isNumeric( n ) ? // name=1 => value=1 !
 						n.equals( v ) :
-						     Numerals.isNumeric( v ) ? // value = xxx, deref
+							Strings.isNumeric( v ) ? // value = xxx, deref
 								null == Variable.get( v ) : true;
 			}
 		} else
