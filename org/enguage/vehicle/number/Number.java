@@ -454,13 +454,11 @@ public class Number {
 	}
 	public Number( ListIterator<String> si ) {
 		if (si.hasNext()) {
-			boolean aDone = false;
 			if (doA(       si ) ||
 				doAbout(   si ) ||
-				doAnother( si )   ) aDone = true;
+				doAnother( si )   );
 			
-			if (!appendExpr( si ) && aDone)
-				si.previous();
+			appendExpr( si );
 	}	}
 
 	//* ===== test code ====
