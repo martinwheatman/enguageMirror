@@ -1,0 +1,6 @@
+On "hello", reply "hello to you too".
+
+On "ok", reply "ok".
+
+On "_user's name is NAME", reply "hello NAME".
+
