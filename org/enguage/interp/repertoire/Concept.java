@@ -32,7 +32,7 @@ public class Concept {
 			return fname; // found, return existing
 		else {
 			String[] names = new File( Concepts.LOCATION ).list();
-			for ( String dir : names ) { // e.g. name="hello.txt"
+			if (names != null) for ( String dir : names ) { // e.g. name="hello.txt"
 				String[] components = dir.split( "\\." );
 				if (components.length == 1 && new File( Concepts.LOCATION + components[ 0 ]+"/"+name+"."+ ext ).exists())
 					return Concepts.LOCATION + components[ 0 ]+"/"+name+"."+ ext; // found, return existing component

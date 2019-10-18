@@ -23,7 +23,7 @@ public class Concepts {
 	static public  void     add( String name ) { names.add( name );}
 	static public  void location( String location ) {
 		String[] names = new File( location ).list();
-		for ( String name : names ) { // e.g. name="hello.txt"
+		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))
 				add( components[ 0 ]);
