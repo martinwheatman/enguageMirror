@@ -702,7 +702,7 @@ public class Enguage {
 			// interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
 		}
 		if (runThisTest( "Verbal Arithmetic" )) {
-			mediate( "what is 1 + 2",                    "1 plus 2 is 3" );
+			mediate( "what's 1 + 2",                     "1 plus 2 is 3" );
 			mediate( "times 2 all squared",              "times 2 all squared makes 36" );
 			mediate( "what is 36 + 4     divided by 2",  "36 plus 4     divided by 2 is 38" );
 			mediate( "what is 36 + 4 all divided by 2",  "36 plus 4 all divided by 2 is 20" );
