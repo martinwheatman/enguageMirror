@@ -23,8 +23,7 @@ import org.enguage.vehicle.where.Where;
 public class Enguage {
 
 	static public final String       DNU = "DNU";
-	static public final String assetsLoc = //"src"+ File.separator +
-			"assets" + File.separator;
+	static public final String assetsLoc = "assets" + File.separator;
 
 	static private  Audit audit = new Audit( "Enguage" );
 
@@ -112,10 +111,8 @@ public class Enguage {
 	static private void      portNumber( String pn ) { portNumber = Integer.parseInt( pn );}
 
 	private static void usage() {
-		Audit.LOG( "Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server <port>] -t ]" );
-		Audit.LOG( "where: -d <configDir>" );
-		Audit.LOG( "          config directory, default=\""+ assetsLoc +"\"\n" );
-		Audit.LOG( "       -p <port>, --port <port>" );
+		Audit.LOG( "Usage: java -jar enguage.jar [-p <port> | -s | [--server <port>] -t ]" );
+		Audit.LOG( "where: -p <port>, --port <port>" );
 		Audit.LOG( "          listens on local TCP/IP port number\n" );
 		Audit.LOG( "       -c, --client" );
 		Audit.LOG( "          runs Engauge as a shell\n" );
@@ -167,10 +164,6 @@ public class Enguage {
 		Strings    cmds = new Strings( args );
 		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String location = assetsLoc;
-		if (cmds.size() > 0 && cmd.equals( "-d" )) {
-			location = cmds.remove(0);
-			cmd = cmds.size()==0 ? "":cmds.remove(0);
-		}
 
 		Enguage.init( location, null, null );
 
