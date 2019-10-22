@@ -31,7 +31,4 @@ public class Concept {
 	}	
 	
 	static public String name( String name ) {return name( name, "txt" );}
-	
-	static public boolean load( String name ) {
-		return com.yagadi.Enguage.loadConcept( name, null, null );
-}	}
+}

@@ -46,15 +46,11 @@ public class Enguage {
 	static public  void   root( String rt ) { Fs.root( rt ); }
 	static public  String root() { return Fs.root();}
 
-	static public  void location( String loc ) {if (!Fs.location( loc )) audit.FATAL(loc +": not found");}
-
-	static public  void init( String pth, Object ctx ) {init( pth, pth, ctx );}
-	static public  void init( String loc, String root, Object ctx ) {
-		location( loc );
+	static public  void init( String root, Object ctx ) {
 		root( root );
 		context( ctx );
-		Concepts.location( loc + Concepts.NAME );
-		Concepts.location(       Concepts.NAME );
+		com.yagadi.Enguage.addAssets();
+		Concepts.addFrom( Concepts.NAME );
 
 		if ((null == o || !o.attached() ) && !Overlay.autoAttach())
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
@@ -165,7 +161,7 @@ public class Enguage {
 		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String location = assetsLoc;
 
-		Enguage.init( location, null, null );
+		Enguage.init( location, null );
 
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
 

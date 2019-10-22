@@ -7,13 +7,14 @@ import java.io.InputStream;
 import org.enguage.util.sys.Fs;
 // */
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.enguage.interp.intention.Intention;
+import org.enguage.interp.repertoire.Concepts;
 import org.enguage.objects.Variable;
-import org.enguage.objects.space.Ospace;
 import org.enguage.util.Audit;
 
 public class Enguage {
@@ -37,6 +38,13 @@ public class Enguage {
 	 	return t;
 	}
 	// */
+	static public void addAssets() {
+		String[] names = new File( org.enguage.Enguage.assetsLoc + Concepts.NAME ).list();
+		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
+			String[] components = name.split( "\\." );
+			if (components.length > 1 && components[ 1 ].equals("txt"))
+				org.enguage.interp.repertoire.Concepts.add( components[ 0 ]);
+	}	}
 	static public boolean loadConcept( String name, String from, String to ) {
 		boolean wasLoaded   = false,
 		        wasSilenced = false,
@@ -65,7 +73,7 @@ public class Enguage {
 				// ANDROID --
 				//Activity a = (Activity) Enguage.context(); //*/
 				is2 =   //a == null ?//*/
-								new FileInputStream( Ospace.location() + fname )
+								new FileInputStream( org.enguage.Enguage.assetsLoc + fname )
 						/*      : a.getAssets().open( fname ); //*/ ;
 				org.enguage.Enguage.shell().interpret( is2, from, to );
 				wasLoaded = true;

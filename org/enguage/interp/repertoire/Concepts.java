@@ -20,15 +20,16 @@ public class Concepts {
 	
 	static private TreeSet<String> names = new TreeSet<String>();
 	static public  void  remove( String name ) { names.remove( name );}
-	static public  void     add( String name ) { names.add( name );}
-	static public  void location( String location ) {
+	static public  void     add( String name ) { names.add(    name );}
+	static public  void  addAll( Strings nms ) { names.addAll(  nms );}
+	static public  void addFrom( String location ) { // "assets/concepts" and "concepts"
 		String[] names = new File( location ).list();
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))
 				add( components[ 0 ]);
 			else if (components.length == 1)
-				location( location+"/"+components[ 0 ]);
+				addFrom( location+"/"+components[ 0 ]);
 	}	}
 	
 	/* This is the STATIC loading of concepts at app startup -- read
@@ -40,7 +41,7 @@ public class Concepts {
 		if (!loaded.contains( name )) {
 			// loading won't use undo - disable
 			Redo.undoEnabledIs( false );
-			if ( Concept.load( name ))
+			if (com.yagadi.Enguage.loadConcept( name, null, null ))
 				loaded.add( name );
 			Redo.undoEnabledIs( true );
 	}	}
@@ -127,7 +128,7 @@ public class Concepts {
 		Audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
 	}
 	public static void main( String args[]) {
-		location( "./src/assets/concepts"  );
+		addFrom( "./src/assets/concepts"  );
 		test( "i need a coffee",false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );
