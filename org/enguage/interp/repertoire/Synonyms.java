@@ -22,7 +22,7 @@ public class Synonyms {
 	static private Attributes                synonyms = new Attributes();
 	
 	private static boolean attempt( String name, String load, String from, String to ) {
-		if (null != autoloaded.get( name ) || Concept.load( load, from, to )) {
+		if (null != autoloaded.get( name ) || com.yagadi.Enguage.loadConcept( load, from, to )) {
 			autoloaded.put( name, 0 );
 			return true;
 		}

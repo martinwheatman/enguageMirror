@@ -1,6 +1,5 @@
 package org.enguage.objects;
 
-import org.enguage.interp.repertoire.Concept;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -29,7 +28,7 @@ public class Spatial {
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
-				addConcept( Variable.get( Concept.LOADING ) );
+				addConcept( Variable.get( com.yagadi.Enguage.LOADING ) );
 			else if (cmd.equals( "locator" ))
 				Where.locatorIs( args );
 			else
