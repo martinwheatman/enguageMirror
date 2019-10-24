@@ -28,7 +28,7 @@ public class Spatial {
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
-				addConcept( Variable.get( com.yagadi.Enguage.LOADING ) );
+				addConcept( Variable.get( com.yagadi.Assets.LOADING ) );
 			else if (cmd.equals( "locator" ))
 				Where.locatorIs( args );
 			else

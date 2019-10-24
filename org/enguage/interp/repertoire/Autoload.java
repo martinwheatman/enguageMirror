@@ -47,7 +47,7 @@ public class Autoload {
 					&&  !Concepts.loaded().contains( candidate )) // not already loaded
 				{
 					if (null != autoloaded.get( candidate )  // Candidate already loaded, OR
-						|| com.yagadi.Enguage.loadConcept( candidate, null, null ))      // just loaded so...
+						|| com.yagadi.Assets.loadConcept( candidate, null, null ))      // just loaded so...
 							autoloaded.put( candidate, 0 ); // ...set new entry to age=0
 						else // ignore, if no repertoire!
 							audit.ERROR( "failed to autoload" );

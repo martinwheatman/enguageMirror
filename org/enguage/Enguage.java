@@ -49,7 +49,7 @@ public class Enguage {
 	static public  void init( String root, Object ctx ) {
 		root( root );
 		context( ctx );
-		com.yagadi.Enguage.addAssets();
+		com.yagadi.Assets.addAssets();
 		Concepts.addFrom( Concepts.NAME );
 
 		if ((null == o || !o.attached() ) && !Overlay.autoAttach())
@@ -161,7 +161,7 @@ public class Enguage {
 		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String location = assetsLoc;
 
-		Enguage.init( location, null );
+		Enguage.init( "os", null );
 
 		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
 

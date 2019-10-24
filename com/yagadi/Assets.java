@@ -1,11 +1,4 @@
 package com.yagadi;
-/* ANDROID --
-import android.app.Activity;
-import android.content.res.AssetManager;
-import java.io.IOException;
-import java.io.InputStream;
-import org.enguage.util.sys.Fs;
-// */
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +10,7 @@ import org.enguage.interp.repertoire.Concepts;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 
-public class Enguage {
+public class Assets {
 	
 	static public final String LOADING = "concept";
 	static private       Audit     audit = new Audit( "yagadi" );
@@ -70,11 +63,7 @@ public class Enguage {
 			InputStream is2 = null;
 			try { // ...or add concept from asset...
 				String fname = org.enguage.interp.repertoire.Concept.name( name );
-				// ANDROID --
-				//Activity a = (Activity) Enguage.context(); //*/
-				is2 =   //a == null ?//*/
-								new FileInputStream( org.enguage.Enguage.assetsLoc + fname )
-						/*      : a.getAssets().open( fname ); //*/ ;
+				is2 = new FileInputStream( org.enguage.Enguage.assetsLoc + fname );
 				org.enguage.Enguage.shell().interpret( is2, from, to );
 				wasLoaded = true;
 			} catch (IOException e2) { audit.ERROR( "name: "+ name +", not found" );

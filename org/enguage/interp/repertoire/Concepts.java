@@ -41,7 +41,7 @@ public class Concepts {
 		if (!loaded.contains( name )) {
 			// loading won't use undo - disable
 			Redo.undoEnabledIs( false );
-			if (com.yagadi.Enguage.loadConcept( name, null, null ))
+			if (com.yagadi.Assets.loadConcept( name, null, null ))
 				loaded.add( name );
 			Redo.undoEnabledIs( true );
 	}	}
