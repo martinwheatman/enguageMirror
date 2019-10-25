@@ -1,0 +1,205 @@
+package org.enguage.demo;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.media.AudioManager;
+import android.os.AsyncTask;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import org.enguage.Enguage;
+import org.enguage.util.Audit;
+import org.enguage.util.sys.Fs;
+import org.enguage.util.Strings;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+
+	private static final int REQUEST_SPEECH = 1;
+
+	public TextToSpeech tts = null;
+	private boolean ttsInitialised = false;
+	private boolean vocalised() {
+		AudioManager am = (AudioManager)this.getSystemService( Activity.AUDIO_SERVICE );
+		return ttsInitialised && AudioManager.RINGER_MODE_NORMAL == am.getRingerMode();
+	}
+
+	@Override
+	protected void onCreate( Bundle savedInstanceState ) {
+		super.onCreate( savedInstanceState );
+		setContentView( R.layout.activity_main );
+
+		tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+			@Override
+			public void onInit(int status) {
+				if(status != TextToSpeech.ERROR) {
+					tts.setLanguage( Locale.getDefault() );
+				}
+			}
+		});
+
+		ImageButton btn_mic = findViewById(R.id.mic);
+		btn_mic.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				promptSpeechInput();
+
+			}
+		});
+
+		Enguage.init(
+				this.getExternalFilesDir(null ).getPath(),
+				this
+		);
+
+		// read the config in the background...
+		new MainActivity.ReadConfig( this ).execute();
+	}
+
+	public void onInit(int code) {
+		if (TextToSpeech.SUCCESS == code) {
+			ttsInitialised = true;
+	}	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+
+	private void promptSpeechInput() {
+		Intent intent = new Intent( RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
+				Locale.getDefault());
+		intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
+				"org.enguage.demo");
+		intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+				getString(R.string.speech_prompt));
+
+		try {
+			startActivityForResult( intent, REQUEST_SPEECH );
+		} catch (ActivityNotFoundException a) {
+			Toast.makeText(getApplicationContext(),
+					getString(R.string.speech_not_supported),
+					Toast.LENGTH_SHORT).show();
+	}	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		final LinearLayout ll_messages = findViewById(R.id.ll_messages);
+
+
+		switch (requestCode) {
+			case REQUEST_SPEECH:
+				if (resultCode == RESULT_OK && null != data) {
+					ArrayList<String> saidArray =
+							data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
+					String said = saidArray.get( 0 );
+					Log.e( ">>>>>>>>>>UTTERANCE>>> ", said);
+					if (Audit.runtimeDebug)
+						Toast.makeText( getApplicationContext(), said, Toast.LENGTH_SHORT ).show();
+
+					// interpret what is said...
+					// ...in case of config failure, repeat what was said
+					Strings truText = Enguage.mediate( new Strings( said ));
+					String  toSpeak = truText.equals( Enguage.DNU ) ? said : truText.toString();
+
+					if (toSpeak.equals( "I don't understand." ))
+						toSpeak += (" " + said);
+
+					Toast.makeText( getApplicationContext(), truText.toString(), Toast.LENGTH_SHORT ).show();
+					Log.e ( ">>>>>>>>>>>REPLY>>> ", toSpeak );
+
+					//display messages in IM format in linear layout
+					for(int i=0; i<2; i++){
+						TextView tv_messeage = new TextView(getBaseContext());
+						String message_text = toSpeak;
+
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+								(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+						params.setMargins(10,10,10,10);
+
+						tv_messeage.setTextColor(getResources().getColor(R.color.white));
+						tv_messeage.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+						tv_messeage.setLayoutParams(new LinearLayout.
+								LayoutParams(LinearLayout.
+								LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+						tv_messeage.setPadding(40, 40, 40, 40);
+						if (i==0) {
+							params.gravity = Gravity.END;
+							tv_messeage.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+							message_text = said;
+						}
+						String message_content = message_text;
+						tv_messeage.setText(message_content);
+						tv_messeage.setLayoutParams(params);
+						ll_messages.addView(tv_messeage);
+					}
+
+					if (null != tts) {
+						tts.stop();
+						tts.speak( toSpeak, TextToSpeech.QUEUE_FLUSH, null );
+					}	}
+				break;
+	}	}
+
+	@Override
+	public void onPause() {
+		if (null != tts) tts.stop();
+		super.onPause();
+	}
+	@Override
+	protected void onDestroy() {
+		if (null != tts) tts.shutdown();
+		super.onDestroy();
+	}
+	// --------
+	private class ReadConfig extends AsyncTask<Void, Void, Void> {
+		private static final String NAME = "BKG";
+
+		private MainActivity ctx = null;
+		public ReadConfig( MainActivity a ) {
+			super();
+			ctx = a;
+		}
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			Log.i( NAME, "Start" );
+		}
+		@Override
+		protected void onPostExecute( Void result ) {
+			super.onPostExecute( result );
+			Log.i( NAME, "Done" );
+		}
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			AssetManager am = ctx.getAssets();
+			try {
+				InputStream is = am.open( "config.xml" );
+				Enguage.loadConfig( Fs.stringFromStream( is ));
+				is.close();
+			} catch (Exception e) {
+				Log.e( NAME, "doInBackground() failed: "+ e.toString() );
+			}
+			return null;
+}	}	}
