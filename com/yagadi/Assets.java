@@ -13,24 +13,8 @@ import org.enguage.util.Audit;
 public class Assets {
 	
 	static public final String LOADING = "concept";
-	static private       Audit     audit = new Audit( "yagadi" );
+	static private       Audit   audit = new Audit( "Assets" );
 	
-	/* ANDROID --
-	public static Tag fromAsset( String fname, Activity ctx ) {
-	 	audit.in( "fromAsset", fname );
-	 	Tag t = null;
-	 	AssetManager am = ctx.getAssets();
-	 	try {
-	 		InputStream is = am.open( fname );
-	 		t = new Tag( Fs.stringFromStream( is ));
-	 		is.close();
-	 	} catch (IOException e) {
-	 		audit.ERROR( "no tag found in asset "+ fname );
-	 	}
-	 	audit.out();
-	 	return t;
-	}
-	// */
 	static public void addAssets() {
 		String[] names = new File( org.enguage.Enguage.assetsLoc + Concepts.NAME ).list();
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
