@@ -1,0 +1,11 @@
+rm -rf tmp
+mkdir tmp
+cp -a org tmp
+cp -a META-INF tmp
+cd tmp
+find org -name \*.java -exec rm -f {} \;
+find org -name .DS_Store -exec rm -f {} \;
+find org -name .gitignore -exec rm -f {} \;
+jar -cmvf META-INF/MANIFEST.MF ../enguage.jar META-INF org
+cd ..
+rm -rf tmp
