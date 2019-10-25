@@ -9,7 +9,7 @@ where: -d <configDir>
           listens on local TCP/IP port number
 
        -c, --client
-          runs Engauge as a shell
+          runs Enguage as a shell
 
        -s <port>, --server <port>
           switch to send test commands to a server.
@@ -18,5 +18,3 @@ where: -d <configDir>
 
        -t, --test
           runs a sanity check
-
-# Enguage
