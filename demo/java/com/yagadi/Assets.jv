@@ -18,9 +18,11 @@ import org.enguage.util.sys.Fs;
 
 public class Assets {
 
-	static public final String LOADING = "concept";
-	static private       Audit   audit = new Audit( "yagadi" );
-
+	static public final String  LOADING = "concept";
+	static public final String     NAME = "assets";
+	static private       Audit    audit = new Audit( NAME );
+	static public final String LOCATION = NAME + File.separator;
+	
 	static public void addAssets () {
 		Activity a = (Activity) org.enguage.Enguage.context();
 		try {

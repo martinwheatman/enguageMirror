@@ -1,7 +1,5 @@
 package org.enguage;
 
-import java.io.File;
-
 import org.enguage.interp.intention.Redo;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Autoload;
@@ -20,11 +18,12 @@ import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
+import com.yagadi.Assets;
+
 public class Enguage {
 
 	static public final String       DNU = "DNU";
-	static public final String assetsLoc = "assets" + File.separator;
-
+	
 	static private  Audit audit = new Audit( "Enguage" );
 
 	static private Shell shell = new Shell( "Enguage" );
@@ -159,7 +158,7 @@ public class Enguage {
 		//Audit.startupDebug = true;
 		Strings    cmds = new Strings( args );
 		String     cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
-		String location = assetsLoc;
+		String location = Assets.LOCATION;
 
 		Enguage.init( "os", null );
 

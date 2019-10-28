@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.Enguage;
+import com.yagadi.Assets;
+
 import org.enguage.interp.intention.Redo;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
@@ -47,7 +48,7 @@ public class Autoload {
 					&&  !Concepts.loaded().contains( candidate )) // not already loaded
 				{
 					if (null != autoloaded.get( candidate )  // Candidate already loaded, OR
-						|| com.yagadi.Assets.loadConcept( candidate, null, null ))      // just loaded so...
+						|| Assets.loadConcept( candidate, null, null ))      // just loaded so...
 							autoloaded.put( candidate, 0 ); // ...set new entry to age=0
 						else // ignore, if no repertoire!
 							audit.ERROR( "failed to autoload" );
@@ -87,8 +88,8 @@ public class Autoload {
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Audit.allTracing = true;
-		if (!Fs.location( Enguage.assetsLoc ))
-			audit.FATAL( Enguage.assetsLoc +": not found" );
+		if (!Fs.location( Assets.LOCATION ))
+			audit.FATAL( Assets.LOCATION +": not found" );
 		else if (!Overlay.autoAttach())
 			audit.ERROR( " can't auto attach" );
 		else {

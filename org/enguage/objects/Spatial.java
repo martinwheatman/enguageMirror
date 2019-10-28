@@ -5,6 +5,8 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.where.Where;
 
+import com.yagadi.Assets;
+
 public class Spatial {
 	
 	static public final String NAME = "spatial";
@@ -28,7 +30,7 @@ public class Spatial {
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
-				addConcept( Variable.get( com.yagadi.Assets.LOADING ) );
+				addConcept( Variable.get( Assets.LOADING ) );
 			else if (cmd.equals( "locator" ))
 				Where.locatorIs( args );
 			else
