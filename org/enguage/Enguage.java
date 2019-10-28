@@ -24,27 +24,23 @@ public class Enguage {
 
 	static public final String       DNU = "DNU";
 	
-	static private  Audit audit = new Audit( "Enguage" );
+	static private Audit audit = new Audit( "Enguage" );
+	static public  Overlay   o = Overlay.Get();
 
-	static private Shell shell = new Shell( "Enguage" );
-	static public  Shell shell() {return shell;}
+	static private Shell  shell = new Shell( "Enguage" );
+	static public  Shell  shell() {return shell;}
 	
-	/*
-	 * Enguage should be independent of Android, but...
-	 */
-	static private Config   config = new Config();
-	static public  int  loadConfig( String content ) { return Enguage.config.load( content ); }
+	static private Config config = new Config();
+	static public  int    config( String content ) {return config.load( content );}
 
-	static private Object  context = null; // if null, not on Android
-	static public  Object  context() { return context; }
-	static public  void    context( Object activity ) { context = activity; }
-
-	static public  Overlay o = Overlay.Get();
-
+	static private Object context = null; // if null, not on Android
+	static public  Object context() { return context; }
+	static public  void   context( Object activity ) { context = activity; }
 	
 	static public  void   root( String rt ) { Fs.root( rt ); }
 	static public  String root() { return Fs.root();}
 
+	
 	static public  void init( String root, Object ctx ) {
 		root( root );
 		context( ctx );
@@ -162,7 +158,7 @@ public class Enguage {
 
 		Enguage.init( "os", null );
 
-		loadConfig( Fs.stringFromFile( location + "/config.xml" ));
+		config( Fs.stringFromFile( location + "/config.xml" ));
 
 		boolean serverTest = false;
 		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
