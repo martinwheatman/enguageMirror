@@ -388,7 +388,7 @@ public class Pattern extends ArrayList<Patternette> {
 		return term;
 	}
 	private String getVariable( Patternette t, ListIterator<Patternette> ti, ListIterator<String> ui, boolean spatial ) {
-		String u = "unseta";
+		String u = "";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
 		if (t.isPhrased() || t.isSign() || (ui.hasNext() && Reply.andConjunction().equals( u ))) {
@@ -426,6 +426,7 @@ public class Pattern extends ArrayList<Patternette> {
 				notMatched == 17 ? "unterminated and-list" :
 				notMatched == 18 ? "postfixa" :
 				notMatched == 19 ? "postfixb" :
+				notMatched == 20 ? "trailing hotspot value missing" :
 				notMatched == 21 ? "more pattern" :
 				notMatched == 22 ? "more utterance" :
 				notMatched == 23 ? "missing apostrophe" : ("unknown:"+ notMatched);
@@ -498,7 +499,12 @@ public class Pattern extends ArrayList<Patternette> {
 					if (patti.hasNext()) next = patti.next();
 				}
 				
-			} else if (utti.hasNext()) { // do these loaded match?
+			} else if (!utti.hasNext() && t.named()) { // "do i need" == "do i need OBJECT"
+				
+				notMatched = 20;
+				return null;
+				
+			} else { // do these loaded match?
 				
 				String val = null;
 				

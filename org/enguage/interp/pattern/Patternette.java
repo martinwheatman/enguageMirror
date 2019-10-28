@@ -166,6 +166,14 @@ public class Patternette {
 			+ postfix().toString();
 	}
 	public String toLine() { return prefix().toString() +" "+ name +" "+ postfix().toString(); }
+	static public Patternette peek( ListIterator<Patternette> li ) {
+		Patternette s = new Patternette();
+		if (li.hasNext()) {
+			s = li.next();
+			li.previous();
+		}
+		return s;
+	}
 	
 	// -- test code
 	public static void main( String argv[]) {

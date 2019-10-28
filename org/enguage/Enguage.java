@@ -225,6 +225,8 @@ public class Enguage {
 		//	mediate( "", "" );
 		//}
 		
+		mediate( "do i need", "i don't understand" ); // regression test: "do i need" != >do i need OBJECT<
+		
 		if (runThisTest( "WSC - advocacy and fear" )) {
 			// TODO: WSC - alternative states tests
 			// mut ex: dead is the opposite of alive, no?
@@ -465,7 +467,7 @@ public class Enguage {
 			mediate( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
 			mediate( "i need cheese and eggs from the dairy aisle",
 					                               "ok, you need cheese and eggs" );
-			mediate( "group by",                   "sorry, i need to know what to group by" );
+			//mediate( "group by",                   "sorry, i need to know what to group by" );
 			mediate( "group by location",          "ok" );
 			
 			mediate( "what do i need from sainsbury's",
