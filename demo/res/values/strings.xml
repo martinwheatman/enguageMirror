@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Enguage</string>
+    <string name="enguage_logo">Enguage Logo</string>
+    <string name="speech_not_supported">Speech not Supported</string>
+    <string name="speech_prompt">Speak now</string>
+</resources>
