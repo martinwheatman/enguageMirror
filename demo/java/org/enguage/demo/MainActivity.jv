@@ -8,7 +8,7 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -101,19 +101,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 					Toast.LENGTH_SHORT).show();
 	}	}
 
-	private TextView createTv(String msg, int colour, boolean user ) {
+	private TextView createTv( String msg, int colour, boolean user ) {
 		TextView tv = new TextView(getBaseContext());
 		tv.setText( msg );
 
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
 				(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		params.setMargins(10,10,10,10);
-		params.gravity = user ? Gravity.START : Gravity.END;
+		params.gravity = Gravity.TOP | (user ? Gravity.START : Gravity.END);
 		tv.setLayoutParams(params);
 
 		tv.setTextColor(getResources().getColor(R.color.white));
 		tv.setBackgroundColor( colour );
-
 		tv.setPadding(40, 40, 40, 40);
 
 		return tv;
@@ -123,8 +122,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		final LinearLayout ll_messages = findViewById(R.id.ll_messages);
-
+		final LinearLayout ll_messages = findViewById( R.id.ll_messages );
 
 		switch (requestCode) {
 			case REQUEST_SPEECH:

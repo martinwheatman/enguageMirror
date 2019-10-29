@@ -2,7 +2,7 @@ package com.yagadi;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,18 +11,14 @@ import java.io.FileInputStream;
 import org.enguage.interp.intention.Intention;
 import org.enguage.util.tag.Tag;
 import org.enguage.objects.Variable;
-import org.enguage.objects.space.Ospace;
 import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 
 public class Assets {
 
-	static public final String  LOADING = "concept";
-	static public final String     NAME = "assets";
-	static private       Audit    audit = new Audit( NAME );
-	static public final String LOCATION = NAME + File.separator;
-	
+	static public final String LOADING = "concept";
+	static private       Audit   audit = new Audit( "yagadi" );
+
 	static public void addAssets () {
 		Activity a = (Activity) org.enguage.Enguage.context();
 		try {
