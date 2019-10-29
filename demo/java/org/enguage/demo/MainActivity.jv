@@ -101,6 +101,24 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 					Toast.LENGTH_SHORT).show();
 	}	}
 
+	private TextView createTv(String msg, int colour, boolean user ) {
+		TextView tv = new TextView(getBaseContext());
+		tv.setText( msg );
+
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+				(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		params.setMargins(10,10,10,10);
+		params.gravity = user ? Gravity.START : Gravity.END;
+		tv.setLayoutParams(params);
+
+		tv.setTextColor(getResources().getColor(R.color.white));
+		tv.setBackgroundColor( colour );
+
+		tv.setPadding(40, 40, 40, 40);
+
+		return tv;
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -130,35 +148,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 					Log.e ( ">>>>>>>>>>>REPLY>>> ", toSpeak );
 
 					//display messages in IM format in linear layout
-					for(int i=0; i<2; i++){
-						TextView tv_messeage = new TextView(getBaseContext());
-						String message_text = toSpeak;
-
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-								(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-						params.setMargins(10,10,10,10);
-
-						tv_messeage.setTextColor(getResources().getColor(R.color.white));
-						tv_messeage.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-						tv_messeage.setLayoutParams(new LinearLayout.
-								LayoutParams(LinearLayout.
-								LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-						tv_messeage.setPadding(40, 40, 40, 40);
-						if (i==0) {
-							params.gravity = Gravity.END;
-							tv_messeage.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-							message_text = said;
-						}
-						String message_content = message_text;
-						tv_messeage.setText(message_content);
-						tv_messeage.setLayoutParams(params);
-						ll_messages.addView(tv_messeage);
-					}
+					ll_messages.addView( createTv( said,    getResources().getColor(R.color.colorPrimary), true ));
+					ll_messages.addView( createTv( toSpeak, getResources().getColor(R.color.colorPrimaryDark), false));
 
 					if (null != tts) {
 						tts.stop();
 						tts.speak( toSpeak, TextToSpeech.QUEUE_FLUSH, null );
-					}	}
+				}	}
 				break;
 	}	}
 
@@ -196,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 			AssetManager am = ctx.getAssets();
 			try {
 				InputStream is = am.open( "config.xml" );
-				Enguage.loadConfig( Fs.stringFromStream( is ));
+				Enguage.config( Fs.stringFromStream( is ));
 				is.close();
 			} catch (Exception e) {
 				Log.e( NAME, "doInBackground() failed: "+ e.toString() );
