@@ -32,10 +32,10 @@ public class Value {
 	// members
 	// TODO: cache items[]? Lock file - this code is not suitable for IPC? Exists in constructor?
 	// set() methods return change in number of items
-	public boolean exists() {    return Fs.exists(       name( ent, attr, Overlay.MODE_READ )); }
-	public boolean set( String val ){return Fs.stringToFile( name( ent, attr, Overlay.MODE_WRITE ), val ); }
-	public void    unset() {               Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
-	public String  getAsString(){return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ )); }
+	public boolean exists() {        return Fs.exists(         name( ent, attr, Overlay.MODE_READ )); }
+	public boolean set( String val ){return Fs.stringToFile(   name( ent, attr, Overlay.MODE_WRITE ), val ); }
+	public void    unset() {                Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
+	public String  getAsString(){    return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ )); }
 	
 	public  boolean equals( String val ) { return getAsString().equals( val ); }
 	private boolean contains( String val ) { return getAsString().contains( val ); }
@@ -59,7 +59,7 @@ public class Value {
 	}
 	public void restore() {
 		String writeName = name( ent, attr, Overlay.MODE_WRITE ); // if not overlayed - simply delete!?!
-		String deletedName = Entity.deleteName( writeName );
+		String deletedName = Entity.deleteName( writeName ); //dir/file => dir/!file
 		File deletedFile = new File( deletedName );
 		String content = Fs.stringFromFile( deletedName );
 		if (content.equals( marker )) {
