@@ -52,7 +52,7 @@ public class Assets {
 				is2 = new FileInputStream( LOCATION + fname );
 				org.enguage.Enguage.shell().interpret( is2, from, to );
 				wasLoaded = true;
-			} catch (IOException e2) { audit.ERROR( "name: "+ name +", not found" );
+			} catch (IOException e2) {
 			} finally {if (is2 != null) try{is2.close();} catch(IOException e2) {} }
 		} finally { if (is != null) try{is.close();} catch(IOException e2) {} }
 		
