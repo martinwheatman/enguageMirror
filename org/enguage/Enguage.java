@@ -175,10 +175,14 @@ public class Enguage {
 		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
 			Net.server( cmds.remove( 0 ));
 		
-		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ))
-			sanityCheck( serverTest, location );
+		else if (cmd.equals( "-t" ) || cmd.equals( "--test" )) {
+			
+			try {
+				level = cmds.size()==0 ? 0 : Integer.valueOf( cmds.remove( 0 ));
+				sanityCheck( serverTest, location );
+			} catch (NumberFormatException nfe) {usage();}
 		
-		else usage();
+		} else usage();
 	}
 	
 	// === test code ===
