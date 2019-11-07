@@ -31,7 +31,7 @@ public class Reply { // a reply is basically a formatted answer
 	static public  boolean isVerbatim() { return verbatim; }
 	static public  void    verbatimIs( boolean val ) { verbatim = val; }
 	
-	static private boolean understood = false;
+	static private boolean understood = true;
 	static public  boolean understoodIs( boolean was ) { return understood = was;}
 	static public  boolean isUnderstood() { return Reply.understood; }
 	

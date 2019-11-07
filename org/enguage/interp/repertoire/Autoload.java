@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import com.yagadi.Assets;
 
 import org.enguage.interp.intention.Redo;
-import org.enguage.objects.space.Overlay;
+import org.enguage.objects.space.Overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -60,7 +60,11 @@ public class Autoload {
 			Autoload.ing( false );
 	}	}
 	static public void unload() {
-		if (!ing()) {
+		
+		if (!Repertoire.transformation() &&
+			!Repertoire.translation()    && // shouldn't be true?
+			!Autoload.ing())
+		{
 			Strings repsToRemove = new Strings();
 			
 			// create a list of repertoire to remove...
@@ -90,7 +94,7 @@ public class Autoload {
 		Audit.allTracing = true;
 		if (!Fs.location( Assets.LOCATION ))
 			audit.FATAL( Assets.LOCATION +": not found" );
-		else if (!Overlay.autoAttach())
+		else if (!Overlay.attachCwd( "autoload" ))
 			audit.ERROR( " can't auto attach" );
 		else {
 			//Concepts.names();

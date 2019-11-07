@@ -21,10 +21,12 @@ public class Fs {
 		return s != null && new File( s ).exists();
 	}
 
-	static private String root =
-			(null != System.getenv( "HOME" ) ? System.getenv( "HOME" ) : ".") + File.separator;
-	static public void   root(String rt ) { root = rt; }
-	static public String root() { return root; }
+	static private String rootDir = ".";
+	static public  String rootDir() { return rootDir; }
+	static public  void   rootDir( String name ) {
+		Audit.LOG( ">>> FS root set to "+ name );
+		new File( rootDir = name + File.separator ).mkdirs();
+	}
 
 	// Composite specific
 	static public boolean createEntity( String name ) { return new File( name ).mkdirs(); }
@@ -66,14 +68,14 @@ public class Fs {
 		return rc;
 	}
 	static public String stringFromFile( String fname ) {
-		//audit.in("stringFromFile", "name="+fname );
+		//audit.IN("stringFromFile", "name="+fname );
 		String value = ""; // need to check elsewhere if file exists
 		try {
 			FileInputStream fis = new FileInputStream( fname );
 			value = stringFromStream( fis );
 			fis.close();
 		} catch (Exception e) {} // just ignore non-existant files...
-		//audit.out( value );
+		//audit.OUT( value );
 		return value;
 	}
 	static public String stringFromStream( InputStream is ) {

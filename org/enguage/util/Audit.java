@@ -133,6 +133,7 @@ public class Audit {
 	public void    out() { out( (String)null ); }
 	public Strings out( Strings s ) { out( s!=null?"["+s.toString(Strings.DQCSV)+"]":"<null>"); return s; }
 	public boolean out( boolean b ) { out( Boolean.toString( b )); return b; }
+	public boolean OUT( boolean b ) { out( Boolean.toString( b )); return b; }
 	public int     out( int     n ) { out( Integer.toString( n )); return n; }
 	public Float   out( Float   f ) { out( Float.toString(   f )); return f; }
 	public Float   OUT( Float   f ) { OUT( Float.toString(   f )); return f; }

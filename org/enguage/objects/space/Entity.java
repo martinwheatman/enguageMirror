@@ -1,9 +1,9 @@
 package org.enguage.objects.space;
 
-import java.io.File;
-
 import org.enguage.objects.space.Entity;
 import org.enguage.objects.space.EntityShell;
+import org.enguage.objects.space.Overlays.Os;
+import org.enguage.objects.space.Overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -18,34 +18,14 @@ public class Entity {
 	static private       Audit audit = new Audit( "Entity" );
 	static public  final int      id = 66162693; //Strings.hash( "entity" );
 	
-	public static String name( String entity, String rw ) {
-		return Overlay.fsname( entity, rw );
-	}
 	public static boolean exists( String name ) {
-		//audit.in( "exists", Overlay.fsname( name, Overlay.MODE_READ ));
-		audit.debug( "NAME="+ name( name, Overlay.MODE_READ ));
-		//return audit.out( Filesystem.exists( name( name, Overlay.MODE_READ )));
-		return Fs.exists( name( name, Overlay.MODE_READ ));
+		return Fs.exists( Os.fsname( name, Os.MODE_READ ));
 	}
 
-	public static String deleteName( String name ) {
-		if (isDeleteName( name )) return name;
-		File f = new File( name );
-		return f.getParent() +"/!"+ f.getName();
-	}
-	public static String nonDeleteName( String name ) {
-		if (!isDeleteName( name )) return name;
-		File f = new File( name );
-		return f.getParent() +"/"+ f.getName().substring( 1 );
-	}
-	public static boolean isDeleteName( String name ) {
-		return new File( name ).getName().charAt( 0 ) == '!';
-	}
-	
 	public static boolean create( String name ) {
-		//audit.in( "create", "name='"+ name +"'" );
-		boolean rc = Fs.create( name( name, Overlay.MODE_WRITE ));
-		//return audit.out( rc );
+		audit.IN( "create", "name='"+ name +"' ("+ Os.fsname( name, Os.MODE_WRITE ) +")" );
+		boolean rc = Fs.create( Os.fsname( name, Os.MODE_WRITE ));
+		audit.OUT( rc );
 		return rc;
 	}
 	
@@ -62,10 +42,10 @@ public class Entity {
 	}
 	public static boolean delete( String name ) {
 		boolean rc = true;
-		String readName  = Overlay.fsname( name, Overlay.MODE_READ );
+		String readName  = Os.fsname( name, Os.MODE_READ );
 		if (Fs.exists( readName )) {
-			String writeName = Overlay.fsname( name, Overlay.MODE_WRITE ),
-			       dname = deleteName( writeName );
+			String writeName = Os.fsname( name, Os.MODE_WRITE ),
+			       dname = Overlay.deleteName( writeName );
 			if (!Fs.destroy( writeName )) {
 				// haven't managed to remove top overlay entity -- either not empty or not there
 				rc = Fs.exists( writeName ) ?
@@ -78,9 +58,9 @@ public class Entity {
 	}
 	public static boolean ignore( String name ) {
 		boolean status = false;
-		String actual = Overlay.fsname( name, Overlay.MODE_READ ),
-		       potential = Overlay.fsname( name, Overlay.MODE_WRITE ),
-		       ignored = deleteName( potential );
+		String actual = Os.fsname( name, Os.MODE_READ ),
+		       potential = Os.fsname( name, Os.MODE_WRITE ),
+		       ignored = Overlay.deleteName( potential );
 		if (Fs.exists( actual ))
 			if (Fs.exists( potential )) 
 				status = Fs.rename( potential, ignored );
@@ -91,8 +71,8 @@ public class Entity {
 	
 	public static boolean restore( String entity ) {
 		boolean status = false;
-		String restored = Overlay.fsname( entity, Overlay.MODE_WRITE ),
-				ignored = deleteName( restored );
+		String restored = Os.fsname( entity, Os.MODE_WRITE ),
+				ignored = Overlay.deleteName( restored );
 		if (!exists( entity ))
 			status = Fs.rename( ignored, restored );
 		return status;
@@ -125,7 +105,7 @@ public class Entity {
 	}
 	
 	public static void main (String args []) {
-		if (!Overlay.autoAttach())
+		if (!Overlay.attachCwd( "Entity" ))
 			audit.ERROR( "Ouch!" );
 		else
 			new EntityShell().run();

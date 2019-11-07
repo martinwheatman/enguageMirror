@@ -3,7 +3,8 @@ package org.enguage.objects.expr;
 import java.util.ListIterator;
 
 import org.enguage.objects.Variable;
-import org.enguage.objects.space.Overlay;
+import org.enguage.objects.space.Overlays.Os;
+import org.enguage.objects.space.Overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -127,8 +128,8 @@ public class Function {
 			eval.toString() : "The "+ fn +" of "+ actuals +" is "+ eval.toString() +"\n" );
 	}
 	static public void main( String args[]) {
-		Overlay.Set( Overlay.Get());
-		if (!Overlay.autoAttach())
+		Os.Set( Os.Get());
+		if (!Overlay.attachCwd( NAME ))
 			audit.ERROR( "Ouch!" );
 		else {
 			Reply.dnk( "I do not know\n" );

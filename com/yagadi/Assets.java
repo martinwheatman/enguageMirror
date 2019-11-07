@@ -14,10 +14,10 @@ public class Assets {
 	
 	static public final String  LOADING = "concept";
 	static public final String     NAME = "assets";
-	static private       Audit    audit = new Audit( NAME );
+	//static private     Audit    audit = new Audit( NAME );
 	static public final String LOCATION = NAME + File.separator;
 	
-	static public void addAssets() {
+	static public void addConcepts() {
 		String[] names = new File( LOCATION + Concepts.NAME ).list();
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );

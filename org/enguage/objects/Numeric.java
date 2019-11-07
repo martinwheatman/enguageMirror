@@ -2,8 +2,8 @@ package org.enguage.objects;
 
 import java.util.ListIterator;
 
-import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
+import org.enguage.objects.space.Overlays.Os;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -20,14 +20,14 @@ public class Numeric extends Value {
 	
 	public void  set( Float val ) {
 		Fs.stringToFile(
-				name( ent, attr, Overlay.MODE_WRITE ),
+				name( ent, attr, Os.MODE_WRITE ),
 				Float.toString( val ));
 	}
 	public Float get( Float def ) {
 		Float val = def;
 		try {
 			val = Float.valueOf( 
-					Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ ))
+					Fs.stringFromFile( name( ent, attr, Os.MODE_READ ))
 			);
 		} catch (Exception e) {
 			set( def ); // set a default

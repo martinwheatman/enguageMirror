@@ -3,7 +3,9 @@ package org.enguage.vehicle.where;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.objects.space.Overlay;
+import org.enguage.objects.Variable;
+import org.enguage.objects.space.Overlays.Os;
+import org.enguage.objects.space.Overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -11,10 +13,15 @@ public class Where {
 	/* e.g. i need milk 'from' "the dairy aisle"
 	 */
 
-	public static final String  NAME = "where";
-	public static final String LOCTR = "LOCATOR";
-	public static final String LOCTN = "LOCATION";
-	public static       Audit  audit = new Audit( NAME );
+	static public final String  NAME = "where";
+	static public       Audit  audit = new Audit( NAME );
+	
+	static public final String LOCTR = "LOCATOR";
+	static public final String LOCTN = "LOCATION";
+	static public void clearLocation() {
+		Variable.unset( Where.LOCTN );
+		Variable.unset( Where.LOCTR );
+	}
 
 	private Where( Strings locr, Strings locn ) {
 		addLocator( locr );
@@ -90,6 +97,9 @@ public class Where {
 		for (String l : locs) 
 			locatorIs( l );
 	}
+	//
+	// -- test code
+	//
 	static private void testDoLocators() {
 		// locators need to be in decreasing length...
 		locatorIs( "to the left of" );
@@ -105,16 +115,13 @@ public class Where {
 		locatorIs( "over" );
 		locatorIs( "at" );
 	}
-	//
-	// -- test code
-	//
 	public static void main( String args[]) {
 		//Audit.allOn();
 		//Audit.traceAll( true );
 		
 		// This should go into SofA
-		Overlay.Set( Overlay.Get());
-		if (!Overlay.autoAttach())
+		Os.Set( Os.Get());
+		if (!Overlay.attachCwd( NAME ))
 			audit.ERROR( "Ouch!" );
 		else {
 			testDoLocators();

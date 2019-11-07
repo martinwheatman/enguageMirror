@@ -10,7 +10,8 @@ import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.sign.Signs;
 import org.enguage.objects.Variable;
-import org.enguage.objects.space.Overlay;
+import org.enguage.objects.space.Overlays.Os;
+import org.enguage.objects.space.Overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -78,7 +79,7 @@ public class Config {
 		Audit.log(
 				welcome(
 					Enguage.shell().copyright() +
-					"\nEnguage main(): overlay is: " + Overlay.Get().toString()
+					"\nEnguage main(): odb root is: " + Os.root()
 			)	);
 
 		Tag t = new Tag( content );
@@ -100,8 +101,8 @@ public class Config {
 	}
 	
 	public static void main( String args[]) {
-		Overlay.Set( Overlay.Get());
-		if (!Overlay.autoAttach())
+		Os.Set( Os.Get());
+		if (!Overlay.attachCwd( NAME ))
 			audit.ERROR( "Ouch!" );
 		Config c = new Config();
 		c.load( "" );

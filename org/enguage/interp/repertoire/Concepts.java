@@ -22,7 +22,7 @@ public class Concepts {
 	static public  void  remove( String name ) { names.remove( name );}
 	static public  void     add( String name ) { names.add(    name );}
 	static public  void  addAll( Strings nms ) { names.addAll(  nms );}
-	static public  void addFrom( String location ) { // "assets/concepts" and "concepts"
+	static public  void addFrom( String location ) { // just "concepts"
 		String[] names = new File( location ).list();
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );

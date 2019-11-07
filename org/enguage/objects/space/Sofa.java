@@ -11,6 +11,8 @@ import org.enguage.objects.expr.Function;
 import org.enguage.objects.list.Item;
 import org.enguage.objects.list.List;
 import org.enguage.objects.list.Transitive;
+import org.enguage.objects.space.Overlays.Os;
+import org.enguage.objects.space.Overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -22,8 +24,8 @@ public class Sofa extends Shell {
 
 	public Sofa(){
 		super( "Sofa" );
-		if (!Overlay.autoAttach())
-			audit.ERROR( "Ouch! in sofa" );
+//		if (!Overlay.autoAttach())
+//			audit.ERROR( "Ouch! in sofa" );
 	}
 	private static final int lSuccess  = 235397545; //Strings.hash( Shell.SUCCESS );
 	private static final int lFail     = 106378;    //Strings.hash( Shell.FAIL );
@@ -177,6 +179,6 @@ public class Sofa extends Shell {
 		} else {
 			Audit.allOn();
 			Audit.traceAll( true );
-			Audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
+			Audit.log( "Sofa: Ovl is: "+ Os.Get().toString());
 			cmd.run();
 }	}	}

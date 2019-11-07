@@ -1,5 +1,7 @@
 package org.enguage.objects.space;
 
+import org.enguage.objects.space.Overlays.Os;
+import org.enguage.objects.space.Overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -18,14 +20,14 @@ public class Link {
 	// **************
 	// ************** FS Helpers - java fs model is s...  symlink-less!
 	// **************
-	static private final String EXT = ".symlink" ;
+	static public final String EXT = ".symlink" ;
 	static public boolean isLink( String s ) {
 		return	s.length() > EXT.length()
 				&& s.substring( s.length() - EXT.length()).equals( EXT );
 	}
 	static public String linkName( String name ) {return isLink( name ) ? name : name + EXT;}
 	static public boolean fromString( String nm, String val ) {
-		return Fs.stringToFile( Overlay.fsname( linkName( nm ), Overlay.MODE_WRITE ), val );
+		return Fs.stringToFile( Os.fsname( linkName( nm ), Os.MODE_WRITE ), val );
 	}
 	static public String toString( String nm ) { return Fs.stringFromFile( linkName( nm ));}
 	
@@ -99,12 +101,12 @@ public class Link {
 	}
 	public static void main( String args[] ) {
 		
-		Fs.root( null );
+		Fs.rootDir( null );
 		Fs.location( "./src/assets" );
 		
-		Overlay o = Overlay.Get();
+		Overlay o = Os.Get();
 
-		if ((null == o || !o.attached() ) && !Overlay.autoAttach())
+		if (!o.attached() && !Overlay.attachCwd( "Link" ))
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
 		else {
 			//Audit.allOn();

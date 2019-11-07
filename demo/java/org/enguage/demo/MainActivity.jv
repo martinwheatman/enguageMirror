@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 		});
 
 		Enguage.init(
-				this.getExternalFilesDir(null ).getPath(),
+				this.getExternalFilesDir( null ).getPath(),
 				this
 		);
 
@@ -136,6 +136,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
 					// interpret what is said...
 					// ...in case of config failure, repeat what was said
+					
+					if (!Enguage.attach())
+						audit.ERROR( "Ouch! >>>>>>>> Cannot attach() to Object Space<<<<<<" );
+
 					Strings truText = Enguage.mediate( new Strings( said ));
 					String  toSpeak = truText.equals( Enguage.DNU ) ? said : truText.toString();
 

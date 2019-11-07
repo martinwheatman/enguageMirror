@@ -19,7 +19,7 @@ public class Assets {
 	static public final String LOADING = "concept";
 	static private       Audit   audit = new Audit( "yagadi" );
 
-	static public void addAssets () {
+	static public void addConcepts () {
 		Activity a = (Activity) org.enguage.Enguage.context();
 		try {
 			AssetManager am = a.getAssets();
