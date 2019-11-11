@@ -2,7 +2,6 @@ package org.enguage.interp.repertoire;
 
 import java.util.Locale;
 
-import org.enguage.Enguage;
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.intention.Redo;
@@ -199,7 +198,7 @@ public class Engine {
 					r.answer( Reply.noStr() );
 				} else {
 					audit.debug("ok - restarting transaction");
-					Enguage.o.reStartTxn();
+					Series.reStartTxn();
 				}
 			} else if (!Redo.undoIsEnabled())
 				r.format( Reply.dnu() );

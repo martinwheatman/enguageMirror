@@ -47,20 +47,17 @@ public class Overlay {
 		}
 		return rc;
 	}
-
-	private static String error = "";
-	public  static String error() { return error; }
-	 
+ 
 	public Overlay() {
 		p = new Path( System.getProperty( "user.dir" ));
 	}
 	
 	private String nthCandidate( String nm, int vn ) {
-		// nthCandidate( "/home/martin/src/myfile.c", 27 ) => "/var/overlays/series.27/myfile.c"
-		if (Series.number() > 0 && vn > Series.number() - 1) {
-			audit.ERROR("nthCandidate( "+ nm +", "+ vn +" ) called with a too high value (max="+ (Series.number() - 1) +")");
-			vn = Series.number() - 1;
-		}
+		int topVn = Series.number() - 1;
+		if (topVn == -1)
+			return nm;
+		else if (vn > topVn) // limit to top version no.
+			vn = topVn;
 		return	(0 > vn) ? nm : 
 				(Series.nth( vn ) + File.separator
 						+ nm.substring( Series.base().length() /*+1*/ ));
@@ -75,18 +72,12 @@ public class Overlay {
 	String find( String vfname ) {
 		String fsname = null;
 		int vn = Series.number(); // number=3 ==> series.0,1,2, so initially decr vn
-		boolean done = false;
-		while (!done && --vn >= 0) {
-			fsname = nthCandidate( vfname, vn );
-			done = Fs.exists( fsname ); // first time around this will be topCandidate()
-			if (!done) { // look for a delete marker
-				if (done = Fs.exists( delCandidate( vfname, vn ) )) {
-					fsname = topCandidate( vfname ); // look no further - return top (non-existing) file
-				} else { // look for rename marker -- is this the right order: file - delete - rename?
-//					fsname = o.renameCandidate( vfname, vn );
-//					done = new File( fsname ).isFile() || new File(  fsname  ).isDirectory();
-		}	}	}
-		return fsname;
+		while (--vn >= 0)
+			if (Fs.exists( fsname = nthCandidate( vfname, vn ) ))
+				return fsname;
+			else if (Fs.exists( delCandidate( vfname, vn ) )) 
+				return topCandidate( vfname ); // look no further - return top (non-existing) file	
+		return null;
 	}
 	boolean isOverlaid( String vfname ) {
 		return vfname != null // sanity
@@ -94,11 +85,11 @@ public class Overlay {
 		&& vfname.substring( 0, Series.base().length()).equals( Series.base()); // NAME="xyz/abc" base="xyz" => true
 	}
 	
-	// --- Compact overlays
-	static private boolean isDeleteName( String name ) {
+	
+	static public boolean isDeleteName( String name ) {
 		return new File( name ).getName().charAt( 0 ) == '!';
 	}
-	static private String nonDeleteName( String name ) {
+	static public String nonDeleteName( String name ) {
 		if (isDeleteName( name )) {
 			File f = new File( name );
 			name = f.getParent() +"/"+ f.getName().substring( 1 );
@@ -112,113 +103,8 @@ public class Overlay {
 		}
 		return name;
 	}
-	static private void moveFile( File src, File dest ) {
-		audit.in( "moveFile", "moving folder: "+ src.toString() +" to "+ dest.toString());
-		/* only called from combineUnderlays()
-		 * so we're not propagating !files
-		 */
-    	if (src.isDirectory()) {
-    		//audit.debug( "moving folder: "+ src.toString() +" to "+ dest.toString());
-    		if (!dest.exists()) dest.mkdir();
-    		//list all the directory contents
-    		String files[] = src.list();
-    		//audit.debug( "moving src of number:"+ src.listFiles().length );
-    		for (String file : files) {
-	    		//construct the src and dest file structure
-	    		File srcFile = new File(src, file);
-	    		File destFile = new File(dest, file);
-	    		//recursive copy
-	    		moveFile( srcFile, destFile );
-    		}
-    		//audit.debug( "deleting "+src.toString()+" of number:"+ src.listFiles().length );
-    		if (!src.delete()) audit.ERROR( "folder move DELETE failed" );
-    	} else {
-    		/* was...
-    		 *   if (dest.exists()) dest.delete();
-             *	 src.renameTo( dest );
-             */
-    		// Of source files, if...
-    		if (!isDeleteName( src.toString()) //  ...we have filename...
-    				&& new File( deleteName( src.toString() )).exists()) // ...and !filename exists
-    		{	//// remove !filename
-        		//audit.debug( "a-delete !filename "+ Entity.deleteName( src.toString() ));
-    			new File( deleteName( src.toString() )).delete();
-    			//// move file across as before
-        		//audit.debug( "a-move file across "+ src.toString() );
-        		if (dest.exists()) dest.delete();
-        		src.renameTo( dest );
-    		} else if ( isDeleteName( src.toString()) // ...we have !filename
-    				&& new File( nonDeleteName( src.toString() )).exists())  // ...and filename exists
-    		{	//// just remove !filename (filename will be dealt with when we get there!)
-        		//audit.debug( "b-deleting files "+ src.toString() );
-        		src.delete();
-    			if (src.exists()) audit.ERROR( "b) deleting !filename, with filename ("+ src.toString() +") FAILED" );
-    		} else if (!isDeleteName( src.toString()) // we have filename..
-    				&& !new File( deleteName( src.toString() )).exists()) // but not !filename
-    		{	//// move file across - as before
-        		//audit.debug( "c-move file across: "+ src.toString() +" to "+ dest.toString());
-        		if (dest.exists()) if (!dest.delete()) audit.ERROR( "c) DELETE failed: "+ dest.toString() );
-        		if (!src.renameTo( dest ))  audit.ERROR( "c) RENAME of "+ src.toString() +" to "+ dest.toString() +" failed" );
-    		} else if (isDeleteName( src.toString()) // we have !filename 
-    				&& !new File( nonDeleteName( src.toString() )).exists()) // but not filename
-    		{	//// remove !filename...
-        		//audit.debug( "d-remove !filename... "+ src.toString() );
-    			//if (!
-    					src.delete()
-    					//) audit.ERROR( "deleting "+ src.toString() +" failed" )
-    					;
-    			//// and delete underlying file
-        		//audit.debug( "d-...and delete underlying file "+ dest.toString());
-    			new File( nonDeleteName( dest.toString() )).delete();
-    		} else
-    			audit.ERROR( "Fs.moveFile(): fallen off end moving "+ src.toString() );
-    	}
-    	audit.out();
-	}	
-	public boolean combineUnderlays( /* int targetNumber */) {
-		audit.in( "compact", "combining "+ (Series.number()-1) +" underlays" );
-		/*
-		 * For expediency's sake, this function combines all underlaid  (i.e. protected) overlays
-		 */
-		boolean rc = false;
-		//audit.debug( "top overlay is "+ highest );
-		if (Series.attached() && Series.number() > 0) {
-			File src, dst;
-			for (int overlay=Series.number()-2; overlay>0; overlay--) {
-				//audit.debug( "COMBINING "+ overlay +" with "+ (overlay-1) );
-				src = new File( Series.nth( overlay ));
-				if (src.exists()) {
-					dst = new File( Series.nth( overlay-1 ));
-					if (dst.exists()) {
-						// move all new files into old overlay
-						//audit.debug( "dst exist: moving overlay "+ src.toString() +" to "+ dst.toString());
-		    			moveFile( src, dst );
-		    			if (src.exists()) audit.ERROR( src.toString() +" still exists - after MOVE ;(" );
-					} else {
-						//audit.debug( "dst not existing: renaming overlay "+ src.toString() +" to "+ dst.toString());
-						src.renameTo( dst );
-		    			if (!dst.exists()) audit.ERROR( src.toString() +" still doesn't exists - after RENAME ;(" );
-					}
-					//count();
-	    			//audit.debug( "number of overlays is now: "+ number() );
-				} //else
-					//audit.debug( "doing nothing: overlay "+ src.toString() +" does not exists" );
-			}
-			// then _rename_ top overlay - will now be ".1"
-			//audit.debug("Now renaming top overlay "+ highest() +" to be 1" );
-			src = new File( Series.nth( Series.number() -1 ));
-			dst = new File( Series.nth( 1 ));
-			if (dst.exists()) dst.delete();
-			if (!src.renameTo( dst )) audit.ERROR( "RENAME "+ src.toString()+" to "+ dst.toString() +" FAILED" );
-			//if (src.exists()) audit.debug( src.toString() +" still exists - after RENAME ;(" );
-			// adjust count()
-			Series.count();
-			//audit.debug( "count really is: "+ number() );
-			rc = true;
-		}
-		audit.out( "compact "+ (rc?"done":"failed") +", count="+ Series.number() +", highest="+ (Series.number()-1) );
-		return rc;
-	}
+
+	
 	
 	public Strings list( String dname ) {
 		
@@ -313,7 +199,7 @@ public class Overlay {
 		} else if ((   cmd.equals(    "bond"  )
 				    || cmd.equals( "combine"  ))
 		           && (1 == argc) ) {
-			rc = o.combineUnderlays() ? Shell.SUCCESS : Shell.FAIL;
+			rc = Series.compact() ? Shell.SUCCESS : Shell.FAIL;
 			
 		} else if (cmd.equals( "rm" )) {
 			argv.remove( 0 );
@@ -367,37 +253,6 @@ public class Overlay {
 			                 +"     : ls <pathname>\n"
 			                 +"given: "+ argv.toString( Strings.CSV ));
 		return new Strings( rc );
-	}
-	
-	/*
-	 * Some helpers from enguage.....
-	 * implements the transaction bit -- this isn't ACID :(
-	 */
-	private boolean inTxn = false;
-	public void startTxn( boolean undoIsEnabled ) {
-		audit.in( "startTxn" );
-		if (undoIsEnabled) {
-			inTxn = true;
-			Series.append();//create();
-		}
-		audit.out();
-	}
-	public void finishTxn( boolean undoIsEnabled ) {
-		audit.in( "finishTxn" );
-		if (undoIsEnabled) {
-			inTxn = false;
-			combineUnderlays();
-		}
-		audit.out();
-	}
-	public void reStartTxn() {
-		audit.in( "restartTxn" );
-		if (inTxn) {
-			Series.remove(); // destroy(); // remove this overlay
-			Series.remove(); // destroy(); // remove previous -- this is the undo bit
-			Series.append(); // create();  // restart a new txn
-		}
-		audit.out();
 	}
 	
 	public static void main (String args []) {

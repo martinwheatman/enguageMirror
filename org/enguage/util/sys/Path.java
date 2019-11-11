@@ -126,7 +126,7 @@ public class Path {
 								if (flist.isFile()) // TTD: move this to String - newCharsFromFilePreview()
 									value = filter( Fs.stringFromFile( flist.getPath()));
 								else if (Link.isLink( name ))
-									value = filter( Link.toString( name));
+									value = filter( Link.content( name));
 								else if (flist.isDirectory())
 									value = "<"+ filter(name) +"/>";
 							}

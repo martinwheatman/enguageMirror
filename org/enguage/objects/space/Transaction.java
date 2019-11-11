@@ -1,6 +1,5 @@
 package org.enguage.objects.space;
 
-import org.enguage.Enguage;
 import org.enguage.interp.intention.Redo;
 import org.enguage.objects.space.overlays.Series;
 import org.enguage.util.Audit;
@@ -17,7 +16,7 @@ public class Transaction {
 	static private void    create() {
 		if (!inprog) {
 			inprog = true;
-			Enguage.o.startTxn( Redo.undoIsEnabled());
+			Series.startTxn( Redo.undoIsEnabled());
 	}	}
 	static private void    abort() {
 		if (inprog) {
@@ -27,7 +26,7 @@ public class Transaction {
 	static private void    commit() {
 		if (inprog) {
 			inprog = false;
-			Enguage.o.combineUnderlays();
+			Series.compact();
 	}	}
 	
 	static public Strings interpret( Strings args ) {

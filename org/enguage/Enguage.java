@@ -71,7 +71,7 @@ public class Enguage {
 				Where.clearLocation();
 				
 				if (Reply.isUnderstood()) // from previous interpretation!
-					o.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
+					Series.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 				
 				Reply r = Repertoire.mediate( new Utterance( utterance ));
 		
@@ -79,7 +79,7 @@ public class Enguage {
 				Utterance.previous( utterance );
 		
 				if (Reply.isUnderstood()) {
-					o.finishTxn( Redo.undoIsEnabled() );
+					Series.finishTxn( Redo.undoIsEnabled() );
 					Redo.disambOff();
 				} else {
 					// really lost track?

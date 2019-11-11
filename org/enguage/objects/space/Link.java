@@ -29,7 +29,7 @@ public class Link {
 	static public boolean fromString( String nm, String val ) {
 		return Fs.stringToFile( Os.fsname( linkName( nm ), Os.MODE_WRITE ), val );
 	}
-	static public String toString( String nm ) { return Fs.stringFromFile( linkName( nm ));}
+	static public String content( String nm ) { return Fs.stringFromFile( linkName( nm ));}
 	
 //	static private String extrd( String e, String a ) {return Overlay.fsname( e +"/"+ a, Overlay.MODE_READ );}
 //	static private String extwr( String e, String a ) {return Overlay.fsname( e +"/"+ a, Overlay.MODE_WRITE );}
