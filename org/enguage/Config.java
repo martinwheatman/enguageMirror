@@ -11,7 +11,6 @@ import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.sign.Signs;
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -102,7 +101,7 @@ public class Config {
 	
 	public static void main( String args[]) {
 		Os.Set( Os.Get());
-		if (!Overlay.attachCwd( NAME ))
+		if (!Os.attachCwd( NAME ))
 			audit.ERROR( "Ouch!" );
 		Config c = new Config();
 		c.load( "" );

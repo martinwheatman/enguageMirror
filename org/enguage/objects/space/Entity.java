@@ -105,7 +105,7 @@ public class Entity {
 	}
 	
 	public static void main (String args []) {
-		if (!Overlay.attachCwd( "Entity" ))
+		if (!Os.attachCwd( "Entity" ))
 			audit.ERROR( "Ouch!" );
 		else
 			new EntityShell().run();

@@ -8,6 +8,7 @@ import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.interp.repertoire.Synonyms;
 import org.enguage.objects.space.overlays.Os;
 import org.enguage.objects.space.overlays.Overlay;
+import org.enguage.objects.space.overlays.Series;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -28,7 +29,7 @@ public class Enguage {
 	
 	static private Audit     audit = new Audit( "Enguage" );
 	static public  Overlay       o = Os.Get();
-	static public  boolean attach( String userId ) { return o.attached() || Overlay.attachCwd( userId );}
+	static public  boolean attach( String userId ) { return Series.attached() || Os.attachCwd( userId );}
 
 	static private Shell   shell   = new Shell( "Enguage" );
 	static public  Shell   shell() {return shell;}
@@ -48,8 +49,7 @@ public class Enguage {
 		Concepts.addFrom( Concepts.NAME );
 	}
 
-
-	static public Strings mediate( Strings utterance ) { return mediate( "uid=marv", utterance );}
+	static public Strings mediate( Strings utterance ) { return mediate( "uid", utterance );}
 	static public Strings mediate( String uid, Strings utterance ) {
 				
 		Strings reply;

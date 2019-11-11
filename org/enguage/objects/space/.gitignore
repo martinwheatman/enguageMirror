@@ -1,6 +1,12 @@
 /Entity.class
 /EntityShell.class
 /Link.class
+/Ospace.class
+/Overlay.class
+/OverlayShell.class
+/Series.class
 /Sofa.class
-/Transaction.class
 /Value.class
+/Transaction.class
+/Os.class
+/User.class

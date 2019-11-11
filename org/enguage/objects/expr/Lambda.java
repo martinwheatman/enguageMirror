@@ -6,7 +6,6 @@ import org.enguage.Enguage;
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.Value;
 import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -75,7 +74,7 @@ public class Lambda {
 	}
 	static public void main( String args[] ) {
 		Os.Set( Os.Get());
-		if (!Overlay.attachCwd( "Lambda" ))
+		if (!Os.attachCwd( "Lambda" ))
 			audit.ERROR( "Ouch!" );
 		else {
 			Variable.set( "x",   "1" );

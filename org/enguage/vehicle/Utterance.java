@@ -10,7 +10,6 @@ import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.Sofa;
 import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
@@ -116,7 +115,7 @@ public class Utterance {
 	public static void main( String arg[]) {
 		
 		Os.Set( Os.Get());
-		if (!Overlay.attachCwd( "Utternace" ))
+		if (!Os.attachCwd( "Utternace" ))
 			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
 
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");

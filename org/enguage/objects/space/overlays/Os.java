@@ -47,4 +47,12 @@ public class Os { // manages the root of object(overlay) space
 					default          : fsname = o.topCandidate( vfname ); // MODE_WRITE | _APPEND
 		}		}
 		return fsname;
+	}
+	static public boolean attachCwd( String userId ) {
+		Overlay.audit.in( "attachCwd", "userid="+userId );
+		root( "os" );
+		user( userId );
+		Set( Get()); // set singleton
+		String cwd = new File( System.getProperty( "user.dir" )).getName();
+		return Overlay.audit.out( Series.attach( cwd ));
 }	}

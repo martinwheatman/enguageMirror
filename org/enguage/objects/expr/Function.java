@@ -4,7 +4,6 @@ import java.util.ListIterator;
 
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -129,7 +128,7 @@ public class Function {
 	}
 	static public void main( String args[]) {
 		Os.Set( Os.Get());
-		if (!Overlay.attachCwd( NAME ))
+		if (!Os.attachCwd( NAME ))
 			audit.ERROR( "Ouch!" );
 		else {
 			Reply.dnk( "I do not know\n" );

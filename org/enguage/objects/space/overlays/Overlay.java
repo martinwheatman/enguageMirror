@@ -28,7 +28,7 @@ class OverlayShell extends Shell {
  */
 //-- BEGIN Overlay
 public class Overlay {
-	static private       Audit   audit = new Audit( "Overlay" );
+	static       Audit   audit = new Audit( "Overlay" );
 	static public  final int        id = 188374473; //Strings.hash( "overlay" );
 	static private       boolean debug = false; //Enguage.runtimeDebugging || Enguage.startupDebugging;
 	
@@ -52,27 +52,8 @@ public class Overlay {
 	public  static String error() { return error; }
 	 
 	public Overlay() {
-		Series.detach(); // start detach()ed;
 		p = new Path( System.getProperty( "user.dir" ));
-		//audit.debug( "initial path is "+ System.getProperty( "user.dir" ) +" (p="+ p.toString() +")" );
-		//new File( Os.root() ).mkdir(); // JIC -- ignore result
-		/*
-		 * For VERSION 2 - was plain Series.DEFAULT...
-		 * If we put in the following it should result in /yagadi.com being overlaid
-		 * with base overlay being /yagadi.com/yagadi.com.0  
-		 * This will make it incompatible with version 1 ( as its series is iNeed ) 
-		Series.create( new File( System.getProperty("user.dir")).getName(), p.toString() );
-		 */
-		//Series.create( Series.DEFAULT, p.toString() );
 	}
-
-	public int    count() { return Series.number(); }
-	//public String toString() { return "[ "+ Os.user() +", "+ Series.name() +"("+ Series.number() +") ]"; }
-	
-	// called from Enguage...
-	public boolean attached() { return Series.attached(); }
-	//static public boolean attach( String series ) { return Series.attach( series ); }
-	//static public void detach() { Series.detach(); }
 	
 	public void create() {
 		audit.in( "create", "" );
@@ -89,26 +70,20 @@ public class Overlay {
 		int topOverlay = Series.highest();
 		if (topOverlay > 0 && !Series.name().equals( "" )) {
 			String nm = Series.nth( topOverlay );
-			//Audit.LOG( "Destroying "+ nm );
 			rc = Fs.destroy( nm );
-			if (rc) Series.count();
+			Series.count();
 		}
 		return audit.out( rc );
 	}
 	private String nthCandidate( String nm, int vn ) {
-		//audit.in( "nthCandidate", "nm='"+ nm +"', vn="+ vn);
 		// nthCandidate( "/home/martin/src/myfile.c", 27 ) => "/var/overlays/series.27/myfile.c"
 		if (Series.highest() > -1 && vn > Series.highest()) {
 			audit.ERROR("nthCandidate( "+ nm +", "+ vn +" ) called with a too high value (max="+ Series.highest()+")");
 			vn = Series.highest();
 		}
-		return	//audit.out
-				(
-				(0 > vn) ? nm : 
+		return	(0 > vn) ? nm : 
 				(Series.nth( vn ) + File.separator
-						+ nm.substring( Series.base().length() /*+1*/ ))
-				)
-						; // +1 remove leading "/"
+						+ nm.substring( Series.base().length() /*+1*/ ));
 	}
 	String topCandidate( String name ) {
 		return nthCandidate( name, Series.number()-1);
@@ -118,7 +93,6 @@ public class Overlay {
 		return f.getParent() +"/"+ DELETE_CH + f.getName(); 
 	}
 	String find( String vfname ) {
-		//audit.in( "find", "find: "+ vfname );
 		String fsname = null;
 		int vn = Series.number(); // number=3 ==> series.0,1,2, so initially decr vn
 		boolean done = false;
@@ -132,29 +106,14 @@ public class Overlay {
 //					fsname = o.renameCandidate( vfname, vn );
 //					done = new File( fsname ).isFile() || new File(  fsname  ).isDirectory();
 		}	}	}
-//		if (!done) // orig file or non-existant file!
-//			fsname = Filesystem.exists( vfname ) ? vfname : topCandidate( vfname );
-		//return audit.out( fsname );
 		return fsname;
 	}
-	// return true for path=/home/martin/persons/fred/waz/ere
-	// where series = persons
-	//   and /home/martin/sofa/persons.0/reuse -> /home/martin/persons
 	boolean isOverlaid( String vfname ) {
-		//audit.audit( "isOverlaid()? Comparing "+ vfname +" with "+ vfname.substring( 0, Series.base( Series.name() ).length()));
-//		if (vfname == null) Audit.LOG( "vfname == null" );
-//		if (0 == Series.base( Series.name() ).length()) Audit.LOG( "0 == Series.base( Series.name() ).length()" );
-//		if (0 == vfname.length()) Audit.LOG( " 0 == vfname.length()" );
-//		if (Series.base( Series.name() ).length() > vfname.length()) Audit.LOG( "Series.base( Series.name() ).length() > vfname.length()" );
-//		if (!vfname.substring( 0, Series.base( Series.name() ).length()).equals( Series.base( Series.name() ))) Audit.LOG( "!vfname.substring( 0, Series.base( Series.name() ).length()).equals( Series.base( Series.name() ))" );
 		return vfname != null // sanity
-		//&& 0 != vfname.length() // so base == "x*", NAME == "x*"
-		//&& 0 != Series.base().length()
 		&& Series.base().length() <= vfname.length()
 		&& vfname.substring( 0, Series.base().length()).equals( Series.base()); // NAME="xyz/abc" base="xyz" => true
 	}
 	
-	// ---
 	// --- Compact overlays
 	static private boolean isDeleteName( String name ) {
 		return new File( name ).getName().charAt( 0 ) == '!';
@@ -236,7 +195,7 @@ public class Overlay {
     	}
     	audit.out();
 	}	
-	static public boolean compact( /* int targetNumber */) {
+	public boolean combineUnderlays( /* int targetNumber */) {
 		audit.in( "compact", "combining "+ (Series.number()-1) +" underlays" );
 		/*
 		 * For expediency's sake, this function combines all underlaid  (i.e. protected) overlays
@@ -280,8 +239,6 @@ public class Overlay {
 		audit.out( "compact "+ (rc?"done":"failed") +", count="+ Series.number() +", highest="+ Series.highest() );
 		return rc;
 	}
-
-	public boolean combineUnderlays() { return compact(); }
 	
 	public Strings list( String dname ) {
 		
@@ -321,7 +278,7 @@ public class Overlay {
 		p.insertDir( absName, "" );
 		if (p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
 			int			n = -1,
-			        count = count();
+			        count = Series.number();
 			String prefix = Os.home() + File.separator + Series.name() +".";
 			String suffix = absName.substring( p.pwd().length());
 			while (++n < count)
@@ -333,14 +290,6 @@ public class Overlay {
 		
 		if (debug) audit.out( rc );
 		return rc;
-	}
-	static public boolean attachCwd( String userId ) {
-		audit.in( "attachCwd", "userid="+userId );
-		Os.root( "os" );
-		Os.user( userId );
-		Os.Set( Os.Get()); // set singleton
-		String cwd = new File( System.getProperty( "user.dir" )).getName();
-		return audit.out( Series.attach( cwd ));
 	}
 	
 	// ===
@@ -485,11 +434,9 @@ public class Overlay {
 		audit.out();
 	}
 	
-
-	
 	public static void main (String args []) {
 		Audit.allOn();
-		if (!attachCwd( "Overlay" ))
+		if (!Os.attachCwd( "Overlay" ))
 			Audit.log( "Ouch! Can't auto attach" );
 		else {
 			Audit.log( "osroot="+ Os.home() );

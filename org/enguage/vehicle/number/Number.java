@@ -4,7 +4,6 @@ import java.util.ListIterator;
 
 import org.enguage.objects.expr.Function;
 import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -555,7 +554,7 @@ public class Number {
 		Audit.decr();
 		
 		Os.Set( Os.Get());
-		if (!Overlay.attachCwd( "Number" ))
+		if (!Os.attachCwd( "Number" ))
 			audit.ERROR( "Ouch!" );
 		else {
 			/* factorial( n ): n times the factorial of n minus 1.

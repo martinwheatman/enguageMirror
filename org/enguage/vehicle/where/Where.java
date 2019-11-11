@@ -5,7 +5,6 @@ import java.util.ListIterator;
 
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -121,7 +120,7 @@ public class Where {
 		
 		// This should go into SofA
 		Os.Set( Os.Get());
-		if (!Overlay.attachCwd( NAME ))
+		if (!Os.attachCwd( NAME ))
 			audit.ERROR( "Ouch!" );
 		else {
 			testDoLocators();

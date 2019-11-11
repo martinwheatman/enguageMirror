@@ -1,7 +1,7 @@
 package org.enguage.objects.space;
 
 import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
+import org.enguage.objects.space.overlays.Series;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -104,9 +104,7 @@ public class Link {
 		Fs.rootDir( null );
 		Fs.location( "./src/assets" );
 		
-		Overlay o = Os.Get();
-
-		if (!o.attached() && !Overlay.attachCwd( "Link" ))
+		if (!Series.attached() && !Os.attachCwd( "Link" ))
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
 		else {
 			//Audit.allOn();
