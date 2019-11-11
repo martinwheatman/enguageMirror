@@ -55,31 +55,11 @@ public class Overlay {
 		p = new Path( System.getProperty( "user.dir" ));
 	}
 	
-	public void xcreate() {
-		audit.in( "create", "" );
-		if (Series.attached())
-			Series.append();
-		else
-			audit.debug( "not created -- not attached" );
-		audit.out();
-	}
-	public boolean xdestroy() {
-		// removes top overlay of current series
-		audit.in( "destroy", "" );
-		boolean rc = false;
-		int topOverlay = Series.highest();
-		if (topOverlay > 0 && !Series.name().equals( "" )) {
-			String nm = Series.nth( topOverlay );
-			rc = Fs.destroy( nm );
-			Series.count();
-		}
-		return audit.out( rc );
-	}
 	private String nthCandidate( String nm, int vn ) {
 		// nthCandidate( "/home/martin/src/myfile.c", 27 ) => "/var/overlays/series.27/myfile.c"
-		if (Series.highest() > -1 && vn > Series.highest()) {
-			audit.ERROR("nthCandidate( "+ nm +", "+ vn +" ) called with a too high value (max="+ Series.highest()+")");
-			vn = Series.highest();
+		if (Series.number() > 0 && vn > Series.number() - 1) {
+			audit.ERROR("nthCandidate( "+ nm +", "+ vn +" ) called with a too high value (max="+ (Series.number() - 1) +")");
+			vn = Series.number() - 1;
 		}
 		return	(0 > vn) ? nm : 
 				(Series.nth( vn ) + File.separator
@@ -202,9 +182,9 @@ public class Overlay {
 		 */
 		boolean rc = false;
 		//audit.debug( "top overlay is "+ highest );
-		if (Series.attached() && Series.highest() > 1) {
+		if (Series.attached() && Series.number() > 0) {
 			File src, dst;
-			for (int overlay=Series.highest()-1; overlay>0; overlay--) {
+			for (int overlay=Series.number()-2; overlay>0; overlay--) {
 				//audit.debug( "COMBINING "+ overlay +" with "+ (overlay-1) );
 				src = new File( Series.nth( overlay ));
 				if (src.exists()) {
@@ -226,7 +206,7 @@ public class Overlay {
 			}
 			// then _rename_ top overlay - will now be ".1"
 			//audit.debug("Now renaming top overlay "+ highest() +" to be 1" );
-			src = new File( Series.nth( Series.highest() ));
+			src = new File( Series.nth( Series.number() -1 ));
 			dst = new File( Series.nth( 1 ));
 			if (dst.exists()) dst.delete();
 			if (!src.renameTo( dst )) audit.ERROR( "RENAME "+ src.toString()+" to "+ dst.toString() +" FAILED" );
@@ -236,7 +216,7 @@ public class Overlay {
 			//audit.debug( "count really is: "+ number() );
 			rc = true;
 		}
-		audit.out( "compact "+ (rc?"done":"failed") +", count="+ Series.number() +", highest="+ Series.highest() );
+		audit.out( "compact "+ (rc?"done":"failed") +", count="+ Series.number() +", highest="+ (Series.number()-1) );
 		return rc;
 	}
 	
@@ -324,21 +304,9 @@ public class Overlay {
 			rc = Shell.SUCCESS;
 			Series.append();//o.create();
 			
-		//} else if (0 == cmd.equals( "exists" ) && (2 == argc)) {
-		//	rc =  o.existingSeries( argv.get( 1 )) ? "Yes":"No";
-			
-		} else if (cmd.equals( "create" ) && ((2 == argc) || (3 == argc)) ) {
-			if (!Series.create( argv.get( 1 ), argc == 3 ? argv.get( 2 ) : System.getProperty( "user.dir" )))
-				audit.debug( argv.get( 1 ) + " already exists" );
-			else
-				rc = Shell.SUCCESS;
-				
-		//} else if (cmd.equals( "delete" ) && (2 == argc) ) {
-		//	if (Series.deleteSeries( argv.get( 1 )))
-		//		rc = Shell.SUCCESS;
-		//	else
-		//		audit.debug( argv.get( 1 ) + " doesn't exists" );
-			
+		} else if (cmd.equals( "exists" ) && (2 == argc)) {
+			rc =  Series.existing() ? "Yes":"No";
+						
 		} else if (cmd.equals(  "destroy"  ) && (1 == argc) ) {
 			rc = Series.remove() ? Shell.SUCCESS : Shell.FAIL;
 			
@@ -391,10 +359,8 @@ public class Overlay {
 			audit.debug( "Usage: attach <series>\n"
 			                 +"     : detach\n"
 			                 +"     : save\n"
-		//	                 +"     : show [<n>] <pathname>\n"
 			                 +"     : write <pathname>\n"
 			                 +"     : read  <pathname>\n"
-			                 +"     : delete <pathname>\n"
 			                 +"     : mkdir <pathname>\n"
 			                 +"     : pwd <pathname>\n"
 			                 +"     : cd <pathname>\n"

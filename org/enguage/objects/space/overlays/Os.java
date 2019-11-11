@@ -43,7 +43,7 @@ public class Os { // manages the root of object(overlay) space
 			if (o.isOverlaid( vfname = Path.absolute( o.path(), vfname ) ))
 				switch (modeChs) {
 					case MODE_READ   : fsname = o.find( vfname ); break;
-					case MODE_DELETE : fsname = o.delCandidate( vfname, Series.highest()); break;
+					case MODE_DELETE : fsname = o.delCandidate( vfname, Series.number() - 1 ); break;
 					default          : fsname = o.topCandidate( vfname ); // MODE_WRITE | _APPEND
 		}		}
 		return fsname;
