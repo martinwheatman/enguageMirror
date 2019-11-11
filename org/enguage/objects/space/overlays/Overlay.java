@@ -55,7 +55,7 @@ public class Overlay {
 		p = new Path( System.getProperty( "user.dir" ));
 	}
 	
-	public void create() {
+	public void xcreate() {
 		audit.in( "create", "" );
 		if (Series.attached())
 			Series.append();
@@ -63,7 +63,7 @@ public class Overlay {
 			audit.debug( "not created -- not attached" );
 		audit.out();
 	}
-	public boolean destroy() {
+	public boolean xdestroy() {
 		// removes top overlay of current series
 		audit.in( "destroy", "" );
 		boolean rc = false;
@@ -322,13 +322,13 @@ public class Overlay {
 		} else if ((cmd.equals( "save" ) || cmd.equals( "create" )) && (1 == argc)) {
 			//audit.audit( "Creating "+ o.series());
 			rc = Shell.SUCCESS;
-			o.create();
+			Series.append();//o.create();
 			
 		//} else if (0 == cmd.equals( "exists" ) && (2 == argc)) {
 		//	rc =  o.existingSeries( argv.get( 1 )) ? "Yes":"No";
 			
 		} else if (cmd.equals( "create" ) && ((2 == argc) || (3 == argc)) ) {
-			if (!Series.create( argv.get( 1 ), argc == 3 ? argv.get( 2 ):System.getProperty("user.dir") ))
+			if (!Series.create( argv.get( 1 ), argc == 3 ? argv.get( 2 ) : System.getProperty( "user.dir" )))
 				audit.debug( argv.get( 1 ) + " already exists" );
 			else
 				rc = Shell.SUCCESS;
@@ -340,7 +340,7 @@ public class Overlay {
 		//		audit.debug( argv.get( 1 ) + " doesn't exists" );
 			
 		} else if (cmd.equals(  "destroy"  ) && (1 == argc) ) {
-			rc = o.destroy() ? Shell.SUCCESS : Shell.FAIL;
+			rc = Series.remove() ? Shell.SUCCESS : Shell.FAIL;
 			
 		} else if ((   cmd.equals(    "bond"  )
 				    || cmd.equals( "combine"  ))
@@ -412,7 +412,7 @@ public class Overlay {
 		audit.in( "startTxn" );
 		if (undoIsEnabled) {
 			inTxn = true;
-			create();
+			Series.append();//create();
 		}
 		audit.out();
 	}
@@ -427,9 +427,9 @@ public class Overlay {
 	public void reStartTxn() {
 		audit.in( "restartTxn" );
 		if (inTxn) {
-			destroy(); // remove this overlay
-			destroy(); // remove previous -- this is the undo bit
-			create();  // restart a new txn
+			Series.remove(); // destroy(); // remove this overlay
+			Series.remove(); // destroy(); // remove previous -- this is the undo bit
+			Series.append(); // create();  // restart a new txn
 		}
 		audit.out();
 	}

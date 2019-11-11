@@ -2,6 +2,7 @@ package org.enguage.objects.space;
 
 import org.enguage.Enguage;
 import org.enguage.interp.intention.Redo;
+import org.enguage.objects.space.overlays.Series;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -21,7 +22,7 @@ public class Transaction {
 	static private void    abort() {
 		if (inprog) {
 			inprog = false;
-			Enguage.o.destroy();
+			Series.remove(); //Enguage.o.destroy();
 	}	}
 	static private void    commit() {
 		if (inprog) {
