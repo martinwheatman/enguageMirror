@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import com.yagadi.Assets;
 
 import org.enguage.interp.intention.Redo;
-import org.enguage.objects.space.Overlays.Overlay;
+import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;

@@ -1,11 +1,11 @@
-package org.enguage.objects.space.Overlays;
+package org.enguage.objects.space.overlays;
 
 import java.io.File;
 import java.util.Iterator;
 
 import org.enguage.objects.space.Value;
-import org.enguage.objects.space.Overlays.Overlay;
-import org.enguage.objects.space.Overlays.OverlayShell;
+import org.enguage.objects.space.overlays.Overlay;
+import org.enguage.objects.space.overlays.OverlayShell;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;

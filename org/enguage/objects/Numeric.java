@@ -3,7 +3,7 @@ package org.enguage.objects;
 import java.util.ListIterator;
 
 import org.enguage.objects.space.Value;
-import org.enguage.objects.space.Overlays.Os;
+import org.enguage.objects.space.overlays.Os;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

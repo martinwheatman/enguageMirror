@@ -1,4 +1,4 @@
-package org.enguage.objects.space.Overlays;
+package org.enguage.objects.space.overlays;
 
 import java.io.File;
 

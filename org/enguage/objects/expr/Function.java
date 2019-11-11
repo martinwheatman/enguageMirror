@@ -3,8 +3,8 @@ package org.enguage.objects.expr;
 import java.util.ListIterator;
 
 import org.enguage.objects.Variable;
-import org.enguage.objects.space.Overlays.Os;
-import org.enguage.objects.space.Overlays.Overlay;
+import org.enguage.objects.space.overlays.Os;
+import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

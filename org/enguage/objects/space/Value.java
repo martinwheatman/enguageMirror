@@ -2,8 +2,8 @@ package org.enguage.objects.space;
 
 import java.io.File;
 
-import org.enguage.objects.space.Overlays.Os;
-import org.enguage.objects.space.Overlays.Overlay;
+import org.enguage.objects.space.overlays.Os;
+import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

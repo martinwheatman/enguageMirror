@@ -20,7 +20,7 @@ import org.enguage.objects.list.Transitive;
 import org.enguage.objects.space.Entity;
 import org.enguage.objects.space.Link;
 import org.enguage.objects.space.Value;
-import org.enguage.objects.space.Overlays.Overlay;
+import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Colloquial;
