@@ -8,8 +8,8 @@ import org.enguage.objects.Numeric;
 import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
+import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Sofa;
-import org.enguage.objects.space.overlays.Os;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
@@ -114,8 +114,8 @@ public class Utterance {
 	
 	public static void main( String arg[]) {
 		
-		Os.Set( Os.Get());
-		if (!Os.attachCwd( "Utternace" ))
+		Overlay.Set( Overlay.Get());
+		if (!Overlay.attachCwd( "Utternace" ))
 			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
 
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");

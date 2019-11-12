@@ -2,8 +2,6 @@ package org.enguage.objects.space;
 
 import org.enguage.objects.space.Entity;
 import org.enguage.objects.space.EntityShell;
-import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -19,12 +17,12 @@ public class Entity {
 	static public  final int      id = 66162693; //Strings.hash( "entity" );
 	
 	public static boolean exists( String name ) {
-		return Fs.exists( Os.fsname( name, Os.MODE_READ ));
+		return Fs.exists( Overlay.fname( name, Overlay.MODE_READ ));
 	}
 
 	public static boolean create( String name ) {
-		audit.IN( "create", "name='"+ name +"' ("+ Os.fsname( name, Os.MODE_WRITE ) +")" );
-		boolean rc = Fs.create( Os.fsname( name, Os.MODE_WRITE ));
+		audit.IN( "create", "name='"+ name +"' ("+ Overlay.fname( name, Overlay.MODE_WRITE ) +")" );
+		boolean rc = Fs.create( Overlay.fname( name, Overlay.MODE_WRITE ));
 		audit.OUT( rc );
 		return rc;
 	}
@@ -42,9 +40,9 @@ public class Entity {
 	}
 	public static boolean delete( String name ) {
 		boolean rc = true;
-		String readName  = Os.fsname( name, Os.MODE_READ );
+		String readName  = Overlay.fname( name, Overlay.MODE_READ );
 		if (Fs.exists( readName )) {
-			String writeName = Os.fsname( name, Os.MODE_WRITE ),
+			String writeName = Overlay.fname( name, Overlay.MODE_WRITE ),
 			       dname = Overlay.deleteName( writeName );
 			if (!Fs.destroy( writeName )) {
 				// haven't managed to remove top overlay entity -- either not empty or not there
@@ -58,8 +56,8 @@ public class Entity {
 	}
 	public static boolean ignore( String name ) {
 		boolean status = false;
-		String actual = Os.fsname( name, Os.MODE_READ ),
-		       potential = Os.fsname( name, Os.MODE_WRITE ),
+		String actual = Overlay.fname( name, Overlay.MODE_READ ),
+		       potential = Overlay.fname( name, Overlay.MODE_WRITE ),
 		       ignored = Overlay.deleteName( potential );
 		if (Fs.exists( actual ))
 			if (Fs.exists( potential )) 
@@ -71,7 +69,7 @@ public class Entity {
 	
 	public static boolean restore( String entity ) {
 		boolean status = false;
-		String restored = Os.fsname( entity, Os.MODE_WRITE ),
+		String restored = Overlay.fname( entity, Overlay.MODE_WRITE ),
 				ignored = Overlay.deleteName( restored );
 		if (!exists( entity ))
 			status = Fs.rename( ignored, restored );
@@ -105,7 +103,7 @@ public class Entity {
 	}
 	
 	public static void main (String args []) {
-		if (!Os.attachCwd( "Entity" ))
+		if (!Overlay.attachCwd( "Entity" ))
 			audit.ERROR( "Ouch!" );
 		else
 			new EntityShell().run();

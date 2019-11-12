@@ -1,7 +1,6 @@
 package org.enguage.objects.space;
 
 import org.enguage.interp.intention.Redo;
-import org.enguage.objects.space.overlays.Series;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -16,17 +15,17 @@ public class Transaction {
 	static private void    create() {
 		if (!inprog) {
 			inprog = true;
-			Series.startTxn( Redo.undoIsEnabled());
+			Overlay.startTxn( Redo.undoIsEnabled());
 	}	}
 	static private void    abort() {
 		if (inprog) {
 			inprog = false;
-			Series.remove(); //Enguage.o.destroy();
+			Overlay.remove(); //Enguage.o.destroy();
 	}	}
 	static private void    commit() {
 		if (inprog) {
 			inprog = false;
-			Series.compact();
+			Overlay.compact();
 	}	}
 	
 	static public Strings interpret( Strings args ) {

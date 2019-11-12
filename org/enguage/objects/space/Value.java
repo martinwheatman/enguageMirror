@@ -2,8 +2,6 @@ package org.enguage.objects.space;
 
 import java.io.File;
 
-import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -28,21 +26,21 @@ public class Value {
 
 	// statics
 	static public String name( String entity, String attr, int rw ) {
-		return Os.fsname( entity +(attr==null?"":"/"+ attr), rw );
+		return Overlay.fname( entity +(attr==null?"":"/"+ attr), rw );
 	}
 	
 	// members
 	// TODO: cache items[]? Lock file - this code is not suitable for IPC? Exists in constructor?
 	// set() methods return change in number of items
-	public boolean exists() {        return Fs.exists(         name( ent, attr, Os.MODE_READ )); }
+	public boolean exists() {        return Fs.exists(         name( ent, attr, Overlay.MODE_READ )); }
 	public boolean set( String val ){
-		audit.in( "set", "val='"+ val +"' ("+ name( ent, attr, Os.MODE_WRITE ) +")" );
-		boolean rc = Fs.stringToFile(   name( ent, attr, Os.MODE_WRITE ), val );
+		audit.in( "set", "val='"+ val +"' ("+ name( ent, attr, Overlay.MODE_WRITE ) +")" );
+		boolean rc = Fs.stringToFile(   name( ent, attr, Overlay.MODE_WRITE ), val );
 		return (boolean) audit.out( rc );
 		
 	}
-	public void    unset() {                Fs.destroyEntity(  name( ent, attr, Os.MODE_WRITE )); }
-	public String  getAsString(){    return Fs.stringFromFile( name( ent, attr, Os.MODE_READ )); }
+	public void    unset() {                Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
+	public String  getAsString(){    return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ )); }
 	
 	public  boolean equals( String val ) { return getAsString().equals( val ); }
 	private boolean contains( String val ) { return getAsString().contains( val ); }
@@ -51,9 +49,9 @@ public class Value {
 	private static final String marker = "this is a marker file";
 	public  boolean  ignore() {
 		boolean rc = false;
-		if (Fs.exists( name( ent, attr, Os.MODE_READ ))) {
+		if (Fs.exists( name( ent, attr, Overlay.MODE_READ ))) {
 			rc = true;
-			String writeName = name( ent, attr, Os.MODE_WRITE );
+			String writeName = name( ent, attr, Overlay.MODE_WRITE );
 			String deleteName = Overlay.deleteName( writeName );
 			if ( Fs.exists( writeName )) { // rename
 				File oldFile = new File( writeName ),
@@ -65,7 +63,7 @@ public class Value {
 		return rc;
 	}
 	public void restore() {
-		String writeName = name( ent, attr, Os.MODE_WRITE ); // if not overlayed - simply delete!?!
+		String writeName = name( ent, attr, Overlay.MODE_WRITE ); // if not overlayed - simply delete!?!
 		String deletedName = Overlay.deleteName( writeName ); //dir/file => dir/!file
 		File deletedFile = new File( deletedName );
 		String content = Fs.stringFromFile( deletedName );
@@ -143,8 +141,8 @@ public class Value {
 			audit.passed();
 	}
  	public static void main( String args[] ) {
-		Os.Set( Os.Get());
-		if (!Os.attachCwd( NAME ))
+		Overlay.Set( Overlay.Get());
+		if (!Overlay.attachCwd( NAME ))
 			System.out.println( "Ouch!" );
 		else {
 			test( "set martin name martin j wheatman", "TRUE" );

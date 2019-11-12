@@ -1,7 +1,5 @@
 package org.enguage.objects.space;
 
-import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Series;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -27,7 +25,7 @@ public class Link {
 	}
 	static public String linkName( String name ) {return isLink( name ) ? name : name + EXT;}
 	static public boolean fromString( String nm, String val ) {
-		return Fs.stringToFile( Os.fsname( linkName( nm ), Os.MODE_WRITE ), val );
+		return Fs.stringToFile( Overlay.fname( linkName( nm ), Overlay.MODE_WRITE ), val );
 	}
 	static public String content( String nm ) { return Fs.stringFromFile( linkName( nm ));}
 	
@@ -104,7 +102,7 @@ public class Link {
 		Fs.rootDir( null );
 		Fs.location( "./src/assets" );
 		
-		if (!Series.attached() && !Os.attachCwd( "Link" ))
+		if (!Overlay.attached() && !Overlay.attachCwd( "Link" ))
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
 		else {
 			//Audit.allOn();

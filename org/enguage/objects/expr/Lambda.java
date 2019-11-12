@@ -4,8 +4,8 @@ import java.util.ListIterator;
 
 import org.enguage.Enguage;
 import org.enguage.objects.Variable;
+import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
-import org.enguage.objects.space.overlays.Os;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -73,8 +73,8 @@ public class Lambda {
 		audit.out();
 	}
 	static public void main( String args[] ) {
-		Os.Set( Os.Get());
-		if (!Os.attachCwd( "Lambda" ))
+		Overlay.Set( Overlay.Get());
+		if (!Overlay.attachCwd( "Lambda" ))
 			audit.ERROR( "Ouch!" );
 		else {
 			Variable.set( "x",   "1" );

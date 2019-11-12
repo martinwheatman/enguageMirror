@@ -10,7 +10,7 @@ import org.enguage.interp.pattern.Patternette;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Variable;
 import org.enguage.objects.list.Item;
-import org.enguage.objects.space.overlays.Series;
+import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Net;
@@ -193,12 +193,12 @@ public class Engine {
 			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
 				Redo.undoEnabledIs( false );
 			else if (cmds.size() == 0 && Redo.undoIsEnabled()) {
-				if (Series.number() < 2) { // if there isn't an overlay to be removed
-					audit.debug( "overlay count( "+ Series.number() +" ) < 2" ); // audit
+				if (Overlay.number() < 2) { // if there isn't an overlay to be removed
+					audit.debug( "overlay count( "+ Overlay.number() +" ) < 2" ); // audit
 					r.answer( Reply.noStr() );
 				} else {
 					audit.debug("ok - restarting transaction");
-					Series.reStartTxn();
+					Overlay.reStartTxn();
 				}
 			} else if (!Redo.undoIsEnabled())
 				r.format( Reply.dnu() );

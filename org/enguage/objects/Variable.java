@@ -8,9 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.interp.pattern.Pattern;
+import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
-import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
@@ -27,7 +26,7 @@ public class Variable {
 	static private       Audit audit = new Audit( "Variable" );
 	
 	private static TreeMap<String,String> cache = encache();
-	private static TreeMap<String,String> encache() { return encache( Os.Get() );}
+	private static TreeMap<String,String> encache() { return encache( Overlay.Get() );}
 	private static TreeMap<String,String> encache( Overlay o ) {
 		//audit.in( "encache", Ospace.location());
 		cache = new TreeMap<String,String>();
@@ -218,7 +217,7 @@ public class Variable {
 			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
 	public static void main( String args[] ) {
-		if (!Os.attachCwd( NAME )) {
+		if (!Overlay.attachCwd( NAME )) {
 			audit.ERROR( "ouch: in Variable.java" );
 		} else {
 			Audit.allOn();

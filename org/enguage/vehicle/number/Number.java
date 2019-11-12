@@ -3,7 +3,7 @@ package org.enguage.vehicle.number;
 import java.util.ListIterator;
 
 import org.enguage.objects.expr.Function;
-import org.enguage.objects.space.overlays.Os;
+import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -553,8 +553,8 @@ public class Number {
 		combineTest( "-~3", "-~3", "about 6 less", "-~6" );
 		Audit.decr();
 		
-		Os.Set( Os.Get());
-		if (!Os.attachCwd( "Number" ))
+		Overlay.Set( Overlay.Get());
+		if (!Overlay.attachCwd( "Number" ))
 			audit.ERROR( "Ouch!" );
 		else {
 			/* factorial( n ): n times the factorial of n minus 1.

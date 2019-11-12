@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.GregorianCalendar;
 
+import org.enguage.objects.space.Overlay;
+
 public class Audit {
 	private              String     name = "";
 	static private       Strings   stack = new Strings( "zeroStack" );
@@ -159,6 +161,7 @@ public class Audit {
 		log( underline );
 	}
 
+	public String toString() { return Overlay.series();}
 	// -- test code...
 	public static void main( String[] agrs ) {
 		Audit audit = new Audit( "Audit" ); // <= needs setting as $DEBUG to test

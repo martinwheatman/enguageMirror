@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import com.yagadi.Assets;
 
 import org.enguage.interp.intention.Redo;
-import org.enguage.objects.space.overlays.Os;
+import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -94,7 +94,7 @@ public class Autoload {
 		Audit.allTracing = true;
 		if (!Fs.location( Assets.LOCATION ))
 			audit.FATAL( Assets.LOCATION +": not found" );
-		else if (!Os.attachCwd( "autoload" ))
+		else if (!Overlay.attachCwd( "autoload" ))
 			audit.ERROR( " can't auto attach" );
 		else {
 			//Concepts.names();

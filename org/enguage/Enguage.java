@@ -6,9 +6,7 @@ import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.interp.repertoire.Synonyms;
-import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
-import org.enguage.objects.space.overlays.Series;
+import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -28,8 +26,8 @@ public class Enguage {
 	static private       int            level = 0; // TODO: 0 = every level, -n = ignore level n
 	
 	static private Audit     audit = new Audit( "Enguage" );
-	static public  Overlay       o = Os.Get();
-	static public  boolean attach( String userId ) { return Series.attached() || Os.attachCwd( userId );}
+	static public  Overlay       o = Overlay.Get();
+	static public  boolean attach( String userId ) { return Overlay.attached() || Overlay.attachCwd( userId );}
 
 	static private Shell   shell   = new Shell( "Enguage" );
 	static public  Shell   shell() {return shell;}
@@ -71,7 +69,7 @@ public class Enguage {
 				Where.clearLocation();
 				
 				if (Reply.isUnderstood()) // from previous interpretation!
-					Series.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
+					Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 				
 				Reply r = Repertoire.mediate( new Utterance( utterance ));
 		
@@ -79,7 +77,7 @@ public class Enguage {
 				Utterance.previous( utterance );
 		
 				if (Reply.isUnderstood()) {
-					Series.finishTxn( Redo.undoIsEnabled() );
+					Overlay.finishTxn( Redo.undoIsEnabled() );
 					Redo.disambOff();
 				} else {
 					// really lost track?

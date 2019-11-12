@@ -11,8 +11,6 @@ import org.enguage.objects.expr.Function;
 import org.enguage.objects.list.Item;
 import org.enguage.objects.list.List;
 import org.enguage.objects.list.Transitive;
-import org.enguage.objects.space.overlays.Os;
-import org.enguage.objects.space.overlays.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
@@ -179,6 +177,6 @@ public class Sofa extends Shell {
 		} else {
 			Audit.allOn();
 			Audit.traceAll( true );
-			Audit.log( "Sofa: Ovl is: "+ Os.Get().toString());
+			Audit.log( "Sofa: Ovl is: "+ Overlay.Get().toString());
 			cmd.run();
 }	}	}
