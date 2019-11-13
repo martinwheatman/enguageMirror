@@ -48,7 +48,7 @@ public class Overlay {
 	
 	private Path p;
 	String  path() { return p.toString(); }
-	private boolean path( String dest ) {
+	public boolean path( String dest ) {
 		boolean rc = true;
 		if (null != dest) {
 			String src = p.pwd();    // remember where we are
@@ -371,7 +371,7 @@ public class Overlay {
 	static public Strings interpret( Strings argv ) {
 		String rc = Shell.FAIL;
 		int argc = argv.size();
-		Overlay o = Get();
+		//Overlay o = Get();
 		
 		Strings values = argv.copyAfter( 0 );
 		String  value  = values.toString( Strings.PATH ),
@@ -414,21 +414,21 @@ public class Overlay {
 			String fname = argv.remove( argv.size()-1 );
 			rc = new Value( argv.toString( Strings.CONCAT ), fname ).ignore() ? Shell.SUCCESS : Shell.FAIL;
 		
-		} else if ((1 == argc) && cmd.equals( "up" )) {
-			if ( o.path( ".." ))
-				rc = Shell.SUCCESS;
-			else
-				audit.debug( cmd +": Cannot cd to .." );
-				
-		} else if ((2 == argc) && cmd.equals( "cd" )) {
-			if ( o.path( argv.get( 1 )))
-				rc = Shell.SUCCESS;
-			else
-				Audit.log( cmd +": Cannot cd to "+ argv.get( 1 ));
-		
-		} else if (cmd.equals( "pwd" ) && (1 == argc)) {
-			rc = Shell.SUCCESS;
-			Audit.log( o.path());
+//		} else if ((1 == argc) && cmd.equals( "up" )) {
+//			if ( o.path( ".." ))
+//				rc = Shell.SUCCESS;
+//			else
+//				audit.debug( cmd +": Cannot cd to .." );
+//				
+//		} else if ((2 == argc) && cmd.equals( "cd" )) {
+//			if ( o.path( argv.get( 1 )))
+//				rc = Shell.SUCCESS;
+//			else
+//				Audit.log( cmd +": Cannot cd to "+ argv.get( 1 ));
+//		
+//		} else if (cmd.equals( "pwd" ) && (1 == argc)) {
+//			rc = Shell.SUCCESS;
+//			Audit.log( o.path());
 
 		} else if (cmd.equals( "write" )) {
 			rc = Shell.SUCCESS;
@@ -444,10 +444,10 @@ public class Overlay {
 			rc = Shell.SUCCESS;
 			Audit.log( "File found? is '"+ fname( argv.get( 1 ), MODE_READ )+"'" );
 			
-		} else if (cmd.equals( "ls" )) {
-			rc = Shell.SUCCESS;
-			for( String s : o.list( argc==2 ? argv.get( 1 ) : "." ))
-				rc += "\n" + s;
+//		} else if (cmd.equals( "ls" )) {
+//			rc = Shell.SUCCESS;
+//			for( String s : o.list( argc==2 ? argv.get( 1 ) : "." ))
+//				rc += "\n" + s;
 			
 		} else
 			audit.debug( "Usage: attach <series>\n"
