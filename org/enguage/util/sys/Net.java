@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 
+import org.enguage.Enguage;
 import org.enguage.interp.Context;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
@@ -20,9 +22,15 @@ public class Net {
 
 	static private Audit audit = new Audit( "net" );
 	
+	static private boolean httpRequest = false;
+	
 	static private boolean serverOn = false;
 	static public  boolean serverOn() { return serverOn; }
 	
+	static public void httpd( String port ) {
+		httpRequest = true;
+		server( port, "" );
+	}
 	static public void server( String port ) { server( port, "" );}
 	static public void server( String port, String prefix ) {
 		ServerSocket server = null;
@@ -37,9 +45,50 @@ public class Net {
 				DataOutputStream out = null;
 				
 				try {
+					String reply;
 					in  = new BufferedReader( new InputStreamReader( connection.getInputStream()));
 					out = new DataOutputStream( connection.getOutputStream());
-					out.writeBytes( prefix + Repertoire.mediate( new Utterance( new Strings( in.readLine() ))) + "\n" );
+					if (httpRequest) {
+						// parse request
+						String request = in.readLine();   // "GET /i need a coffee HTTP/2.0"
+						String[] reqs = request.split("/"); // ["GET ", ...
+						reqs = reqs[ 1 ].split(" ");          // ["i", "need", "coffee", "HTTP"]
+						Strings utterances = new Strings( reqs ); // ("i", "need", "coffee", "HTTP")
+						utterances.remove( utterances.size() - 1 );   // remove "HTTP"
+						utterances = new Strings( URLDecoder.decode( utterances.toString(), "UTF-8" ));
+						
+						// parse header for cookies...
+						boolean found = false;
+						String enguid = "";
+						String setCookie = "";
+						String cookiesString = in.readLine();
+						while (!(found = cookiesString.startsWith( "Cookie:" ))) {
+							cookiesString = in.readLine();
+							if (cookiesString.equals( "" ))
+								break;
+						}
+						if (found) {
+							// parse cookies for enguid
+							found = false;
+							String[] cookies = cookiesString.split(";");
+							for (String cookie : cookies)
+								if (cookie.startsWith( "enguid=" )) {
+									enguid = cookie.split( "=" )[ 1 ];
+									found = true;
+									break;
+						}		}
+						if (!found) {
+							enguid    = "000000000001";
+							setCookie = "Set-cookie: enguid=\""+ enguid +"\"\n";
+						}
+						prefix = "HTTP/2.0\nContent-type: text/html\n"+ setCookie +"\n";
+						reply = Enguage.mediate( enguid,  utterances ).toString();
+					} else
+						reply = Repertoire.mediate( new Utterance( new Strings( in.readLine() ))).toString();
+					
+					Audit.LOG( "Relying with: "+ reply );
+					out.writeBytes( prefix + reply + "\n" );
+					
 				} catch (Exception e) {
 					audit.ERROR( "Error in child socket");
 				} finally {
