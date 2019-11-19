@@ -24,7 +24,6 @@ public class Fs {
 	static private String rootDir = ".";
 	static public  String rootDir() { return rootDir; }
 	static public  void   rootDir( String name ) {
-		Audit.LOG( ">>> FS root set to "+ name );
 		new File( rootDir = name + File.separator ).mkdirs();
 	}
 

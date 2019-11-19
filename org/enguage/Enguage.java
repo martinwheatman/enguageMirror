@@ -784,19 +784,16 @@ public class Enguage {
 			test( "simon says put your hands on your head" ); //, "ok, success" );
 		}
 		if (runThisTest( "Polymorphism - setup new idea and save" )) { // code generation features
-			test( "want is like need",   "ok, want is like need" );
-			//Audit.allOn();
-			Synonyms.interpret( new Strings( "save" ));
 			
-			audit.subtl( "unset synonyms" );
-			test( "want is unlike need",   "ok, want is unlike need" );
-			
-			audit.title( "Recall values and use" );
-			Synonyms.interpret( new Strings( "recall" ));
-			test( "what do i want",      "you don't want anything" );
-			test( "i want another pony", "ok, you want another pony" );
-			test( "what do i want",      "you want another pony" );
 			clearTheNeedsList( "i don't want anything" );
+			test( "want is unlike need",   "ok, want is unlike need", "i know" );
+			test( "what do i want",        "i don't understand" );
+			
+			test( "want is like need",     "ok, want is like need" );
+			
+			test( "what do i want",      "you want another pony", "you don't want anything" );
+			test( "i want another pony", "i know", "ok, you want another pony" );
+			test( "what do i want",      "you want another pony" );
 		}
 		if (runThisTest( "On-the-fly Langauge Learning" )) { // 
 			/* TODO: create filename from pattern:
