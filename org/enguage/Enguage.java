@@ -5,7 +5,6 @@ import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
-import org.enguage.interp.repertoire.Synonyms;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -177,7 +176,6 @@ public class Enguage {
 		//if (runThisTest( level, ++testNo )) {
 		//	mediate( "", "" );
 		//}
-		test( "do i need", "i don't understand" ); // regression test: "do i need" != >do i need OBJECT<
 		
 		if (runThisTest( "WSC - advocacy and fear" )) {
 			// TODO: WSC - alternative states tests
@@ -341,6 +339,11 @@ public class Enguage {
 			
 		}
 		if (runThisTest( "The Non-Computable concept of NEED" )) { // 
+			
+			// regression test: "do i need" != >do i need OBJECT<
+			// blank var at end of utterance
+			test( "do i need", "i don't understand" );
+			
 			clearTheNeedsList();
 			test( "what do i need",	           "you don't need anything" );
 			test( "i need 2 cups of coffee and a biscuit",
@@ -786,10 +789,10 @@ public class Enguage {
 		if (runThisTest( "Polymorphism - setup new idea and save" )) { // code generation features
 			
 			clearTheNeedsList( "i don't want anything" );
-			test( "want is unlike need",   "ok, want is unlike need", "i know" );
-			test( "what do i want",        "i don't understand" );
+			test( "want is unlike need", "ok, want is unlike need", "i know" );
+			test( "what do i want",      "i don't understand" );
 			
-			test( "want is like need",     "ok, want is like need" );
+			test( "want is like need",   "ok, want is like need" );
 			
 			test( "what do i want",      "you want another pony", "you don't want anything" );
 			test( "i want another pony", "i know", "ok, you want another pony" );
