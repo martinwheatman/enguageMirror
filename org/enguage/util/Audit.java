@@ -124,24 +124,22 @@ public class Audit {
     	indent.decr();
 		log( "OUT "+ name
 				+ (stack.size()>1?"."+ stack.get( 0 ) +"()" : "")
-				+ (result==null ? "" : " => "+ result)
+				+ (result==null || result.contentEquals("") ? "" : " => "+ result)
 			);
 		if (stack.size() > 1) stack.remove( 0 );
 		return result;
     }
-	public String out( String result ) {
-		return (tracing != allTracing) ? OUT( result ) : result;	
-	}
+	public String out( String result ) {return (tracing != allTracing) ? OUT( result ) : result;}
 	public void    out() { out( (String)null ); }
 	public Strings out( Strings s ) { out( s!=null?"["+s.toString(Strings.DQCSV)+"]":"<null>"); return s; }
 	public boolean out( boolean b ) { out( Boolean.toString( b )); return b; }
-	public boolean OUT( boolean b ) { out( Boolean.toString( b )); return b; }
 	public int     out( int     n ) { out( Integer.toString( n )); return n; }
 	public Float   out( Float   f ) { out( Float.toString(   f )); return f; }
 	public Float   OUT( Float   f ) { OUT( Float.toString(   f )); return f; }
 	public long    out( long    l ) { out( Long.toString(    l )); return l; }
 	public Object  out( Object  o ) { out( o==null ? "null" : o.toString()); return o;}
 	public Object  OUT( Object  o ) { OUT( o==null ? "null" : o.toString()); return o;}
+	public boolean OUT( boolean b ) { OUT( Boolean.toString( b )); return b; }
 	
 	// === allOn - tracing AND debug
 	// allOn vs. auditOn - turning auditOn when allOn, suppresses for this level
