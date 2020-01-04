@@ -19,9 +19,10 @@ public class Path {
 	
 	public static String absolute( String pwd, String vfname ) {
 		String savedName = vfname;
-		if (!new File( vfname ).isAbsolute()) vfname = pwd + File.separator + vfname;
 		try {
-			vfname = new File( vfname ).getCanonicalPath();
+			vfname = new File(
+					vfname.startsWith( File.separator ) ? vfname : pwd + File.separator + vfname
+					).getCanonicalPath();
 		} catch( IOException e) {
 			System.err.println( "getCanonicalPath("+savedName +" => "+ vfname +") failed:"+ e );
 		}
