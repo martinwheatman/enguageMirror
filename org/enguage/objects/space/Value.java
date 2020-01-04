@@ -33,12 +33,7 @@ public class Value {
 	// TODO: cache items[]? Lock file - this code is not suitable for IPC? Exists in constructor?
 	// set() methods return change in number of items
 	public boolean exists() {        return Fs.exists(         name( ent, attr, Overlay.MODE_READ )); }
-	public boolean set( String val ){
-		audit.in( "set", "val='"+ val +"' ("+ name( ent, attr, Overlay.MODE_WRITE ) +")" );
-		boolean rc = Fs.stringToFile(   name( ent, attr, Overlay.MODE_WRITE ), val );
-		return (boolean) audit.out( rc );
-		
-	}
+	public boolean set( String val ){return Fs.stringToFile(   name( ent, attr, Overlay.MODE_WRITE ), val );}
 	public void    unset() {                Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
 	public String  getAsString(){    return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ )); }
 	
