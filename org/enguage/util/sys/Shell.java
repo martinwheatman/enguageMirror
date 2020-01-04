@@ -68,9 +68,10 @@ public class Shell {
 	public  String name() { return prog; }
 	public  Shell  name( String nm ) { prog = nm; return this; }
 	
-	private String who, dates;
-	public  String copyright() { return prog +" (c) "+ who +", "+ dates; }
+	private String who, dates, copyright;
+	public  String copyright() { return prog +" (c) "+ (copyright!=null? copyright : who +", "+ dates); }
 	public  Shell  copyright( String wh, String dts ) { who = wh; dates = dts; return this; }
+	public  Shell  copyright( String statement ) { copyright = statement; return this; }
 
 	static private long then = new GregorianCalendar().getTimeInMillis();
 	static public  long interval() {
@@ -80,6 +81,9 @@ public class Shell {
 		return rc;
 	}
 	
+	public Shell( String name, String copyright ) {
+		name( name ).prompt( "> " ).copyright( copyright );
+	}
 	public Shell( String name ) {
 		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-19" );
 	}
