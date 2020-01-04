@@ -74,6 +74,7 @@ public class Overlay {
 	static public  void   user( String nm ) { new File( root() + (user = nm) ).mkdirs(); }
 	static private String user() { return user==null ? "" : user + File.separator; }
 
+	// e.g. fsdir/os/uid/
 	static public  String home() { return root() + user(); } // should always end in "/"
 	
 	// --- Series management
@@ -133,6 +134,7 @@ public class Overlay {
 			return nm;
 		else if (vn > topVn) // limit to top version no.
 			vn = topVn;
+		if (length > nm.length()) return nm;
 		return	(0 > vn) ? nm : 
 				(nth( vn ) + File.separator
 						+ nm.substring( length /*+1*/ ));
@@ -154,12 +156,29 @@ public class Overlay {
 				return topCandidate( vfname ); // look no further - return top (non-existing) file	
 		return null;
 	}
-	boolean isOverlaid( String vfname ) {
-		return vfname != null // sanity
-		&& length <= vfname.length()
-		&& vfname.substring( 0, length ).equals( Link.content( home() + series )); // NAME="xyz/abc" base="xyz" => true
+	private boolean isOverlaid( String vfname ) {
+		if (vfname == null) return false;
+		if (vfname.startsWith( home() )) return false;
+		if (!vfname.startsWith( "/" )) return true; // assumes were at head of overlaid fs!
+		return vfname.startsWith( Link.content( home() + series )); // NAME="xyz/abc" base="xyz" => true
 	}
 	
+	//  virtual to "real" filename mapping
+	// /home/martin/person/martin/name.txt -> /home/martin/sofa/sofa.0/martin/name.txt
+	// if write - top overlay NAME is returned, simple.
+	// if read  - overlay space is searched for an existing file.
+	//          - if not found, or if the file has been deleted, the (non-existing) write filename is returned
+	//          - if rename found (e.g. old^new), change return the old NAME.
+	static public String fname( String vfname, int modeChs ) {
+		String fsname = vfname; // pass through!
+		if (o.isOverlaid( vfname ))
+			switch (modeChs) {
+				case MODE_READ   : fsname = o.find( vfname ); break;
+				case MODE_DELETE : fsname = o.delCandidate( vfname, number() - 1 ); break;
+				default          : fsname = o.topCandidate( vfname ); // MODE_WRITE | _APPEND
+			}
+		return fsname;
+	}
 	
 	static public boolean isDeleteName( String name ) {
 		return new File( name ).getName().charAt( 0 ) == '!';
@@ -347,25 +366,6 @@ public class Overlay {
 		audit.out();
 	}
 
-	//  virtual to "real" filename mapping
-	// /home/martin/person/martin/name.txt -> /home/martin/sofa/sofa.0/martin/name.txt
-	// if write - top overlay NAME is returned, simple.
-	// if read  - overlay space is searched for an existing file.
-	//          - if not found, or if the file has been deleted, the (non-existing) write filename is returned
-	//          - if rename found (e.g. old^new), change return the old NAME.
-	static public String fname( String vfname, int modeChs ) {
-		String fsname = vfname; // pass through!
-		if (vfname != null) {
-			//Audit.LOG( "o.path:"+ o.path() );
-			if (o.isOverlaid( vfname = Path.absolute( o.path(), vfname ) ))
-				switch (modeChs) {
-					case MODE_READ   : fsname = o.find( vfname ); break;
-					case MODE_DELETE : fsname = o.delCandidate( vfname, number() - 1 ); break;
-					default          : fsname = o.topCandidate( vfname ); // MODE_WRITE | _APPEND
-		}		}
-		return fsname;
-	}
-	
 	// --- Test code...
 	
 	static public Strings interpret( Strings argv ) {

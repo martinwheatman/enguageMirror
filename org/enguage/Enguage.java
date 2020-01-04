@@ -1,5 +1,7 @@
 package org.enguage;
 
+import java.io.File;
+
 import org.enguage.interp.intention.Redo;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Autoload;
@@ -19,6 +21,8 @@ import org.enguage.vehicle.where.Where;
 import com.yagadi.Assets;
 
 public class Enguage {
+	
+	static private String copyright = "Martin Wheatman, 2001-4, 2011-20";
 
 	static public  final String           DNU = "DNU";
 	static private final boolean startupDebug = false;
@@ -28,7 +32,7 @@ public class Enguage {
 	static public  Overlay       o = Overlay.Get();
 	static public  boolean attach( String userId ) { return Overlay.attached() || Overlay.attachCwd( userId );}
 
-	static private Shell   shell   = new Shell( "Enguage" );
+	static private Shell   shell   = new Shell( "Enguage", copyright );
 	static public  Shell   shell() {return shell;}
 	
 	static private Config  config  = new Config();
@@ -191,7 +195,6 @@ public class Enguage {
 			//         I am not fat. Am i thin. I don't know
 			audit.subtl( "Contradiction test... can't swap between states directly");
 			test( "demonstrators fear violence",        "ok, demonstrators fear violence" );
-
 			test( "demonstrators advocate violence",    "no, demonstrators fear violence" );
 			test( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
 			test( "demonstrators advocate violence",    "ok, demonstrators advocate violence" );
@@ -374,7 +377,9 @@ public class Enguage {
 			audit.title( "Correction" );
 			test( "i need another coffee", "ok, you need another coffee" );
 			test( "no i need another 3",   "ok, you need another 3 coffees" );
+			//Audit.allOn();
 			test( "what do i need",        "you need 6 coffees, and a cup of tea" );
+			//System.exit( 0 );
 			test( "prime the answer yes",  "ok, the next answer will be yes" );
 			test( "i don't need anything", "ok, you don't need anything" );
 			
@@ -935,33 +940,37 @@ public class Enguage {
 		String       cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String   location = Assets.LOCATION;
 
-		Enguage.init( "fsdir", null ); // null cos we're not on Android
-		Enguage.config( Fs.stringFromFile( location + "/config.xml" ));
-
-		boolean serverTest = false;
-		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
-			serverTest = true;
-			cmds.remove(0);
-			cmd = cmds.size()==0 ? "":cmds.remove(0);
-			portNumber( cmds.remove( 0 ));
-			cmd = cmds.size()==0 ? "":cmds.remove(0);
-		}
-				
-		if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
-			Enguage.shell.aloudIs( true ).run();
-		
-		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
-			Net.server( cmds.remove( 0 ));
-		
-		else if (cmds.size()>0 && (cmd.equals( "-h" ) || cmd.equals( "--http" )))
-			Net.httpd( cmd.length() == 0 ? "8080" : cmds.remove( 0 ));
-		
-		else if (cmd.equals( "-t" ) || cmd.equals( "--test" )) {
+//		if (!new File( "fsdir" ).delete())
+//			audit.FATAL( "failed to remove old database - fsdir" );
+//		else
+		{
+			Enguage.init( "fsdir", null ); // null cos we're not on Android
+			Enguage.config( Fs.stringFromFile( location + "/config.xml" ));
+	
+			boolean serverTest = false;
+			if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
+				serverTest = true;
+				cmds.remove(0);
+				cmd = cmds.size()==0 ? "":cmds.remove(0);
+				portNumber( cmds.remove( 0 ));
+				cmd = cmds.size()==0 ? "":cmds.remove(0);
+			}
+					
+			if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
+				Enguage.shell.aloudIs( true ).run();
 			
-			try {
-				level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
-				sanityCheck( serverTest, location );
-			} catch (NumberFormatException nfe) {usage();}
-		
-		} else usage();
-}	}
+			else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
+				Net.server( cmds.remove( 0 ));
+			
+			else if (cmds.size()>0 && (cmd.equals( "-h" ) || cmd.equals( "--http" )))
+				Net.httpd( cmd.length() == 0 ? "8080" : cmds.remove( 0 ));
+			
+			else if (cmd.equals( "-t" ) || cmd.equals( "--test" )) {
+				
+				try {
+					level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
+					sanityCheck( serverTest, location );
+				} catch (NumberFormatException nfe) {usage();}
+			
+			} else usage();
+}	}	}
