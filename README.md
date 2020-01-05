@@ -21,8 +21,6 @@ where: -d <configDir>
 
 
 <hr/>
-<h3>Known Bug</h3>
-<p>Enguage is under a process of refactoring and a bug has crept in whereby the unit test doesn't work first time around. Just re-run it, it seems to work on subsequent runs! Will be fixed, asap!</p>
 <h2>Notes</h2>
 <p>Enguage is a natural language engine: a virtual machine for utterances. It uses human social interaction as a model for human computer interaction by defining vocal norms as mappings between utterances  and their replies. This is different to the simple command model, developed from internet search, used by popular voice driven devices. This is novel because mappings—including any intermediate interaction with machine state—are determined by further utterances: there’s no pesky JavaScript or corporate websites to get in the way! Furthermore, mappings are also created by utterance: there’s no central website on which to create your skills.</p>
 <p>This notes are are a little out of date now, originally created for the JAR only repo. 
