@@ -134,10 +134,7 @@ public class Overlay {
 			return nm;
 		else if (vn > topVn) // limit to top version no.
 			vn = topVn;
-		if (length > nm.length()) return nm;
-		return	(0 > vn) ? nm : 
-				(nth( vn ) + File.separator
-						+ nm.substring( length /*+1*/ ));
+		return	(0 > vn) ? nm : (nth( vn ) + File.separator + nm);
 	}
 	private String topCandidate( String name ) {
 		return nthCandidate( name, number()-1);
@@ -154,7 +151,7 @@ public class Overlay {
 				return fsname;
 			else if (Fs.exists( delCandidate( vfname, vn ) )) 
 				return topCandidate( vfname ); // look no further - return top (non-existing) file	
-		return null;
+		return vfname;
 	}
 	private boolean isOverlaid( String vfname ) {
 		if (vfname == null) return false;
@@ -171,7 +168,7 @@ public class Overlay {
 	//          - if rename found (e.g. old^new), change return the old NAME.
 	static public String fname( String vfname, int modeChs ) {
 		String fsname = vfname; // pass through!
-		if (o.isOverlaid( vfname ))
+		if (attached && o.isOverlaid( vfname ))
 			switch (modeChs) {
 				case MODE_READ   : fsname = o.find( vfname ); break;
 				case MODE_DELETE : fsname = o.delCandidate( vfname, number() - 1 ); break;
