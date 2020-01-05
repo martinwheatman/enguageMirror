@@ -77,7 +77,7 @@ public class Fs {
 		//audit.OUT( value );
 		return value;
 	}
-	static public String stringFromStream( InputStream is ) {
+	static private String stringFromStream( InputStream is ) {
 		//audit.in( "stringFromStream" );
 		String value = "";
 		try {
