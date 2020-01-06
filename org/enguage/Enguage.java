@@ -1,7 +1,5 @@
 package org.enguage;
 
-import java.io.File;
-
 import org.enguage.interp.intention.Redo;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Autoload;
@@ -30,7 +28,6 @@ public class Enguage {
 	
 	static private Audit     audit = new Audit( "Enguage" );
 	static public  Overlay       o = Overlay.Get();
-	static public  boolean attach( String userId ) { return Overlay.attached() || Overlay.attachCwd( userId );}
 
 	static private Shell   shell   = new Shell( "Enguage", copyright );
 	static public  Shell   shell() {return shell;}
@@ -56,7 +53,7 @@ public class Enguage {
 		Strings reply;
 		audit.in( "mediate", utterance.toString() );
 		
-		if (!Enguage.attach( uid ))
+		if (!Overlay.attachCwd( uid ))
 			
 			audit.ERROR( 
 					"Ouch! >>>>>>>> "
@@ -98,6 +95,8 @@ public class Enguage {
 				Reply.say( null );
 			}
 			if (Net.serverOn()) Audit.log( "Server replied: "+ reply );
+			
+			Overlay.detach();
 		}
 		return audit.out( reply );
 	}

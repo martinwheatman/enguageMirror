@@ -159,7 +159,7 @@ public class Audit {
 		log( underline );
 	}
 
-	public String toString() { return Overlay.series();}
+	//public String toString() { return Overlay.series();}
 	// -- test code...
 	public static void main( String[] agrs ) {
 		Audit audit = new Audit( "Audit" ); // <= needs setting as $DEBUG to test

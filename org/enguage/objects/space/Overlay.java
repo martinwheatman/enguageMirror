@@ -78,7 +78,6 @@ public class Overlay {
 	static public  String home() { return root() + user(); } // should always end in "/"
 	
 	// --- Series management
-	
 	static private String series = DETACHED;
 	static private void   series( String nm ) { if (nm != null) series = nm; }
 	static public  String series() { return series; }
@@ -90,19 +89,16 @@ public class Overlay {
 	static public  int    number() { return number; } // initialised to 1, for 0th overlay
 	
 	static private String  nth( int vn ) { return home() + series +"."+ vn;}
-	static private int     length = 0; // length of overlaid root
 	
 	static public  void    detach() {
 		attached = false;
 		series( DETACHED );
 		number = 0;
-		length = 0;
 	}
 	
-	static public  boolean attach( String nm ) {
+	static private  void initSeries( String nm ) {
 		series( nm );
 		number = 0;
-		length = Link.content( home() + series ).length();
 		String candidates[] = new File( home() ).list();
 		if (candidates != null) for (String candidate : candidates) {
 			String[] cands = candidate.split("\\.");
@@ -111,20 +107,19 @@ public class Overlay {
 					Integer.parseInt( cands[ 1 ]);
 					number++;
 				} catch (Exception ex){}
-		}
-		attached = exists() || Link.fromString( home() + nm, System.getProperty( "user.dir" ));
-		return attached;
-	}
+	}	}
 	static public boolean attachCwd( String userId ) {
 		audit.in( "attachCwd", "userid="+userId );
 		root( "os" );
 		user( userId );
 		Set( Get()); // set singleton
-		String cwd = new File( System.getProperty( "user.dir" )).getName();
-		return audit.out( attach( cwd ));
+		String cwd = System.getProperty( "user.dir" );
+		initSeries( new File( cwd ).getName() );
+		attached = Link.fromString( home() + series(), cwd );
+		return audit.out( attached );
 	}
 
-	static public  boolean exists() { return attached() && Fs.exists( home()+ series + Link.EXT );}
+	static public  boolean exists() { return Fs.exists( home()+ series + Link.EXT );}
 	static public  void    append() { if (attached()) new File( nth( number++ )).mkdirs(); }
 	static public  boolean remove() { return number >= 0 && attached() && Fs.destroy( nth( --number ));}
 
@@ -377,7 +372,8 @@ public class Overlay {
 		if (cmd.equals("attach") && (2 >= argc)) {
 			//audit.debug( "enguage series existing="+ Boolean.valueOf( Series.existing( "enguage" )));
 			if (2 == argc) {
-				if (attach( argv.get( 1 )))
+				initSeries( argv.get( 1 ));
+				if (0 >= number)
 					audit.debug( "No such series "+ argv.get( 1 ));
 				else
 					rc = Shell.SUCCESS;
