@@ -10,7 +10,7 @@ On "what is the heading":
 	is heading set;
 	if not, reply "sorry, i don't know";
 	get the value of heading;
-	reply "the heading is ...".
+	reply "..., the heading is ...".
 	
 # Correction...
 On "correction the heading is PHRASE-X":

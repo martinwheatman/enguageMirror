@@ -1,9 +1,9 @@
 # I've hacked this together at 2:52pm 7th October...
      On "the eagle has landed", perform "list add _user needs apollo 11".
-Then on "the eagle has landed", reply "so you're talking about apollo 11".
+Then on "the eagle has landed", reply "so, you're talking about apollo 11".
 
      On "the eagle has landed", perform "list add _user needs to discover the author's name".
 Then on "the eagle has landed", reply "so, you're talking about the novel".
 
      On "the eagle has landed", perform "list add _user needs to note the eagle has landed".
-Then on "the eagle has landed", reply "are you an ornitholgist".
+Then on "the eagle has landed", reply "so, are you an ornithologist".

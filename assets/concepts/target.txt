@@ -17,7 +17,7 @@ On "target elevation PHRASE-X":
 
 On "what is the target elevation":
 	get the value of target_elevation;
-	reply "target elevation is ...".
+	reply "..., target elevation is ...".
 	
 # correction 
 On "correction target elevation is PHRASE-X":
@@ -50,7 +50,7 @@ On "target description PHRASE-X":
 
 On "what is the target description":
 	get the value of target_description;
-	reply "target description is ...".
+	reply "..., target description is ...".
 	
 # correction...
 On "correction target description is PHRASE-X":
@@ -83,7 +83,7 @@ On "target location PHRASE-X":
 
 On "what is the target location":
 	get the value of target_location;
-	reply "target location is ...".
+	reply "..., target location is ...".
 
 # Correction...
 On "correction target location is PHRASE-X":

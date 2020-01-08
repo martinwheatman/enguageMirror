@@ -32,9 +32,9 @@ On "X is a Y":
 
 On "is OBJECT a CLASS":
 	perform "an isa link from CLASS exists";
-	if not, reply "CLASS is not a class";
+	if not, reply "sorry, CLASS is not a class";
 	perform "entity OBJECT exists";
-	if not, reply "OBJECT does not exist"
+	if not, reply "sorry, OBJECT does not exist"
 	perform "link exists OBJECT instanceof CLASS";
 	reply "yes, OBJECT is an instance of a CLASS";
 	perform "link get OBJECT instanceof";
@@ -44,7 +44,7 @@ On "is OBJECT a CLASS":
 	
 On "is CLASS a class":
 	entity CLASS exists;
-	if not, reply "CLASS does not exist";
+	if not, reply "sorry, CLASS does not exist";
 	perform "link exists CLASS isa";
 	reply "yes, CLASS is a class";
 	then, reply "no, CLASS is not a class".

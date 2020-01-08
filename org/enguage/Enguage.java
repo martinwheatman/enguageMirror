@@ -197,7 +197,9 @@ public class Enguage {
 			test( "demonstrators advocate violence",    "no, demonstrators fear violence" );
 			test( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
 			test( "demonstrators advocate violence",    "ok, demonstrators advocate violence" );
+			Audit.allOn();
 			test( "demonstrators fear violence",        "no, demonstrators advocate violence" );
+			Audit.allOff();
 			test( "demonstrators don't advocate violence", 
 					 "ok, demonstrators don't advocate violence" );
 			// tidy up
@@ -881,8 +883,8 @@ public class Enguage {
 			
 //			mediate( "no friendlies",                "ok, no friendlies are present" );
 //			mediate( "where are friendlies",         "no friendlies are present" );
-			test( "what is the target elevation", "target elevation is 142 feet"     );
-			test( "where are friendlies",         "friendlies are 30 clicks east of target" );
+			test( "what is the target elevation", "142 feet, target elevation is 142 feet"     );
+			test( "where are friendlies",         "30 clicks east of target, friendlies are 30 clicks east of target" );
 		}
 		if (runThisTest( "Light bins" )) {
 			test( "there are 6 light bins",        "ok, there are 6 light bins" );
