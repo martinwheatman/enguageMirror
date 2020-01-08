@@ -72,10 +72,10 @@ public class Overlay {
 	
 	static private String user = null;
 	static public  void   user( String nm ) { new File( root() + (user = nm) ).mkdirs(); }
-	static private String user() { return user==null ? "" : user + File.separator; }
+	static private String user() { return user==null ? "" : user; }
 
 	// e.g. fsdir/os/uid/
-	static public  String home() { return root() + user(); } // should always end in "/"
+	static public  String home() { return root() + user() + File.separator; } // should always end in "/"
 	
 	// --- Series management
 	static private String series = DETACHED;

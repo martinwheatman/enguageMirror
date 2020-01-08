@@ -197,9 +197,7 @@ public class Enguage {
 			test( "demonstrators advocate violence",    "no, demonstrators fear violence" );
 			test( "demonstrators do not fear violence", "ok, demonstrators don't fear violence" );
 			test( "demonstrators advocate violence",    "ok, demonstrators advocate violence" );
-			Audit.allOn();
 			test( "demonstrators fear violence",        "no, demonstrators advocate violence" );
-			Audit.allOff();
 			test( "demonstrators don't advocate violence", 
 					 "ok, demonstrators don't advocate violence" );
 			// tidy up
@@ -935,17 +933,19 @@ public class Enguage {
 	}
 	public static void main( String args[] ) {
 		
+		String fsys = ".os";
+		
 		Audit.startupDebug = startupDebug;
 		
 		Strings      cmds = new Strings( args );
 		String       cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String   location = Assets.LOCATION;
 
-//		if (!new File( "fsdir" ).delete())
-//			audit.FATAL( "failed to remove old database - fsdir" );
-//		else
-		{
-			Enguage.init( "fsdir", null ); // null cos we're not on Android
+		if (!Fs.destroy( fsys ))
+			audit.FATAL( "failed to remove old database - "+ fsys );
+		else {
+			// and recreate
+			Enguage.init( fsys, null ); // null 'cos we're not on Android
 			Enguage.config( Fs.stringFromFile( location + "/config.xml" ));
 	
 			boolean serverTest = false;

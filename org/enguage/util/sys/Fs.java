@@ -38,11 +38,15 @@ public class Fs {
 	//static public boolean exists( String NAME ) { return new File( NAME ).isDirectory() || new File( NAME ).isFile(); }
 	static public boolean exists( String fname ) { return fname != null && new File( fname ).exists(); } // ultimately less File() creation!
 	static public boolean destroy( String name ) {
+		boolean rc = true;
 		File dir = new File( name );
-		String[] list = dir.list();
-		if (list != null) for (int i=0; i<list.length; i++)
-			destroy( name+ File.separator +list[ i ]);
-		return dir.delete();
+		if (dir.exists()) {
+			String[] list = dir.list();
+			if (list != null) for (int i=0; i<list.length; i++)
+				destroy( name+ File.separator +list[ i ]);
+			rc = dir.delete();
+		}
+		return rc;
 	}
 	static public boolean stringToFile( String fname, String value ) {
 		boolean rc = true;
