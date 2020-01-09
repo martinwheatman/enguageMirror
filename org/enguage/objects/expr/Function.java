@@ -128,7 +128,7 @@ public class Function {
 	}
 	static public void main( String args[]) {
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attachCwd( NAME ))
+		if (!Overlay.attach( NAME ))
 			audit.ERROR( "Ouch!" );
 		else {
 			Reply.dnk( "I do not know\n" );

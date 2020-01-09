@@ -99,10 +99,10 @@ public class Link {
 	}
 	public static void main( String args[] ) {
 		
-		Fs.rootDir( null );
+		Fs.root( null );
 		Fs.location( "./src/assets" );
 		
-		if (!Overlay.attached() && !Overlay.attachCwd( "Link" ))
+		if (!Overlay.attached() && !Overlay.attach( "Link" ))
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
 		else {
 			//Audit.allOn();

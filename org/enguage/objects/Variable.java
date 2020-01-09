@@ -217,7 +217,7 @@ public class Variable {
 			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
 	public static void main( String args[] ) {
-		if (!Overlay.attachCwd( NAME )) {
+		if (!Overlay.attach( NAME )) {
 			audit.ERROR( "ouch: in Variable.java" );
 		} else {
 			Audit.allOn();

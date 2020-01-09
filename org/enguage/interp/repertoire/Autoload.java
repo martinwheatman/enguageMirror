@@ -94,7 +94,7 @@ public class Autoload {
 		Audit.allTracing = true;
 		if (!Fs.location( Assets.LOCATION ))
 			audit.FATAL( Assets.LOCATION +": not found" );
-		else if (!Overlay.attachCwd( "autoload" ))
+		else if (!Overlay.attach( "autoload" ))
 			audit.ERROR( " can't auto attach" );
 		else {
 			//Concepts.names();

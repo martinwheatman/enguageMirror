@@ -120,7 +120,7 @@ public class Where {
 		
 		// This should go into SofA
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attachCwd( NAME ))
+		if (!Overlay.attach( NAME ))
 			audit.ERROR( "Ouch!" );
 		else {
 			testDoLocators();

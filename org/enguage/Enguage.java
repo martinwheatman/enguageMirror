@@ -41,7 +41,7 @@ public class Enguage {
 	
 	
 	static public  void    init( String root, Object ctx ) {
-		Fs.rootDir( root );
+		Fs.root( root );
 		context( ctx );
 		com.yagadi.Assets.addConcepts();
 		Concepts.addFrom( Concepts.NAME );
@@ -53,7 +53,7 @@ public class Enguage {
 		Strings reply;
 		audit.in( "mediate", utterance.toString() );
 		
-		if (!Overlay.attachCwd( uid ))
+		if (!Overlay.attach( uid ))
 			
 			audit.ERROR( 
 					"Ouch! >>>>>>>> "

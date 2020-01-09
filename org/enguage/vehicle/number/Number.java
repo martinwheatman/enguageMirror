@@ -554,7 +554,7 @@ public class Number {
 		Audit.decr();
 		
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attachCwd( "Number" ))
+		if (!Overlay.attach( "Number" ))
 			audit.ERROR( "Ouch!" );
 		else {
 			/* factorial( n ): n times the factorial of n minus 1.

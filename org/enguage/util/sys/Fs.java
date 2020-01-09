@@ -21,10 +21,10 @@ public class Fs {
 		return s != null && new File( s ).exists();
 	}
 
-	static private String rootDir = ".";
-	static public  String rootDir() { return rootDir; }
-	static public  void   rootDir( String name ) {
-		new File( rootDir = name + File.separator ).mkdirs();
+	static private String root = ".";
+	static public  String root() { return root; }
+	static public  void   root( String name ) {
+		new File( root = name + File.separator ).mkdirs();
 	}
 
 	// Composite specific

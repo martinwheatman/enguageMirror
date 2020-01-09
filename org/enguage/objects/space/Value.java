@@ -137,7 +137,7 @@ public class Value {
 	}
  	public static void main( String args[] ) {
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attachCwd( NAME ))
+		if (!Overlay.attach( NAME ))
 			System.out.println( "Ouch!" );
 		else {
 			test( "set martin name martin j wheatman", "TRUE" );

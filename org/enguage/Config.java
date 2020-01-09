@@ -78,7 +78,7 @@ public class Config {
 		Audit.log(
 				welcome(
 					Enguage.shell().copyright() +
-					"\nEnguage main(): odb root is: " + Overlay.root()
+					"\nEnguage main(): odb root is: " + Fs.root()
 			)	);
 
 		Tag t = new Tag( content );
@@ -101,7 +101,7 @@ public class Config {
 	
 	public static void main( String args[]) {
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attachCwd( NAME ))
+		if (!Overlay.attach( NAME ))
 			audit.ERROR( "Ouch!" );
 		Config c = new Config();
 		c.load( "" );

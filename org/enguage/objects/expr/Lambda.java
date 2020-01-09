@@ -74,7 +74,7 @@ public class Lambda {
 	}
 	static public void main( String args[] ) {
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attachCwd( "Lambda" ))
+		if (!Overlay.attach( "Lambda" ))
 			audit.ERROR( "Ouch!" );
 		else {
 			Variable.set( "x",   "1" );

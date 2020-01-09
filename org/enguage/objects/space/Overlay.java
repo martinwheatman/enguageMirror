@@ -64,62 +64,50 @@ public class Overlay {
 		p = new Path( System.getProperty( "user.dir" ));
 	}
 	
-	// --- object space
-		
-	static private String root = "os";
-	static public  void   root( String nm ) { new File( Fs.rootDir() + (root = nm) ).mkdirs(); }
-	static public  String root() { return Fs.rootDir() + root + File.separator; }
-	
-	static private String user = null;
-	static public  void   user( String nm ) { new File( root() + (user = nm) ).mkdirs(); }
-	static private String user() { return user==null ? "" : user; }
-
-	// e.g. fsdir/os/uid/
-	static public  String home() { return root() + user() + File.separator; } // should always end in "/"
+	// --- object space - just write directly into Fs.root()
+	static private String root = "";
+	static public  void   root( String uid ) { new File( root = Fs.root()+ uid +File.separator ).mkdirs(); }
 	
 	// --- Series management
 	static private String series = DETACHED;
 	static private void   series( String nm ) { if (nm != null) series = nm; }
-	static public  String series() { return series; }
-	
-	static private boolean attached = false;
-	static public  boolean attached() { return attached;}
-	
-	static private int    number = 0; // series.0, series.1, ..., series.n => 1+n
-	static public  int    number() { return number; } // initialised to 1, for 0th overlay
-	
-	static private String  nth( int vn ) { return home() + series +"."+ vn;}
-	
-	static public  void    detach() {
-		attached = false;
-		series( DETACHED );
-		number = 0;
-	}
-	
-	static private  void initSeries( String nm ) {
-		series( nm );
-		number = 0;
-		String candidates[] = new File( home() ).list();
+	static private int    countSeries() {
+		int n = 0;
+		String candidates[] = new File( root ).list();
 		if (candidates != null) for (String candidate : candidates) {
 			String[] cands = candidate.split("\\.");
 			if (cands.length == 2 && cands[0].equals( series ))
 				try {	
 					Integer.parseInt( cands[ 1 ]);
-					number++;
+					n++;
 				} catch (Exception ex){}
-	}	}
-	static public boolean attachCwd( String userId ) {
-		audit.in( "attachCwd", "userid="+userId );
-		root( "os" );
-		user( userId );
+		}
+		return n;
+	}
+	
+	static private int     number = -1; // series.0, series.1, ..., series.n => 1+n
+	static public  int     number() { return number; } // initialised to 1, for 0th overlay
+	
+	static public  boolean attached() {return number >= 0;}
+	
+	static private String  nth( int vn ) { return root + series +"."+ vn;}
+	
+	static public boolean attach( String userId ) {
+		audit.in( "attach", "userid="+userId );
+		root( userId );
 		Set( Get()); // set singleton
 		String cwd = System.getProperty( "user.dir" );
-		initSeries( new File( cwd ).getName() );
-		attached = Link.fromString( home() + series(), cwd );
-		return audit.out( attached );
+		series( new File( cwd ).getName() );
+		number = countSeries();
+		Link.fromString( root + series, cwd );
+		return audit.out( number >= 0 );
+	}
+	static public  void    detach() {
+		series( DETACHED );
+		number = -1;
 	}
 
-	static public  boolean exists() { return Fs.exists( home()+ series + Link.EXT );}
+	static public  boolean exists() { return Fs.exists( root+ series + Link.EXT );}
 	static public  void    append() { if (attached()) new File( nth( number++ )).mkdirs(); }
 	static public  boolean remove() { return number >= 0 && attached() && Fs.destroy( nth( --number ));}
 
@@ -150,9 +138,9 @@ public class Overlay {
 	}
 	private boolean isOverlaid( String vfname ) {
 		if (vfname == null) return false;
-		if (vfname.startsWith( home() )) return false;
+		if (vfname.startsWith( root )) return false;
 		if (!vfname.startsWith( "/" )) return true; // assumes were at head of overlaid fs!
-		return vfname.startsWith( Link.content( home() + series )); // NAME="xyz/abc" base="xyz" => true
+		return vfname.startsWith( Link.content( root + series )); // NAME="xyz/abc" base="xyz" => true
 	}
 	
 	//  virtual to "real" filename mapping
@@ -163,7 +151,7 @@ public class Overlay {
 	//          - if rename found (e.g. old^new), change return the old NAME.
 	static public String fname( String vfname, int modeChs ) {
 		String fsname = vfname; // pass through!
-		if (attached && o.isOverlaid( vfname ))
+		if (attached() && o.isOverlaid( vfname ))
 			switch (modeChs) {
 				case MODE_READ   : fsname = o.find( vfname ); break;
 				case MODE_DELETE : fsname = o.delCandidate( vfname, number() - 1 ); break;
@@ -229,7 +217,7 @@ public class Overlay {
 		if (p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
 			int			n = -1,
 			        count = number();
-			String prefix = home() + File.separator + series() +".";
+			String prefix = root + series +".";
 			String suffix = absName.substring( p.pwd().length());
 			while (++n < count)
 				p.insertDir( prefix + n + suffix, "" );
@@ -372,7 +360,7 @@ public class Overlay {
 		if (cmd.equals("attach") && (2 >= argc)) {
 			//audit.debug( "enguage series existing="+ Boolean.valueOf( Series.existing( "enguage" )));
 			if (2 == argc) {
-				initSeries( argv.get( 1 ));
+				countSeries();
 				if (0 >= number)
 					audit.debug( "No such series "+ argv.get( 1 ));
 				else
@@ -458,11 +446,11 @@ public class Overlay {
 	
 	public static void main (String args []) {
 		Audit.allOn();
-		if (!attachCwd( "Overlay" ))
+		if (!attach( "Overlay" ))
 			Audit.log( "Ouch! Can't auto attach" );
 		else {
-			Audit.log( "osroot="+ home() );
-			Audit.log( "base="+ series()+", n=" + number() );
+			Audit.log( "osroot="+ root );
+			Audit.log( "base="+ series+", n=" + number() );
 			OverlayShell os = new OverlayShell( new Strings( args ));
 			os.run();
 }	}	}

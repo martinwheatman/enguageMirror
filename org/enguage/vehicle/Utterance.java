@@ -115,7 +115,7 @@ public class Utterance {
 	public static void main( String arg[]) {
 		
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attachCwd( "Utternace" ))
+		if (!Overlay.attach( "Utternace" ))
 			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
 
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");
