@@ -30,7 +30,7 @@ public class Function {
 	
 	static private Strings create( String name, Strings args ) {
 		// args=[ "x and y", "/", "body='x + y'" ]
-		audit.in( "name="+ name +", args="+ args );
+		audit.in( "create", "name="+ name +", args="+ args );
 		Strings params = new Strings();
 		ListIterator<String> si = args.listIterator();
 		
@@ -41,6 +41,7 @@ public class Function {
 			params.remove( params.size()-2 ); // remove 'and'
 		
 		new Function( name, params, Attribute.getAttribute( si ).value() );
+		
 		audit.out();
 		return Shell.Success;
 	}
