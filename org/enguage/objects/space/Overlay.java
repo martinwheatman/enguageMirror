@@ -17,29 +17,19 @@ class OverlayShell extends Shell {
 	public Strings interpret( Strings argv ) { return interpret( argv ); }
 }
 
-/* The analysis of this file is all off following the port to Android
- * OverlaySpace contains several series, each series contains several overlays.
- * TODO: sort this out! v1.1?
- */
-
-/* --- Q's:
- * could overlays be sparse (e.g. persons.0 persons.5? -- reuse link is in persons.0 could it be persons.<min>?
- */
-//-- BEGIN Overlay
 public class Overlay {
 	static       Audit   audit = new Audit( "Overlay" );
 	static public  final int        id = 188374473; //Strings.hash( "overlay" );
-	static private       boolean debug = false; //Enguage.runtimeDebugging || Enguage.startupDebugging;
-
-	static private final String   DELETE_CH = "!";  // RENAME_CH = "^";
-	static private final String    DETACHED = null;
 	
-	static public final String  DEFAULT = "Enguage"; //"sofa";
-	static public final int MODE_READ   = 0; // "r";
-	static public final int MODE_WRITE  = 1; // "w";
-	static public final int MODE_APPEND = 2; // "a";
-	static public final int MODE_DELETE = 3; // "d";
-	//static public final String MODE_RENAME = "m"; 
+	static private final String DELETE_CH = "!";  // RENAME_CH = "^";
+	static private final String  DETACHED = null;
+	
+	static public  final String   DEFAULT = "Enguage"; //"sofa";
+	static public  final int  MODE_READ   = 0; // "r";
+	static public  final int  MODE_WRITE  = 1; // "w";
+	static public  final int  MODE_APPEND = 2; // "a";
+	static public  final int  MODE_DELETE = 3; // "d";
+	//static public final int MODE_RENAME = 4; // "m"; 
 	
 	// manage singleton
 	static private Overlay o = null;
@@ -71,36 +61,33 @@ public class Overlay {
 	// --- Series management
 	static private String series = DETACHED;
 	static private void   series( String nm ) { if (nm != null) series = nm; }
-	static private int    countSeries() {
+	static private int    count() {
 		int n = 0;
 		String candidates[] = new File( root ).list();
-		if (candidates != null) for (String candidate : candidates) {
-			String[] cands = candidate.split("\\.");
-			if (cands.length == 2 && cands[0].equals( series ))
+		if (candidates == null)
+			n = -1;
+		else
+			for (String candidate : candidates)
 				try {	
-					Integer.parseInt( cands[ 1 ]);
+					Integer.parseInt( candidate );
 					n++;
 				} catch (Exception ex){}
-		}
 		return n;
 	}
 	
-	static private int     number = -1; // series.0, series.1, ..., series.n => 1+n
-	static public  int     number() { return number; } // initialised to 1, for 0th overlay
-	
+	static private int     number = -1; // 0, 1, ..., n => 1+n; -1 == detached
+	static public  int     number() { return number; }
 	static public  boolean attached() {return number >= 0;}
 	
-	static private String  nth( int vn ) { return root + series +"."+ vn;}
+	static private String  nth( int vn ) { return root + vn;}
 	
 	static public boolean attach( String userId ) {
-		audit.in( "attach", "userid="+userId );
 		root( userId );
 		Set( Get()); // set singleton
 		String cwd = System.getProperty( "user.dir" );
 		series( new File( cwd ).getName() );
-		number = countSeries();
 		Link.fromString( root + series, cwd );
-		return audit.out( number >= 0 );
+		return (number = count()) >= 0;
 	}
 	static public  void    detach() {
 		series( DETACHED );
@@ -128,7 +115,7 @@ public class Overlay {
 	}
 	private String find( String vfname ) {
 		String fsname = null;
-		int vn = number(); // number=3 ==> series.0,1,2, so initially decr vn
+		int vn = number(); // number=3 ==> 0,1,2, so initially decr vn
 		while (--vn >= 0)
 			if (Fs.exists( fsname = nthCandidate( vfname, vn ) ))
 				return fsname;
@@ -180,7 +167,6 @@ public class Overlay {
 	
 	public Strings list( String dname ) {
 		
-		if (debug) audit.in( "list", dname );
 		/* dname will usually be ".", or "1subDir"
 		 * 
 		 * vpwd is: /home/martin/src/files/
@@ -217,16 +203,14 @@ public class Overlay {
 		if (p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
 			int			n = -1,
 			        count = number();
-			String prefix = root + series +".";
 			String suffix = absName.substring( p.pwd().length());
 			while (++n < count)
-				p.insertDir( prefix + n + suffix, "" );
+				p.insertDir( root + n + suffix, "" );
 		}
 		Iterator<Pent> pi = p.iterator(); 
 		while ( pi.hasNext() )
 			rc.add( pi.next().name() );
 		
-		if (debug) audit.out( rc );
 		return rc;
 	}
 	
@@ -358,11 +342,11 @@ public class Overlay {
 				cmd    = argv.get( 0 );
 		
 		if (cmd.equals("attach") && (2 >= argc)) {
-			//audit.debug( "enguage series existing="+ Boolean.valueOf( Series.existing( "enguage" )));
+			//audit.debug( "enguage series existing="+ Boolean.valueOf( existing( "enguage" )));
 			if (2 == argc) {
-				countSeries();
+				count();
 				if (0 >= number)
-					audit.debug( "No such series "+ argv.get( 1 ));
+					audit.debug( "No such serie's "+ argv.get( 1 ));
 				else
 					rc = Shell.SUCCESS;
 			} else if ( attached())
@@ -375,9 +359,8 @@ public class Overlay {
 			rc = Shell.SUCCESS;
 			
 		} else if ((cmd.equals( "save" ) || cmd.equals( "create" )) && (1 == argc)) {
-			//audit.audit( "Creating "+ o.series());
 			rc = Shell.SUCCESS;
-			append();//o.create();
+			append();
 			
 		} else if (cmd.equals( "exists" ) && (2 == argc)) {
 			rc =  exists() ? "Yes":"No";
