@@ -176,10 +176,10 @@ public class Enguage {
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine  ruth" ));
 
-		//if (runThisTest( level, ++testNo )) {
-		//	mediate( "", "" );
-		//}
-		
+//		if (runThisTest( "title" )) {
+//			test( "", "" );
+//		}
+				
 		if (runThisTest( "WSC - advocacy and fear" )) {
 			// TODO: WSC - alternative states tests
 			// mut ex: dead is the opposite of alive, no?
