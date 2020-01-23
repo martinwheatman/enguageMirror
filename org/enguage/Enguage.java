@@ -180,6 +180,12 @@ public class Enguage {
 //			test( "", "" );
 //		}
 				
+		if (runThisTest( "title" )) {
+			test( "i have eaten an apple", "ok, you have eaten an apple" );
+			//Audit.allOn();
+			//test( "what have i eaten",   "so, you have eaten an apple" );
+		}
+				
 		if (runThisTest( "WSC - advocacy and fear" )) {
 			// TODO: WSC - alternative states tests
 			// mut ex: dead is the opposite of alive, no?

@@ -431,7 +431,7 @@ public class Number {
 		return rc;
 	}
 	private boolean appendExpr( ListIterator<String> si ) {
-		audit.in( "appendExpr", Strings.peek( si ));
+		//audit.in( "appendExpr", Strings.peek( si ));
 		boolean rc = false;
 		if (appendNum( si ) || appendFunction( si )) {
 			rc = true;
@@ -450,7 +450,8 @@ public class Number {
 			magnitude( representamen.doTerms()); // need to do this before more or less
 			doMoreOrLess( si );
 		}		
-		return audit.out( rc );
+		//audit.out( rc );
+		return rc;
 	}
 	public Number( ListIterator<String> si ) {
 		if (si.hasNext()) {
