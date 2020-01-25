@@ -180,10 +180,13 @@ public class Enguage {
 //			test( "", "" );
 //		}
 				
-		if (runThisTest( "title" )) {
-			test( "i have eaten an apple", "ok, you have eaten an apple" );
-			//Audit.allOn();
-			//test( "what have i eaten",   "so, you have eaten an apple" );
+		if (runThisTest( "Simple Food Diary" )) {
+			test( "i have eaten breakfast",            "ok, you have eaten breakfast" );
+			test( "i have eaten a mars bar",           "ok, you have eaten a mars bar" );
+			test( "i have eaten 2 packets of crisps",  "ok, you have eaten 2 packets of crisps" );
+			
+			test( "what have i eaten",
+			      "you have eaten breakfast, a mars bar, and 2 packets of crisps" );
 		}
 				
 		if (runThisTest( "WSC - advocacy and fear" )) {
