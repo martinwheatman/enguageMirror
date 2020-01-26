@@ -8,36 +8,36 @@
 
 On "does SUBJECT LIST list exist", perform "value exists SUBJECT LIST list".
 
-On "does NUMERIC-QUANTITY    PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list    matches SUBJECT LIST OBJECT".
-On "does                     PHRASE-OBJECT                 exist  in SUBJECT LIST list",                                    perform " list    matches SUBJECT LIST OBJECT".
-On "does                     PHRASE-OBJECT at PHRASE-WHERE exist  in SUBJECT LIST list",                                    perform " list    matches SUBJECT LIST OBJECT WHERE WHEN".
+On "does NUMERIC-QUANTITY    PHRASE-OBJECT                 exist  in SUBJECT LIST list",                   perform " list    matches SUBJECT LIST OBJECT".
+On "does                     PHRASE-OBJECT                 exist  in SUBJECT LIST list",                   perform " list    matches SUBJECT LIST OBJECT".
+On "does                     PHRASE-OBJECT at PHRASE-WHERE exist  in SUBJECT LIST list",                   perform " list    matches SUBJECT LIST OBJECT WHERE WHEN".
 
-On "                                PHRASE-OBJECT          exists in SUBJECT LIST list",                                    perform " list     exists SUBJECT LIST OBJECT".
-On "    NUMERIC-QUANTITY            PHRASE-OBJECT          exists in SUBJECT LIST list",                                    perform " list     exists SUBJECT LIST OBJECT QUANTITY".
-On "    NUMERIC-QUANTITY    UNIT of PHRASE-OBJECT          exists in SUBJECT LIST list",                                    perform " list     exists SUBJECT LIST OBJECT QUANTITY UNIT".
-On "                                PHRASE-OBJECT does not exist  in SUBJECT LIST list",                                    perform "!list     exists SUBJECT LIST OBJECT".
-On "    NUMERIC-QUANTITY            PHRASE-OBJECT does not exist  in SUBJECT LIST list",                                    perform "!list     exists SUBJECT LIST OBJECT QUANTITY".
-On "    NUMERIC-QUANTITY    UNIT of PHRASE-OBJECT does not exist  in SUBJECT LIST list",                                    perform "!list     exists SUBJECT LIST OBJECT QUANTITY UNIT".
+On "                                PHRASE-OBJECT          exists in SUBJECT LIST list",                   perform " list     exists SUBJECT LIST OBJECT".
+On "    NUMERIC-QUANTITY            PHRASE-OBJECT          exists in SUBJECT LIST list",                   perform " list     exists SUBJECT LIST OBJECT QUANTITY".
+On "    NUMERIC-QUANTITY    UNIT of PHRASE-OBJECT          exists in SUBJECT LIST list",                   perform " list     exists SUBJECT LIST OBJECT QUANTITY UNIT".
+On "                                PHRASE-OBJECT does not exist  in SUBJECT LIST list",                   perform "!list     exists SUBJECT LIST OBJECT".
+On "    NUMERIC-QUANTITY            PHRASE-OBJECT does not exist  in SUBJECT LIST list",                   perform "!list     exists SUBJECT LIST OBJECT QUANTITY".
+On "    NUMERIC-QUANTITY    UNIT of PHRASE-OBJECT does not exist  in SUBJECT LIST list",                   perform "!list     exists SUBJECT LIST OBJECT QUANTITY UNIT".
 
-On "append                          PHRASE-OBJECT               onto SUBJECT LIST list": perform "variable set op    add"; perform " list        add SUBJECT LIST OBJECT";               then, reply "ok".
-On "add                             PHRASE-OBJECT                 to SUBJECT LIST list": perform "variable set op    add"; perform " list        add SUBJECT LIST OBJECT"; if not, reply "sorry"; then, reply "ok".
-On "add    NUMERIC-QUANTITY         PHRASE-OBJECT                 to SUBJECT LIST list": perform "variable set op    add"; perform " list        add SUBJECT LIST OBJECT QUANTITY";      then, reply "ok".
-On "add    NUMERIC-QUANTITY UNIT of PHRASE-OBJECT                 to SUBJECT LIST list": perform "variable set op    add"; perform " list        add SUBJECT LIST OBJECT QUANTITY UNIT"; then, reply "ok".
-On "add                             WHOM at WHERE                 to SUBJECT LIST list": perform "variable set op    add"; perform " list        add SUBJECT LIST OBJECT";               then, reply "ok".
+On "append                          PHRASE-OBJECT               onto SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT";               then, reply "ok".
+On "add                             PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT"; if not, reply "sorry"; then, reply "ok".
+On "add    NUMERIC-QUANTITY         PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT QUANTITY";      then, reply "ok".
+On "add    NUMERIC-QUANTITY UNIT of PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT QUANTITY UNIT"; then, reply "ok".
+On "add                             WHOM at WHERE                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT";               then, reply "ok".
 
-On "remove                          PHRASE-OBJECT               from SUBJECT LIST list": perform "variable set op remove"; perform " list     remove SUBJECT LIST OBJECT";               then, reply "ok".
-On "remove NUMERIC-QUANTITY         PHRASE-OBJECT               from SUBJECT LIST list": perform "variable set op remove"; perform " list     remove SUBJECT LIST OBJECT QUANTITY";      then, reply "ok".
-On "remove NUMERIC-QUANTITY UNIT of PHRASE-OBJECT               from SUBJECT LIST list": perform "variable set op remove"; perform " list     remove SUBJECT LIST OBJECT QUANTITY UNIT"; then, reply "ok".
-On "remove any                      PHRASE-OBJECT               from SUBJECT LIST list",                                   perform " list  removeAny SUBJECT LIST OBJECT".
-On "remove the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                   perform " list    delAttr SUBJECT LIST OBJECT NAME".
-On "remove everything                                           from SUBJECT LIST list",                                   perform " list  removeAll SUBJECT LIST".
+On "remove                          PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT";               then, reply "ok".
+On "remove NUMERIC-QUANTITY         PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT QUANTITY";      then, reply "ok".
+On "remove NUMERIC-QUANTITY UNIT of PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT QUANTITY UNIT"; then, reply "ok".
+On "remove any                      PHRASE-OBJECT               from SUBJECT LIST list",                   perform " list  removeAny SUBJECT LIST OBJECT".
+On "remove the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                   perform " list    delAttr SUBJECT LIST OBJECT NAME".
+On "remove everything                                           from SUBJECT LIST list",                   perform " list  removeAll SUBJECT LIST".
 
-On "get    the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                                   perform " list getAttrVal SUBJECT LIST NAME OBJECT".
-On "get                                                              SUBJECT LIST list",                                   perform " list        get SUBJECT LIST".
-On "get                                                              SUBJECT LIST list where NAME equals PHRASE-VALUE",    perform " list   getWhere SUBJECT LIST NAME VALUE".
-
-On "delete                                                           SUBJECT LIST list",                                   perform " list     delete SUBJECT LIST".
-On "how many                UNIT of PHRASE-OBJECT                 in SUBJECT LIST list",                                   perform " list   quantity SUBJECT needs OBJECT UNIT".
-On "how many                        PHRASE-OBJECT                 in SUBJECT LIST list",                                   perform " list   quantity SUBJECT needs OBJECT".
+On "get    the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                   perform " list getAttrVal SUBJECT LIST NAME OBJECT".
+On "get                                                              SUBJECT LIST list",                   perform " list        get SUBJECT LIST".
+On "get                                                              SUBJECT LIST list where NAME equals PHRASE-VALUE",
+                                                                                                           perform " list   getWhere SUBJECT LIST NAME VALUE".
+On "delete                                                           SUBJECT LIST list",                   perform " list     delete SUBJECT LIST".
+On "how many                UNIT of PHRASE-OBJECT                 in SUBJECT LIST list",                   perform " list   quantity SUBJECT needs OBJECT UNIT".
+On "how many                        PHRASE-OBJECT                 in SUBJECT LIST list",                   perform " list   quantity SUBJECT needs OBJECT".
 
 On "clear the list", perform "list delete SUBJECT LIST".
