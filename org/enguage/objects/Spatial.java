@@ -14,9 +14,9 @@ public class Spatial {
 	static private      Audit audit = new Audit( NAME );
 	
 	private static Strings concepts = new Strings();
-	public  static boolean isConcept(  String s) {return concepts.contains( s );}
-	public  static void   addConcepts( Strings ss) {for (String s : ss) addConcept( s );}
-	public  static void   addConcept(  String s ) {if (s != null && !concepts.contains( s )) concepts.add( s );}
+	private static void   addConcepts( Strings ss) {for (String s : ss) addConcept( s );}
+	public  static void    addConcept(  String s ) {if (s != null && !concepts.contains( s )) concepts.add( s );}
+	//private static boolean  isConcept(  String s) {return concepts.contains( s );}
 	//public  static void    conceptIs(  String s ) {addConcept( s );}
 	
 	public static String list() { return concepts.toString( Strings.CSV );}
@@ -30,7 +30,7 @@ public class Spatial {
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
-				addConcept( Variable.get( Assets.LOADING ) );
+				addConcept( Variable.get( Assets.LOADING ));
 			else if (cmd.equals( "locator" ))
 				Where.locatorIs( args );
 			else
