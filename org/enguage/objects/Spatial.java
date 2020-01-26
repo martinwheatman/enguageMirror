@@ -15,7 +15,8 @@ public class Spatial {
 	
 	private static Strings concepts = new Strings();
 	private static void   addConcepts( Strings ss) {for (String s : ss) addConcept( s );}
-	private static void    addConcept(  String s ) {if (s != null && !concepts.contains( s )) concepts.add( s );}
+	public  static void    addConcept(  String s ) {if (s != null && !concepts.contains( s )) concepts.add( s );}
+
 	//private static boolean  isConcept(  String s) {return concepts.contains( s );}
 	//public  static void    conceptIs(  String s ) {addConcept( s );}
 	
