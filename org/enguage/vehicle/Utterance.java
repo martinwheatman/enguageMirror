@@ -82,7 +82,7 @@ public class Utterance {
 	static public Strings  externalise( Strings reply, boolean verbatim ) {
 		
 		reply = Variable.derefOrPop( reply.listIterator());
-
+		
 		// outbound and general colloquials
 		if (!verbatim)
 			reply = Colloquial.applyOutgoing( reply );
