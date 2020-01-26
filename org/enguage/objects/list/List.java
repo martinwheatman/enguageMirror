@@ -174,7 +174,7 @@ public class List extends ArrayList<Item> {
 		}
 		return audit.out( rc );
 	}
-	public String toXml() {
+	private String toXml() {
 		String list = "";
 		for (Item item : this)
 			list += item.toXml()+"\n      ";
@@ -262,7 +262,7 @@ public class List extends ArrayList<Item> {
 			value.set( toXml() ); // put list back...
 		return audit.out( rc );
 	}
-	public String removeAll( Item tbr ) {
+	private String removeAll( Item tbr ) {
 		audit.in( "removeAll", tbr==null?"<ALL>":tbr.toXml());
 		ArrayList<Item> reprieve = new ArrayList<Item>();
 		while (size() > 0) {
@@ -273,15 +273,6 @@ public class List extends ArrayList<Item> {
 		for (Item itm : reprieve) add( itm );
 		value.set( toXml() );
 		return audit.out( Shell.SUCCESS );
-	}
-	public boolean move(List l) {
-		/*
-		 * moves the content of one list to another.
-		 */
-		while (l.size() > 0)
-			append( new Item( l.remove( 0 )));
-
-		return true;
 	}
 	private boolean exists(Item item, Strings params) {
 		/* 
