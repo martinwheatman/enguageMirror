@@ -1,1 +1,3 @@
 On "X is temporal", perform "temporal add X".
+
+On "this concept is temporal", perform "temporal addCurrent".

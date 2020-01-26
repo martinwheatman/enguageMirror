@@ -4,27 +4,32 @@
 
 #On "i have had PHRASE_OBJECTS", i have eaten OBJECTS.
 
+this concept is temporal.
+
 ###############################################################################
 # Various singular additions
 On "i have eaten PHRASE-OBJECTS":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,WHEN";
 	add OBJECTS to me eaten list;
 	if not, append OBJECTS onto me eaten list;
 	reply "ok, you have eaten ...".
 
 On "i have eaten NUMERIC-QUANTITY PHRASE-OBJECT":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,WHEN";
 	add QUANTITY OBJECT to me eaten list;
 	reply "ok, you have eaten ... ".
 
 On "i have eaten NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
-	set output format to "QUANTITY,UNIT of,";
+	set output format to "QUANTITY,UNIT of,,WHEN";
 	add QUANTITY UNIT of OBJECT to me eaten list;
 	reply "ok, you have eaten ...".
 	
 On "what have i eaten":
-	set output format to "QUANTITY,UNIT of,,LOCATOR LOCATION";
+	set output format to "QUANTITY,UNIT of,,WHEN";
 	get me eaten list;
 	if not, reply "you have not eaten anything";
 	reply "you have eaten ...".
 	
+On "i have just eaten PHRASE-OBJECTS": i have eaten OBJECTS today.
+On "i just ate PHRASE-OBJECTS": i have just eaten OBJECTS.
+On "i ate PHRASE-OBJECTS": i have eaten OBJECTS.

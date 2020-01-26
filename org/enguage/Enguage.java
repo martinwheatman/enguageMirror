@@ -181,12 +181,12 @@ public class Enguage {
 //		}
 				
 		if (runThisTest( "Simple Food Diary" )) {
-			test( "i have eaten breakfast",            "ok, you have eaten breakfast" );
-			test( "i have eaten a mars bar",           "ok, you have eaten a mars bar" );
-			test( "i have eaten 2 packets of crisps",  "ok, you have eaten 2 packets of crisps" );
+			test( "i just ate breakfast",             "ok, you have eaten breakfast today" );
+			test( "today i have eaten a mars bar",    "ok, you have eaten a mars bar today" );
+			test( "i have eaten 2 packets of crisps", "ok, you have eaten 2 packets of crisps" );
 			
-			test( "what have i eaten",
-			      "you have eaten breakfast, a mars bar, and 2 packets of crisps" );
+			test( "what have i eaten today",
+			      "you have eaten breakfast today , and a mars bar today" );
 		}
 				
 		if (runThisTest( "WSC - advocacy and fear" )) {

@@ -6,6 +6,8 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.when.Day;
 import org.enguage.vehicle.when.When;
 
+import com.yagadi.Assets;
+
 public class Temporal {
 	
 	static public final String NAME = "temporal";
@@ -23,27 +25,34 @@ public class Temporal {
 	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String rc = Shell.IGNORE;
-		if (args.size() > 1) {
-			rc = Shell.FAIL;
+		if (args.size() > 0) {
 			String cmd = args.remove( 0 );
-			if (cmd.equals( "dayOfWeek" )) {
-				When w = Day.getWhen( args );
-				rc = (w == null ? Shell.FAIL : Day.name( w.from().moment()));
-				
-			} else if (cmd.equals( "set" )) {
-				rc = Shell.SUCCESS;
-				String arg = args.remove( 0 );
-				if ( arg.equals( "future" ))
-					When.futureIs();
-				else if ( arg.equals( "past" ))
-					When.pastIs();
-				else if ( arg.equals( "present" ))
-					When.presentIs();
-				
-			} else if (cmd.equals( "add" )) {
-				addConcepts( args );
-				rc = Shell.SUCCESS;
-		}	}
+			rc = Shell.SUCCESS;
+			if (args.size() == 0) {
+				if (cmd.equals( "addCurrent" ))
+					addConcept( Variable.get( Assets.LOADING ));
+				else
+					rc = Shell.FAIL;
+			} else {
+				if (cmd.equals( "dayOfWeek" )) {
+					When w = Day.getWhen( args );
+					rc = (w == null ? Shell.FAIL : Day.name( w.from().moment()));
+				} else if (cmd.equals( "set" )) {
+					String arg = args.remove( 0 );
+					if ( arg.equals( "future" ))
+						When.futureIs();
+					else if ( arg.equals( "past" ))
+						When.pastIs();
+					else if ( arg.equals( "present" ))
+						When.presentIs();
+					else
+						rc = Shell.FAIL;
+				} else if (cmd.equals( "add" ))
+					addConcepts( args );
+				else
+					rc = Shell.FAIL;
+			}
+		}
 		return audit.out( new Strings( rc ));
 	}
 	public static void main( String args[] ) {
