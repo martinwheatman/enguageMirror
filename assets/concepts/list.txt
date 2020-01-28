@@ -19,15 +19,15 @@ On "                                PHRASE-OBJECT does not exist  in SUBJECT LIS
 On "    NUMERIC-QUANTITY            PHRASE-OBJECT does not exist  in SUBJECT LIST list",                   perform "!list     exists SUBJECT LIST OBJECT QUANTITY".
 On "    NUMERIC-QUANTITY    UNIT of PHRASE-OBJECT does not exist  in SUBJECT LIST list",                   perform "!list     exists SUBJECT LIST OBJECT QUANTITY UNIT".
 
-On "append                          PHRASE-OBJECT               onto SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT";               then, reply "ok".
-On "add                             PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT"; if not, reply "sorry"; then, reply "ok".
-On "add    NUMERIC-QUANTITY         PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT QUANTITY";      then, reply "ok".
-On "add    NUMERIC-QUANTITY UNIT of PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT QUANTITY UNIT"; then, reply "ok".
-On "add                             WHOM at WHERE                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT";               then, reply "ok".
+On "append                          PHRASE-OBJECT               onto SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT";               reply "ok".
+On "add                             PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT"; if not, reply "sorry"; reply "ok".
+On "add    NUMERIC-QUANTITY         PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT QUANTITY";      reply "ok".
+On "add    NUMERIC-QUANTITY UNIT of PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT QUANTITY UNIT"; reply "ok".
+On "add                             WHOM at WHERE                 to SUBJECT LIST list": set op to    add; perform " list        add SUBJECT LIST OBJECT";               reply "ok".
 
-On "remove                          PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT";               then, reply "ok".
-On "remove NUMERIC-QUANTITY         PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT QUANTITY";      then, reply "ok".
-On "remove NUMERIC-QUANTITY UNIT of PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT QUANTITY UNIT"; then, reply "ok".
+On "remove                          PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT";               reply "ok".
+On "remove NUMERIC-QUANTITY         PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT QUANTITY";      reply "ok".
+On "remove NUMERIC-QUANTITY UNIT of PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " list     remove SUBJECT LIST OBJECT QUANTITY UNIT"; reply "ok".
 On "remove any                      PHRASE-OBJECT               from SUBJECT LIST list",                   perform " list  removeAny SUBJECT LIST OBJECT".
 On "remove the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                   perform " list    delAttr SUBJECT LIST OBJECT NAME".
 On "remove everything                                           from SUBJECT LIST list",                   perform " list  removeAll SUBJECT LIST".

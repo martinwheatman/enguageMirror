@@ -5,6 +5,8 @@ import java.util.ListIterator;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
+import org.enguage.vehicle.when.Moment;
+import org.enguage.vehicle.when.When;
 
 public class Attribute {
 	
@@ -61,8 +63,18 @@ public class Attribute {
 		return from;
 	}
 	
-	public Attribute( String nm, String val ) { name( nm ).value( val ); }
+	public Attribute( String nm, String val ) {
+		name( nm );
+		if (nm.equals( When.ID )) { // this code is linked to Item::getFormatComponentValue()
+			When w = Moment.valid( val ) ?
+					new When( new Moment( Long.valueOf( val ))) : // e.g. 2020012888888
+					When.getWhen( new When(), new Strings( val )); //e.g. 'yesterday'
+			value( w.toString() );
+		} else
+			value( val );
+	}
 	public Attribute( String s ) { this( getName( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
+	
 	static public Attribute getAttribute( ListIterator<String> si ) {
 		return new Attribute( si.hasNext() ? si.next() : "" );
 	}

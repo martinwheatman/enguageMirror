@@ -183,10 +183,10 @@ public class Enguage {
 		if (runThisTest( "Simple Food Diary" )) {
 			test( "i just ate breakfast",             "ok, you have eaten breakfast today" );
 			test( "today i have eaten a mars bar",    "ok, you have eaten a mars bar today" );
-			test( "i have eaten 2 packets of crisps", "ok, you have eaten 2 packets of crisps" );
+			test( "i have eaten 2 packets of crisps", "ok, you have eaten 2 packets of crisps today" );
 			
 			test( "what have i eaten today",
-			      "you have eaten breakfast today , and a mars bar today" );
+			      "you have eaten breakfast today , a mars bar today , and 2 packets of crisps today" );
 		}
 				
 		if (runThisTest( "WSC - advocacy and fear" )) {
@@ -980,7 +980,9 @@ public class Enguage {
 				try {
 					level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
 					sanityCheck( serverTest, location );
-				} catch (NumberFormatException nfe) {usage();}
+				} catch (NumberFormatException nfe) {
+					Audit.LOG( "Insanity: "+ nfe.toString() );
+				}
 			
 			} else usage();
 }	}	}

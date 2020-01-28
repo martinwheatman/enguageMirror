@@ -177,7 +177,10 @@ public class Item {
 						value=null; // this component is undefined, IGNORE
 						break;
 					} else if (cmp.equals(When.ID)) {
-						value.add( new When( new Moment( Long.valueOf( val ))).toString() );
+						When w = Moment.valid( val ) ?
+								new When( new Moment( Long.valueOf( val ))) : // e.g. 2020012888888
+								When.getWhen( new When(), new Strings( val )); //e.g. 'yesterday'
+						value.add( w.toString() );
 					} else if (cmp.equals(Where.LOCTN)
 							|| cmp.equals(Where.LOCTR)) {
 						value.add( val ); // don't count these!
@@ -218,7 +221,6 @@ public class Item {
 						
 					else
 						rc.append( counted( prevNum, descr )); // 2 beers
-					
 					prevNum = Float.NaN;
 				} else { // component, f, e.g. "UNIT of"
 					Strings subrc = getFormatComponentValue( f );

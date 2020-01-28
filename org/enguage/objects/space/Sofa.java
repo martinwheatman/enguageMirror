@@ -1,5 +1,6 @@
 package org.enguage.objects.space;
 
+import org.enguage.interp.Context;
 import org.enguage.interp.repertoire.Synonyms;
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
@@ -50,6 +51,7 @@ public class Sofa extends Shell {
 				case Plural.id :     return Plural.interpret( a );
 				case Entity.id :     return Entity.interpret( a );
 				case Spatial.id :    return Spatial.interpret( a );
+				case Context.id :    return Context.interpret( a );
 				case Numeric.id  :   return Numeric.interpret( a );
 				case Overlay.id  :   return Overlay.interpret( a );
 				case Synonyms.id :   return Synonyms.interpret( a );
