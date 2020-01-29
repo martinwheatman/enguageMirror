@@ -6,18 +6,18 @@ What is the product of 6 and 7.</p>
 What is the factorial of 4.</p>
 <p>To the phrase hello reply hello to you too.<ber/>
 To the phrase my name is variable name reply hello variable name.</p>
-<p>A needs list:<br/>
-                I need milk.<br/>
-                It is from the dairy aisle.<br/>
-                I need a coffee.<br/>
-                And another.<br/>
-                How many coffees do I need.<br/>
-                What do I need from the dairy aisle.</p>
-<p>A food diary—under development—with a default date of today:
-I just ate breakfast.<br/>
-Today I have eaten a mars bar.<br/>
-I have eaten 2 packets of crisps.<br/>
-What have I eaten today.</p>
+<p>A needs list:<br/><pre/>
+        I need milk.
+        It is from the dairy aisle.
+        I need a coffee.
+        And another.
+        How many coffees do I need.
+        What do I need from the dairy aisle.</pre></p>
+<p>A food diary with a default date of today:<pre>
+        I just ate breakfast.
+        Today I have eaten a mars bar.
+        I have eaten 2 packets of crisps.
+        What have I eaten today.</pre></p>
 <p>What do YOU want to say?</p>
 <hr/>
 Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server [<port>]] -t ]
