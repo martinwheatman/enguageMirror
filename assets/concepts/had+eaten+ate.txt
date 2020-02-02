@@ -38,6 +38,6 @@ On "what have i eaten":
 	if not, reply "you have not eaten anything";
 	reply "you have eaten ...".
 	
-On "i have just eaten PHRASE-OBJECTS": i have eaten OBJECTS today.
-On "i just ate PHRASE-OBJECTS": i have just eaten OBJECTS.
-On "i ate PHRASE-OBJECTS": i have eaten OBJECTS.
+On "i have just eaten PHRASE-OBJECTS", today i have eaten OBJECTS.
+On "i just ate PHRASE-OBJECTS", i have just eaten OBJECTS.
+On "i ate PHRASE-OBJECTS", i have eaten OBJECTS.
