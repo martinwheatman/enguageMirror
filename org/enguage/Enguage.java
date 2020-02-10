@@ -902,14 +902,16 @@ public class Enguage {
 			// see if we've remembered hello... shouldn't have
 			test( "hello", "i don't understand" );
 		}
-//		if (runThisTest( level, ++testNo )) { // 
-//			audit.title( "Ask: Confirmation" );
+		if (runThisTest( "Ask: Confirmation" )) {
 //
-//			//interpret( "prime the answer yes", "ok, the next answer will be yes" );
-//			interpret( "i have everything", "ok , you don't need anything" );
-//
-//			//interpret( "prime the answer no", "ok, the next answer will be no" );
-//			//interpret( "i have everything", "ok , let us leave things as they are" );
+			test( "the colour of the sky is blue", "ok, the colour of the sky is blue" );
+			test( "what is the colour of the sky", "blue , the colour of the sky is blue" );
+			
+			test( "to the phrase ask me phrase variable question reply variable question", "ok" );
+
+			test( "prime the answer blue", "ok, the next answer will be blue" );
+			test( "ask me what is the colour of the sky", "what is the colour of the sky" );
+			test( "blue", "i don't understand" );
 //
 //			//interpret( "prime the answer i do not understand", "ok, the next answer will be i don't understand" );
 //			//interpret( "i have everything", "Ok , let us leave things as they are" );
@@ -920,7 +922,7 @@ public class Enguage {
 //			 *                p v name            => set user name NAME
 //			 * Ask: what is your name?
 //			 */
-//		}
+		}
 		
 		Audit.log( testNo +" test group(s) found" );
 		audit.PASSED();

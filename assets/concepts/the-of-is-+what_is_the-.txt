@@ -10,6 +10,10 @@ On "the ATTR of ENT is PHRASE-VALUE":
 	perform "value set ENT ATTR VALUE";
 	then, reply "ok, the ATTR of ENT is VALUE".
 
+On "the ATTR of the ENT is PHRASE-VALUE":
+	perform "value set ENT ATTR VALUE";
+	then, reply "ok, the ATTR of the ENT is VALUE".
+
 # the height of an entity is a numeric variable.
 # the factorial of n is n times the factorial of n minus 1.
 # the factorial of 1 is 1.
@@ -21,6 +25,10 @@ On "the ATTR of ENT is PHRASE-VALUE":
 On "what is the ATTR of ENTITY":
 	get the ATTR of ENTITY;
 	then, reply "..., the ATTR of ENTITY is ...".
+
+On "what is the ATTR of the ENTITY":
+	get the ATTR of ENTITY;
+	then, reply "..., the ATTR of the ENTITY is ...".
 
 On "what is the FUNCTION of PHRASE-PARAMS":
 	perform "function evaluate FUNCTION PARAMS";
