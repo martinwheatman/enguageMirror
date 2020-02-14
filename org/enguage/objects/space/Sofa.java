@@ -4,7 +4,7 @@ import org.enguage.interp.Context;
 import org.enguage.interp.repertoire.Synonyms;
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
-import org.enguage.objects.Sign;
+import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
@@ -42,7 +42,7 @@ public class Sofa extends Shell {
 			switch (Strings.hash( type )) {
 				case lFail    :      return Shell.Fail;
 				case lSuccess :      return Shell.Success;
-				case Sign.id  :      return Sign.interpret( a );
+				case Sign.id  :      return org.enguage.interp.sign.Sign.interpret( a );
 				case Link.id  :      return Link.interpret( a );
 				case Item.id  :      return Item.interpret( a );
 				case List.id  :      return List.interpret( a );

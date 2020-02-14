@@ -7,9 +7,9 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TreeSet;
 
+import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
-import org.enguage.objects.Sign;
 import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;

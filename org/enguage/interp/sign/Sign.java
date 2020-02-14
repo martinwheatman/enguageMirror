@@ -14,11 +14,13 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
+import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Reply;
 
 public class Sign {
 	private static final String   NAME = "sign";
 	private static       Audit   audit = new Audit( NAME );
+	public  static final int        id = 340224; //Strings.hash( NAME );
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
@@ -158,6 +160,90 @@ public class Sign {
 		}	}
 		return (Reply) audit.out( r );
 	}
+	/*
+	 * This will handle "sign create X", found in interpret.txt
+	 */
+	static public Strings interpret( Strings argv ) {
+		Sign.audit.in( "interpret", argv.toString());
+		String rc = Shell.FAIL;
+		
+		if (argv.size() > 0) {
+			String var1 = Variable.get( "prepending" ),
+			       var2 = Variable.get( "headAppending" );
+			boolean prepending    = var1 != null && var1.equals( "true" ),
+					headAppending = var2 != null && var2.equals( "true" );
+			
+			boolean isElse = false;
+			Reply r = new Reply();
+			String cmd = argv.remove( 0 );
+			if (cmd.equals( "else" )) {
+				isElse = true;
+				cmd = argv.remove( 0 );
+			}
+	
+			if (cmd.equals( "create" )) {
+				Sign.audit.debug( "creating sign with: " +   argv.toString());
+				rc = new Intention( Intention.create, argv.toString(), Intention.create ).autopoiesis( r ).toString();
+				
+			} else if (cmd.equals( "perform" )) {
+				Sign.audit.debug( "adding a conceptual "+    argv.toString() );
+				rc = new Intention(
+							isElse ? Intention.elseDo : Intention.thenDo,
+							argv.toString(),
+						   prepending ?
+								Intention.prepend :
+							   headAppending ?
+								Intention.headAppend :
+								Intention.append
+						).autopoiesis( r ).toString();
+				
+			} else if (cmd.equals( "reply" )) {
+				if (argv.size() > 0) {
+					rc = new Intention(
+							isElse? Intention.elseReply : Intention.thenReply, 
+							argv.toString(), 
+							prepending ?
+								Intention.prepend :
+								headAppending ?
+								Intention.headAppend :
+								Intention.append
+						  ).autopoiesis( r ).toString();
+				}
+			} else if (cmd.equals( "think" )) {
+				Sign.audit.debug( "adding a thought "+ argv.toString() );
+				rc = new Intention(
+							isElse? Intention.elseThink : Intention.thenThink,
+							argv.toString(), 
+							prepending ?
+								Intention.prepend :
+								 headAppending ?
+									Intention.headAppend :
+									Intention.append
+					  ).autopoiesis( r ).toString();
+				
+			} else if (cmd.equals( "imply" )) {
+				Sign.audit.debug( "prepending an implication '"+ argv.toString() +"'");
+				rc = new Intention(
+						isElse? Intention.elseThink : Intention.thenThink,
+						argv.toString(),
+						Intention.prepend
+					 ).autopoiesis( r ).toString();
+				
+			} else if (cmd.equals( "finally" )) {
+				Sign.audit.debug( "adding a final clause? "+ argv.toString() );
+				cmd = argv.remove( 0 );
+				if (cmd.equals( "perform" ))
+					rc = new Intention( isElse ? Intention.elseDo    : Intention.thenDo,    argv.toString(), Intention.append ).autopoiesis( r ).toString();
+				else if (cmd.equals( "reply" ))
+					rc = new Intention( isElse ? Intention.elseReply : Intention.thenReply, argv.toString(), Intention.append ).autopoiesis( r ).toString();
+				else
+					rc = new Intention( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Intention.append ).autopoiesis( r ).toString();
+			
+			} else
+				Sign.audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
+		}
+		return Sign.audit.out( new Strings( rc ));
+	}
 	// --- test code below
 	public static void complexityTest( Pattern t ) {
 		Sign container = new Sign();
@@ -201,4 +287,11 @@ public class Sign {
 		Audit.log( s2.toString());
 		s2.toVariable();
 		
+		interpret( new Strings( "this won't work!" ));
+		interpret( new Strings( "create variable whom needs phrase variable object" ));
+		interpret( new Strings( "reply  ok variable whom needs variable object" ));
+		interpret( new Strings( "imply  is variable object in variable name needs list" ));
+		//interpret( new Strings( "reply  i know" ));
+		//interpret( new Strings( "perform add variable object to variable name needs list" ));
+		Intention.printSign();
 }	}
