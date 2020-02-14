@@ -15,7 +15,7 @@ import org.enguage.util.tag.Tag;
  */
 public class Concepts {
 	static public  final String     NAME = "concepts";
-	static public  final String LOCATION = NAME + File.separator;
+	//static public  final String LOCATION = NAME + File.separator;
 	static private       Audit     audit = new Audit( NAME );
 	
 	static private TreeSet<String> names = new TreeSet<String>();
@@ -24,13 +24,14 @@ public class Concepts {
 	static public  void  addAll( Strings nms ) { names.addAll(  nms );}
 	static public  void addFrom( String location ) { // just "concepts"
 		String[] names = new File( location ).list();
-		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
-			String[] components = name.split( "\\." );
-			if (components.length > 1 && components[ 1 ].equals("txt"))
-				add( components[ 0 ]);
-			else if (components.length == 1)
-				addFrom( location+"/"+components[ 0 ]);
-	}	}
+		if (names != null)
+			for ( String name : names ) { // e.g. name="hello.txt"
+				String[] components = name.split( "\\." );
+				if (components.length > 1 && components[ 1 ].equals("txt"))
+					add( components[ 0 ]);
+				else if (components.length == 1)
+					addFrom( location+"/"+components[ 0 ]);
+	}		}
 	
 	/* This is the STATIC loading of concepts at app startup -- read
 	 * from the config.xml file.

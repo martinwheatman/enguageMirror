@@ -1,11 +1,10 @@
 package org.enguage.interp.repertoire;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import com.yagadi.Assets;
 
 import org.enguage.interp.intention.Redo;
 import org.enguage.objects.space.Overlay;
@@ -13,6 +12,8 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.vehicle.Language;
+
+import com.yagadi.Assets;
 
 /** Implements Dynamic Repertoires:
  * attempts to load all words in an utterance as a repertoire.
@@ -92,8 +93,8 @@ public class Autoload {
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Audit.allTracing = true;
-		if (!Fs.location( Assets.LOCATION ))
-			audit.FATAL( Assets.LOCATION +": not found" );
+		if (!Fs.location( Assets.NAME ))
+			audit.FATAL( Assets.NAME + File.separator +": not found" );
 		else if (!Overlay.attach( "autoload" ))
 			audit.ERROR( " can't auto attach" );
 		else {

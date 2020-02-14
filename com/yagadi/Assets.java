@@ -15,10 +15,10 @@ public class Assets {
 	static public final String  LOADING = "concept";
 	static public final String     NAME = "assets";
 	//static private     Audit    audit = new Audit( NAME );
-	static public final String LOCATION = NAME + File.separator;
+	//static public final String LOCATION = NAME + File.separator;
 	
-	static public void addConcepts() {
-		String[] names = new File( LOCATION + Concepts.NAME ).list();
+	static public void addConcepts( String loc ) {
+		String[] names = new File( loc + Concepts.NAME ).list();
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))
@@ -49,7 +49,7 @@ public class Assets {
 			InputStream is2 = null;
 			try { // ...or add concept from asset...
 				String fname = org.enguage.interp.repertoire.Concept.name( name );
-				is2 = new FileInputStream( LOCATION + fname );
+				is2 = new FileInputStream( NAME + File.separator + fname );
 				org.enguage.Enguage.shell().interpret( is2, from, to );
 				wasLoaded = true;
 			} catch (IOException e2) {
