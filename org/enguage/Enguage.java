@@ -888,8 +888,8 @@ public class Enguage {
 					"egress is back into the wheel . "+
 					"ok" );
 			
-//			mediate( "no friendlies",                "ok, no friendlies are present" );
-//			mediate( "where are friendlies",         "no friendlies are present" );
+//			test( "no friendlies",                "ok, no friendlies are present" );
+//			test( "where are friendlies",         "no friendlies are present" );
 			test( "what is the target elevation", "142 feet, target elevation is 142 feet"     );
 			test( "where are friendlies",         "30 clicks east of target, friendlies are 30 clicks east of target" );
 		}
