@@ -2,7 +2,6 @@ package com.yagadi;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
-import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +32,7 @@ public class Assets {
 		}
 	}
 
-	public static Tag fromAsset( String fname, @NonNull Activity ctx ) {
+	public static Tag fromAsset( String fname, Activity ctx ) {
 	 	audit.in( "fromAsset", fname );
 	 	Tag t = null;
 	 	AssetManager am = ctx.getAssets();

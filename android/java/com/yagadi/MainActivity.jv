@@ -1,4 +1,4 @@
-package org.enguage.demo;
+package com.yagadi;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -8,7 +8,6 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,14 +22,16 @@ import org.enguage.Enguage;
 import org.enguage.util.Audit;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.Strings;
+import org.enguage.objects.space.Overlay;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
 
 	private static final int REQUEST_SPEECH = 1;
+	static private Audit     audit = new Audit( "Enguage" );
 
 	public TextToSpeech tts = null;
 	private boolean ttsInitialised = false;
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 					// interpret what is said...
 					// ...in case of config failure, repeat what was said
 					
-					if (!Enguage.attach())
+					if (!Overlay.attach( "uid" ))
 						audit.ERROR( "Ouch! >>>>>>>> Cannot attach() to Object Space<<<<<<" );
 
 					Strings truText = Enguage.mediate( new Strings( said ));
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 		super.onDestroy();
 	}
 	// --------
-	private class ReadConfig extends AsyncTask<Void, Void, Void> {
+	static private class ReadConfig extends AsyncTask<Void, Void, Void> {
 		private static final String NAME = "BKG";
 
 		private MainActivity ctx = null;
