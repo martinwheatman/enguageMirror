@@ -15,7 +15,6 @@ import org.enguage.util.tag.Tag;
  */
 public class Concepts {
 	static public  final String     NAME = "concepts";
-	//static public  final String LOCATION = NAME + File.separator;
 	static private       Audit     audit = new Audit( NAME );
 	
 	static private TreeSet<String> names = new TreeSet<String>();
@@ -32,6 +31,31 @@ public class Concepts {
 				else if (components.length == 1)
 					addFrom( location+"/"+components[ 0 ]);
 	}		}
+	
+	static private String name( String loc, String name, String ext ) {
+		// would just return "concepts"/name.ext
+		String fname = loc + name +"."+ ext;
+		if (new File( fname ).exists())
+			return fname; // found, return existing
+		else {
+			String[] names = new File( loc ).list();
+			if (names != null) for (String dir : names) { // e.g. name="hello.txt"
+				String[] components = dir.split( "\\." );
+				if (components.length == 1 && new File( loc + components[ 0 ]+"/"+name+"."+ ext ).exists())
+					return loc + components[ 0 ]+"/"+name+"."+ ext; // found, return existing component
+		}	}
+		return fname; // not found, new filename
+	}
+	static public  String name( String name ) {
+		return name( NAME + File.separator, name, "txt" );
+	}
+	static public void delete( String cname ) {
+		if (cname != null) {
+			File oldFile = new File( name( cname )),
+			     newFile = new File( name( NAME + File.separator, cname, "del" ));
+			if (!oldFile.renameTo( newFile ))
+				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
+	}	}
 	
 	/* This is the STATIC loading of concepts at app startup -- read
 	 * from the config.xml file.
@@ -106,7 +130,7 @@ public class Concepts {
 		
 		return true;
 	}
-	public static Strings matches( Strings utterance ) {
+	public static Strings matched( Strings utterance ) {
 		//audit.in( "matches", utterance.toString() );
 		// matches: utt=[martin is a wally], candiates=[ "is_a+has_a" ] => add( is_a+has_a )
 		Strings matches = new Strings();
@@ -120,19 +144,23 @@ public class Concepts {
 		//return audit.out( matches );
 		return matches;
 	}
-
 	/*
 	 *  --- test code
 	 */
 	private static void test( String s, boolean matchesToReply ) {
-		Strings sa = matches( new Strings( s ));
-		Audit.log( "matches: " + sa.toString( Strings.DQCSV ) + (matchesToReply ? " should":" shouldn't") + " match to-reply-");
+		Strings sa = matched( new Strings( s ));
+		Audit.log( sa.size() == 0 ? "Doesn't match" :
+			       ("matches: " 
+		            +sa.toString( Strings.DQCSV ) 
+		            +(matchesToReply ? " should":" shouldn't")
+		            +" match to-reply-"));
 	}
 	public static void main( String args[]) {
-		addFrom( "./src/assets/concepts"  );
-		test( "i need a coffee",false );
+		addFrom( "./assets/concepts"  );
+		test( "i need a coffee", false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );
 		test( "to hello reply", false );
 		test( "hello to fred reply way", false );
-}	}
+}
+}

@@ -42,13 +42,13 @@ public class Assets {
 		InputStream  is = null;
 		
 		try { // ...add concept from user space...
-			is = new FileInputStream( org.enguage.interp.repertoire.Concept.name( name ));
+			is = new FileInputStream( org.enguage.interp.repertoire.Concepts.name( name ));
 			org.enguage.Enguage.shell().interpret( is, from, to );
 			wasLoaded = true;
 		} catch (IOException e1) {
 			InputStream is2 = null;
 			try { // ...or add concept from asset...
-				String fname = org.enguage.interp.repertoire.Concept.name( name );
+				String fname = org.enguage.interp.repertoire.Concepts.name( name );
 				is2 = new FileInputStream( NAME + File.separator + fname );
 				org.enguage.Enguage.shell().interpret( is2, from, to );
 				wasLoaded = true;

@@ -244,7 +244,7 @@ public class Engine {
 			String concept = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Deleting "+ concept +" concept");
 			Concepts.remove( concept );
-			Concept.delete( concept );
+			Concepts.delete( concept );
 			Repertoire.signs.remove( concept );
 			r.format( Reply.success() );
 
