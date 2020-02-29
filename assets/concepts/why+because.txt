@@ -1,15 +1,11 @@
 cause is transitive.
 
 On "SIGN-WHAT because SIGN-CAUSE":
-	perform "transaction create";
 	WHAT;
-	if not, perform "transaction abort";
-	if not, reply "i do not think EXT-WHAT";
+	if not, reply "sorry, i do not think EXT-WHAT";
 	CAUSE;
-	if not, perform "transaction abort";
-	if not, reply "i do not think EXT-CAUSE";
+	if not, reply "sorry, i do not think EXT-CAUSE";
 	perform "list add _user whyBecause WHAT CAUSE";
-	perform "transaction commit";
 	reply "ok, EXT-WHAT because EXT-CAUSE".
 	
 On "why do SIGN-WHAT":
@@ -18,7 +14,7 @@ On "why do SIGN-WHAT":
 	if i know, get the cause of WHAT from _user whyBecause list;
 	set cause to ...;
 	reply "because EXT-CAUSE";
-	then, if not, reply "sorry, it is not the case that EXT-WHAT".
+	then, if not, reply "sorry, i did not think that EXT-WHAT".
 On "why does SIGN-WHAT", why do WHAT.
 
 On "why am I PHRASE-WHAT":

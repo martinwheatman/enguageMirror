@@ -236,7 +236,7 @@ public class Enguage {
 			
 			// test  1
 			test( "the councillors refused the demonstrators a permit because they fear violence",
-					 "I don't think they fear violence" );
+					 "Sorry, I don't think they fear violence" );
 			test( "who are they", "I don't know" );
 			
 			// test 2
@@ -260,7 +260,7 @@ public class Enguage {
 			
 			// test 2
 			test( "the councillors refused the demonstrators a permit because they advocate violence",
-					 "I don't think they advocate violence" );
+					 "Sorry, I don't think they advocate violence" );
 			test( "who are they", "i don't know" );
 			
 			// tidy up
@@ -347,7 +347,7 @@ public class Enguage {
 			test( "i am not baking a cake",  "ok, you're not baking a cake" );
 			test( "am i baking a cake",      "no, you're not baking a cake" );
 			test( "i do not need any eggs",  "ok, you don't need any eggs" );
-			test( "why do i need 3 eggs",    "sorry, it is not the case that you need 3 eggs" );
+			test( "why do i need 3 eggs",    "sorry, i did not think that you need 3 eggs" );
 			test( "why might i need 3 eggs", "because you're baking a cake" );
 			
 		}
