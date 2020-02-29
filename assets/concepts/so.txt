@@ -1,5 +1,7 @@
 # so - all part of why
 # e.g. i am baking a cake so i need 3 eggs
+# Should be:
+#   On "SIGN-CAUSE so SIGN-WHAT", WHAT because CAUSE.
 
 On "SIGN-CAUSE so SIGN-WHAT":
 	CAUSE;
