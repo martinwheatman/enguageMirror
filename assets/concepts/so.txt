@@ -1,12 +1,6 @@
 # so - all part of why
 # e.g. i am baking a cake so i need 3 eggs
-# Should be:
-#   On "SIGN-CAUSE so SIGN-WHAT", WHAT because CAUSE.
+# BUG: Should be: CAUSE so WHAT, but this interferes with WHAT because CAUSE
+#      Leaking of values?  Values shouldn't be matched on load!?
 
-On "SIGN-CAUSE so SIGN-WHAT":
-	CAUSE;
-	if not, reply "i do not think EXT-CAUSE";
-	WHAT;
-	if not, reply "i do not think EXT-WHAT";
-	perform "list add _user whyBecause WHAT CAUSE";
-	then, reply "ok, EXT-WHAT because EXT-CAUSE".
+On "SIGN-SOCAUSE so SIGN-SOWHAT", SOWHAT because SOCAUSE.
