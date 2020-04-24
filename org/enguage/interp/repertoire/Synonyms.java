@@ -22,7 +22,9 @@ public class Synonyms {
 	static private Attributes                synonyms = new Attributes();
 	
 	private static boolean attempt( String name, String load, String from, String to ) {
-		if (null != autoloaded.get( name ) || com.yagadi.Assets.loadConcept( load, from, to )) {
+		if (null != autoloaded.get( name )) {
+			return true;
+		} else if (com.yagadi.Assets.loadConcept( load, from, to )) {
 			autoloaded.put( name, 0 );
 			return true;
 		}
@@ -32,7 +34,7 @@ public class Synonyms {
 		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
 		for (String synonym : synonyms.matchNames( utterance )) {
 			String existing = synonyms.get( synonym );
-			if (!attempt( synonym, existing, existing, synonym )                    &&
+			if (!attempt( synonym, existing, existing, synonym )                      &&
 				!attempt( synonym+"+"+Plural.plural( synonym ),
 				         existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
 				!attempt( Plural.plural(  synonym )+"+"+synonym,

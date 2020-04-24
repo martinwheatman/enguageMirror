@@ -1,4 +1,4 @@
-# synonyms: "want it like need"
+# synonyms: "want is like need"
 #
 On "PHRASE-SYNONYM is like PHRASE-EXISTING":
 	perform "synonyms create SYNONYM / EXISTING";

@@ -121,10 +121,13 @@ public class Enguage {
 	static private void tidyUpViolenceTest() { tidyUpViolenceTest( "violence" ); }
 	
 	static private int testNo = 0;
+	static private String testName = null;
 	static private boolean runThisTest() {return runThisTest( null );}
 	static private boolean runThisTest( String title ) {
 		++testNo;
-		boolean runThisTest = level == 0 || level == testNo || (level < 0 && -level != testNo);
+		boolean runThisTest = testName != null ?
+				title != null && title.contains( testName )
+				: level == 0 || level == testNo || (level < 0 && -level != testNo);
 		if (runThisTest) audit.title( "Test "+ testNo + (title != null ? ": "+ title : ""));
 		return runThisTest;
 	}
@@ -181,7 +184,40 @@ public class Enguage {
 //		if (runThisTest( "title" )) {
 //			test( "", "" );
 //		}
-				
+		if (runThisTest( "BCS HCI Workshop" )) { // code generation features
+			
+			test( "to the phrase hello reply hello to you too" );
+			test( "hello",                 "hello to you too" );
+			test( "to the phrase my name is variable name reply hello variable name" );
+			test( "my name is martin",     "hello martin" );
+			
+			test( "what do i need",        "you don't need anything" );
+			test( "i need a coffee",       "ok, you need a coffee" );
+			test( "what do i need",        "you need a coffee" );
+			
+			test( "what do i want",        "i don't understand" );
+			test( "want is like need",     "ok, want is like need" );
+			test( "what do i want",        "you don't want anything" );
+			
+			test( "interpret something can be variable quality thus" );
+			test( "first add variable quality to my quality list" );
+			test( "and then reply ok variable quality is a quality" );
+			test( "that concludes interpretation", "ok" );
+			
+			test( "something can be cool", "ok cool is a quality" );
+			
+			test( "interpret variable things are variable quality thus" );
+			test( "first add variable things to my variable quality list" );
+			test( "and then reply ok variable things are variable quality" );
+			test( "that concludes interpretation", "ok" );
+			
+			
+			test( "ferraris are cool",     "ok ferraris are cool" );
+			test( "want is like need" );
+			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
+			//test( "why do I want a ferrari", "because they are cool" );
+		}
+		
 		if (runThisTest( "Simple Food Diary" )) {
 			test( "i just ate breakfast",             "ok, you have eaten breakfast today" );
 			test( "today i have eaten a mars bar",    "ok, you have eaten a mars bar today" );
@@ -280,8 +316,8 @@ public class Enguage {
 			tidyUpViolenceTest( "csviolence" );
 		}
 		if (runThisTest( "Saving spoken concepts" )) {
-			// First, check we're clean!
-			test( "hello",                          "I don't understand" );
+			// First, check we're clean!  -- may not be the case with BCS HCI code
+			test( "hello",                          "hello to you too", "I don't understand" );
 			// Build a repertoire...
 			test( "to the phrase hello reply hello to you too", "ok" );
 			test( "ok",                             "ok" );
@@ -804,11 +840,12 @@ public class Enguage {
 		if (runThisTest( "Polymorphism - setup new idea and save" )) { // code generation features
 			
 			clearTheNeedsList( "i don't want anything" );
+			Audit.allOn();
 			test( "want is unlike need", "ok, want is unlike need", "i know" );
+			Audit.allOff();
 			test( "what do i want",      "i don't understand" );
 			
 			test( "want is like need",   "ok, want is like need" );
-			
 			test( "what do i want",      "you want another pony", "you don't want anything" );
 			test( "i want another pony", "i know", "ok, you want another pony" );
 			test( "what do i want",      "you want another pony" );
@@ -941,7 +978,7 @@ public class Enguage {
 		Audit.LOG( "          switch to send test commands to a server." );
 		Audit.LOG( "          This is only a test, and is on localhost." );
 		Audit.LOG( "          (Needs to be initialised with -p nnnn)\n" );
-		Audit.LOG( "       -t, --test" );
+		Audit.LOG( "       -t <n>, --test <n>, -T <name>" );
 		Audit.LOG( "          runs a sanity check" );
 	}
 	public static void main( String args[] ) {
@@ -979,10 +1016,13 @@ public class Enguage {
 			else if (cmds.size()>0 && (cmd.equals( "-h" ) || cmd.equals( "--http" )))
 				Net.httpd( cmd.length() == 0 ? "8080" : cmds.remove( 0 ));
 			
-			else if (cmd.equals( "-t" ) || cmd.equals( "--test" )) {
+			else if (cmd.equals( "-t" ) || cmd.equals( "--test" ) || cmd.equals( "-T" )) {
 				
 				try {
-					level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
+					if (cmd.equals( "-T" ))
+						testName = cmds.size()==0 ? testName : cmds.remove( 0 );
+					else
+						level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
 					sanityCheck( serverTest, location );
 				} catch (NumberFormatException nfe) {
 					Audit.LOG( "Insanity: "+ nfe.toString() );
