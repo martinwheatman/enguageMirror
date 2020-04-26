@@ -28,7 +28,7 @@ What is the factorial of 4.</pre>
         What have I eaten today.</pre></p>
 <p>We can program applications without the written artefact which is source code!</p>
 <hr/>
-Usage: java -jar enguage.jar [-d <configDir>] [-p <port> | -s | [--server [<port>]] -t ]
+Usage: java -jar enguage.jar [--server &lt;port&gt;] --http &lt;port&gt; | -port &lt;port&gt; |  --test 
 where: -d <configDir>
           config directory, default="./src/assets"
 
