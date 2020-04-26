@@ -126,7 +126,7 @@ public class Shell {
 								interval();
 								String rc = Repertoire.mediate( new Utterance( s )).toString();
 								if (aloud)
-									Audit.log( "Shell.interpret("+ (Audit.timings ? " -- "+interval()+"ms" : "") +") =>"+ rc );
+									Audit.log( (Audit.timings ? "( -- "+interval()+"ms)" : "") +" => "+ rc );
 							}
 							// ...expand sentence here.
 					}	}
@@ -135,7 +135,7 @@ public class Shell {
 				aloud = was;	
 			}
 		} catch (java.io.IOException e ) {
-			System.err.println( "IO error in Shell::interpret(stdin);" );
+			audit.ERROR( "IO error in Shell::interpret(stdin);" );
 		} finally {
 			try {
 				br.close();
