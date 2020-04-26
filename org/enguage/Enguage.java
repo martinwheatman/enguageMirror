@@ -996,33 +996,33 @@ public class Enguage {
 		String       cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		String   location = Assets.NAME + File.separator;
 
-		if (!Fs.destroy( fsys ))
-			audit.FATAL( "failed to remove old database - "+ fsys );
-		else {
-			// and recreate
-			Enguage.init( fsys, null ); // null 'cos we're not on Android
-			Enguage.config( Fs.stringFromFile( location + "/config.xml" ));
-	
-			boolean serverTest = false;
-			if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
-				serverTest = true;
-				cmds.remove(0);
-				cmd = cmds.size()==0 ? "":cmds.remove(0);
-				portNumber( cmds.remove( 0 ));
-				cmd = cmds.size()==0 ? "":cmds.remove(0);
-			}
-					
-			if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
-				Enguage.shell.aloudIs( true ).run();
-			
-			else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
-				Net.server( cmds.remove( 0 ));
-			
-			else if (cmds.size()>0 && (cmd.equals( "-h" ) || cmd.equals( "--http" )))
-				Net.httpd( cmd.length() == 0 ? "8080" : cmds.remove( 0 ));
-			
-			else if (cmd.equals( "-t" ) || cmd.equals( "--test" ) || cmd.equals( "-T" )) {
+		Enguage.init( fsys, null ); // null 'cos we're not on Android
+		Enguage.config( Fs.stringFromFile( location + "/config.xml" ));
+
+		boolean serverTest = false;
+		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
+			serverTest = true;
+			cmds.remove(0);
+			cmd = cmds.size()==0 ? "":cmds.remove(0);
+			portNumber( cmds.remove( 0 ));
+			cmd = cmds.size()==0 ? "":cmds.remove(0);
+		}
 				
+		if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
+			Enguage.shell.aloudIs( true ).run();
+		
+		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
+			Net.server( cmds.remove( 0 ));
+		
+		else if (cmds.size()>0 && (cmd.equals( "-h" ) || cmd.equals( "--http" )))
+			Net.httpd( cmd.length() == 0 ? "8080" : cmds.remove( 0 ));
+		
+		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ) || cmd.equals( "-T" )) {
+			
+			// If we're sanity testing, remove persistent data...
+			if (!Fs.destroy( fsys ))
+				audit.FATAL( "failed to remove old database - "+ fsys );
+			else {
 				try {
 					if (cmd.equals( "-T" ))
 						testName = cmds.size()==0 ? testName : cmds.remove( 0 );
@@ -1031,7 +1031,7 @@ public class Enguage {
 					sanityCheck( serverTest, location );
 				} catch (NumberFormatException nfe) {
 					Audit.LOG( "Insanity: "+ nfe.toString() );
-				}
-			
-			} else usage();
-}	}	}
+			}	}
+		
+		} else usage();
+}	}
