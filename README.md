@@ -7,45 +7,47 @@
 <p>You can introduce simple variables:</p>
 <pre>To the phrase my name is variable name reply hello variable name.</pre>
 
-<p>Simple functions can be programmed, including recursive functions:</p>
+<p>Simple functions can be programmed:</p>
 <pre>The product of x and y is x times y.
 What is the product of 6 and 7.
-</pre><pre>
+</pre>
+..., including recursive functions:
+<pre>
 The factorial of n is n times the factorial of n minus 1.
-What is the factorial of 4.</pre>
-<p>Enguage comes with about 30 pre-built concepts, or 'repertoires' from which you can copy ideas. For example, a spatially aware needs list:</p>
+What is the factorial of 4.
+</pre>
+<p>Enguage comes with repertoiress for about 30 pre-built concepts from which you can copy ideas.
+   For example, a spatially aware needs list:</p>
 <pre/>
         I need milk.
         It is from the dairy aisle.
         I need a coffee.
         And another.
         How many coffees do I need.
-        What do I need from the dairy aisle.</pre></p>
-<p>Also a food diary with a default date of today:<pre>
+        What do I need from the dairy aisle.</pre>
+<p>Also a food diary with a default date of today:</op>
+<pre>
         I just ate breakfast.
         Today I have eaten a mars bar.
         I have eaten 2 packets of crisps.
-        What have I eaten today.</pre></p>
+        What have I eaten today.
+</pre>
 <p>We can program applications without the written artefact which is source code!</p>
 <hr/>
-Usage: java -jar enguage.jar [--server &lt;port&gt;] --http &lt;port&gt; | -port &lt;port&gt; |  --test 
-where: -d <configDir>
-          config directory, default="./src/assets"
-
-       -p <port>, --port <port>
-          listens on local TCP/IP port number
-
-       -c, --client
+<pre>
+Usage: java -jar enguage.jar --http &lt;port&gt; | --port &lt;port&gt; |  --test [nnn] | --client
+where: -c, --client
           runs Enguage as a shell
 
-       -s <port>, --server <port>
-          switch to send test commands to a server.
-          This is only a test, and is on localhost.
-          (Needs to be initialised with -p nnnn)
+       -h <port>, --http <port>
+          runs as a simple http server
+       
+       -p <port>, --port <port>
+          runs as a simple server, listening on local TCP/IP port number
 
-       -t, --test
-          runs a sanity check
-
+       -t, --test [nnn]
+          runs a sanity check, on test number nnn (-nnn misses out test nnn)
+</pre>
 
 <hr/><p>This notes are are a little out of date now, originally created for the JAR only repo. 
           But they contain all the interesting stuff like hooking it all up to a backend database.
