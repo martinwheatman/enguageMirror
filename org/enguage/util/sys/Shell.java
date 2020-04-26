@@ -85,7 +85,7 @@ public class Shell {
 		name( name ).prompt( "> " ).copyright( copyright );
 	}
 	public Shell( String name ) {
-		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-19" );
+		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-20" );
 	}
 	public Shell( String name, Strings args ) { this( name ); }
 	public void interpret( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
