@@ -74,10 +74,9 @@ Enguage main(): odb root is: .os/
 Initialisation in: 213ms
 0 clashes in a total of 117
 Enguage> i need a coffee.
-Shell.interpret() =>Ok , you need a coffee.
+ => Ok , you need a coffee.
 </pre>
-<p>First thing to note, the Shell.interpret() => is just output by my shell code, nothing to worry about—it doesn’t get output when running as a server!
-Now you’re ready to programme Enguage…
+<p>Now you’re ready to programme Enguage…
 <h3>Programming</h3>
 Create a plain text file in the assets directory—a repertoire—called show_me_all_files.txt containing:
 <pre>
@@ -90,7 +89,7 @@ On "show me all files":
 <p>Now this utterance can be typed in, although this would normally be collected from some speech-to-text software!
 <pre>   
 Enguage> show me all files.
-Shell.interpret() =>Ok , assets enguage.7z enguage.jar variable.
+ => Ok , assets enguage.7z enguage.jar variable.
 Enguage> 
 </pre>
 <P>This matches the utterance with the repertoire names and loads them temporarily, so language support is both scalable and dynamic. It then loads all the signs in the repertoire, some of which may not match the filename but are ancillary to the repertoire. It then matches the utterance with the ‘name’ of the actual sign: it must match the whole utterance, this is not a keyword search like a chatbot(!)
@@ -196,15 +195,15 @@ Enguage main(): overlay is: [ /home/martin/yagadi.com, tmp(2) ]
 Initialisation in: 765ms
 2 clashes in a total of 117
 Enguage> show me all names.
-Shell.interpret() =>Ok , names include coffee , milk.
+ => Ok , names include coffee , milk.
 Enguage> show me all descriptions.
-Shell.interpret() =>Ok , descriptions include americano , dairy free.
+ => Ok , descriptions include americano , dairy free.
 Enguage> 
 </pre>
 So, this isn’t brilliant. You can probably use MySql to separate fields with commas.  (I really have thrown this together!) And, you can still run the original example, Enguage will take longest match first:
 <pre>
 Enguage> show me all files.
-Shell.interpret() =>Ok , assets enguage.7z enguage.jar variable.
+ => Ok , assets enguage.7z enguage.jar variable.
 Enguage>
 </pre>
 <h3>Running under Httpd</h3>
