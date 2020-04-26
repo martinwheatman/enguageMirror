@@ -191,14 +191,17 @@ public class Enguage {
 			test( "to the phrase my name is variable name reply hello variable name" );
 			test( "my name is martin",     "hello martin" );
 			
+			clearTheNeedsList();
 			test( "what do i need",        "you don't need anything" );
 			test( "i need a coffee",       "ok, you need a coffee" );
 			test( "what do i need",        "you need a coffee" );
-			
-			test( "what do i want",        "i don't understand" );
-			test( "want is like need",     "ok, want is like need" );
-			test( "what do i want",        "you don't want anything" );
-			
+//			
+//			test( "what do i want",        "i don't understand" );
+//			Audit.allOn();
+//			test( "want is like need",     "ok, want is like need" );
+//			test( "what do i want",        "you don't want anything" );
+//			Audit.allOff();
+//			
 			test( "interpret something can be variable quality thus" );
 			test( "first add variable quality to my quality list" );
 			test( "and then reply ok variable quality is a quality" );
@@ -210,12 +213,14 @@ public class Enguage {
 			test( "first add variable things to my variable quality list" );
 			test( "and then reply ok variable things are variable quality" );
 			test( "that concludes interpretation", "ok" );
-			
-			
+//			
+//			
 			test( "ferraris are cool",     "ok ferraris are cool" );
-			test( "want is like need" );
-			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
-			//test( "why do I want a ferrari", "because they are cool" );
+//			test( "want is like need" );
+			test( "i need a ferrari because ferraris are cool", "ok, you need a ferrari because ferraris are cool" );
+//			test( "why do I need a ferrari", "because they are cool" );
+//			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
+//			//test( "why do I want a ferrari", "because they are cool" );
 		}
 		
 		if (runThisTest( "Simple Food Diary" )) {
@@ -840,9 +845,7 @@ public class Enguage {
 		if (runThisTest( "Polymorphism - setup new idea and save" )) { // code generation features
 			
 			clearTheNeedsList( "i don't want anything" );
-			Audit.allOn();
 			test( "want is unlike need", "ok, want is unlike need", "i know" );
-			Audit.allOff();
 			test( "what do i want",      "i don't understand" );
 			
 			test( "want is like need",   "ok, want is like need" );

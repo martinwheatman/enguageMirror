@@ -24,10 +24,12 @@ public class Assets {
 			if (components.length > 1 && components[ 1 ].equals("txt"))
 				org.enguage.interp.repertoire.Concepts.add( components[ 0 ]);
 	}	}
-	static public boolean loadConcept( String name, String from, String to ) {
+	static public String loadConcept( String name, String from, String to ) {
 		boolean wasLoaded   = false,
 		        wasSilenced = false,
 		        wasAloud    = org.enguage.Enguage.shell().isAloud();
+		String conceptName = to==null ? name : name.replace( from, to );
+		//if (to != null) Audit.LOG( "Concept is "+ conceptName );
 		
 		Variable.set( LOADING, name );
 		
@@ -63,5 +65,5 @@ public class Assets {
 		}
 		
 		Variable.unset( LOADING );
-		return wasLoaded;
+		return wasLoaded ? conceptName : ""; // audit.OUT( wasLoaded ? conceptName : "" ); //
 }	}

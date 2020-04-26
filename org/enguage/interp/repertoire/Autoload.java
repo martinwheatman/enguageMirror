@@ -11,7 +11,6 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.vehicle.Language;
 
 import com.yagadi.Assets;
 
@@ -36,6 +35,13 @@ public class Autoload {
 	public static boolean ing() { return autoloading; }
 
 	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
+	
+	static public Strings loaded() {
+		Strings out = new Strings();
+		for(Map.Entry<String,Integer> entry : autoloaded.entrySet())
+			out.add( " "+ entry.getKey());
+		return out;
+	}
 
 	static public void load( Strings utterance ) {
 		if (!ing()) {
@@ -43,17 +49,15 @@ public class Autoload {
 			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
 			for (String candidate : Concepts.matched( utterance ))
-				if (!Language.isQuoted( candidate )// don't try to load: anything that is quoted, ...
-					&&	!candidate.equals(",")             // ...punctuation, ...
-					&&	!Strings.isUpperCase( candidate ) // ...hotspots, ...
-					&&  !Concepts.loaded().contains( candidate )) // not already loaded
+				if (null == autoloaded.get( candidate ))  // Candidate already loaded, OR
 				{
-					if (null != autoloaded.get( candidate )  // Candidate already loaded, OR
-						|| Assets.loadConcept( candidate, null, null ))      // just loaded so...
-							autoloaded.put( candidate, 0 ); // ...set new entry to age=0
-						else // ignore, if no repertoire!
-							audit.ERROR( "failed to autoload" );
-				}
+					String conceptName = Assets.loadConcept( candidate, null, null );     // just loaded so...
+					if (!conceptName.equals( "" ))
+						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0
+					else // ignore, if no repertoire!
+						audit.ERROR( "failed to autoload" );
+				} else
+					autoloaded.put( candidate, 0 ); // reset to age=0
 			
 			Synonyms.autoload( utterance );			
 				
@@ -88,7 +92,7 @@ public class Autoload {
 				Repertoire.signs.remove( repertoire );
 				autoloaded.remove( repertoire );
 			}
-			Synonyms.unload();
+			Synonyms.autoUnload();
 	}	}
 	public static void main( String args[] ) {
 		Audit.allOn();

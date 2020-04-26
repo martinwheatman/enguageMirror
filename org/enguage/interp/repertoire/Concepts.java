@@ -66,8 +66,9 @@ public class Concepts {
 		if (!loaded.contains( name )) {
 			// loading won't use undo - disable
 			Redo.undoEnabledIs( false );
-			if (com.yagadi.Assets.loadConcept( name, null, null ))
-				loaded.add( name );
+			String conceptName = com.yagadi.Assets.loadConcept( name, null, null );
+			if (!conceptName.equals( "" ))
+				loaded.add( conceptName );
 			Redo.undoEnabledIs( true );
 	}	}
 	static public void load( Tag concepts ) {

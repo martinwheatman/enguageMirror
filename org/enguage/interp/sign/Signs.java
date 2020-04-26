@@ -14,6 +14,7 @@ import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
+import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.pronoun.Pronoun;
@@ -209,6 +210,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				" ("+ name +"="+ size() +") "
 				+ " '"+ u.toString() +"' "
 		 		+ (ignore.size()==0?"":("avoiding "+ignore)));
+			audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
 		// -- */
 		int here = interpretation(); // an ID for this interpretation
 		

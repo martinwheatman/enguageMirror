@@ -21,26 +21,31 @@ public class Synonyms {
 	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
 	static private Attributes                synonyms = new Attributes();
 	
-	private static boolean attempt( String name, String load, String from, String to ) {
+	private static boolean load( String name, String load, String from, String to ) {
 		if (null != autoloaded.get( name )) {
 			return true;
-		} else if (com.yagadi.Assets.loadConcept( load, from, to )) {
-			autoloaded.put( name, 0 );
-			return true;
-		}
+		} else {
+			//Audit.log("name="+ name +", load="+ load +", from="+ from +", to="+to );
+			String conceptName = com.yagadi.Assets.loadConcept( load, from, to );
+			//Audit.log( "Synonym: "+ conceptName );
+			if (!conceptName.equals( "" )) {
+				//Audit.log( "Synonyms: loaded "+ conceptName );
+				autoloaded.put( conceptName, 0 );
+				return true;
+		}	}
 		return false;
 	}
 	public static void autoload( Strings utterance ) {
 		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
 		for (String synonym : synonyms.matchNames( utterance )) {
 			String existing = synonyms.get( synonym );
-			if (!attempt( synonym, existing, existing, synonym )                      &&
-				!attempt( synonym+"+"+Plural.plural( synonym ),
+			if (!load( synonym, existing, existing, synonym )                      &&
+				!load( synonym+"+"+Plural.plural( synonym ),
 				         existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
-				!attempt( Plural.plural(  synonym )+"+"+synonym,
+				!load( Plural.plural(  synonym )+"+"+synonym,
 				          Plural.plural( existing )+"+"+existing, existing, synonym ));
 	}	}
-	static public void unload() {
+	static public void autoUnload() {
 		Strings removals = new Strings();
 		
 		// create a list of repertoire to remove...
@@ -63,6 +68,22 @@ public class Synonyms {
 			Repertoire.signs.remove( repertoire );
 			autoloaded.remove( repertoire );
 	}	}
+	private static boolean unload( String name ) {
+		//audit.in( "unload", "name="+name );
+		if (autoloaded.containsKey( name )) {
+			//Audit.LOG( "removing:"+ name );
+			Repertoire.signs.remove( name );
+			autoloaded.remove( name );
+			return true; //audit.out( true );
+		}
+		return false; //audit.out( false );
+	}
+	private static void destroy( String name ) {
+		synonyms.remove( name );
+		if (unload( name ) ||
+		    unload( name+"+"+Plural.plural( name )) ||
+		    unload( Plural.plural( name )+"+"+name )) ;
+	}
 	static public Strings interpret( Strings cmds ) {
 		// e.g. ["create", "want", "need"]
 		Strings rc = Reply.failure();
@@ -76,10 +97,11 @@ public class Synonyms {
 				synonyms.add( Attribute.value( cmds.getUntil( "/" )).toString( Strings.UNDERSC ), //from
 				              Attribute.value( cmds                ).toString( Strings.UNDERSC ));//to
 				
-			else if (cmd.equals( "destroy" ) && sz==2)
-				synonyms.remove( cmds.toString( Strings.UNDERSC ));
-			
-			else if (cmd.equals( "save" ))
+			else if (cmd.equals( "destroy" ) && sz==2) {
+				destroy( cmds.toString( Strings.UNDERSC ));
+				rc = Reply.success(); // success if destroyed or not!
+				
+			} else if (cmd.equals( "save" ))
 				Variable.set( NAME, synonyms.toString());
 			
 			else if (cmd.equals( "recall" ))
