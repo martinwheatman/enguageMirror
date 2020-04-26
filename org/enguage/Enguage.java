@@ -197,10 +197,8 @@ public class Enguage {
 			test( "what do i need",        "you need a coffee" );
 //			
 //			test( "what do i want",        "i don't understand" );
-//			Audit.allOn();
 //			test( "want is like need",     "ok, want is like need" );
 //			test( "what do i want",        "you don't want anything" );
-//			Audit.allOff();
 //			
 			test( "interpret something can be variable quality thus" );
 			test( "first add variable quality to my quality list" );
@@ -213,14 +211,18 @@ public class Enguage {
 			test( "first add variable things to my variable quality list" );
 			test( "and then reply ok variable things are variable quality" );
 			test( "that concludes interpretation", "ok" );
-//			
-//			
+			
 			test( "ferraris are cool",     "ok ferraris are cool" );
-//			test( "want is like need" );
-			test( "i need a ferrari because ferraris are cool", "ok, you need a ferrari because ferraris are cool" );
-//			test( "why do I need a ferrari", "because they are cool" );
+			test( "want is like need" );
+			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
+//			Audit.allOn();
+//			test( "why do I want a ferrari", "because they are cool" );
+//			Audit.allOff();
 //			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
 //			//test( "why do I want a ferrari", "because they are cool" );
+			// Tidy up...
+			test( "I don't want anything");
+			test( "want is not like need", "ok, want is not like need" );
 		}
 		
 		if (runThisTest( "Simple Food Diary" )) {

@@ -8,3 +8,7 @@ On "PHRASE-SYNONYM is unlike PHRASE-EXISTING":
 	perform "synonyms destroy SYNONYM";
 	reply "ok, SYNONYM is unlike EXISTING".
 			
+On "PHRASE-SYNONYM is not like PHRASE-EXISTING":
+	perform "synonyms destroy SYNONYM";
+	reply "ok, SYNONYM is not like EXISTING".			
+			
