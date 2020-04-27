@@ -34,7 +34,11 @@ public class Autoload {
 	public static void    ing( boolean al ) { autoloading = al; }
 	public static boolean ing() { return autoloading; }
 
-	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
+	private static TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
+	public  static Integer get( String name ) { return autoloaded.get( name );}
+	public  static void    put( String name ) { autoloaded.put( name, 0 );}
+	public  static void remove( String name ) { autoloaded.remove( name );}
+	public  static boolean containsKey( String name ) { return autoloaded.containsKey( name );}
 	
 	static public Strings loaded() {
 		Strings out = new Strings();
@@ -92,7 +96,6 @@ public class Autoload {
 				Repertoire.signs.remove( repertoire );
 				autoloaded.remove( repertoire );
 			}
-			Synonyms.autoUnload();
 	}	}
 	public static void main( String args[] ) {
 		Audit.allOn();

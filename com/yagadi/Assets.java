@@ -40,7 +40,7 @@ public class Assets {
 			org.enguage.Enguage.shell().aloudIs( false );
 		}
 		
-		Intention.concept( name );
+		Intention.concept( conceptName );
 		InputStream  is = null;
 		
 		try { // ...add concept from user space...

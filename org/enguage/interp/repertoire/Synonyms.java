@@ -1,10 +1,5 @@
 package org.enguage.interp.repertoire;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -18,11 +13,10 @@ public class Synonyms {
 	//static private      Audit audit = new Audit( NAME );
 	static public final int      id = 237427137; //Strings.hash( "synonyms" );
 
-	static private TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
 	static private Attributes                synonyms = new Attributes();
 	
 	private static boolean load( String name, String load, String from, String to ) {
-		if (null != autoloaded.get( name )) {
+		if (null != Autoload.get( name )) {
 			return true;
 		} else {
 			//Audit.log("name="+ name +", load="+ load +", from="+ from +", to="+to );
@@ -30,7 +24,7 @@ public class Synonyms {
 			//Audit.log( "Synonym: "+ conceptName );
 			if (!conceptName.equals( "" )) {
 				//Audit.log( "Synonyms: loaded "+ conceptName );
-				autoloaded.put( conceptName, 0 );
+				Autoload.put( conceptName );
 				return true;
 		}	}
 		return false;
@@ -41,39 +35,16 @@ public class Synonyms {
 			String existing = synonyms.get( synonym );
 			if (!load( synonym, existing, existing, synonym )                      &&
 				!load( synonym+"+"+Plural.plural( synonym ),
-				         existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
+				       existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
 				!load( Plural.plural(  synonym )+"+"+synonym,
-				          Plural.plural( existing )+"+"+existing, existing, synonym ));
-	}	}
-	static public void autoUnload() {
-		Strings removals = new Strings();
-		
-		// create a list of repertoire to remove...
-		Set<Map.Entry<String,Integer>> set = autoloaded.entrySet();
-		Iterator<Map.Entry<String,Integer>> i = set.iterator();
-		while(i.hasNext()) {
-			Map.Entry<String,Integer> me = (Map.Entry<String,Integer>)i.next();
-			String repertoire = me.getKey();
-			Integer nextVal = me.getValue() + 1;
-			if (nextVal > Autoload.ttl())
-				removals.add( repertoire );
-			else
-				autoloaded.put( repertoire, nextVal );
-		}
-		
-		// ...now do the removals...
-		Iterator<String> ri = removals.iterator();
-		while (ri.hasNext()) {
-			String repertoire = ri.next();
-			Repertoire.signs.remove( repertoire );
-			autoloaded.remove( repertoire );
+				       Plural.plural( existing )+"+"+existing, existing, synonym ));
 	}	}
 	private static boolean unload( String name ) {
 		//audit.in( "unload", "name="+name );
-		if (autoloaded.containsKey( name )) {
+		if (Autoload.containsKey( name )) {
 			//Audit.LOG( "removing:"+ name );
 			Repertoire.signs.remove( name );
-			autoloaded.remove( name );
+			Autoload.remove( name );
 			return true; //audit.out( true );
 		}
 		return false; //audit.out( false );
@@ -98,6 +69,7 @@ public class Synonyms {
 				              Attribute.value( cmds                ).toString( Strings.UNDERSC ));//to
 				
 			else if (cmd.equals( "destroy" ) && sz==2) {
+				synonyms.remove( cmds.toString( Strings.UNDERSC ));
 				destroy( cmds.toString( Strings.UNDERSC ));
 				rc = Reply.success(); // success if destroyed or not!
 				

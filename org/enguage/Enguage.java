@@ -195,11 +195,11 @@ public class Enguage {
 			test( "what do i need",        "you don't need anything" );
 			test( "i need a coffee",       "ok, you need a coffee" );
 			test( "what do i need",        "you need a coffee" );
-//			
-//			test( "what do i want",        "i don't understand" );
-//			test( "want is like need",     "ok, want is like need" );
-//			test( "what do i want",        "you don't want anything" );
-//			
+			
+			test( "what do i want",        "i don't understand" );
+			test( "want is like need",     "ok, want is like need" );
+			test( "what do i want",        "you don't want anything" );
+			
 			test( "interpret something can be variable quality thus" );
 			test( "first add variable quality to my quality list" );
 			test( "and then reply ok variable quality is a quality" );
@@ -211,18 +211,16 @@ public class Enguage {
 			test( "first add variable things to my variable quality list" );
 			test( "and then reply ok variable things are variable quality" );
 			test( "that concludes interpretation", "ok" );
-			
+		
 			test( "ferraris are cool",     "ok ferraris are cool" );
 			test( "want is like need" );
 			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
-//			Audit.allOn();
-//			test( "why do I want a ferrari", "because they are cool" );
-//			Audit.allOff();
-//			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
-//			//test( "why do I want a ferrari", "because they are cool" );
+			test( "why do I want a ferrari", "because ferraris are cool" );
+			
 			// Tidy up...
-			test( "I don't want anything");
+			test( "I don't want anything", "ok, you don't want anything" );
 			test( "want is not like need", "ok, want is not like need" );
+			test( "what do i want",        "i don't understand" );
 		}
 		
 		if (runThisTest( "Simple Food Diary" )) {
@@ -390,7 +388,7 @@ public class Enguage {
 			test( "i am not baking a cake",  "ok, you're not baking a cake" );
 			test( "am i baking a cake",      "no, you're not baking a cake" );
 			test( "i do not need any eggs",  "ok, you don't need any eggs" );
-			test( "why do i need 3 eggs",    "sorry, i did not think that you need 3 eggs" );
+			test( "why do i need 3 eggs",    "sorry, i don't think that you need 3 eggs" );
 			test( "why might i need 3 eggs", "because you're baking a cake" );
 			
 		}

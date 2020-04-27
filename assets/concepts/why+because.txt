@@ -10,11 +10,11 @@ On "SIGN-WHAT because SIGN-CAUSE":
 	
 On "why do SIGN-WHAT":
 	do WHAT;
-	undo;
-	if i know, get the cause of WHAT from _user whyBecause list;
+	if not, reply "sorry, i do not think that EXT-WHAT";
+	get the cause of WHAT from _user whyBecause list;
+	if not, reply "I do not know";
 	set cause to ...;
-	reply "because EXT-CAUSE";
-	then, if not, reply "sorry, i did not think that EXT-WHAT".
+	reply "because EXT-CAUSE".
 On "why does SIGN-WHAT", why do WHAT.
 
 On "why am I PHRASE-WHAT":
