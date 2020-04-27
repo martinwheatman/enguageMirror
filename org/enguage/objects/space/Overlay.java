@@ -274,7 +274,6 @@ public class Overlay {
 		//audit.out();
 	}
 	static public boolean compact() {
-		audit.in( "compact", "combining "+ (number()-1) +" underlays" );
 		boolean rc = false;
 		if (attached() && number > 2) {
 			File src, dst;
@@ -298,51 +297,39 @@ public class Overlay {
 			
 			rc = true;
 		}
-		audit.out( "compact "+ (rc?"done":"failed") +", count="+ number() +", highest="+ (number()-1) );
 		return rc;
 	}
 
 	// --- Transactions
 	static boolean inTxn = false;
 	static public void reStartTxn() {
-		audit.in( "restartTxn" );
 		if (inTxn) {
 			remove(); // remove this overlay
 			remove(); // remove previous -- this is the undo bit
 			append(); // restart a new txn
-		}
-		audit.out();
-	}
+	}	}
 	static public void finishTxn( boolean undoIsEnabled ) {
-		audit.in( "finishTxn" );
 		if (undoIsEnabled) {
 			inTxn = false;
 			compact();
-		}
-		audit.out();
-	}
+	}	}
 	static public void startTxn( boolean undoIsEnabled ) {
-		audit.in( "startTxn" );
 		if (undoIsEnabled) {
 			inTxn = true;
 			append();
-		}
-		audit.out();
-	}
+	}	}
 
 	// --- Test code...
 	
 	static public Strings interpret( Strings argv ) {
 		String rc = Shell.FAIL;
 		int argc = argv.size();
-		//Overlay o = Get();
 		
 		Strings values = argv.copyAfter( 0 );
 		String  value  = values.toString( Strings.PATH ),
 				cmd    = argv.get( 0 );
 		
 		if (cmd.equals("attach") && (2 >= argc)) {
-			//audit.debug( "enguage series existing="+ Boolean.valueOf( existing( "enguage" )));
 			if (2 == argc) {
 				count();
 				if (0 >= number)
