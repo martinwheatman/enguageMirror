@@ -45,7 +45,7 @@ public class Enguage {
 	static public  void    init( String root, Object ctx ) {
 		Fs.root( root );
 		context( ctx );
-		com.yagadi.Assets.addConcepts( Assets.NAME + File.separator );   // built-ins
+		com.yagadi.Assets.addConcepts();   // built-ins
 		Concepts.addFrom( Concepts.NAME ); // pre-defined
 	}
 
@@ -992,7 +992,7 @@ public class Enguage {
 		
 		Strings      cmds = new Strings( args );
 		String       cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
-		String   location = Assets.NAME + File.separator;
+		String   location = Assets.LOCATION + File.separator;
 
 		Enguage.init( fsys, null ); // null 'cos we're not on Android
 		Enguage.config( Fs.stringFromFile( location + "/config.xml" ));

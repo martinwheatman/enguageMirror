@@ -13,12 +13,11 @@ import org.enguage.util.Audit;
 public class Assets {
 	
 	static public final String  LOADING = "concept";
-	static public final String     NAME = "assets";
+	static public final String LOCATION = "assets";
 	//static private     Audit    audit = new Audit( NAME );
-	//static public final String LOCATION = NAME + File.separator;
 	
-	static public void addConcepts( String loc ) {
-		String[] names = new File( loc + Concepts.NAME ).list();
+	static public void addConcepts() {
+		String[] names = new File( LOCATION + File.separator + Concepts.NAME ).list();
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))
@@ -29,7 +28,6 @@ public class Assets {
 		        wasSilenced = false,
 		        wasAloud    = org.enguage.Enguage.shell().isAloud();
 		String conceptName = to==null ? name : name.replace( from, to );
-		//if (to != null) Audit.LOG( "Concept is "+ conceptName );
 		
 		Variable.set( LOADING, name );
 		
@@ -51,7 +49,7 @@ public class Assets {
 			InputStream is2 = null;
 			try { // ...or add concept from asset...
 				String fname = org.enguage.interp.repertoire.Concepts.name( name );
-				is2 = new FileInputStream( NAME + File.separator + fname );
+				is2 = new FileInputStream( LOCATION + File.separator + fname );
 				org.enguage.Enguage.shell().interpret( is2, from, to );
 				wasLoaded = true;
 			} catch (IOException e2) {
@@ -65,5 +63,5 @@ public class Assets {
 		}
 		
 		Variable.unset( LOADING );
-		return wasLoaded ? conceptName : ""; // audit.OUT( wasLoaded ? conceptName : "" ); //
+		return wasLoaded ? conceptName : "";
 }	}
