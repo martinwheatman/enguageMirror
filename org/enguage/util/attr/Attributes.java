@@ -84,7 +84,7 @@ public class Attributes extends ArrayList<Attribute> {
 		}
 		return true;
 	}
-	public boolean has( String name ) {
+	public boolean hasName( String name ) {
 		Iterator<Attribute> i = iterator();
 		while (i.hasNext())
 			if (i.next().name().equalsIgnoreCase( name ))

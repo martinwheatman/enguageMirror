@@ -198,7 +198,7 @@ public class List extends ArrayList<Item> {
 		audit.in( "getAttrVal", "item='"+ item.toXml() +"', name="+ name );
 		for (Item t : this) 
 			if ((item == null || t.matchesDescription( item ))
-				&& (t.attributes().has( name )))
+				&& (t.attributes().hasName( name )))
 					rc.add( t.attributes().get( name ));
 		return audit.out( rc );
 	}
@@ -233,8 +233,8 @@ public class List extends ArrayList<Item> {
 		if (-1 != (n = index( tbr, exact ))) {
 			Item tmp = remove( n );
 			
-			if (   tbr.attributes().has( "quantity" )
-			    && tmp.attributes().has( "quantity" ))
+			if (   tbr.attributes().hasName( "quantity" )
+			    && tmp.attributes().hasName( "quantity" ))
 			{
 				String maxRemoval = new Number( tmp.attribute( "quantity" )).toString();
 				

@@ -63,11 +63,22 @@ public class Autoload {
 				} else
 					autoloaded.put( candidate, 0 ); // reset to age=0
 			
-			Synonyms.autoload( utterance );			
+			Similarity.autoload( utterance );			
 				
 			Redo.undoEnabledIs( true );
 			Autoload.ing( false );
 	}	}
+	static void unload( String name ) {
+		Repertoire.signs.remove( name );
+		remove( name );
+	}
+	static boolean unloadConditionally( String name ) {
+		if (containsKey( name )) {
+			unload( name );
+			return true;
+		}
+		return false;
+	}
 	static public void unload() {
 		
 		if (!Repertoire.transformation() &&
@@ -91,11 +102,8 @@ public class Autoload {
 			
 			// ...now do the removals...
 			Iterator<String> ri = repsToRemove.iterator();
-			while (ri.hasNext()) {
-				String repertoire = ri.next();
-				Repertoire.signs.remove( repertoire );
-				autoloaded.remove( repertoire );
-			}
+			while (ri.hasNext()) unload( ri.next() );
+
 	}	}
 	public static void main( String args[] ) {
 		Audit.allOn();

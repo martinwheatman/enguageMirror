@@ -333,6 +333,7 @@ public class Enguage {
 			test( "save  spoken concepts as hello", "ok" );
 			// then remove the sign...
 			Repertoire.signs.remove( "hello" );
+			// TODO: This needs also to be removed from Autoloaded concepts?
 			// So, this will reload the newly created repertoire
 			test( "hello",                          "hello to you too" );
 			// OK, now delete the repertoire (and the sign)

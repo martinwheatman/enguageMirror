@@ -1,14 +1,14 @@
 # synonyms: "want is like need"
 #
-On "PHRASE-SYNONYM is like PHRASE-EXISTING":
-	perform "synonyms create SYNONYM / EXISTING";
-	reply "ok, SYNONYM is like EXISTING".
+On "PHRASE-SIMILAR is like PHRASE-EXISTING":
+	perform "similarity between SIMILAR and EXISTING";
+	reply "ok, SIMILAR is like EXISTING".
 
-On "PHRASE-SYNONYM is unlike PHRASE-EXISTING":
-	perform "synonyms destroy SYNONYM";
-	reply "ok, SYNONYM is unlike EXISTING".
+On "PHRASE-SIMILAR is unlike PHRASE-EXISTING":
+	perform "similarity destroy SIMILAR";
+	reply "ok, SIMILAR is unlike EXISTING".
 			
-On "PHRASE-SYNONYM is not like PHRASE-EXISTING":
-	perform "synonyms destroy SYNONYM";
-	reply "ok, SYNONYM is not like EXISTING".			
+On "PHRASE-SIMILAR is not like PHRASE-EXISTING":
+	perform "similarity destroy SIMILAR";
+	reply "ok, SIMILAR is not like EXISTING".			
 			
