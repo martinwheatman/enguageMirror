@@ -331,11 +331,13 @@ public class Enguage {
 			test( "ok", "ok" );
 			// OK, now save this...
 			test( "save  spoken concepts as hello", "ok" );
-			// then remove the sign...
-			Repertoire.signs.remove( "hello" );
-			// TODO: This needs also to be removed from Autoloaded concepts?
-			// So, this will reload the newly created repertoire
+			
+			// then remove the cached concept...
+			Autoload.unload( "hello" );
+			
+			// So, this will reload from the saved repertoire
 			test( "hello",                          "hello to you too" );
+			
 			// OK, now delete the repertoire (and the sign)
 			test( "delete spoken concept hello",    "ok" );
 			// ...and its gone. We're clean again!

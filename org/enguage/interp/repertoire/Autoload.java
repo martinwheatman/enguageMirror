@@ -68,7 +68,7 @@ public class Autoload {
 			Redo.undoEnabledIs( true );
 			Autoload.ing( false );
 	}	}
-	static void unload( String name ) {
+	static public void unload( String name ) {
 		Repertoire.signs.remove( name );
 		remove( name );
 	}
