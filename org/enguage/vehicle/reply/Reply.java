@@ -203,11 +203,10 @@ public class Reply { // a reply is basically a formatted answer
 	public  void    verbose( boolean v ) { f.shrt( v );}
 
 	public static boolean isLiteral( Strings sa ) { return sa.areLowerCase() && !sa.contains( Strings.ELLIPSIS );}
-	public  Reply   format( Strings format ) {
+	public  Reply   format( String  format ) { return format( new Strings( format ));}
+	public Reply   format( Strings format ) {
 		cache = null; //de-cache any previous reply
-		//Strings format = new Strings( sa );
 		f.ormat( format );
-
 		if (isLiteral( format ) && a.none()) // remove a.none?
 			answer( format.toString() ); // overwrite answer!
 		return this;

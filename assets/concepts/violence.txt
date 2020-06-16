@@ -67,7 +67,7 @@ On "they STATE violence":
 	set the value of they to ... ;
 	reply "ok, they are ...";
 	if not, unset the value of they;
-	reply "i don't know".
+	reply "sorry, i don't think they STATE violence".
 	
 On "who are they":
 	get the value of they;

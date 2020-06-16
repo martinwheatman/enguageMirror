@@ -2,9 +2,9 @@ cause is transitive.
 
 On "SIGN-WHAT because SIGN-CAUSE":
 	WHAT;
-	if not, reply "sorry, i do not think EXT-WHAT";
+	if not, reply;
 	CAUSE;
-	if not, reply "sorry, i do not think EXT-CAUSE";
+	if not, reply;
 	perform "list add _user whyBecause WHAT CAUSE";
 	reply "ok, EXT-WHAT because EXT-CAUSE".
 	

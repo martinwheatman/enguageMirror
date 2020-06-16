@@ -274,10 +274,7 @@ public class Intention {
 	}
 	private Reply reply( Reply r ) {
 		//audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		/* TODO: 
-		 * if reply on its own, return reply from previous/inner reply -- imagination!
-		 */
-		r.format( value.equals( "" ) ? Reply.success() : new Strings( value ));
+		r.format( value.equals( "" ) ? r.toString() : value );
 		r.type( new Strings( value ));
 		r.doneIs( r.type() != Reply.DNU );
 		return r; //(Reply) audit.out( r );
