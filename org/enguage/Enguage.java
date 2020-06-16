@@ -374,7 +374,7 @@ public class Enguage {
 			test( "do i need 250 grams of flour because i am baking a cake",
                        "Sorry, it is not the case that you need 250 grams of flour" );
 			test( "why am i heating the oven",
-					   "Sorry, it is not the case that you're heating the oven" );
+					   "Sorry, i don't know if you're heating the oven" );
 			
 			audit.subtl( "Transitivity" );
 			test( "i need to go to the shops because i need 3 eggs",
@@ -391,7 +391,7 @@ public class Enguage {
 			test( "i am not baking a cake",  "ok, you're not baking a cake" );
 			test( "am i baking a cake",      "no, you're not baking a cake" );
 			test( "i do not need any eggs",  "ok, you don't need any eggs" );
-			test( "why do i need 3 eggs",    "sorry, i don't think that you need 3 eggs" );
+			test( "why do i need 3 eggs",    "no, you don't need 3 eggs" );
 			test( "why might i need 3 eggs", "because you're baking a cake" );
 			
 		}

@@ -2,16 +2,16 @@ cause is transitive.
 
 On "SIGN-WHAT because SIGN-CAUSE":
 	WHAT;
-	if not, reply;
+	if not, reply "";
 	CAUSE;
-	if not, reply;
-	perform "list add _user whyBecause WHAT CAUSE";
+	if not, reply "";
+	perform "list add _user causal WHAT CAUSE";
 	reply "ok, EXT-WHAT because EXT-CAUSE".
 	
 On "why do SIGN-WHAT":
 	do WHAT;
-	if not, reply "sorry, i do not think that EXT-WHAT";
-	get the cause of WHAT from _user whyBecause list;
+	if not, reply "";
+	get the cause of WHAT from _user causal list;
 	if not, reply "I do not know";
 	set cause to ...;
 	reply "because EXT-CAUSE".
@@ -19,13 +19,13 @@ On "why does SIGN-WHAT", why do WHAT.
 
 On "why am I PHRASE-WHAT":
 	am i WHAT;
-	if not, reply "sorry, it is not the case that you are WHAT";
-	get the cause of i am WHAT from _user whyBecause list;
+	if not, reply "";
+	get the cause of i am WHAT from _user causal list;
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
 
 On "why might SIGN-WHAT":
-	get the cause of WHAT from _user whyBecause list;
+	get the cause of WHAT from _user causal list;
 	if not, reply "I don't know";
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
@@ -33,7 +33,7 @@ On "why does SIGN-WHAT", why do WHAT.
 
 
 On "do SIGN-WHAT because SIGN-CAUSE":
-	does WHAT exist in _user whyBecause list;
+	does WHAT exist in _user causal list;
 	if not, reply "sorry, it is not the case that EXT-WHAT";
 	is CAUSE the cause of WHAT;
 	if not, reply "sorry, it is not the case EXT-WHAT because EXT-CAUSE";
@@ -41,7 +41,7 @@ On "do SIGN-WHAT because SIGN-CAUSE":
 On "does SIGN-WHAT because SIGN-CAUSE", do WHAT because CAUSE.
 
 On "is SIGN-CAUSE the cause of SIGN-WHAT":
-	perform "list isAttrVal SUBJECT whyBecause cause WHAT CAUSE";
+	perform "list isAttrVal SUBJECT causal cause WHAT CAUSE";
 	if not, reply "no, EXT-WHAT is not because EXT-CAUSE";
 	then, reply "yes, EXT-WHAT because EXT-CAUSE".
 
