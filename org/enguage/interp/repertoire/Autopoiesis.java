@@ -187,6 +187,9 @@ public class Autopoiesis {
 		new Sign( "Then on ",  new Quote( "x" ), ", if not, reply ", new Quote( "y" ))
 			.append( new Intention( Intention.append, Intention.ELSE_REPLY +" Y")),
 			
+		new Sign( "Then on ",  new Quote( "x" ), ", if not, reply " )
+			.append( new Intention( Intention.append, Intention.ELSE_REPLY +" \"\" ")),
+			
 		new Sign( " Finally on ", new Quote( "x" ), ",   perform ", new Quote( "y" ))
 			.append( new Intention( Intention.append, Intention.FINALLY+" Y" )),
 			

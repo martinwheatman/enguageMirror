@@ -2,15 +2,15 @@ cause is transitive.
 
 On "SIGN-WHAT because SIGN-CAUSE":
 	WHAT;
-	if not, reply "";
+	if not, reply;
 	CAUSE;
-	if not, reply "";
+	if not, reply;
 	perform "list add _user causal WHAT CAUSE";
 	reply "ok, EXT-WHAT because EXT-CAUSE".
 	
 On "why do SIGN-WHAT":
 	do WHAT;
-	if not, reply "";
+	if not, reply;
 	get the cause of WHAT from _user causal list;
 	if not, reply "I do not know";
 	set cause to ...;
@@ -19,7 +19,7 @@ On "why does SIGN-WHAT", why do WHAT.
 
 On "why am I PHRASE-WHAT":
 	am i WHAT;
-	if not, reply "";
+	if not, reply;
 	get the cause of i am WHAT from _user causal list;
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
