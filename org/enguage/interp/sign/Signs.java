@@ -236,7 +236,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					Pronoun.update( match );
 					
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
-					audit.debug( "matched '"+ s +"', of "+s.concept()+", with "+ match.toString() +", and "+ Context.valueOf());
+					audit.debug( "matched:\n"+ s +"Concept: "+s.concept()+", with "+ match.toString() +", and "+ Context.valueOf());
 					
 					//audit.debug("setting "+ i +" to "+ here );
 					s.interpretation = here; // mark here first as this understanding may be toxic!
