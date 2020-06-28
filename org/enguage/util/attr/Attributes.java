@@ -50,6 +50,15 @@ public class Attributes extends ArrayList<Attribute> {
 		nchars = i;
 	}
 	
+	static public Attributes next( ListIterator<String> si ) {
+		Attributes attrs = new Attributes();
+		audit.in( "next", "si="+ Strings.peek( si ));
+		Attribute attr;
+		while (null != (attr = Attribute.next( si )))
+			attrs.add( attr );
+		return (Attributes) audit.out( attrs );
+	}
+	
 	// save the number of chars read in creating attributes...
 	private int  nchars = 0;
 	public  int  nchars() { return nchars;}
@@ -272,6 +281,7 @@ public class Attributes extends ArrayList<Attribute> {
 		a.add( new Attribute( "martin", "heroic" ));
 		a.add( new Attribute( "ruth", "fab" ));
 		Audit.log( "Initial test: "+ a.toString());
+		
 		Audit.log( "\tmartin is "+  a.get( "martin" ));
 		Audit.log( "\truth is "+   a.get( "ruth" ));
 		Audit.log( "\tjames is "+  a.get( "james" ));
@@ -289,4 +299,11 @@ public class Attributes extends ArrayList<Attribute> {
 			Audit.log( "matched" );
 		else
 			Audit.log( "not mathing" );
+		
+		Audit.allOn();
+		Strings s = new Strings( "martin='heroic' ruth='fab'" );
+		Audit.log( "Test string is; ["+ s.toString()+"]");
+		Audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
+		Attributes attrs = Attributes.next( s.listIterator());
+		Audit.log( "Copy is: >"+ attrs.toString() +"<");
 }	}

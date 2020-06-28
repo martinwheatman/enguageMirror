@@ -4,11 +4,12 @@ import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.attr.Attribute;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
 
 public class Attribute {
+	
+	static private      Audit  audit         = new Audit( "Attribute" );
 	
 	// TODO: these don't seem to swap yet :( -- see colloquia.txt
 	static public final char   DEF_QUOTE_CH  = '\''; // '"';  //
@@ -16,24 +17,6 @@ public class Attribute {
 	static public final char   ALT_QUOTE_CH  = '"'; // '\''; //
 	static public final String ALT_QUOTE_STR = "\""; //  "'";  //
 	
-	//static private      Audit  audit         = new Audit( "Attribute" );
-	
-	private static String valueFromAttribute( String s ) {
-		// takes value from name='value' -- 
-		String stripped = s;
-		int n = s.indexOf( "=" );
-		if (-1 != n) {
-			stripped = s.substring( 1+n );
-			char quoteCh = stripped.charAt( 0 );
-			if (quoteCh == stripped.charAt( stripped.length() - 1) &&
-				(	quoteCh == ALT_QUOTE_CH
-				 ||	quoteCh == DEF_QUOTE_CH   
-				)	)
-				stripped = Strings.trim( stripped, quoteCh );
-		}
-		return stripped;
-	}
-
 	private char quote = DEF_QUOTE_CH;
 	private char quote() { return quote; }
 	private void quote( char ch ) { quote = ch; }
@@ -63,6 +46,41 @@ public class Attribute {
 		return from;
 	}
 	
+	// --- c'tors ---
+	private static boolean isAlphabetic( String s ) {
+		int sz = s.length();
+		for (int i=0; i<sz; i++) {
+			char ch = s.charAt( i ); 
+			if (Character.getType( ch ) != Character.LOWERCASE_LETTER
+				&& Character.getType( ch ) != Character.UPPERCASE_LETTER )
+				return false;
+		}
+		return true;
+	}
+	public static boolean isAttribute( String s ) {
+		// this defines attribute as:xxxxx='y y y y y'
+		// this, ultimately,  may be:xxxxxx="y y y y xxxx='y y y's y'"
+		Strings sa = new Strings( s );
+		return (sa.size() == 3)
+				&& isAlphabetic( sa.get( 0 ))
+				&& sa.get( 1 ).equals( "=" );
+	}
+	private static String stripQuotes( String str ) {
+		char quoteCh = str.charAt( 0 );
+		if (quoteCh == str.charAt( str.length() - 1) &&
+			(	quoteCh == ALT_QUOTE_CH
+			 ||	quoteCh == DEF_QUOTE_CH   
+			)	)
+			str = Strings.trim( str, quoteCh );
+		return str;
+	}
+	private static String valueFromAttribute( String s ) {
+		// takes value from name='value' -- 
+		int n = s.indexOf( "=" );
+		return -1 != n ? stripQuotes( s.substring( 1+n )) : s;
+	}
+	// --- 
+	public Attribute( String s ) { this( getName( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
 	public Attribute( String nm, String val ) {
 		name( nm );
 		if (nm.equals( When.ID )) { // this code is linked to Item::getFormatComponentValue()
@@ -73,21 +91,61 @@ public class Attribute {
 		} else
 			value( val );
 	}
-	public Attribute( String s ) { this( getName( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
 	
-	static public Attribute getAttribute( ListIterator<String> si ) {
-		return new Attribute( si.hasNext() ? si.next() : "" );
+	static public Attribute next( ListIterator<String> si ) {
+		audit.in( "next", "si="+Strings.peek( si ));
+		Attribute a = null;
+		if (si.hasNext()) {
+			String name = si.next();
+			if (!si.hasNext() || !name.matches( "[a-zA-Z]+"))
+				si.previous();
+			else if (!si.hasNext() || !si.next().equals( "=" ))
+				si.previous();   // readahead=2, but...
+				//si.previous(); // don't put ">" back
+			else
+				a = new Attribute(
+						name,
+						Strings.trim(
+								Strings.trim( si.next(), Attribute.DEF_QUOTE_CH ),
+								Attribute.ALT_QUOTE_CH
+				)		);
+		}
+		return (Attribute) audit.out( a );
 	}
+//	static public Attribute next( ListIterator<String> si) {
+//		audit.in( "next", "si="+Strings.peek( si ));
+//		Attribute a = null;
+//		if (si.hasNext()) {
+//			String nm = si.next();
+//			if (!nm.matches( "[a-zA-Z]+" ) || !si.hasNext()) {
+//				si.previous();
+//			} else if (!si.next().equals( "=" ) || !si.hasNext()) {
+//				si.previous();
+//				si.previous();
+//			} else {
+//				String val = si.next();
+//				if (!val.matches( "[a-zA-Z'\"]+" ) //||
+//					//!val.matches( "'+" ) ||
+//					//!val.matches( "[a-zA-Z]+" )
+//					) {
+//					si.previous();
+//					si.previous();
+//					si.previous();
+//				} else 
+//					a = new Attribute( nm, val );
+//		}	}
+//		return (Attribute) audit.out( a );
+//	}
 	
+	// -- toString
+	static private String asString( String name, char quote, String value ) {
+		return name +"="+ quote + value + quote;
+	}
 	static public String asString( String name, String value ) {
 		return asString(      // quotes are this way round for a reason!
 				name,
-
 				value.indexOf( ALT_QUOTE_STR ) == -1 ? ALT_QUOTE_CH : DEF_QUOTE_CH,
 				value );
-	}
-	static public String asString( String name, char quote, String value ) {
-		return name +"="+ quote + value + quote;
 	}
 	public String toString() { return toString( quote() ); }
 	public String toString( char quote ) { return asString( name, quote, value );}
@@ -109,24 +167,6 @@ public class Attribute {
 			else
 				rc.add(  item );
 		return rc;
-	}
-	private static boolean isAlphabetic( String s ) {
-		int sz = s.length();
-		for (int i=0; i<sz; i++) {
-			char ch = s.charAt( i ); 
-			if (Character.getType( ch ) != Character.LOWERCASE_LETTER
-				&& Character.getType( ch ) != Character.UPPERCASE_LETTER )
-				return false;
-		}
-		return true;
-	}
-	static public boolean isAttribute( String s ) {
-		// this defines attribute as:xxxxx='y y y y y'
-		// this, ultimately,  may be:xxxxxx="y y y y xxxx='y y y's y'"
-		Strings sa = new Strings( s );
-		return (sa.size() == 3)
-				&& isAlphabetic( sa.get( 0 ))
-				&& sa.get( 1 ).equals( "=" );
 	}
 	// --- test code
 	static private String attrTest( String s ) {
@@ -151,4 +191,12 @@ public class Attribute {
 		sa = sa.normalise();
 		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		
+		Audit.allOn();
+		Attribute attr;
+		Strings s = new Strings( "martin='heroic' ruth='fab'" );
+		Audit.log( "Test string is; ["+ s.toString()+"]");
+		Audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
+		ListIterator<String> si = s.listIterator();
+		while (null != (attr = Attribute.next( si )))
+			Audit.log( "Copy is: >"+ attr.toString() +"<");
 }	}

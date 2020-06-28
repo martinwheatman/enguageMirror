@@ -78,7 +78,7 @@ public class Item {
 		attributes( a );
 	}
 	public Item( String s ) {
-		// "black coffee quantity='1' unit='cup'
+		// "black coffee quantity='1' unit='cup'"
 		this( new Strings( s ).contract( "=" ));
 	}
 	public Item( Strings ss, Attributes as ) {
@@ -308,9 +308,9 @@ public class Item {
 		if (expected != null && !expected.equals( ans ))
 			audit.FATAL( "the item: '" + ans +"'\n  is not the expected: '"+ expected +"'");
 		else if (expected == null)
-			Audit.log( "is ===> "+ ans );
+			audit.passed( " is ===> "+ ans );
 		else
-			Audit.log( " PASSED: "+ ans );
+			audit.passed( " PASSED: "+ ans );
 	}
 	public static void main( String args[] ) {
 		//Audit.allOn();
@@ -358,5 +358,6 @@ public class Item {
 		
 		audit.title( "Groups" );
 		Audit.log( groups.toString() +"." );
-		Audit.log( "PASSED" );
+		
+		audit.PASSED();
 }	}

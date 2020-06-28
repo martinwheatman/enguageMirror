@@ -7,6 +7,7 @@ import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.reply.Reply;
@@ -23,11 +24,9 @@ public class List extends ArrayList<Item> {
 	public void restore() {value.restore();}
 	
 	// constructors
-	public List( String e, String a ) {loadTagData( value = new Value( e, a ));}
-	
-	//----------------------- List of Items Code --------
-	private void loadTagData( Value v ) {
-		Strings ss = new Strings( v.getAsString());
+	public List( String e, String a ) {
+		value = new Value( e, a );
+		Strings ss = new Strings( value.getAsString());
 		ListIterator<String> si = ss.listIterator();
 		if (doName( si )) {
 			Item it;
@@ -45,9 +44,8 @@ public class List extends ArrayList<Item> {
 			si.hasNext() && si.next().equals( "item" ))
 		{
 			it = new Item();
-			Attribute a;
-			while (null != (a = getAttr( si )))
-				it.attributes().add( a );
+			it.attributes( Attributes.next( si ));
+			si.next(); // consume ">"
 			it.description( getDescr( si ));
 			if (!si.hasNext() || !si.next().equals( "/" ) &&
 				!si.hasNext() || !si.next().equals( "item" ))
@@ -63,21 +61,8 @@ public class List extends ArrayList<Item> {
 			sa.append( s );
 		return sa;
 	}
-	private Attribute getAttr( ListIterator<String> si ) {
-		// going to read "name", "=", "val" or ">" descr1 descr2
-		if (si.hasNext()) {
-			String name = si.next();
-			if (si.hasNext()) {
-				if (si.next().equals( "=" ) && si.hasNext())
-					return new Attribute( name, Strings.trim( Strings.trim( si.next(), Attribute.DEF_QUOTE_CH ), Attribute.ALT_QUOTE_CH) );
-				else
-					si.previous();   // readahead=2, but...
-					//si.previous(); // don't put ">" back
-			} else
-				si.previous();
-		}
-		return null;
-	}
+	//----------------------- end of Constructor  --------
+
 	private int index( Item item, boolean exact ) {
 		//audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
 		
@@ -159,8 +144,6 @@ public class List extends ArrayList<Item> {
 		value.set( toXml() );
 		return audit.out( rc );
 	}
-	//----------------------- end of List of Items Code --------
-
 	private String update( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
 		int n = index( item, false ); // exact match? No!
@@ -438,6 +421,8 @@ public class List extends ArrayList<Item> {
 					+ "but should return:\n"
 					+ "\t'"+ result +"'"
 			);
+		else
+			audit.passed( result );
 	}
 	static public void test( int id, String cmd ) { test( id, cmd, "" );}
 	static public void test( String cmd ) { test( -1, cmd, "" );}
@@ -445,12 +430,6 @@ public class List extends ArrayList<Item> {
 	
 	public static void main( String[] argv ) {
 		
-		//Audit.allOn();
-		
-		// Audit.runtimeDebug = true;
-		// Audit.tracing = true;
-		// localDebug = true;
-
 		List l = new List( "martin", "needs" );
 		l.append( new Item( "coffee   unit='cup' quantity='1' locator='from' location='Sainsburys'"   ));
 		l.append( new Item( "biscuits            quantity='1' locator='from' location='Sainsburys'"   ));
@@ -461,7 +440,7 @@ public class List extends ArrayList<Item> {
 		Item.groupOn( Where.LOCTN );
 		Audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
 		
-		// BEGIN SHOPPING LIST TESTS...
+		audit.title( "SHOPPING LIST TESTS..." );
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );
 		test( 102, "add martin needs coffee quantity='1'", "a coffee" );
@@ -480,18 +459,16 @@ public class List extends ArrayList<Item> {
 		
 		test( 112, "removeAny martin needs coffee", "coffee" );
 		test( 113, "get martin needs", "");
-		// END SHOPPING LIST TEST.
 		
-		// BEGIN Calendar list tests...
+		audit.title( "Calendar list tests..." );
 		Item.groupOn( "" ); // reset
 		Item.format( ","+Where.LOCTR +" "+ Where.LOCTN+",WHEN" );
 		test( 201, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
 				  "fred at the pub at 7 pm on the 25th of December , 2015" );
 		test( 202, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
-		// END Calendar list tests.
-
-		// BEGIN test why
+		
+		audit.title( "why" );
 		l = new List( "martin", "why" );
 		
 		l.append( new Item( "i need 3 eggs               cause='i am baking a cake'"   ));
@@ -500,7 +477,6 @@ public class List extends ArrayList<Item> {
 		
 		test( 300, "getAttrVal martin why name='cause' i need 3 eggs",              "i am baking a cake" );
 		test( 301, "getAttrVal martin why name='cause' i need to go to the garage", "i need 3 eggs" );
-		// END test why
 		
-		Audit.log( "All tests pass!" );
+		audit.PASSED();
 }	}

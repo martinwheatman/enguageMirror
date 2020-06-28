@@ -40,7 +40,11 @@ public class Function {
 		if (params.size() > 2)
 			params.remove( params.size()-2 ); // remove 'and'
 		
-		new Function( name, params, Attribute.getAttribute( si ).value() );
+		new Function(
+				name,
+				params,
+				new Attribute( si.hasNext() ? si.next() : "" ).value()
+		);
 		
 		audit.out();
 		return Shell.Success;
