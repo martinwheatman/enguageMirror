@@ -29,8 +29,8 @@ public class Item {
 	static public  Strings groupOn() { return groupOn; }
 	
 	// members: name, desc, attr
-	private String  name = new String();
-	public  String  name() {return name; }
+	private String  name = new String( NAME );
+	public  String  name() { return name; }
 	public  Item    name( String s ) { name=s; return this; }
 	
 	private Strings descr = new Strings();
@@ -57,14 +57,13 @@ public class Item {
 	public  String     attribute( String name ) { return attrs.get( name ); }
 	public  void       replace( String name, String val ) { attrs.replace( name, val );}
 	
-	public Item() { name( "item" ); }
+	public Item() {};
 	public Item( Item item ) { // copy c'tor
-		this();
+		name( item.name() );
 		description( new Strings( item.description() ));
 		attributes( new Attributes( item.attributes() ));
 	}
 	public Item( Strings ss ) { // [ "black", "coffee", "quantity='1'", "unit='cup'" ]
-		this();
 		Attributes  a = new Attributes();
 		Strings descr = new Strings();
 		
@@ -77,16 +76,23 @@ public class Item {
 		description(  descr );
 		attributes( a );
 	}
-	public Item( String s ) {
-		// "black coffee quantity='1' unit='cup'"
-		this( new Strings( s ).contract( "=" ));
+	static public Item next( ListIterator<String> si ) {
+		Item it = null;
+		if (si.hasNext() && si.next().equals( "<" ) &&
+			si.hasNext() && si.next().equals( "item" )) // will be "/" on end list
+		{
+			it = new Item();
+			it.attributes( Attributes.next( si ));
+			si.next(); // consume ">"
+			it.description( Strings.copyUntil( si, "<" ));
+			if (!si.hasNext() || !si.next().equals(    "/" ) &&
+				!si.hasNext() || !si.next().equals( "item" ) &&
+				!si.hasNext() || !si.next().equals(    ">" )   )
+			{
+				audit.ERROR( "Missing end-item tag");
+		}	}
+		return it;
 	}
-	public Item( Strings ss, Attributes as ) {
-		// [ "black", "coffee", "quantity='1'"], [unit='cup']
-		this( ss );
-		attributes().addAll( as );
-	}
-	
 	// -- list helpers
 	public long when() {
 		long it = -1;
