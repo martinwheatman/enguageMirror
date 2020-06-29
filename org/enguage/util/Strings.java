@@ -497,6 +497,15 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return b;
 	}
+	static public Strings copyUntil( ListIterator<String> si, String until ) {
+		// until is separator, it is consumed
+		String tmp;
+		Strings sa = new Strings();
+		while (si.hasNext() &&
+		       !(tmp = si.next()).equals( until ))
+			sa.append( tmp );
+		return sa;
+	}
 	static public Strings fromNonWS( String buf ) {
 		Strings a = new Strings();
 		if (buf != null) {

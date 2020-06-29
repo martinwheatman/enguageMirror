@@ -7,7 +7,6 @@ import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
-import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.reply.Reply;
@@ -25,44 +24,34 @@ public class List extends ArrayList<Item> {
 	
 	// constructors
 	public List( String e, String a ) {
-		value = new Value( e, a );
-		Strings ss = new Strings( value.getAsString());
-		ListIterator<String> si = ss.listIterator();
-		if (doName( si )) {
-			Item it;
-			while (null != (it = getItem( si )))
-				add( it );
-	}	}
-	private boolean doName( ListIterator<String> si ) {
-		return si.hasNext() && si.next().equals("<")
-			&& si.hasNext() && si.next().equals( NAME );
-	}
-	private Item getItem( ListIterator<String> si ) {
-		Item it = null;
-		if (si.hasNext() && si.next().equals( ">" ) &&
-			si.hasNext() && si.next().equals( "<" ) &&
-			si.hasNext() && si.next().equals( "item" ))
-		{
-			it = new Item();
-			it.attributes( Attributes.next( si ));
-			si.next(); // consume ">"
-			it.description( getDescr( si ));
-			if (!si.hasNext() || !si.next().equals( "/" ) &&
-				!si.hasNext() || !si.next().equals( "item" ))
-				audit.ERROR( "Missing end-item tag");
-		}
-		return it;
-	}
-	private Strings getDescr( ListIterator<String> si ) {
-		Strings sa = new Strings();
-		String s;
-		while (si.hasNext() &&
-				!(s = si.next()).equals( "<" ))
-			sa.append( s );
-		return sa;
+		fromValue( value = new Value( e, a ));
 	}
 	//----------------------- end of Constructor  --------
-
+	private void fromValue( Value v ) {
+		Item it;
+		ListIterator<String> si = new Strings( v.getAsString() ).listIterator();
+		if (si.hasNext() && si.next().equals(  "<" ) &&
+			si.hasNext() && si.next().equals( value.name() ) &&
+			si.hasNext() && si.next().equals(  ">" )   )
+		{
+			while (null != (it = Item.next( si ))) add( it );
+	}	}
+	private String toXml() {
+		String list = "";
+		for (Item item : this)
+			list += item.toXml()+"\n      ";
+		return "<"+value.name()+">"+ list +"</"+value.name()+">";
+	}
+	public  String toString() { return toString( null ); }
+	private String toString( Item pattern ) { // to Items class!
+		audit.in( "get", "item="+ (pattern==null?"ALL":pattern.toXml()));
+		Groups g=new Groups();
+		for (Item item : this)
+			if (pattern == null || item.matches( pattern ))
+				g.add( item.group(), item.toString());
+		return audit.out( g.toString());
+	}
+	// --- List Processing Methods ---
 	private int index( Item item, boolean exact ) {
 		//audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
 		
@@ -109,15 +98,6 @@ public class List extends ArrayList<Item> {
 		audit.out( count );
 		return count.toString();
 	}
-	public  String toString() { return toString( null ); }
-	private String toString( Item pattern ) { // to Items class!
-		audit.in( "get", "item="+ (pattern==null?"ALL":pattern.toXml()));
-		Groups g=new Groups();
-		for (Item item : this)
-			if (pattern == null || item.matches( pattern ))
-				g.add( item.group(), item.toString());
-		return audit.out( g.toString());
-	}
 	private String append( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString()+ " "+ item.group(); // return what we've just said
 		audit.in( "append", item.toXml() +" ("+ rc +")" );
@@ -156,12 +136,6 @@ public class List extends ArrayList<Item> {
 			value.set( toXml() );
 		}
 		return audit.out( rc );
-	}
-	private String toXml() {
-		String list = "";
-		for (Item item : this)
-			list += item.toXml()+"\n      ";
-		return "<list>"+ list +"</list>";
 	}
 	private String delAttr( Item item, String name ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
@@ -431,9 +405,9 @@ public class List extends ArrayList<Item> {
 	public static void main( String[] argv ) {
 		
 		List l = new List( "martin", "needs" );
-		l.append( new Item( "coffee   unit='cup' quantity='1' locator='from' location='Sainsburys'"   ));
-		l.append( new Item( "biscuits            quantity='1' locator='from' location='Sainsburys'"   ));
-		l.append( new Item( "locator='from' unit='pint' quantity='1' location='the dairy aisle' milk" ));
+		l.append( new Item( new Strings( "coffee   unit='cup' quantity='1' locator='from' location='Sainsburys'"   )));
+		l.append( new Item( new Strings( "biscuits            quantity='1' locator='from' location='Sainsburys'"   )));
+		l.append( new Item( new Strings( "locator='from' unit='pint' quantity='1' location='the dairy aisle' milk" )));
 		Audit.log( "martin needs: "+ l.toString());
 		
 		Item.format( "QUANTITY,UNIT of,,"+ Where.LOCTR +" "+ Where.LOCTN );
@@ -471,8 +445,8 @@ public class List extends ArrayList<Item> {
 		audit.title( "why" );
 		l = new List( "martin", "why" );
 		
-		l.append( new Item( "i need 3 eggs               cause='i am baking a cake'"   ));
-		l.append( new Item( "i need to go to the garage  cause='i need 3 eggs'"   ));
+		l.append( new Item( new Strings( "i need 3 eggs               cause='i am baking a cake'" ).contract("=")));
+		l.append( new Item( new Strings( "i need to go to the garage  cause='i need 3 eggs'"      ).contract("=")));
 		l.value.set( l.toXml() );
 		
 		test( 300, "getAttrVal martin why name='cause' i need 3 eggs",              "i am baking a cake" );

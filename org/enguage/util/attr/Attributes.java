@@ -49,7 +49,8 @@ public class Attributes extends ArrayList<Attribute> {
 		}
 		nchars = i;
 	}
-	
+
+	// -- from/to Strings
 	static public Attributes next( ListIterator<String> si ) {
 		Attributes attrs = new Attributes();
 		audit.in( "next", "si="+ Strings.peek( si ));
@@ -58,8 +59,18 @@ public class Attributes extends ArrayList<Attribute> {
 			attrs.add( attr );
 		return (Attributes) audit.out( attrs );
 	}
+	public String toString( String sep ) {
+		if (null == sep) sep = "";
+		String s = "";
+		Iterator<Attribute> ai = iterator();
+		while (ai.hasNext())
+			s += sep + ai.next().toString();
+		return s;
+	}
+	public String toString() { return toString( " " ); }
+
 	
-	// save the number of chars read in creating attributes...
+	// -- save the number of chars read in creating attributes...
 	private int  nchars = 0;
 	public  int  nchars() { return nchars;}
 	public  void nchars( int n ) { nchars = n;}
@@ -71,10 +82,6 @@ public class Attributes extends ArrayList<Attribute> {
 	public Strings matchNames( Strings utterance ) {
 		//[want="need"].matchNames(["i","want","a","pony"])=>["want"]
 		Strings matches = new Strings();
-//		Strings synonyms = names();
-//		for (String uttered : utterance )
-//			if (synonyms.contains( uttered ))
-//				matches.add( uttered );
 		Strings synonyms = names();
 		for (String name : synonyms )
 			if (utterance.contains( new Strings( name, '_' )))
@@ -106,12 +113,10 @@ public class Attributes extends ArrayList<Attribute> {
 	}
 	public String get( String name ) {
 		Attribute a;
-		Iterator<Attribute> i = iterator();
-		while (i.hasNext()) {
-			a = i.next();
-			if (a.name().equalsIgnoreCase( name ))
+		Iterator<Attribute> ai = iterator();
+		while (ai.hasNext())
+			if (( a = ai.next() ).name().equalsIgnoreCase( name ))
 				return a.value();
-		}
 		return "";
 	}
 	public Attributes replace( String name, String value ) {
@@ -141,16 +146,6 @@ public class Attributes extends ArrayList<Attribute> {
 		return rc;
 	}
 	
-	public String toString( String sep ) {
-		if (null == sep) sep = "";
-		String s = "";
-		Iterator<Attribute> ai = iterator();
-		while (ai.hasNext())
-			s += sep + ai.next().toString();
-		return s;
-	}
-	public String toString() { return toString( " " ); }
-
 	public static boolean isUpperCase( String s ) {return s.equals( s.toUpperCase( Locale.getDefault()));}
 	public static boolean isAlphabetic( String s ) {
 		for ( int i=0; i< s.length(); i++ ) {

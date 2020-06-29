@@ -103,23 +103,33 @@ public class Value {
 				
 				if (cmd.equals( "set" ))
 					v.set( value );
-				else if (cmd.equals( "exists" ))
-					rc = (null==value || 0 == value.length()) ?
-							v.exists() ? Shell.SUCCESS : Shell.FAIL :
-								v.contains( value ) ? Shell.SUCCESS : Shell.FAIL;
+				
 				else if (cmd.equals( "equals" )) 
 					rc = v.equals( value ) ? Shell.SUCCESS : Shell.FAIL;
+				
+				else if (cmd.equals( "contains" ))
+					rc = v.contains( value ) ? Shell.SUCCESS : Shell.FAIL;
+				
 				else
 					usage( cmd, entity, attribute, a );
+				
 			} else {
 				if (cmd.equals( "get" ))
 					rc = v.getAsString();
+				
 				else if (cmd.equals( "unset" ))
 					v.unset();
+				
 				else if (cmd.equals( "delete" ))
 					v.ignore();
+				
 				else if (cmd.equals( "undelete" ))
 					v.restore();
+				
+				else if (cmd.equals( "exists" ))
+					// could check to see if it contains <attribute>?
+					rc = v.exists() ? Shell.SUCCESS : Shell.FAIL ;
+				
 				else 
 					rc = usage( cmd, entity, attribute, a );
 			}

@@ -75,7 +75,7 @@ public class Attribute {
 		return str;
 	}
 	private static String valueFromAttribute( String s ) {
-		// takes value from name='value' -- 
+		// takes value from: name='value'
 		int n = s.indexOf( "=" );
 		return -1 != n ? stripQuotes( s.substring( 1+n )) : s;
 	}
@@ -91,7 +91,7 @@ public class Attribute {
 		} else
 			value( val );
 	}
-	
+	// --- String list factory
 	static public Attribute next( ListIterator<String> si ) {
 		audit.in( "next", "si="+Strings.peek( si ));
 		Attribute a = null;
@@ -112,30 +112,6 @@ public class Attribute {
 		}
 		return (Attribute) audit.out( a );
 	}
-//	static public Attribute next( ListIterator<String> si) {
-//		audit.in( "next", "si="+Strings.peek( si ));
-//		Attribute a = null;
-//		if (si.hasNext()) {
-//			String nm = si.next();
-//			if (!nm.matches( "[a-zA-Z]+" ) || !si.hasNext()) {
-//				si.previous();
-//			} else if (!si.next().equals( "=" ) || !si.hasNext()) {
-//				si.previous();
-//				si.previous();
-//			} else {
-//				String val = si.next();
-//				if (!val.matches( "[a-zA-Z'\"]+" ) //||
-//					//!val.matches( "'+" ) ||
-//					//!val.matches( "[a-zA-Z]+" )
-//					) {
-//					si.previous();
-//					si.previous();
-//					si.previous();
-//				} else 
-//					a = new Attribute( nm, val );
-//		}	}
-//		return (Attribute) audit.out( a );
-//	}
 	
 	// -- toString
 	static private String asString( String name, char quote, String value ) {
