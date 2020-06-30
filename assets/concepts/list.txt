@@ -6,7 +6,7 @@
 ### 
 ####################################################
 
-On "does SUBJECT LIST list exist", perform "value exists SUBJECT LIST list".
+On "does SUBJECT LIST list exist", perform "value exists SUBJECT LIST".
 
 On "does NUMERIC-QUANTITY    PHRASE-OBJECT                 exist  in SUBJECT LIST list",                   perform " list    matches SUBJECT LIST OBJECT".
 On "does                     PHRASE-OBJECT                 exist  in SUBJECT LIST list",                   perform " list    matches SUBJECT LIST OBJECT".

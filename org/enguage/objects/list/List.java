@@ -31,7 +31,7 @@ public class List extends ArrayList<Item> {
 		Item it;
 		ListIterator<String> si = new Strings( v.getAsString() ).listIterator();
 		if (si.hasNext() && si.next().equals(  "<" ) &&
-			si.hasNext() && si.next().equals( NAME ) &&
+			si.hasNext() && si.next().equals( value.name() ) &&
 			si.hasNext() && si.next().equals(  ">" )   )
 		{
 			while (null != (it = Item.next( si ))) add( it );
@@ -40,7 +40,7 @@ public class List extends ArrayList<Item> {
 		String list = "";
 		for (Item item : this)
 			list += item.toXml()+"\n      ";
-		return "<list>"+ list +"</list>";
+		return "<"+value.name()+">"+ list +"</"+value.name()+">";
 	}
 	public  String toString() { return toString( null ); }
 	private String toString( Item pattern ) { // to Items class!
