@@ -10,7 +10,7 @@ import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.objects.expr.Function;
 import org.enguage.objects.list.Item;
-import org.enguage.objects.list.List;
+import org.enguage.objects.list.Items;
 import org.enguage.objects.list.Transitive;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -45,7 +45,7 @@ public class Sofa extends Shell {
 				case Sign.id  :      return org.enguage.interp.sign.Sign.interpret( a );
 				case Link.id  :      return Link.interpret( a );
 				case Item.id  :      return Item.interpret( a );
-				case List.id  :      return List.interpret( a );
+				case Items.id :      return Items.interpret( a );
 				case Value.id :      return Value.interpret( a );
 				case Every.id :      return Every.interpret( a );
 				case Plural.id :     return Plural.interpret( a );

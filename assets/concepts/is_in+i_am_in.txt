@@ -1,5 +1,5 @@
 On "CITY is in COUNTRY":
-	perform "list add _user cityCountry CITY COUNTRY";
+	perform "items add _user cityCountry CITY COUNTRY";
 	then, reply "ok, CITY is in COUNTRY".
 	
 On "I am in CITY":

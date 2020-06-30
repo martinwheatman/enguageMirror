@@ -12,35 +12,41 @@ import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
-public class List extends ArrayList<Item> {
+public class Items extends ArrayList<Item> {
 	static final long serialVersionUID = 0L;
-	static final public  String   NAME = "list";
+	static final public  String   NAME = "items";
 	static       private Audit   audit = new Audit( NAME );
-	static final public  int        id = 217510; //Strings.hash( NAME );
+	static final public  int        id = 4468041; //Strings.hash( NAME );
 	
-	Value value; // instead of extending this class...
+	Value value;
 	public void ignore() {value.ignore();}
 	public void restore() {value.restore();}
 	
-	// constructors
-	public List( String e, String a ) {
-		fromValue( value = new Value( e, a ));
+	public Items( String ent, String attr ) {
+		value = new Value( ent, attr );
+		fromXml(
+			new Strings( value.getAsString() ).listIterator()	
+		);
 	}
-	//----------------------- end of Constructor  --------
-	private void fromValue( Value v ) {
+	
+	// --- to/from XML ---
+	private void fromXml( ListIterator<String> si ) {
 		Item it;
-		ListIterator<String> si = new Strings( v.getAsString() ).listIterator();
-		if (si.hasNext() && si.next().equals(  "<" ) &&
+		if (si.hasNext() && si.next().equals(     "<"      ) &&
 			si.hasNext() && si.next().equals( value.name() ) &&
-			si.hasNext() && si.next().equals(  ">" )   )
+			si.hasNext() )
 		{
-			while (null != (it = Item.next( si ))) add( it );
+			String tmp = si.next();
+			if (tmp.equals( ">" ))
+				while (null != (it = Item.next( si ))) add( it );
+			else if (!tmp.equals( "/" ))
+				audit.ERROR( "unknown token in Xml file: "+ tmp );
 	}	}
 	private String toXml() {
 		String list = "";
 		for (Item item : this)
 			list += item.toXml()+"\n      ";
-		return "<"+value.name()+">"+ list +"</"+value.name()+">";
+		return "<"+value.name()+ (list.equals("") ? "/" : ">"+ list +"</"+value.name()) +">";
 	}
 	public  String toString() { return toString( null ); }
 	private String toString( Item pattern ) { // to Items class!
@@ -51,6 +57,8 @@ public class List extends ArrayList<Item> {
 				g.add( item.group(), item.toString());
 		return audit.out( g.toString());
 	}
+	// -------------------------------
+	
 	// --- List Processing Methods ---
 	private int index( Item item, boolean exact ) {
 		//audit.in( "find", "lookingFor="+ item.toXml() +" f/p="+ (exact ? "FULL":"partial"));
@@ -272,7 +280,7 @@ public class List extends ArrayList<Item> {
 				atr = sa.remove( 0 ),
 				attrName = cmd.equals( "getAttrVal" ) ? sa.remove( 0 ) : "";
 		
-		List list = new List( ent, atr );
+		Items list = new Items( ent, atr );
 		
 		if (cmd.equals( "delete" )) {
 			list.ignore();
@@ -386,7 +394,7 @@ public class List extends ArrayList<Item> {
 		return new Strings( s ).contract( "+=" ).contract( "-=" ).contract( "=" );
 	}
 	static public void test( int id, String cmd, String result ) {
-		Strings s = List.interpret( params( cmd ));
+		Strings s = Items.interpret( params( cmd ));
 		if (!result.equals( "" ) && !s.equals( new Strings( result )))
 			audit.FATAL(
 					(id != -1 ? id +": " : "")+
@@ -404,7 +412,7 @@ public class List extends ArrayList<Item> {
 	
 	public static void main( String[] argv ) {
 		
-		List l = new List( "martin", "needs" );
+		Items l = new Items( "martin", "needs" );
 		l.append( new Item( new Strings( "coffee   unit='cup' quantity='1' locator='from' location='Sainsburys'"   )));
 		l.append( new Item( new Strings( "biscuits            quantity='1' locator='from' location='Sainsburys'"   )));
 		l.append( new Item( new Strings( "locator='from' unit='pint' quantity='1' location='the dairy aisle' milk" )));
@@ -443,7 +451,7 @@ public class List extends ArrayList<Item> {
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
 		
 		audit.title( "why" );
-		l = new List( "martin", "why" );
+		l = new Items( "martin", "why" );
 		
 		l.append( new Item( new Strings( "i need 3 eggs               cause='i am baking a cake'" ).contract("=")));
 		l.append( new Item( new Strings( "i need to go to the garage  cause='i need 3 eggs'"      ).contract("=")));

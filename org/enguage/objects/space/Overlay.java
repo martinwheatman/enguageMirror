@@ -18,8 +18,9 @@ class OverlayShell extends Shell {
 }
 
 public class Overlay {
-	static       Audit   audit = new Audit( "Overlay" );
-	static public  final int        id = 188374473; //Strings.hash( "overlay" );
+	static public  final String NAME = "overlay";
+	static               Audit audit = new Audit( "Overlay" );
+	static public  final int      id = 188374473; //Strings.hash( "overlay" );
 	
 	static private final String DELETE_CH = "!";  // RENAME_CH = "^";
 	static private final String  DETACHED = null;
