@@ -15,7 +15,7 @@ On "SUBJECT is meeting PHRASE-WHOM":
 	set output format to ",LOCATOR LOCATION,WHEN";
 	assert SUBJECT is meeting WHOM;
 	reply "I know";
-	if not, perform "list add SUBJECT meeting WHOM";
+	if not, perform "items add SUBJECT meeting WHOM";
 	then, reply "ok, SUBJECT is meeting ...".
 On "I am meeting PHRASE-WHOM", _user is meeting WHOM.
 #On "help", reply "to say who you are meeting".
@@ -49,21 +49,21 @@ On "where am i meeting PHRASE-WHOM", where is _user meeting WHOM.
 #On "help", reply "to find out where you are meeting the person".
 
 On "SUBJECT is not meeting PHRASE-WHOM":
-	perform "list remove SUBJECT meeting WHOM";
+	perform "items remove SUBJECT meeting WHOM";
 	if not, "I know";
 	then, reply "ok, SUBJECT is not meeting WHOM".
 On "I am not meeting PHRASE-WHOM", _user is not meeting WHOM.
 
 On "is SUBJECT meeting PHRASE-WHOM":
 	set output format to ",WHEN,LOCATOR LOCATION";
-	perform "list exists SUBJECT meeting WHOM";
+	perform "items exists SUBJECT meeting WHOM";
 	if not, reply "no, SUBJECT is not meeting WHOM";
 	then, reply "yes, SUBJECT is meeting WHOM".
 On "am i meeting PHRASE-WHOM", is _user meeting WHOM.
 
 On "who is SUBJECT meeting":
 	set output format to ",at WHERE,WHEN";
-	perform "list get SUBJECT meeting -";
+	perform "items get SUBJECT meeting -";
 	if not, reply "SUBJECT is not meeting anybody";
 	then, reply "SUBJECT is meeting ...".
 On "who am i meeting", who is _user meeting.

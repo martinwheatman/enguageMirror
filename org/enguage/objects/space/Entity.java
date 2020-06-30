@@ -13,6 +13,7 @@ class EntityShell extends Shell {
 }
 
 public class Entity {
+	static public  final String NAME = "entity";
 	static private       Audit audit = new Audit( "Entity" );
 	static public  final int      id = 66162693; //Strings.hash( "entity" );
 	

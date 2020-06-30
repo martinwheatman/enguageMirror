@@ -91,7 +91,7 @@ On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
 
 ###### Pronoun ancillaries - it is/they are from X #######
 On "the PHRASE-OBJECT is": #  LOCATOR LOCATION are implied anyway!
-	perform "list update SUBJECT needs OBJECT";
+	perform "items update SUBJECT needs OBJECT";
 	reply "ok, OBJECT is LOCATOR LOCATION".
 
 On "it is":
@@ -149,28 +149,28 @@ On "what does SUBJECT need":
 	reply "SUBJECT needs ...".
 
 On "does SUBJECT need PHRASE-OBJECT":
-	perform "list exists SUBJECT needs OBJECT";
+	perform "items exists SUBJECT needs OBJECT";
 	if not, reply "no, SUBJECT does not need OBJECT";
 	reply "yes, SUBJECT needs OBJECT".
 
 On "does SUBJECT need NUMERIC-QUANTITY PHRASE-OBJECT":
-	perform "list exists SUBJECT needs OBJECT QUANTITY";
+	perform "items exists SUBJECT needs OBJECT QUANTITY";
 	if not, reply "no, SUBJECT does not need QUANTITY OBJECT";
 	reply "yes, SUBJECT needs QUANTITY OBJECT".
 
 On "does SUBJECT need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
-	perform "list exists SUBJECT needs OBJECT QUANTITY UNIT";
+	perform "items exists SUBJECT needs OBJECT QUANTITY UNIT";
 	if not, reply "no, SUBJECT does not need QUANTITY UNIT of OBJECT";
 	reply "yes, SUBJECT needs QUANTITY UNIT of OBJECT".
 
 On "how many UNIT of PHRASE-OBJECT does SUBJECT need":
-	perform "list exists SUBJECT needs OBJECT";
+	perform "items exists SUBJECT needs OBJECT";
 	if not, reply "SUBJECT does not need OBJECT";
 	how many UNIT of OBJECT in SUBJECT needs list;
 	reply "..., SUBJECT needs ... UNIT of OBJECT".
 
 On "how many PHRASE-OBJECT does SUBJECT need":
-	perform "list exists SUBJECT needs OBJECT";
+	perform "items exists SUBJECT needs OBJECT";
 	if not, reply "SUBJECT does not need OBJECT";
 	how many OBJECT in SUBJECT needs list;
 	reply "..., SUBJECT needs ... OBJECT".

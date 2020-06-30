@@ -5,7 +5,7 @@ On "SIGN-WHAT because SIGN-CAUSE":
 	if not, reply;
 	CAUSE;
 	if not, reply;
-	perform "list add _user causal WHAT CAUSE";
+	perform "items add _user causal WHAT CAUSE";
 	reply "ok, EXT-WHAT because EXT-CAUSE".
 	
 On "why do SIGN-WHAT":
@@ -41,7 +41,7 @@ On "do SIGN-WHAT because SIGN-CAUSE":
 On "does SIGN-WHAT because SIGN-CAUSE", do WHAT because CAUSE.
 
 On "is SIGN-CAUSE the cause of SIGN-WHAT":
-	perform "list isAttrVal SUBJECT causal cause WHAT CAUSE";
+	perform "items isAttrVal SUBJECT causal cause WHAT CAUSE";
 	if not, reply "no, EXT-WHAT is not because EXT-CAUSE";
 	then, reply "yes, EXT-WHAT because EXT-CAUSE".
 

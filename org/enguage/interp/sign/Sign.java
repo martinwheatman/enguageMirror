@@ -18,7 +18,7 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Reply;
 
 public class Sign {
-	private static final String   NAME = "sign";
+	public  static final String   NAME = "sign";
 	private static       Audit   audit = new Audit( NAME );
 	public  static final int        id = 340224; //Strings.hash( NAME );
 	private static final String indent = "    ";
