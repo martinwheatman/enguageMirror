@@ -66,6 +66,7 @@ public class Items extends ArrayList<Item> {
 		String ilocr = item.attribute( Where.LOCTR );
 		String ilocn = item.attribute( Where.LOCTN );
 		long   iwhen = item.when();
+		boolean desc = item.description().size() > 0;
 		
 		int pos = -1;
 		for (Item li : this) {
@@ -79,7 +80,7 @@ public class Items extends ArrayList<Item> {
 					&& (ilocn.equals( "" ) || ilocn.equals( tlocn )))
 				)
 				&&     (( exact && li.equals( item ))
-			         || (!exact && li.matchesDescription( item )))
+			         || (!exact && (desc ? li.matchesDescription( item ):li.matchesAttributes( item ))))
 			 )
 				return pos; //audit.out( pos );
 		}
@@ -99,9 +100,10 @@ public class Items extends ArrayList<Item> {
 	private String quantity( Item item, boolean exact ) { // e.g. ["cake slices","2"]
 		audit.in( "quantity", "Item="+item.toString() + ", exact="+ (exact?"T":"F"));
 		Integer count = 0;
+		boolean desc = item.description().size() > 0;
 		for (Item t : this ) // go though the file
 			if (   ( exact && t.equals( item ))
-			    || (!exact && t.matchesDescription( item )))
+			    || (!exact && (desc ? t.matchesDescription( item ):t.matchesAttributes( item ))))
 				count += t.quantity();
 		audit.out( count );
 		return count.toString();
@@ -161,8 +163,9 @@ public class Items extends ArrayList<Item> {
 	private Strings getAttrVal( Item item, String name ) {
 		Strings   rc = new Strings();
 		audit.in( "getAttrVal", "item='"+ item.toXml() +"', name="+ name );
+		boolean desc = item.description().size() > 0;
 		for (Item t : this) 
-			if ((item == null || t.matchesDescription( item ))
+			if ((item == null || (desc ? t.matchesDescription( item ):t.matchesAttributes( item )))
 				&& (t.attributes().hasName( name )))
 					rc.add( t.attributes().get( name ));
 		return audit.out( rc );
