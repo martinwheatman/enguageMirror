@@ -21,6 +21,7 @@ import org.enguage.objects.space.Entity;
 import org.enguage.objects.space.Link;
 import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Colloquial;
@@ -287,11 +288,17 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		} else 
 			return toString( seps.get( 0 ), seps.get( 1 ), seps.get( 2 ));
 	} // don't use traceOutStrings here -- it calls Strings.toString()!
-	/* --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
-	static private String[] fromString( String buf ) {
-		Strings a = new Strings( buf );
-		return Strings.fromArrayList( a );
-	}*/
+	// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+	public static boolean isAlphabetic( String s ) {
+		int sz = s.length();
+		for (int i=0; i<sz; i++) {
+			char ch = s.charAt( i ); 
+			if (   Character.getType( ch ) != Character.LOWERCASE_LETTER
+				&& Character.getType( ch ) != Character.UPPERCASE_LETTER )
+				return false;
+		}
+		return true;
+	}
 	static public boolean isNumeric( String s ) {
 		try {
 			return !Float.isNaN( Float.parseFloat( s ));
@@ -735,6 +742,15 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			else if (ch == DOUBLE_QUOTE) s = Strings.triml( s, sz, DOUBLE_QUOTE );
 		}
 		return s; 
+	}
+	public static String stripAttrQuotes( String str ) {
+		char quoteCh = str.charAt( 0 );
+		if (quoteCh == str.charAt( str.length() - 1) &&
+			(	quoteCh == Attribute.ALT_QUOTE_CH
+			 ||	quoteCh == Attribute.DEF_QUOTE_CH   
+			)	)
+			str = Strings.trim( str, quoteCh );
+		return str;
 	}
 	public Strings strip( String from, String to ) {
 		// this {one} and {two} is => one two

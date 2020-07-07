@@ -53,11 +53,11 @@ public class Attributes extends ArrayList<Attribute> {
 	// -- from/to Strings
 	static public Attributes next( ListIterator<String> si ) {
 		Attributes attrs = new Attributes();
-		audit.in( "next", "si="+ Strings.peek( si ));
+		//audit.in( "next", "si="+ Strings.peek( si ));
 		Attribute attr;
 		while (null != (attr = Attribute.next( si )))
 			attrs.add( attr );
-		return (Attributes) audit.out( attrs );
+		return attrs; //(Attributes) audit.out( attrs );
 	}
 	public String toString( String sep ) {
 		if (null == sep) sep = "";

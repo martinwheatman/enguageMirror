@@ -9,7 +9,7 @@ import org.enguage.vehicle.when.When;
 
 public class Attribute {
 	
-	static private      Audit  audit         = new Audit( "Attribute" );
+	//static private      Audit  audit         = new Audit( "Attribute" );
 	
 	// TODO: these don't seem to swap yet :( -- see colloquia.txt
 	static public final char   DEF_QUOTE_CH  = '\''; // '"';  //
@@ -47,37 +47,18 @@ public class Attribute {
 	}
 	
 	// --- c'tors ---
-	private static boolean isAlphabetic( String s ) {
-		int sz = s.length();
-		for (int i=0; i<sz; i++) {
-			char ch = s.charAt( i ); 
-			if (Character.getType( ch ) != Character.LOWERCASE_LETTER
-				&& Character.getType( ch ) != Character.UPPERCASE_LETTER )
-				return false;
-		}
-		return true;
-	}
 	public static boolean isAttribute( String s ) {
 		// this defines attribute as:xxxxx='y y y y y'
 		// this, ultimately,  may be:xxxxxx="y y y y xxxx='y y y's y'"
 		Strings sa = new Strings( s );
 		return (sa.size() == 3)
-				&& isAlphabetic( sa.get( 0 ))
+				&& Strings.isAlphabetic( sa.get( 0 ))
 				&& sa.get( 1 ).equals( "=" );
 	}
-	private static String stripQuotes( String str ) {
-		char quoteCh = str.charAt( 0 );
-		if (quoteCh == str.charAt( str.length() - 1) &&
-			(	quoteCh == ALT_QUOTE_CH
-			 ||	quoteCh == DEF_QUOTE_CH   
-			)	)
-			str = Strings.trim( str, quoteCh );
-		return str;
-	}
 	private static String valueFromAttribute( String s ) {
-		// takes value from: name='value'
+		// takes "value" from: "name='value'"
 		int n = s.indexOf( "=" );
-		return -1 != n ? stripQuotes( s.substring( 1+n )) : s;
+		return -1 != n ? Strings.stripAttrQuotes( s.substring( 1+n )) : s;
 	}
 	// --- 
 	public Attribute( String s ) { this( getName( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
@@ -93,7 +74,7 @@ public class Attribute {
 	}
 	// --- String list factory
 	static public Attribute next( ListIterator<String> si ) {
-		audit.in( "next", "si="+Strings.peek( si ));
+		//audit.in( "next", "si="+Strings.peek( si ));
 		Attribute a = null;
 		if (si.hasNext()) {
 			String name = si.next();
@@ -110,7 +91,7 @@ public class Attribute {
 								Attribute.ALT_QUOTE_CH
 				)		);
 		}
-		return (Attribute) audit.out( a );
+		return a; //(Attribute) audit.out( a );
 	}
 	
 	// -- toString
