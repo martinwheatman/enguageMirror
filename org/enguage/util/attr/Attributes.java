@@ -95,10 +95,14 @@ public class Attributes extends ArrayList<Attribute> {
 		Iterator<Attribute> pi = pattern.iterator();
 		while (pi.hasNext()) {
 			Attribute a = pi.next();
-			if (!a.value().equalsIgnoreCase( get( a.name() )))
+			if (!Plural.singular(a.value()).equalsIgnoreCase( Plural.singular( get( a.name() ) )))
 				return false;
 		}
 		return true;
+	}
+	public Attribute first() {
+		ListIterator<Attribute> li = listIterator();
+		return li.hasNext() ? li.next() : null; 
 	}
 	public boolean hasName( String name ) {
 		Iterator<Attribute> i = iterator();
