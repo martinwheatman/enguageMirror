@@ -125,6 +125,9 @@ public class Attribute {
 				rc.add(  item );
 		return rc;
 	}
+	public boolean equals( Attribute cmp ) {
+		return this.name.equals( cmp.name ) && this.value.equals( cmp.value );
+	}
 	// --- test code
 	static private String attrTest( String s ) {
 		return s +" "+ (isAttribute( s ) ? "IS":"is NOT") +" an attribute";
