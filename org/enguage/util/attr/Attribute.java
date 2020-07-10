@@ -4,6 +4,7 @@ import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
 
@@ -125,8 +126,12 @@ public class Attribute {
 				rc.add(  item );
 		return rc;
 	}
-	public boolean equals( Attribute cmp ) {
-		return this.name.equals( cmp.name ) && this.value.equals( cmp.value );
+	public boolean equalsIgnoreCase( Attribute cmp ) {
+		return this.name.equalsIgnoreCase( cmp.name ) &&
+						Plural.singular( this.value )
+				.equalsIgnoreCase(
+						Plural.singular( cmp.value )
+					);
 	}
 	// --- test code
 	static private String attrTest( String s ) {

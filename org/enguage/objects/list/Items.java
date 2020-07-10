@@ -80,7 +80,7 @@ public class Items extends ArrayList<Item> {
 					&& (ilocn.equals( "" ) || ilocn.equals( tlocn )))
 				)
 				&&     (( exact && li.equals( item ))
-			         || (!exact && (desc ? li.matchesDescription( item ):li.matchesAttributes( item ))))
+			         || (!exact && (desc ? li.matchesDescription( item ):li.firstEquals( item ))))
 			 )
 				return pos; //audit.out( pos );
 		}
@@ -103,7 +103,7 @@ public class Items extends ArrayList<Item> {
 		boolean desc = item.description().size() > 0;
 		for (Item t : this ) // go though the file
 			if (   ( exact && t.equals( item ))
-			    || (!exact && (desc ? t.matchesDescription( item ):t.matchesAttributes( item ))))
+			    || (!exact && (desc ? t.matchesDescription( item ):t.firstEquals( item ))))
 				count += t.quantity();
 		audit.out( count );
 		return count.toString();
@@ -165,12 +165,12 @@ public class Items extends ArrayList<Item> {
 		audit.in( "getAttrVal", "item='"+ item.toXml() +"', name="+ name );
 		boolean desc = item.description().size() > 0;
 		for (Item t : this) 
-			if ((item == null || (desc ? t.matchesDescription( item ):t.matchesAttributes( item )))
-				&& (t.attributes().hasName( name )))
+			if ((item == null || (desc ? t.matchesDescription( item ):t.firstEquals( item )))
+				&& t.attributes().hasName( name ))
 					rc.add( t.attributes().get( name ));
 		return audit.out( rc );
 	}
-	private boolean isAttrVal( Strings descr, String name, String value ) {
+	private boolean isAttrVal( Strings effect, String name, String value ) {
 		/* Example:??? item = name = value =???
 		 * item  => <item cause="i am baking a cake">i need 3 eggs</item>
 		 * name  => 'cause'
@@ -178,13 +178,13 @@ public class Items extends ArrayList<Item> {
 		 */
 		boolean rc = false,
 		   isTrans = Transitive.isConcept( name );
-		audit.in( "isAttrVal", "descr='"+ descr +"', name='"+ name +"', value="+ value );
+		audit.in( "isAttrVal", "effect='"+ effect +"', name='"+ name +"', value="+ value );
 		for (Item li : this) {
-			if (descr.equalsIgnoreCase( li.description())) {
+			if (effect.equalsIgnoreCase( li.description().size() > 0 ? li.description(): new Strings(li.attributes().get( "what" )))) {
 				String cause = li.attributes().get( name );
-				if (!cause.equals(""))
-					if (           (rc = cause.equals( value )) ||
-					    isTrans && (rc = isAttrVal( descr, name, cause )))
+				if (!cause.equals( "" ))
+					if (            (rc = cause.equals( value )) ||
+					    (isTrans && (rc = isAttrVal( effect, name, cause ))))
 						break;
 		}	}
 		return audit.out( rc );
@@ -308,12 +308,12 @@ public class Items extends ArrayList<Item> {
 			
 			for (Strings params : paramsList.divide( "and" )) {
 				
-				// Expand param 0 if attr, e.g. if param="OBJECT='black coffee'"
-				if (Attribute.isAttribute( params.get(0) )) {
-					Attribute a = new Attribute( params.get( 0 ));
-					if (!Strings.isUpperCaseWithHyphens( a.name() ))
-						params.set( 0, a.value() );
-				}
+//				// Expand param 0 if attr, e.g. if param="OBJECT='black coffee'"
+//				if (Attribute.isAttribute( params.get(0) )) {
+//					Attribute a = new Attribute( params.get( 0 ));
+//					if (!Strings.isUpperCaseWithHyphens( a.name() ))
+//						params.set( 0, a.value() );
+//				}
 				
 				Item item = new Item( params );
 				
@@ -425,6 +425,13 @@ public class Items extends ArrayList<Item> {
 		Item.groupOn( Where.LOCTN );
 		Audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
 		
+		audit.title( "SHOPPING LIST TESTS..." );
+		Item.format( "QUANTITY,UNIT of,OBJECT,from FROM" );
+		test( 51, "delete martin needs", "TRUE" );
+		test( 52, "add martin needs object='coffee' quantity='1'", "a coffee" );
+		test( 53, "add martin needs object='coffee' quantity='another'", "another coffee" );
+		test( 55, "get martin needs", "2 coffees" );
+
 		audit.title( "SHOPPING LIST TESTS..." );
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );

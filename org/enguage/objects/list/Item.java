@@ -117,6 +117,9 @@ public class Item {
 	public boolean matchesAttributes( Item patt ){
 		return attributes().matches( patt.attributes());
 	}
+	public boolean firstEquals( Item patt ){
+		return attributes().first().equalsIgnoreCase( patt.attributes().first() );
+	}
 	public boolean equals( Item patt ) {
 		return equalsDescription( patt )
 				&& matchesAttributes( patt );
@@ -198,7 +201,8 @@ public class Item {
 						prevNum = Float.NaN;
 						united = true;
 					} else { // something else?
-						value.add( val );  
+						value.add( counted( prevNum, val ));
+						prevNum = Float.NaN;
 				}	}
 			} else // lower case -- constant
 				value.add( cmp ); // e.g. "of"

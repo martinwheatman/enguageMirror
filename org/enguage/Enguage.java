@@ -395,16 +395,16 @@ public class Enguage {
 			test( "why might i need 3 eggs", "because you're baking a cake" );
 			
 		}
-		if (runThisTest( "The Non-Computable concept of NEED" )) { // 
+		if (runThisTest( "The Non-Computable concept of Need" )) { // 
 			
 			// regression test: "do i need" != >do i need OBJECT<
 			// blank var at end of utterance
 			test( "do i need", "i don't understand" );
 			
 			clearTheNeedsList();
-			test( "what do i need",	           "you don't need anything" );
+			test( "what do i need",	            "you don't need anything" );
 			test( "i need 2 cups of coffee and a biscuit",
-					                               "ok, you need 2 cups of coffee and a biscuit");
+					                            "ok, you need 2 cups of coffee and a biscuit");
 			test( "what do i need",             "you need 2 cups of coffee, and a biscuit");
 			test( "how many coffees do i need", "2, you need 2 coffees" );
 			test( "i need 2 coffees",           "i know" );
@@ -508,11 +508,11 @@ public class Enguage {
 			test( "i need an apple" );
 			test( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
 		}
-		if (runThisTest( "james's experimental example" )) { // variables, arithmetic and lambda tests
-			//interpret( "england is a country",  "ok, england is a country" );
-			test( "preston is in england", "ok, preston is in england" );
-			test( "i am in preston",       "ok, you're in england" );
-		}
+//		if (runThisTest( "james's experimental example" )) { // variables, arithmetic and lambda tests
+//			//interpret( "england is a country",  "ok, england is a country" );
+//			test( "preston is in england", "ok, preston is in england" );
+//			test( "i am in preston",       "ok, you're in england" );
+//		}
 		if (runThisTest( "Simple Variables" )) { // 
 			test( "the value of name is fred",       "ok, name is set to fred" );
 			test( "get the value of name",           "fred" );
