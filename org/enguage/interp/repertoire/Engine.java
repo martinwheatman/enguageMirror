@@ -2,6 +2,7 @@ package org.enguage.interp.repertoire;
 
 import java.util.Locale;
 
+import org.enguage.Enguage;
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.intention.Redo;
@@ -45,10 +46,9 @@ public class Engine {
 		          	.appendIntention( Intention.allop, "ask answering ANSWERS , QUESTION" )
 	          		.concept( NAME ),
 		          	
-			new Sign().pattern( new Patternette(  "describe ", "x" ))
-					.appendIntention( Intention.allop, "describe X" )
-		          	.concept( NAME )
-					.help( "where x is a repertoire" ),
+			new Sign().pattern( new Patternette( "ok" ))
+					.appendIntention( Intention.allop, "ok" )
+					.concept( NAME ),
 					 
 			new Sign()
 					.pattern( new Patternette( "list repertoires","" ))
@@ -403,14 +403,14 @@ public class Engine {
 			 */
 			r.format( new Strings( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() )));
 			
-//		} else if ( cmd.equals( "describe" ) && cmds.size() >= 2) {
-//			
-//			String name = cmds.toString( Strings.CONCAT );
-//			r.format( Repertoire.signs.helpedToString( name ));
-//			
-//		} else if ( cmd.equals( "repertoire" )) {
-//			r.format( Repertoire.signs.helpedToString());
-//			
+		} else if ( cmd.equals( "ok" ) && cmds.size() == 0) {
+
+			r.format( // think( "that concludes interprtation" );
+				new Variable( "transformation" ).isSet( "true" ) ?
+						Enguage.mediate( new Strings( "that concludes interpretation" )).toString()
+						: "ok"
+			);
+
 		} else {
 			
 			r = Redo.unknownCommand( r, cmd, cmds );

@@ -39,10 +39,6 @@ public class Autopoiesis {
 				.appendIntention( Intention.thenReply, "ok" ),
 				
 	//		On "that is it", ok.
-			new Sign( "ok" )
-				.appendIntention( Intention.thenThink, "that concludes interpretation" ),
-					
-	//		On "that is it", ok.
 			new Sign( "that is it" )
 				.appendIntention( Intention.thenThink, "that concludes interpretation" ),
 						

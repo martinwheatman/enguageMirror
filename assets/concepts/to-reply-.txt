@@ -26,5 +26,3 @@ On "if not reply PHRASE-REPLY":
 On "this implies PHRASE-IMPLICATION":
 	perform "sign imply IMPLICATION";
 	then, reply "go on".
-
-To the phrase ok reply ok.
