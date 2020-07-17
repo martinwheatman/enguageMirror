@@ -19,7 +19,7 @@ On "why does SIGN-EFFECT", why do EFFECT.
 
 On "why am I PHRASE-EFFECT":
 	am i EFFECT;
-	if not, say so;
+	if not, reply "Sorry, I didn't know you are EXT-EFFECT";
 	get the cause of i am EFFECT from _user causal list;
 	set cause to ...;
 	then, reply "because EXT-CAUSE".

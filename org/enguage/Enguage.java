@@ -374,7 +374,7 @@ public class Enguage {
 			test( "do i need 250 grams of flour because i am baking a cake",
                        "Sorry, it is not the case that you need 250 grams of flour" );
 			test( "why am i heating the oven",
-					   "Sorry, i don't know if you're heating the oven" );
+					   "Sorry, i didn't know you're heating the oven" );
 			
 			audit.subtl( "Transitivity" );
 			test( "i need to go to the shops because i need 3 eggs",
