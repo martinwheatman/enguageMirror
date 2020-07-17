@@ -50,14 +50,10 @@ public class Attributes extends ArrayList<Attribute> {
 		nchars = i;
 	}
 
-	// -- from/to Strings
-	static public Attributes next( ListIterator<String> si ) {
-		Attributes attrs = new Attributes();
-		//audit.in( "next", "si="+ Strings.peek( si ));
+	public Attributes( ListIterator<String> si ) {
 		Attribute attr;
 		while (null != (attr = Attribute.next( si )))
-			attrs.add( attr );
-		return attrs; //(Attributes) audit.out( attrs );
+			add( attr );
 	}
 	public String toString( String sep ) {
 		if (null == sep) sep = "";
@@ -303,6 +299,6 @@ public class Attributes extends ArrayList<Attribute> {
 		Strings s = new Strings( "martin='heroic' ruth='fab'" );
 		Audit.log( "Test string is; ["+ s.toString()+"]");
 		Audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
-		Attributes attrs = Attributes.next( s.listIterator());
+		Attributes attrs = new Attributes( s.listIterator());
 		Audit.log( "Copy is: >"+ attrs.toString() +"<");
 }	}

@@ -7,6 +7,7 @@ import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.reply.Reply;
@@ -22,6 +23,8 @@ public class Items extends ArrayList<Item> {
 	public void ignore() {value.ignore();}
 	public void restore() {value.restore();}
 	
+	Attributes attrs = new Attributes();
+	
 	public Items( String ent, String attr ) {
 		value = new Value( ent, attr );
 		fromXml(
@@ -31,11 +34,12 @@ public class Items extends ArrayList<Item> {
 	
 	// --- to/from XML ---
 	private void fromXml( ListIterator<String> si ) {
-		Item it;
 		if (si.hasNext() && si.next().equals(     "<"      ) &&
 			si.hasNext() && si.next().equals( value.name() ) &&
 			si.hasNext() )
 		{
+			Item it;
+			attrs = new Attributes( si );
 			String tmp = si.next();
 			if (tmp.equals( ">" ))
 				while (null != (it = Item.next( si ))) add( it );
@@ -46,7 +50,7 @@ public class Items extends ArrayList<Item> {
 		String list = "";
 		for (Item item : this)
 			list += item.toXml()+"\n      ";
-		return "<"+value.name()+ (list.equals("") ? "/" : ">"+ list +"</"+value.name()) +">";
+		return "<"+value.name()+ attrs.toString() +(list.equals("") ? "/" : ">"+ list +"</"+value.name()) +">";
 	}
 	public  String toString() { return toString( null ); }
 	private String toString( Item pattern ) { // to Items class!

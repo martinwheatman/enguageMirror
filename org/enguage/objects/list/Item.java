@@ -82,7 +82,7 @@ public class Item {
 			si.hasNext() && si.next().equals( "item" )) // will be "/" on end list
 		{
 			it = new Item();
-			it.attributes( Attributes.next( si ));
+			it.attributes( new Attributes( si ));
 			si.next(); // consume ">"
 			it.description( Strings.copyUntil( si, "<" ));
 			if (!si.hasNext() || !si.next().equals(    "/" ) &&
