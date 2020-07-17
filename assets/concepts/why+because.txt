@@ -1,47 +1,46 @@
 cause is transitive.
 
-On "SIGN-WHAT because SIGN-CAUSE":
-	WHAT;
-	if not, reply;
+On "SIGN-EFFECT because SIGN-CAUSE":
+	EFFECT;
+	if not, say so;
 	CAUSE;
-	if not, reply;
-	perform "items add _user causal WHAT CAUSE";
-	reply "ok, EXT-WHAT because EXT-CAUSE".
+	if not, say so;
+	perform "items add _user causal EFFECT CAUSE";
+	reply "ok, EXT-EFFECT because EXT-CAUSE".
 	
-On "why do SIGN-WHAT":
-	do WHAT;
-	if not, reply;
-	get the cause of WHAT from _user causal list;
+On "why do SIGN-EFFECT":
+	do EFFECT;
+	if not, say so;
+	get the cause of EFFECT from _user causal list;
 	if not, reply "I do not know";
 	set cause to ...;
 	reply "because EXT-CAUSE".
-On "why does SIGN-WHAT", why do WHAT.
+On "why does SIGN-EFFECT", why do EFFECT.
 
-On "why am I PHRASE-WHAT":
-	am i WHAT;
-	if not, reply;
-	get the cause of i am WHAT from _user causal list;
+On "why am I PHRASE-EFFECT":
+	am i EFFECT;
+	if not, say so;
+	get the cause of i am EFFECT from _user causal list;
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
 
-On "why might SIGN-WHAT":
-	get the cause of WHAT from _user causal list;
+On "why might SIGN-EFFECT":
+	get the cause of EFFECT from _user causal list;
 	if not, reply "I don't know";
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
-On "why does SIGN-WHAT", why do WHAT.
+On "why does SIGN-EFFECT", why do EFFECT.
 
 
-On "do SIGN-WHAT because SIGN-CAUSE":
-	does WHAT exist in _user causal list;
-	if not, reply "sorry, it is not the case that EXT-WHAT";
-	is CAUSE the cause of WHAT;
-	if not, reply "sorry, it is not the case EXT-WHAT because EXT-CAUSE";
-	then, reply "yes, EXT-WHAT because EXT-CAUSE".
-On "does SIGN-WHAT because SIGN-CAUSE", do WHAT because CAUSE.
+On "do SIGN-EFFECT because SIGN-CAUSE":
+	does EFFECT exist in _user causal list;
+	if not, reply "sorry, it is not the case that EXT-EFFECT";
+	is CAUSE the cause of EFFECT;
+	if not, reply "sorry, it is not the case EXT-EFFECT because EXT-CAUSE";
+	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
+On "does SIGN-EFFECT because SIGN-CAUSE", do EFFECT because CAUSE.
 
-On "is SIGN-CAUSE the cause of SIGN-WHAT":
-	perform "items isAttrVal SUBJECT causal cause WHAT CAUSE";
-	if not, reply "no, EXT-WHAT is not because EXT-CAUSE";
-	then, reply "yes, EXT-WHAT because EXT-CAUSE".
-
+On "is SIGN-CAUSE the cause of SIGN-EFFECT":
+	perform "items isAttrVal SUBJECT causal cause EFFECT CAUSE";
+	if not, reply "no, EXT-EFFECT is not because EXT-CAUSE";
+	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
