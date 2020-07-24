@@ -91,12 +91,16 @@ public class Attributes extends ArrayList<Attribute> {
 		Iterator<Attribute> pi = pattern.iterator();
 		while (pi.hasNext()) {
 			Attribute a = pi.next();
-			if (!Plural.singular(a.value()).equalsIgnoreCase( Plural.singular( get( a.name() ) )))
+			if (!Plural.singular(a.value()).equalsIgnoreCase( Plural.singular( value( a.name() ) )))
 				return false;
 		}
 		return true;
 	}
-	public Attribute first() {
+	public boolean contains( Attribute from, Attribute to ) {
+		return value( from.name() ).equalsIgnoreCase( from.value() )
+			&& value(   to.name() ).equalsIgnoreCase(   to.value() );
+	}
+		public Attribute first() {
 		ListIterator<Attribute> li = listIterator();
 		return li.hasNext() ? li.next() : null; 
 	}
@@ -111,7 +115,7 @@ public class Attributes extends ArrayList<Attribute> {
 		add( new Attribute( name, value ));
 		return this;
 	}
-	public String get( String name ) {
+	public String value( String name ) {
 		Attribute a;
 		Iterator<Attribute> ai = iterator();
 		while (ai.hasNext())
@@ -192,7 +196,7 @@ public class Attributes extends ArrayList<Attribute> {
 			name = name.substring( name.lastIndexOf( "-" )+1 );
 			// do the dereferencing...
 			if ( isAlphabetic( name ) && isUpperCase( name )) {
-				value = get( name.toLowerCase( Locale.getDefault() ));
+				value = value( name.toLowerCase( Locale.getDefault() ));
 				if (expand && !value.equals( "" ))
 					value = Attribute.asString( name.toLowerCase( Locale.getDefault() ), value );
 			}
@@ -277,9 +281,9 @@ public class Attributes extends ArrayList<Attribute> {
 		a.add( new Attribute( "ruth", "fab" ));
 		Audit.log( "Initial test: "+ a.toString());
 		
-		Audit.log( "\tmartin is "+  a.get( "martin" ));
-		Audit.log( "\truth is "+   a.get( "ruth" ));
-		Audit.log( "\tjames is "+  a.get( "james" ));
+		Audit.log( "\tmartin is "+  a.value( "martin" ));
+		Audit.log( "\truth is "+   a.value( "ruth" ));
+		Audit.log( "\tjames is "+  a.value( "james" ));
 		Audit.log( "\tderef martin is "+  a.deref( "what is MARTIN" ));
 		
 		Audit.log( "\tremoving "+ a.remove( new Attribute( "martin" )));

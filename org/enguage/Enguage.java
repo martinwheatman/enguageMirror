@@ -116,6 +116,7 @@ public class Enguage {
 	static private void tidyUpViolenceTest( String fname ) {
 		Enguage.mediate( new Strings( "delete "+ fname +" advocate list" ));
 		Enguage.mediate( new Strings( "delete "+ fname +" fear     list" ));
+		Enguage.mediate( new Strings( "delete _user causal list" ));
 		Enguage.mediate( new Strings( "unset the value of they" ));
 	}
 	static private void tidyUpViolenceTest() { tidyUpViolenceTest( "violence" ); }
@@ -146,27 +147,27 @@ public class Enguage {
 
 		if (expected != null) {
 			
-			if (reply.equalsIgnoreCase( new Strings( expected )))
+			if (reply.equalsIgnoreCase( new Strings( expected ))) {
 				audit.passed( "enguage> "+ reply +"\n" );      // 1st success
 			
-			else if (unexpected == null)                       // no second chance
+			} else if (unexpected == null) {                     // no second chance
 				//Repertoire.signs.show();
 				audit.FATAL(
 						"reply: '"+ reply +"',\n             "+
 								"expected: '"+ expected +"' "+
 								"(reason="+ Pattern.notMatched() +")" );
 			
-			else if (reply.equalsIgnoreCase( new Strings( unexpected )))
+			} else if (reply.equalsIgnoreCase( new Strings( unexpected ))) {
 				audit.passed( "enguage> "+ reply +"\n" );
 			
-			else                                             // second chance failed too!
+			} else {                                           // second chance failed too!
 				//Repertoire.signs.show();
 				audit.FATAL(
 						"reply: '"      + reply      +"'\n             "+
 						"expected: '"   + expected   +"'\n          "+
 						"alternately: '"+ unexpected +"'\n          "+
 						"(reason="+ Pattern.notMatched() +")" );
-	}	}
+	}	}	}
 	
 	public static void sanityCheck( boolean serverTest, String location ) {
 		// ...useful ephemera...
@@ -361,8 +362,7 @@ public class Enguage {
 				       "yes, you need 3 eggs because you're baking a cake" );
 			// simple check for infinite loops
 			test( "i am baking a cake because i need 3 eggs",
-					   "ok, you're baking a cake because you need 3 eggs" );
-			test( "why am i baking a cake",  "because you need 3 eggs" );
+					   "sorry, you need 3 eggs because you're baking a cake" );
 			
 			audit.subtl( "Distinguishing negative responses" );
 			// I do understand, "sophie needs dr martens", but
@@ -379,10 +379,8 @@ public class Enguage {
 			audit.subtl( "Transitivity" );
 			test( "i need to go to the shops because i need 3 eggs",
 					   "ok, you need to go to the shops because you need 3 eggs" );
-			test( "is i need 3 eggs the cause of i need to go to the shops",
+			test( "do i need to go to the shops because i need 3 eggs",
 					   "yes, you need to go to the shops because you need 3 eggs" );
-			test( "is i am baking a cake the cause of i need to go to the shops",
-					   "yes, you need to go to the shops because you're baking a cake" );
 			// this test steps over one reason...
 			test( "do i need to go to the shops because i am baking a cake",
 					   "yes, you need to go to the shops because you're baking a cake" );

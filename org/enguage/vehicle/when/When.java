@@ -64,7 +64,7 @@ public class When {
 	public When( Moment fr, Moment t ) { from = fr; to = t; }
 	
 	// from/to Attributes
-	public When( Attributes a ) { this( a.get( "when" )); }
+	public When( Attributes a ) { this( a.value( "when" )); }
 	public Attributes toAttributes() { return new Attributes().add( "when", valueOf());}
 	
 

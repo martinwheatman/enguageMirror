@@ -58,7 +58,7 @@ public class Tag {
 		attrs.nchars( as.nchars());
 		return this;
 	}
-	public  String     attribute( String name ) { return attrs.get( name ); }
+	public  String     attribute( String name ) { return attrs.value( name ); }
 	public  Tag        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
 	public  Tag        prepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
 	public  Tag        add( int posn, String name, String value ) {

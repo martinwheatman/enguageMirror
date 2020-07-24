@@ -413,19 +413,20 @@ public class Pattern extends ArrayList<Patternette> {
 		return val;
 	}
 	static private int notMatched = 0;
+	static String term = "", tmp = "";
 	static public String notMatched() {
 		return  notMatched ==  0 ? "matched" :
 				notMatched ==  1 ? "precheck 1" :
 				notMatched ==  2 ? "precheck 2" :
-				notMatched == 11 ? "prefixa" :
-				notMatched == 12 ? "prefixb" :
+				notMatched == 11 ? term +" != "+ tmp:
+				notMatched == 12 ? "... "+term +" != "+ tmp +" ...":
 				notMatched == 13 ? "invalid expr" :
 				notMatched == 14 ? "and-list runs into hotspot" :
 				notMatched == 15 ? "not numeric" :
 				notMatched == 16 ? "invalid flags" :
 				notMatched == 17 ? "unterminated and-list" :
-				notMatched == 18 ? "postfixa" :
-				notMatched == 19 ? "postfixb" :
+				notMatched == 18 ? "... "+term +" != "+ tmp :
+				notMatched == 19 ? "... "+term +" != "+ tmp +"." :
 				notMatched == 20 ? "trailing hotspot value missing" :
 				notMatched == 21 ? "more pattern" :
 				notMatched == 22 ? "more utterance" :
@@ -434,10 +435,9 @@ public class Pattern extends ArrayList<Patternette> {
 	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui, boolean spatial ) {
 
 		Where w;
-		String term;
 		Iterator<String> bpi = bp.iterator();
 		while ( bpi.hasNext() && ui.hasNext())
-			if (!(term = bpi.next()).equalsIgnoreCase( ui.next() )) {
+			if (!(term = bpi.next()).equalsIgnoreCase( tmp = ui.next() )) {
 				ui.previous();
 				if (spatial && null != (w = Where.getWhere( ui, term )))
 					matched( w );

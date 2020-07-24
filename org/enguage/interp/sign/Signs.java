@@ -229,8 +229,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				//TODO: removed noInter check -- need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
 				if (null == match) {
-					//if (!Pattern.notMatched().equals("prefixa"))
-						; //audit.debug( "NO match: "+ s.pattern().toString() +" ("+ Pattern.notMatched() +")");
+					;//	audit.debug( "NO match: "+ s.pattern().toString() +" ("+ Pattern.notMatched() +")");
 				} else { // we have found a meaning! So I do understand...!
 					
 					Pronoun.update( match );

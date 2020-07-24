@@ -90,12 +90,18 @@ public class Items extends ArrayList<Item> {
 		}
 		return -1; //audit.out( -1 );
 	}
+	private boolean exists(Item item, Strings params) {
+		String lastParam = params.get( params.size() - 1 );
+		return index( item,
+				!(lastParam.equals( "quantity='some'" )
+				||lastParam.equals( "quantity='any'" ))) != -1;
+	}
 	private int matches( Item item ) {
 		audit.in( "matches", "item="+ item.toXml());
 		int pos = -1;
 		for (Item li : this) {
-			pos++;
 			audit.debug( "matching: "+ li.toXml() );
+			pos++;
 			if (li.matches( item ))
 				return audit.out( pos ); // pos;
 		}
@@ -171,27 +177,33 @@ public class Items extends ArrayList<Item> {
 		for (Item t : this) 
 			if ((item == null || (desc ? t.matchesDescription( item ):t.firstEquals( item )))
 				&& t.attributes().hasName( name ))
-					rc.add( t.attributes().get( name ));
+					rc.add( t.attributes().value( name ));
 		return audit.out( rc );
 	}
-	private boolean isAttrVal( Strings effect, String name, String value ) {
-		/* Example:??? item = name = value =???
-		 * item  => <item cause="i am baking a cake">i need 3 eggs</item>
-		 * name  => 'cause'
-		 * value => i need 3 eggs.
+	private boolean isLinked( Attribute from, Attribute to) {
+		/*  isLinked( cause="X", effect="Z" )
+		 * it.item contains attrs: [cause='X', effect='Y'], [cause='Y', effect='Z']
+		 * if trans, swap cause value to effect and re-search
 		 */
-		boolean rc = false,
-		   isTrans = Transitive.isConcept( name );
-		audit.in( "isAttrVal", "effect='"+ effect +"', name='"+ name +"', value="+ value );
-		for (Item li : this) {
-			if (effect.equalsIgnoreCase( li.description().size() > 0 ? li.description(): new Strings(li.attributes().get( "what" )))) {
-				String cause = li.attributes().get( name );
-				if (!cause.equals( "" ))
-					if (            (rc = cause.equals( value )) ||
-					    (isTrans && (rc = isAttrVal( effect, name, cause ))))
-						break;
-		}	}
-		return audit.out( rc );
+		audit.in( "isLinked", "CHECKING: from: "+ from +", to: '"+ to +"'");
+
+		// sanity check
+		if (to.value().equals("") || from.value().equals("")) {
+			audit.debug( "bailing out" );
+			return audit.out( false );
+		}
+
+		for (Item li : this)
+			if (li.attributes().contains( from, to ))
+				return audit.out( true );
+
+		for (Item li : this) 
+			if (  !li.attributes().value(   to.name() ).equalsIgnoreCase(   to.value()) // loop check - same dest
+				&& li.attributes().value( from.name() ).equalsIgnoreCase( from.value()) // a='x' A='X'
+				&& isLinked( new Attribute( from.name(), li.attributes().value( to.name() )), to ))
+						return audit.out( true );
+
+		return audit.out( false );
 	}
 	/* this needs to include adjusting quantity downwards, as above in add()
 	 * i need coffee + I have 3 coffees = ???
@@ -246,23 +258,6 @@ public class Items extends ArrayList<Item> {
 		value.set( toXml() );
 		return audit.out( Shell.SUCCESS );
 	}
-	private boolean exists(Item item, Strings params) {
-		/* 
-		 * TODO: to "list exists _user needs coffee"
-		 * return "FALSE" or "5 cups of coffee" 
-		 */
-		/* TODO
-		 * exists a & b & c + a & b => false (only if all present!)
-		 */
-		/* Applying an addition of exists:
-		 * i.e. a+b+c? with a+b =>false
-		 */
-		String lastParam = params.get( params.size() - 1 );
-		// also need when='any' !
-		return index( item,
-				!(lastParam.equals( "quantity='some'" )
-				||lastParam.equals( "quantity='any'" ))) != -1;
-	}
 	static public Strings interpret( Strings sa ) {
 		/* An item may be <item>black coffee</item>, or
 		 * <item unit="cup" quantity="1">black coffee</item>
@@ -305,7 +300,23 @@ public class Items extends ArrayList<Item> {
 				list.removeAll( (Item)null );
 				rc = Shell.Success;
 			}
+		
+		} else if (cmd.equals( "isLinked" )) {
 			
+			Attribute from = new Attribute( sa.remove( 0 ));
+			Attribute   to = new Attribute( sa.remove( 0 ));
+
+			if (Transitive.are( from.name(), to.name() ))
+				rc = list.isLinked( from, to )
+						? Shell.Success : Shell.Fail;
+			else {
+				rc = Shell.Fail;
+				for (Item li : list)
+					if (li.attributes().contains( from, to )) {
+						rc = Shell.Success;
+						break;
+			}		}
+
 		} else {
 			Strings paramsList = new Strings( sa ),
 			        rca        = new Strings();
@@ -355,17 +366,7 @@ public class Items extends ArrayList<Item> {
 								Attribute.getValue( attrName ) // Expand: n='v' => v
 							).toString( Reply.andListFormat())
 					);
-						
-				} else if (cmd.equals( "isAttrVal" )) {
-					// called in why.txt: [list isAttrVal SUBJECT LIST cause] WHAT CAUSE
-					// Audit.log( "Item is: "+ item.toXml());
-					rca.add( list.isAttrVal(
-								new Strings( item.attribute( "what" )), // i need 3 eggs
-								item.description().toString(), // cause - not description!
-								item.attribute( "cause" )      // i am baking a cake
-							) ? Shell.SUCCESS : Shell.FAIL
-					);
-						
+
 				} else if (cmd.equals( "quantity" )) {
 					rca.add( list.quantity( item, false ));
 					
@@ -465,14 +466,35 @@ public class Items extends ArrayList<Item> {
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
 		
 		audit.title( "why" );
-		l = new Items( "martin", "why" );
+		l = new Items( "martin", "causal" );
 		
-		l.append( new Item( new Strings( "i need 3 eggs               cause='i am baking a cake'" ).contract("=")));
-		l.append( new Item( new Strings( "i need to go to the garage  cause='i need 3 eggs'"      ).contract("=")));
+		// two linked cause-effects
+		Attributes one = new Attributes();
+		one.add( new Attribute( "cause",  "i am baking a cake" ));
+		one.add( new Attribute( "effect", "i need 3 eggs" ));
+		
+		Attributes two = new Attributes();
+		two.add( new Attribute( "cause",  "i need 3 eggs" ));
+		two.add( new Attribute( "effect", "i need to go to the shop" ));
+		
+		// non-linked cause
+		Attributes ten = new Attributes();
+		ten.add( new Attribute( "cause",  "sophie is very fashionable" ));
+		ten.add( new Attribute( "effect", "sophie needs dr martens" ));
+		
+		l.append( new Item().attributes( one ));
+		l.append( new Item().attributes( two ));
+		l.append( new Item().attributes( ten ));
 		l.value.set( l.toXml() );
 		
-		test( 300, "getAttrVal martin why name='cause' i need 3 eggs",              "i am baking a cake" );
-		test( 301, "getAttrVal martin why name='cause' i need to go to the garage", "i need 3 eggs" );
+		
+		//test( 300, "getAttrVal martin why name='cause' i need 3 eggs", "i am baking a cake" );
+		Audit.log( l.toXml());
+		//Audit.allOn();
+		Transitive.add( "cause", "effect" );
+		test( 301, "isLinked martin causal  cause='i am baking a cake' effect='i need to go to the shop'", "TRUE" );
+		test( 302, "isLinked martin causal effect='i am baking a cake'  cause='i need to go to the shop'", "FALSE" ); //not trans
+		test( 303, "isLinked martin causal  cause='i am baking a cake' effect='sophie is so fashionable'", "FALSE" );
 		
 		audit.PASSED();
 }	}

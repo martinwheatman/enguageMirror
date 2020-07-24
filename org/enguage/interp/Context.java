@@ -36,7 +36,7 @@ public class Context {
 	}
 	static public String get( String word ) {
 		for (Attributes context : contexts) {
-			String deref = context.get( word );
+			String deref = context.value( word );
 			if (!deref.equals(""))
 				return deref;
 		}

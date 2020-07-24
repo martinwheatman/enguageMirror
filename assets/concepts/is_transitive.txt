@@ -1,1 +1,1 @@
-On "X is transitive", perform "transitive add X".
+On "X and Y are transitive", perform "transitive add X Y".

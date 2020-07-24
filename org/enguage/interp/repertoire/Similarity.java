@@ -29,7 +29,7 @@ public class Similarity {
 	static public void autoload( Strings utterance ) {
 		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
 		for (String synonym : similarities.matchNames( utterance )) {
-			String existing = similarities.get( synonym );
+			String existing = similarities.value( synonym );
 			if (!load( synonym, existing, existing, synonym )                      &&
 				!load( synonym+"+"+Plural.plural( synonym ),
 				       existing+"+"+Plural.plural( existing ),  existing, synonym ) &&

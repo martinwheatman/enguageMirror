@@ -54,7 +54,7 @@ public class Item {
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
 	public  Item       attributes( Attributes a ) { attrs=a; return this; }
-	public  String     attribute( String name ) { return attrs.get( name ); }
+	public  String     attribute( String name ) { return attrs.value( name ); }
 	public  void       replace( String name, String val ) { attrs.replace( name, val );}
 	
 	public Item() {};
@@ -181,7 +181,7 @@ public class Item {
 					audit.debug( "toString(): ignoring:"+ cmp );
 					break;
 				} else { // cmp = "UNIT"
-					String val = attributes().get( cmp );
+					String val = attributes().value( cmp );
 					if (val.equals( "" )) {
 						value=null; // this component is undefined, IGNORE
 						break;
@@ -212,7 +212,7 @@ public class Item {
 	public String toString() {
 		Strings rc = new Strings();
 		if (format.size() == 0)
-			rc.appendAll( descr );
+			rc.appendAll( descr.size()>0? descr : new Strings( attributes().first().value() ));
 		else {
 			united = false;
 			/* Read through the format string: ",from LOCATION"
@@ -245,7 +245,7 @@ public class Item {
 		Strings value = new Strings();
 		for (String cmp : new Strings( f ))
 			if ( Strings.isUpperCase( cmp )) { // variable e.g. UNIT
-				String val = attributes().get( cmp );
+				String val = attributes().value( cmp );
 				if (val.equals( "" )) {
 					found = false;
 					break;
