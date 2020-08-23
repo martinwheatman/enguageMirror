@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.enguage.Enguage;
 import org.enguage.interp.intention.Redo;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
@@ -108,8 +109,8 @@ public class Autoload {
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Audit.allTracing = true;
-		if (!Fs.location( Assets.LOCATION ))
-			audit.FATAL( Assets.LOCATION + File.separator +": not found" );
+		if (!Fs.location( Enguage.LOCATION ))
+			audit.FATAL( Enguage.LOCATION + File.separator +": not found" );
 		else if (!Overlay.attach( "autoload" ))
 			audit.ERROR( " can't auto attach" );
 		else {

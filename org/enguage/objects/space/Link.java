@@ -101,7 +101,7 @@ public class Link {
 	public static void main( String args[] ) {
 		
 		Fs.root( null );
-		Fs.location( "./src/assets" );
+		//Fs.location( Enguage.LOCATION );
 		
 		if (!Overlay.attached() && !Overlay.attach( "Link" ))
 			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );

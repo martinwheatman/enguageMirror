@@ -24,6 +24,7 @@ public class Enguage {
 	
 	static private String copyright = "Martin Wheatman, 2001-4, 2011-20";
 
+	static public  final String      LOCATION = "etc";
 	static public  final String           DNU = "DNU";
 	static private final boolean startupDebug = false;
 	static private       int            level = 0; // TODO: 0 = every level, -n = ignore level n
@@ -993,7 +994,7 @@ public class Enguage {
 		
 		Strings      cmds = new Strings( args );
 		String       cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
-		String   location = Assets.LOCATION + File.separator;
+		String   location = LOCATION + File.separator; // Assets.LOCATION + File.separator;
 
 		Enguage.init( fsys, null ); // null 'cos we're not on Android
 		Enguage.config( Fs.stringFromFile( location + "/config.xml" ));
