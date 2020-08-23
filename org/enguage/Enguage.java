@@ -975,7 +975,7 @@ public class Enguage {
 		Audit.LOG( "Usage: java -jar enguage.jar [-p <port> | -s | [--server <port>] -t ]" );
 		Audit.LOG( "where: -p <port>, --port <port>" );
 		Audit.LOG( "          listens on local TCP/IP port number\n" );
-		Audit.LOG( "       -h [<port>], --httpd [<port>]" );
+		Audit.LOG( "       -H [<port>], --httpd [<port>]" );
 		Audit.LOG( "          webserver on port number, default to 8080\n" );
 		Audit.LOG( "       -c, --client" );
 		Audit.LOG( "          runs Engauge as a shell\n" );
@@ -1014,8 +1014,8 @@ public class Enguage {
 		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
 			Net.server( cmds.remove( 0 ));
 		
-		else if (cmds.size()>0 && (cmd.equals( "-h" ) || cmd.equals( "--http" )))
-			Net.httpd( cmd.length() == 0 ? "8080" : cmds.remove( 0 ));
+		else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" ))
+			Net.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
 		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ) || cmd.equals( "-T" )) {
 			
