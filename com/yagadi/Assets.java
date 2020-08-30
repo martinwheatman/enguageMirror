@@ -18,7 +18,7 @@ public class Assets {
 	//static private     Audit    audit = new Audit( NAME );
 	
 	static public void addConcepts() {
-		String[] names = new File( Enguage.LOCATION + File.separator + Concepts.NAME ).list();
+		String[] names = new File( Concepts.RO_REPS ).list();
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))
@@ -43,14 +43,14 @@ public class Assets {
 		InputStream  is = null;
 		
 		try { // ...add concept from user space...
-			is = new FileInputStream( org.enguage.interp.repertoire.Concepts.name( name ));
+			is = new FileInputStream( org.enguage.interp.repertoire.Concepts.spokenName( name ));
 			org.enguage.Enguage.shell().interpret( is, from, to );
 			wasLoaded = true;
 		} catch (IOException e1) {
 			InputStream is2 = null;
 			try { // ...or add concept from asset...
-				String fname = org.enguage.interp.repertoire.Concepts.name( name );
-				is2 = new FileInputStream( Enguage.LOCATION + File.separator + fname );
+				String fname = org.enguage.interp.repertoire.Concepts.writtenName( name );
+				is2 = new FileInputStream( fname );
 				org.enguage.Enguage.shell().interpret( is2, from, to );
 				wasLoaded = true;
 			} catch (IOException e2) {

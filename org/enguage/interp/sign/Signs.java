@@ -132,7 +132,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			Sign s = me.getValue();
 			if (s.concept().equals(simpleFilter)) {
 				String fname = cname==null ? s.pattern().toFilename() : cname;
-				if (s.toFile( Concepts.name( fname ))) {
+				if (s.toFile( Concepts.spokenName( fname ))) {
 					s.concept( fname );
 					rc = true;
 		}	}	}

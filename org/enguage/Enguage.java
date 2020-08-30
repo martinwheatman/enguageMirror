@@ -18,13 +18,13 @@ import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
-import com.yagadi.Assets;
-
 public class Enguage {
 	
 	static private String copyright = "Martin Wheatman, 2001-4, 2011-20";
 
-	static public  final String      LOCATION = "etc";
+	static public  final String      RO_SPACE = "etc"+ File.separator;
+	static public  final String      RW_SPACE = "var"+ File.separator;
+	
 	static public  final String           DNU = "DNU";
 	static private final boolean startupDebug = false;
 	static private       int            level = 0; // TODO: 0 = every level, -n = ignore level n
@@ -42,12 +42,13 @@ public class Enguage {
 	static public  Object  context() { return context; }
 	static public  void    context( Object activity ) { context = activity; }
 	
+	static public  boolean verbose = false;
 	
 	static public  void    init( String root, Object ctx ) {
 		Fs.root( root );
 		context( ctx );
 		com.yagadi.Assets.addConcepts();   // built-ins
-		Concepts.addFrom( Concepts.NAME ); // pre-defined
+		Concepts.addFrom( Concepts.RO_REPS ); // pre-defined
 	}
 
 	static public Strings mediate( Strings utterance ) { return mediate( "uid", utterance );}
@@ -170,7 +171,7 @@ public class Enguage {
 						"(reason="+ Pattern.notMatched() +")" );
 	}	}	}
 	
-	public static void sanityCheck( boolean serverTest, String location ) {
+	public static void sanityCheck() {
 		// ...useful ephemera...
 		//interpret( "detail on" );
 		//interpret( "tracing on" );
@@ -972,7 +973,7 @@ public class Enguage {
 		audit.PASSED();
 	}
 	private static void usage() {
-		Audit.LOG( "Usage: java -jar enguage.jar [-p <port> | -s | [--server <port>] -t ]" );
+		Audit.LOG( "Usage: java [-jar enguage.jar|org.enguage.Enguage] [-p <port> | -s | [--server <port>] -t ]" );
 		Audit.LOG( "where: -p <port>, --port <port>" );
 		Audit.LOG( "          listens on local TCP/IP port number\n" );
 		Audit.LOG( "       -H [<port>], --httpd [<port>]" );
@@ -988,26 +989,36 @@ public class Enguage {
 	}
 	public static void main( String args[] ) {
 		
-		String fsys = ".os";
+		String fsys = RW_SPACE;
 		
 		Audit.startupDebug = startupDebug;
 		
-		Strings      cmds = new Strings( args );
-		String       cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
-		String   location = LOCATION + File.separator; // Assets.LOCATION + File.separator;
+		Strings cmds = new Strings( args );
+		String  cmd,
+		     confLoc = RO_SPACE;
+
+		int i = 0;
+		while (i < cmds.size()) {
+			cmd = cmds.get( i );
+			if (cmd.equals( "-v" ) || cmd.equals( "--verbose" )) {
+				cmds.remove( i );
+				verbose = true;
+			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
+				cmds.remove( i );
+				serverTest = true;
+				cmd = cmds.size()==0 ? "8080":cmds.remove( i );
+				portNumber( cmd );
+			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
+				cmds.remove( i );
+				fsys = cmds.size()==0 ? fsys : cmds.remove( i );
+			} else
+				i++;
+		}
 
 		Enguage.init( fsys, null ); // null 'cos we're not on Android
-		Enguage.config( Fs.stringFromFile( location + "/config.xml" ));
-
-		boolean serverTest = false;
-		if (cmds.size() > 0 && (cmd.equals( "-s" ) || cmd.equals( "--server" ))) {
-			serverTest = true;
-			cmds.remove(0);
-			cmd = cmds.size()==0 ? "":cmds.remove(0);
-			portNumber( cmds.remove( 0 ));
-			cmd = cmds.size()==0 ? "":cmds.remove(0);
-		}
+		Enguage.config( Fs.stringFromFile( confLoc + "/config.xml" ));
 				
+		cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
 			Enguage.shell.aloudIs( true ).run();
 		
@@ -1017,21 +1028,21 @@ public class Enguage {
 		else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" ))
 			Net.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
-		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ) || cmd.equals( "-T" )) {
+		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ) || cmd.equals( "-T" ))
 			
 			// If we're sanity testing, remove persistent data...
 			if (!Fs.destroy( fsys ))
 				audit.FATAL( "failed to remove old database - "+ fsys );
-			else {
+			else
 				try {
 					if (cmd.equals( "-T" ))
 						testName = cmds.size()==0 ? testName : cmds.remove( 0 );
 					else
 						level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
-					sanityCheck( serverTest, location );
+					sanityCheck();
 				} catch (NumberFormatException nfe) {
 					Audit.LOG( "Insanity: "+ nfe.toString() );
-			}	}
-		
-		} else usage();
+				}
+		else
+			usage();
 }	}

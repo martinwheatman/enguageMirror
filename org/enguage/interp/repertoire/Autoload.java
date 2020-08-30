@@ -109,8 +109,8 @@ public class Autoload {
 	public static void main( String args[] ) {
 		Audit.allOn();
 		Audit.allTracing = true;
-		if (!Fs.location( Enguage.LOCATION ))
-			audit.FATAL( Enguage.LOCATION + File.separator +": not found" );
+		if (!Fs.location( Enguage.RO_SPACE ))
+			audit.FATAL( Enguage.RO_SPACE +": not found" );
 		else if (!Overlay.attach( "autoload" ))
 			audit.ERROR( " can't auto attach" );
 		else {

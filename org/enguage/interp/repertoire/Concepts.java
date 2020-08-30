@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import org.enguage.Enguage;
 import org.enguage.interp.intention.Redo;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
 import org.enguage.util.tag.Tag;
 
 /** Concepts is: the list of concept names;
@@ -46,13 +48,14 @@ public class Concepts {
 		}	}
 		return fname; // not found, new filename
 	}
-	static public  String name( String name ) {
-		return name( NAME + File.separator, name, "txt" );
-	}
+	static final private String rwReps() {return Fs.root() +"reps"+ File.separator;}
+	static final public  String RO_REPS = Enguage.RO_SPACE +"reps"+ File.separator;
+	static public  String writtenName( String name ) {return name( RO_REPS, name, "txt" );}
+	static public  String spokenName( String s ) {return name( rwReps(), s, "txt" );}
 	static public void delete( String cname ) {
 		if (cname != null) {
-			File oldFile = new File( name( cname )),
-			     newFile = new File( name( NAME + File.separator, cname, "del" ));
+			File oldFile = new File( writtenName( cname )),
+			     newFile = new File( name( rwReps(), cname, "del" ));
 			if (!oldFile.renameTo( newFile ))
 				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
 	}	}
@@ -157,7 +160,7 @@ public class Concepts {
 		            +" match to-reply-"));
 	}
 	public static void main( String args[]) {
-		addFrom( "./assets/concepts"  );
+		addFrom( RO_REPS );
 		test( "i need a coffee", false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );
