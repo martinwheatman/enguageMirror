@@ -199,7 +199,9 @@ public class Enguage {
 			test( "i need a coffee",       "ok, you need a coffee" );
 			test( "what do i need",        "you need a coffee" );
 			
-			test( "what do i want",        "i don't understand" );
+			test( "what do i think",       "sorry, I don't understand the question" );
+			
+			test( "what do i want",        "sorry, i don't understand the question" );
 			test( "want is like need",     "ok, want is like need" );
 			test( "what do i want",        "you don't want anything" );
 			
@@ -223,7 +225,7 @@ public class Enguage {
 			// Tidy up...
 			test( "I don't want anything", "ok, you don't want anything" );
 			test( "want is not like need", "ok, want is not like need" );
-			test( "what do i want",        "i don't understand" );
+			test( "what do i want",        "sorry, i don't understand the question" );
 		}
 		
 		if (runThisTest( "Simple Food Diary" )) {
@@ -399,7 +401,7 @@ public class Enguage {
 			
 			// regression test: "do i need" != >do i need OBJECT<
 			// blank var at end of utterance
-			test( "do i need", "i don't understand" );
+			test( "do i need",                  "sorry, i don't understand the question" );
 			
 			clearTheNeedsList();
 			test( "what do i need",	            "you don't need anything" );
@@ -849,7 +851,7 @@ public class Enguage {
 			
 			clearTheNeedsList( "i don't want anything" );
 			test( "want is unlike need", "ok, want is unlike need", "i know" );
-			test( "what do i want",      "i don't understand" );
+			test( "what do i want",      "sorry, i don't understand the question" );
 			
 			test( "want is like need",   "ok, want is like need" );
 			test( "what do i want",      "you want another pony", "you don't want anything" );

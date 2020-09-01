@@ -1,0 +1,7 @@
+On "do  i   PHRASE-X", reply "sorry, I don't understand the question".
+On "do you  PHRASE-X", reply "sorry, I don't understand the question".
+On "do they PHRASE-X", reply "sorry, I don't understand the question".
+
+On "what do  i   PHRASE-X", reply "sorry, I don't understand the question".
+On "what do you  PHRASE-X", reply "sorry, I don't understand the question".
+On "what do they PHRASE-X", reply "sorry, I don't understand the question".
