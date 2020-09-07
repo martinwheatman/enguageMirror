@@ -24,8 +24,8 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-	public Sign( Patte variable ) { this();       pattern( variable );}
-	public Sign( String prefix )        { this( new Patte( prefix )); }
+	public Sign( Patte  patte  ) { this(); pattern( patte );}
+	public Sign( String prefix ) { this( new Patte( prefix )); }
 	public Sign( String prefix, Patte variable ) { this( variable.prefix( prefix ));}
 	public Sign( String prefix, Patte variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
@@ -117,8 +117,7 @@ public class Sign {
 				+" "+ Attribute.asString( "complexity", ""+complexity )
 				+" "+ Attribute.asString( "repertoire", concept() )
 				+ intentions
-				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">"
-				+ "\n";
+				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toString() {
 		String sign = "";

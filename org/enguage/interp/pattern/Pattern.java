@@ -6,19 +6,22 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Random;
 
+import org.enguage.interp.sign.Sign;
+import org.enguage.objects.Spatial;
+import org.enguage.util.Audit;
+import org.enguage.util.Indent;
+import org.enguage.util.Strings;
 import org.enguage.util.algorithm.Expression;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.pronoun.Gendered;
 import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
-import org.enguage.util.Audit;
-import org.enguage.util.Indent;
-import org.enguage.util.Strings;
 
 public class Pattern extends ArrayList<Patte> {
 	static final         long serialVersionUID = 0;
@@ -425,7 +428,7 @@ public class Pattern extends ArrayList<Patte> {
 				notMatched == 15 ? "not numeric" :
 				notMatched == 16 ? "invalid flags" :
 				notMatched == 17 ? "unterminated and-list" :
-				notMatched == 18 ? "... "+term +" != "+ tmp :
+				notMatched == 18 ? "... "+term +" != "+ tmp +"..":
 				notMatched == 19 ? "... "+term +" != "+ tmp +"." :
 				notMatched == 20 ? "trailing hotspot value missing" :
 				notMatched == 21 ? "more pattern" :
@@ -639,14 +642,21 @@ public class Pattern extends ArrayList<Patte> {
 //			audit.FATAL( "answer '"+ patt +"' doesn't equal expected: '" + answer +"'" );
 //		Audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
 //	}
-	private void newTest( String utterance ) {
-		audit.in( "newTest", utterance );
+	// TODO:
+	static private void matchTest( String pref, String var, String concept, String utterance ) {
+		audit.in( "matchTest", utterance );
 		Attributes as;
+		Utterance u = new Utterance( new Strings( utterance ));
 		Audit.log( "Utterance: "+ utterance );
-		if (null != (as = matchValues( new Strings( utterance ), true )))
-			Audit.log( "  matches: "+ as.toString());
+		
+		Sign s = new Sign( new Patte( pref, var ));
+		s.concept( concept );
+		Audit.log( "     Sign: "+ s.toXml(0, -1) );
+		
+		if (null != (as = u.match( s )))
+			audit.passed( "  matches: "+ as.toString());
 		else
-			Audit.log( "notMatched (="+ notMatched +")" );
+			Audit.log( "notMatched ("+ notMatched() +")" );
 		audit.out();
 	}
 	static private void complexityTest( String str ) {
@@ -744,35 +754,25 @@ public class Pattern extends ArrayList<Patte> {
 //		Audit.runtimeDebug = false;
 //		Audit.traceAll( false );		
 		
-		Where.doLocators("at/from/in");
-		Pattern p = new Pattern( "i need PHRASE-OBJECTS" );
-		Audit.log( "sign is: "+ p.toXml());
-		
-		p.newTest( "i need milk" );
-		p.newTest( "i need milk from the dairy aisle" );
-		p.newTest( "i from the dairy aisle need milk" );
-		p.newTest( "from the dairy aisle i need milk" );
-		p.newTest( "i need sliced bread from the bakery" );
-		
-		Audit.allOn();
-		//Audit.traceAll( true );		
-		
-		p = new Pattern( "help" );
-		Audit.log( "sign is now: "+ p.toXml());
-		p.newTest( "at the pub i am meeting my brother" );
-		
-		p.newTest( "doesnt match at all" );
-
-		// -- expr
-		p = new Pattern( "the FUNCITON of LIST-FNAME is EXPR-VAL" );
-		Audit.log( "sign is: "+ p.toXml());
-		
-		p.newTest( "the sum of x is x plus y" );
+//		Audit.allOn();
+//		//Audit.traceAll( true );		
+//		
+//		p = new Pattern( "help" );
+//		Audit.log( "sign is now: "+ p.toXml());
+//		p.newTest( "at the pub i am meeting my brother" );
+//		
+//		p.newTest( "doesnt match at all" );
+//
+//		// -- expr
+//		p = new Pattern( "the FUNCITON of LIST-FNAME is EXPR-VAL" );
+//		Audit.log( "sign is: "+ p.toXml());
+//		
+//		p.newTest( "the sum of x is x plus y" );
 
 		// pronouns test...
-		p = new Pattern( "they are" );
-		Audit.log( "sign is: "+ p.toXml());
-		p.newTest( "they are from sainsburys" );
+//		p = new Pattern( "they are" );
+//		Audit.log( "sign is: "+ p.toXml());
+//		p.newTest( "they are from sainsburys" );
 
 		complexityTest(	"i am legend" );
 		complexityTest(	"variable nm needs numeric variable quantity units of phrase variable object" );
@@ -782,5 +782,35 @@ public class Pattern extends ArrayList<Patte> {
 		complexityTest(	"i am     variable action phrase variable value" );
 		complexityTest(	"set value of variable x to phrase variable y" );
 		complexityTest(	"set variable attribute of variable x to phrase variable y" );
-		Audit.log( "PASSED" );
+		
+		Where.doLocators("at/from/in");
+		Spatial.addConcept( "need+needs" );
+		Pattern p = new Pattern( "i need PHRASE-OBJECTS" );
+		Audit.log( "pattern is: "+ p.toXml());
+		
+		Audit.allOn();
+		matchTest(
+				"i need",
+				"PHRASE-OBJECTS",
+				"need+needs",
+				"i need milk" );
+		matchTest(
+				"i need",
+				"PHRASE-OBJECTS",
+				"need+needs",
+				"i need milk from the dairy aisle" );
+		matchTest(
+				"i need",
+				"PHRASE-OBJECTS",
+				"need+needs",
+				"i from the dairy aisle need milk" );
+		matchTest(
+				"i need",
+				"PHRASE-OBJECTS",
+				"need+needs",
+				"from the dairy aisle i need milk" );
+		Audit.allOff();
+//		newTest( "i need sliced bread from the bakery" );
+		
+		audit.PASSED();
 }	}
