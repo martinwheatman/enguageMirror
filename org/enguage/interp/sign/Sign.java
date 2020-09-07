@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.pattern.Pattern;
-import org.enguage.interp.pattern.Patternette;
+import org.enguage.interp.pattern.Patte;
 import org.enguage.interp.repertoire.Engine;
 import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
@@ -24,14 +24,14 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-	public Sign( Patternette variable ) { this();       pattern( variable );}
-	public Sign( String prefix )        { this( new Patternette( prefix )); }
-	public Sign( String prefix, Patternette variable ) { this( variable.prefix( prefix ));}
-	public Sign( String prefix, Patternette variable, String postfix ) {
+	public Sign( Patte variable ) { this();       pattern( variable );}
+	public Sign( String prefix )        { this( new Patte( prefix )); }
+	public Sign( String prefix, Patte variable ) { this( variable.prefix( prefix ));}
+	public Sign( String prefix, Patte variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
 	}
-	public Sign( String prefix1, Patternette variable1,
-	             String prefix2, Patternette variable2 )
+	public Sign( String prefix1, Patte variable1,
+	             String prefix2, Patte variable2 )
 	{	this();
 		pattern( variable1.prefix( prefix1 ));
 		pattern( variable2.prefix( prefix2 ));
@@ -40,7 +40,7 @@ public class Sign {
 	private Pattern pattern = new Pattern();
 	public  Pattern pattern() {return pattern;}
 	public  Sign    pattern( Pattern ta ) { pattern = ta; return this; }
-	public  Sign    pattern( Patternette child ) {
+	public  Sign    pattern( Patte child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
@@ -255,27 +255,27 @@ public class Sign {
 		s.append( new Intention( Intention.thenDo, "person create martin" ));
 		s.append( new Intention( Intention.elseReply, "no, somethings gone wrong" ));
 		s.append( new Intention( Intention.thenReply, "ok, thank goodness" ));
-		s.pattern( new Patternette().prefix( new Strings( "hello" )));
+		s.pattern( new Patte().prefix( new Strings( "hello" )));
 		Reply r = new Reply();
 		Intention intent = new Intention( Intention.thenReply, "hello world" );
 		r = intent.mediate( r );
 		Audit.log( "r="+ r.toString());
 		
 		Pattern ts = new Pattern();
-		ts.add( new Patternette( "this is a", "x" ).phrasedIs() );
+		ts.add( new Patte( "this is a", "x" ).phrasedIs() );
 		complexityTest( ts );
-		s.pattern( new Patternette( "this is a", "x" ).phrasedIs() );
+		s.pattern( new Patte( "this is a", "x" ).phrasedIs() );
 		
 		ts = new Pattern();
-		ts.add( new Patternette( "this is a", "test" ));
-		complexityTest( ts );
-		
-		ts = new Pattern();
-		ts.add( new Patternette( "this is a test", "x" ).phrasedIs() );
+		ts.add( new Patte( "this is a", "test" ));
 		complexityTest( ts );
 		
 		ts = new Pattern();
-		ts.add( new Patternette( "one small step for man", "" ));
+		ts.add( new Patte( "this is a test", "x" ).phrasedIs() );
+		complexityTest( ts );
+		
+		ts = new Pattern();
+		ts.add( new Patte( "one small step for man", "" ));
 		complexityTest( ts );
 		
 		Audit.log( s.toString());

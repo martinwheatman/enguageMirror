@@ -11,24 +11,24 @@ import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.reply.Reply;
 
-public class Patternette {
+public class Patte {
 	private static Audit audit = new Audit( "Patternette" );
 	
 	
 	// -- constructors...
-	public Patternette() {}
-	public Patternette( Strings pre, String nm ) {
+	public Patte() {}
+	public Patte( Strings pre, String nm ) {
 		this();
 		prefix( pre ).name( nm );
 	}
-	public Patternette( Strings pre, String nm, Strings post ) {
+	public Patte( Strings pre, String nm, Strings post ) {
 		this( pre, nm );
 		postfix( new Strings( post ));
 	}
 	//just a helper ctor for hardcoded Patternettes
-	public Patternette( String pre ) { this( new Strings( pre ), "" ); }
-	public Patternette( String pre, String nm ) { this( new Strings( pre ), nm );}
-	public Patternette( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
+	public Patte( String pre ) { this( new Strings( pre ), "" ); }
+	public Patte( String pre, String nm ) { this( new Strings( pre ), nm );}
+	public Patte( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
 
 	private int  preSz  = 0;
 	private int  postSz = 0;
@@ -36,8 +36,8 @@ public class Patternette {
 	
 	private Strings     prefix = new Strings();
 	public  Strings     prefix() { return prefix; }
-	public  Patternette prefix( Strings s ) { prefix = s; preSz = prefix.size(); return this; }
-	public  Patternette prefix( String str ) {
+	public  Patte prefix( Strings s ) { prefix = s; preSz = prefix.size(); return this; }
+	public  Patte prefix( String str ) {
 		for (String s : new Strings( str ))
 			prefix.append( s );
 		preSz = prefix.size();
@@ -46,8 +46,8 @@ public class Patternette {
 
 	private Strings     postfix = new Strings();
 	public  Strings     postfix() { return postfix; }
-	public  Patternette postfix( Strings ss ) { postfix = ss; postSz = postfix.size(); return this; }
-	public  Patternette postfix( String str ) {
+	public  Patte postfix( Strings ss ) { postfix = ss; postSz = postfix.size(); return this; }
+	public  Patte postfix( String str ) {
 		for (String s : new Strings( str ))
 			postfix.append( s );
 		postSz = postfix.size();
@@ -57,55 +57,55 @@ public class Patternette {
 	private boolean     named = false;
 	private String      name = "";
 	public  String      name() { return name; }
-	public  Patternette name( String nm ) { if (null != nm) {name = nm; named = !nm.equals("");} return this; }
+	public  Patte name( String nm ) { if (null != nm) {name = nm; named = !nm.equals("");} return this; }
 	public  boolean     named() { return named;}
 
 	// -- mutually exclusive attributes --:
 	private boolean     isNumeric = false;
 	public  boolean     isNumeric() { return isNumeric; }
-	public  Patternette numericIs( boolean nm ) { isNumeric = nm; return this; }
-	public  Patternette numericIs() { isNumeric = true; return this; }
+	public  Patte numericIs( boolean nm ) { isNumeric = nm; return this; }
+	public  Patte numericIs() { isNumeric = true; return this; }
 
 	private boolean     isExpr = false;
 	public  boolean     isExpr() { return isExpr; }
-	public  Patternette exprIs( boolean ex ) { isExpr = ex; return this; }
-	public  Patternette exprIs() { isExpr = true; return this; }
+	public  Patte exprIs( boolean ex ) { isExpr = ex; return this; }
+	public  Patte exprIs() { isExpr = true; return this; }
 
 	private boolean     isQuoted = false;
 	public  boolean     quoted() { return isQuoted;}
-	public  Patternette quotedIs( boolean b ) { isQuoted = b; return this; }
-	public  Patternette quotedIs() { isQuoted = true; return this; }
+	public  Patte quotedIs( boolean b ) { isQuoted = b; return this; }
+	public  Patte quotedIs() { isQuoted = true; return this; }
 	
 	private boolean     isPlural = false;
 	public  boolean     isPlural() { return isPlural; }
-	public  Patternette pluralIs( boolean b ) { isPlural = b; return this; }
-	public  Patternette pluralIs() { isPlural = true; return this; }
+	public  Patte pluralIs( boolean b ) { isPlural = b; return this; }
+	public  Patte pluralIs() { isPlural = true; return this; }
 	
 	private boolean     isPhrased = false;
 	public  boolean     isPhrased() { return isPhrased; }
-	public  Patternette phrasedIs() { isPhrased = true; return this; }
+	public  Patte phrasedIs() { isPhrased = true; return this; }
 	
 	private boolean     isGrouped = false;
 	public  boolean     isGrouped() { return isGrouped; }
-	public  Patternette groupedIs() { isGrouped = true; return this; }
+	public  Patte groupedIs() { isGrouped = true; return this; }
 	
 	private boolean     isSign = false;
 	public  boolean     isSign() { return isSign; }
-	public  Patternette signIs() { isSign = true; return this; }
+	public  Patte signIs() { isSign = true; return this; }
 	
    // TODO: Apretrophed
 	private String      isApostrophed = null;
 	public  boolean     isApostrophed() { return isApostrophed != null; }
-	public  Patternette apostrophedIs( String s ) { isApostrophed = s; return this; }
+	public  Patte apostrophedIs( String s ) { isApostrophed = s; return this; }
 	
 	private boolean     isList = false;
 	public  boolean     isList() { return isList; }
-	public  Patternette listIs() { isList = true; return this; }
+	public  Patte listIs() { isList = true; return this; }
 	// --
 	
 	private String      conjunction = "";
 	public  String      conjunction() { return conjunction; }
-	public  Patternette conjunction( String c ) { conjunction = c; return this; }
+	public  Patte conjunction( String c ) { conjunction = c; return this; }
 	
 	public Attribute matchedAttr( String val ) {
 		return new Attribute(
@@ -166,8 +166,8 @@ public class Patternette {
 			+ postfix().toString();
 	}
 	public String toLine() { return prefix().toString() +" "+ name +" "+ postfix().toString(); }
-	static public Patternette peek( ListIterator<Patternette> li ) {
-		Patternette s = new Patternette();
+	static public Patte peek( ListIterator<Patte> li ) {
+		Patte s = new Patte();
 		if (li.hasNext()) {
 			s = li.next();
 			li.previous();

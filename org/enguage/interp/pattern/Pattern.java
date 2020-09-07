@@ -20,7 +20,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
 
-public class Pattern extends ArrayList<Patternette> {
+public class Pattern extends ArrayList<Patte> {
 	static final         long serialVersionUID = 0;
 	static private       Audit           audit = new Audit( "Pattern" );
 	
@@ -51,7 +51,7 @@ public class Pattern extends ArrayList<Patternette> {
 	public Pattern( Strings words ) {
 		
 		// "if X do Y" -> [ <x prefix=["if"]/>, <y prefix=["do"] postfix="."/> ]
-		Patternette t = new Patternette();
+		Patte t = new Patte();
 		for ( String word : words ) {
 			
 			if (word.equals( "an" )) word = "a";
@@ -120,7 +120,7 @@ public class Pattern extends ArrayList<Patternette> {
 				}
 				
 				add( t.name( sw ));
-				t = new Patternette();
+				t = new Patte();
 				
 			} else
 				t.prefix( word );
@@ -268,7 +268,7 @@ public class Pattern extends ArrayList<Patternette> {
 		    vars = 0,
 		    rand = rn.nextInt( RANGE );
 		
-		for (Patternette t : this) {
+		for (Patte t : this) {
 			cons += t.nconsts();
 			if (t.isPhrased())
 				infinite = true;
@@ -319,7 +319,7 @@ public class Pattern extends ArrayList<Patternette> {
 		return rep == null ? "" : rep.toString();
 
 	}
-	private String doList( ListIterator<Patternette> patti,
+	private String doList( ListIterator<Patte> patti,
 	                       ListIterator<String>      utti  ) 
 	{
 		String  word = utti.next();
@@ -374,7 +374,7 @@ public class Pattern extends ArrayList<Patternette> {
 		}
 		return vals.toString("", " and ", "");
 	}
-	private String getNextBoilerplate( Patternette t, ListIterator<Patternette> ti ) {
+	private String getNextBoilerplate( Patte t, ListIterator<Patte> ti ) {
 		String term = null;
 		if (t.postfix().size() != 0)
 			term = t.postfix().get( 0 );
@@ -387,7 +387,7 @@ public class Pattern extends ArrayList<Patternette> {
 		}
 		return term;
 	}
-	private String getVariable( Patternette t, ListIterator<Patternette> ti, ListIterator<String> ui, boolean spatial ) {
+	private String getVariable( Patte t, ListIterator<Patte> ti, ListIterator<String> ui, boolean spatial ) {
 		String u = "";
 		if (ui.hasNext()) u = ui.next();
 		Strings vals = new Strings( u );
@@ -474,13 +474,13 @@ public class Pattern extends ArrayList<Patternette> {
 		 * ???NAME="an/array/or/list"	... <NAME array="array"/>
 		 * ???NAME="value one/value two/value three" <NAME phrased="phrased" array="array"/>
 		 */
-		ListIterator<Patternette> patti = listIterator();           // [ 'this    is    a   <test/>' ]
+		ListIterator<Patte> patti = listIterator();           // [ 'this    is    a   <test/>' ]
 		ListIterator<String>       utti = utterance.listIterator(); // [ "this", "is", "a", "test"   ]
 		
-		Patternette next = null;
+		Patte next = null;
 		while (patti.hasNext() && utti.hasNext()) {
 			
-			Patternette t = (next != null) ? next : patti.next();
+			Patte t = (next != null) ? next : patti.next();
 			next = null;
 			
 			if (null == (utti = matchBoilerplate( t.prefix(), utti, spatial ))) { // ...match prefix
@@ -564,9 +564,9 @@ public class Pattern extends ArrayList<Patternette> {
 	public String toXml( Indent indent ) {
 		String oldName = "";
 		String str  = "\n"+indent.toString();
-		Iterator<Patternette> ti = iterator();
+		Iterator<Patte> ti = iterator();
 		while (ti.hasNext()) {
-			Patternette t = ti.next();
+			Patte t = ti.next();
 			str += (t.name().equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent );
 			oldName = t.name();
 		}
@@ -574,7 +574,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	public String toString() {
 		String tmp, str="";
-		Iterator<Patternette> ti = iterator();
+		Iterator<Patte> ti = iterator();
 		while (ti.hasNext())
 			if (!(tmp = ti.next().toString()).equals(""))
 				str += tmp +(ti.hasNext() ? " " : "");
@@ -582,7 +582,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	public String toFilename() {
 		String tmp, str="";
-		Iterator<Patternette> ti = iterator();
+		Iterator<Patte> ti = iterator();
 		while (ti.hasNext())
 			if (!(tmp = ti.next().toPattern()).equals(""))
 				str += tmp +(ti.hasNext() ? "_" : "");
@@ -590,7 +590,7 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	public String toText() {
 		String str="";
-		Iterator<Patternette> ti = iterator();
+		Iterator<Patte> ti = iterator();
 		while (ti.hasNext()) {
 			str += ti.next().toText();
 			if (ti.hasNext()) str += " ";
@@ -599,9 +599,9 @@ public class Pattern extends ArrayList<Patternette> {
 	}
 	public String toLine() {
 		String str="";
-		Iterator<Patternette> ti = iterator();
+		Iterator<Patte> ti = iterator();
 		while (ti.hasNext()) {
-			Patternette t = ti.next();
+			Patte t = ti.next();
 			str += ( " "+t.prefix().toString()+" <"+t.name() +" "
 			//+ t.attributes().toString()
 					+"/> "+t.postfix().toString());

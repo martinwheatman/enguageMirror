@@ -2,7 +2,7 @@ package org.enguage.vehicle;
 
 import org.enguage.interp.Context;
 import org.enguage.interp.pattern.Pattern;
-import org.enguage.interp.pattern.Patternette;
+import org.enguage.interp.pattern.Patte;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Spatial;
@@ -127,7 +127,7 @@ public class Utterance {
 
 		// create a meeting repertoire
 		Pattern ts = new Pattern();
-		ts.add( new Patternette( "i am meeting", "WHOM" ).phrasedIs() );
+		ts.add( new Patte( "i am meeting", "WHOM" ).phrasedIs() );
 		Sign s = new Sign().concept("meeting").pattern( ts );
 		Spatial.addConcept("meeting");
 		Temporal.addConcept("meeting");
@@ -138,7 +138,7 @@ public class Utterance {
 		test( s, "i am meeting my sister  at the pub" );
 		
 		ts = new Pattern();
-		ts.add( new Patternette( "what is the factorial of", "N" ).numericIs() );
+		ts.add( new Patte( "what is the factorial of", "N" ).numericIs() );
 		s = new Sign().concept("meeting").pattern( ts );
 
 		test( s, "what is the factorial of whatever", new Strings( "3" ));
