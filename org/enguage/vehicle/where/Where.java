@@ -59,30 +59,30 @@ public class Where {
 	public  String             locatorAsString( int n ) {return locator.get( n ).toString();}
 
 	// --
-	public static Where getWhere( ListIterator<String> ui, String term ) {
+	public static Where getWhere( ListIterator<String> said, String term ) {
 		Where w = null;
-		if (ui.hasNext()) {
+		if (said.hasNext()) {
 			Strings locr;
-			if (null != (locr = Where.isLocator( ui ))) { // << see this -- only works on single length locr
+			if (null != (locr = Where.isLocator( said ))) { // << see this -- only works on single length locr
 				Strings locn = new Strings();
-				if (ui.hasNext()) {
-					String uttered = ui.next(); // typically "the"
+				if (said.hasNext()) {
+					String uttered = said.next(); // typically "the"
 					locn.add( uttered );
 					boolean dontStop = null == term;
-					while (ui.hasNext()) {
-						uttered = ui.next();
-						if (dontStop || !uttered.equals( term )) {
+					while (said.hasNext()) {
+						uttered = said.next();
+						if (dontStop || !uttered.equals( term ))
 							locn.add( uttered );
-						} else {
-							ui.previous();
+						else
 							break;
-					}	}
-					if (( dontStop && !ui.hasNext()) ||
-					    (!dontStop &&  ui.hasNext())    )
+					}
+					if (( dontStop && !said.hasNext()) ||
+					    (!dontStop &&  said.hasNext())    )
+					{
 						w = new Where( new Strings( locr ), locn ).assigned( true );
-				}
+				}	}
 				// undo changes to ui...
-				if (w==null) Strings.previous( ui, locr.size() + locn.size() );
+				if (w==null) Strings.previous( said, locr.size() + locn.size() );
 		}	}
 		return w;
 	}

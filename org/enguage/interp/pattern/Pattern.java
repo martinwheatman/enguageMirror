@@ -309,8 +309,30 @@ public class Pattern extends ArrayList<Patte> {
 		matched.add( a ); // remember what it was matched with!
 	}
 	private void matched( Where w ) {
-		matched( new Attribute( Where.LOCTR,  w.locatorAsString( 0 )));
-		matched( new Attribute( Where.LOCTN, w.locationAsString( 0 )));
+		if (null != w) {
+			matched( new Attribute( Where.LOCTR, w.locatorAsString(  0 )));
+			matched( new Attribute( Where.LOCTN, w.locationAsString( 0 )));
+	}	}
+	
+	static private int notMatched = 0;
+	static String term = "", tmp = "";
+	static public String notMatched() {
+		return  notMatched ==  0 ? "matched" :
+				notMatched ==  1 ? "precheck 1" :
+				notMatched ==  2 ? "precheck 2" :
+				notMatched == 11 ? term +" != "+ tmp:
+				notMatched == 12 ? "... "+term +" != "+ tmp +" ...":
+				notMatched == 13 ? "invalid expr" :
+				notMatched == 14 ? "and-list runs into hotspot" :
+				notMatched == 15 ? "not numeric" :
+				notMatched == 16 ? "invalid flags" :
+				notMatched == 17 ? "unterminated and-list" :
+				notMatched == 18 ? "... "+term +" != "+ tmp +"..":
+				notMatched == 19 ? "... "+term +" != "+ tmp +"." :
+				notMatched == 20 ? "trailing hotspot value missing" :
+				notMatched == 21 ? "more pattern" :
+				notMatched == 22 ? "more utterance" :
+				notMatched == 23 ? "missing apostrophe" : ("unknown:"+ notMatched);
 	}
 	
 	private String doNumeric( ListIterator<String> ui ) {
@@ -377,6 +399,28 @@ public class Pattern extends ArrayList<Patte> {
 		}
 		return vals.toString("", " and ", "");
 	}
+	
+	private ListIterator<String> matchBoilerplate(
+			Strings bp,
+			ListIterator<String> said,
+			boolean spatial )
+	{
+		Where w;
+		Iterator<String> bpi = bp.iterator();
+		while (bpi.hasNext() && said.hasNext()) {
+			term = bpi.next();
+			tmp = said.next();
+			if (!term.equalsIgnoreCase( tmp )) {
+				said.previous();
+				if (spatial && null != (w = Where.getWhere( said, term )))
+					matched( w );
+				else {
+					notMatched = 11;
+					return null; // string mismatch
+		}	}	}
+		notMatched = 12;
+		return bpi.hasNext() ? null : said;
+	}
 	private String getNextBoilerplate( Patte t, ListIterator<Patte> ti ) {
 		String term = null;
 		if (t.postfix().size() != 0)
@@ -390,20 +434,27 @@ public class Pattern extends ArrayList<Patte> {
 		}
 		return term;
 	}
-	private String getVariable( Patte t, ListIterator<Patte> ti, ListIterator<String> ui, boolean spatial ) {
+	private String getVariable(
+			Patte t,
+			ListIterator<Patte> ti,
+			ListIterator<String> said,
+			boolean spatial )
+	{
 		String u = "";
-		if (ui.hasNext()) u = ui.next();
+		if (said.hasNext()) u = said.next();
 		Strings vals = new Strings( u );
-		if (t.isPhrased() || t.isSign() || (ui.hasNext() && Reply.andConjunction().equals( u ))) {
+		if (t.isPhrased() || t.isSign() || (said.hasNext() && Reply.andConjunction().equals( u ))) {
 			Where where = null;
 			String term = getNextBoilerplate( t, ti ); // null if this is last tag
-			while (ui.hasNext()) {
-				if (spatial && null != (where = Where.getWhere( ui, term ))) // term==null? => read to end
+			while (said.hasNext()) {
+				// term==null? => read to end
+				if (spatial && null != (where = Where.getWhere( said, term ))) {
 					matched( where );
-				else {
-					u = ui.next();
+					break; // finding a where is the end of a variable...
+				} else {
+					u = said.next();
 					if (term != null && term.equals( u )) {
-						ui.previous();
+						said.previous();
 						break;
 					} else
 						vals.add( u );
@@ -414,44 +465,6 @@ public class Pattern extends ArrayList<Patte> {
 			val = val.endsWith( Language.Apostrophed() ) ? val.substring( 0, val.length()-2 ) : null;
 		
 		return val;
-	}
-	static private int notMatched = 0;
-	static String term = "", tmp = "";
-	static public String notMatched() {
-		return  notMatched ==  0 ? "matched" :
-				notMatched ==  1 ? "precheck 1" :
-				notMatched ==  2 ? "precheck 2" :
-				notMatched == 11 ? term +" != "+ tmp:
-				notMatched == 12 ? "... "+term +" != "+ tmp +" ...":
-				notMatched == 13 ? "invalid expr" :
-				notMatched == 14 ? "and-list runs into hotspot" :
-				notMatched == 15 ? "not numeric" :
-				notMatched == 16 ? "invalid flags" :
-				notMatched == 17 ? "unterminated and-list" :
-				notMatched == 18 ? "... "+term +" != "+ tmp +"..":
-				notMatched == 19 ? "... "+term +" != "+ tmp +"." :
-				notMatched == 20 ? "trailing hotspot value missing" :
-				notMatched == 21 ? "more pattern" :
-				notMatched == 22 ? "more utterance" :
-				notMatched == 23 ? "missing apostrophe" : ("unknown:"+ notMatched);
-	}
-	private ListIterator<String> matchBoilerplate( Strings bp, ListIterator<String> ui, boolean spatial ) {
-
-		Where w;
-		Iterator<String> bpi = bp.iterator();
-		while ( bpi.hasNext() && ui.hasNext())
-			if (!(term = bpi.next()).equalsIgnoreCase( tmp = ui.next() )) {
-				ui.previous();
-				if (spatial && null != (w = Where.getWhere( ui, term )))
-					matched( w );
-				else {
-					notMatched = 11;
-					return null; // string mismatch
-				}
-				if (ui.hasNext()) ui.next(); // getWhere doen't consume terminator
-			}
-		notMatched = 12;
-		return bpi.hasNext() ? null : ui;
 	}
 	private String getVal(
 			Patte t,
@@ -531,11 +544,10 @@ public class Pattern extends ArrayList<Patte> {
 			} else if (!t.named()) { // last tag - no postfix?
 				
 				if (utti.hasNext()) { // end of array on null (end?) tag...
-					if (spatial) {
-						Where w;
-						if (null != (w = Where.getWhere( utti, null )))
-							matched( w );
-					}
+					
+					if (spatial )
+						matched( Where.getWhere( utti, null ));
+					
 				} else { // check 4 trailing where
 					if (patti.hasNext()) next = patti.next();
 				}
@@ -549,12 +561,15 @@ public class Pattern extends ArrayList<Patte> {
 				
 				String val = getVal( t, patti, utti, spatial );
 				if (val == null) return null;
+				
 				matched( t.matchedAttr( val ));
 				
 				if (null == (utti = matchBoilerplate( t.postfix(), utti, spatial ))) {
 					notMatched += 7; // 18 or 19!
 					return null;
-		}	}	}
+			}	}
+
+		}
 		
 		if (patti.hasNext()) {
 			notMatched = 21;
