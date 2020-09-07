@@ -12,6 +12,7 @@ public class Repertoire {
 	public  static final String PRONUNCIATION = "repper-to-are";  // better than  ~wah	
 	public  static final String PLURALISATION = "repper-to-wahs"; // better than ~ares
 	public  static final String          NAME = "repertoire";
+	public  static final String           LOC = "rpt";
 
 	public  static final String         ALLOP = "engine";
 	public  static final String         AUTOP = "autopoiesis";

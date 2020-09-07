@@ -48,8 +48,8 @@ public class Concepts {
 		}	}
 		return fname; // not found, new filename
 	}
-	static final private String rwReps() {return Fs.root() +"reps"+ File.separator;}
-	static final public  String RO_REPS = Enguage.RO_SPACE +"reps"+ File.separator;
+	static final private String rwReps() {return Fs.root() +Repertoire.LOC+ File.separator;}
+	static final public  String RO_REPS = Enguage.RO_SPACE +Repertoire.LOC+ File.separator;
 	static public  String writtenName( String name ) {return name( RO_REPS, name, "txt" );}
 	static public  String spokenName( String s ) {return name( rwReps(), s, "txt" );}
 	static public void delete( String cname ) {
