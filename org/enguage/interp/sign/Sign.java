@@ -131,7 +131,7 @@ public class Sign {
 				for (Intention in : programme)
 					sign += (line++ == 0 ? ":" : ";") + "\n" + indent + in;
 		}	}	
-		return sign +".\n\n";
+		return sign +".\n";
 	}
 	public boolean toFile( String fname ){
 		//Audit.log( "creating: "+ loc + pattern.toFilename() +".txt" );

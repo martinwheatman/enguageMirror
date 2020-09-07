@@ -453,6 +453,44 @@ public class Pattern extends ArrayList<Patte> {
 		notMatched = 12;
 		return bpi.hasNext() ? null : ui;
 	}
+	private String getVal(
+			Patte t,
+			ListIterator<Patte> patti,
+			ListIterator<String> utti,
+			boolean spatial)
+	{
+		String val = null;
+		if (t.isNumeric()) {
+			
+			if (null == (val = doNumeric( utti ))) {
+				notMatched = 15;
+				return null;
+			}
+			
+		} else if (t.isList()) {
+			
+			if (null == (val = doList( patti, utti ))) {
+				notMatched = 17;
+				return null;
+			}
+			
+		} else if (t.isExpr()) {
+			
+			if (null == (val = doExpr( utti ))) {
+				notMatched = 13;
+				return null;
+			}
+			
+		} else if (t.invalid( utti )) {
+			notMatched = 16;
+			return null;
+			
+		} else if (null == (val = getVariable( t, patti, utti, spatial ))) {
+			notMatched = 23;
+			return null;
+		}
+		return val;
+	}
 	
 	/* TODO: Proposal: that a singular tag (i.e. non-PHRASE) can match with a known string
 	 * i.e. an object id: e.g. theOldMan, thePub, fishAndChips.
@@ -509,40 +547,8 @@ public class Pattern extends ArrayList<Patte> {
 				
 			} else { // do these loaded match?
 				
-				String val = null;
-				
-				if (t.isNumeric()) {
-					
-					if (null == (val = doNumeric( utti ))) {
-						notMatched = 15;
-						return null;
-					}
-					
-				} else if (t.isList()) {
-					
-					if (null == (val = doList( patti, utti ))) {
-						notMatched = 17;
-						return null;
-					}
-					
-				} else if (t.isExpr()) {
-					
-					if (null == (val = doExpr( utti ))) {
-						notMatched = 13;
-						return null;
-					}
-					
-				} else if (t.invalid( utti )) {
-					notMatched = 16;
-					return null;
-					
-				} else if (null == (val = getVariable( t, patti, utti, spatial ))) {
-					notMatched = 23;
-					return null;
-				}
-				// ...add value
-				//if (null == matched) matched = new Attributes();
-				//matched.add( t.matchedAttr( val )); // remember what it was matched with!
+				String val = getVal( t, patti, utti, spatial );
+				if (val == null) return null;
 				matched( t.matchedAttr( val ));
 				
 				if (null == (utti = matchBoilerplate( t.postfix(), utti, spatial ))) {
@@ -642,7 +648,6 @@ public class Pattern extends ArrayList<Patte> {
 //			audit.FATAL( "answer '"+ patt +"' doesn't equal expected: '" + answer +"'" );
 //		Audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
 //	}
-	// TODO:
 	static private void matchTest( String pref, String var, String concept, String utterance ) {
 		audit.in( "matchTest", utterance );
 		Attributes as;
