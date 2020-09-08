@@ -1033,16 +1033,16 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		ListIterator<String> loci = listIterator();
 		Strings rc = new Strings();
 		String tmp;
-		while (ui.hasNext() && loci.hasNext()) {
-			if ((tmp = ui.next()).equals( loci.next() )) {
+		while (ui.hasNext() && loci.hasNext())
+			if ((tmp = ui.next()).equals( loci.next() ))
 				rc.add( tmp );
-			} else { // not matched...
+			else { // not matched...
 				ui.previous(); // ...put this one back!
 				break;
 			}
-		}
 		if (loci.hasNext()) { // we've failed!
-			unload( ui, rc );
+			previous( ui, rc.size());
+			rc = new Strings();
 		}
 		return rc;
 	}

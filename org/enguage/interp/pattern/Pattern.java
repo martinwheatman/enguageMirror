@@ -315,20 +315,20 @@ public class Pattern extends ArrayList<Patte> {
 	}	}
 	
 	static private int notMatched = 0;
-	static String term = "", tmp = "";
+	static String term = "", word = "";
 	static public String notMatched() {
 		return  notMatched ==  0 ? "matched" :
 				notMatched ==  1 ? "precheck 1" :
 				notMatched ==  2 ? "precheck 2" :
-				notMatched == 11 ? term +" != "+ tmp:
-				notMatched == 12 ? "... "+term +" != "+ tmp +" ...":
+				notMatched == 11 ? term +" != "+ word:
+				notMatched == 12 ? "... "+term +" != "+ word +" ...":
 				notMatched == 13 ? "invalid expr" :
 				notMatched == 14 ? "and-list runs into hotspot" :
 				notMatched == 15 ? "not numeric" :
 				notMatched == 16 ? "invalid flags" :
 				notMatched == 17 ? "unterminated and-list" :
-				notMatched == 18 ? "... "+term +" != "+ tmp +"..":
-				notMatched == 19 ? "... "+term +" != "+ tmp +"." :
+				notMatched == 18 ? "... "+term +" != "+ word +"..":
+				notMatched == 19 ? "... "+term +" != "+ word +"." :
 				notMatched == 20 ? "trailing hotspot value missing" :
 				notMatched == 21 ? "more pattern" :
 				notMatched == 22 ? "more utterance" :
@@ -400,26 +400,25 @@ public class Pattern extends ArrayList<Patte> {
 		return vals.toString("", " and ", "");
 	}
 	
-	private ListIterator<String> matchBoilerplate(
+	private boolean matchBoilerplate(
 			Strings bp,
 			ListIterator<String> said,
 			boolean spatial )
 	{
-		Where w;
 		Iterator<String> bpi = bp.iterator();
 		while (bpi.hasNext() && said.hasNext()) {
 			term = bpi.next();
-			tmp = said.next();
-			if (!term.equalsIgnoreCase( tmp )) {
+			if (spatial)
+				matched( Where.getWhere( said, term ) );
+			
+			if (!term.equalsIgnoreCase( word = said.next() )) {
 				said.previous();
-				if (spatial && null != (w = Where.getWhere( said, term )))
-					matched( w );
-				else {
-					notMatched = 11;
-					return null; // string mismatch
-		}	}	}
+				notMatched = 11;
+				return false; // string mismatch
+		}	}
+		
 		notMatched = 12;
-		return bpi.hasNext() ? null : said;
+		return !bpi.hasNext();
 	}
 	private String getNextBoilerplate( Patte t, ListIterator<Patte> ti ) {
 		String term = null;
@@ -466,7 +465,7 @@ public class Pattern extends ArrayList<Patte> {
 		
 		return val;
 	}
-	private String getVal(
+	private String getValue(
 			Patte t,
 			ListIterator<Patte> patti,
 			ListIterator<String> utti,
@@ -537,7 +536,7 @@ public class Pattern extends ArrayList<Patte> {
 			Patte t = (next != null) ? next : patti.next();
 			next = null;
 			
-			if (null == (utti = matchBoilerplate( t.prefix(), utti, spatial ))) { // ...match prefix
+			if (!matchBoilerplate( t.prefix(), utti, spatial )) { // ...match prefix
 				//notMatched set within matchBoilerplate()
 				return null;
 				
@@ -545,7 +544,7 @@ public class Pattern extends ArrayList<Patte> {
 				
 				if (utti.hasNext()) { // end of array on null (end?) tag...
 					
-					if (spatial )
+					if (spatial)
 						matched( Where.getWhere( utti, null ));
 					
 				} else { // check 4 trailing where
@@ -559,17 +558,16 @@ public class Pattern extends ArrayList<Patte> {
 				
 			} else { // do these loaded match?
 				
-				String val = getVal( t, patti, utti, spatial );
+				String val = getValue( t, patti, utti, spatial );
 				if (val == null) return null;
 				
 				matched( t.matchedAttr( val ));
-				
-				if (null == (utti = matchBoilerplate( t.postfix(), utti, spatial ))) {
-					notMatched += 7; // 18 or 19!
-					return null;
-			}	}
-
-		}
+			}
+			
+			if (!matchBoilerplate( t.postfix(), utti, spatial )) {
+				notMatched += 7; // 18 or 19!
+				return null;
+		}	}
 		
 		if (patti.hasNext()) {
 			notMatched = 21;

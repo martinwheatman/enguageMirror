@@ -156,8 +156,9 @@ public class Enguage {
 				//Repertoire.signs.show();
 				audit.FATAL(
 						"reply: '"+ reply +"',\n             "+
-								"expected: '"+ expected +"' "+
-								"(reason="+ Pattern.notMatched() +")" );
+								"expected: '"+ expected +"' "
+								//+"(reason="+ Pattern.notMatched()+")"
+								);
 			
 			} else if (reply.equalsIgnoreCase( new Strings( unexpected ))) {
 				audit.passed( "enguage> "+ reply +"\n" );
@@ -167,8 +168,9 @@ public class Enguage {
 				audit.FATAL(
 						"reply: '"      + reply      +"'\n             "+
 						"expected: '"   + expected   +"'\n          "+
-						"alternately: '"+ unexpected +"'\n          "+
-						"(reason="+ Pattern.notMatched() +")" );
+						"alternately: '"+ unexpected +"'\n          "
+						//+"(reason="+ Pattern.notMatched() +")"
+						);
 	}	}	}
 	
 	public static void sanityCheck() {
