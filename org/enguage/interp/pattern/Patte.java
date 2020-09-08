@@ -36,23 +36,19 @@ public class Patte {
 	
 	private Strings     prefix = new Strings();
 	public  Strings     prefix() { return prefix; }
-	public  Patte prefix( Strings s ) { prefix = s; preSz = prefix.size(); return this; }
+	public  Patte prefix( Strings s ) { prefix = s.toLowerCase(); preSz = prefix.size(); return this; }
 	public  Patte prefix( String str ) {
+		// cant combine with prefix(Strings) -- prefix not initialised???
 		for (String s : new Strings( str ))
-			prefix.append( s );
+			prefix.append( s.toLowerCase() );
 		preSz = prefix.size();
 		return this;
 	}
 
 	private Strings     postfix = new Strings();
 	public  Strings     postfix() { return postfix; }
-	public  Patte postfix( Strings ss ) { postfix = ss; postSz = postfix.size(); return this; }
-	public  Patte postfix( String str ) {
-		for (String s : new Strings( str ))
-			postfix.append( s );
-		postSz = postfix.size();
-		return this;
-	}
+	public  Patte postfix( Strings ss ) { postfix = ss.toLowerCase(); postSz = postfix.size(); return this; }
+	public  Patte postfix( String str ) {return postfix( new Strings( str ));}
 
 	private boolean     named = false;
 	private String      name = "";

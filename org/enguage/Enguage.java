@@ -156,8 +156,9 @@ public class Enguage {
 				//Repertoire.signs.show();
 				audit.FATAL(
 						"reply: '"+ reply +"',\n             "+
-								"expected: '"+ expected +"' "+
-								"(reason="+ Pattern.notMatched() +")" );
+								"expected: '"+ expected +"' "
+								//+"(reason="+ Pattern.notMatched()+")"
+								);
 			
 			} else if (reply.equalsIgnoreCase( new Strings( unexpected ))) {
 				audit.passed( "enguage> "+ reply +"\n" );
@@ -167,8 +168,9 @@ public class Enguage {
 				audit.FATAL(
 						"reply: '"      + reply      +"'\n             "+
 						"expected: '"   + expected   +"'\n          "+
-						"alternately: '"+ unexpected +"'\n          "+
-						"(reason="+ Pattern.notMatched() +")" );
+						"alternately: '"+ unexpected +"'\n          "
+						//+"(reason="+ Pattern.notMatched() +")"
+						);
 	}	}	}
 	
 	public static void sanityCheck() {
@@ -501,7 +503,7 @@ public class Enguage {
 			test( "i need biscuits",       "ok, you need biscuits" );
 			test( "i need milk from the dairy aisle", "ok, you need milk from the dairy aisle" );
 			test( "i from the dairy aisle need milk", "i know" );
-			//test( "i need from the dairy aisle milk", "i know" );
+			test( "from the dairy aisle i need milk", "i know" );
 			test( "what do i need",        "you need biscuits; and, milk from the dairy aisle" );
 			test( "from the dairy aisle what do i need",  "you need milk from the dairy aisle" );
 			test( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );

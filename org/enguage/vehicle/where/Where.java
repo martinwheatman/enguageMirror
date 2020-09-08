@@ -59,30 +59,37 @@ public class Where {
 	public  String             locatorAsString( int n ) {return locator.get( n ).toString();}
 
 	// --
-	public static Where getWhere( ListIterator<String> said, String term ) {
+	public static Where getWhere( ListIterator<String> said, String terminator ) {
 		Where w = null;
 		if (said.hasNext()) {
-			Strings locr;
-			if (null != (locr = Where.isLocator( said ))) { // << see this -- only works on single length locr
-				Strings locn = new Strings();
+			Strings locr = Where.isLocator( said );
+			if (null != locr) {
 				if (said.hasNext()) {
-					String uttered = said.next(); // typically "the"
-					locn.add( uttered );
-					boolean dontStop = null == term;
-					while (said.hasNext()) {
-						uttered = said.next();
-						if (dontStop || !uttered.equals( term ))
-							locn.add( uttered );
-						else
-							break;
-					}
-					if (( dontStop && !said.hasNext()) ||
-					    (!dontStop &&  said.hasNext())    )
-					{
+					Strings locn = new Strings();
+					String word = said.next(); // typically "the"
+					locn.add( word );
+					
+					if (null == terminator) {
+						while (said.hasNext()) locn.add( said.next() );
 						w = new Where( new Strings( locr ), locn ).assigned( true );
-				}	}
-				// undo changes to ui...
-				if (w==null) Strings.previous( said, locr.size() + locn.size() );
+					} else {
+						while (said.hasNext()) {
+							word = said.next();
+							if (!word.equals( terminator ))
+								locn.add( word );
+							else {
+								// put unmacthed back
+								said.previous();
+								break;
+						}	}
+						
+						if (said.hasNext())
+							w = new Where( new Strings( locr ), locn ).assigned( true );
+						else
+							Strings.previous( said, locn.size() + locr.size());
+					}
+				} else
+					Strings.previous( said, locr.size() );
 		}	}
 		return w;
 	}
