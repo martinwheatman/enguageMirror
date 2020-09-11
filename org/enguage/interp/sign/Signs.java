@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
-import org.enguage.interp.pattern.Patte;
+import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
@@ -337,18 +337,18 @@ public class Signs extends TreeMap<Integer,Sign> {
 		audit.tracing = true;
 		Signs r = new Signs( "test" );
 		r.insert(
-				new Sign().pattern( new Patte(  "debug ", "x" ))
+				new Sign().pattern( new Pattern(  "debug ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "debug X" ))
 			);
 		r.insert(
-				new Sign().pattern( new Patte(  "describe ", "x" ))
+				new Sign().pattern( new Pattern(  "describe ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "describe X" ))
 					.help( "where x is a repertoire" )
 			);
 		r.insert(
-			new Sign().pattern( new Patte(  "list repertoires ", "" ))
+			new Sign().pattern( new Pattern(  "list repertoires ", "" ))
 				.concept( "test" )
 				.append( new Intention( Intention.allop, "list repertoires" ))
 				.help( "" )

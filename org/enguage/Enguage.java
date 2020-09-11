@@ -3,7 +3,7 @@ package org.enguage;
 import java.io.File;
 
 import org.enguage.interp.intention.Redo;
-import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
@@ -503,7 +503,7 @@ public class Enguage {
 			test( "i need biscuits",       "ok, you need biscuits" );
 			test( "i need milk from the dairy aisle", "ok, you need milk from the dairy aisle" );
 			test( "i from the dairy aisle need milk", "i know" );
-			//test( "i need from the dairy aisle milk", "i know" );
+			test( "from the dairy aisle i need milk", "i know" );
 			test( "what do i need",        "you need biscuits; and, milk from the dairy aisle" );
 			test( "from the dairy aisle what do i need",  "you need milk from the dairy aisle" );
 			test( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );

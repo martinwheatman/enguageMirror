@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.interp.intention.Intention;
+import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.pattern.Pattern;
-import org.enguage.interp.pattern.Patte;
 import org.enguage.interp.repertoire.Engine;
 import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
@@ -24,23 +24,23 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-	public Sign( Patte  patte  ) { this(); pattern( patte );}
-	public Sign( String prefix ) { this( new Patte( prefix )); }
-	public Sign( String prefix, Patte variable ) { this( variable.prefix( prefix ));}
-	public Sign( String prefix, Patte variable, String postfix ) {
+	public Sign( Pattern  patte  ) { this(); pattern( patte );}
+	public Sign( String prefix ) { this( new Pattern( prefix )); }
+	public Sign( String prefix, Pattern variable ) { this( variable.prefix( prefix ));}
+	public Sign( String prefix, Pattern variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
 	}
-	public Sign( String prefix1, Patte variable1,
-	             String prefix2, Patte variable2 )
+	public Sign( String prefix1, Pattern variable1,
+	             String prefix2, Pattern variable2 )
 	{	this();
 		pattern( variable1.prefix( prefix1 ));
 		pattern( variable2.prefix( prefix2 ));
 	}
 	
-	private Pattern pattern = new Pattern();
-	public  Pattern pattern() {return pattern;}
-	public  Sign    pattern( Pattern ta ) { pattern = ta; return this; }
-	public  Sign    pattern( Patte child ) {
+	private Patterns pattern = new Patterns();
+	public  Patterns pattern() {return pattern;}
+	public  Sign    pattern( Patterns ta ) { pattern = ta; return this; }
+	public  Sign    pattern( Pattern child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
@@ -244,7 +244,7 @@ public class Sign {
 		return Sign.audit.out( new Strings( rc ));
 	}
 	// --- test code below
-	public static void complexityTest( Pattern t ) {
+	public static void complexityTest( Patterns t ) {
 		Sign container = new Sign();
 		container.pattern( t );
 		Audit.log( "Complexity of "+ container.toXml( 0, container.cplex() ) +"\n" );
@@ -254,27 +254,27 @@ public class Sign {
 		s.append( new Intention( Intention.thenDo, "person create martin" ));
 		s.append( new Intention( Intention.elseReply, "no, somethings gone wrong" ));
 		s.append( new Intention( Intention.thenReply, "ok, thank goodness" ));
-		s.pattern( new Patte().prefix( new Strings( "hello" )));
+		s.pattern( new Pattern().prefix( new Strings( "hello" )));
 		Reply r = new Reply();
 		Intention intent = new Intention( Intention.thenReply, "hello world" );
 		r = intent.mediate( r );
 		Audit.log( "r="+ r.toString());
 		
-		Pattern ts = new Pattern();
-		ts.add( new Patte( "this is a", "x" ).phrasedIs() );
+		Patterns ts = new Patterns();
+		ts.add( new Pattern( "this is a", "x" ).phrasedIs() );
 		complexityTest( ts );
-		s.pattern( new Patte( "this is a", "x" ).phrasedIs() );
+		s.pattern( new Pattern( "this is a", "x" ).phrasedIs() );
 		
-		ts = new Pattern();
-		ts.add( new Patte( "this is a", "test" ));
-		complexityTest( ts );
-		
-		ts = new Pattern();
-		ts.add( new Patte( "this is a test", "x" ).phrasedIs() );
+		ts = new Patterns();
+		ts.add( new Pattern( "this is a", "test" ));
 		complexityTest( ts );
 		
-		ts = new Pattern();
-		ts.add( new Patte( "one small step for man", "" ));
+		ts = new Patterns();
+		ts.add( new Pattern( "this is a test", "x" ).phrasedIs() );
+		complexityTest( ts );
+		
+		ts = new Patterns();
+		ts.add( new Pattern( "one small step for man", "" ));
 		complexityTest( ts );
 		
 		Audit.log( s.toString());

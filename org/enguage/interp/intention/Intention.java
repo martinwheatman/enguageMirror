@@ -1,7 +1,7 @@
 package org.enguage.interp.intention;
 
 import org.enguage.interp.Context;
-import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Variable;
@@ -156,21 +156,21 @@ public class Intention {
 		case  create:
 			Repertoire.signs.insert(
 				voiced = new Sign()
-					.pattern( new Pattern( value ))
+					.pattern( new Patterns( value ))
 					.concept( Repertoire.AUTOPOIETIC )
 			);
 			break;
 		case append:
 			if (null != voiced)
-				voiced.append( new Intention( type, Pattern.toPattern( new Strings( value ))));
+				voiced.append( new Intention( type, Patterns.toPattern( new Strings( value ))));
 			break;
 		case prepend :
 			if (null != voiced)
-				voiced.prepend( new Intention( type, Pattern.toPattern( new Strings( value ))));
+				voiced.prepend( new Intention( type, Patterns.toPattern( new Strings( value ))));
 			break;
 		case headAppend:
 			if (null != voiced) 
-				voiced.insert( 1, new Intention( type, Pattern.toPattern( new Strings( value ))));
+				voiced.insert( 1, new Intention( type, Patterns.toPattern( new Strings( value ))));
 			break;
 		// following these are trad. autopoiesis...this need updating as above!!!
 		default:
@@ -182,7 +182,7 @@ public class Intention {
 					   val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 				Repertoire.signs.insert(
 						s = new Sign()
-								.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+								.pattern( new Patterns( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
 								.concept( concept() )
 								.append( new Intention( Intention.nameToType( attr ), val )));
 				break;
@@ -357,7 +357,7 @@ public class Intention {
 		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();
 		s = new Sign()
-				.pattern( new Pattern( "c variable pattern z" ))
+				.pattern( new Patterns( "c variable pattern z" ))
 				.concept( concept() );
 		String reply = "three four";
 		s.append( new Intention( thenReply, reply ));

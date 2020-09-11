@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.pattern.Patterns;
 import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
@@ -82,9 +82,9 @@ public class Variable {
 	static public void unset( String name ) { new Variable( name ).unset(); }
 	static public String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
 	static public String get( String name, String def ) {
-		boolean reflectValue = name.startsWith( Pattern.externPrefix );
+		boolean reflectValue = name.startsWith( Patterns.externPrefix );
 		if (reflectValue)
-			name = name.substring( Pattern.externPrefix.length() );
+			name = name.substring( Patterns.externPrefix.length() );
 		String value = cache.get( name );   // raw name, so "compass" not set, but "COMPASS" is
 		if (reflectValue)
 			value = Attributes.reflect( new Strings( value )).toString();

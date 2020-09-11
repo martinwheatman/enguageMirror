@@ -1002,6 +1002,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return sa;
 	}
+	public Strings toLowerCase() {
+		Strings lc = new Strings();
+		for( String s : this )
+			lc.add( s.toLowerCase( Locale.getDefault()));
+		return lc;
+	}
 	public static String toCamelCase( String in ) {
 		String out = "";
 		Strings tmp = new Strings( in );

@@ -1,6 +1,6 @@
 package org.enguage.vehicle.pronoun;
 
-import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.pattern.Patterns;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -52,19 +52,19 @@ public class Pronoun {
 		if (ps == PLURAL) {
 			if (os == SUBJECTIVE) {
 				if (mf == Gendered.PERSONAL)
-					Pattern.subjGroup( val );
+					Patterns.subjGroup( val );
 				else if (mf == Gendered.NEUTRAL)
-					Pattern.subjOther( val );
+					Patterns.subjOther( val );
 			} else if (os == OBJECTIVE) {
 				if (mf == Gendered.PERSONAL)
-					Pattern.objGroup( val );
+					Patterns.objGroup( val );
 				else if (mf == Gendered.NEUTRAL)
-					Pattern.objOther( val );
+					Patterns.objOther( val );
 			} else if (os == POSSESSIVE) {
 				if (mf == Gendered.PERSONAL)
-					Pattern.possGroup( val );
+					Patterns.possGroup( val );
 				else if (mf == Gendered.NEUTRAL)
-					Pattern.possOther( val );
+					Patterns.possOther( val );
 	}	}	}
 	
 	static private String[][][] values = { // initialise to names!
