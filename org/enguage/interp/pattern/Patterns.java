@@ -126,7 +126,7 @@ public class Patterns extends ArrayList<Pattern> {
 				t = new Pattern();
 				
 			} else
-				t.prefix( word );
+				t.prefixAppend( word );
 		}
 		if (!t.isEmpty()) add( t );
 	}

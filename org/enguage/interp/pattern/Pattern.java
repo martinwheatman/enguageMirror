@@ -38,12 +38,13 @@ public class Pattern {
 	public  Strings     prefix() { return prefix; }
 	public  Pattern prefix( Strings s ) { prefix = s.toLowerCase(); preSz = prefix.size(); return this; }
 	public  Pattern prefix( String str ) {
-		// cant combine with prefix(Strings) -- prefix not initialised???
+		prefix = new Strings();
 		for (String s : new Strings( str ))
 			prefix.append( s.toLowerCase() );
 		preSz = prefix.size();
 		return this;
 	}
+	public void prefixAppend( String word ) {prefix.append( word.toLowerCase() ); preSz++;}
 
 	private Strings     postfix = new Strings();
 	public  Strings     postfix() { return postfix; }
