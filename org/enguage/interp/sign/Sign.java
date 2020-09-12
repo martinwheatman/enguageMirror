@@ -39,8 +39,8 @@ public class Sign {
 	
 	private Patterns pattern = new Patterns();
 	public  Patterns pattern() {return pattern;}
-	public  Sign    pattern( Patterns ta ) { pattern = ta; return this; }
-	public  Sign    pattern( Pattern child ) {
+	public  Sign     pattern( Patterns ta ) { pattern = ta; return this; }
+	public  Sign     pattern( Pattern child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;

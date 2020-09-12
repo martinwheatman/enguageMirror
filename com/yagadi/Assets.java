@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.enguage.Enguage;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.objects.Variable;

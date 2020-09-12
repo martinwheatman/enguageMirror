@@ -3,7 +3,6 @@ package org.enguage;
 import java.io.File;
 
 import org.enguage.interp.intention.Redo;
-import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
@@ -123,16 +122,16 @@ public class Enguage {
 	}
 	static private void tidyUpViolenceTest() { tidyUpViolenceTest( "violence" ); }
 	
-	static private int testNo = 0;
+	static private int testGrp = 0;
 	static private String testName = null;
-	static private boolean runThisTest() {return runThisTest( null );}
-	static private boolean runThisTest( String title ) {
-		++testNo;
-		boolean runThisTest = testName != null ?
+	static private boolean runTheseTests() {return runTheseTests( null );}
+	static private boolean runTheseTests( String title ) {
+		++testGrp;
+		boolean runTheseTests = testName != null ?
 				title != null && title.contains( testName )
-				: level == 0 || level == testNo || (level < 0 && -level != testNo);
-		if (runThisTest) audit.title( "Test "+ testNo + (title != null ? ": "+ title : ""));
-		return runThisTest;
+				: level == 0 || level == testGrp || (level < 0 && -level != testGrp);
+		if (runTheseTests) audit.title( "Test "+ testGrp + (title != null ? ": "+ title : ""));
+		return runTheseTests;
 	}
 	
 	static private void test( String cmd ) { test( cmd, null );}
@@ -173,7 +172,7 @@ public class Enguage {
 						);
 	}	}	}
 	
-	public static void sanityCheck() {
+	public static void selfTest() {
 		// ...useful ephemera...
 		//interpret( "detail on" );
 		//interpret( "tracing on" );
@@ -189,7 +188,7 @@ public class Enguage {
 //		if (runThisTest( "title" )) {
 //			test( "", "" );
 //		}
-		if (runThisTest( "BCS HCI Workshop" )) { // code generation features
+		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
 			
 			test( "to the phrase hello reply hello to you too" );
 			test( "hello",                 "hello to you too" );
@@ -230,7 +229,7 @@ public class Enguage {
 			test( "what do i want",        "sorry, i don't understand the question" );
 		}
 		
-		if (runThisTest( "Simple Food Diary" )) {
+		if (runTheseTests( "Simple Food Diary" )) {
 			test( "i just ate breakfast",             "ok, you have eaten breakfast today" );
 			test( "today i have eaten a mars bar",    "ok, you have eaten a mars bar today" );
 			test( "i have eaten 2 packets of crisps", "ok, you have eaten 2 packets of crisps today" );
@@ -239,7 +238,7 @@ public class Enguage {
 			      "you have eaten breakfast today , a mars bar today , and 2 packets of crisps today" );
 		}
 				
-		if (runThisTest( "WSC - advocacy and fear" )) {
+		if (runTheseTests( "WSC - advocacy and fear" )) {
 			// TODO: WSC - alternative states tests
 			// mut ex: dead is the opposite of alive, no?
 			//         dead and alive are mutually exclusive
@@ -327,7 +326,7 @@ public class Enguage {
 			// tidy up - N.B. these will affect previous tests on re-runs
 			tidyUpViolenceTest( "csviolence" );
 		}
-		if (runThisTest( "Saving spoken concepts" )) {
+		if (runTheseTests( "Saving spoken concepts" )) {
 			// First, check we're clean!  -- may not be the case with BCS HCI code
 			test( "hello",                          "hello to you too", "I don't understand" );
 			// Build a repertoire...
@@ -350,7 +349,7 @@ public class Enguage {
 			// ...and its gone. We're clean again!
 			test( "hello",                          "i don't understand" );
 		}
-		if (runThisTest( "Why/because, IJCSSA article example" )) {
+		if (runTheseTests( "Why/because, IJCSSA article example" )) {
 			audit.subtl( "Simple action demo" );
 			test( "i am baking a cake",     "i know", "ok, you're baking a cake" );
 			test( "am i baking a cake",     "yes, you're     baking a cake" );
@@ -399,7 +398,7 @@ public class Enguage {
 			test( "why might i need 3 eggs", "because you're baking a cake" );
 			
 		}
-		if (runThisTest( "The Non-Computable concept of Need" )) { // 
+		if (runTheseTests( "The Non-Computable concept of Need" )) { // 
 			
 			// regression test: "do i need" != >do i need OBJECT<
 			// blank var at end of utterance
@@ -519,7 +518,7 @@ public class Enguage {
 //			test( "preston is in england", "ok, preston is in england" );
 //			test( "i am in preston",       "ok, you're in england" );
 //		}
-		if (runThisTest( "Simple Variables" )) { // 
+		if (runTheseTests( "Simple Variables" )) { // 
 			test( "the value of name is fred",       "ok, name is set to fred" );
 			test( "get the value of name",           "fred" );
 			test( "set the value of name to fred bloggs", "ok, name is set to fred bloggs" );
@@ -539,7 +538,7 @@ public class Enguage {
 			test( "martin's height is 195",  "Ok,  martin's height is 195" );
 			test( "what is the height of martin", "195, the height of martin is 195" );
 		}
-		if (runThisTest( "Annotation" )) {
+		if (runTheseTests( "Annotation" )) {
 			test( "delete martin was       list", "ok" );
 			test( "delete martin wasNot    list", "ok" );
 			test( "delete i      am        list", "ok" );
@@ -713,7 +712,7 @@ public class Enguage {
 			// Event: to move is to was (traverse time quanta)
 			// interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
 		}
-		if (runThisTest( "Verbal Arithmetic" )) {
+		if (runTheseTests( "Verbal Arithmetic" )) {
 			test( "what's 1 + 2",                     "1 plus 2 is 3" );
 			test( "times 2 all squared",              "times 2 all squared makes 36" );
 			test( "what is 36 + 4     divided by 2",  "36 plus 4     divided by 2 is 38" );
@@ -772,7 +771,7 @@ public class Enguage {
 					"ok, the factorial of n is n times the factorial of n minus 1" );
 			test( "what is the factorial of 4", "the factorial of 4 is 24" );
 		}
-		if (runThisTest( "Temporal interpret" )) {
+		if (runTheseTests( "Temporal interpret" )) {
 			test( "what day is christmas day" );
 			//testInterpret( "what day is it today" );
 			// my date of birth is
@@ -782,7 +781,7 @@ public class Enguage {
 			// persons age given in years
 			// what is my age [in <epoch default="years"/>]
 		}
-		if (runThisTest( "Temporospatial concept MEETING" )) {
+		if (runTheseTests( "Temporospatial concept MEETING" )) {
 			/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
 			 * first create a class variable entity.             // mkdir pub; touch pub/isa 
 			 * then  create an anonymous entity variable entity. // mkdir pub/a
@@ -809,7 +808,7 @@ public class Enguage {
 			test( "Where am I meeting my dad" ,
 					   "i don't know if you're meeting your dad" );
 		}
-		if (runThisTest( "Generic Pronouns" )) { // Language features
+		if (runTheseTests( "Generic Pronouns" )) { // Language features
 			clearTheNeedsList( "martin doesn't need anything" );
 			test( "martin needs a coffee", "ok, martin needs a coffee" );
 			test( "what does he need",     "martin needs a coffee" );
@@ -828,7 +827,7 @@ public class Enguage {
 			test( "james needs 3 eggs because he is baking a cake",
 					 "ok, james needs 3 eggs because he is baking a cake" );
 		}
-		if (runThisTest()) { // 
+		if (runTheseTests()) { // 
 			/* TODO:
 			 *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
 			 *  she died in 1603
@@ -836,7 +835,7 @@ public class Enguage {
 			 */
 			test( "a queen is a monarch", "ok, a queen is a monarch" );
 		}
-		if (runThisTest( "Disambiguation" )) {
+		if (runTheseTests( "Disambiguation" )) {
 			test( "the eagle has landed"    /* "Are you an ornithologist" */);
 			test( "no the eagle has landed" /* "So , you're talking about the novel" */ );
 			test( "no the eagle has landed" /*"So you're talking about Apollo 11" */	);
@@ -844,14 +843,14 @@ public class Enguage {
 			// Issue here: on DNU, we need to advance this on "the eagle has landed"
 			// i.e. w/o "no ..."
 		}
-		if (runThisTest( "TCP/IP test" )) {
+		if (runTheseTests( "TCP/IP test" )) {
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
 			// config port get chosen over this one???
 			test( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
 			test( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
 			test( "simon says put your hands on your head" ); //, "ok, success" );
 		}
-		if (runThisTest( "Polymorphism - setup new idea and save" )) { // code generation features
+		if (runTheseTests( "Polymorphism - setup new idea and save" )) { // code generation features
 			
 			clearTheNeedsList( "i don't want anything" );
 			test( "want is unlike need", "ok, want is unlike need", "i know" );
@@ -862,7 +861,7 @@ public class Enguage {
 			test( "i want another pony", "i know", "ok, you want another pony" );
 			test( "what do i want",      "you want another pony" );
 		}
-		if (runThisTest( "On-the-fly Langauge Learning" )) { // 
+		if (runTheseTests( "On-the-fly Langauge Learning" )) { // 
 			/* TODO: create filename from pattern:
 			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)
 			 *    "this is part of the need concept" => need.txt (append)
@@ -913,7 +912,7 @@ public class Enguage {
 			test( "just call me phrase variable name means i am called variable name", "ok" );
 			test( "just call me martin", "i already know this" );
 		}
-		if (runThisTest( "Example: 9-line input" )) {
+		if (runTheseTests( "Example: 9-line input" )) {
 			test( "havoc 1 this is a Type II control",  "ok, go ahead" );
 			test( "lines 1 through 3 are not applicable",
 					 "ok, lines 1 through 3 are not applicable" );
@@ -944,16 +943,16 @@ public class Enguage {
 			test( "what is the target elevation", "142 feet, target elevation is 142 feet"     );
 			test( "where are friendlies",         "30 clicks east of target, friendlies are 30 clicks east of target" );
 		}
-		if (runThisTest( "Light bins" )) {
+		if (runTheseTests( "Light bins" )) {
 			test( "there are 6 light bins",        "ok, there are 6 light bins" );
 			test( "how many light bins are there", "6,  there are 6 light bins" );
 			test( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
 		}
-		if (runThisTest( "Checking spoken concepts - have we remembered Hello" )) {
+		if (runTheseTests( "Checking spoken concepts - have we remembered Hello" )) {
 			// see if we've remembered hello... shouldn't have
 			test( "hello", "i don't understand" );
 		}
-		if (runThisTest( "Ask: Confirmation" )) {
+		if (runTheseTests( "Ask: Confirmation" )) {
 //
 			test( "the colour of the sky is blue", "ok, the colour of the sky is blue" );
 			test( "what is the colour of the sky", "blue , the colour of the sky is blue" );
@@ -975,23 +974,34 @@ public class Enguage {
 //			 */
 		}
 		
-		Audit.log( testNo +" test group(s) found" );
+		Audit.log( testGrp +" test group(s) found" );
 		audit.PASSED();
 	}
 	private static void usage() {
-		Audit.LOG( "Usage: java [-jar enguage.jar|org.enguage.Enguage] [-p <port> | -s | [--server <port>] -t ]" );
-		Audit.LOG( "where: -p <port>, --port <port>" );
-		Audit.LOG( "          listens on local TCP/IP port number\n" );
-		Audit.LOG( "       -H [<port>], --httpd [<port>]" );
-		Audit.LOG( "          webserver on port number, default to 8080\n" );
-		Audit.LOG( "       -c, --client" );
-		Audit.LOG( "          runs Engauge as a shell\n" );
+		Audit.LOG(
+			 "Usage: java [-jar enguage.jar|org.enguage.Enguage]\n"  // program
+			+"            --verbose --data <path> --server <port>\n" // switches
+			+"            [--port <port> | --httpd <port> | --client | --test ]" //optis
+		);
+		Audit.LOG( "Switches are:" );
+		Audit.LOG( "       -v, --verbose\n" );
+		Audit.LOG( "       -d, --data <path> specifies the data volume to use\n" );
 		Audit.LOG( "       -s, --server <port>" );
 		Audit.LOG( "          switch to send test commands to a server." );
 		Audit.LOG( "          This is only a test, and is on localhost." );
-		Audit.LOG( "          (Needs to be initialised with -p nnnn)\n" );
-		Audit.LOG( "       -t <n>, --test <n>, -T <name>" );
-		Audit.LOG( "          runs a sanity check" );
+		Audit.LOG( "          (Needs to be initialised with -p nnnn);\n" );
+		Audit.LOG( "Options are:" );
+		Audit.LOG( "       -p, --port <port>" );
+		Audit.LOG( "          listens on local TCP/IP port number\n" );
+		Audit.LOG( "       -H, --httpd [<port>]" );
+		Audit.LOG( "          webserver on port number, default to 8080\n" );
+		Audit.LOG( "       -c, --client" );
+		Audit.LOG( "          runs Engauge as a shell\n" );
+		Audit.LOG( "       -t, --test <n>, -T <name>" );
+		Audit.LOG( "          runs a self test, where" );
+		Audit.LOG( "           n is the test number, or" );
+		Audit.LOG( "          -n excludes a test, or" );
+		Audit.LOG( "          -T <name> is part of the test name." );
 	}
 	public static void main( String args[] ) {
 		
@@ -1007,11 +1017,11 @@ public class Enguage {
 		while (i < cmds.size()) {
 			cmd = cmds.get( i );
 			if (cmd.equals( "-v" ) || cmd.equals( "--verbose" )) {
-				cmds.remove( i );
 				verbose = true;
-			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
 				cmds.remove( i );
+			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
 				serverTest = true;
+				cmds.remove( i );
 				cmd = cmds.size()==0 ? "8080":cmds.remove( i );
 				portNumber( cmd );
 			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
@@ -1045,7 +1055,7 @@ public class Enguage {
 						testName = cmds.size()==0 ? testName : cmds.remove( 0 );
 					else
 						level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
-					sanityCheck();
+					selfTest();
 				} catch (NumberFormatException nfe) {
 					Audit.LOG( "Insanity: "+ nfe.toString() );
 				}
