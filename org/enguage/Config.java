@@ -75,7 +75,8 @@ public class Config {
 		long then = new GregorianCalendar().getTimeInMillis();
 		Redo.undoEnabledIs( false );
 		
-		Audit.log(
+		if (Enguage.verbose)
+			Audit.log(
 				welcome(
 					Enguage.shell().copyright() +
 					"\nEnguage main(): odb root is: " + Fs.root()
@@ -91,9 +92,11 @@ public class Config {
 		Redo.undoEnabledIs( true );
 		long now = new GregorianCalendar().getTimeInMillis();
 		
-		Audit.log( "Initialisation in: " + (now - then) + "ms" );
-		Audit.log( Signs.stats() );
-
+		if (Enguage.verbose) {
+			Audit.log( "Initialisation in: " + (now - then) + "ms" );
+			Audit.log( Signs.stats() );
+		}
+		
 		Audit.allOff();
 		if (Audit.runtimeDebug) Audit.allOn();
 		return audit.out( rc );

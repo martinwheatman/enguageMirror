@@ -77,7 +77,7 @@ public class Concepts {
 	static public void load( Tag concepts ) {
 		if (null != concepts) {
 			Repertoire.transformation( true );
-			Audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
+			if (Enguage.verbose) Audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
 			for (int j=0; j<concepts.content().size(); j++) {
 				String name = concepts.content().get( j ).name();
 				if (name.equals( "concept" )) {

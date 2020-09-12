@@ -50,7 +50,7 @@ public class Enguage {
 		Concepts.addFrom( Concepts.RO_REPS ); // pre-defined
 	}
 
-	static public Strings mediate( Strings utterance ) { return mediate( "uid", utterance );}
+	static public Strings mediate( Strings said ) { return mediate( "uid", said );}
 	static public Strings mediate( String uid, Strings utterance ) {
 				
 		Strings reply;
@@ -135,7 +135,7 @@ public class Enguage {
 	}
 	
 	static private void test( String cmd ) { test( cmd, null );}
-	static private void test( String cmd, String expected ) { test( cmd, expected, null ); }
+	static private void test( String cmd, String expected ) { test( cmd, expected, null );}
 	static private void test( String cmd, String expected, String unexpected ) {
 		
 		// expected == null => silent!
@@ -981,7 +981,7 @@ public class Enguage {
 		Audit.LOG(
 			 "Usage: java [-jar enguage.jar|org.enguage.Enguage]\n"  // program
 			+"            --verbose --data <path> --server <port>\n" // switches
-			+"            [--port <port> | --httpd <port> | --client | --test ]" //optis
+			+"            [--port <port> | --httpd <port> | [<utterance>] | --test ]" //optis
 		);
 		Audit.LOG( "Switches are:" );
 		Audit.LOG( "       -v, --verbose\n" );
@@ -995,14 +995,29 @@ public class Enguage {
 		Audit.LOG( "          listens on local TCP/IP port number\n" );
 		Audit.LOG( "       -H, --httpd [<port>]" );
 		Audit.LOG( "          webserver on port number, default to 8080\n" );
-		Audit.LOG( "       -c, --client" );
-		Audit.LOG( "          runs Engauge as a shell\n" );
 		Audit.LOG( "       -t, --test <n>, -T <name>" );
 		Audit.LOG( "          runs a self test, where" );
 		Audit.LOG( "           n is the test number, or" );
 		Audit.LOG( "          -n excludes a test, or" );
-		Audit.LOG( "          -T <name> is part of the test name." );
+		Audit.LOG( "          -T <name> is part of the test name`n" );
+		Audit.LOG( "       [<utterance>]" );
+		Audit.LOG( "          with an utterance it runs one-shot,\n" );
+		Audit.LOG( "          with no utterance it runs as a shell." );
 	}
+	private static void selfTest( String fsys, String cmd, Strings cmds ) {
+		// If we're sanity testing, remove persistent data...
+		if (!Fs.destroy( fsys ))
+			audit.FATAL( "failed to remove old database - "+ fsys );
+		else
+			try {
+				if (cmd.equals( "-T" ))
+					testName = cmds.size()==0 ? testName : cmds.remove( 0 );
+				else
+					level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
+				selfTest();
+			} catch (NumberFormatException nfe) {
+				Audit.LOG( "Insanity: "+ nfe.toString() );
+	}		}
 	public static void main( String args[] ) {
 		
 		String fsys = RW_SPACE;
@@ -1031,34 +1046,28 @@ public class Enguage {
 				i++;
 		}
 
-		Enguage.init( fsys, null ); // null 'cos we're not on Android
-		Enguage.config( Fs.stringFromFile( confLoc + "/config.xml" ));
+		init( fsys, null ); // null 'cos we're not on Android
+		config( Fs.stringFromFile( confLoc + "/config.xml" ));
 				
 		cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
-		if (cmd.equals( "-c" ) || cmd.equals( "--client" ))
-			Enguage.shell.aloudIs( true ).run();
-		
-		else if (cmds.size()>0 && (cmd.equals( "-p" ) || cmd.equals( "--port" )))
-			Net.server( cmds.remove( 0 ));
+		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))
+			Net.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
 		else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" ))
 			Net.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
-		else if (cmd.equals( "-t" ) || cmd.equals( "--test" ) || cmd.equals( "-T" ))
-			
-			// If we're sanity testing, remove persistent data...
-			if (!Fs.destroy( fsys ))
-				audit.FATAL( "failed to remove old database - "+ fsys );
-			else
-				try {
-					if (cmd.equals( "-T" ))
-						testName = cmds.size()==0 ? testName : cmds.remove( 0 );
-					else
-						level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
-					selfTest();
-				} catch (NumberFormatException nfe) {
-					Audit.LOG( "Insanity: "+ nfe.toString() );
-				}
-		else
+		else if (  cmd.equals( "-t" )
+				|| cmd.equals( "--test" )
+				|| cmd.equals( "-T" ))
+			selfTest( fsys, cmd, cmds );
+		
+		else if (cmd.equals( "-h" ) || cmd.equals( "--help" ))
 			usage();
-}	}
+		
+		else if (cmd.equals( "" ))
+			Enguage.shell.aloudIs( true ).run();
+		
+		else { // there are unknown parameters
+			cmds.add( 0, cmd );
+			Audit.log( mediate( cmds ));
+}	}	}
