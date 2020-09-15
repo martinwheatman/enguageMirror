@@ -999,9 +999,9 @@ public class Enguage {
 		Audit.LOG( "          runs a self test, where" );
 		Audit.LOG( "           n is the test number, or" );
 		Audit.LOG( "          -n excludes a test, or" );
-		Audit.LOG( "          -T <name> is part of the test name`n" );
+		Audit.LOG( "          -T <name> is part of the test name.\n" );
 		Audit.LOG( "       [<utterance>]" );
-		Audit.LOG( "          with an utterance it runs one-shot,\n" );
+		Audit.LOG( "          with an utterance it runs one-shot," );
 		Audit.LOG( "          with no utterance it runs as a shell." );
 	}
 	private static void selfTest( String fsys, String cmd, Strings cmds ) {
