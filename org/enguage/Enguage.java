@@ -1001,8 +1001,10 @@ public class Enguage {
 		Audit.LOG( "          -n excludes a test, or" );
 		Audit.LOG( "          -T <name> is part of the test name.\n" );
 		Audit.LOG( "       [<utterance>]" );
-		Audit.LOG( "          with an utterance it runs one-shot," );
-		Audit.LOG( "          with no utterance it runs as a shell." );
+		Audit.LOG( "          with an utterance it runs one-shot;" );
+		Audit.LOG( "          with no utterance it runs as a shell," );
+		Audit.LOG( "             requiring full stops (periods) to" );
+		Audit.LOG( "             terminate utterances." );
 	}
 	private static void selfTest( String fsys, String cmd, Strings cmds ) {
 		// If we're sanity testing, remove persistent data...
