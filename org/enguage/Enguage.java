@@ -991,6 +991,8 @@ public class Enguage {
 		Audit.LOG( "          This is only a test, and is on localhost." );
 		Audit.LOG( "          (Needs to be initialised with -p nnnn);\n" );
 		Audit.LOG( "Options are:" );
+		Audit.LOG( "       -h, --help" );
+		Audit.LOG( "          displays this message\n" );
 		Audit.LOG( "       -p, --port <port>" );
 		Audit.LOG( "          listens on local TCP/IP port number\n" );
 		Audit.LOG( "       -H, --httpd [<port>]" );
