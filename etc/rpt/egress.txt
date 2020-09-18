@@ -5,7 +5,7 @@ On "egress PHRASE-EGRESS":
 	
 On "what is egress":
 	get the value of egress;
-	if not, reply "sorry, egress is not applicable";
+	if not, reply "i'm sorry, egress is not applicable";
 	reply "..., egress is ...".
 	
 # Correction...

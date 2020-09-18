@@ -17,7 +17,7 @@ On "friendlies are PHRASE-LOCATION":
 On "where are friendlies":
 	get the value of friendlies;
 	reply "..., friendlies are ...";
-	if not, reply "sorry, no friendlies are present".
+	if not, reply "i'm sorry, no friendlies are present".
 
 # Corrections...
 On "correction friendlies are PHRASE-LOCATION":

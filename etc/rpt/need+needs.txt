@@ -124,21 +124,21 @@ On "SUBJECT does not need NUMERIC-QUANTITY PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
 	if not, reply "i know";
 	remove QUANTITY OBJECT from SUBJECT needs list;
-	if not, reply "sorry, SUBJECT does not need QUANTITY OBJECT";
+	if not, reply "i'm sorry, SUBJECT does not need QUANTITY OBJECT";
 	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
 	if not, reply "i know";
 	remove QUANTITY UNIT of OBJECT from SUBJECT needs list;
-	if not, reply "sorry, SUBJECT does not need QUANTITY UNIT of OBJECT";
+	if not, reply "i'm sorry, SUBJECT does not need QUANTITY UNIT of OBJECT";
 	reply "ok, SUBJECT does not need ...".
 
 On "SUBJECT does not need any PHRASE-OBJECT":
 	OBJECT exists in SUBJECT needs list;
 	if not, reply "i know";
 	remove any OBJECT from SUBJECT needs list;
-	if not, reply "sorry, SUBJECT does not need any OBJECT";
+	if not, reply "i'm sorry, SUBJECT does not need any OBJECT";
 	reply "ok, SUBJECT does not need any OBJECT".
 
 ### does X need .../how many

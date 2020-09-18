@@ -60,7 +60,7 @@ public class Enguage {
 			
 			audit.ERROR( 
 					"Ouch! >>>>>>>> "
-					+ (reply = new Strings( "sorry, i cannot connect to object space" ))
+					+ (reply = new Strings( "i'm sorry, i cannot connect to object space" ))
 					+ " <<<<<<" 
 			);
 			
@@ -200,9 +200,9 @@ public class Enguage {
 			test( "i need a coffee",       "ok, you need a coffee" );
 			test( "what do i need",        "you need a coffee" );
 			
-			test( "what do i think",       "sorry, I don't understand the question" );
+			test( "what do i think",       "i'm sorry, I don't understand the question" );
 			
-			test( "what do i want",        "sorry, i don't understand the question" );
+			test( "what do i want",        "i'm sorry, i don't understand the question" );
 			test( "want is like need",     "ok, want is like need" );
 			test( "what do i want",        "you don't want anything" );
 			
@@ -226,7 +226,7 @@ public class Enguage {
 			// Tidy up...
 			test( "I don't want anything", "ok, you don't want anything" );
 			test( "want is not like need", "ok, want is not like need" );
-			test( "what do i want",        "sorry, i don't understand the question" );
+			test( "what do i want",        "i'm sorry, i don't understand the question" );
 		}
 		
 		if (runTheseTests( "Simple Food Diary" )) {
@@ -283,7 +283,7 @@ public class Enguage {
 			
 			// test  1
 			test( "the councillors refused the demonstrators a permit because they fear violence",
-					 "Sorry, I don't think they fear violence" );
+					 "i'm sorry, I don't think they fear violence" );
 			test( "who are they", "I don't know" );
 			
 			// test 2
@@ -307,7 +307,7 @@ public class Enguage {
 			
 			// test 2
 			test( "the councillors refused the demonstrators a permit because they advocate violence",
-					 "Sorry, I don't think they advocate violence" );
+					 "i'm sorry, I don't think they advocate violence" );
 			test( "who are they", "i don't know" );
 			
 			// tidy up
@@ -367,7 +367,7 @@ public class Enguage {
 				       "yes, you need 3 eggs because you're baking a cake" );
 			// simple check for infinite loops
 			test( "i am baking a cake because i need 3 eggs",
-					   "sorry, you need 3 eggs because you're baking a cake" );
+					   "i'm sorry, you need 3 eggs because you're baking a cake" );
 			
 			audit.subtl( "Distinguishing negative responses" );
 			// I do understand, "sophie needs dr martens", but
@@ -377,9 +377,9 @@ public class Enguage {
 			test( "sophie is very fashionable because sophie needs dr martens",
                        "I don't understand" );
 			test( "do i need 250 grams of flour because i am baking a cake",
-                       "Sorry, it is not the case that you need 250 grams of flour" );
+                       "i'm sorry, it is not the case that you need 250 grams of flour" );
 			test( "why am i heating the oven",
-					   "Sorry, i didn't know you're heating the oven" );
+					   "i'm sorry, i didn't know you're heating the oven" );
 			
 			audit.subtl( "Transitivity" );
 			test( "i need to go to the shops because i need 3 eggs",
@@ -402,7 +402,7 @@ public class Enguage {
 			
 			// regression test: "do i need" != >do i need OBJECT<
 			// blank var at end of utterance
-			test( "do i need",                  "sorry, i don't understand the question" );
+			test( "do i need",                  "i'm sorry, i don't understand the question" );
 			
 			clearTheNeedsList();
 			test( "what do i need",	            "you don't need anything" );
@@ -485,7 +485,7 @@ public class Enguage {
 			test( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
 			test( "i need cheese and eggs from the dairy aisle",
 					                               "ok, you need cheese and eggs" );
-			//mediate( "group by",                   "sorry, i need to know what to group by" );
+			//mediate( "group by",                   "i'm sorry, i need to know what to group by" );
 			test( "group by location",          "ok" );
 			
 			test( "what do i need from sainsbury's",
@@ -847,14 +847,14 @@ public class Enguage {
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
 			// config port get chosen over this one???
 			test( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
-			test( "tcpip localhost 5678 \"this is a test, which will fail\"",  "Sorry" );
+			test( "tcpip localhost 5678 \"this is a test, which will fail\"",  "i'm sorry" );
 			test( "simon says put your hands on your head" ); //, "ok, success" );
 		}
 		if (runTheseTests( "Polymorphism - setup new idea and save" )) { // code generation features
 			
 			clearTheNeedsList( "i don't want anything" );
 			test( "want is unlike need", "ok, want is unlike need", "i know" );
-			test( "what do i want",      "sorry, i don't understand the question" );
+			test( "what do i want",      "i'm sorry, i don't understand the question" );
 			
 			test( "want is like need",   "ok, want is like need" );
 			test( "what do i want",      "you want another pony", "you don't want anything" );
@@ -903,10 +903,10 @@ public class Enguage {
 
 			// 2. could this be built thus?
 			test( "to phrase variable this means phrase variable that reply ok", "ok" );
-			test( "this implies set transformation to false",                 "go on" );
-			test( "this implies ok perform sign think variable that",               "go on" );
-			test( "this implies ok perform sign create variable this",              "go on" );
-			test( "this implies set transformation to true",                  "go on" );
+			test( "this implies set transformation to false",                    "go on" );
+			test( "this implies ok perform sign think variable that",            "go on" );
+			test( "this implies ok perform sign create variable this",           "go on" );
+			test( "this implies set transformation to true",                     "go on" );
 			test( "ok", "ok" );
 
 			test( "just call me phrase variable name means i am called variable name", "ok" );
@@ -946,7 +946,7 @@ public class Enguage {
 		if (runTheseTests( "Light bins" )) {
 			test( "there are 6 light bins",        "ok, there are 6 light bins" );
 			test( "how many light bins are there", "6,  there are 6 light bins" );
-			test( "show me light bin 6",           "ok, light bin 6 is flashing", "sorry" );
+			test( "show me light bin 6",           "ok, light bin 6 is flashing", "i'm sorry" );
 		}
 		if (runTheseTests( "Checking spoken concepts - have we remembered Hello" )) {
 			// see if we've remembered hello... shouldn't have

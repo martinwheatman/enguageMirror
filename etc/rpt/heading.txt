@@ -8,7 +8,7 @@ On "the heading is PHRASE-X":
 
 On "what is the heading":
 	is heading set;
-	if not, reply "sorry, i don't know";
+	if not, reply "i'm sorry, i don't know";
 	get the value of heading;
 	reply "..., the heading is ...".
 	

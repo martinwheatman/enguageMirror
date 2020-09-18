@@ -1,6 +1,6 @@
 On "create entity NAME":
 	assert that entity NAME exists;
-	reply "sorry, NAME already exists";
+	reply "i'm sorry, NAME already exists";
 	if not, perform "entity create NAME" ;
 	then, reply "ok".
 

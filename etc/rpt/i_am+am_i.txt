@@ -12,7 +12,7 @@ On "i am not ACTIONING PHRASE-WHAT":
 
 On "am i ACTIONING PHRASE-WHAT":
 	does _user ACTIONING list exist;
-	if not, reply "sorry, i don't know if you are ACTIONING WHAT";
+	if not, reply "i'm sorry, i don't know if you are ACTIONING WHAT";
 	does WHAT exist in _user ACTIONING list;
 	if not, reply "no, you are not ACTIONING WHAT";
 	then, reply "yes, you are ACTIONING WHAT".

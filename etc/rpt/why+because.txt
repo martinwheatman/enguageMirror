@@ -2,7 +2,7 @@ cause and effect are transitive.
 
 On "SIGN-EFFECT because SIGN-CAUSE":
 	is CAUSE because EFFECT;
-	reply "sorry, EXT-CAUSE because EXT-EFFECT";
+	reply "i'm sorry, EXT-CAUSE because EXT-EFFECT";
 	if not, ok;
 	is EFFECT because CAUSE;
 	reply "I know";
@@ -30,7 +30,7 @@ On "why does SIGN-EFFECT", why do EFFECT.
 
 On "why am I PHRASE-EFFECT":
 	am i EFFECT;
-	if not, reply "Sorry, I didn't know you are EXT-EFFECT";
+	if not, reply "i'm sorry, I didn't know you are EXT-EFFECT";
 	get the cause of i am EFFECT from _user causal list;
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
@@ -45,9 +45,9 @@ On "why does SIGN-EFFECT", why do EFFECT.
 
 On "do SIGN-EFFECT because SIGN-CAUSE":
 	does EFFECT exist in _user causal list;
-	if not, reply "sorry, it is not the case that EXT-EFFECT";
+	if not, reply "i'm sorry, it is not the case that EXT-EFFECT";
 	is EFFECT because CAUSE;
-	if not, reply "sorry, it is not the case EXT-EFFECT because EXT-CAUSE";
+	if not, reply "i'm sorry, it is not the case EXT-EFFECT because EXT-CAUSE";
 	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
 On "does SIGN-EFFECT because SIGN-CAUSE", do EFFECT because CAUSE.
 

@@ -8,7 +8,7 @@ On "the initial point is PHRASE-X":
 
 on "what is the initial point":
 	is initial_point set;
-	if not, reply "sorry, i don't know";
+	if not, reply "i'm sorry, i don't know";
 	get the value of initial_point;
 	reply "the initial point is ...".
 

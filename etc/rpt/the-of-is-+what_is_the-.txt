@@ -37,5 +37,5 @@ On "what is the FUNCTION of PHRASE-PARAMS":
 	
 On "what is the value of VARIABLE":
 	get the value of VARIABLE;
-	if not, reply "sorry, VARIABLE is not set";
+	if not, reply "i'm sorry, VARIABLE is not set";
 	then, reply "..., the value of VARIABLE is ...".

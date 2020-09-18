@@ -21,7 +21,7 @@ On "    NUMERIC-QUANTITY            PHRASE-OBJECT does not exist  in SUBJECT LIS
 On "    NUMERIC-QUANTITY    UNIT of PHRASE-OBJECT does not exist  in SUBJECT LIST list",                   perform "!items     exists SUBJECT LIST OBJECT QUANTITY UNIT".
 
 On "append                          PHRASE-OBJECT               onto SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT";               reply "ok".
-On "add                             PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT"; if not, reply "sorry"; reply "ok".
+On "add                             PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT"; if not, reply "i'm sorry"; reply "ok".
 On "add    NUMERIC-QUANTITY         PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT QUANTITY";      reply "ok".
 On "add    NUMERIC-QUANTITY UNIT of PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT QUANTITY UNIT"; reply "ok".
 On "add                             WHOM at WHERE                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT";               reply "ok".
