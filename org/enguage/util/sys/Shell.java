@@ -89,7 +89,7 @@ public class Shell {
 	}
 	public Shell( String name, Strings args ) { this( name ); }
 	public void interpret( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
-		if (fp==System.in) System.err.print( name() + prompt());
+		if (fp==System.in) System.err.print( prompt() );
 		BufferedReader br = null;
 		try {
 			String line;
@@ -130,7 +130,7 @@ public class Shell {
 							}
 							// ...expand sentence here.
 					}	}
-					if (fp==System.in) System.err.print( name() + prompt());
+					if (fp==System.in) System.err.print( prompt() );
 				}
 				aloud = was;	
 			}

@@ -981,7 +981,7 @@ public class Enguage {
 		Audit.LOG(
 			 "Usage: java [-jar enguage.jar|org.enguage.Enguage]\n"  // program
 			+"            --verbose --data <path> --server <port>\n" // switches
-			+"            [--port <port> | --httpd <port> | [<utterance>] | --test ]" //optis
+			+"            [-h | --port <port> | --httpd <port> | [<utterance>] | --test ]" //optis
 		);
 		Audit.LOG( "Switches are:" );
 		Audit.LOG( "       -v, --verbose\n" );
@@ -1071,7 +1071,14 @@ public class Enguage {
 			usage();
 		
 		else if (cmd.equals( "" ))
-			Enguage.shell.aloudIs( true ).run();
+			if (!Overlay.attach( "uid" ))
+				audit.ERROR( 
+						"Ouch! >>>>>>>> "
+						+ new Strings( "i'm sorry, i cannot connect to object space" )
+						+ " <<<<<<" 
+				);
+			else
+				Enguage.shell.aloudIs( true ).run();
 		
 		else { // there are unknown parameters
 			cmds.add( 0, cmd );

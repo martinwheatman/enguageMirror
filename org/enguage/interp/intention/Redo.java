@@ -14,7 +14,6 @@ public class Redo {
 	// this supports the command="" attribute loaded in the creation of command data structure
 	// needs "command //delete "...". -- to remove a tag, to support '"X" is meaningless.'
 	static public Reply unknownCommand( Reply r, String cmd, Strings args ) {
-		audit.ERROR( "Unknown command "+ cmd +" "+ args.toString( Strings.CSV ));
 		return r.format( Reply.dnu() );
 	}
 		

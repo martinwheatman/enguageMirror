@@ -1,10 +1,23 @@
 TMP=jardir
+INSTALL=${HOME}
 
 default:
 	@echo "Usage: make [ jar | eng | install | clean ]" >&2
 
-install: ~/bin sbin/eng
-	cp sbin/eng ~/bin/
+install: ${INSTALL}/bin ${INSTALL}/etc ${INSTALL}/lib eng jar
+	cp sbin/eng ${INSTALL}/bin/
+	cp -a etc/config.xml ${INSTALL}/etc
+	cp -a etc/rpt        ${INSTALL}/etc
+	cp enguage.jar       ${INSTALL}/lib
+
+${INSTALL}/bin:
+	mkdir ${INSTALL}/bin
+
+${INSTALL}/etc:
+	mkdir ${INSTALL}/etc
+
+${INSTALL}/lib:
+	mkdir ${INSTALL}/lib
 
 eng: sbin/eng
 
