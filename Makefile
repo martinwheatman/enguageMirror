@@ -29,4 +29,4 @@ jar:
 
 clean:
 	(cd src/eng; make clean)
-	rm -rf enguage.jar variable var/uid sbin/eng
+	rm -rf enguage.jar selftest/ variable var/uid sbin/eng

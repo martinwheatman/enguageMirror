@@ -193,7 +193,7 @@ public class Enguage {
 			test( "to the phrase hello reply hello to you too" );
 			test( "hello",                 "hello to you too" );
 			test( "to the phrase my name is variable name reply hello variable name" );
-			test( "my name is martin",     "hello martin" );
+			test( "please my name is martin", "hello martin" );
 			
 			clearTheNeedsList();
 			test( "what do i need",        "you don't need anything" );
@@ -1006,8 +1006,10 @@ public class Enguage {
 		Audit.LOG( "             requiring full stops (periods) to" );
 		Audit.LOG( "             terminate utterances." );
 	}
-	private static void selfTest( String fsys, String cmd, Strings cmds ) {
-		// If we're sanity testing, remove persistent data...
+	private static void selfTest( String cmd, Strings cmds ) {
+		// If we're sanity testing, remove yet preserve persistent data...
+		String fsys = "./selftest";
+		init( fsys, null ); // null 'cos we're not on Android
 		if (!Fs.destroy( fsys ))
 			audit.FATAL( "failed to remove old database - "+ fsys );
 		else
@@ -1061,7 +1063,7 @@ public class Enguage {
 		else if (  cmd.equals( "-t" )
 				|| cmd.equals( "--test" )
 				|| cmd.equals( "-T" ))
-			selfTest( fsys, cmd, cmds );
+			selfTest( cmd, cmds );
 		
 		else if (cmd.equals( "-h" ) || cmd.equals( "--help" ))
 			usage();

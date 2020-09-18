@@ -30,6 +30,11 @@ public class Engine {
 			 * interpretations and so are built here alongside those interpretations.
 			 */	
    			new Sign()
+				.pattern( new Pattern( "run a self test", "" ))
+	          		.appendIntention( Intention.allop, "selfTest" )
+	          		.concept( NAME ),
+		          	
+   			new Sign()
 				.pattern( new Pattern( "remove the primed answer ", "" ))
 	          		.appendIntention( Intention.allop, "removePrimedAnswer" )
 	          		.concept( NAME ),
@@ -151,7 +156,12 @@ public class Engine {
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
 
-		if ( cmd.equals( "primeAnswer" )) {
+		if ( cmd.equals( "selfTest" )) {
+			
+			Enguage.selfTest();
+			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
+			
+		} else if ( cmd.equals( "primeAnswer" )) {
 			
 			Question.primedAnswer( cmds.toString() ); // needs to be tidied up...
 			
