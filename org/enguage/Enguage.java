@@ -1072,13 +1072,9 @@ public class Enguage {
 		
 		else if (cmd.equals( "" ))
 			if (!Overlay.attach( "uid" ))
-				audit.ERROR( 
-						"Ouch! >>>>>>>> "
-						+ new Strings( "i'm sorry, i cannot connect to object space" )
-						+ " <<<<<<" 
-				);
+				audit.ERROR( "i'm sorry, i cannot connect to object space" );
 			else
-				Enguage.shell.aloudIs( true ).run();
+				shell.aloudIs( true ).run();
 		
 		else { // there are unknown parameters
 			cmds.add( 0, cmd );
