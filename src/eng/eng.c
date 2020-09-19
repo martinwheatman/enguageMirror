@@ -4,15 +4,17 @@
 #include <sys/stat.h>
 
 #define JAVA "/usr/bin/java"
-#define JAR  "/Users/martinwheatman/lib/enguage.jar"
+#define JAR  "lib/enguage.jar"
 
 int main( int argc, char* argv[] ) {
 
-    struct stat buf;
-    if (-1 == stat( JAR, &buf)) {
-        fprintf( stderr, "Error: can't find JAR file\n" );
-        exit( -1 );
-    } else {
+	char jarLoc[ 1024 ];
+	snprintf( jarLoc, 1024, "%s/%s", getenv( "HOME" ), JAR ); 
+	
+	struct stat buf;
+	if (-1 == stat( jarLoc, &buf)) {
+		fprintf( stderr, "Error: can't find JAR file\n" );
+	} else {
 		char** args = (char**)calloc( 3 + argc, sizeof( char* ));
 
 		args[ 0 ] = JAVA;
@@ -20,7 +22,9 @@ int main( int argc, char* argv[] ) {
 		args[ 2 ] = JAR;
 
 		for (int i=1; i<argc; i++)
-		  args[ i+2 ] = argv[ i ];
+			args[ i+2 ] = argv[ i ];
 
 		execv( JAVA, args );
-}	}
+	}
+	return -1;
+}

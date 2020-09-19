@@ -1026,13 +1026,10 @@ public class Enguage {
 	}		}
 	public static void main( String args[] ) {
 		
-		String fsys = RW_SPACE;
-		
 		Audit.startupDebug = startupDebug;
-		
-		Strings cmds = new Strings( args );
-		String  cmd,
-		     confLoc = RO_SPACE;
+		Strings    cmds = new Strings( args );
+		String     cmd,
+		           fsys = RW_SPACE;
 
 		int i = 0;
 		while (i < cmds.size()) {
@@ -1053,7 +1050,7 @@ public class Enguage {
 		}
 
 		init( fsys, null ); // null 'cos we're not on Android
-		config( Fs.stringFromFile( confLoc + "/config.xml" ));
+		config( Fs.stringFromFile( RO_SPACE + "/config.xml" ));
 				
 		cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
 		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))

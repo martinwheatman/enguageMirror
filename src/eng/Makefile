@@ -10,4 +10,4 @@ eng: eng.c
 	gcc -o eng eng.c
 
 clean:
-	rm -f eng *.o
+	@rm -f eng *.o

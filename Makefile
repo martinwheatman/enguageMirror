@@ -2,12 +2,29 @@ TMP=jardir
 INSTALL=${HOME}
 
 default:
-	@echo "Usage: make [ jar | eng | install | clean ]" >&2
+	@echo "Usage: make [ install | uninstall | clean ]" >&2
 
-install: ${INSTALL}/bin ${INSTALL}/etc ${INSTALL}/lib eng jar
-	cp sbin/eng ${INSTALL}/bin/
-	cp -a etc/config.xml ${INSTALL}/etc
+install:${INSTALL}/etc/rpt \
+	${INSTALL}/etc/config.xml \
+	${INSTALL}/lib/enguage.jar \
+	${INSTALL}/bin/eng
+
+uninstall:
+	rm -rf ${INSTALL}/etc/rpt
+	rm -f  ${INSTALL}/etc/config.xml
+	rm -f  ${INSTALL}/lib/enguage.jar
+	rm -f  ${INSTALL}/bin/eng
+
+${INSTALL}/bin/eng: ${INSTALL}/bin sbin/eng 
+	cp sbin/eng          ${INSTALL}/bin/
+
+${INSTALL}/etc/config.xml:
+	cp etc/config.xml    ${INSTALL}/etc
+
+${INSTALL}/etc/rpt:
 	cp -a etc/rpt        ${INSTALL}/etc
+
+${INSTALL}/lib/enguage.jar: enguage.jar
 	cp enguage.jar       ${INSTALL}/lib
 
 ${INSTALL}/bin:
@@ -24,22 +41,19 @@ eng: sbin/eng
 sbin/eng: src/eng/eng.c
 	(cd src/eng/; make install)
 
-jar:
+enguage.jar:
 	mkdir ${TMP}
 	cp -a org ${TMP}
 	cp -a com ${TMP}
 	cp -a etc/META-INF ${TMP}
 	( cd ${TMP} ;\
-		find com -name \*.java -exec rm -f {} \;  ;\
-		find org -name \*.java -exec rm -f {} \;  ;\
-		find com -name .DS_Store -exec rm -f {} \; ;\
-		find org -name .DS_Store -exec rm -f {} \; ;\
-		find org -name .gitignore -exec rm -f {} \; ;\
-		find com -name .gitignore -exec rm -f {} \; ;\
+		find com org -name \*.java -exec rm -f {} \;  ;\
+		find com org -name .DS_Store -exec rm -f {} \; ;\
+		find com org -name .gitignore -exec rm -f {} \; ;\
 		jar -cmf META-INF/MANIFEST.MF ../enguage.jar META-INF org com \
-  )
+	)
 	rm -rf ${TMP}
 
 clean:
 	(cd src/eng; make clean)
-	rm -rf enguage.jar selftest/ variable var/uid sbin/eng
+	@rm -rf enguage.jar selftest/ variable var/uid sbin/eng
