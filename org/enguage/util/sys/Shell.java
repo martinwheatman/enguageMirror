@@ -126,7 +126,7 @@ public class Shell {
 								interval();
 								String rc = Repertoire.mediate( new Utterance( s )).toString();
 								if (aloud)
-									Audit.log( (Audit.timings ? "( -- "+interval()+"ms)" : "") +" => "+ rc );
+									Audit.log( (Audit.timings ? "( -- "+interval()+"ms)" : "") + rc );
 							}
 							// ...expand sentence here.
 					}	}
