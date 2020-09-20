@@ -1,0 +1,26 @@
+id: org.enguage.Eng
+runtime: org.freedesktop.Platform
+runtime-version: '19.08'
+sdk: org.freedesktop.Sdk
+command: eng
+sdk-extensions:
+- org.freedesktop.Sdk.Extension.openjdk11
+modules:
+- name: openjdk
+  buildsystem: simple
+  build-commands:
+  - /usr/lib/sdk/openjdk11/install.sh
+- name: eng
+  buildsystem: simple
+  build-commands:
+  - install -Dv eng         /app/bin/eng
+  sources:
+  - type: file
+    path: eng
+- name: enguage.jar
+  buildsystem: simple
+  build-commands:
+  - install -Dv enguage.jar /app/lib/enguage.jar
+  sources:
+  - type: file
+    path: enguage.jar

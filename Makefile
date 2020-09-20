@@ -2,9 +2,13 @@ TMP=jardir
 INSTALL=${HOME}
 
 default:
-	@echo "Usage: make [ install | uninstall | clean ]" >&2
+	@echo "Usage: make [ install | uninstall | flatpak | clean ]" >&2
 
-install:${INSTALL}/etc/rpt \
+flatpak: install
+	(cd app/flatpak; make install)
+
+install: \
+	${INSTALL}/etc/rpt \
 	${INSTALL}/etc/config.xml \
 	${INSTALL}/lib/enguage.jar \
 	${INSTALL}/bin/eng
@@ -55,5 +59,6 @@ enguage.jar:
 	rm -rf ${TMP}
 
 clean:
-	(cd src/eng; make clean)
+	(cd app/flatpak; make clean)
+	(cd src/eng;     make clean)
 	@rm -rf enguage.jar selftest/ variable var/uid sbin/eng

@@ -1030,7 +1030,6 @@ public class Enguage {
 		Strings    cmds = new Strings( args );
 		String     cmd,
 		           fsys = RW_SPACE;
-
 		int i = 0;
 		while (i < cmds.size()) {
 			cmd = cmds.get( i );
@@ -1052,16 +1051,16 @@ public class Enguage {
 		init( fsys, null ); // null 'cos we're not on Android
 		config( Fs.stringFromFile( RO_SPACE + "/config.xml" ));
 				
-		cmd  = cmds.size()==0 ? "":cmds.remove( 0 );
+		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))
 			Net.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
 		else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" ))
 			Net.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
-		else if (  cmd.equals( "-t" )
-				|| cmd.equals( "--test" )
-				|| cmd.equals( "-T" ))
+		else if (cmd.equals( "-t" )
+			  || cmd.equals( "--test" )
+			  || cmd.equals( "-T" ))
 			selfTest( cmd, cmds );
 		
 		else if (cmd.equals( "-h" ) || cmd.equals( "--help" ))
@@ -1073,7 +1072,6 @@ public class Enguage {
 			else
 				shell.aloudIs( true ).run();
 		
-		else { // there are unknown parameters
-			cmds.add( 0, cmd );
-			Audit.log( mediate( cmds ));
-}	}	}
+		else // reconstruct original commands and interpret
+			Audit.log( mediate( cmds.prepend( cmd ) ));
+}	}
