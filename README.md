@@ -14,9 +14,18 @@ there’s no pesky JavaScript or corporate websites to get in the way!</p>
 ## Containers
 
 [docker Webserver](doc/container.md)<br/>
-Containerised (flatpak) app - WIP<br/>
 [Running jarfile](doc/jarfile.md)<br/>
-[Apache Web Server](doc/httpd.md)<br/>
+[Web Server](doc/httpd.md)<br/>
+Containerised (flatpak) app - WIP<br/>
+This requires:
+<ul>
+<li> apt install flatpak
+<li> apt install flatpak-builder
+<li> flatpak install flathub org.freedesktop.Platform//19.08 org.freedesktop.Sdk//19.08
+<li> flatpak install flathub org.freedesktop.Sdk.Extension.openjdk11
+<li> flatpak-builder --user --install --force-clean inst org.enguage.Eng.yaml
+<li> flatpak run --versbose org.enguage.Eng hello
+</ul>
 
 ## Examples
 

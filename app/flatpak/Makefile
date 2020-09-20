@@ -8,5 +8,6 @@ install:
 	flatpak-builder --force-clean --user --install build org.enguage.Eng.yaml
 
 clean:
-	rm -rf etc eng enguage.jar build vat variable
+	rm -rf etc eng enguage.jar build vat variable .flatpak-builder
+
 
