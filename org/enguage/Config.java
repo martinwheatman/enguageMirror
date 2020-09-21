@@ -33,7 +33,7 @@ public class Config {
 	static public  boolean firstRun() { return firstRun; }
 	static public  void    firstRun( boolean b ) { firstRun = b; }
 	
-	public static void setContext( ArrayList<Attribute> aa ) {
+	private static void setContext( ArrayList<Attribute> aa ) {
 		if (null != aa) {
 			ListIterator<Attribute> pi = aa.listIterator();
 			while (pi.hasNext()) {

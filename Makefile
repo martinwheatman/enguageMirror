@@ -10,40 +10,27 @@ flatpak: install
 install: \
 	${INSTALL}/etc/rpt \
 	${INSTALL}/etc/config.xml \
-	${INSTALL}/lib/enguage.jar \
-	${INSTALL}/bin/eng
+	${INSTALL}/lib/enguage.jar
 
 uninstall:
 	rm -rf ${INSTALL}/etc/rpt
 	rm -f  ${INSTALL}/etc/config.xml
 	rm -f  ${INSTALL}/lib/enguage.jar
-	rm -f  ${INSTALL}/bin/eng
 
-${INSTALL}/bin/eng: ${INSTALL}/bin sbin/eng 
-	cp sbin/eng          ${INSTALL}/bin/
-
-${INSTALL}/etc/config.xml:
+${INSTALL}/etc/config.xml: ${INSTALL}/etc
 	cp etc/config.xml    ${INSTALL}/etc
 
-${INSTALL}/etc/rpt:
+${INSTALL}/etc/rpt: ${INSTALL}/etc
 	cp -a etc/rpt        ${INSTALL}/etc
 
-${INSTALL}/lib/enguage.jar: enguage.jar
+${INSTALL}/lib/enguage.jar: ${INSTALL}/lib enguage.jar
 	cp enguage.jar       ${INSTALL}/lib
-
-${INSTALL}/bin:
-	mkdir ${INSTALL}/bin
 
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc
 
 ${INSTALL}/lib:
 	mkdir ${INSTALL}/lib
-
-eng: sbin/eng
-
-sbin/eng: src/eng/eng.c
-	(cd src/eng/; make install)
 
 enguage.jar:
 	mkdir ${TMP}
@@ -60,5 +47,4 @@ enguage.jar:
 
 clean:
 	(cd app/flatpak; make clean)
-	(cd src/eng;     make clean)
-	@rm -rf enguage.jar selftest/ variable var/uid sbin/eng
+	@rm -rf enguage.jar selftest/ variable var/uid

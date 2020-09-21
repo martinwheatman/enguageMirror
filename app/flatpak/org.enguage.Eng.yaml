@@ -5,6 +5,8 @@ sdk: org.freedesktop.Sdk
 command: eng
 sdk-extensions:
 - org.freedesktop.Sdk.Extension.openjdk11
+finish-args:
+- --env=JAVA_HOME=/app/jre
 modules:
 - name: openjdk
   buildsystem: simple
@@ -13,14 +15,188 @@ modules:
 - name: eng
   buildsystem: simple
   build-commands:
-  - install -Dv eng         /app/bin/eng
+  - install -D eng            /app/bin/eng
+  - install -D enguage.jar    /app/lib/enguage.jar
+  - install -D config.xml     /app/etc/config.xml
+  - install -dv etc/rpt/      /app/etc/rpt
+  - install -Dv arithmetic.txt /app/etc/rpt/arithmetic.txt
+  - install -Dv assert.txt    /app/etc/rpt/assert.txt
+  - install -Dv attribute.txt /app/etc/rpt/attribute.txt
+  - install -Dv baking.txt    /app/etc/rpt/baking.txt
+  - install -Dv colloquia.txt /app/etc/rpt/colloquia.txt
+  - install -Dv create.txt    /app/etc/rpt/create.txt
+  - install -Dv day.txt       /app/etc/rpt/day.txt
+  - install -Dv delete.txt    /app/etc/rpt/delete.txt
+  - install -Dv distance.txt  /app/etc/rpt/distance.txt
+  - install -Dv do.txt        /app/etc/rpt/do.txt
+  - install -Dv eagle.txt     /app/etc/rpt/eagle.txt
+  - install -Dv egress.txt    /app/etc/rpt/egress.txt
+  - install -Dv engine.txt    /app/etc/rpt/engine.txt
+  - install -Dv entity.txt    /app/etc/rpt/entity.txt
+  - install -Dv exist+exists.txt /app/etc/rpt/exist+exists.txt
+  - install -Dv format.txt    /app/etc/rpt/format.txt
+  - install -Dv friendlies.txt /app/etc/rpt/friendlies.txt
+  - install -Dv goodbye.txt   /app/etc/rpt/goodbye.txt
+  - install -Dv had+eaten+ate.txt /app/etc/rpt/had+eaten+ate.txt
+  - install -Dv have+has.txt  /app/etc/rpt/have+has.txt
+  - install -Dv heading.txt   /app/etc/rpt/heading.txt
+  - install -Dv his+what_is-.txt /app/etc/rpt/his+what_is-.txt
+  - install -Dv i_am+am_i.txt /app/etc/rpt/i_am+am_i.txt
+  - install -Dv ignore.txt    /app/etc/rpt/ignore.txt
+  - install -Dv initial_point.txt /app/etc/rpt/initial_point.txt
+  - install -Dv is_a+is-a+is_an+is-an.txt /app/etc/rpt/is_a+is-a+is_an+is-an.txt
+  - install -Dv is_in+i_am_in.txt /app/etc/rpt/is_in+i_am_in.txt
+  - install -Dv is_like+is_unlike.txt /app/etc/rpt/is_like+is_unlike.txt
+  - install -Dv is_transitive.txt /app/etc/rpt/is_transitive.txt
+  - install -Dv light_bin+light_bins.txt /app/etc/rpt/light_bin+light_bins.txt
+  - install -Dv line+lines.txt /app/etc/rpt/line+lines.txt
+  - install -Dv link.txt       /app/etc/rpt/link.txt
+  - install -Dv list.txt       /app/etc/rpt/list.txt
+  - install -Dv meeting.txt    /app/etc/rpt/meeting.txt
+  - install -Dv need+needs.txt /app/etc/rpt/need+needs.txt
+  - install -Dv none+mark_type.txt /app/etc/rpt/none+mark_type.txt
+  - install -Dv plural.txt /app/etc/rpt/plural.txt
+  - install -Dv read_back.txt  /app/etc/rpt/read_back.txt
+  - install -Dv restore.txt    /app/etc/rpt/restore.txt
+  - install -Dv set+get+unset.txt /app/etc/rpt/set+get+unset.txt
+  - install -Dv show_me_all_files.txt /app/etc/rpt/show_me_all_files.txt
+  - install -Dv show_me_all.txt /app/etc/rpt/show_me_all.txt
+  - install -Dv simon_says.txt /app/etc/rpt/simon_says.txt
+  - install -Dv so.txt         /app/etc/rpt/so.txt
+  - install -Dv spatial+spatially.txt /app/etc/rpt/spatial+spatially.txt
+  - install -Dv target.txt     /app/etc/rpt/target.txt
+  - install -Dv temporal.txt   /app/etc/rpt/temporal.txt
+  - install -Dv test.txt       /app/etc/rpt/test.txt
+  - install -Dv the-of-is-+what_is_the-.txt /app/etc/rpt/the-of-is-+what_is_the-.txt
+  - install -Dv this_is_a_type.txt /app/etc/rpt/this_is_a_type.txt
+  - install -Dv to-reply-.txt  /app/etc/rpt/to-reply-.txt
+  - install -Dv verbose.txt    /app/etc/rpt/verbose.txt
+  - install -Dv violence.txt   /app/etc/rpt/violence.txt
+  - install -Dv welcome.txt    /app/etc/rpt/welcome.txt
+  - install -Dv what\'s.txt    /app/etc/rpt/what\'s.txt
+  - install -Dv why+because.txt /app/etc/rpt/why+because.txt
   sources:
-  - type: file
-    path: eng
-- name: enguage.jar
-  buildsystem: simple
-  build-commands:
-  - install -Dv enguage.jar /app/lib/enguage.jar
-  sources:
+  - type: script
+    dest-filename: eng
+    commands:
+    - "exec $JAVA_HOME/bin/java -jar /app/lib/enguage.jar"
   - type: file
     path: enguage.jar
+  - type: file
+    path: etc/config.xml
+  - type: dir
+    path: etc/rpt
+  - type: file
+    path: need+needs.txt
+  - type: file
+    path: arithmetic.txt
+  - type: file
+    path: assert.txt
+  - type: file
+    path: attribute.txt
+  - type: file
+    path: baking.txt
+  - type: file
+    path: colloquia.txt
+  - type: file
+    path: create.txt
+  - type: file
+    path: day.txt
+  - type: file
+    path: delete.txt
+  - type: file
+    path: distance.txt
+  - type: file
+    path: do.txt
+  - type: file
+    path: eagle.txt
+  - type: file
+    path: egress.txt
+  - type: file
+    path: engine.txt
+  - type: file
+    path: entity.txt
+  - type: file
+    path: exist+exists.txt
+  - type: file
+    path: format.txt
+  - type: file
+    path: friendlies.txt
+  - type: file
+    path: goodbye.txt
+  - type: file
+    path: had+eaten+ate.txt
+  - type: file
+    path: have+has.txt
+  - type: file
+    path: heading.txt
+  - type: file
+    path: his+what_is-.txt
+  - type: file
+    path: i_am+am_i.txt
+  - type: file
+    path: ignore.txt
+  - type: file
+    path: initial_point.txt
+  - type: file
+    path: is_a+is-a+is_an+is-an.txt
+  - type: file
+    path: is_in+i_am_in.txt
+  - type: file
+    path: is_like+is_unlike.txt
+  - type: file
+    path: is_transitive.txt
+  - type: file
+    path: light_bin+light_bins.txt
+  - type: file
+    path: line+lines.txt
+  - type: file
+    path: link.txt
+  - type: file
+    path: list.txt
+  - type: file
+    path: meeting.txt
+  - type: file
+    path: none+mark_type.txt
+  - type: file
+    path: plural.txt
+  - type: file
+    path: read_back.txt
+  - type: file
+    path: restore.txt
+  - type: file
+    path: set+get+unset.txt
+  - type: file
+    path: show_me_all_files.txt
+  - type: file
+    path: show_me_all.txt
+  - type: file
+    path: simon_says.txt
+  - type: file
+    path: so.txt
+  - type: file
+    path: spatial+spatially.txt
+  - type: file
+    path: target.txt
+  - type: file
+    path: temporal.txt
+  - type: file
+    path: test.txt
+  - type: file
+    path: the-of-is-+what_is_the-.txt
+  - type: file
+    path: this_is_a_type.txt
+  - type: file
+    path: to-reply-.txt
+  - type: file
+    path: verbose.txt
+  - type: file
+    path: violence.txt
+  - type: file
+    path: welcome.txt
+  - type: file
+    path: what's.txt
+  - type: file
+    path: why+because.txt
+
+

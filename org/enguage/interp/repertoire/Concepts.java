@@ -19,20 +19,13 @@ public class Concepts {
 	static public  final String     NAME = "concepts";
 	static private       Audit     audit = new Audit( NAME );
 	
+	static private boolean isFlatpakLocation = false;
+	static public  void    isFlatpakLocation() { isFlatpakLocation = true; }
+
 	static private TreeSet<String> names = new TreeSet<String>();
 	static public  void  remove( String name ) { names.remove( name );}
 	static public  void     add( String name ) { names.add(    name );}
 	static public  void  addAll( Strings nms ) { names.addAll(  nms );}
-	static public  void addFrom( String location ) { // just "concepts"
-		String[] names = new File( location ).list();
-		if (names != null)
-			for ( String name : names ) { // e.g. name="hello.txt"
-				String[] components = name.split( "\\." );
-				if (components.length > 1 && components[ 1 ].equals("txt"))
-					add( components[ 0 ]);
-				else if (components.length == 1)
-					addFrom( location+"/"+components[ 0 ]);
-	}		}
 	
 	static private String name( String loc, String name, String ext ) {
 		// would just return "concepts"/name.ext
@@ -49,8 +42,11 @@ public class Concepts {
 		return fname; // not found, new filename
 	}
 	static final private String rwReps() {return Fs.root() +Repertoire.LOC+ File.separator;}
-	static final public  String RO_REPS = Enguage.RO_SPACE +Repertoire.LOC+ File.separator;
-	static public  String writtenName( String name ) {return name( RO_REPS, name, "txt" );}
+	static public  String roRpts() {
+		return (isFlatpakLocation ? "/app/":"")+
+	                  Enguage.RO_SPACE +Repertoire.LOC+ File.separator;
+	}
+	static public  String writtenName( String name ) {return name( roRpts(), name, "txt" );}
 	static public  String spokenName( String s ) {return name( rwReps(), s, "txt" );}
 	static public void delete( String cname ) {
 		if (cname != null) {
@@ -160,7 +156,7 @@ public class Concepts {
 		            +" match to-reply-"));
 	}
 	public static void main( String args[]) {
-		addFrom( RO_REPS );
+		com.yagadi.Assets.addConcepts();
 		test( "i need a coffee", false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );

@@ -17,7 +17,11 @@ public class Assets {
 	//static private     Audit    audit = new Audit( NAME );
 	
 	static public void addConcepts() {
-		String[] names = new File( Concepts.RO_REPS ).list();
+		String[] names = new File( Concepts.roRpts() ).list();
+		if (names == null) { // try flatpak location
+			Concepts.isFlatpakLocation();
+			names = new File( Concepts.roRpts() ).list();
+		}
 		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))

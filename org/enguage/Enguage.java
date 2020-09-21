@@ -46,8 +46,6 @@ public class Enguage {
 	static public  void    init( String root, Object ctx ) {
 		Fs.root( root );
 		context( ctx );
-		com.yagadi.Assets.addConcepts();   // built-ins
-		Concepts.addFrom( Concepts.RO_REPS ); // pre-defined
 	}
 
 	static public Strings mediate( Strings said ) { return mediate( "uid", said );}
@@ -1049,7 +1047,12 @@ public class Enguage {
 		}
 
 		init( fsys, null ); // null 'cos we're not on Android
-		config( Fs.stringFromFile( RO_SPACE + "/config.xml" ));
+		com.yagadi.Assets.addConcepts();   // built-ins
+
+		if (-1 == config( Fs.stringFromFile( RO_SPACE + "/config.xml" ))) {
+			audit.debug( "config read from "+ RO_SPACE + "/config.xml"+" failed, flatpack?" );
+			config( Fs.stringFromFile( "/app/etc/config.xml" ));
+		}
 				
 		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))
