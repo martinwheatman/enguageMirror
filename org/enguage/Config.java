@@ -33,6 +33,8 @@ public class Config {
 	static public  boolean firstRun() { return firstRun; }
 	static public  void    firstRun( boolean b ) { firstRun = b; }
 	
+	static private Config  config  = new Config();
+
 	private static void setContext( ArrayList<Attribute> aa ) {
 		if (null != aa) {
 			ListIterator<Attribute> pi = aa.listIterator();
@@ -66,7 +68,7 @@ public class Config {
 					Variable.set( name,  value );
 	}	}	}
 
-	public int load( String content ) {
+	public static int load( String content ) {
 		int rc = -1;
 		audit.in( "load", content );
 		Audit.allOff();

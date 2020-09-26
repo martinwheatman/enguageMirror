@@ -41,6 +41,12 @@ public class Concepts {
 		}	}
 		return fname; // not found, new filename
 	}
+	static public void addConcepts( String[] names) {
+		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
+			String[] components = name.split( "\\." );
+			if (components.length > 1 && components[ 1 ].equals("txt"))
+				add( components[ 0 ]);
+	}	}
 	static final private String rwReps() {return Fs.root() +Repertoire.LOC+ File.separator;}
 	static public  String roRpts() {
 		return (isFlatpakLocation ? "/app/":"")+
@@ -156,7 +162,7 @@ public class Concepts {
 		            +" match to-reply-"));
 	}
 	public static void main( String args[]) {
-		com.yagadi.Assets.addConcepts();
+		addConcepts( com.yagadi.Assets.listConcepts());
 		test( "i need a coffee", false );
 		test( "to the phrase my name is variable name reply hello variable name", true );
 		test( "to reply hello variable name", false );

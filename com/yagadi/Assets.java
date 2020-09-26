@@ -9,24 +9,32 @@ import org.enguage.interp.intention.Intention;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
+import org.enguage.util.sys.Fs;
+import org.enguage.Enguage;
 
 public class Assets {
 	
 	static public final String  LOADING = "concept";
 	//static public final String LOCATION = "assets";
-	//static private     Audit    audit = new Audit( NAME );
+	static private     Audit    audit = new Audit( "Assets" );
 	
-	static public void addConcepts() {
+	static public String getConfig() {
+		String rc = Fs.stringFromFile( Enguage.RO_SPACE + "/config.xml" );
+		if (rc.equals( "" )) {
+			rc = Fs.stringFromFile( "/app/etc/config.xml" );
+			if (rc.equals( "" ))
+				audit.ERROR( "config not found" );
+		}
+		return rc;
+	}
+	static public String[] listConcepts() {
 		String[] names = new File( Concepts.roRpts() ).list();
 		if (names == null) { // try flatpak location
 			Concepts.isFlatpakLocation();
 			names = new File( Concepts.roRpts() ).list();
 		}
-		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
-			String[] components = name.split( "\\." );
-			if (components.length > 1 && components[ 1 ].equals("txt"))
-				org.enguage.interp.repertoire.Concepts.add( components[ 0 ]);
-	}	}
+		return names;
+	}
 	static public String loadConcept( String name, String from, String to ) {
 		boolean wasLoaded   = false,
 		        wasSilenced = false,
