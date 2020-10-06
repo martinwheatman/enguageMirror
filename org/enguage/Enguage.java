@@ -135,7 +135,7 @@ public class Enguage {
 		
 		// expected == null => silent!
 		if (expected != null)
-			Audit.log( "user> "+ cmd );
+			Audit.log( "user> "+ cmd +".");
 		
 		Strings reply = serverTest ?
 				new Strings( Net.client( "localhost", portNumber, cmd ))
@@ -144,7 +144,7 @@ public class Enguage {
 		if (expected != null) {
 			
 			if (reply.equalsIgnoreCase( new Strings( expected ))) {
-				audit.passed( "enguage> "+ reply +"\n" );      // 1st success
+				audit.passed( "enguage> "+ reply +".\n" );      // 1st success
 			
 			} else if (unexpected == null) {                     // no second chance
 				//Repertoire.signs.show();
@@ -155,7 +155,7 @@ public class Enguage {
 								);
 			
 			} else if (reply.equalsIgnoreCase( new Strings( unexpected ))) {
-				audit.passed( "enguage> "+ reply +"\n" );
+				audit.passed( "enguage> "+ reply +".\n" );
 			
 			} else {                                           // second chance failed too!
 				//Repertoire.signs.show();

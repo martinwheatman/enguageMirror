@@ -1,15 +1,12 @@
-INSTALL=${HOME}
+INSTALL=${HOME}/java/enguage
 
-install: etc/rpt
+install:
+	mkdir -p etc/rpt
 	cp -a ${INSTALL}/etc/rpt/*.txt   .
 	cp -a ${INSTALL}/etc/config.xml  etc
 	cp -a ${INSTALL}/lib/enguage.jar .
 	flatpak-builder --force-clean --user --install bld org.enguage.Eng.yaml
-
-etc/rpt:
-	mkdir -p etc/rpt
+	rm -rf *.txt etc bld enguage.jar .flatpak-builder
 
 clean:
-	rm -rf .flatpak-builder etc enguage.jar bld var variable repo *.txt
-
-
+	rm -rf .flatpak-builder enguage.jar bld var etc variable repo
