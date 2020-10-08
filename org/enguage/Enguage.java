@@ -129,43 +129,58 @@ public class Enguage {
 		return runTheseTests;
 	}
 	
+	static private String testPrompt = "";
+	static private String testPrompt() { return testPrompt;}
+	static private void   testPrompt( String prompt) { testPrompt = prompt;}
+	
+	static private String replyPrompt = "";
+	static private String replyPrompt() { return replyPrompt;}
+	static private void   replyPrompt( String prompt) { replyPrompt = prompt;}
+	
+	static private boolean testprmpt = true;
+	
 	static private void test( String cmd ) { test( cmd, null );}
 	static private void test( String cmd, String expected ) { test( cmd, expected, null );}
 	static private void test( String cmd, String expected, String unexpected ) {
 		
+		testprmpt = expected != null; // something is expected
+		
 		// expected == null => silent!
-		if (expected != null)
-			Audit.log( "user> "+ cmd +".");
+		if (testprmpt)
+			Audit.log( testPrompt()+ cmd +".");
 		
 		Strings reply = serverTest ?
 				new Strings( Net.client( "localhost", portNumber, cmd ))
 				: Enguage.mediate( new Strings( cmd ));
 
-		if (expected != null) {
+		if (expected == null      ||
+			expected.equals( "" ) ||
+			reply.equalsIgnoreCase( new Strings( expected )))
+		{
+			audit.passed( replyPrompt()+ reply +"." );      // 1st success
 			
-			if (reply.equalsIgnoreCase( new Strings( expected ))) {
-				audit.passed( "enguage> "+ reply +".\n" );      // 1st success
-			
-			} else if (unexpected == null) {                     // no second chance
-				//Repertoire.signs.show();
-				audit.FATAL(
-						"reply: '"+ reply +"',\n             "+
-								"expected: '"+ expected +"' "
-								//+"(reason="+ Pattern.notMatched()+")"
-								);
-			
-			} else if (reply.equalsIgnoreCase( new Strings( unexpected ))) {
-				audit.passed( "enguage> "+ reply +".\n" );
-			
-			} else {                                           // second chance failed too!
-				//Repertoire.signs.show();
-				audit.FATAL(
-						"reply: '"      + reply      +"'\n             "+
-						"expected: '"   + expected   +"'\n          "+
-						"alternately: '"+ unexpected +"'\n          "
-						//+"(reason="+ Pattern.notMatched() +")"
-						);
-	}	}	}
+		} else if (unexpected == null) {                     // no second chance
+			//Repertoire.signs.show();
+			audit.FATAL(
+					"reply: '"+    reply    +"',\n             "+
+					"expected: '"+ expected +"' "
+			);
+		
+		} else if (
+				unexpected.equals( "" ) ||
+				reply.equalsIgnoreCase( new Strings( unexpected )))
+		{
+			audit.passed( replyPrompt()+ reply +".\n" );
+		
+		} else {                                           // second chance failed too!
+			//Repertoire.signs.show();
+			audit.FATAL(
+					"reply: '"      + reply      +"'\n             "+
+					"expected: '"   + expected   +"'\n          "+
+					"alternately: '"+ unexpected +"'\n          "
+					//+"(reason="+ Pattern.notMatched() +")"
+					);
+	}	}
 	
 	public static void selfTest() {
 		// ...useful ephemera...
@@ -175,6 +190,8 @@ public class Enguage {
 		//Repertoire.signs.show( "OTF" );
 		
 		Audit.interval(); // reset timer
+		testPrompt(  "\nuser> "    );
+		replyPrompt( "enguage> " );
 
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
@@ -185,9 +202,9 @@ public class Enguage {
 //		}
 		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
 			
-			test( "to the phrase hello reply hello to you too" );
+			test( "to the phrase hello reply hello to you too", "" );
 			test( "hello",                 "hello to you too" );
-			test( "to the phrase my name is variable name reply hello variable name" );
+			test( "to the phrase my name is variable name reply hello variable name", "" );
 			test( "please my name is martin", "hello martin" );
 			
 			clearTheNeedsList();
@@ -201,20 +218,20 @@ public class Enguage {
 			test( "want is like need",     "ok, want is like need" );
 			test( "what do i want",        "you don't want anything" );
 			
-			test( "interpret something can be variable quality thus" );
-			test( "first add variable quality to my quality list" );
-			test( "and then reply ok variable quality is a quality" );
-			test( "that concludes interpretation", "ok" );
+			test( "interpret something can be variable quality thus", "" );
+			test( "first add variable quality to my quality list",    "" );
+			test( "and then reply ok variable quality is a quality",  "" );
+			test( "that concludes interpretation",                    "ok" );
 			
 			test( "something can be cool", "ok cool is a quality" );
 			
-			test( "interpret variable things are variable quality thus" );
-			test( "first add variable things to my variable quality list" );
-			test( "and then reply ok variable things are variable quality" );
+			test( "interpret variable things are variable quality thus", "" );
+			test( "first add variable things to my variable quality list", "" );
+			test( "and then reply ok variable things are variable quality", "" );
 			test( "that concludes interpretation", "ok" );
 		
 			test( "ferraris are cool",     "ok ferraris are cool" );
-			test( "want is like need" );
+			test( "want is like need",     "" );
 			test( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
 			test( "why do I want a ferrari", "because ferraris are cool" );
 			
@@ -505,7 +522,7 @@ public class Enguage {
 			
 			audit.title( "Numbers ERROR!" );
 			clearTheNeedsList();
-			test( "i need an apple" );
+			test( "i need an apple", "" );
 			test( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
 		}
 //		if (runThisTest( "james's experimental example" )) { // variables, arithmetic and lambda tests
@@ -739,7 +756,7 @@ public class Enguage {
 			test( "first evaluate variable a times variable b",                       "go on" );
 			test( "ok", "ok" );
 			
-			test( "the product of x and y is x times y" );
+			test( "the product of x and y is x times y", "" );
 			test( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
 			//TODO:
 			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
@@ -767,7 +784,7 @@ public class Enguage {
 			test( "what is the factorial of 4", "the factorial of 4 is 24" );
 		}
 		if (runTheseTests( "Temporal interpret" )) {
-			test( "what day is christmas day" );
+			test( "what day is christmas day", "" );
 			//testInterpret( "what day is it today" );
 			// my date of birth is
 			// how old am i.
@@ -794,7 +811,7 @@ public class Enguage {
 			test( "Am I meeting my brother",
 					   "Yes , you're meeting your brother" );
 			
-			test( "I'm meeting my sister at the pub" );
+			test( "I'm meeting my sister at the pub", "" );
 			test( "When am I meeting my sister",
 					   "I don't know when you're meeting your sister" );
 			
@@ -831,10 +848,10 @@ public class Enguage {
 			test( "a queen is a monarch", "ok, a queen is a monarch" );
 		}
 		if (runTheseTests( "Disambiguation" )) {
-			test( "the eagle has landed"    /* "Are you an ornithologist" */);
-			test( "no the eagle has landed" /* "So , you're talking about the novel" */ );
-			test( "no the eagle has landed" /*"So you're talking about Apollo 11" */	);
-			test( "no the eagle has landed" /* "I don't understand" */ );
+			test( "the eagle has landed",    ""   /* "Are you an ornithologist" */);
+			test( "no the eagle has landed", "" /* "So , you're talking about the novel" */ );
+			test( "no the eagle has landed", "" /*"So you're talking about Apollo 11" */	);
+			test( "no the eagle has landed", "" /* "I don't understand" */ );
 			// Issue here: on DNU, we need to advance this on "the eagle has landed"
 			// i.e. w/o "no ..."
 		}
@@ -843,7 +860,7 @@ public class Enguage {
 			// config port get chosen over this one???
 			test( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
 			test( "tcpip localhost 5678 \"this is a test, which will fail\"",  "i'm sorry" );
-			test( "simon says put your hands on your head" ); //, "ok, success" );
+			test( "simon says put your hands on your head", "" ); //, "ok, success" );
 		}
 		if (runTheseTests( "Polymorphism - setup new idea and save" )) { // code generation features
 			
@@ -885,7 +902,7 @@ public class Enguage {
 			test( "this implies name gets set to variable name",   "go on" );
 			test( "this implies name is not set to variable name", "go on" );
 			test( "if not reply i already know this",              "go on" );
-			test( "ok", "ok" );
+			test( "ok",                                            "ok" );
 
 			test( "i am called martin", "i already know this" );
 
@@ -1069,6 +1086,17 @@ public class Enguage {
 			else
 				shell.aloudIs( true ).run();
 		
-		else // reconstruct original commands and interpret
-			Audit.log( mediate( cmds.prepend( cmd ) ));
-}	}
+		else {
+			// Command line parameters exists...
+			// reconstruct original commands and interpret...
+
+			// remove full stop, if one given
+			cmds = new Strings( cmds.toString() );
+			if (cmds.get( cmds.size()-1 ).equals( "." )) cmds.remove( cmds.size()-1 );
+
+			// this didn't attach:
+			//Audit.log( mediate( cmds.prepend( cmd ) ));
+
+			// ...sliently for now
+			test( (cmds.prepend( cmd )).toString() );
+}	}	}

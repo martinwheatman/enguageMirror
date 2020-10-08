@@ -44,4 +44,4 @@ app/android.app/libs/anduage.jar:
 clean:
 	(cd app/flatpak; make clean)
 	@rm -rf ${TMP} lib/ _user/ \
-		selftest/ variable var/uid
+		selftest/ variable var
