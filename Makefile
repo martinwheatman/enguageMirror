@@ -2,14 +2,14 @@ TMP=jardir
 INSTALL=${HOME}
 
 default:
-	@echo "Usage: make [ install | android | flatpak | clean ]" >&2
+	@echo "Usage: make [ enguage | android | flatpak | clean ]" >&2
 
-flatpak: install
+flatpak: enguage
 	(cd app/flatpak; make install)
 
 android: app/android.app/libs/anduage.jar
 
-install: lib/enguage.jar
+enguage: lib/enguage.jar
 
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc
@@ -21,7 +21,11 @@ ${TMP}:
 	mkdir ${TMP}
 
 lib/enguage.jar: ${TMP} lib
-	cp -a org com etc/META-INF ${TMP}
+	cp -a org com ${TMP}
+	mkdir -p ${TMP}/META-INF
+	echo "Manifest-Version: 1.0"           >  ${TMP}/META-INF/MANIFEST.MF
+	echo "Class-Path: ."                   >> ${TMP}/META-INF/MANIFEST.MF
+	echo "Main-Class: org.enguage.Enguage" >> ${TMP}/META-INF/MANIFEST.MF
 	( cd ${TMP} ;\
 		find com org -name \*.java -exec rm -f {} \;  ;\
 		find com org -name .DS_Store -exec rm -f {} \; ;\
