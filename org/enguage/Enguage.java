@@ -137,16 +137,13 @@ public class Enguage {
 	static private String replyPrompt() { return replyPrompt;}
 	static private void   replyPrompt( String prompt) { replyPrompt = prompt;}
 	
-	static private boolean testprmpt = true;
-	
-	static private void test( String cmd ) { test( cmd, null );}
-	static private void test( String cmd, String expected ) { test( cmd, expected, null );}
-	static private void test( String cmd, String expected, String unexpected ) {
-		
-		testprmpt = expected != null; // something is expected
+	static public  void test( Strings cmd ) { test( cmd.toString() );}
+	static private void test( String  cmd ) { test( cmd, null );}
+	static private void test( String  cmd, String expected ) { test( cmd, expected, null );}
+	static private void test( String  cmd, String expected, String unexpected ) {
 		
 		// expected == null => silent!
-		if (testprmpt)
+		if (expected != null)
 			Audit.log( testPrompt()+ cmd +".");
 		
 		Strings reply = serverTest ?
@@ -156,31 +153,29 @@ public class Enguage {
 		if (expected == null      ||
 			expected.equals( "" ) ||
 			reply.equalsIgnoreCase( new Strings( expected )))
-		{
+		
 			audit.passed( replyPrompt()+ reply +"." );      // 1st success
 			
-		} else if (unexpected == null) {                     // no second chance
+		else if (unexpected == null)                        // no second chance
 			//Repertoire.signs.show();
 			audit.FATAL(
-					"reply: '"+    reply    +"',\n             "+
-					"expected: '"+ expected +"' "
+				"reply: '"+    reply    +"',\n             "+
+				"expected: '"+ expected +"' "
 			);
 		
-		} else if (
-				unexpected.equals( "" ) ||
-				reply.equalsIgnoreCase( new Strings( unexpected )))
-		{
+		else if (unexpected.equals( "" ) ||
+				 reply.equalsIgnoreCase( new Strings( unexpected )))
+		
 			audit.passed( replyPrompt()+ reply +".\n" );
 		
-		} else {                                           // second chance failed too!
+		else                                           // second chance failed too!
 			//Repertoire.signs.show();
 			audit.FATAL(
-					"reply: '"      + reply      +"'\n             "+
-					"expected: '"   + expected   +"'\n          "+
-					"alternately: '"+ unexpected +"'\n          "
-					//+"(reason="+ Pattern.notMatched() +")"
-					);
-	}	}
+				"reply: '"      + reply      +"'\n             "+
+				"expected: '"   + expected   +"'\n          "+
+				"alternately: '"+ unexpected +"'\n          "
+			);
+	}
 	
 	public static void selfTest() {
 		// ...useful ephemera...
@@ -1081,6 +1076,7 @@ public class Enguage {
 			usage();
 		
 		else if (cmd.equals( "" ))
+			
 			if (!Overlay.attach( "uid" ))
 				audit.ERROR( "i'm sorry, i cannot connect to object space" );
 			else
@@ -1090,13 +1086,10 @@ public class Enguage {
 			// Command line parameters exists...
 			// reconstruct original commands and interpret...
 
-			// remove full stop, if one given
+			// - remove full stop, if one given -
 			cmds = new Strings( cmds.toString() );
 			if (cmds.get( cmds.size()-1 ).equals( "." )) cmds.remove( cmds.size()-1 );
 
-			// this didn't attach:
-			//Audit.log( mediate( cmds.prepend( cmd ) ));
-
-			// ...sliently for now
-			test( (cmds.prepend( cmd )).toString() );
+			// ...reconstruct original commands and interpret
+			test( cmds.prepend( cmd ));
 }	}	}

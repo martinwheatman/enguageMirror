@@ -100,12 +100,10 @@ public class Overlay {
 	static public  boolean remove() { return number >= 0 && attached() && Fs.destroy( nth( --number ));}
 
 	private String nthCandidate( String nm, int vn ) {
-		int topVn = number() - 1;
-		if (topVn == -1)
-			return nm;
-		else if (vn > topVn) // limit to top version no.
-			vn = topVn;
-		return	(0 > vn) ? nm : (nth( vn ) + File.separator + nm);
+		int topVn;
+		return nth( vn < 0                    ? 0 :
+		            vn > (topVn = number()-1) ? topVn : vn
+		          ) + File.separator + nm;
 	}
 	private String topCandidate( String name ) {
 		return nthCandidate( name, number()-1);
