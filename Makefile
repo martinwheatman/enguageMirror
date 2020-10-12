@@ -1,8 +1,9 @@
 TMP=jardir
 INSTALL=${HOME}
+SHAR=enguage.shar
 
 default:
-	@echo "Usage: make [ enguage | android | flatpak | clean ]" >&2
+	@echo "Usage: make [ enguage | shar | android | flatpak | clean ]" >&2
 
 flatpak: enguage
 	(cd app/flatpak; make install)
@@ -10,6 +11,8 @@ flatpak: enguage
 android: app/android.app/libs/anduage.jar
 
 enguage: lib/enguage.jar
+
+shar: ${SHAR}
 
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc
@@ -19,6 +22,19 @@ lib:
 
 ${TMP}:
 	mkdir ${TMP}
+
+${SHAR}: lib/enguage.jar
+	echo "#!/bin/sh"                                              > ${SHAR}
+	echo "SHAR=\`/bin/pwd\`/$$"0                                >> ${SHAR}
+	echo "cd $$"HOME                                            >> ${SHAR}
+	echo "awk '(y==1){print $$"0"}($$"1"==\"exit\"){y=1}' $$"SHAR \\ >> ${SHAR}
+	echo "                                | base64 -d | tar -xz" >> ${SHAR}
+	echo "exit"                                                  >> ${SHAR}
+	tar  -cz lib/enguage.jar etc bin/eng | base64                >> ${SHAR}
+	chmod +x ${SHAR}
+
+uninstall:
+	rm -rf ~/bin/eng ~/etc/config.xml ~/etc/rpt ~/lib/enguage.jar
 
 lib/enguage.jar: ${TMP} lib
 	cp -a org com ${TMP}
@@ -47,5 +63,4 @@ app/android.app/libs/anduage.jar:
 
 clean:
 	(cd app/flatpak; make clean)
-	@rm -rf ${TMP} lib/ _user/ \
-		selftest/ variable var
+	@rm -rf ${TMP} lib/ selftest/ variable var ${SHAR}
