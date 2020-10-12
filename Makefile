@@ -24,13 +24,13 @@ ${TMP}:
 	mkdir ${TMP}
 
 ${SHAR}: lib/enguage.jar
-	echo "#!/bin/sh"                                              > ${SHAR}
-	echo "SHAR=\`/bin/pwd\`/$$"0                                >> ${SHAR}
-	echo "cd $$"HOME                                            >> ${SHAR}
+	echo "#!/bin/sh"                                                 >  ${SHAR}
+	echo "SHAR=\`/bin/pwd\`/$$"0                                     >> ${SHAR}
+	echo "cd $$"HOME                                                 >> ${SHAR}
 	echo "awk '(y==1){print $$"0"}($$"1"==\"exit\"){y=1}' $$"SHAR \\ >> ${SHAR}
-	echo "                                | base64 -d | tar -xz" >> ${SHAR}
-	echo "exit"                                                  >> ${SHAR}
-	tar  -cz lib/enguage.jar etc bin/eng | base64                >> ${SHAR}
+	echo "                                    | base64 -d | tar -xz" >> ${SHAR}
+	echo "exit"                                                      >> ${SHAR}
+	tar  -cz lib/enguage.jar etc bin/eng | base64                    >> ${SHAR}
 	chmod +x ${SHAR}
 
 uninstall:
