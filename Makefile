@@ -3,7 +3,9 @@ INSTALL=${HOME}
 SHAR=enguage.shar
 
 default:
-	@echo "Usage: make [ enguage | shar | android | flatpak | clean ]" >&2
+	@echo "Usage: make [ install | enguage | shar | android | flatpak | clean ]" >&2
+
+install: enguage
 
 flatpak: enguage
 	(cd app/flatpak; make install)
