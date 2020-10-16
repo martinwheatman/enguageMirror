@@ -1,4 +1,5 @@
 TMP=jardir
+MANIFEST=${TMP}/META-INF/MANIFEST.MF
 INSTALL=${HOME}
 SHAR=enguage.shar
 
@@ -35,19 +36,26 @@ ${SHAR}: lib/enguage.jar
 	tar  -cz lib/enguage.jar etc bin/eng | base64                    >> ${SHAR}
 	chmod +x ${SHAR}
 
+tarball: enguage
+	tar  -czf app/snapcraft/enguage.tar.gz lib/enguage.jar etc bin/eng
+
 uninstall:
 	rm -rf ~/bin/eng ~/etc/config.xml ~/etc/rpt ~/lib/enguage.jar
 
-lib/enguage.jar: ${TMP} lib
+${MANIFEST}:
+	mkdir -p `dirname ${MANIFEST}`
+	echo "Manifest-Version: 1.0"           >  ${MANIFEST}
+	echo "Class-Path: ."                   >> ${MANIFEST}
+	echo "Main-Class: org.enguage.Enguage" >> ${MANIFEST}
+
+lib/enguage.jar: ${TMP} ${MANIFEST} lib
 	cp -a org com ${TMP}
-	mkdir -p ${TMP}/META-INF
-	echo "Manifest-Version: 1.0"           >  ${TMP}/META-INF/MANIFEST.MF
-	echo "Class-Path: ."                   >> ${TMP}/META-INF/MANIFEST.MF
-	echo "Main-Class: org.enguage.Enguage" >> ${TMP}/META-INF/MANIFEST.MF
 	( cd ${TMP} ;\
-		find com org -name \*.java -exec rm -f {} \;  ;\
+		find com org -name \*.class -exec rm -f {} \; ;\
 		find com org -name .DS_Store -exec rm -f {} \; ;\
 		find com org -name .gitignore -exec rm -f {} \; ;\
+		javac org/enguage/Enguage.java ;\
+		find com org -name \*.java -exec rm -f {} \;  ;\
 		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
 	)
 	rm -rf ${TMP}
