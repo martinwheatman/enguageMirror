@@ -1,9 +1,10 @@
 TMP=jardir
+MANIFEST=${TMP}/META-INF/MANIFEST.MF
 INSTALL=${HOME}
 SHAR=enguage.shar
 
 default:
-	@echo "Usage: make [ install | enguage | shar | android | flatpak | clean ]" >&2
+	@echo "Usage: make [ snap | enguage | shar | android | flatpak | clean ]" >&2
 
 install: enguage
 
@@ -22,9 +23,6 @@ ${INSTALL}/etc:
 lib:
 	mkdir lib
 
-${TMP}:
-	mkdir ${TMP}
-
 ${SHAR}: lib/enguage.jar
 	echo "#!/bin/sh"                                                 >  ${SHAR}
 	echo "SHAR=\`/bin/pwd\`/$$"0                                     >> ${SHAR}
@@ -35,19 +33,28 @@ ${SHAR}: lib/enguage.jar
 	tar  -cz lib/enguage.jar etc bin/eng | base64                    >> ${SHAR}
 	chmod +x ${SHAR}
 
+snap: enguage
+	tar  -czf app/snapcraft/enguage.tgz lib/enguage.jar etc bin/eng
+	(cd app/snapcraft; snapcraft)
+
 uninstall:
 	rm -rf ~/bin/eng ~/etc/config.xml ~/etc/rpt ~/lib/enguage.jar
 
-lib/enguage.jar: ${TMP} lib
+${MANIFEST}:
+	mkdir -p `dirname ${MANIFEST}`
+	echo "Manifest-Version: 1.0"           >  ${MANIFEST}
+	echo "Class-Path: ."                   >> ${MANIFEST}
+	echo "Main-Class: org.enguage.Enguage" >> ${MANIFEST}
+
+lib/enguage.jar: ${MANIFEST} lib
+	mkdir -p ${TMP}
 	cp -a org com ${TMP}
-	mkdir -p ${TMP}/META-INF
-	echo "Manifest-Version: 1.0"           >  ${TMP}/META-INF/MANIFEST.MF
-	echo "Class-Path: ."                   >> ${TMP}/META-INF/MANIFEST.MF
-	echo "Main-Class: org.enguage.Enguage" >> ${TMP}/META-INF/MANIFEST.MF
 	( cd ${TMP} ;\
-		find com org -name \*.java -exec rm -f {} \;  ;\
+		find com org -name \*.class -exec rm -f {} \; ;\
 		find com org -name .DS_Store -exec rm -f {} \; ;\
 		find com org -name .gitignore -exec rm -f {} \; ;\
+		javac org/enguage/Enguage.java ;\
+		find com org -name \*.java -exec rm -f {} \;  ;\
 		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
 	)
 	rm -rf ${TMP}
@@ -65,4 +72,5 @@ app/android.app/libs/anduage.jar:
 
 clean:
 	(cd app/flatpak; make clean)
+	(cd app/snapcraft; snapcraft clean; rm -f enguage.tgz enguage_*.snap)
 	@rm -rf ${TMP} lib/ selftest/ variable var ${SHAR}

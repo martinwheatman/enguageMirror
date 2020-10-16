@@ -78,22 +78,32 @@ public class Overlay {
 	
 	static private int     number = -1; // 0, 1, ..., n => 1+n; -1 == detached
 	static public  int     number() { return number; }
-	static public  boolean attached() {return number >= 0;}
+	
+	
+	static public  int     attached = 0;
+	static public  boolean attached() {return attached > 0;}
 	
 	static private String  nth( int vn ) { return root + vn;}
 	
 	static public boolean attach( String userId ) {
-		root( userId );
-		Set( Get()); // set singleton
-		String cwd = System.getProperty( "user.dir" );
-		series( new File( cwd ).getName() );
-		Link.fromString( root + series, cwd );
-		return (number = count()) >= 0;
+		attached++;
+		if (attached==1) {
+			root( userId );
+			Set( Get()); // set singleton
+			String cwd = System.getProperty( "user.dir" );
+			series( new File( cwd ).getName() );
+			Link.fromString( root + series, cwd );
+			number = count();
+		}
+		return true;
 	}
 	static public  void    detach() {
-		series( DETACHED );
-		number = -1;
-	}
+		attached--;
+		if (attached <= 0) {
+			attached = 0;
+			series( DETACHED );
+			number = -1;
+	}	}
 
 	static public  boolean exists() { return Fs.exists( root+ series + Link.EXT );}
 	static public  void    append() { if (attached()) new File( nth( number++ )).mkdirs(); }
