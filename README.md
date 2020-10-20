@@ -16,8 +16,9 @@ there’s no pesky JavaScript or corporate websites to get in the way!</p>
 [docker Webserver](doc/container.md)<br/>
 [Running jarfile](doc/jarfile.md)<br/>
 [Web Server](doc/httpd.md)<br/>
+[Shar](doc/shar.md)<br/>
+SNAP (WIP)<br/>
 Containerised (flatpak) app - WIP<br/>
-[Shar](doc/shar.md)
 This requires:
 <ul>
 <li> apt install flatpak
