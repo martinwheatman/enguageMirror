@@ -2,6 +2,7 @@ TMP=jardir
 MANIFEST=${TMP}/META-INF/MANIFEST.MF
 INSTALL=${HOME}
 SHAR=enguage.shar
+ANDLIBS=${HOME}/StudioProjects/Enguage/app/libs
 
 default:
 	@echo "Usage: make [ snap | enguage | shar | android | flatpak | clean ]" >&2
@@ -11,7 +12,7 @@ install: enguage
 flatpak: enguage
 	(cd app/flatpak; make install)
 
-android: ${HOME}/AndroidStudioProjects/Enguage/app/libs/anduage.jar
+android: ${ANDLIBS}/anduage.jar
 
 enguage: lib/enguage.jar
 
@@ -59,14 +60,14 @@ lib/enguage.jar: ${MANIFEST} lib
 	)
 	rm -rf ${TMP}
 
-${HOME}/AndroidStudioProjects/Enguage/app/libs/anduage.jar:
+${ANDLIBS}/anduage.jar:
 	mkdir -p ${TMP} app/android.app/libs
 	cp -a org ${TMP}
 	( cd ${TMP} ;\
 		find org -name \*.java -exec rm -f {} \;  ;\
 		find org -name .DS_Store -exec rm -f {} \; ;\
 		find org -name .gitignore -exec rm -f {} \; ;\
-		jar -cf ${HOME}/AndroidStudioProjects/Enguage/app/libs/anduage.jar org \
+		jar -cf ${ANDLIBS}/anduage.jar org \
 	)
 	rm -rf ${TMP}
 
