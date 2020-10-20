@@ -18,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.enguage.Config;
 import org.enguage.Enguage;
+import org.enguage.interp.repertoire.Concepts;
 import org.enguage.util.Audit;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.Strings;
@@ -194,8 +196,10 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 		protected Void doInBackground(Void... arg0) {
 			AssetManager am = ctx.getAssets();
 			try {
+				Assets.addConcepts();
+
 				InputStream is = am.open( "config.xml" );
-				Enguage.config( Fs.stringFromStream( is ));
+				Config.load( Fs.stringFromStream( is ));
 				is.close();
 			} catch (Exception e) {
 				Log.e( NAME, "doInBackground() failed: "+ e.toString() );

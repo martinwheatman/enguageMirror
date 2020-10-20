@@ -11,7 +11,7 @@ install: enguage
 flatpak: enguage
 	(cd app/flatpak; make install)
 
-android: app/android.app/libs/anduage.jar
+android: ${HOME}/AndroidStudioProjects/Enguage/app/libs/anduage.jar
 
 enguage: lib/enguage.jar
 
@@ -59,18 +59,19 @@ lib/enguage.jar: ${MANIFEST} lib
 	)
 	rm -rf ${TMP}
 
-app/android.app/libs/anduage.jar:
+${HOME}/AndroidStudioProjects/Enguage/app/libs/anduage.jar:
 	mkdir -p ${TMP} app/android.app/libs
 	cp -a org ${TMP}
 	( cd ${TMP} ;\
 		find org -name \*.java -exec rm -f {} \;  ;\
 		find org -name .DS_Store -exec rm -f {} \; ;\
 		find org -name .gitignore -exec rm -f {} \; ;\
-		jar -cf ../app/android.app/libs/anduage.jar org \
+		jar -cf ${HOME}/AndroidStudioProjects/Enguage/app/libs/anduage.jar org \
 	)
 	rm -rf ${TMP}
 
 clean:
 	(cd app/flatpak; make clean)
 	(cd app/snapcraft; snapcraft clean; rm -f enguage.tgz enguage_*.snap)
-	@rm -rf ${TMP} lib/ selftest/ variable var ${SHAR}
+	@rm -rf ${TMP} lib/ selftest/ variable var ${SHAR} \
+	           ${HOME}/AndroidStudioProjects/Enguage/app/libs/anduage.jar
