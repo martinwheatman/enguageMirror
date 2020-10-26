@@ -2,7 +2,7 @@ TMP=jardir
 MANIFEST=${TMP}/META-INF/MANIFEST.MF
 INSTALL=${HOME}
 SHAR=enguage.shar
-ANDLIBS=${HOME}/StudioProjects/Enguage/app/libs
+ANDLIBS=${HOME}/AndroidStudioProjects/Enguage/app/libs
 
 default:
 	@echo "Usage: make [ snap | enguage | shar | android | flatpak | clean ]" >&2
@@ -20,6 +20,9 @@ shar: ${SHAR}
 
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc
+	
+${TMP}:
+	mkdir -p ${TMP}
 
 lib:
 	mkdir lib
@@ -47,7 +50,7 @@ ${MANIFEST}:
 	echo "Class-Path: ."                   >> ${MANIFEST}
 	echo "Main-Class: org.enguage.Enguage" >> ${MANIFEST}
 
-lib/enguage.jar: ${MANIFEST} lib
+lib/enguage.jar: ${MANIFEST} ${TMP} lib
 	mkdir -p ${TMP}
 	cp -a org com ${TMP}
 	( cd ${TMP} ;\
@@ -58,10 +61,9 @@ lib/enguage.jar: ${MANIFEST} lib
 		find com org -name \*.java -exec rm -f {} \;  ;\
 		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
 	)
-	rm -rf ${TMP}
 
-${ANDLIBS}/anduage.jar:
-	mkdir -p ${TMP} app/android.app/libs
+${ANDLIBS}/anduage.jar: ${TMP}
+	mkdir -p ${ANDLIBS}
 	cp -a org ${TMP}
 	( cd ${TMP} ;\
 		find org -name \*.java -exec rm -f {} \;  ;\
@@ -69,7 +71,6 @@ ${ANDLIBS}/anduage.jar:
 		find org -name .gitignore -exec rm -f {} \; ;\
 		jar -cf ${ANDLIBS}/anduage.jar org \
 	)
-	rm -rf ${TMP}
 
 clean:
 	(cd app/flatpak; make clean)
