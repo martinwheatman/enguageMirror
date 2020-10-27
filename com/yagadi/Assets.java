@@ -22,6 +22,16 @@ public class Assets {
 	static public  Object  context() { return context; }
 	static public  void    context( Object activity ) { context = activity; }
 	
+   static public FileInputStream getAsset(String name ) {
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream( name );
+        } catch (IOException ignore) {
+            //audit.ERROR( "gone missing: "+ name );
+        }
+        return is;
+    }
+   
 	static public String getConfig() {
 		String rc = Fs.stringFromFile( Enguage.RO_SPACE + "/config.xml" );
 		if (rc.equals( "" )) {
@@ -62,14 +72,12 @@ public class Assets {
 			org.enguage.Enguage.shell().interpret( is, from, to );
 			wasLoaded = true;
 		} catch (IOException e1) {
-			InputStream is2 = null;
-			try { // ...or add concept from asset...
-				String fname = org.enguage.interp.repertoire.Concepts.writtenName( name );
-				is2 = new FileInputStream( fname );
-				org.enguage.Enguage.shell().interpret( is2, from, to );
+			if (null != (is = Assets.getAsset( org.enguage.interp.repertoire.Concepts.writtenName( name )))) {
+				// ...or add concept from asset...
+				org.enguage.Enguage.shell().interpret( is, from, to );
 				wasLoaded = true;
-			} catch (IOException e2) {
-			} finally {if (is2 != null) try{is2.close();} catch(IOException e2) {} }
+				try{is.close();} catch(IOException e2) {}
+			}
 		} finally { if (is != null) try{is.close();} catch(IOException e2) {} }
 		
 		//...un-silence after inner thought
