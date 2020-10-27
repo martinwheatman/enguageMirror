@@ -18,6 +18,10 @@ public class Assets {
 	//static public final String LOCATION = "assets";
 	static private     Audit    audit = new Audit( "Assets" );
 	
+	static private Object  context = null; // if null, not on Android
+	static public  Object  context() { return context; }
+	static public  void    context( Object activity ) { context = activity; }
+	
 	static public String getConfig() {
 		String rc = Fs.stringFromFile( Enguage.RO_SPACE + "/config.xml" );
 		if (rc.equals( "" )) {

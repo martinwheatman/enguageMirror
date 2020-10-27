@@ -17,6 +17,8 @@ import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
+import com.yagadi.Assets;
+
 public class Enguage {
 	
 	static private String copyright = "Martin Wheatman, 2001-4, 2011-20";
@@ -34,17 +36,8 @@ public class Enguage {
 	static private Shell   shell   = new Shell( "Enguage", copyright );
 	static public  Shell   shell() {return shell;}
 	
-	static private Object  context = null; // if null, not on Android
-	static public  Object  context() { return context; }
-	static public  void    context( Object activity ) { context = activity; }
-	
 	static public  boolean verbose = false;
 	
-	static public  void    init( String root, Object ctx ) {
-		Fs.root( root );
-		context( ctx );
-	}
-
 	static public Strings mediate( Strings said ) { return mediate( "uid", said );}
 	static public Strings mediate( String uid, Strings utterance ) {
 				
@@ -1018,7 +1011,8 @@ public class Enguage {
 	private static void selfTest( String cmd, Strings cmds ) {
 		// If we're sanity testing, remove yet preserve persistent data...
 		String fsys = "./selftest";
-		init( fsys, null ); // null 'cos we're not on Android
+		Fs.root( fsys );
+		
 		if (!Fs.destroy( fsys ))
 			audit.FATAL( "failed to remove old database - "+ fsys );
 		else
@@ -1055,7 +1049,8 @@ public class Enguage {
 				i++;
 		}
 
-		init( fsys, null ); // null 'cos we're not on Android
+		Fs.root( fsys );
+		
 		Concepts.addConcepts( com.yagadi.Assets.listConcepts() );
 
 		Config.load( com.yagadi.Assets.getConfig() );
