@@ -13,8 +13,6 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 
-import com.yagadi.Assets;
-
 /** Implements Dynamic Repertoires:
  * attempts to load all words in an utterance as a repertoire.
  */
@@ -56,7 +54,7 @@ public class Autoload {
 			for (String candidate : Concepts.matched( utterance ))
 				if (null == autoloaded.get( candidate ))  // Candidate already loaded, OR
 				{
-					String conceptName = Assets.loadConcept( candidate, null, null );     // just loaded so...
+					String conceptName = Concepts.loadConcept( candidate, null, null );     // just loaded so...
 					if (!conceptName.equals( "" ))
 						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0
 					else // ignore, if no repertoire!

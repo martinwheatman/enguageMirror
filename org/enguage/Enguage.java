@@ -1050,10 +1050,8 @@ public class Enguage {
 		}
 
 		Fs.root( fsys );
-		
-		Concepts.addConcepts( com.yagadi.Assets.listConcepts() );
-
-		Config.load( com.yagadi.Assets.getConfig() );
+		Concepts.addConcepts( Assets.listConcepts() );
+		Config.load( Assets.getContent( "config.xml" ));
 				
 		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))

@@ -19,7 +19,7 @@ public class Similarity {
 		if (null != Autoload.get( name ))
 			return true;
 		else {
-			String conceptName = com.yagadi.Assets.loadConcept( load, from, to );
+			String conceptName = Concepts.loadConcept( load, from, to );
 			if (!conceptName.equals( "" )) {
 				Autoload.put( conceptName );
 				return true;
