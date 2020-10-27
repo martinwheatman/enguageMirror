@@ -1,4 +1,4 @@
-package com.yagadi;
+package com.yagadi.enguage;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
@@ -8,89 +8,42 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 
 import org.enguage.interp.intention.Intention;
-import org.enguage.util.tag.Tag;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.sys.Fs;
 
 public class Assets {
 
-	static public final String LOADING = "concept";
-	static private       Audit   audit = new Audit( "yagadi" );
+    static public final String LOADING = "concept";
+    static private       Audit   audit = new Audit( "yagadi" );
 
-	static public void addConcepts () {
-		Activity a = (Activity) org.enguage.Enguage.context();
-		try {
-			AssetManager am = a.getAssets();
-			String[] assets = am.list( "rpt" );
-			for (String asset : assets) {
-				String concept = asset.substring( 0, asset.length() - 4 );
-				org.enguage.interp.repertoire.Concepts.add( concept );
-			}
-		} catch (IOException iox) {
-			audit.ERROR( "addAssets: concepts not found" );
-		}
-	}
+    static private Activity  context = null; // if null, not on Android
+    static public  Activity  context() { return context; }
+    static public  void      context( Activity activity ) { context = activity; }
 
-	public static Tag fromAsset( String fname, Activity ctx ) {
-	 	audit.in( "fromAsset", fname );
-	 	Tag t = null;
-	 	AssetManager am = ctx.getAssets();
-	 	try {
-	 		InputStream is = am.open( fname );
-	 		t = new Tag( Fs.stringFromStream( is ));
-	 		is.close();
-	 	} catch (IOException e) {
-	 		audit.ERROR( "no tag found in asset "+ fname );
-	 	}
-	 	audit.out();
-	 	return t;
-	}
-
-	static public String loadConcept( String name, String from, String to ) {
-		boolean wasLoaded   = false,
-				wasSilenced = false,
-				wasAloud    = org.enguage.Enguage.shell().isAloud();
-
-		Variable.set( LOADING, name );
-
-		// silence inner thought...
-		if (!Audit.startupDebug) {
-			wasSilenced = true;
-			Audit.suspend();
-			org.enguage.Enguage.shell().aloudIs( false );
-		}
-
-		Intention.concept( name );
-		InputStream  is = null;
-
-		try { // ...add concept from user space...
-			is = new FileInputStream( org.enguage.interp.repertoire.Concepts.spokenName( name ));
-			org.enguage.Enguage.shell().interpret( is, from, to );
-			wasLoaded = true;
-		} catch (IOException e1) {
-			String fname = "";
-			InputStream is2 = null;
-			try { // ...or add concept from asset...
-				fname = "rpt/"+ name +".txt";
-				Activity a = (Activity) org.enguage.Enguage.context();
-				if (null == a)
-					audit.ERROR( "context not set" );
-				else {
-					is2 = a.getAssets().open( fname );
-					org.enguage.Enguage.shell().interpret( is2, from, to );
-					wasLoaded = true;
-				}
-			} catch (IOException e2) { audit.ERROR( "name: "+ fname +", not found" );
-			} finally {if (is2 != null) try{is2.close();} catch(IOException e2) {} }
-		} finally { if (is != null) try{is.close();} catch(IOException e2) {} }
-
-		//...un-silence after inner thought
-		if (wasSilenced) {
-			Audit.resume();
-			org.enguage.Enguage.shell().aloudIs( wasAloud );
-		}
-
-		Variable.unset( LOADING );
-		return wasLoaded ? name : "";
+    static public FileInputStream getAsset(String name ) {
+        FileInputStream is = null;
+        try {
+            is = (FileInputStream) context().getAssets().open( name );
+        } catch (IOException ignore) {
+            //audit.ERROR( "gone missing: "+ name );
+        }
+        return is;
+    }
+    static public String getContent( String name ) {
+        InputStream is = getAsset( name );
+        String rc = Fs.stringFromStream( is );
+        try {is.close();} catch (IOException ignore){}
+        if (rc.equals( "" ))
+            audit.ERROR( "config not found" );
+        return rc;
+    }
+    static public String[] listConcepts() {
+        String[] names = null;
+        try {
+            names = context().getAssets().list( "rpt" );
+        } catch (IOException iox) {
+            audit.ERROR( "listConcepts: rpt not found" );
+        }
+        return names;
 }	}

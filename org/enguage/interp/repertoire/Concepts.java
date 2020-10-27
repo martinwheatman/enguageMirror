@@ -1,15 +1,22 @@
 package org.enguage.interp.repertoire;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.enguage.Enguage;
+import org.enguage.interp.intention.Intention;
 import org.enguage.interp.intention.Redo;
+import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.tag.Tag;
+
+import com.yagadi.Assets;
 
 /** Concepts is: the list of concept names;
  *               the list of loaded concepts; and,
@@ -61,7 +68,46 @@ public class Concepts {
 			if (!oldFile.renameTo( newFile ))
 				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
 	}	}
-	
+	static public String loadConcept( String name, String from, String to ) {
+		boolean wasLoaded   = false,
+		        wasSilenced = false,
+		        wasAloud    = Enguage.shell().isAloud();
+		String conceptName = to==null ? name : name.replace( from, to );
+		
+		Variable.set( Assets.NAME, name );
+		
+		// silence inner thought...
+		if (!Audit.startupDebug) {
+			wasSilenced = true;
+			Audit.suspend();
+			Enguage.shell().aloudIs( false );
+		}
+		
+		Intention.concept( conceptName );
+		InputStream  is = null;
+		
+		try { // ...add concept from user space...
+			is = new FileInputStream( spokenName( name ));
+			Enguage.shell().interpret( is, from, to );
+			wasLoaded = true;
+		} catch (IOException e1) {
+			if (null != (is = Assets.getAsset( writtenName( name )))) {
+				// ...or add concept from asset...
+				Enguage.shell().interpret( is, from, to );
+				wasLoaded = true;
+				try{is.close();} catch(IOException e2) {}
+			}
+		} finally { if (is != null) try{is.close();} catch(IOException e2) {} }
+		
+		//...un-silence after inner thought
+		if (wasSilenced) {
+			Audit.resume();
+			Enguage.shell().aloudIs( wasAloud );
+		}
+		
+		Variable.unset( Assets.NAME );
+		return wasLoaded ? conceptName : "";
+	}
 	/* This is the STATIC loading of concepts at app startup -- read
 	 * from the config.xml file.
 	 */
@@ -71,7 +117,7 @@ public class Concepts {
 		if (!loaded.contains( name )) {
 			// loading won't use undo - disable
 			Redo.undoEnabledIs( false );
-			String conceptName = com.yagadi.Assets.loadConcept( name, null, null );
+			String conceptName = loadConcept( name, null, null );
 			if (!conceptName.equals( "" ))
 				loaded.add( conceptName );
 			Redo.undoEnabledIs( true );
@@ -168,5 +214,4 @@ public class Concepts {
 		test( "to reply hello variable name", false );
 		test( "to hello reply", false );
 		test( "hello to fred reply way", false );
-}
-}
+}	}

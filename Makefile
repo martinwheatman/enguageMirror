@@ -2,7 +2,7 @@ TMP=jardir
 MANIFEST=${TMP}/META-INF/MANIFEST.MF
 INSTALL=${HOME}
 SHAR=enguage.shar
-ANDLIBS=${HOME}/AndroidStudioProjects/Enguage/app/libs
+ANDLIBS=${HOME}/StudioProjects/Enguage/app/libs
 
 default:
 	@echo "Usage: make [ snap | enguage | shar | android | flatpak | clean ]" >&2

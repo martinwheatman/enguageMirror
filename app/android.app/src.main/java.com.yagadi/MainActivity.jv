@@ -65,13 +65,11 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 			}
 		});
 
-		Enguage.init(
-				this.getExternalFilesDir( null ).getPath(),
-				this
-		);
+		Assets.context( this ); // dpo this first
+        Enguage.init( this.getExternalFilesDir( null ).getPath());
 
 		// read the config in the background...
-		new MainActivity.ReadConfig( this ).execute();
+		// new MainActivity.ReadConfig( this ).execute();
 	}
 
 	public void onInit(int code) {
@@ -140,8 +138,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 					// interpret what is said...
 					// ...in case of config failure, repeat what was said
 					
-					if (!Overlay.attach( "uid" ))
-						audit.ERROR( "Ouch! >>>>>>>> Cannot attach() to Object Space<<<<<<" );
+					// if (!Overlay.attach( "uid" ))
+					//	audit.ERROR( "Ouch! >>>>>>>> Cannot attach() to Object Space<<<<<<" );
 
 					Strings truText = Enguage.mediate( new Strings( said ));
 					String  toSpeak = truText.equals( Enguage.DNU ) ? said : truText.toString();
@@ -173,7 +171,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 		if (null != tts) tts.shutdown();
 		super.onDestroy();
 	}
-	// --------
+	/* --------
 	static private class ReadConfig extends AsyncTask<Void, Void, Void> {
 		private static final String NAME = "BKG";
 
@@ -205,4 +203,5 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 				Log.e( NAME, "doInBackground() failed: "+ e.toString() );
 			}
 			return null;
-}	}	}
+	}	}	--- --- --- --- */
+}

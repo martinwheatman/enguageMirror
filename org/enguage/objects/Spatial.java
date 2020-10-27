@@ -30,7 +30,7 @@ public class Spatial {
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
-				addConcept( Variable.get( Assets.LOADING ));
+				addConcept( Variable.get( Assets.NAME ));
 			else if (cmd.equals( "locator" ))
 				Where.locatorIs( args );
 			else

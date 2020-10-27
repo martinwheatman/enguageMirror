@@ -30,7 +30,7 @@ public class Temporal {
 			rc = Shell.SUCCESS;
 			if (args.size() == 0) {
 				if (cmd.equals( "addCurrent" ))
-					addConcept( Variable.get( Assets.LOADING ));
+					addConcept( Variable.get( Assets.NAME ));
 				else
 					rc = Shell.FAIL;
 			} else {
