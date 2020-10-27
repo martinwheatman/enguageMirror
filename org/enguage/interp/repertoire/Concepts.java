@@ -68,8 +68,15 @@ public class Concepts {
 			if (!oldFile.renameTo( newFile ))
 				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
 	}	}
+	static private FileInputStream getFile( String name ) {
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream( name );
+		} catch (IOException ignore) {}
+		return is;
+	}
 	static public String loadConcept( String name, String from, String to ) {
-		boolean wasLoaded   = false,
+		boolean wasLoaded   = true,
 		        wasSilenced = false,
 		        wasAloud    = Enguage.shell().isAloud();
 		String conceptName = to==null ? name : name.replace( from, to );
@@ -86,18 +93,14 @@ public class Concepts {
 		Intention.concept( conceptName );
 		InputStream  is = null;
 		
-		try { // ...add concept from user space...
-			is = new FileInputStream( spokenName( name ));
+		if (null != (is = getFile( spokenName( name ))))
 			Enguage.shell().interpret( is, from, to );
-			wasLoaded = true;
-		} catch (IOException e1) {
-			if (null != (is = Assets.getAsset( writtenName( name )))) {
-				// ...or add concept from asset...
-				Enguage.shell().interpret( is, from, to );
-				wasLoaded = true;
-				try{is.close();} catch(IOException e2) {}
-			}
-		} finally { if (is != null) try{is.close();} catch(IOException e2) {} }
+		else if (null != (is = Assets.getAsset( writtenName( name ))))
+			Enguage.shell().interpret( is, from, to );
+		else
+			wasLoaded = false;
+		
+		if (is != null) try{is.close();} catch(IOException e2) {}
 		
 		//...un-silence after inner thought
 		if (wasSilenced) {
@@ -143,7 +146,6 @@ public class Concepts {
 		} else
 			audit.ERROR( "Concepts tag not found!" );
 	}
-	
 	static private boolean matchesHyphenatedPattern( Strings s, String pattern ) {
 		// where pattern may be "to_the_phrase-reply_with"
 		Strings pcomp = new Strings( pattern, '-' );
