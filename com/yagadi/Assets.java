@@ -27,15 +27,6 @@ public class Assets {
         }
         return is;
     }
-	static public FileInputStream getFile( String name ) {
-        FileInputStream is = null;
-        try {
-            is = new FileInputStream( name );
-        } catch (IOException ignore) {
-            //audit.ERROR( "gone missing: "+ name );
-        }
-        return is;
-    }
 	static public String getContent( String name ) {
 		String rc = Fs.stringFromFile( Enguage.RO_SPACE + "/" + name );
 		if (rc.equals( "" )) {

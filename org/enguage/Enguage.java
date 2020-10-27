@@ -38,6 +38,12 @@ public class Enguage {
 	
 	static public  boolean verbose = false;
 	
+	static public  void init( String root ) {
+		Fs.root( root );
+		Concepts.addConcepts( Assets.listConcepts() );
+		Config.load( Assets.getContent( "config.xml" ));
+	}
+	
 	static public Strings mediate( Strings said ) { return mediate( "uid", said );}
 	static public Strings mediate( String uid, Strings utterance ) {
 				
@@ -1049,9 +1055,7 @@ public class Enguage {
 				i++;
 		}
 
-		Fs.root( fsys );
-		Concepts.addConcepts( Assets.listConcepts() );
-		Config.load( Assets.getContent( "config.xml" ));
+		init( fsys );
 				
 		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))
