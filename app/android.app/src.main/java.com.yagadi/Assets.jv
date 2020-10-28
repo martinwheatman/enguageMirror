@@ -1,4 +1,4 @@
-package com.yagadi.enguage;
+package com.yagadi;
 
 import android.app.Activity;
 import android.content.res.AssetManager;
@@ -14,36 +14,37 @@ import org.enguage.util.sys.Fs;
 
 public class Assets {
 
-    static public final String LOADING = "concept";
-    static private       Audit   audit = new Audit( "yagadi" );
+	static public final String  LOADING = "concept";
+	static public final String LOCATION = ""; // rpt/ located directly below assets
+	static private       Audit    audit = new Audit( "Assets" );
 
-    static private Activity  context = null; // if null, not on Android
-    static public  Activity  context() { return context; }
-    static public  void      context( Activity activity ) { context = activity; }
+	static private Activity  context = null; // if null, not on Android
+	static public  Activity  context() { return context; }
+	static public  void      context( Activity activity ) { context = activity; }
 
-    static public FileInputStream getAsset(String name ) {
-        FileInputStream is = null;
-        try {
-            is = (FileInputStream) context().getAssets().open( name );
-        } catch (IOException ignore) {
-            //audit.ERROR( "gone missing: "+ name );
-        }
-        return is;
-    }
-    static public String getContent( String name ) {
-        InputStream is = getAsset( name );
-        String rc = Fs.stringFromStream( is );
-        try {is.close();} catch (IOException ignore){}
-        if (rc.equals( "" ))
-            audit.ERROR( "config not found" );
-        return rc;
-    }
-    static public String[] listConcepts() {
-        String[] names = null;
-        try {
-            names = context().getAssets().list( "rpt" );
-        } catch (IOException iox) {
-            audit.ERROR( "listConcepts: rpt not found" );
-        }
-        return names;
+	static public InputStream getAsset( String name ) {
+		InputStream is = null;
+		try {
+			is = context().getAssets().open( name );
+		} catch (IOException ignore) {
+			//audit.ERROR( "gone missing: "+ name );
+		}
+		return is;
+	}
+	static public String getContent( String name ) {
+		InputStream is = getAsset( name );
+		String rc = Fs.stringFromStream( is );
+		try {is.close();} catch (IOException ignore){}
+		if (rc.equals( "" ))
+			audit.ERROR( "config not found" );
+		return rc;
+	}
+	static public String[] listConcepts() {
+		String[] names = null;
+		try {
+			names = context().getAssets().list( "rpt" );
+		} catch (IOException iox) {
+			audit.ERROR( "listConcepts: rpt not found" );
+		}
+		return names;
 }	}

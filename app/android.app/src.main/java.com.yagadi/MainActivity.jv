@@ -3,9 +3,7 @@ package com.yagadi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.media.AudioManager;
-import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
@@ -17,16 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import org.enguage.Config;
 import org.enguage.Enguage;
-import org.enguage.interp.repertoire.Concepts;
 import org.enguage.util.Audit;
-import org.enguage.util.sys.Fs;
 import org.enguage.util.Strings;
 import org.enguage.objects.space.Overlay;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -65,11 +58,11 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 			}
 		});
 
-		Assets.context( this ); // dpo this first
-        Enguage.init( this.getExternalFilesDir( null ).getPath());
+		Assets.context( this );
+		Enguage.init( this.getExternalFilesDir( null ).getPath() );
 
 		// read the config in the background...
-		// new MainActivity.ReadConfig( this ).execute();
+		//new MainActivity.ReadConfig( this ).execute();
 	}
 
 	public void onInit(int code) {
@@ -138,9 +131,6 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 					// interpret what is said...
 					// ...in case of config failure, repeat what was said
 					
-					// if (!Overlay.attach( "uid" ))
-					//	audit.ERROR( "Ouch! >>>>>>>> Cannot attach() to Object Space<<<<<<" );
-
 					Strings truText = Enguage.mediate( new Strings( said ));
 					String  toSpeak = truText.equals( Enguage.DNU ) ? said : truText.toString();
 
@@ -171,37 +161,4 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 		if (null != tts) tts.shutdown();
 		super.onDestroy();
 	}
-	/* --------
-	static private class ReadConfig extends AsyncTask<Void, Void, Void> {
-		private static final String NAME = "BKG";
-
-		private MainActivity ctx = null;
-		public ReadConfig( MainActivity a ) {
-			super();
-			ctx = a;
-		}
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			Log.i( NAME, "Start" );
-		}
-		@Override
-		protected void onPostExecute( Void result ) {
-			super.onPostExecute( result );
-			Log.i( NAME, "Done" );
-		}
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			AssetManager am = ctx.getAssets();
-			try {
-				Assets.addConcepts();
-
-				InputStream is = am.open( "config.xml" );
-				Config.load( Fs.stringFromStream( is ));
-				is.close();
-			} catch (Exception e) {
-				Log.e( NAME, "doInBackground() failed: "+ e.toString() );
-			}
-			return null;
-	}	}	--- --- --- --- */
 }

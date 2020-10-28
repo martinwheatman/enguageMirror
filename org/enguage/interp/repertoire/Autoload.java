@@ -57,7 +57,7 @@ public class Autoload {
 					if (!conceptName.equals( "" ))
 						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0
 					else // ignore, if no repertoire!
-						audit.ERROR( "failed to autoload" );
+						audit.ERROR( "failed to autoload: "+ candidate );
 				} else
 					autoloaded.put( candidate, 0 ); // reset to age=0
 			

@@ -1,6 +1,7 @@
 package com.yagadi;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -11,15 +12,16 @@ import org.enguage.Enguage;
 
 public class Assets {
 	
-	static public final String  NAME = "assets";
-	static private     Audit    audit = new Audit( "Assets" );
+	static public final String     NAME = "assets";
+	static public final String LOCATION = "etc" + File.separator;
+	static private      Audit     audit = new Audit( "Assets" );
 	
 	static private Object  context = null; // if null, not on Android
 	static public  Object  context() { return context; }
 	static public  void    context( Object activity ) { context = activity; }
 	
-	static public FileInputStream getAsset( String name ) {
-        FileInputStream is = null;
+	static public InputStream getAsset( String name ) {
+		InputStream is = null;
         try {
             is = new FileInputStream( name );
         } catch (IOException ignore) {
