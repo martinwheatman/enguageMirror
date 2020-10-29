@@ -18,7 +18,7 @@ import org.enguage.vehicle.when.When;
 import org.enguage.vehicle.where.Where;
 
 public class Utterance {
-	static private Audit audit = new Audit( "Utterance" );
+	//static private Audit audit = new Audit( "Utterance" );
 
 	static private Strings previous = null;
 	static public  Strings previous() { return previous; }
@@ -115,8 +115,7 @@ public class Utterance {
 	public static void main( String arg[]) {
 		
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attach( "Utternace" ))
-			audit.FATAL(">>>>Ouch! Cannot autoAttach() to object space<<<<" );
+		Overlay.attach( "Utternace" );
 
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");
 		Where.doLocators( "behind/in/on/under/underneath/over/at" );

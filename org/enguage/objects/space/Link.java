@@ -101,28 +101,25 @@ public class Link {
 	public static void main( String args[] ) {
 		
 		Fs.root( null );
-		//Fs.location( Enguage.LOCATION );
 		
-		if (!Overlay.attached() && !Overlay.attach( "Link" ))
-			audit.ERROR( "Ouch! >>>>>>>> Cannot autoAttach() to object space<<<<<<" );
-		else {
-			//Audit.allOn();
-			test( "create martin loves ruth",   Shell.SUCCESS );
-			test( "create martin hates ruth",   Shell.SUCCESS );
-			test( "delete martin hates ruth",  Shell.SUCCESS );
-			test( "exists martin hates",        "no" );
-			test( "exists martin hates ruth",   "no" );
-			test( "exists martin loves",        "yes" );
-			test( "exists martin loves ruth",   "yes" );
-			test( "create engineer isa person", Shell.SUCCESS );
-			test( "create martin isa engineer", Shell.SUCCESS );
-			test( "exists martin isa",          "yes" );
-			test( "exists martin isa person",   "yes" );
-			test( "exists person isa martin",   "no" );
+		Overlay.attach( "Link" );
+		
+		test( "create martin loves ruth",   Shell.SUCCESS );
+		test( "create martin hates ruth",   Shell.SUCCESS );
+		test( "delete martin hates ruth",  Shell.SUCCESS );
+		test( "exists martin hates",        "no" );
+		test( "exists martin hates ruth",   "no" );
+		test( "exists martin loves",        "yes" );
+		test( "exists martin loves ruth",   "yes" );
+		test( "create engineer isa person", Shell.SUCCESS );
+		test( "create martin isa engineer", Shell.SUCCESS );
+		test( "exists martin isa",          "yes" );
+		test( "exists martin isa person",   "yes" );
+		test( "exists person isa martin",   "no" );
+		
+		new Value( "person", "age" ).set( "42" );
+		test( "attribute martin isa age 42",     Shell.SUCCESS );
+		test( "attribute martin isa age 55",     Shell.FAIL );
 			
-			new Value( "person", "age" ).set( "42" );
-			test( "attribute martin isa age 42",     Shell.SUCCESS );
-			test( "attribute martin isa age 55",     Shell.FAIL );
-			
-			audit.PASSED();
-}	}	}
+		audit.PASSED();
+}	}

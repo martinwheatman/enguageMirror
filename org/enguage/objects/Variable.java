@@ -217,43 +217,41 @@ public class Variable {
 			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
 	public static void main( String args[] ) {
-		if (!Overlay.attach( NAME )) {
-			audit.ERROR( "ouch: in Variable.java" );
-		} else {
-			Audit.allOn();
-			Audit.detailedOn = true;
+		Overlay.attach( NAME );
+		Audit.allOn();
+		Audit.detailedOn = true;
+		
+		printCache();
+		Variable spk = new Variable( "NAME" );
+		String tmp = spk.get();
+		Audit.log( "was="+ (tmp==null?"<null>":tmp));
+		if ( tmp.equals( "fred" ))
+			interpret( new Strings( "set NAME billy boy" ));
+		else
+			spk.set( "fred" );
+		tmp = spk.get();
+		Audit.log( "now="+ (tmp==null?"<null>":tmp));
+		if ( spk.isSet( "fred" ))
+			Audit.log( "spk set to Fred" );
+		else
+			Audit.log( "spk is set to Bill" );
+		printCache();
+		
+		//*		Static test, backwards compat...
+		test( "set hello there", "there" );
+		test( "get HELLO", "there" );
+		test( "equals HELLO there", Shell.SUCCESS );
+		Audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
+		test( "unset HELLO", Shell.SUCCESS );
+		test( "get HELLO", "" );
+		{	// derefOrPop test...
+			Variable.unset( "LOCATOR" );
+			Variable.set( "LOCATION", "Sainsburys" );
+			Strings b = new Strings( "where [LOCATOR LOCATION] to LOCATION" );
 			
-			printCache();
-			Variable spk = new Variable( "NAME" );
-			String tmp = spk.get();
-			Audit.log( "was="+ (tmp==null?"<null>":tmp));
-			if ( tmp.equals( "fred" ))
-				interpret( new Strings( "set NAME billy boy" ));
-			else
-				spk.set( "fred" );
-			tmp = spk.get();
-			Audit.log( "now="+ (tmp==null?"<null>":tmp));
-			if ( spk.isSet( "fred" ))
-				Audit.log( "spk set to Fred" );
-			else
-				Audit.log( "spk is set to Bill" );
-			printCache();
-			
-			//*		Static test, backwards compat...
-			test( "set hello there", "there" );
-			test( "get HELLO", "there" );
-			test( "equals HELLO there", Shell.SUCCESS );
-			Audit.log( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
-			test( "unset HELLO", Shell.SUCCESS );
-			test( "get HELLO", "" );
-			{	// derefOrPop test...
-				Variable.unset( "LOCATOR" );
-				Variable.set( "LOCATION", "Sainsburys" );
-				Strings b = new Strings( "where [LOCATOR LOCATION] to LOCATION" );
-				
-				b = derefOrPop( b.listIterator() );
+			b = derefOrPop( b.listIterator() );
 
-				Audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
-			}
-			Audit.log( "PASSED" );
-}	}	}
+			Audit.log( "b is now '"+ b +"' (should be 'where to Sainsburys')");
+		}
+		Audit.log( "PASSED" );
+}	}

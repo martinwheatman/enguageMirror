@@ -108,10 +108,8 @@ public class Autoload {
 		Audit.allTracing = true;
 		if (!Fs.location( Enguage.RO_SPACE ))
 			audit.FATAL( Enguage.RO_SPACE +": not found" );
-		else if (!Overlay.attach( "autoload" ))
-			audit.ERROR( " can't auto attach" );
 		else {
-			//Concepts.names();
+			Overlay.attach( "autoload" );
 			load( new Strings( "i need a coffee" ));
 			load( new Strings( "martin needs a coffee" ));
 }	}	}

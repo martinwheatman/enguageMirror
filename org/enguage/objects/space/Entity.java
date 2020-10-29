@@ -104,8 +104,6 @@ public class Entity {
 	}
 	
 	public static void main (String args []) {
-		if (!Overlay.attach( "Entity" ))
-			audit.ERROR( "Ouch!" );
-		else
-			new EntityShell().run();
+		Overlay.attach( "Entity" );
+		new EntityShell().run();
 }	}

@@ -555,35 +555,33 @@ public class Number {
 		Audit.decr();
 		
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attach( "Number" ))
-			audit.ERROR( "Ouch!" );
-		else {
-			/* factorial( n ): n times the factorial of n minus 1.
-			 * Mersenne number( n ): 2^n ALL minus 1  -- not a definition???
-			 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
-			 */
+		Overlay.attach( "Number" );
+		
+		/* factorial( n ): n times the factorial of n minus 1.
+		 * Mersenne number( n ): 2^n ALL minus 1  -- not a definition???
+		 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
+		 */
 			
-			audit.title( "Function test:");
-			Audit.incr();
-			// Function within function:
-			Function.interpret( "create sum x y / "+ new Attribute( "body", "x + y" ));
-			getNumberTest( "2 times the sum of 2 and 3",  "10" );
-			
-			Function.interpret( "create addition x y / "+ new Attribute( "body", "the sum of x and y" ));
-			getNumberTest( "2 times the addition of 2 and 3",  "10" );
-			
-			Function.interpret( "create product x y / "+ new Attribute( "body", "x times y" ));
-			getNumberTest( "2 times the product of 2 and 3",  "12" );
-			
-			Function.interpret( "create square x / "+ new Attribute( "body", "the product of x and x" ));
-			getNumberTest( "2 times the square of 2",  "8" );
-			//TODO:
-			//getNumberTest( "the square of x",  "the product of x and x" );
-			
-			Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
-			getNumberTest( "2 times the factorial of 4",   "48" );
-			Audit.decr();
-		}
+		audit.title( "Function test:");
+		Audit.incr();
+		// Function within function:
+		Function.interpret( "create sum x y / "+ new Attribute( "body", "x + y" ));
+		getNumberTest( "2 times the sum of 2 and 3",  "10" );
+		
+		Function.interpret( "create addition x y / "+ new Attribute( "body", "the sum of x and y" ));
+		getNumberTest( "2 times the addition of 2 and 3",  "10" );
+		
+		Function.interpret( "create product x y / "+ new Attribute( "body", "x times y" ));
+		getNumberTest( "2 times the product of 2 and 3",  "12" );
+		
+		Function.interpret( "create square x / "+ new Attribute( "body", "the product of x and x" ));
+		getNumberTest( "2 times the square of 2",  "8" );
+		//TODO:
+		//getNumberTest( "the square of x",  "the product of x and x" );
+		
+		Function.interpret( "create factorial n / "+ new Attribute( "body", "n times the factorial of n - 1" ));
+		getNumberTest( "2 times the factorial of 4",   "48" );
+		Audit.decr();
 		
 		Audit.log( "PASSED." );
 }	}

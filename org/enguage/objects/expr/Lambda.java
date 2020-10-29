@@ -74,26 +74,25 @@ public class Lambda {
 	}
 	static public void main( String args[] ) {
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attach( "Lambda" ))
-			audit.ERROR( "Ouch!" );
-		else {
-			Variable.set( "x",   "1" );
-			Variable.set( "y",   "2" );
-			matchTest(    "1",   "1",  true );
-			matchTest(    "x",   "1",  true );
-			matchTest(  "x y", "1 2",  true );
-			matchTest(    "x", "1 2", false ); // n vals != n names
-			matchTest(  "x 1", "1 2", false ); // 1 != 2
-			Audit.log(  "match tests PASSED" );
+		Overlay.attach( "Lambda" );
+		
+		Variable.set( "x",   "1" );
+		Variable.set( "y",   "2" );
+		matchTest(    "1",   "1",  true );
+		matchTest(    "x",   "1",  true );
+		matchTest(  "x y", "1 2",  true );
+		matchTest(    "x", "1 2", false ); // n vals != n names
+		matchTest(  "x 1", "1 2", false ); // 1 != 2
+		Audit.log(  "match tests PASSED" );
 			
-			//Audit.allOn();
-			Audit.log( "Creating a blank function, called 'sum'..." );
-			Function f = new Function( "sum" );
-			Audit.log( "Creating a new lambda..." );
-			new Lambda( f, new Strings( "a b" ), "a plus b" );
-			Audit.log( "Finding it:" );
-			Audit.incr();
-			Lambda l = new Lambda( f, new Strings( "2 3" ));
-			Audit.decr();
-			Audit.log( "PASSED: "+ l.toString() );
-}	}	}
+		//Audit.allOn();
+		Audit.log( "Creating a blank function, called 'sum'..." );
+		Function f = new Function( "sum" );
+		Audit.log( "Creating a new lambda..." );
+		new Lambda( f, new Strings( "a b" ), "a plus b" );
+		Audit.log( "Finding it:" );
+		Audit.incr();
+		Lambda l = new Lambda( f, new Strings( "2 3" ));
+		Audit.decr();
+		Audit.log( "PASSED: "+ l.toString() );
+}	}

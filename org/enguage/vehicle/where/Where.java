@@ -9,7 +9,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Where {
-	/* e.g. i need milk 'from' "the dairy aisle"
+	/** e.g. i need milk locator='from' location="the dairy aisle"
 	 */
 
 	static public final String  NAME = "where";
@@ -37,8 +37,8 @@ public class Where {
 				return rc;
 		return null;
 	}
-	static private void    locatorIs( String l ) { locatorIs( new Strings( l )); }
-	static public  void    locatorIs( Strings l ){ if (l.size() > 0) locators.add( l ); }
+	static private void locatorIs( String l ) { locatorIs( new Strings( l )); }
+	static public  void locatorIs( Strings l ){ if (l.size() > 0) locators.add( l ); }
 
 	private boolean assigned = false;
 	public  boolean assigned() { return assigned; }
@@ -122,18 +122,7 @@ public class Where {
 		locatorIs( "at" );
 	}
 	public static void main( String args[]) {
-		//Audit.allOn();
-		//Audit.traceAll( true );
-		
-		// This should go into SofA
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attach( NAME ))
-			audit.ERROR( "Ouch!" );
-		else {
-			testDoLocators();
-			
-			// ok, let's do some testing...
-//			testGet( "i am meeting my brother in paris at 10", "i am meeting my brother at 10" );
-//			testGet( "i am meeting my brother at the pub at 10", "i am meeting my brother at 10" );
-//			testGet( "underneath" );
-}	}	}
+		Overlay.attach( NAME );
+		testDoLocators();
+}	}

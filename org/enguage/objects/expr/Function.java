@@ -133,26 +133,25 @@ public class Function {
 	}
 	static public void main( String args[]) {
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attach( NAME ))
-			audit.ERROR( "Ouch!" );
-		else {
-			Reply.dnk( "I do not know\n" );
-			testQuery(  "sum", "1 , 1" ); // error!
-			
-			testCreate( "sum", "a and b", "a + b" );
-			testQuery(  "sum", "3 and 2" );
-			
-			testCreate( "sum", "a b c and d", "a + b + c + d" );
-			testQuery(  "sum", "4 and 3 and 2 and 1" );
-			
-			Audit.log( "setting x to 1" );
-			Variable.set( "x", "1" );
-			Audit.log( "setting y to 2" );
-			Variable.set( "y", "2" );
-			testQuery(  "sum", "x and y" );
-			
-			testCreate( "factorial", "1", "1" );
-			testQuery(  "factorial", "1" );
-			//testQuery(  "factorial", "4" );
-			Audit.log( "PASSED" );
-}	}	}
+		Overlay.attach( NAME );
+		
+		Reply.dnk( "I do not know\n" );
+		testQuery(  "sum", "1 , 1" ); // error!
+		
+		testCreate( "sum", "a and b", "a + b" );
+		testQuery(  "sum", "3 and 2" );
+		
+		testCreate( "sum", "a b c and d", "a + b + c + d" );
+		testQuery(  "sum", "4 and 3 and 2 and 1" );
+		
+		Audit.log( "setting x to 1" );
+		Variable.set( "x", "1" );
+		Audit.log( "setting y to 2" );
+		Variable.set( "y", "2" );
+		testQuery(  "sum", "x and y" );
+		
+		testCreate( "factorial", "1", "1" );
+		testQuery(  "factorial", "1" );
+		//testQuery(  "factorial", "4" );
+		Audit.log( "PASSED" );
+}	}

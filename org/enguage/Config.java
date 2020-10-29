@@ -33,8 +33,6 @@ public class Config {
 	static public  boolean firstRun() { return firstRun; }
 	static public  void    firstRun( boolean b ) { firstRun = b; }
 	
-	static private Config  config  = new Config();
-
 	private static void setContext( ArrayList<Attribute> aa ) {
 		if (null != aa) {
 			ListIterator<Attribute> pi = aa.listIterator();
@@ -106,8 +104,6 @@ public class Config {
 	
 	public static void main( String args[]) {
 		Overlay.Set( Overlay.Get());
-		if (!Overlay.attach( NAME ))
-			audit.ERROR( "Ouch!" );
-		Config c = new Config();
-		c.load( "" );
+		Overlay.attach( NAME );
+		Config.load( "" );
 }	}

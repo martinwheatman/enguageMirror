@@ -85,7 +85,7 @@ public class Overlay {
 	
 	static private String  nth( int vn ) { return root + vn;}
 	
-	static public boolean attach( String userId ) {
+	static public void attach( String userId ) {
 		attached++;
 		if (attached==1) {
 			root( userId );
@@ -94,9 +94,7 @@ public class Overlay {
 			series( new File( cwd ).getName() );
 			Link.fromString( root + series, cwd );
 			number = count();
-		}
-		return true;
-	}
+	}	}
 	static public  void    detach() {
 		attached--;
 		if (attached <= 0) {
@@ -425,11 +423,9 @@ public class Overlay {
 	
 	public static void main (String args []) {
 		Audit.allOn();
-		if (!attach( "Overlay" ))
-			Audit.log( "Ouch! Can't auto attach" );
-		else {
-			Audit.log( "osroot="+ root );
-			Audit.log( "base="+ series+", n=" + number() );
-			OverlayShell os = new OverlayShell( new Strings( args ));
-			os.run();
-}	}	}
+		attach( "Overlay" );
+		Audit.log( "osroot="+ root );
+		Audit.log( "base="+ series+", n=" + number() );
+		OverlayShell os = new OverlayShell( new Strings( args ));
+		os.run();
+}	}

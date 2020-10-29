@@ -50,51 +50,43 @@ public class Enguage {
 		Strings reply;
 		audit.in( "mediate", utterance.toString() );
 		
-		if (!Overlay.attach( uid ))
+		Overlay.attach( uid );
 			
-			audit.ERROR( 
-					"Ouch! >>>>>>>> "
-					+ (reply = new Strings( "i'm sorry, i cannot connect to object space" ))
-					+ " <<<<<<" 
-			);
-			
-		else {
-			
-			if (Net.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
-			{
-				// locations contextual per utterance
-				Where.clearLocation();
-				
-				if (Reply.isUnderstood()) // from previous interpretation!
-					Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
-				
-				Reply r = Repertoire.mediate( new Utterance( utterance ));
+		if (Net.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
 		
-				// once processed, keep a copy
-				Utterance.previous( utterance );
+		// locations contextual per utterance
+		Where.clearLocation();
 		
-				if (Reply.isUnderstood()) {
-					Overlay.finishTxn( Redo.undoIsEnabled() );
-					Redo.disambOff();
-				} else {
-					// really lost track?
-					audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
-					             +Repertoire.signs.ignore().toString() );
-					Repertoire.signs.ignoreNone();
-					shell.aloudIs( true ); // sets aloud for whole session if reading from fp
-				}
+		if (Reply.isUnderstood()) // from previous interpretation!
+			Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 		
-				// auto-unload here - autoloading() in Repertoire.interpret() 
-				// asymmetry: load as we go; tidy-up once finished
-				Autoload.unload();
-		
-				reply = Reply.say().appendAll( r.toStrings());
-				Reply.say( null );
-			}
-			if (Net.serverOn()) Audit.log( "Server replied: "+ reply );
-			
-			Overlay.detach();
+		Reply r = Repertoire.mediate( new Utterance( utterance ));
+
+		// once processed, keep a copy
+		Utterance.previous( utterance );
+
+		if (Reply.isUnderstood()) {
+			Overlay.finishTxn( Redo.undoIsEnabled() );
+			Redo.disambOff();
+		} else {
+			// really lost track?
+			audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
+			             +Repertoire.signs.ignore().toString() );
+			Repertoire.signs.ignoreNone();
+			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
 		}
+
+		// auto-unload here - autoloading() in Repertoire.interpret() 
+		// asymmetry: load as we go; tidy-up once finished
+		Autoload.unload();
+
+		reply = Reply.say().appendAll( r.toStrings());
+		Reply.say( null );
+		
+		if (Net.serverOn()) Audit.log( "Server replied: "+ reply );
+			
+		Overlay.detach();
+		
 		return audit.out( reply );
 	}
 	
@@ -1072,14 +1064,11 @@ public class Enguage {
 		else if (cmd.equals( "-h" ) || cmd.equals( "--help" ))
 			usage();
 		
-		else if (cmd.equals( "" ))
-			
-			if (!Overlay.attach( "uid" ))
-				audit.ERROR( "i'm sorry, i cannot connect to object space" );
-			else
-				shell.aloudIs( true ).run();
+		else if (cmd.equals( "" )) {
+			Overlay.attach( "uid" );
+			shell.aloudIs( true ).run();
 		
-		else {
+		} else {
 			// Command line parameters exists...
 			// reconstruct original commands and interpret...
 
