@@ -5,7 +5,6 @@ import org.enguage.interp.repertoire.Similarity;
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
 import org.enguage.interp.sign.Sign;
-import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.objects.expr.Function;
@@ -17,6 +16,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Colloquial;
 import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.where.Where;
 
 public class Sofa extends Shell {
 	static private Audit audit = new Audit( "Sofa" );
@@ -48,9 +48,9 @@ public class Sofa extends Shell {
 				case Items.id :      return Items.interpret( a );
 				case Value.id :      return Value.interpret( a );
 				case Every.id :      return Every.interpret( a );
+				case Where.id :      return Where.interpret( a );
 				case Plural.id :     return Plural.interpret( a );
 				case Entity.id :     return Entity.interpret( a );
-				case Spatial.id :    return Spatial.interpret( a );
 				case Context.id :    return Context.interpret( a );
 				case Numeric.id  :   return Numeric.interpret( a );
 				case Overlay.id  :   return Overlay.interpret( a );

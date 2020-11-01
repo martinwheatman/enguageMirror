@@ -7,7 +7,6 @@ import org.enguage.interp.intention.Intention;
 import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Engine;
-import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
@@ -16,6 +15,7 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.where.Where;
 
 public class Sign {
 	public  static final String   NAME = "sign";
@@ -76,7 +76,7 @@ public class Sign {
 	private boolean spatial = false;
 	public  boolean isSpatial() {
 		if (!spatialSet && !concept.equals( "" )) {
-			spatial = Spatial.isConcept( concept );
+			spatial = Where.isConcept( concept );
 			spatialSet = true;
 		}
 		return spatial;

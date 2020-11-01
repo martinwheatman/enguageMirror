@@ -7,12 +7,16 @@ import org.enguage.objects.Variable;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Shell;
+
+import com.yagadi.Assets;
 
 public class Where {
 	/** e.g. i need milk locator='from' location="the dairy aisle"
 	 */
 
 	static public final String  NAME = "where";
+	static public final int       id = 10654909; //Strings.hash( NAME );
 	static public       Audit  audit = new Audit( NAME );
 	
 	static public final String LOCTR = "LOCATOR";
@@ -44,6 +48,11 @@ public class Where {
 	public  boolean assigned() { return assigned; }
 	public  Where   assigned( boolean l ) { assigned = l; return this; }
 
+	private static Strings   concepts = new Strings();
+	public  static boolean isConcept(  String s) {return concepts.contains( s );}
+	public  static void   addConcept(  String s ) {if (s != null && !concepts.contains( s )) concepts.add( s );}
+	private static void   addConcepts( Strings ss) {for (String s : ss) Where.addConcept( s );}
+	
 	// Was: location=["the", "pub"]
 	// Now: location=[ ["the", pub"] ]
 	private ArrayList<Strings> location = new ArrayList<Strings>();
@@ -98,6 +107,27 @@ public class Where {
 	public String toString() {
 		return assigned() ? locatorAsString( 0 ) +" "+ locationAsString( 0 ) : "";
 	}
+	public static String list() { return concepts.toString( Strings.CSV );}
+
+	static public Strings interpret( Strings args ) {
+		audit.in( "interpret", args.toString() );
+		String rc = Shell.IGNORE;
+		if (args.size() > 0) {
+			String cmd = args.remove( 0 );
+			rc = Shell.SUCCESS;
+			if (cmd.equals( "add" ))
+				addConcepts( args );
+			else if (cmd.equals( "addCurrent" ))
+				addConcept( Variable.get( Assets.NAME ));
+			else if (cmd.equals( "locator" ))
+				locatorIs( args );
+			else
+				rc = Shell.FAIL;
+		}
+		audit.out( rc );
+		return new Strings( rc );
+	}
+
 	static public void doLocators( String locators ) {
 		Strings locs = new Strings( locators, '/' );
 		for (String l : locs) 

@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.Random;
 
 import org.enguage.interp.sign.Sign;
-import org.enguage.objects.Spatial;
 import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
@@ -800,7 +799,7 @@ public class Patterns extends ArrayList<Pattern> {
 		complexityTest(	"set variable attribute of variable x to phrase variable y" );
 		
 		Where.doLocators("at/from/in");
-		Spatial.addConcept( "need+needs" );
+		Where.addConcept( "need+needs" );
 		Patterns p = new Patterns( "i need PHRASE-OBJECTS" );
 		Audit.log( "pattern is: "+ p.toXml());
 		

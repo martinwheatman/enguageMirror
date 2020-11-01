@@ -1,9 +1,9 @@
-On "X is spatial", perform "spatial add X".
+On "X is spatial", perform "where add X".
 
-On "this concept is spatial", perform "spatial addCurrent".
+On "this concept is spatial", perform "where addCurrent".
 
 On "spatially something can be PHRASE-LOCATOR":
-	perform "spatial locator LOCATOR";
+	perform "where locator LOCATOR";
 	then, reply "ok".
 	
 spatially something can be to the right of.

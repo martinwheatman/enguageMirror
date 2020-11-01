@@ -10,7 +10,6 @@ import java.util.TreeSet;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Every;
 import org.enguage.objects.Numeric;
-import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.objects.expr.Function;
@@ -29,6 +28,7 @@ import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Answer;
+import org.enguage.vehicle.where.Where;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
@@ -1252,11 +1252,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		Audit.log( "Every:      "+ Strings.hash(     Every.NAME));
 		Audit.log( "Items:      "+ Strings.hash(     Items.NAME));
 		Audit.log( "Value:      "+ Strings.hash(     Value.NAME));
+		Audit.log( "Where:      "+ Strings.hash(     Where.NAME));
 		Audit.log( "Entity:     "+ Strings.hash(    Entity.NAME));
 		Audit.log( "Plural:     "+ Strings.hash(    Plural.NAME));
 		Audit.log( "Numeric:    "+ Strings.hash(   Numeric.NAME));
 		Audit.log( "Overlay:    "+ Strings.hash(   Overlay.NAME));
-		Audit.log( "Spatial:    "+ Strings.hash(   Spatial.NAME));
 		Audit.log( "Function:   "+ Strings.hash(  Function.NAME));
 		Audit.log( "Temporal:   "+ Strings.hash(  Temporal.NAME));
 		Audit.log( "Variable:   "+ Strings.hash(  Variable.NAME));

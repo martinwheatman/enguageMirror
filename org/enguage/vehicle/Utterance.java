@@ -5,7 +5,6 @@ import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Numeric;
-import org.enguage.objects.Spatial;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.objects.space.Overlay;
@@ -128,7 +127,7 @@ public class Utterance {
 		Patterns ts = new Patterns();
 		ts.add( new Pattern( "i am meeting", "WHOM" ).phrasedIs() );
 		Sign s = new Sign().concept("meeting").pattern( ts );
-		Spatial.addConcept("meeting");
+		Where.addConcept("meeting");
 		Temporal.addConcept("meeting");
 		s.isSpatial();
 		s.isTemporal();
