@@ -1,22 +1,34 @@
-TMP=jardir
+TMP=tmp
 MANIFEST=${TMP}/META-INF/MANIFEST.MF
 INSTALL=${HOME}
 SHAR=enguage.shar
 ANDLIBS=${HOME}/StudioProjects/Enguage/app/libs
 
 default:
-	@echo "Usage: make [ snap | enguage | shar | android | flatpak | clean ]" >&2
+	@echo "Usage: make [ snap | jar | shar | android | flatpak | clean ]" >&2
 
-install: enguage
+install: jar
 
-flatpak: enguage
+flatpak: jar
 	(cd app/flatpak; make install)
 
 android: ${ANDLIBS}/anduage.jar
 
-enguage: lib/enguage.jar
-
 shar: ${SHAR}
+
+jar: lib/enguage.jar
+
+lib/enguage.jar: ${MANIFEST} ${TMP} lib
+	mkdir -p ${TMP}
+	cp -a org com ${TMP}
+	( cd ${TMP} ;\
+		find com org -name \*.class -exec rm -f {} \; ;\
+		find com org -name .DS_Store -exec rm -f {} \; ;\
+		find com org -name .gitignore -exec rm -f {} \; ;\
+		javac org/enguage/Enguage.java ;\
+		find com org -name \*.java -exec rm -f {} \;  ;\
+		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
+	)
 
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc
@@ -37,7 +49,7 @@ ${SHAR}: lib/enguage.jar
 	tar  -cz lib/enguage.jar etc bin/eng | base64                    >> ${SHAR}
 	chmod +x ${SHAR}
 
-snap: enguage
+snap: jar
 	tar  -czf app/snapcraft/enguage.tgz lib/enguage.jar etc bin/eng
 	(cd app/snapcraft; snapcraft)
 
@@ -49,18 +61,6 @@ ${MANIFEST}:
 	echo "Manifest-Version: 1.0"           >  ${MANIFEST}
 	echo "Class-Path: ."                   >> ${MANIFEST}
 	echo "Main-Class: org.enguage.Enguage" >> ${MANIFEST}
-
-lib/enguage.jar: ${MANIFEST} ${TMP} lib
-	mkdir -p ${TMP}
-	cp -a org com ${TMP}
-	( cd ${TMP} ;\
-		find com org -name \*.class -exec rm -f {} \; ;\
-		find com org -name .DS_Store -exec rm -f {} \; ;\
-		find com org -name .gitignore -exec rm -f {} \; ;\
-		javac org/enguage/Enguage.java ;\
-		find com org -name \*.java -exec rm -f {} \;  ;\
-		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
-	)
 
 ${ANDLIBS}/anduage.jar: ${TMP}
 	mkdir -p ${ANDLIBS}
