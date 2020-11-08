@@ -1,14 +1,7 @@
 package org.enguage.util.tag;
 
-/* ANDROID --
-import android.app.Activity;
-import android.content.res.AssetManager;
-import java.io.IOException;
-import java.io.InputStream;
-import org.enguage.util.sys.Fs;
-// */
-
 import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.util.Audit;
@@ -19,18 +12,9 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Plural;
 
 public class Tag {
-	private static Audit audit = new Audit( "Tag" );
-	
-	public static final int NULL   = 0;
-	public static final int ATOMIC = 1;
-	public static final int START  = 2;
-	public static final int END    = 3;
+	//private static Audit audit = new Audit( "Tag" );
 	
 	public static final String emptyPrefix = "";
-
-	private int  type = NULL;
-	private int  type() { return type; }
-	private void type( int t ) { if (t>=NULL && t<=END) type = t; }
 	
 	private Strings prefix = new Strings();
 	public  Strings prefix() { return prefix; }
@@ -90,137 +74,45 @@ public class Tag {
 	public  Tag  content( int n, Tag t ) { content.add( n, t ); return this; }
 	public  Tag  content( Tag child ) {
 		if (null != child && !child.isEmpty()) {
-			type = START;
+			//type = START;
 			content.add( child );
 		}
 		return this;
 	}
 	// --
 	public boolean equals( Tag pattern ) {
-		boolean rc;
-		if (attributes().size() < pattern.attributes().size()) { // not exact!!!
-			rc = false;
-		} else if ((content().size()==0 && pattern.content().size()!=0) 
-				|| (content().size()!=0 && pattern.content().size()==0)) {
-			rc =  false;
-		} else {
-			rc =   Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
-				&& Plural.singular( postfix()).equals( Plural.singular( pattern.postfix()))
-				&& attributes().matches( pattern.attributes()) // not exact!!!
-				&& content().equals( pattern.content());
-		}
-		return rc;
+		return  attributes().size() < pattern.attributes().size()   ||
+		       (content().size()==0 && pattern.content().size()!=0) ||
+			   (content().size()!=0 && pattern.content().size()==0) ?
+			false
+			:  Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
+			&& Plural.singular( postfix()).equals( Plural.singular( pattern.postfix()))
+			&& attributes().matches( pattern.attributes()) // not exact!!!
+			&& content().equals( pattern.content());
+
 	}
 	public boolean matches( Tag pattern ) {
-		//if (audit.tracing) audit.in( "matches", "this="+ toXml() +", pattern="+ pattern.toXml() );
-		boolean rc;
-		if (attributes().size() < pattern.attributes().size()) {
-			//audit.debug( "Too many attrs -> false" );
-			rc = false;
-		} else if ((content().size()==0 && pattern.content().size()!=0) ){
-			//	|| (content().size()!=0 && pattern.content().size()==0)) {
-			//audit.audit("one content empty -> false");
-			rc =  false;
-		} else {
-			//audit.debug( "Checking also attrs:"+ attributes().toString() +":with:"+ pattern.attributes().toString() );
-			rc =   Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
-				&& postfix().equals( pattern.postfix())
-				&& attributes().matches( pattern.attributes())
-				&&    content().matches( pattern.content());
-			//audit.debug("full check returns: "+ rc );
-		}
-		//if (audit.tracing) audit.out( rc );
-		return rc;
+		return ( attributes().size() < pattern.attributes().size()  ||
+                (content().size()==0 && pattern.content().size()!=0)  ) ?
+			false 
+		    :  Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
+			&& postfix().equals( pattern.postfix())
+			&& attributes().matches( pattern.attributes())
+			&&    content().matches( pattern.content());
 	}
 	public boolean matchesContent( Tag pattern ) {
-		boolean rc;
-		if (   (content().size()==0 && pattern.content().size()!=0) 
-			|| (content().size()!=0 && pattern.content().size()==0)) {
-			rc =  false;
-		} else {
-			rc =   Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
-					&& postfix().equals( pattern.postfix())
-					&& content().matches( pattern.content());
-		}
-		return rc;
+		return  (content().size()==0 && pattern.content().size()!=0) || 
+			    (content().size()!=0 && pattern.content().size()==0)   ?
+			false
+			:	Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
+				&& postfix().equals( pattern.postfix())
+				&& content().matches( pattern.content());
 	}
 
-	// -- tag from string ctor
-	private Tag doPreamble() {
-		int i = 0;
-		String preamble = "";
-		while (i < postfix().length() && '<' != postfix().charAt( i )) 
-			preamble += postfix().charAt( i++ );
-		prefix( new Strings( preamble ));
-		if (i < postfix().length()) {
-			i++; // read over terminator
-			postfix( postfix().substring( i )); // ...save rest for later!
-		} else
-			postfix( "" );
-		return this;
-	}
-	private Tag doName() {
-		int i = 0;
-		while(i < postfix().length() && Character.isWhitespace( postfix().charAt( i ))) i++; //read over space following '<'
-		if (i < postfix().length() && '/' == postfix().charAt( i )) {
-			i++;
-			type( END );
-		}
-		if (i < postfix().length()) {
-			String name = "";
-			while (i < postfix().length() && Character.isLetterOrDigit( postfix().charAt( i ))) name += postfix().charAt( i++ );
-			name( name );
-			
-			if (i < postfix().length()) postfix( postfix().substring( i )); // ...save rest for later!
-		} else
-			name( "" ).postfix( "" );
-		return this;
-	}
-	private Tag doAttrs() {
-		attributes( new Attributes( postfix() ));
-		int i = attributes().nchars();
-		if (i < postfix().length()) {
-			type( '/' == postfix().charAt( i ) ? ATOMIC : START );
-			while (i < postfix().length() && '>' != postfix().charAt( i )) i++; // read to tag end
-			if (i < postfix().length()) i++; // should be at '>' -- read over it
-		}
-		postfix( postfix().substring( i )); // save rest for later
-		return this;
-	}
-	private Tag doChildren() {
-		if ( null != postfix() && !postfix().equals("") ) {
-			Tag child = new Tag( postfix());
-			while( NULL != child.type()) {
-				// move child remained to tag...
-				postfix( child.postfix());
-				// ...add child, sans remainder, to tag content
-				content( child.postfix( "" ));
-				child = new Tag( postfix());
-			}
-			postfix( child.postfix() ).content( child.postfix( "" ));
-		}
-		return this;
-	}
-	private Tag doEnd() {
-		name( "" ).type( NULL );
-		int i = 0;
-		while (i < postfix().length() && '>' != postfix().charAt( i )) i++; // read over tag end
-		postfix( i == postfix().length() ? "" : postfix().substring( ++i ));
-		return this;
-	}
 	// -- constructors...
 	public Tag() {}
-	public Tag( String cpp ) { // tagFromString()
-		this();
-		postfix( cpp );
-		doPreamble().doName();
-		if (type() == END) 
-			doEnd();
-		else {
-			doAttrs();
-			if (type() == START) doChildren();
-	}	}
-	// -- tag from string: DONE
+	public Tag( ListIterator<String> si ) { this( next( si )); }
+
 	public Tag( String pre, String nm ) {
 		this();
 		prefix( new Strings( pre )).name( nm );
@@ -234,14 +126,36 @@ public class Tag {
 		attributes( new Attributes( orig.attributes()));
 		content( orig.content());
 	}
-
+	// -- fromXML
+	static public Tag next( ListIterator<String> si ) {
+		Tag t = new Tag();
+		t.prefix( Strings.copyUntil( si, "<" ));
+		if (si.hasNext() ) {
+			String nxt = si.next();
+			if (nxt.equals( "/" )) {
+				si.next(); // consume name
+				si.next(); // consume ">" -- found END </tag> 
+			} else {
+				t.name( nxt ); // will be "/" on end list
+				t.attributes( new Attributes( si ));
+				nxt = si.next(); 
+				if (nxt.equals( "/" )) // consumed ">" ?
+					si.next(); // no, consume ">" -- found STANDALONE <tag/>
+				else {  // look for children....
+					Tag tmp;
+					while (si.hasNext() && !(tmp = next( si )).name().equals( t.name ))
+						t.content( tmp );
+		}	}	}
+		return t;
+	}
+	// -- toString
 	private static Indent indent = new Indent( "  " );
 	public String toXml() { return toXml( indent );}
 	public String toXml( Indent indent ) {
 		int sz = content.size();
 		String contentSep = sz > 0? ("\n" + indent.toString()) : sz == 1 ? " " : "";
 		indent.incr();
-		String    attrSep = sz > 0  ? "\n  "+indent.toString() : " " ;
+		String attrSep = sz > 0  ? "\n  "+indent.toString() : " " ;
 		String s = prefix().toString( Strings.OUTERSP )
 				+ (name.equals( "" ) ? "" :
 					("<"+ name
@@ -276,22 +190,7 @@ public class Tag {
 				+ (0 == content().size() ? "" : content.toText() )
 				+ postfix ;
 	}
-	/* ANDROID --
-	public static Tag fromAsset( String fname, Activity ctx ) {
-	 	audit.in( "fromAsset", fname );
-	 	Tag t = null;
-	 	AssetManager am = ctx.getAssets();
-	 	try {
-	 		InputStream is = am.open( fname );
-	 		t = new Tag( Fs.stringFromStream( is ));
-	 		is.close();
-	 	} catch (IOException e) {
-	 		audit.ERROR( "no tag found in asset "+ fname );
-	 	}
-	 	audit.out();
-	 	return t;
-	}
-	// */
+	// --
 	public Tag findByName( String nm ) {
 		Tag rc = null;
 		if (name().equals( nm ))
@@ -306,20 +205,19 @@ public class Tag {
 	// -- test code
 	public static void main( String argv[]) {
 		Audit.allOn();
-		audit.tracing = true;
-		Tag orig = new Tag("prefix ", "util", "posstfix").append("sofa", "show").append("attr","one");
-		orig.content( new Tag().prefix( new Strings( "show" )).name("sub"));
-		orig.content( new Tag().prefix( new Strings( "fred") ));
-		Tag t = new Tag( "<xml>\n"+
+		Strings s = new Strings(
+			"a \n"+
+			"<xml type='xml'>b\n"+
 			" <config \n"+
 			"   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
-			"   DNU=\"I do not understand\" >\n" +	
-            "   <concepts>\n"+
-			"     <concept id=\"colloquia\"      op=\"load\"/>\n"+
-			"     <concept id=\"needs\"          op=\"load\"/>\n"+
-			"     <concept id=\"engine\"         op=\"load\"/>\n"+
-			"   </concepts>\n"+
-	        "   </config>\n"+
-	        "   </xml>"        );
+			"   DNU=\"I do not understand\" >c\n" +	
+            "   <concepts>d\n"+
+			"     <concept id=\"colloquia\"      op=\"load\"/>e\n"+
+			"     <concept id=\"needs\"          op=\"load\"/>f\n"+
+			"     <concept id=\"engine\"         op=\"load\"/>g\n"+
+			"   </concepts>h\n"+
+	        "   </config>i\n"+
+	        "</xml>"        );
+		Tag t = new Tag( s.listIterator() );
 		Audit.log( "tag:"+ t.toXml());
 }	}

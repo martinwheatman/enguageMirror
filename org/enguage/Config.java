@@ -82,7 +82,8 @@ public class Config {
 					"\nEnguage main(): odb root is: " + Fs.root()
 			)	);
 
-		Tag t = new Tag( content );
+		Tag t = new Tag( new Strings( content ).listIterator());
+
 		if (t != null && (t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
 			Concepts.load( t.findByName( "concepts" ));
