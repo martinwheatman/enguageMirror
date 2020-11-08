@@ -2,7 +2,7 @@ package org.enguage.objects.space;
 
 import org.enguage.interp.Context;
 import org.enguage.interp.repertoire.Similarity;
-import org.enguage.objects.Every;
+import org.enguage.objects.Expand;
 import org.enguage.objects.Numeric;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Temporal;
@@ -47,10 +47,10 @@ public class Sofa extends Shell {
 				case Item.id  :      return Item.interpret( a );
 				case Items.id :      return Items.interpret( a );
 				case Value.id :      return Value.interpret( a );
-				case Every.id :      return Every.interpret( a );
 				case Where.id :      return Where.interpret( a );
 				case Plural.id :     return Plural.interpret( a );
 				case Entity.id :     return Entity.interpret( a );
+				case Expand.id :     return Expand.interpret( a );
 				case Context.id :    return Context.interpret( a );
 				case Numeric.id  :   return Numeric.interpret( a );
 				case Overlay.id  :   return Overlay.interpret( a );

@@ -1,5 +1,9 @@
 package org.enguage.interp.intention;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import org.enguage.interp.Context;
 import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.repertoire.Repertoire;
@@ -12,10 +16,6 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Proc;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
-import org.enguage.vehicle.where.Where;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Intention {
 	
@@ -247,14 +247,18 @@ public class Intention {
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
 		//Audit.log( "performing: "+ cmd.toString());
-		// deref 1..3 params before sofa - this is for every, only???
-		int sz = cmd.size();
-		for (int i=1; i<4 && i<sz; i++)
-			if (cmd.get( i ).equals( ":" )) {
-				cmd.remove( i );
-				break;
-			} else
-				cmd.set( i, Attribute.getValue( cmd.get( i ) ));
+		// deref 1..3 params before sofa, not for every???
+		ListIterator<String> ci = cmd.listIterator();
+		if (ci.hasNext() && !ci.next().equals( "every") && ci.hasNext()) {
+			String attr = ci.next();               // 1
+			ci.set( Attribute.getValue( attr ));
+			if (ci.hasNext()) {
+				attr = ci.next();                  // 2
+				ci.set( Attribute.getValue( attr ));
+				if (ci.hasNext()) {
+					attr = ci.next();              // 3
+					ci.set( Attribute.getValue( attr ));
+		}	}	}
 		//Audit.log( "  real cmd: "+ cmd.toString());
 
 		Strings rawAnswer = new Sofa().doCall( new Strings( cmd ));

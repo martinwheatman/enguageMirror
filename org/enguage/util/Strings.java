@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.TreeSet;
 
 import org.enguage.interp.sign.Sign;
-import org.enguage.objects.Every;
+import org.enguage.objects.Expand;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
@@ -1249,11 +1249,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		Audit.log( "Item:       "+ Strings.hash(      Item.NAME));
 		Audit.log( "Link:       "+ Strings.hash(      Link.NAME));
 		Audit.log( "Sign:       "+ Strings.hash(      Sign.NAME));
-		Audit.log( "Every:      "+ Strings.hash(     Every.NAME));
 		Audit.log( "Items:      "+ Strings.hash(     Items.NAME));
 		Audit.log( "Value:      "+ Strings.hash(     Value.NAME));
 		Audit.log( "Where:      "+ Strings.hash(     Where.NAME));
 		Audit.log( "Entity:     "+ Strings.hash(    Entity.NAME));
+		Audit.log( "Expand:     "+ Strings.hash(    Expand.NAME));
 		Audit.log( "Plural:     "+ Strings.hash(    Plural.NAME));
 		Audit.log( "Numeric:    "+ Strings.hash(   Numeric.NAME));
 		Audit.log( "Overlay:    "+ Strings.hash(   Overlay.NAME));

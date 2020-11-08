@@ -10,10 +10,10 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 
-public class Every {
-	static public  final String NAME = "every";
+public class Expand {
+	static public  final String NAME = "expand";
 	static public  final int      id = 2675425; //Strings.hash( NAME );
-	static private       Audit audit = new Audit( "Every" );
+	static private       Audit audit = new Audit( "Expand" );
 	
 	static private String forEvery( Strings sa ) {
 		String rc = Shell.FAIL;
@@ -56,5 +56,6 @@ public class Every {
 	}
 	static public Strings interpret( Strings sa ) {
 		audit.in( "interpret", sa.toString());
+		//sa.remove( 0 ); // ":"
 		return audit.out( new Strings( forEvery( sa ) ));
 }	}
