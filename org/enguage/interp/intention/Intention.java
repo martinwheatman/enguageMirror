@@ -228,7 +228,7 @@ public class Intention {
 		 .conclude( thought );
 		
 		// If we've returned DNU, we want to continue
-		r.doneIs( Strings.isUpperCaseWithHyphens( value ) // critical!
+		r.doneIs( Strings.isUCwHyphUs( value ) // critical!
 		          && r.type() == Reply.FAIL );
 
 		return r; //(Reply) audit.out( r );

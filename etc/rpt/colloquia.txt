@@ -8,10 +8,10 @@ On "QUOTED-EX means QUOTED-IN", perform "colloquial both IN EX".
 "doesn't" means "does not".
 "don't"   means "do not".
 "can't"   means "cannot".
-"I've"    means "I have".
-"I'm"     means "i am".
-"I'd"     means "i would".
-"I'll"    means "i will".
+"i've"    means "i have".
+"i'm"     means "i am".
+"i'd"     means "i would".
+"i'll"    means "i will".
 "you're"  means "you are".
 "you'd"   means "you would".
 "you'll"  means "you will".

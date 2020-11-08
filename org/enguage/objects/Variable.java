@@ -125,7 +125,7 @@ public class Variable {
 	static private Strings deref( String name ) {
 		// must return strings for case where variable value is 'hello world'
 		// must contract( "=" ) for case where 'name' is "SUBJECT='fred'"
-		return (!exceptions.contains( name ) && Strings.isUpperCaseWithHyphens( name )
+		return (!exceptions.contains( name ) && Strings.isUCwHyphUs( name )
 				 ?	new Strings( get( name, name )).replace( ",", "and" )
 				 :	new Strings( name )).contract( "=" );
 	}
@@ -144,7 +144,7 @@ public class Variable {
 				Strings c = deref( next ); // deref ...
 				if (internal) for (String d : c)
 					if (!exceptions.contains( d )
-							&& Strings.isUpperCaseWithHyphens( d )) { // ... POP!
+							&& Strings.isUCwHyphUs( d )) { // ... POP!
 						//audit.debug( "popping on "+ d );
 						while (ai.hasNext() && !ai.next().equals( "]" ));
 						return new Strings();  // or null?
@@ -171,8 +171,10 @@ public class Variable {
 			if (sz > 1)
 				if (cmd.equals( "set" ))
 					rc = set( name, args.toString() );
+
 				else if (cmd.equals( "equals" ))
 					rc = isSet( name, args.toString()) ? Shell.SUCCESS : Shell.FAIL;
+			
 				else if (cmd.equals( "exception" )) {
 					
 					String direction = args.remove( 0 );

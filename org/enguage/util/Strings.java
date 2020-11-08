@@ -705,7 +705,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				return false;
 		return true;
 	}
-	public static boolean isUpperCaseWithHyphens( String a ) {
+	public static boolean isUCwHyphUs( String a ) {
 		char ch;
 		int len=a.length();
 		for (int i=0; i<len; i++) {
