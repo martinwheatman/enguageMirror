@@ -242,30 +242,20 @@ public class Intention {
 		String answer = r.a.toString();
 		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
 		
-		{ // Add tempro/spatial awareness if it has been added. 
-			String when = Context.get( "when" );
-			if (!when.equals(""))
-				cmd.append( Attribute.asString( "WHEN", when ) );
-			String locator = Context.get( Where.LOCTR );
-			if (!locator.equals("")) {
-				String location = Context.get( Where.LOCTN );
-				if (!location.equals("")) {
-					cmd.append( Attribute.asString( Where.LOCTR, locator  ));
-					cmd.append( Attribute.asString( Where.LOCTN, location ));
-		}	}	}
-
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
-		audit.debug( "performing: "+ cmd.toString());
-		// deref first 4 params before sofa
-		for (int i=0; i<4 && i<cmd.size(); i++)
+		//Audit.log( "performing: "+ cmd.toString());
+		// deref 1..3 params before sofa - this is for every, only???
+		int sz = cmd.size();
+		for (int i=1; i<4 && i<sz; i++)
 			if (cmd.get( i ).equals( ":" )) {
 				cmd.remove( i );
 				break;
 			} else
 				cmd.set( i, Attribute.getValue( cmd.get( i ) ));
+		//Audit.log( "  real cmd: "+ cmd.toString());
 
 		Strings rawAnswer = new Sofa().doCall( new Strings( cmd ));
 		if (!ignore) r.rawAnswer( rawAnswer.toString(), cmd.get( 1 ));

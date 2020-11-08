@@ -3,6 +3,7 @@ package org.enguage.objects.list;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+import org.enguage.interp.Context;
 import org.enguage.objects.space.Value;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -259,6 +260,20 @@ public class Items extends ArrayList<Item> {
 		return audit.out( Shell.SUCCESS );
 	}
 	static public Strings interpret( Strings sa ) {
+		
+		{ // Add tempro/spatial awareness if it has been added. 
+			String when = Context.get( "when" );
+			if (!when.equals(""))
+				sa.append( Attribute.asString( "WHEN", when ) );
+			String locator = Context.get( Where.LOCTR );
+			if (!locator.equals("")) {
+				String location = Context.get( Where.LOCTN );
+				if (!location.equals("")) {
+					sa.append( Attribute.asString( Where.LOCTR, locator  ));
+					sa.append( Attribute.asString( Where.LOCTN, location ));
+		}	}	}
+
+		
 		/* An item may be <item>black coffee</item>, or
 		 * <item unit="cup" quantity="1">black coffee</item>
 		 */
