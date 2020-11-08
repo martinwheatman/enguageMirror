@@ -180,28 +180,28 @@ On "how many PHRASE-OBJECT does SUBJECT need":
 ######################################
 On "_user    needs       NUMERIC-QUANTITY", _user needs QUANTITY OBJECT.
 
-On "I        need        PHRASE-OBJECTS", _user needs OBJECTS.
+On "i        need        PHRASE-OBJECTS", _user needs OBJECTS.
 #On "help", reply "to add items to the list".
 
-On "I        need        help", help.
+On "i        need        help", help.
 
-On "I        need to      PHRASE-OBJECT", _user needs to OBJECT.
-On "I        need to get  PHRASE-OBJECT", _user needs OBJECT.
-On "I do not need to get  PHRASE-OBJECT", _user does not need OBJECT.
+On "i        need to      PHRASE-OBJECT", _user needs to OBJECT.
+On "i        need to get  PHRASE-OBJECT", _user needs OBJECT.
+On "i do not need to get  PHRASE-OBJECT", _user does not need OBJECT.
 
-On "I do not need         PHRASE-OBJECT", _user does not need OBJECT.
-On "I do not need any     PHRASE-OBJECT", _user does not need any OBJECT.
-On "I do not need anything",              _user does not need anything.
+On "i do not need         PHRASE-OBJECT", _user does not need OBJECT.
+On "i do not need any     PHRASE-OBJECT", _user does not need any OBJECT.
+On "i do not need anything",              _user does not need anything.
 #On "help", reply "to clear the list".
 
-On "what  do   I   need", what does _user need.
+On "what  do   i   need", what does _user need.
 #On "help", reply "to find out what is on the list".
 
-On "do I need PHRASE-OBJECT", does _user need OBJECT.
-On "how many PHRASE-OBJECT do I need", how many OBJECT does _user need.
+On "do i need PHRASE-OBJECT", does _user need OBJECT.
+On "how many PHRASE-OBJECT do i need", how many OBJECT does _user need.
 #On "help", reply "to find out if something specific is on the list".
 
-On "we need PHRASE-OBJECT", I need OBJECT. # a fix for now
+On "we need PHRASE-OBJECT", i need OBJECT. # a fix for now
 On "what do we need", what do i need.
 On "do we need PHRASE-OBJECTS", do i need OBJECTS.
 On "we do not need PHRASE-OBJECTS", do i need OBJECTS.

@@ -705,14 +705,14 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				return false;
 		return true;
 	}
-	public static boolean isUpperCaseWithHyphens( String a ) {
+	public static boolean isUCwHyphUs( String a ) {
 		char ch;
 		int len=a.length();
 		for (int i=0; i<len; i++) {
 			// TODO: l'eau
 			if ((ch = a.charAt( i )) == Language.APOSTROPHE_CH && i == len-2)
 				return a.endsWith( Language.Apostrophed() );
-			if (!Character.isUpperCase( ch ) && ch != '-' )
+			if (!Character.isUpperCase( ch ) && ch != '-' && ch !='_' )
 				return false;
 		}
 		return true;

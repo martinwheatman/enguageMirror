@@ -58,7 +58,7 @@ public class Patterns extends ArrayList<Pattern> {
 			
 			if (word.equals( "an" )) word = "a";
 			
-			if (Strings.isUpperCaseWithHyphens( word ) && !word.equals( "I" )) { // TODO: remove "I"
+			if (Strings.isUCwHyphUs( word )) {
 				Strings arr = new Strings( word.toLowerCase( locale ), '-' );
 				ListIterator<String> wi = arr.listIterator();
 				String sw = wi.next();

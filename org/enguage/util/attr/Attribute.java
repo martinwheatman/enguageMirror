@@ -79,7 +79,7 @@ public class Attribute {
 		Attribute a = null;
 		if (si.hasNext()) {
 			String name = si.next();
-			if (!si.hasNext() || !name.matches( "[a-zA-Z]+"))
+			if (!si.hasNext() || !name.matches( "[a-zA-Z_]+"))
 				si.previous();
 			else if (!si.hasNext() || !si.next().equals( "=" ))
 				si.previous();   // readahead=2, but...

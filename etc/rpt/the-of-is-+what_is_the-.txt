@@ -32,7 +32,7 @@ On "what is the ATTR of the ENTITY":
 
 On "what is the FUNCTION of PHRASE-PARAMS":
 	perform "function evaluate FUNCTION PARAMS";
-	if not, reply "I do not know";
+	if not, reply "i do not know";
 	then, reply "the FUNCTION of PARAMS is ...".
 	
 On "what is the value of VARIABLE":

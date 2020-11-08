@@ -8,20 +8,20 @@ meeting is spatial.
 On "SUBJECT is not meeting anybody":
 	delete SUBJECT meeting list;
 	then, reply "ok, SUBJECT is not meeting anybody".
-On "I am not meeting anybody", _user is not meeting anybody.
-On "I am not meeting anyone",  _user is not meeting anybody.
+On "i am not meeting anybody", _user is not meeting anybody.
+On "i am not meeting anyone",  _user is not meeting anybody.
 
 On "SUBJECT is meeting PHRASE-WHOM":
 	set output format to "WHOM,LOCATOR LOCATION,WHEN";
 	assert SUBJECT is meeting WHOM;
-	reply "I know";
+	reply "i know";
 	if not, perform "items add SUBJECT meeting WHOM";
 	then, reply "ok, SUBJECT is meeting ...".
-On "I am meeting PHRASE-WHOM", _user is meeting WHOM.
+On "i am meeting PHRASE-WHOM", _user is meeting WHOM.
 #On "help", reply "to say who you are meeting".
 
 On "when is SUBJECT meeting PHRASE-WHOM":
-	get SUBJECT meeting list;       # General I don't know
+	get SUBJECT meeting list;       # General i don't know
 	if not, reply "i do not know "; # 
 	assert SUBJECT is meeting WHOM; # 
 	if not, reply "i do not know if SUBJECT is meeting WHOM"; #
@@ -34,8 +34,8 @@ On "when am i meeting PHRASE-WHOM", when is _user meeting WHOM.
 On "what time PHRASE-X", when X.
 
 On "where is SUBJECT meeting PHRASE-WHOM":
-	get SUBJECT meeting list;       # General I don't know
-	if not, reply "I do not know";  # 
+	get SUBJECT meeting list;       # General i don't know
+	if not, reply "i do not know";  # 
 	assert SUBJECT is meeting WHOM; # 
 	if not, reply "i do not know if SUBJECT is meeting WHOM"; #
 	set output format to "WHOM,LOCATOR LOCATION";
@@ -50,9 +50,9 @@ On "where am i meeting PHRASE-WHOM", where is _user meeting WHOM.
 
 On "SUBJECT is not meeting PHRASE-WHOM":
 	perform "items remove SUBJECT meeting WHOM";
-	if not, "I know";
+	if not, "i know";
 	then, reply "ok, SUBJECT is not meeting WHOM".
-On "I am not meeting PHRASE-WHOM", _user is not meeting WHOM.
+On "i am not meeting PHRASE-WHOM", _user is not meeting WHOM.
 
 On "is SUBJECT meeting PHRASE-WHOM":
 	set output format to "WHOM,WHEN,LOCATOR LOCATION";

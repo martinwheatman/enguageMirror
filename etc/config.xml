@@ -2,12 +2,12 @@
 	<config
 			CLASSPATH="/home/martin/ws/Enguage/bin"
 			SOFA="java com.yagadi.enguage.object.Sofa"
+			MY_NAME="martin"
 			DNU="i don't understand"
 			DNK="i don't know"
 			SUCCESS="ok"
 			FAILURE="i'm sorry"
 			ANSWER="whatever"
-			NOTVARS="I"
 			IK="i know"
 			TTL="5"
 			TERMS=". ? !"
