@@ -712,7 +712,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			// TODO: l'eau
 			if ((ch = a.charAt( i )) == Language.APOSTROPHE_CH && i == len-2)
 				return a.endsWith( Language.Apostrophed() );
-			if (!Character.isUpperCase( ch ) && ch != '-' )
+			if (!Character.isUpperCase( ch ) && ch != '-' && ch !='_' )
 				return false;
 		}
 		return true;
