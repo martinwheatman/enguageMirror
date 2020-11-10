@@ -276,25 +276,29 @@ public class Item {
 		return rc.toString( Strings.SPACED );
 	}
 	// ------------------------------------------------------------------------
-	static public Strings interpret( Strings cmd ) {
+	static public Strings interpret( Strings cmds ) {
 		String rc = Shell.FAIL;
-		if (cmd.size() > 2) {
+		if (cmds.size() > 2)
+		{
 			rc = Shell.SUCCESS;
+			String one = cmds.remove( 0 ),
+			       two = cmds.remove( 0 ),
+			       thr = cmds.remove( 0 );
 			
-			if (cmd.get( 0 ).equals( "set" )
-			 && cmd.get( 1 ).equals( "format" ))
+			if (one.equals( "set" )
+			 && two.equals( "format" ))
 			
-				format( Strings.stripQuotes( cmd.get( 2 )));
+				format( Strings.stripQuotes( Attribute.getValue( thr )));
 				
-			else if (cmd.get( 0 ).equals( "things" )
-			      && cmd.get( 1 ).equals( "include" ))
+			else if (one.equals( "things" )
+			      && two.equals( "include" ))
 				
-				thingsAre( new Strings( Strings.stripQuotes( cmd.get( 2 ))));
+				thingsAre( new Strings( Strings.stripQuotes( thr )));
 				
-			else if (cmd.get( 0 ).equals( "stuff" )
-			      && cmd.get( 1 ).equals( "includes" ))
+			else if (one.equals( "stuff" )
+			      && two.equals( "includes" ))
 			
-				stuffIs( new Strings( Strings.stripQuotes( cmd.get( 2 ))));
+				stuffIs( new Strings( Strings.stripQuotes( thr )));
 				
 			else
 				rc = Shell.FAIL;
