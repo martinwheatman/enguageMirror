@@ -7,6 +7,7 @@ import org.enguage.objects.Variable;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Shell;
 
 import com.yagadi.Assets;
@@ -120,7 +121,7 @@ public class Where {
 			else if (cmd.equals( "addCurrent" ))
 				addConcept( Variable.get( Assets.NAME ));
 			else if (cmd.equals( "locator" ))
-				locatorIs( args );
+				locatorIs( Attribute.value( args ));
 			else
 				rc = Shell.FAIL;
 		}
