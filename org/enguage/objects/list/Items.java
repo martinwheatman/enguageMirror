@@ -273,6 +273,18 @@ public class Items extends ArrayList<Item> {
 					sa.append( Attribute.asString( Where.LOCTN, location ));
 		}	}	}
 
+		ListIterator<String> ci = sa.listIterator();
+		if (ci.hasNext() && !ci.next().equals( "every") && ci.hasNext()) {
+			String attr = ci.next();               // 1
+			ci.set( Attribute.getValue( attr ));
+			if (ci.hasNext()) {
+				attr = ci.next();                  // 2
+				ci.set( Attribute.getValue( attr ));
+				if (ci.hasNext()) {
+					attr = ci.next();              // 3
+					ci.set( Attribute.getValue( attr ));
+		}	}	}
+
 		
 		/* An item may be <item>black coffee</item>, or
 		 * <item unit="cup" quantity="1">black coffee</item>

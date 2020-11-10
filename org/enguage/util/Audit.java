@@ -138,6 +138,7 @@ public class Audit {
 	public long    out( long    l ) { out( Long.toString(    l )); return l; }
 	public Object  out( Object  o ) { out( o==null ? "null" : o.toString()); return o;}
 	public Object  OUT( Object  o ) { OUT( o==null ? "null" : o.toString()); return o;}
+	public Strings OUT( Strings o ) { OUT( o==null ? "null" : o.toString()); return o;}
 	public boolean OUT( boolean b ) { OUT( Boolean.toString( b )); return b; }
 	
 	// === allOn - tracing AND debug
