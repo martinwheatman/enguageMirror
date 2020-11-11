@@ -162,11 +162,11 @@ public class Sign {
 	/*
 	 * This will handle "sign create X", found in interpret.txt
 	 */
-	static public Strings interpret( Strings argv ) {
-		Sign.audit.in( "interpret", argv.toString());
+	static public Strings interpret( Strings args ) {
+		audit.in( "interpret", args.toString());
 		String rc = Shell.FAIL;
 		
-		if (argv.size() > 0) {
+		if (args.size() > 0) {
 			String var1 = Variable.get( "prepending" ),
 			       var2 = Variable.get( "headAppending" );
 			boolean prepending    = var1 != null && var1.equals( "true" ),
@@ -174,74 +174,72 @@ public class Sign {
 			
 			boolean isElse = false;
 			Reply r = new Reply();
-			String cmd = argv.remove( 0 );
+			String cmd = args.remove( 0 );
 			if (cmd.equals( "else" )) {
 				isElse = true;
-				cmd = argv.remove( 0 );
+				cmd = args.remove( 0 );
 			}
-	
+				
 			if (cmd.equals( "create" )) {
-				Sign.audit.debug( "creating sign with: " +   argv.toString());
-				rc = new Intention( Intention.create, argv.toString(), Intention.create ).autopoiesis( r ).toString();
+				audit.debug( "creating sign with: " +   args.toString());
+				rc = new Intention( Intention.create, args.toString(), Intention.create ).autopoiesis( r ).toString();
 				
 			} else if (cmd.equals( "perform" )) {
-				Sign.audit.debug( "adding a conceptual "+    argv.toString() );
+				audit.debug( "adding a conceptual "+    args.toString() );
 				rc = new Intention(
 							isElse ? Intention.elseDo : Intention.thenDo,
-							argv.toString(),
-						   prepending ?
+							args.toString(),
+						   	prepending ?
 								Intention.prepend :
-							   headAppending ?
-								Intention.headAppend :
-								Intention.append
+							   	headAppending ?
+									Intention.headAppend :
+									Intention.append
 						).autopoiesis( r ).toString();
 				
 			} else if (cmd.equals( "reply" )) {
-				if (argv.size() > 0) {
-					rc = new Intention(
+				rc = new Intention(
 							isElse? Intention.elseReply : Intention.thenReply, 
-							argv.toString(), 
+							args.toString(), 
 							prepending ?
 								Intention.prepend :
 								headAppending ?
 								Intention.headAppend :
 								Intention.append
 						  ).autopoiesis( r ).toString();
-				}
+				
 			} else if (cmd.equals( "think" )) {
-				Sign.audit.debug( "adding a thought "+ argv.toString() );
+				audit.debug( "adding a thought "+ args.toString() );
 				rc = new Intention(
 							isElse? Intention.elseThink : Intention.thenThink,
-							argv.toString(), 
+							args.toString(), 
 							prepending ?
 								Intention.prepend :
-								 headAppending ?
+								headAppending ?
 									Intention.headAppend :
 									Intention.append
 					  ).autopoiesis( r ).toString();
 				
 			} else if (cmd.equals( "imply" )) {
-				Sign.audit.debug( "prepending an implication '"+ argv.toString() +"'");
+				audit.debug( "prepending an implication '"+ args.toString() +"'");
 				rc = new Intention(
 						isElse? Intention.elseThink : Intention.thenThink,
-						argv.toString(),
+								args.toString(),
 						Intention.prepend
 					 ).autopoiesis( r ).toString();
 				
 			} else if (cmd.equals( "finally" )) {
-				Sign.audit.debug( "adding a final clause? "+ argv.toString() );
-				cmd = argv.remove( 0 );
-				if (cmd.equals( "perform" ))
-					rc = new Intention( isElse ? Intention.elseDo    : Intention.thenDo,    argv.toString(), Intention.append ).autopoiesis( r ).toString();
+				audit.debug( "adding a final clause? "+ args.toString() );
+				if (cmd.length() > 7 && cmd.substring( 0, 7 ).equals( "perform" ))
+					rc = new Intention( isElse ? Intention.elseDo    : Intention.thenDo,    args.toString(), Intention.append ).autopoiesis( r ).toString();
 				else if (cmd.equals( "reply" ))
-					rc = new Intention( isElse ? Intention.elseReply : Intention.thenReply, argv.toString(), Intention.append ).autopoiesis( r ).toString();
+					rc = new Intention( isElse ? Intention.elseReply : Intention.thenReply, args.toString(), Intention.append ).autopoiesis( r ).toString();
 				else
-					rc = new Intention( isElse ? Intention.elseThink : Intention.thenThink, argv.toString(), Intention.append ).autopoiesis( r ).toString();
+					rc = new Intention( isElse ? Intention.elseThink : Intention.thenThink, args.toString().toString(), Intention.append ).autopoiesis( r ).toString();
 			
 			} else
-				Sign.audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
+				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
 		}
-		return Sign.audit.out( new Strings( rc ));
+		return audit.out( new Strings( rc ));
 	}
 	// --- test code below
 	public static void complexityTest( Patterns t ) {

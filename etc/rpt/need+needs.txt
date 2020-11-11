@@ -9,7 +9,7 @@ When host says "_user does not need" host means "you do not need".
 ###############################################################################
 # Multiple singular additions
 On "SUBJECT needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
-	perform "every SUBJECT needs { OBJECTS }";
+	perform "expand SUBJECT needs { OBJECTS }";
 	if not, reply "i do not understand";
 	reply "ok, SUBJECT needs OBJECTS".
 
@@ -40,7 +40,7 @@ On "AND-LIST-SUBJECTS do not need anything":
 # Combinations - multiple single subjects, phrased objects
 # martin and james and ruth all need a coffee and a tea.
 On "AND-LIST-SUBJECTS all need PHRASE-OBJECTS":
-	perform "every { SUBJECTS } needs OBJECTS";
+	perform "expand { SUBJECTS } needs OBJECTS";
 	if not, reply "i do not understand";
 	reply "ok, SUBJECTS all need OBJECTS".
 
@@ -99,7 +99,7 @@ On "it is":
 	reply "ok, it is LOCATOR LOCATION".
 
 On "the PHRASE-OBJECTS are":
-	perform "every the {OBJECTS} is";
+	perform "expand the {OBJECTS} is";
 	reply "ok, OBJECTS are LOCATOR LOCATION".
 	
 On "they are":
