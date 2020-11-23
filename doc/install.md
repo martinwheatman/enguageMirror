@@ -16,7 +16,7 @@
     This should give you many example utterances supported by the repertoires in etc/rpt/.
     Great! You can also run the jarfile as a shell to type in utterances like a command line interface.
 <pre>
-    $ java -jar enguage.jar
+    $ java -jar lib/enguage.jar
     > i need a coffee.
     Ok , you need a coffee.
 </pre>
