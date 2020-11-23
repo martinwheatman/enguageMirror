@@ -3,7 +3,7 @@
 <pre>
     docker pull martinwheatman/enguage
 </pre>
-    or, by copying the commands below at a Linux/Cygwin shell, clone this repo,
+    or, by copying the commands below at a Linux or Cygwin shell, clone this repo
     and create a jar file using 'make jar', then run the test suite with the -t option:</p>
 <pre>
     $ git clone https://github.com/martinwheatman/enguage.git
@@ -14,9 +14,7 @@
 <p>
     It loads the config.xml file in the etc/ directory, which contains lots of options to configure Enguage.
     This should give you many example utterances supported by the repertoires in etc/rpt/.
-    Great! You can also run the jarfile as a shell.
-<p>
-    You can also type in utterances like a command line interface.
+    Great! You can also run the jarfile as a shell to type in utterances like a command line interface.
 <pre>
     $ java -jar enguage.jar
     > i need a coffee.
