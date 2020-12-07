@@ -246,21 +246,6 @@ public class Intention {
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
-		//Audit.log( "performing: "+ cmd.toString());
-		// deref 1..3 params before sofa, not for every???
-		ListIterator<String> ci = cmd.listIterator();
-		if (ci.hasNext() && !ci.next().equals( "every") && ci.hasNext()) {
-			String attr = ci.next();               // 1
-			ci.set( Attribute.getValue( attr ));
-			if (ci.hasNext()) {
-				attr = ci.next();                  // 2
-				ci.set( Attribute.getValue( attr ));
-				if (ci.hasNext()) {
-					attr = ci.next();              // 3
-					ci.set( Attribute.getValue( attr ));
-		}	}	}
-		//Audit.log( "  real cmd: "+ cmd.toString());
-
 		Strings rawAnswer = new Sofa().doCall( new Strings( cmd ));
 		if (!ignore) r.rawAnswer( rawAnswer.toString(), cmd.get( 1 ));
 

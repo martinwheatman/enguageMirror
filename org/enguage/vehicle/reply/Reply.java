@@ -204,7 +204,7 @@ public class Reply { // a reply is basically a formatted answer
 
 	public static boolean isLiteral( Strings sa ) { return sa.areLowerCase() && !sa.contains( Strings.ELLIPSIS );}
 	public  Reply   format( String  format ) { return format( new Strings( format ));}
-	public Reply   format( Strings format ) {
+	public  Reply   format( Strings format ) {
 		cache = null; //de-cache any previous reply
 		f.ormat( format );
 		if (isLiteral( format ) && a.none()) // remove a.none?

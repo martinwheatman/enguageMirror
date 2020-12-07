@@ -1,6 +1,7 @@
 package org.enguage.vehicle;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -89,6 +90,19 @@ public class Colloquial {
 	static public Strings interpret( Strings a ) {
 		if (null == a) return Shell.Fail;
 		//audit.in( "interpret", a.toString( Strings.CSV ));
+		
+		// expand 2nd and 3rd attribute parameters
+		ListIterator<String> ci = a.listIterator();
+		if (ci.hasNext()) {
+			ci.next();                          // ignore 0
+			if (ci.hasNext()) {
+				String attr = ci.next();               // 1
+				ci.set( Attribute.getValue( attr ));
+				if (ci.hasNext()) {
+					attr = ci.next();                  // 2
+					ci.set( Attribute.getValue( attr ));
+		}	}	}
+
 		if (a.size() >= 3) {
 			
 			Strings intl, extl;

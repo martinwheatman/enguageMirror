@@ -126,6 +126,20 @@ public class Attribute {
 				rc.add(  item );
 		return rc;
 	}
+	static public Strings expand23( Strings a ) {
+		// expand 2nd and 3rd attribute parameters
+		ListIterator<String> ci = a.listIterator();
+		if (ci.hasNext()) {
+			ci.next();                          // ignore 0
+			if (ci.hasNext()) {
+				String attr = ci.next();               // 1
+				ci.set( Attribute.getValue( attr ));
+				if (ci.hasNext()) {
+					attr = ci.next();                  // 2
+					ci.set( Attribute.getValue( attr ));
+		}	}	}
+		return a;
+	}
 	public boolean equalsIgnoreCase( Attribute cmp ) {
 		return this.name.equalsIgnoreCase( cmp.name ) &&
 						Plural.singular( this.value )

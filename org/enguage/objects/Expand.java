@@ -12,7 +12,7 @@ import org.enguage.util.sys.Shell;
 
 public class Expand {
 	static public  final String NAME = "expand";
-	static public  final int      id = 2675425; //Strings.hash( NAME );
+	static public  final int      id = 70656564; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Expand" );
 	
 	static private String forEvery( Strings sa ) {

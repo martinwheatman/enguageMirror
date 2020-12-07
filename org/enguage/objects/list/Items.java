@@ -261,7 +261,19 @@ public class Items extends ArrayList<Item> {
 	}
 	static public Strings interpret( Strings sa ) {
 		
-		{ // Add tempro/spatial awareness if it has been added. 
+		// first dereference 2nd and 3rd parameters
+		ListIterator<String> ci = sa.listIterator();
+		if (ci.hasNext()) {
+			ci.next();                            // ignore 0
+			if (ci.hasNext()) {
+				String attr = ci.next();
+				ci.set( Attribute.getValue( attr ));     // 1
+				if (ci.hasNext()) {
+					attr = ci.next();                
+					ci.set( Attribute.getValue( attr )); // 2
+		}	}	}
+		
+		{ // Then append tempro/spatial awareness if it has been added. 
 			String when = Context.get( "when" );
 			if (!when.equals(""))
 				sa.append( Attribute.asString( "WHEN", when ) );
@@ -272,6 +284,7 @@ public class Items extends ArrayList<Item> {
 					sa.append( Attribute.asString( Where.LOCTR, locator  ));
 					sa.append( Attribute.asString( Where.LOCTN, location ));
 		}	}	}
+
 
 		
 		/* An item may be <item>black coffee</item>, or
