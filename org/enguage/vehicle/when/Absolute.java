@@ -4,9 +4,6 @@ import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.when.Month;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
 
 public class Absolute {
 

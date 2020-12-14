@@ -7,14 +7,6 @@ import java.util.Locale;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.when.Absolute;
-import org.enguage.vehicle.when.Day;
-import org.enguage.vehicle.when.Duration;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.Month;
-import org.enguage.vehicle.when.Relative;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
 
 public class Moment {
 	private        boolean CE = true; // current epoch (western?)

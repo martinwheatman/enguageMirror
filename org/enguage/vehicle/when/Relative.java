@@ -6,12 +6,6 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.number.Number;
-import org.enguage.vehicle.when.Absolute;
-import org.enguage.vehicle.when.Day;
-import org.enguage.vehicle.when.Month;
-import org.enguage.vehicle.when.Relative;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
 
 public class Relative {
 	// "... a week ago last Monday ..."

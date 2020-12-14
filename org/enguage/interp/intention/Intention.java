@@ -2,7 +2,6 @@ package org.enguage.interp.intention;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 
 import org.enguage.interp.Context;
 import org.enguage.interp.pattern.Patterns;
