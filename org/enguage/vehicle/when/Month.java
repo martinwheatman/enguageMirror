@@ -3,9 +3,6 @@ package org.enguage.vehicle.when;
 import java.util.ListIterator;
 
 import org.enguage.util.Audit;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
 
 public class Month {
 	public static Audit audit = new Audit( "Month" );

@@ -1,11 +1,6 @@
 package org.enguage.vehicle.when;
 
 import org.enguage.util.Audit;
-import org.enguage.vehicle.when.Day;
-import org.enguage.vehicle.when.Duration;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.Time;
-import org.enguage.vehicle.when.When;
 
 public class Duration {
 	private static String NAME = "Duration";

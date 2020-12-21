@@ -40,8 +40,8 @@ public class Tags extends ArrayList<Tag> {
 		Iterator<Tag> ti = iterator();
 		while (ti.hasNext()) {
 			Tag t = ti.next();
-			str += (t.name().equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent );
-			oldName = t.name();
+			str += (t.name.equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent );
+			oldName = t.name;
 		}
 		return str;
 	}

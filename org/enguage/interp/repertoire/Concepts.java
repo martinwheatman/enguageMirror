@@ -130,7 +130,7 @@ public class Concepts {
 			Repertoire.transformation( true );
 			if (Enguage.verbose) Audit.log( "Found: "+ concepts.content().size() +" concept(s)" );
 			for (int j=0; j<concepts.content().size(); j++) {
-				String name = concepts.content().get( j ).name();
+				String name = concepts.content().get( j ).name;
 				if (name.equals( "concept" )) {
 					String op = concepts.content().get( j ).attribute( "op" ),
 							 id = concepts.content().get( j ).attribute( "id" );
