@@ -10,8 +10,8 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Net;
 import org.enguage.util.sys.Shell;
+import org.enguage.util.web.Server;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
@@ -52,7 +52,7 @@ public class Enguage {
 		
 		Overlay.attach( uid );
 			
-		if (Net.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
+		if (Server.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
 		
 		// locations contextual per utterance
 		Where.clearLocation();
@@ -83,7 +83,7 @@ public class Enguage {
 		reply = Reply.say().appendAll( r.toStrings());
 		Reply.say( null );
 		
-		if (Net.serverOn()) Audit.log( "Server replied: "+ reply );
+		if (Server.serverOn()) Audit.log( "Server replied: "+ reply );
 			
 		Overlay.detach();
 		
@@ -138,7 +138,7 @@ public class Enguage {
 			Audit.log( testPrompt()+ cmd +".");
 		
 		Strings reply = serverTest ?
-				new Strings( Net.client( "localhost", portNumber, cmd ))
+				new Strings( Server.client( "localhost", portNumber, cmd ))
 				: Enguage.mediate( new Strings( cmd ));
 
 		if (expected == null      ||
@@ -844,7 +844,7 @@ public class Enguage {
 		if (runTheseTests( "TCP/IP test" )) {
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
 			// config port get chosen over this one???
-			test( "tcpip localhost "+ Net.TestPort +" \"a test port address\"", "ok" );
+			test( "tcpip localhost "+ Server.TestPort +" \"a test port address\"", "ok" );
 			test( "tcpip localhost 5678 \"this is a test, which will fail\"",  "i'm sorry" );
 			test( "simon says put your hands on your head", "" ); //, "ok, success" );
 		}
@@ -1051,10 +1051,10 @@ public class Enguage {
 				
 		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))
-			Net.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
+			Server.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
 		else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" ))
-			Net.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
+			Server.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
 		else if (cmd.equals( "-t" )
 			  || cmd.equals( "--test" )

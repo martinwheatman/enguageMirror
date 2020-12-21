@@ -1,4 +1,4 @@
-package org.enguage.util.sys;
+package org.enguage.util.web;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,7 +16,7 @@ import org.enguage.util.Strings;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 
-public class Net {
+public class Server {
 	
 	static final public int TestPort = 0;
 
@@ -94,20 +94,11 @@ public class Net {
 				} finally {
 					try {
 						if (null != in) in.close();
-					} catch (IOException e) {
-						audit.ERROR( "Net.server():IO error in closing TCP child in socket" );
-					}
-					try {
 						if (null != out) out.close();
-					} catch (IOException e) {
-						audit.ERROR( "Net.server():IO error in closing TCP child out socket" );
-					}
-					try {
 						if (null != connection) connection.close();
 					} catch (IOException e) {
-						audit.ERROR( "Net.server():IO error in closing TCP child connection socket" );
-				}	}
-			}
+						audit.ERROR( "error in closing stream: "+ e );
+			}	}	}
 		} catch (IOException e) {
 			audit.ERROR( "Engauge.main():IO error in TCP socket operation" );
 		} finally {
@@ -156,18 +147,10 @@ public class Net {
 			} finally {
 				try {
 					if (null != in) in.close();
-				} catch (IOException e){
-					audit.ERROR("closing connection:"+ e.toString());
-				}
-				try {
 					if (null != out) out.close();
-				} catch (IOException e){
-					audit.ERROR("closing connection:"+ e.toString());
-				}
-				try {
 					if (null != connection) connection.close();
 				} catch (IOException e){
-					audit.ERROR("closing connection:"+ e.toString());
+					audit.ERROR("closing connection: "+ e.toString());
 		}	}	}
 		return audit.out( rc );
 	}

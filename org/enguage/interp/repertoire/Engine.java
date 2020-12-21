@@ -14,7 +14,7 @@ import org.enguage.objects.list.Item;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.sys.Net;
+import org.enguage.util.web.Server;
 import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Question;
 import org.enguage.vehicle.Utterance;
@@ -290,7 +290,7 @@ public class Engine {
 				}	}
 			
 				msg = prefix + Variable.derefUc( Strings.trim( msg , Strings.DOUBLE_QUOTE )) + suffix;
-				String ans = Net.client( host, port, msg );
+				String ans = Server.client( host, port, msg );
 				r.answer( ans );
 			}
 		} else if (cmd.equals( "timing" )) {
