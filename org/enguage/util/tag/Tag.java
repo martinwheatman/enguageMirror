@@ -12,46 +12,71 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Plural;
 
 public class Tag {
-	//private static Audit audit = new Audit( "Tag" );
-	
 	public static final String emptyPrefix = "";
 	
-	private Strings prefix = new Strings();
-	public  Strings prefix() { return prefix; }
-	public  Tag     prefix( Strings s ) { prefix = s; return this; }
-	public  Tag     prefix( String str ) { prefix.append( str ); return this; }
-
-	public Strings postfixAsStrings;
-	public Strings postfixAsStrings() { return new Strings( postfix ); }
-	public String  postfix = "";
-	public String  postfix(  ) { return postfix; }
-	public Tag     postfix( String str ) { postfix = str; return this; }
-
-	private String name = "";
-	public  String name() { return name; }
-	public  Tag    name( String nm ) { if (null != nm) name = nm; return this; }
+	public final String name;
 	
+	// -- constructors...
+	public Tag( String n ) {name = n;}
+	public Tag( Tag orig ) {
+		this( orig.name );
+		prefix( orig.prefix() );
+		attributes( new Attributes( orig.attributes()));
+		content( orig.content());
+	}
+	public Tag( ListIterator<String> si ) {
+		Strings pref = Strings.copyUntil( si, "<" );
+		String  nm = "";
+		Attributes a = new Attributes();
+		Tags    cont = new Tags();
+		if (si.hasNext() ) {
+			String nxt = si.next();
+			if (nxt.equals( "/" )) {
+				si.next(); // consume name + ">" -- found END </tag>
+				si.next();
+			} else {
+				nm = nxt;
+				a = new Attributes( si );
+				nxt = si.next();
+				if (nxt.equals( "/" )) // consumed ">" ?
+					si.next(); // no, consume ">" -- found STANDALONE <tag/>
+				else {  // look for children....
+					Tag tmp;
+					while (si.hasNext()) {
+						cont.add( tmp = new Tag( si ));
+						if (tmp.name.equals("")) //.name().equals( t.name ))
+							break;
+		}	}	}	}
+		name = nm;
+		prefix( pref ).attributes( a ).content( cont );
+	}
+	// ************************************************************************
+	
+	private Strings prefix = new Strings();
+	public  Strings prefix() {return prefix;}
+	public  Tag     prefix( Strings strs ) {prefix = strs; return this;}
+	public  Tag     prefixAdd( String s ) { prefix.append( s ); return this;}
+
 	private Attributes attrs = new Attributes();
 	public  Attributes attributes() { return attrs; }
-	public  Tag        attributes( Attribute a ) {
-		attrs.add( a );
-		return this;
-	}
+	public  Tag        attributes( Attribute a ) {attrs.add( a ); return this;}
 	public  Tag        attributes( Attributes as ) {
-		attrs = as;
-		attrs.nchars( as.nchars());
+		if (null != as) {
+			attrs = as;
+			attrs.nchars( as.nchars());
+		}
 		return this;
 	}
-	public  String     attribute( String name ) { return attrs.value( name ); }
-	public  Tag        append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
-	public  Tag        prepend( String name, String value ) { return add( 0, name, value );}  // 0 == add at 0th index!
-	public  Tag        add( int posn, String name, String value ) {
+	public  String attribute( String name ) { return attrs.value( name ); }
+	public  Tag    append( String name, String value ) { attributes( new Attribute( name, value )); return this; }
+	public  Tag    prepend( String name, String value ) { return add( 0, name, value );} 
+	public  Tag    add( int posn, String name, String value ) {
 		attrs.add( posn, new Attribute( name, value ));
 		return this;
 	}
-	public  Tag        remove( int nth ) { attrs.remove( nth ); return this; }
-	public  Tag        remove( String name ) { attrs.remove( name ); return this; }
-	public  Tag        replace( String name, String value ) {
+	public  Tag    remove( int nth ) { attrs.remove( nth ); return this; }
+	public  Tag    remove( String name ) { attrs.remove( name ); return this; }
+	public  Tag    replace( String name, String value ) {
 		attrs.remove( name );
 		attrs.add( new Attribute( name, value ));
 		return this;
@@ -69,14 +94,12 @@ public class Tag {
 
 	Tags content = new Tags();
 	public  Tags content() {return content;}
-	public  Tag  content( Tags ta ) { content = ta; return this; }
+	public  Tag  content( Tags ta ) { if (null!=ta) content = ta; return this; }
 	public  Tag  removeContent( int n ) { return content.remove( n ); }
 	public  Tag  content( int n, Tag t ) { content.add( n, t ); return this; }
 	public  Tag  content( Tag child ) {
-		if (null != child && !child.isEmpty()) {
-			//type = START;
+		if (null != child && !child.isEmpty())
 			content.add( child );
-		}
 		return this;
 	}
 	// --
@@ -86,7 +109,6 @@ public class Tag {
 			   (content().size()!=0 && pattern.content().size()==0) ?
 			false
 			:  Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
-			&& Plural.singular( postfix()).equals( Plural.singular( pattern.postfix()))
 			&& attributes().matches( pattern.attributes()) // not exact!!!
 			&& content().equals( pattern.content());
 
@@ -96,7 +118,6 @@ public class Tag {
                 (content().size()==0 && pattern.content().size()!=0)  ) ?
 			false 
 		    :  Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
-			&& postfix().equals( pattern.postfix())
 			&& attributes().matches( pattern.attributes())
 			&&    content().matches( pattern.content());
 	}
@@ -105,50 +126,10 @@ public class Tag {
 			    (content().size()!=0 && pattern.content().size()==0)   ?
 			false
 			:	Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
-				&& postfix().equals( pattern.postfix())
 				&& content().matches( pattern.content());
 	}
 
-	// -- constructors...
-	public Tag() {}
-	public Tag( ListIterator<String> si ) { this( next( si )); }
-
-	public Tag( String pre, String nm ) {
-		this();
-		prefix( new Strings( pre )).name( nm );
-	}
-	public Tag( String pre, String nm, String post ) {
-		this( pre, nm );
-		postfix( post );
-	}
-	public Tag( Tag orig ) {
-		this( orig.prefix().toString(), orig.name(), orig.postfix());
-		attributes( new Attributes( orig.attributes()));
-		content( orig.content());
-	}
-	// -- fromXML
-	static public Tag next( ListIterator<String> si ) {
-		Tag t = new Tag();
-		t.prefix( Strings.copyUntil( si, "<" ));
-		if (si.hasNext() ) {
-			String nxt = si.next();
-			if (nxt.equals( "/" )) {
-				si.next(); // consume name
-				si.next(); // consume ">" -- found END </tag> 
-			} else {
-				t.name( nxt ); // will be "/" on end list
-				t.attributes( new Attributes( si ));
-				nxt = si.next(); 
-				if (nxt.equals( "/" )) // consumed ">" ?
-					si.next(); // no, consume ">" -- found STANDALONE <tag/>
-				else {  // look for children....
-					Tag tmp;
-					while (si.hasNext() && !(tmp = next( si )).name().equals( t.name ))
-						t.content( tmp );
-		}	}	}
-		return t;
-	}
-	// -- toString
+	// *** toString ***********************************************************
 	private static Indent indent = new Indent( "  " );
 	public String toXml() { return toXml( indent );}
 	public String toXml( Indent indent ) {
@@ -166,34 +147,31 @@ public class Tag {
 									+ content.toXml( indent )
 									+ contentSep
 									+ "</"+ name +">"
-				  )	)		  )		)
-				+ postfix;
+				  )	)		  )		);
 		indent.decr();
 		return s;
 	}
 	public String toString() {
 		return prefix().toString() + (name.equals( "" ) ? "" :
-			("<"+ name +" "+ attrs.toString()+  // attributes doesn't have preceding space
-			(0 == content().size() ? "/>" : ( ">"+ content.toString() + "</"+ name +">" ))))
-			+ postfix;
+			"<"+ name +" "+ attrs.toString()+  // attrs doesn't have preceding space
+			(0 == content().size() ?
+					"/>" : ( ">"+ content.toString() + "</"+ name +">" )));
 	}
 	public String toText() {
 		return prefix().toString()
 			+ (prefix().toString()==null||prefix().toString().equals("") ? "":" ")
 			+ (name.equals( "" ) ? "" :
-				( name.toUpperCase( Locale.getDefault() ) +" "+  // attributes has preceding space
-					(0 == content().size() ? "" : content.toText() )))
-			+ postfix;
+				( name.toUpperCase( Locale.getDefault() ) +" "+
+					(0 == content().size() ? "" : content.toText() )));
 	}
 	public String toLine() {
 		return prefix().toString()
-				+ (0 == content().size() ? "" : content.toText() )
-				+ postfix ;
+				+ (0 == content().size() ? "" : content.toText() );
 	}
-	// --
+	// ************************************************************************
 	public Tag findByName( String nm ) {
 		Tag rc = null;
-		if (name().equals( nm ))
+		if (name.equals( nm ))
 			rc = this; // found
 		else {
 			ArrayList<Tag> ta = content();
@@ -202,22 +180,20 @@ public class Tag {
 		}
 		return rc;
 	}
-	// -- test code
+	// ************************************************************************
 	public static void main( String argv[]) {
-		Audit.allOn();
-		Strings s = new Strings(
-			"a \n"+
-			"<xml type='xml'>b\n"+
-			" <config \n"+
-			"   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
-			"   DNU=\"I do not understand\" >c\n" +	
-            "   <concepts>d\n"+
-			"     <concept id=\"colloquia\"      op=\"load\"/>e\n"+
-			"     <concept id=\"needs\"          op=\"load\"/>f\n"+
-			"     <concept id=\"engine\"         op=\"load\"/>g\n"+
-			"   </concepts>h\n"+
-	        "   </config>i\n"+
-	        "</xml>"        );
+		Strings s = new Strings( "a<xml type='xml'>b\n"+
+								 " <config \n"+
+								 "   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
+								 "   DNU=\"I do not understand\" >c\n" +	
+					             "   <concepts>d\n"+
+								 "     <concept id=\"colloquia\"      op=\"load\"/>e\n"+
+								 "     <concept id=\"needs\"          op=\"load\"/>f\n"+
+								 "     <concept id=\"engine\"         op=\"load\"/>g\n"+
+								 "   </concepts>h\n"+
+								 "   </config>i\n"+
+								 "</xml> j"
+		);
 		Tag t = new Tag( s.listIterator() );
 		Audit.log( "tag:"+ t.toXml());
 }	}
