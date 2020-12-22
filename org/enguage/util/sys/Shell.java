@@ -10,6 +10,7 @@ import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.reply.Reply;
 
 public class Shell {
 
@@ -121,8 +122,12 @@ public class Shell {
 							if (sentence.get( sentence.size()-1 ).equals("."))
 								sentence.remove( sentence.size()-1 );
 							// Expand sentence here...
-							for (Strings s : expandSemicolonList( sentence ))
-								Repertoire.mediate( new Utterance( new Strings( s )));
+							for (Strings s : expandSemicolonList( sentence )) {
+								//Audit.LOG( "one" );
+								Reply r = Repertoire.mediate( new Utterance( new Strings( s )));
+								if (aloud) System.out.println( r.toString());
+								//Audit.LOG( "two" );
+							}
 							// ...expand sentence here.
 					}	}
 					if (fp==System.in) System.err.print( prompt() );
