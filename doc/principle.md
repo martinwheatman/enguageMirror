@@ -39,3 +39,15 @@ I A Richards in their 1923 publication, The Meaning of Meaning.
 + Felicity - was introduced by John Langshaw Austin, in his 1955 
 William James Lectures at Harvard University, Boston, MA. 
 This was taken up and advances as Speech Act Theory by John Searle.
+
+## Papers
++ 2007 - Semiotic Distance - describing the 'depth' of understanding.
++ 2011 - Semiotc Model of IS - a conversational model if information systems.
++ 2013 - If we are holding hands... - the first comprehensive example.
++ 2014 - Autopoietic Repertoire - how to self-generate information systems.
++ 2016 - Disambiguation - a vocal mechanism.
++ 2018 - Programming without Program - Vocal programming.
++ 2018 - Because and Why - Advanced example of vocal reasoning.
++ 2019 - Pronoun disabmiguation - Winograd Schema Challenge example.
+Plus many more available on [ReserchGate.org](https://www.researchgate.net/profile/Martin_Wheatman) and
+[Academia.com](https://reading.academia.edu/MartinJWheatman)
