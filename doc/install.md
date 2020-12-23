@@ -9,6 +9,13 @@ This runs the image listening to port 8080 as a simple webserve (where the utter
 </pre>
 ## b) From a DOS command line
 This assumes you have git and java installed.
+
+    Git can be obtained from: https://git-scm.com/downloads
+
+    An open Java Development Kit can be obtained from https://openjdk.java.net/ 
+    or a licenced verstion from https://jdk.java.net/  Any version should do.
+
+Type the following commands:
 <pre>
     C:\>git clone https://github.com/martinwheatman/enguage.git
     C:\>cd enguage
