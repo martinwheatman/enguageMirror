@@ -1,5 +1,5 @@
 # Install
-## As a docker image
+## a) As a docker image
 Grab and run the docker image from
 [docker hub](https://hub.docker.com/r/martinwheatman/enguage)
 This runs the image listening to port 8080 as a simple webserve (where the utterance is given as the URL and the reply is displayed in the retrieved page)
@@ -7,7 +7,7 @@ This runs the image listening to port 8080 as a simple webserve (where the utter
     docker pull martinwheatman/enguage
     docker run -p 8080:8080 --mount type=volume,src=eng,dst=/var/local/eng
 </pre>
-## From a DOS command line
+## b) From a DOS command line
 This assumes you have git and java installed.
 <pre>
     C:\>git clone https://github.com/martinwheatman/enguage.git
@@ -25,7 +25,7 @@ with around 350 examples:
     C:\>java org.enguage.Enguage -t
 </pre>
 
-## From a Linux or Cygwin shell
+## c) From a Linux or Cygwin shell
 Copy the commands below at a Linux or Cygwin shell, to clone this repo,
 create and run a jar file:
 <pre>
