@@ -1,7 +1,9 @@
 # Enguage - Basic Principles
 
 Enguage attempts to reflect the conventional mapping of words uttered
-to the words replied. This convention is based on the idea that we think in utterances, and it is directed by the way we react to those thoughts.
+to those replied.
+This convention is based on the idea that we think in utterances,
+and it is directed by our reaction to those thoughts.
 
 <center>
 utterance --> {thoughts} --> {replies} </br>
@@ -33,8 +35,13 @@ but are not necessarily, prefixed by "if so, ".
 
 ## Acknowledgements:
 + U-T-R: is essentially the Triadic Sign model, of Sign, Object and Interpretant
-by Charles Sanders Peirce (1839-1914), as illustrated by Charles Kay Ogden and 
-I A Richards in their 1923 publication, The Meaning of Meaning.
+by Charles Sanders Peirce (1839-1914), as illustrated by C. K. Ogden and 
+I. A. Richards in their 1923 publication, The Meaning of Meaning.
+
+<img src="./triOfRef.png">
+<center>
+Fig. 1. The Semiotic Tringle, c/f The Meaning of Meaning, 1923.
+</center>
 
 + Felicity - was introduced by John Langshaw Austin, in his 1955 
 William James Lectures at Harvard University, Boston, MA. 
