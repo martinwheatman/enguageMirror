@@ -49,5 +49,6 @@ This was taken up and advances as Speech Act Theory by John Searle.
 + 2018 - Programming without Program - Vocal programming.
 + 2018 - Because and Why - Advanced example of vocal reasoning.
 + 2019 - Pronoun disabmiguation - Winograd Schema Challenge example.
+
 Plus many more available on [ReserchGate.org](https://www.researchgate.net/profile/Martin_Wheatman) and
 [Academia.com](https://reading.academia.edu/MartinJWheatman)
