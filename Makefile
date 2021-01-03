@@ -76,3 +76,4 @@ clean:
 	(cd app/flatpak; make clean)
 	(cd app/snapcraft; snapcraft clean; rm -f enguage.tgz enguage_*.snap)
 	@rm -rf ${TMP} lib/ selftest/ variable var ${SHAR}
+	find . -name "*.class" -exec /bin/rm {} \;
