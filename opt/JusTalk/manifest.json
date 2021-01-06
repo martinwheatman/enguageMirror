@@ -21,7 +21,7 @@
     "tts"
   ],
   "browser_action": {
-    "default_icon": "images/lbolt512.png",
+    "default_icon": "images/layzee512.png",
     "default_title": "Press Ctrl+Space and say, 'Hello'"
   },
   "commands": {
@@ -33,8 +33,8 @@
       "description": "single utterance"
   } },
   "icons": {
-    "16": "images/lbolt16.png",
-    "48": "images/lbolt48.png",
-    "128": "images/lbolt128.png",
-    "512": "images/lbolt512.png"
+    "16": "images/layzee16.png",
+    "48": "images/layzee48.png",
+    "128": "images/layzee128.png",
+    "512": "images/layzee512.png"
 } }
