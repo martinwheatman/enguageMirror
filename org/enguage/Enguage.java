@@ -188,9 +188,13 @@ public class Enguage {
 //		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
 			// before logging in, test that we can't just affect things...
+			test( "switch to submarines screen",
+					                           "sorry, you need to be logged in" );
 			test( "clear the filter",          "sorry, you need to be logged in" );
 			
 			test( "login as megan",            "ok, you're logged in as megan" );
+			test( "switch to submarines screen", "ok, switched to submarines screen" );
+			test( "what is the value of screen", "submarines, the value of screen is submarines" );
 			test( "filter by submarines only", "ok, you're filtering by submarines only" );
 			
 			test( "logout",                    "ok, you have logged out" );
