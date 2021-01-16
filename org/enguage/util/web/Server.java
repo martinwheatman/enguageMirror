@@ -143,7 +143,38 @@ public class Server extends Thread {
 	static final private String  name = "WebServer";
 	static final private Audit  audit = new Audit( name );
 
+
 	// HTML pages
+	static final String engPage( String username ) {
+		return	"<fieldset>\n"
+				+ "		<legend>Say:</legend>\n"
+				+ "		<form action='/enguage'>\n"
+				+ "			<label for='utterance'>Utterance:</label>\n"
+				+ "			<input type='text' id='utterance'>&nbsp;\n"
+				+ "			<input type='button' id='say' onclick='i_say()' value='Say'>\n" 
+				+ "		</form>\n"
+				+ " 	<p id='reply'></p>\n"
+				+ "	</fieldset>\n"
+				+ "<script>\n"
+				+ "	function i_say() {\n"
+				+ "		//alert( 'hello' );\n"
+				+ "		var request = '/enguage'"
+				+ "					+ '?uid=" + username +"'"
+				+ "					+ '&utterance='+ document.getElementById('utterance').value;\n"
+				+ "		var xhttp = new XMLHttpRequest();\n"
+				+ "		xhttp.onreadystatechange = function() {\n"
+				+ "			if (this.readyState == 4 && this.status == 200) {\n"
+				+ "				document.getElementById('utterance').value = '';\n"
+				+ "				document.getElementById('reply').innerHTML = this.responseText;\n"
+				+ "			}\n"
+				+ "		};\n"
+				+ "		xhttp.open('GET', request, true);\n"
+				+ "		xhttp.send();\n"
+				+ "	}\n"
+				+ "</script><br>\n";
+	}
+			
+	
 	static final private String
 			begin   = "<!DOCTYPE=html>\n"
 					+ "<html>"
@@ -174,32 +205,6 @@ public class Server extends Thread {
 					+ "}"
 					+ "</script>",
 			
-			engPage =
-					"<fieldset>\n"
-					+ "		<legend>Say:</legend>\n"
-					+ "		<form action='/enguage'>\n"
-					+ "			<label for='utterance'>Utterance:</label>\n"
-					+ "			<input type='text' id='utterance'>&nbsp;\n"
-					+ "			<input type='button' id='say' onclick='i_say()' value='Say'>\n" 
-					+ "		</form>\n"
-					+ " 	<p id='reply'></p>\n"
-					+ "	</fieldset>\n"
-					+ "<script>\n"
-					+ "	function i_say() {\n"
-					+ "		//alert( 'hello' );\n"
-					+ "		var request = '/enguage?utterance='"
-					+ "					 + document.getElementById('utterance').value;\n"
-					+ "		var xhttp = new XMLHttpRequest();\n"
-					+ "		xhttp.onreadystatechange = function() {\n"
-					+ "			if (this.readyState == 4 && this.status == 200) {\n"
-					+ "				document.getElementById('reply').innerHTML = this.responseText;\n"
-					+ "			}\n"
-					+ "		};\n"
-					+ "		xhttp.open('GET', request, true);\n"
-					+ "		xhttp.send();\n"
-					+ "	}\n"
-					+ "</script><br>\n",
-					
 			addPage =
 					"<fieldset>\n"
 					+ "<legend>Add User:</legend>\n"
@@ -355,7 +360,7 @@ public class Server extends Thread {
 				if (Users.validUser( uname, passwd )) {
 					
 					sID( uname + User.delim + passwd );
-					reply += (Users.isAdmin( uname, passwd ) ? adminPage:engPage) + logoutButton;
+					reply += (Users.isAdmin( uname, passwd ) ? adminPage:engPage( uname )) + logoutButton;
 					
 				} else
 					reply += loginScreen + "<br><strong>Login failed</strong>";
@@ -377,14 +382,17 @@ public class Server extends Thread {
 		 */
 		} else if (cmd.equals( "enguage" )) {
 			
-			if (   params.length == 1 && validAttr( params[ 0 ]))
-				reply = "<p>iSaid=<strong>'"
+			if (   params.length == 2
+				&& validAttr( params[ 0 ])
+				&& validAttr( params[ 1 ]) )
+				reply = "<center><strong>"
 						+ Enguage.mediate(
-								new Strings( params[ 0 ].split( "=" )[ 1 ].split( "%20" ))
+								params[ 0 ].split( "=" )[ 1 ],
+								new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 						  )
-						+ "'</strong></P>";
+						+ "</strong></center></P>";
 			else
-				reply = "<strong>invalid params</strong>";
+				reply = "<center>(Try setting the value of utterance to something)</center>";
 				
 		} else if (params.length > 2 && cmd.equals( "addUser" )) {
 			
@@ -473,6 +481,9 @@ public class Server extends Thread {
 
 	static public void server( String port ) {
 		ServerSocket server = null;
+
+		Enguage.init( Enguage.RW_SPACE );
+
 		try {
 			server = new ServerSocket( Integer.valueOf( port ));
 			Audit.LOG( "Server listening on port: "+ port );
