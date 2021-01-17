@@ -150,7 +150,7 @@ public class Server extends Thread {
 				+ "		<legend>Say:</legend>\n"
 				+ "		<form action='/enguage'>\n"
 				+ "			<label for='utterance'>Utterance:</label>\n"
-				+ "			<input type='text' id='utterance'>&nbsp;\n"
+				+ "			<input type='text' id='utterance' placeholder='utterance'>&nbsp;\n"
 				+ "			<input type='button' id='say' onclick='i_say()' value='Say'>\n" 
 				+ "		</form>\n"
 				+ " 	<p id='reply'></p>\n"
