@@ -344,6 +344,11 @@ function titleOrInnerTextDesc( el ) {
            el.innerText.trim() != "" ? articled( el.innerText ):
                                        articled( "unknown" )   ;
 }
+function placeholderOrId( el ) {
+    return el.placeholder.trim() != "" ? articled( el.placeholder ) :
+           el.id.trim()          != "" ? articled( el. id         ) :
+                                         articled( "unnamed" );
+}
 function describeThePage() {
 	var response = "";
 	var elements = document.getElementsByTagName( "*" );
@@ -355,7 +360,7 @@ function describeThePage() {
 			response += articled( el.innerText ) +" button, ";
 
 		else if (el.tagName == "INPUT" && (el.type == "text" || el.type == "textarea"))
-			response += articled( el.placeholder ) +" value, ";
+			response += placeholderOrId( el ) +" value, ";
 
 		else if (el.tagName == "INPUT" && (el.type == "button"   ))
 			response += innerTextOrValueDesc( el ) + " button, ";

@@ -1,6 +1,7 @@
 package org.enguage.util.sys;
 
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -98,5 +99,17 @@ public class Fs {
 			value = "";
 		}
 		//audit.out( value );
+		return value;
+	}
+	static public byte[] fileToBytes( File f ) {
+		// possibly used in the webserver
+		byte[] value = new byte[ // truncate this at 2Gib
+			(int)(f.length() <= Integer.MAX_VALUE ? f.length() : Integer.MAX_VALUE)
+		];
+		try (
+			DataInputStream fis = new DataInputStream( new FileInputStream( f ))
+		) {
+			fis.readFully( value );
+		} catch (IOException e) {}
 		return value;
 }	}

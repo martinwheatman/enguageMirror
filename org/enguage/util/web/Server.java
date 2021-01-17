@@ -193,7 +193,7 @@ public class Server extends Thread {
 					+ "	<form action='/login'>\n"
 					+ "		<label for='user name'>User Name:</label>\n"
 					+ "		<input type='text' id='user name' name='username'><br>\n"
-					+ "		<label for='password'>Password:&nbsp;</label>\n"
+					+ "		<label for='password'>Password:&nbsp;&nbsp;&nbsp;</label>\n"
 					+ "		<input type='password' id='password' name='password'> &nbsp;\n"
 					+ "		<input type='submit' onclick='hidePwd()' value='Login'>\n"
 					+ "	</form>\n"
@@ -303,7 +303,10 @@ public class Server extends Thread {
 	static private String sID = "";
 	static private String sID() {return sID;}
 	static private void   sID( String s ) {sID = s;}
-
+	static private void   sID( String uid, String pwd ) {sID( uid +User.delim+ pwd );}
+	static private String uid() {return sID.split(User.delim)[ 0 ];}
+	static private String passwd() {return sID.split(User.delim)[ 1 ];}
+	
 	static private String param = "";
 	static private String param() {return param;}
 	static private void   param( String s ) {param = s;}
@@ -359,7 +362,7 @@ public class Server extends Thread {
 				
 				if (Users.validUser( uname, passwd )) {
 					
-					sID( uname + User.delim + passwd );
+					sID( uname, passwd );
 					reply += (Users.isAdmin( uname, passwd ) ? adminPage:engPage( uname )) + logoutButton;
 					
 				} else
@@ -372,9 +375,9 @@ public class Server extends Thread {
 			sID( "" );
 			reply = begin + loginScreen + end;
 				
-		} else if (cmd.equals( "/index.html" )) {
+		} else if (cmd.equals( "login" )) {
 			reply = begin
-					+ adminPage
+					+ (Users.isAdmin( uid(), passwd() ) ? adminPage:engPage( uid() ))
 					+ logoutButton
 					+ end;
 		/*
@@ -472,8 +475,8 @@ public class Server extends Thread {
 				
 		} else {
 			Audit.log( "Unknown request" );
-			reply = begin + "Unknown request: cmd="+ cmd +": ";
-			for (String s : params) reply += " "+ s;
+			reply = begin + "Unknown request: cmd='"+ cmd +"':";
+			for (String s : params) reply += " '"+ s +"'";
 			reply += logoutButton + end;
 		}
 		return audit.out( reply );
