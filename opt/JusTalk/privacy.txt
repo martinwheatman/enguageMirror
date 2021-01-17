@@ -1,0 +1,2 @@
+This software enables the user to direct a browser by voice.
+It does not collect any data or set any cookies. That's it.

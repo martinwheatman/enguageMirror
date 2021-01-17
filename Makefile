@@ -10,7 +10,7 @@ default:
 install: jar
 
 flatpak: jar
-	(cd app/flatpak; make install)
+	(cd opt/flatpak; make install)
 
 android: ${ANDLIBS}/anduage.jar
 
@@ -50,8 +50,8 @@ ${SHAR}: lib/enguage.jar
 	chmod +x ${SHAR}
 
 snap: jar
-	tar  -czf app/snapcraft/enguage.tgz lib/enguage.jar etc bin/eng
-	(cd app/snapcraft; snapcraft)
+	tar  -czf opt/snapcraft/enguage.tgz lib/enguage.jar etc bin/eng
+	(cd opt/snapcraft; snapcraft)
 
 uninstall:
 	rm -rf ~/bin/eng ~/etc/config.xml ~/etc/rpt ~/lib/enguage.jar
@@ -73,7 +73,7 @@ ${ANDLIBS}/anduage.jar: ${TMP}
 	)
 
 clean:
-	(cd app/flatpak; make clean)
-	(cd app/snapcraft; snapcraft clean; rm -f enguage.tgz enguage_*.snap)
+	(cd opt/flatpak; make clean)
+	(cd opt/snapcraft; snapcraft clean; rm -f enguage.tgz enguage_*.snap)
 	@rm -rf ${TMP} lib/ selftest/ variable var ${SHAR}
 	find . -name "*.class" -exec /bin/rm {} \;
