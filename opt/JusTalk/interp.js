@@ -15,6 +15,8 @@ function pageLoad() {
 }   }
 window.addEventListener( "load", pageLoad, false );
 */
+var utterance;
+var reply
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -27,7 +29,7 @@ chrome.runtime.onMessage.addListener(
         recognition.onresult = function(event) {
             if (event.results[0].isFinal) {
 
-                var utterance = event.results[0][0].transcript;
+                utterance = event.results[0][0].transcript;
 
                 if (utterance == "pause" ||
                     utterance == "pores" ||
@@ -41,9 +43,13 @@ chrome.runtime.onMessage.addListener(
 
                 else {
                     window.speechSynthesis.cancel();
+                    reply = interp( utterance );
+                    //if (reply.startsWith( felicity[ 0 ], 0 )) {
+                    //   window.alert( reply +'\n'+ felicity[ 0 ]);
+                    //}
                     window.speechSynthesis.speak(
                         new SpeechSynthesisUtterance(
-                            interp( utterance )
+                            reply
                     )   );
                 }
     }	}   }

@@ -15,6 +15,9 @@ import org.enguage.util.Strings;
 
 public class Server extends Thread {
 	
+	static final private String  name = "WebServer";
+	static       private Audit  audit = new Audit( name );
+
 	static class User {
 		static public String delim = ":";
 		
@@ -44,6 +47,7 @@ public class Server extends Thread {
 	static class Users extends ArrayList<User> {
 		
 		static final long serialVersionUID = 0l;
+		static       private Audit  audit = new Audit( name ); 
 		
 		private Users append( User u ) { add( u ); return this;}
 		
@@ -140,8 +144,6 @@ public class Server extends Thread {
 			users = newUsers;
 	}	}
 	
-	static final private String  name = "WebServer";
-	static final private Audit  audit = new Audit( name );
 
 
 	// HTML pages
@@ -481,67 +483,52 @@ public class Server extends Thread {
 		}
 		return audit.out( reply );
 	}
-
+	static public void doRequest( Socket conn ) {
+		try  (	Scanner           in = new Scanner( conn.getInputStream());
+				DataOutputStream out = new DataOutputStream( conn.getOutputStream());
+		) {
+			String reply;
+			
+			// parse request
+			if (in.hasNextLine()) {
+				String request = in.nextLine();   // "GET /login HTTP/2.0"
+				Audit.log( "Request is: "+ request );
+					
+				sID("");
+				parseSID( in );
+				
+				reply = processRequest( request );
+				
+				//if (reply.startsWith( begin )) // it's a page
+					reply = "HTTP/2.0\n"
+							+ "Content-type: text/html\n"
+							+ "Set-cookie: sessionID='"+ sID() +"'\n"
+							+ "\n"
+							+ reply;
+				
+				//Audit.LOG( "Replying with:\n"+ reply +"\n" );
+				out.writeBytes( reply + "\n" );
+			}
+			conn.close();
+			
+		} catch (Exception e) {
+			audit.ERROR( "Error in child socket");
+			e.printStackTrace();
+	}	}
 	static public void server( String port ) {
-		ServerSocket server = null;
-
+		
 		Enguage.init( Enguage.RW_SPACE );
 
-		try {
-			server = new ServerSocket( Integer.valueOf( port ));
+		try (ServerSocket server = new ServerSocket( Integer.valueOf( port ))) {
+			
 			Audit.LOG( "Server listening on port: "+ port );
-			while (true) {
-				
-				Socket    connection = server.accept();
-				Scanner   in  = null;
-				DataOutputStream out = null;
-				
-				try {
-					String reply;
-					in  = new Scanner( connection.getInputStream());
-					out = new DataOutputStream( connection.getOutputStream());
-					
-					// parse request
-					if (in.hasNextLine()) {
-						String request = in.nextLine();   // "GET /login HTTP/2.0"
-						Audit.log( "Request is: "+ request );
-							
-						sID("");
-						parseSID( in );
-						
-						reply = processRequest( request );
-						
-						//if (reply.startsWith( begin )) // it's a page
-							reply = "HTTP/2.0\n"
-									+ "Content-type: text/html\n"
-									+ "Set-cookie: sessionID='"+ sID() +"'\n"
-									+ "\n"
-									+ reply;
-						
-						//Audit.LOG( "Replying with:\n"+ reply +"\n" );
-						out.writeBytes( reply + "\n" );
-					}
-					
-				} catch (Exception e) {
-					audit.ERROR( "Error in child socket");
-					e.printStackTrace();
-				} finally {
-					try {
-						if (null != in) in.close();
-						if (null != out) out.close();
-						if (null != connection) connection.close();
-					} catch (IOException e) {
-						audit.ERROR( "error in closing stream: "+ e );
-			}	}	}
+			while (true)
+				doRequest( server.accept() );
+			
 		} catch (IOException e) {
 			audit.ERROR( name +":IO error in TCP socket operation" );
 			e.printStackTrace();
-		} finally {
-			try {
-				if (null != server) server.close();
-			} catch (IOException e) {
-				audit.ERROR( "Net.server():IO error in closing TCP server socket" );
-	}	}	}
+	}	}
 	public static void main( String args[]) {
 		server( args.length == 1 ? args[ 0 ] : "8080" );
 }	}
