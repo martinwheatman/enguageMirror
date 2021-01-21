@@ -18,6 +18,28 @@ window.addEventListener( "load", pageLoad, false );
 var utterance;
 var reply
 
+function speakToMe( reply ) {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(
+        new SpeechSynthesisUtterance(
+            reply
+    )   );
+}
+
+function ajaxEnguage( utterance, reply ) {
+    var request='/Enguage?utterance='+ utterance;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            speakToMe( this.responseText );
+        } else if (this.readyState == 4) {
+            speakToMe( reply ); // original reply
+        }
+    };
+    xhttp.open('GET', request, true);
+    xhttp.send();
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
 
@@ -42,18 +64,15 @@ chrome.runtime.onMessage.addListener(
                     window.speechSynthesis.resume();
 
                 else {
-                    window.speechSynthesis.cancel();
                     reply = interp( utterance );
-                    //if (reply.startsWith( felicity[ 0 ], 0 )) {
-                    //   window.alert( reply +'\n'+ felicity[ 0 ]);
-                    //}
-                    window.speechSynthesis.speak(
-                        new SpeechSynthesisUtterance(
-                            reply
-                    )   );
+                    if (reply.startsWith( felicity[ 0 ], 0 ))
+                        ajaxEnguage( utterance, reply );
+                    else
+                        speakToMe( reply );
                 }
     }	}   }
 );
+
 // ****************************************************************************
 // ****************************************************************************
 // ****************************************************************************

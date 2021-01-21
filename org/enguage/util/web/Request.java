@@ -264,6 +264,19 @@ public class Request {
 			else
 				reply = "<center>(Try setting the value of utterance to something)</center>";
 				
+		} else if (cmd.equals( "Enguage" )) {
+			
+			if (   params.length > 0
+				&& validAttr( params[ 0 ])
+				&& uid().length() > 0)
+				reply = Enguage.mediate(
+								uid(),
+								new Strings( params[ 0 ].split( "=" )[ 1 ].split( "%20" ))
+						).toString();
+			else {
+				Audit.log( "not found" );
+				reply = ""; // => 404
+			}
 		} else if (params.length > 2 && cmd.equals( "addUser" )) {
 			
 			Audit.log( "adduser" );
@@ -341,10 +354,9 @@ public class Request {
 			reply = "Try selecting an action...";
 				
 		} else {
-			Audit.log( "Unknown request" );
-			reply = begin + "Unknown request: cmd='"+ cmd +"':";
-			for (String s : params) reply += " '"+ s +"'";
-			reply += logoutButton + end;
+			Audit.log( "Unknown request: cmd='"+ cmd +"':" );
+			for (String s : params) Audit.log( " '"+ s +"'" );
+			reply = "";
 		}
 		return audit.out( reply );
 	}
@@ -364,8 +376,9 @@ public class Request {
 				
 				reply = processContent( request );
 				
+				String response = reply.equals( "" ) ? "404" : "200 OK";
 				//if (reply.startsWith( begin )) // it's a page
-					reply = "HTTP/2.0\n"
+					reply = "HTTP/2.0 "+ response +"\n"
 							+ "Content-type: text/html\n"
 							+ "Set-cookie: sessionID='"+ sID() +"'\n"
 							+ "\n"
