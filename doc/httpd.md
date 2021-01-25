@@ -1,32 +1,56 @@
-## HTTPD - a web server example
 
-<p>Let’s put this behind a web server. I use Ubuntu desktop which doesn’t seem to come with a webserver, so I’m setting up apache2 from scratch. I’ve also created a simple cgi-bin program to call the Enguage jarfile running on the localhost with the arguments. This can be installed:
-<pre>
-martin@vBox:~/enguage$ su
-root@vBox:/home/martin/enguage$ apt-get install apache2
-root@vBox:/home/martin/enguage$ chown www-data.www-data *
-root@vBox:/home/martin/enguage$ cp cgi-enguage.c /usr/lib/cgi-bin
-root@vBox:/home/martin/enguage$ cp index.html /var/www/html
-root@vBox:/home/martin/enguage$ cd /var/www/html
-root@vBox:/var/www/html$ more index.html
-</pre>
-Then we can go and look at, and build, the cgi-bin program. Apache.conf specifies the location of cgi-bin in /usr/lib. Below, I have created a simple CGI program which takes ajax enguage queries and sends them to an adjacent server on this machine. 
-<pre>
-martin@vBox:/var/www/html$ su
-root@vBox:/var/www/html# cd /usr/lib/cgi-bin
-root@vBox:/usr/lib/cgi-bin# cc -o enguage.cgi cgi-enguage.c
-root@vBox:/usr/lib/cgi-bin# more cgi-enguage.c
-</pre>
-[cgi-example.c](src/cgi-example.c)
+## Enguage on a Web Server
 
-You will also have to enable support for CGI programs:
+### A simple Webserver
+Let’s put Enguage into a web server.
+
+A simple webserver is available from within Enguage.
+After building Engauge,
+if it is called with the --http switch,
+````
+java org.enguage.Enguage --httpd
+````
+it will run, by default on port 8080, to service URLs containing utterances.
 <pre>
-root@vBox:/var/www/html# cd /etc/apache2/mods-enabled
-root@vBox:/var/www/html# ln -s ../mods-available/cgi.load .
+http://localhost:8080/what do i need
 </pre>
-<p>The apache webserver can now be started with:
+which will return, in the webpage the reply (for example):
 <pre>
-root@vBox:/var/www/html# systemctl start apache2
+you don't need anything
 </pre>
-<p>We start with typing in the utterance/sentence into the input box in the web browser and press the Send button. If the input box is updated on the Web text to speech software returning a string, the send could be performed on input box change event. The AJAX code sends the utterance to the CGI-script which places the utterance next-door onto the Enguage jar-file, running as a server.  Enguage interprets the utterance, and in the case of “show me all names” it runs the squelch script to interrogate the database. This is returned back to the web browser as plain text in the CGI program. Hopefully this example is enough to get you going. Here’s what is should look like at the end:
+This currently works on a hardcoded user Id of 000...0001.
+Some work is needed to add an automatic random-number-as-UID algorithm.
+
+### JusTalk
+There is a Chome Extension, called [JusTalk](https://chrome.google.com/webstore/detail/lets-justalk-to-the-web/leoimjokapbleghdnkgnomeoaaabhaco?hl=en-GB),
+which interprets a hardcoded repretoire of utterances concerned with navigation and page interaction (e.g. "goto the bbc dot co dot uk" and "set the value of name to martin" and "click on the ok button")
+
+A development of this can be found within the Enguage repo which also attempts to send the utterance to the current website if it is not understood by JusTalk. This allows a developer to interact with their repertoires locally, through the Chrome text-to-speech service.
+
+To set this up, a developer needs to:
++ Install the [Chrome webbrowser](https://www.google.co.uk/chrome/).
++ Clone the Enguage repo locally:
+  ````
+  git clone https://github.com/martinwheatman/enguage.git
+  ````
++ Build and run the WebServer class:
+  ````
+  C:\> javac org\enguage\Webserver.java
+  ... or:
+  $ javac org/enguage/WebServer.java
+
+  ...and then:
+  java org.enguage.WebServer
+  ````
++ Run Chrome and load the JusTalk development Extension:
+  
+  ... &rarr; More Tools &rarr; Extensions &rarr; Load unpacked
+  
+  From there select the repo directory, enguage &rarr; opt &rarr; JusTalk
+  This should then show the "lazy e" icon in the menu bar, next to the Extensions icon (black jigsaw puzzle piece).
+
+The speech-to-text service of the Web Browser can now be activated by the clicking on Control-Space, or the MacControl-Space.  The microphone may need to be activated - given permission to be used - on the first operation.
+
+Finally, a "recording" symbol is displayed in the Tab and the developer can access their repertoires by voice.
+
 
