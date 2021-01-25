@@ -81,7 +81,9 @@ public class Server {
 							enguid    = "000000000001";
 							setCookie = "Set-cookie: enguid=\""+ enguid +"\"\n";
 						}
-						prefix = "HTTP/2.0\nContent-type: text/html\n"+ setCookie +"\n";
+						prefix = "HTTP/2.0\n"
+								 + "Content-type: text/html\n"
+								 + setCookie +"\n";
 						reply = Enguage.mediate( enguid,  utterances ).toString();
 					} else
 						reply = Repertoire.mediate( new Utterance( new Strings( in.readLine() ))).toString();

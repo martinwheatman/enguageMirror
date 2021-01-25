@@ -21,7 +21,7 @@ jar: lib/enguage.jar
 ${TMP}:
 	mkdir -p ${TMP}
 
-lib/enguage.jar: ${MANIFEST} ${TMP} lib
+lib/enguage.jar: ${TMP} ${MANIFEST} lib
 	cp -a org com ${TMP}
 	( cd ${TMP} ;\
 		find com org -name \*.class -exec rm -f {} \; ;\
@@ -31,6 +31,7 @@ lib/enguage.jar: ${MANIFEST} ${TMP} lib
 		find com org -name \*.java -exec rm -f {} \;  ;\
 		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
 	)
+	rm -rf ${TMP}
 
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc

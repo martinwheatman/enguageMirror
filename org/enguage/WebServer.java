@@ -1,15 +1,15 @@
-package org.enguage.util.web;
+package org.enguage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import org.enguage.Enguage;
 import org.enguage.util.Audit;
+import org.enguage.util.web.Request;
 
 public class WebServer extends Thread {
 	
 	static final private String  name = "WebServer";
-	static       private Audit  audit = new Audit( name );
+	//static       private Audit  audit = new Audit( name );
 
 	static private int  port = 8080;
 	static public  int  port() {return port;}
@@ -27,7 +27,6 @@ public class WebServer extends Thread {
 				new Request().doRequest( server.accept() );
 			
 		} catch (IOException e) {
-			audit.ERROR( name +":IO error in TCP socket operation" );
 			e.printStackTrace();
 	}	}
 	public static void main( String args[]) {
