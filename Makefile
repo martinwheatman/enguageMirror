@@ -18,8 +18,10 @@ shar: ${SHAR}
 
 jar: lib/enguage.jar
 
-lib/enguage.jar: ${MANIFEST} ${TMP} lib
+${TMP}:
 	mkdir -p ${TMP}
+
+lib/enguage.jar: ${MANIFEST} ${TMP} lib
 	cp -a org com ${TMP}
 	( cd ${TMP} ;\
 		find com org -name \*.class -exec rm -f {} \; ;\
@@ -33,9 +35,6 @@ lib/enguage.jar: ${MANIFEST} ${TMP} lib
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc
 	
-${TMP}:
-	mkdir -p ${TMP}
-
 lib:
 	mkdir lib
 
