@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import org.enguage.Enguage;
 import org.enguage.util.Audit;
 
-public class Server extends Thread {
+public class WebServer extends Thread {
 	
 	static final private String  name = "WebServer";
 	static       private Audit  audit = new Audit( name );
