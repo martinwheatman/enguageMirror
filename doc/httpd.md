@@ -3,7 +3,6 @@
 
 ### A simple Webserver
 Let’s put Enguage into a web server.
-
 A simple webserver is available from within Enguage.
 After building Engauge,
 if it is called with the --http switch,
@@ -23,7 +22,7 @@ Some work is needed to add an automatic random-number-as-UID algorithm.
 
 ### JusTalk
 There is a Chome Extension, called [JusTalk](https://chrome.google.com/webstore/detail/lets-justalk-to-the-web/leoimjokapbleghdnkgnomeoaaabhaco?hl=en-GB),
-which interprets a hardcoded repretoire of utterances concerned with navigation and page interaction (e.g. "goto the bbc dot co dot uk" and "set the value of name to martin" and "click on the ok button")
+which interprets a hardcoded repretoire of utterances concerned with web navigation and page interaction (e.g. "goto the bbc dot co dot uk", "set the value of name to martin" and "click on the ok button")
 
 A development of this Chrome Extension can be found within the Enguage repo which also attempts to send the utterance to the current website if it is not understood by JusTalk.
 This allows a developer to interact with their repertoires locally, through the Chrome text-to-speech service, rather than in Android.
@@ -37,9 +36,9 @@ To set this up, a developer needs to:
   ````
 + Build and run the WebServer class:
   ````
-  C:\> javac org\enguage\Webserver.java
+  C:\> javac org\enguage\WebServer.java
   ````
-  in a Windows/DOS shell, or in Linux:
+  in a Windows/DOS box, or in Linux bash shell:
   ````
   $ javac org/enguage/WebServer.java
   ````
@@ -48,9 +47,9 @@ To set this up, a developer needs to:
   java org.enguage.WebServer
   Server listening on port 8080
   ````
-+ Install the [Chrome web browser](https://www.google.co.uk/chrome/).
++ Install and open the [Chrome web browser](https://www.google.co.uk/chrome/).
 
-+ Run Chrome, and load the development JusTalk Chrome Extension:
++ Load the development JusTalk Chrome Extension:
   
   &vellip;&rarr;More Tools&rarr;Extensions
 
@@ -70,10 +69,10 @@ To set this up, a developer needs to:
   + Click on the (i) icon to the left of the URL and select Site settings
   + Scroll down to Microphone, and on the right-hand side click on Ask(default)&rarr;Allow
   
-+ In the localhost:8080 tab, the (i) popup should be displaying the Microphone option, as Allow. 
+  In the localhost:8080 tab, the (i) popup should be displaying the Microphone option, as Allow. 
 
 The Chrome speech-to-text service can now be activated by clicking on Control-Space, or the MacControl-Space.
-If you're still not working:
+If your mic is still not working:
   + Make sure you're not muted, or your mic [is blocked](https://www.youtube.com/watch?v=TiZcsd_BahU); or,
   + You might find further help here: [Windows](https://support.microsoft.com/help/4027981/windows-how-to-set-up-and-test-microphones-in-windows-10) or [Mac](https://support.apple.com/kb/PH22070)
 
