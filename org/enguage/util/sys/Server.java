@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.util.Random;
 
 import org.enguage.Enguage;
 import org.enguage.interp.Context;
@@ -20,9 +21,9 @@ public class Server {
 	
 	static final public int TestPort = 0;
 
-	static private Audit audit = new Audit( "net" );
-	
+	static private Audit         audit = new Audit( "net" );
 	static private boolean httpRequest = false;
+	static private Random       random = new Random();
 	
 	static private boolean serverOn = false;
 	static public  boolean serverOn() { return serverOn; }
@@ -33,21 +34,17 @@ public class Server {
 	}
 	static public void server( String port ) { server( port, "" );}
 	static public void server( String port, String prefix ) {
-		ServerSocket server = null;
+		
 		serverOn = true;
-		try {
-			server = new ServerSocket( Integer.valueOf( port ));
+		try (ServerSocket server = new ServerSocket( Integer.valueOf( port ));)
+		{
 			Audit.LOG( "Server listening on port: "+ port );
 			while (true) {
-				
-				Socket    connection = server.accept();
-				BufferedReader   in  = null;
-				DataOutputStream out = null;
-				
-				try {
+				try (	Socket    connection = server.accept();
+						BufferedReader   in  = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+						DataOutputStream out = new DataOutputStream( connection.getOutputStream());
+				) {
 					String reply;
-					in  = new BufferedReader( new InputStreamReader( connection.getInputStream()));
-					out = new DataOutputStream( connection.getOutputStream());
 					if (httpRequest) {
 						// parse request
 						String request = in.readLine();   // "GET /i need a coffee HTTP/2.0"
@@ -78,10 +75,10 @@ public class Server {
 									break;
 						}		}
 						if (!found) {
-							enguid    = "000000000001";
+							enguid    = "" + random.nextInt();
 							setCookie = "Set-cookie: enguid=\""+ enguid +"\"\n";
 						}
-						prefix = "HTTP/2.0\n"
+						prefix = "HTTP/2.0 200 OK\n"
 								 + "Content-type: text/html\n"
 								 + setCookie +"\n";
 						reply = Enguage.mediate( enguid,  utterances ).toString();
@@ -93,22 +90,10 @@ public class Server {
 					
 				} catch (Exception e) {
 					audit.ERROR( "Error in child socket");
-				} finally {
-					try {
-						if (null != in) in.close();
-						if (null != out) out.close();
-						if (null != connection) connection.close();
-					} catch (IOException e) {
-						audit.ERROR( "error in closing stream: "+ e );
-			}	}	}
+			}	}
 		} catch (IOException e) {
 			audit.ERROR( "Engauge.main():IO error in TCP socket operation" );
-		} finally {
-			try {
-				if (null != server) server.close();
-			} catch (IOException e) {
-				audit.ERROR( "Net.server():IO error in closing TCP server socket" );
-		}	}
+		}
 		serverOn = false;
 	}
 	static public String client( String addr, int port, String data ) {
@@ -126,34 +111,21 @@ public class Server {
 			
 		} else if (port > 1024 && port < 65536) {
 			addr = addr==null || addr.equals( "" ) ? "localhost" : addr;
-			
-			Socket connection = null;
-			DataOutputStream out = null;
-			BufferedReader in = null;
-			try {
-				audit.debug( "creating socket" );
-				connection = new Socket( addr, port );
-				
-				out = new DataOutputStream( connection.getOutputStream());
+		
+			try (	Socket connection = new Socket( addr, port );
+					DataOutputStream out = new DataOutputStream( connection.getOutputStream());
+					BufferedReader in = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+			) {
 				audit.debug( "  writing: "+ data );
 				out.writeBytes( data );
 				out.flush();
 				
-				audit.debug( "reading" );
-				in = new BufferedReader( new InputStreamReader( connection.getInputStream()));
 				audit.debug( "  reading..." );
 				rc = in.readLine();
 				
 			} catch (IOException e) {
 				audit.ERROR( "error: "+ e.toString());
-			} finally {
-				try {
-					if (null != in) in.close();
-					if (null != out) out.close();
-					if (null != connection) connection.close();
-				} catch (IOException e){
-					audit.ERROR("closing connection: "+ e.toString());
-		}	}	}
+		}	}
 		return audit.out( rc );
 	}
 	public static void main( String args[]) {

@@ -178,6 +178,10 @@ public class Request {
 	private String param() {return param;}
 	private void   param( String s ) {param = s;}
 
+	private String response = "200 OK";
+	private String response() {return response;}
+	private void   response( String s ) {response = s;}
+
 	private void parseSID( Scanner header ) {
 		// parse header for cookies...
 		String headerLine = "";
@@ -206,7 +210,7 @@ public class Request {
 	private String processContent( String request ) {
 		Audit.LOG( "processRequest: request="+ request );
 		// request="GET /addUser?uname=martin&pwd=s3cret HTTP/2.0"
-		String reply = "unknown";
+		String reply = "";
 		String[] reqs = request.split(" "); // ["GET", "/..."
 		reqs = reqs[ 1 ].split("\\?"); // leading '/' ["", "addUser", "1001", "1234"]
 		
@@ -349,14 +353,10 @@ public class Request {
 			} else
 				reply = "<strong>Permission Denied</strong>";
 			
-		} else if (cmd.equals( "Select" )) {
-			Audit.log( "Action unselected" );
-			reply = "Try selecting an action...";
-				
 		} else {
 			Audit.log( "Unknown request: cmd='"+ cmd +"':" );
 			for (String s : params) Audit.log( " '"+ s +"'" );
-			reply = "";
+			response( "404" );
 		}
 		return audit.out( reply );
 	}
@@ -364,8 +364,6 @@ public class Request {
 		try  (	Scanner           in = new Scanner( conn.getInputStream());
 				DataOutputStream out = new DataOutputStream( conn.getOutputStream());
 		) {
-			String reply;
-			
 			// parse request
 			if (in.hasNextLine()) {
 				String request = in.nextLine();   // "GET /login HTTP/2.0"
@@ -374,15 +372,14 @@ public class Request {
 				sID("");
 				parseSID( in );
 				
-				reply = processContent( request );
+				response( "200 OK" );
+				String reply = processContent( request );
 				
-				String response = reply.equals( "" ) ? "404" : "200 OK";
-				//if (reply.startsWith( begin )) // it's a page
-					reply = "HTTP/2.0 "+ response +"\n"
-							+ "Content-type: text/html\n"
-							+ "Set-cookie: sessionID='"+ sID() +"'\n"
-							+ "\n"
-							+ reply;
+				reply = "HTTP/2.0 "+ response() +"\n"
+						+ "Content-type: text/html\n"
+						+ "Set-cookie: sessionID='"+ sID() +"'\n"
+						+ "\n"
+						+ reply;
 				
 				//Audit.LOG( "Replying with:\n"+ reply +"\n" );
 				out.writeBytes( reply + "\n" );
