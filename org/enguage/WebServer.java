@@ -8,7 +8,7 @@ import org.enguage.util.web.Request;
 
 public class WebServer extends Thread {
 	
-	static final private String  name = "WebServer";
+	//static final private String  name = "WebServer";
 	//static       private Audit  audit = new Audit( name );
 
 	static private int  port = 8080;

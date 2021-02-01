@@ -273,11 +273,15 @@ public class Request {
 			if (   params.length > 0
 				&& validAttr( params[ 0 ])
 				&& uid().length() > 0)
+			{
 				reply = Enguage.mediate(
 								uid(),
 								new Strings( params[ 0 ].split( "=" )[ 1 ].split( "%20" ))
 						).toString();
-			else {
+				// fix incase enguage (repertoire) isnot so polite!
+				if (reply.equalsIgnoreCase( "i don't understand" ))
+					reply = "sorry, "+ reply;
+			} else {
 				Audit.log( "not found" );
 				reply = ""; // => 404
 			}
