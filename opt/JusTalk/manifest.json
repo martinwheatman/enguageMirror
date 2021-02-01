@@ -1,7 +1,7 @@
 { "name": "Let's JusTalk to the Web",
   "short_name" : "JusTalk",
   "description": "A vocal Web interface. Press Ctrl+space and say, 'Hello'",
-  "version": "0.98.4",
+  "version": "0.98.5",
   "manifest_version": 2,
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "background": {
@@ -33,8 +33,8 @@
       "description": "single utterance"
   } },
   "icons": {
-    "16": "images/layzee16.png",
-    "48": "images/layzee48.png",
-    "128": "images/layzee128.png",
-    "512": "images/layzee512.png"
+    "16": "images/lbolt16.png",
+    "48": "images/lbolt48.png",
+    "128": "images/lbolt128.png",
+    "512": "images/lbolt512.png"
 } }
