@@ -30,7 +30,10 @@ function ajaxEnguage( utterance, reply ) {
     var request='/Enguage?utterance='+ utterance;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+        if (    this.readyState == 4
+            &&  this.status     == 200
+            && !this.responseText.startsWith( felicity[ 0 ], 0 ))
+        {
             speakToMe( this.responseText );
         } else if (this.readyState == 4) {
             speakToMe( reply ); // original reply
@@ -354,23 +357,35 @@ function articled( str ) {
 			return " an "+ str;
 		default: return " a "+ str;
 }	}
-function labelledNodeDesc( el ) {
-    return el.parentNode.nodeName == "LABEL" ? articled( el.parentNode.innerText ):
-           el.value.trim()        !=      "" ? articled( el.value ) :
-                                               articled( "unknown" );
+function attrValue( element, attr ) {
+    return element.hasAttribute( attr ) ? element.getAttribute( attr ).trim().toLowerCase() : "";
 }
-function innerTextOrValueDesc( el ) {
+function labelValue( el ) {
+    var labels = document.getElementsByTagName( "LABEL" );
+    for (label of labels)
+        if (attrValue( label, "for" ) == el.id) 
+            return label.innerText;
+    return el.parentNode.nodeName=="LABEL" ? el.parentNode.innerText : el.value;
+}
+function articledLabel( el ) {
+    var labelVal = labelValue( el );
+    return labelVal != "" ? articled( labelVal ) :
+                            articled( "unknown" );
+}
+function articledInnerTextOrValue( el ) {
     return el.innerText.trim() != "" ? articled( el.innerText ):
            el.value.trim()     != "" ? articled( el.value    ):
                                        articled( "unknown"  );
 }
-function titleOrInnerTextDesc( el ) {
+function articledTitleOrInnerText( el ) {
     return el.title.trim()     != "" ? articled( el.title )    :
            el.innerText.trim() != "" ? articled( el.innerText ):
                                        articled( "unknown" )   ;
 }
-function placeholderOrId( el ) {
-    return el.placeholder.trim() != "" ? articled( el.placeholder ) :
+function articledPlaceholderOrId( el ) {
+    var label = labelValue( el );
+    return label                 != "" ? articled( label ) :
+           el.placeholder.trim() != "" ? articled( el.placeholder ) :
            el.id.trim()          != "" ? articled( el. id         ) :
                                          articled( "unnamed" );
 }
@@ -379,34 +394,28 @@ function describeThePage() {
 	var elements = document.getElementsByTagName( "*" );
 	for (el of elements)
 		if (el.tagName ==      "A")
-			response += titleOrInnerTextDesc( el ) +" link, ";
+			response += articledTitleOrInnerText( el ) +" link, ";
 
 		else if (el.tagName == "BUTTON")
 			response += articled( el.innerText ) +" button, ";
 
 		else if (el.tagName == "INPUT" && (el.type == "text" || el.type == "textarea"))
-			response += placeholderOrId( el ) +" value, ";
+			response += articledPlaceholderOrId( el ) +" value, ";
 
 		else if (el.tagName == "INPUT" && (el.type == "button"   ))
-			response += innerTextOrValueDesc( el ) + " button, ";
+			response += articledInnerTextOrValue( el ) + " button, ";
                 
 		else if (el.tagName == "INPUT" && (el.type == "submit"   ))
-			response += innerTextOrValueDesc( el ) + " submit button, ";
+			response += articledInnerTextOrValue( el ) + " submit button, ";
                 
 		else if (el.tagName == "INPUT" && (el.type == "radio"   ))
-			response += labelledNodeDesc( el )+ " radio button, ";
+			response += articledLabel( el )+ " radio button, ";
 
 		else if (el.tagName == "INPUT" && (el.type == "checkbox"   ))
-			response += labelledNodeDesc( el )+ " check box, ";
+			response += articledLabel( el )+ " check box, ";
 
     return felicity[ 1 ] +", on this page there is "+
                     (response == "" ? "nothing" : response);
-}
-function attrValue( element, attr ) {
-    return element.hasAttribute( attr ) ? element.getAttribute( attr ).trim().toLowerCase() : "";
-}
-function labelValue( el ) {
-    return el.parentNode.nodeName=="LABEL" ? el.parentNode.innerText : el.value;
 }
 function query ( cmd, imp ) { //is there [a|an].../do you have [a|an]...
 	var response = [];
