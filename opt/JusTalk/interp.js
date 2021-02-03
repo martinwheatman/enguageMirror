@@ -32,6 +32,7 @@ function ajaxEnguage( utterance, reply ) {
     xhttp.onreadystatechange = function() {
         if (    this.readyState == 4
             &&  this.status     == 200
+            && !this.responseText.startsWith( "<", 0 )
             && !this.responseText.startsWith( felicity[ 0 ], 0 ))
         {
             speakToMe( this.responseText );
