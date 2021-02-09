@@ -1,7 +1,7 @@
-{ "name": "Let's JusTalk to the Web",
-  "short_name" : "JusTalk",
-  "description": "A vocal Web interface. Press Ctrl+space and say, 'Hello'",
-  "version": "0.98.5",
+{ "name": "Let's Enguage with the Web",
+  "short_name" : "Enguage the Web",
+  "description": "A vocal Webpage interface. Press Ctrl+space and say, 'Hello'",
+  "version": "0.98.0",
   "manifest_version": 2,
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "background": {
