@@ -21,7 +21,7 @@ import com.yagadi.Assets;
 
 public class Enguage {
 	
-	static private String copyright = "Martin Wheatman, 2001-4, 2011-20";
+	static private String copyright = "Martin Wheatman, 2001-4, 2011-21";
 
 	static public  final String      RO_SPACE = Assets.LOCATION;
 	static public  final String      RW_SPACE = "var"+ File.separator;
