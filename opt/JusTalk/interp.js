@@ -91,6 +91,69 @@ function shift( cmd, n ) {
     for (i=0; i<n; i++) cmd.shift();
     return cmd;
 }
+var playMe = null;
+function playPlayMe() {
+	if (playMe != null) {
+		playMe.play()
+		playMe = null;
+}	}
+function play( utt ) { // [play] [the] X [video|audio]
+    if (utt.length == 0)
+		return felicity[0] + ", "+ reply[ 0 ] +": play ";
+	else {
+        var orig = utt.join( " " );
+	    var  the = "";
+	    if (utt[ 0 ] == "the") {
+	        the = "the ";
+	        utt.shift();
+	    }
+	    if (utt.length == 0)
+	    	return felicity[0] + ", "+ reply[ 0 ] +": play the";
+	    else {
+	        var videos = null, audios = null;
+	        var elemType = utt.length < 1 ? "" : utt[ utt.length -1 ];
+		    if (elemType == "video") {
+		        links = document.getElementsByTagName( "video" );
+		        utt.pop();
+		    } else if (elemType == "audio") {
+		        links = document.getElementsByTagName( "audio" );
+		        utt.pop();
+		    } else {
+		        elemType = "";
+		        videos = document.getElementsByTagName( "videos" );
+		        audios = document.getElementsByTagName( "audios" );
+		    }
+		    if (utt.length == 0) {
+                alert( "a v failing here?" );
+                return felicity[0] + ", "+ reply[ 0 ] +": play "+ orig;
+		    } else {
+                utt = utt.join( " " ); // is now a string
+			    var clickable;
+			    var candidates = [];
+                if (videos != null) for (i=0; i<videos.length; i++) candidates.push( videos[ i ]);
+			    if (audios != null) for (i=0; i<audios.length; i++) candidates.push( audios[ i ]);
+                
+                var clickables = [];
+			    for (clickable of candidates)
+			        if ((clickable.title != undefined     &&
+                         includesWord( clickable.title, utt ))
+                     || (clickable.value != undefined     &&
+                         includesWord( clickable.value, utt ))
+                     || (clickable.placeholder != undefined &&
+                         includesWord( clickable.placeholder, utt ))
+                     || (clickable.hasAttribute( "aria-label" ) &&
+                         includesWord( clickable.getAttribute( "aria-label" ), utt ))
+                     ) // label?
+                        //if (!clickables.includes( clickable ))
+                            clickables.push( clickable );
+                switch (clickables.length) {
+                    case 0:
+                        return felicity[0] + ", no clickable items match: "+ orig;
+                    default: //case 1:
+                        playMe = clickables[ 0 ].play();
+                        setTimeout( playPlayMe, 1800 );
+                        return felicity[1] +", "+ the + utt +" "+ elemType +" is clicked";
+}   }   }   }   }
 var clickMe = null;
 function clickClickMe() {
 	if (clickMe != null) {
@@ -397,6 +460,9 @@ function describeThePage() {
 		if (el.tagName ==      "A")
 			response += articledTitleOrInnerText( el ) +" link, ";
 
+		else if (el.tagName == "AUDIO")
+			response += articledPlaceholderOrId( el )+ " audio, ";
+
 		else if (el.tagName == "BUTTON")
 			response += articled( el.innerText ) +" button, ";
 
@@ -415,6 +481,9 @@ function describeThePage() {
 		else if (el.tagName == "INPUT" && (el.type == "checkbox"   ))
 			response += articledLabel( el )+ " check box, ";
 
+		else if (el.tagName == "VIDEO")
+			response += articledPlaceholderOrId( el )+ " video, ";
+
     return felicity[ 1 ] +", on this page there is "+
                     (response == "" ? "nothing" : response);
 }
@@ -422,7 +491,13 @@ function query ( cmd, imp ) { //is there [a|an].../do you have [a|an]...
 	var response = [];
 	var article = cmd[ 0 ]; cmd.shift();
 	var type = cmd[ cmd.length -1 ];
-	if (type == "checkbox" || type == "link" || type == "button" || type == "value") {
+	if (type == "checkbox" ||
+	    type ==     "link" ||
+	    type ==   "button" ||
+	    type ==    "value" ||
+	    type ==    "audio" ||
+	    type ==    "video"   )
+	{
         if (type == "button" && cmd[ cmd.length -2 ] == "radio") {
             type = "radio";
             cmd.pop();
@@ -433,18 +508,26 @@ function query ( cmd, imp ) { //is there [a|an].../do you have [a|an]...
 	str = cmd.join(" ").toLowerCase();
 	var elements = document.getElementsByTagName( "*" );
 	for (el of elements) if (!hidden( el )) {
-		if ((el.tagName == "A" && type == "link" &&
-				(includesWord( el.title,     str ) ||
+		if ((   el.tagName == "A"
+		     && type       == "link"
+		     &&	(includesWord( el.title,     str ) ||
 				 includesWord( el.innerText, str )   ))
          || ((el.tagName == "BUTTON" ||
              (el.tagName == "INPUT" && el.type == "button"))
-             && type == "button" &&
-				 (includesWord( el.innerText, str )))
-         || (el.tagName == "INPUT" && (el.type == "text" || el.type == "textarea")
-             && type == "value" &&
-                 (includesWord(el.innerText, str )))
-         || (el.tagName == "INPUT" && el.type == type    && includesWord( labelValue(el), str))
-		)   
+             && type == "button"
+             && includesWord( el.innerText, str ))
+         || (   el.tagName == "INPUT"
+             && (el.type == "text" || el.type == "textarea")
+             && type       == "value"
+             && includesWord( el.innerText, str ))
+         || (   el.tagName == "INPUT"
+             && el.type    == type
+             && includesWord( labelValue(el), str))
+         || (   el.tagName == "VIDEO"
+             && includesWord( labelValue(el), str))
+         || (   el.tagName == "AUDIO"
+             && includesWord( labelValue(el), str))
+		)
             return felicity[ 2 ] + " , "
 					+ (imp ? "there is " : "I have ")
 					+ article +" "+ str +" "+ (type == "radio"?"radio button":type);
@@ -485,12 +568,14 @@ function howMany( cmd ) { // how many [level n headings|X] [are there [on this p
     switch (name) {
         case "headers"    :
         case "headings"   : elems = document.getElementsByTagName( "h" + level ); break;
-        case "paragraphs" : elems = document.getElementsByTagName( "p" );      break;
-        case "values"     : elems = document.getElementsByTagName( "input" );  break;
-        case "checkboxes" : elems = document.getElementsByTagName( "input" );  break;
-        case "radio"      : elems = document.getElementsByTagName( "input" );  break;
-        case "buttons"    : elems = document.getElementsByTagName( "*" );      break;
-        case "links"      : elems = document.getElementsByTagName( "a" );      break;
+        case "paragraphs" : elems = document.getElementsByTagName(      "p" ); break;
+        case "values"     : elems = document.getElementsByTagName(  "input" ); break;
+        case "checkboxes" : elems = document.getElementsByTagName(  "input" ); break;
+        case "radio"      : elems = document.getElementsByTagName(  "input" ); break;
+        case "buttons"    : elems = document.getElementsByTagName(      "*" ); break;
+        case "audio"      : elems = document.getElementsByTagName(  "audio" ); break;
+        case "video"      : elems = document.getElementsByTagName(  "video" ); break;
+        case "links"      : elems = document.getElementsByTagName(      "a" ); break;
         case "figures"    : elems = document.getElementsByTagName( "figure" ); break;
         default           : return felicity[ 0 ]+ ", "+ reply[ 0 ]+ ": how many "+ cmd.join( " " );
     }
@@ -521,6 +606,18 @@ function howMany( cmd ) { // how many [level n headings|X] [are there [on this p
                         if (!hidden( e ))
                             number++;
                 break;
+            case "audio" :
+                for (e of elems)
+                    if (e.tagName == "AUDIO")
+                        if (!hidden( e ))
+                            number++;
+                break;
+            case "video" :
+                for (e of elems)
+                    if (e.tagName == "VIDEO")
+                        if (!hidden( e ))
+                            number++;
+                break;
             default        :
                 if ((name == "headings" || name == "headers") && level != "*")
                     name = "level "+ level+ " " + name;
@@ -548,7 +645,7 @@ function what( cmd ) { // [what|list] .. [buttons|links|values|figures|paragraph
     var widgets = [];
     var response = reply[ 0 ];
     var type = "", name;
-            if (-1 != cmd.indexOf(    "radio" )) type =   "radio";
+         if (-1 != cmd.indexOf(    "radio" )) type =   "radio";
     else if (-1 != cmd.indexOf("checkboxes")) type ="checkbox";
     else if (-1 != cmd.indexOf(  "buttons" )) type =  "button";
     else if (-1 != cmd.indexOf(   "values" )) type =   "value";
@@ -558,7 +655,9 @@ function what( cmd ) { // [what|list] .. [buttons|links|values|figures|paragraph
     else if (-1 != cmd.indexOf( "headings" )) type =  "header";
     else if (-1 != cmd.indexOf(  "headers" )) type = "heading";
     else if (-1 != cmd.indexOf(    "title" )) type =   "title";
-    else return felicity[ 0 ] +", "+ " i didn't hear a word like: buttons, values, links figures, paragraphs or headers.";
+    else if (-1 != cmd.indexOf(    "audio" )) type =   "audio";
+    else if (-1 != cmd.indexOf(    "video" )) type =   "video";
+    else return felicity[ 0 ] +", "+ " i didn't hear a word like: audio, buttons, values, video, links figures, paragraphs or headers.";
         
     var elems;
     switch (type) {
@@ -580,6 +679,23 @@ function what( cmd ) { // [what|list] .. [buttons|links|values|figures|paragraph
                 }
             response = widgets.length == 0 ?
                         "there are no buttons."
+                        : "there is: " + widgets.join( " ; and, there is " );
+            break;
+        case "video":
+            elems = document.getElementsByTagName( "video" );
+            for (el of elems)
+                if (el.tagName == "VIDEO")
+                    if (!hidden( el ))
+                        widgets.push( articled( el.title.toLowerCase().trim()) +" "+type );
+        case "audio":
+            elems = document.getElementsByTagName( "audio" );
+            for (el of elems)
+                if (el.tagName == "AUDIO")
+                    if (!hidden( el ))
+                        widgets.push( articled( el.title.toLowerCase().trim()) +" "+type );
+                
+            response = widgets.length == 0 ?
+                        "there are no audios."
                         : "there is: " + widgets.join( " ; and, there is " );
             break;
         case "header":
@@ -756,6 +872,8 @@ function interp( utterance ) {
             response = "ok";
 
         // Page interaction/navigation
+        else if (cmd[ 0 ] == "play")
+            response = play( shift( cmd, 1 ));
         else if (cmd[ 0 ] == "click"
               && cmd[ 1 ] == "on")
             response = clickOn( shift( cmd, 2 ));
