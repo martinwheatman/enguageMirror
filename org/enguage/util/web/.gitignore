@@ -5,3 +5,10 @@
 /Server$User.class
 /Server$Users.class
 /Request.class
+/Action.class
+/UserAdd.class
+/UserDelete.class
+/UserPwd.class
+/Enguage.class
+/EnguagePage.class
+/Login.class
