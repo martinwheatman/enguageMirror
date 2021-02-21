@@ -1,4 +1,4 @@
-package org.enguage.util.web.users;
+package org.enguage.web.users;
 
 import java.io.File;
 import java.io.FileWriter;

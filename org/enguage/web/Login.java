@@ -1,4 +1,4 @@
-package org.enguage.util.web;
+package org.enguage.web;
 
 public class Login {
 	public static String widget =

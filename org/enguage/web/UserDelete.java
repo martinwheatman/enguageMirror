@@ -1,7 +1,7 @@
-package org.enguage.util.web;
+package org.enguage.web;
 
 import org.enguage.util.Audit;
-import org.enguage.util.web.users.Users;
+import org.enguage.web.users.Users;
 
 public class UserDelete {
 	public static final String widget = 

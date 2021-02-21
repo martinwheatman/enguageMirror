@@ -1,10 +1,10 @@
-package org.enguage;
+package org.enguage.web;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import org.enguage.Enguage;
 import org.enguage.util.Audit;
-import org.enguage.util.web.Request;
 
 public class WebServer extends Thread {
 	

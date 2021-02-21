@@ -1,4 +1,4 @@
-package org.enguage.util.web;
+package org.enguage.web;
 
 import org.enguage.Enguage;
 import org.enguage.util.Strings;

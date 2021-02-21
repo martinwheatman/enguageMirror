@@ -1,12 +1,12 @@
-package org.enguage.util.web;
+package org.enguage.web;
 
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
 import org.enguage.util.Audit;
-import org.enguage.util.web.users.User;
-import org.enguage.util.web.users.Users;
+import org.enguage.web.users.User;
+import org.enguage.web.users.Users;
 
 public class Request {
 	
