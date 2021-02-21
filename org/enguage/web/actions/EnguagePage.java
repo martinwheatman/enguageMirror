@@ -1,10 +1,10 @@
-package org.enguage.web;
+package org.enguage.web.actions;
 
 import org.enguage.Enguage;
 import org.enguage.util.Strings;
 
 public class EnguagePage {
-	static final String engPage( String username ) {
+	public static final String engPage( String username ) {
 		return	"<fieldset>\n"
 				+ "		<legend>Say:</legend>\n"
 				+ "		<form action='/enguage'>\n"

@@ -1,4 +1,4 @@
-package org.enguage.web;
+package org.enguage.web.actions;
 
 import org.enguage.util.Audit;
 import org.enguage.web.users.Users;
