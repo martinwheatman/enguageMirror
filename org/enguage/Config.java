@@ -1,5 +1,6 @@
 package org.enguage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.ListIterator;
@@ -18,6 +19,9 @@ import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Proc;
 import org.enguage.util.sys.Shell;
 import org.enguage.web.tag.Tag;
+
+import com.yagadi.Assets;
+
 import org.enguage.vehicle.reply.Answer;
 import org.enguage.vehicle.reply.Reply;
 
@@ -66,9 +70,17 @@ public class Config {
 					Variable.set( name,  value );
 	}	}	}
 
-	public static int load( String content ) {
+	public static int load( String fname ) {
 		int rc = -1;
-		audit.in( "load", content );
+		audit.in( "load", fname );
+		String content = Fs.stringFromStream(
+				Assets.getAsset( Enguage.RO_SPACE+ File.separator + fname )
+		);
+		if (content.equals( "" )) {
+			content = Fs.stringFromFile( "/app/etc/"+ fname );
+			if (content.equals( "" ))
+				audit.ERROR( "config not found" );
+		}
 		Audit.allOff();
 		if (Audit.startupDebug) Audit.allOn();
 		

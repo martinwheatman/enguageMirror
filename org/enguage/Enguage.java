@@ -41,7 +41,7 @@ public class Enguage {
 	static public  void init( String root ) {
 		Fs.root( root );
 		Concepts.addConcepts( Assets.listConcepts() );
-		Config.load( Assets.getContent( "config.xml" ));
+		Config.load( "config.xml" );
 	}
 	
 	static public Strings mediate( Strings said ) { return mediate( "uid", said );}

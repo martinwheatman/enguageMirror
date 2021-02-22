@@ -1,14 +1,12 @@
 package com.yagadi;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.util.Audit;
-import org.enguage.util.sys.Fs;
-import org.enguage.Enguage;
 
 public class Assets {
 	
@@ -29,15 +27,6 @@ public class Assets {
         }
         return is;
     }
-	static public String getContent( String name ) {
-		String rc = Fs.stringFromFile( Enguage.RO_SPACE + "/" + name );
-		if (rc.equals( "" )) {
-			rc = Fs.stringFromFile( "/app/etc/"+ name );
-			if (rc.equals( "" ))
-				audit.ERROR( "config not found" );
-		}
-		return rc;
-	}
 	static public String[] listConcepts() {
 		String[] names = new File( Concepts.roRpts() ).list();
 		if (names == null) { // try flatpak location
