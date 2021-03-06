@@ -1,6 +1,6 @@
 cause and effect are transitive.
 
-On "SIGN-EFFECT because SIGN-CAUSE":
+On "SAID-EFFECT because SAID-CAUSE":
 	is CAUSE because EFFECT;
 	reply "i'm sorry, EXT-CAUSE because EXT-EFFECT";
 	if not, ok;
@@ -14,19 +14,19 @@ On "SIGN-EFFECT because SIGN-CAUSE":
 	perform "items add _user causal EFFECT CAUSE";
 	reply "ok, EXT-EFFECT because EXT-CAUSE".
 	
-On "is SIGN-EFFECT because SIGN-CAUSE":
+On "is SAID-EFFECT because SAID-CAUSE":
 	perform "items isLinked _user causal CAUSE EFFECT";
 	if not, reply "no, EXT-EFFECT is not because EXT-CAUSE";
 	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
 
-On "why do SIGN-EFFECT":
+On "why do SAID-EFFECT":
 	do EFFECT;
 	if not, say so;
 	get the cause of EFFECT from _user causal list;
 	if not, reply "i do not know";
 	set cause to ...;
 	reply "because EXT-CAUSE".
-On "why does SIGN-EFFECT", why do EFFECT.
+On "why does SAID-EFFECT", why do EFFECT.
 
 On "why am i PHRASE-EFFECT":
 	am i EFFECT;
@@ -35,19 +35,19 @@ On "why am i PHRASE-EFFECT":
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
 
-On "why might SIGN-EFFECT":
+On "why might SAID-EFFECT":
 	get the cause of EFFECT from _user causal list;
 	if not, reply "i don't know";
 	set cause to ...;
 	then, reply "because EXT-CAUSE".
-On "why does SIGN-EFFECT", why do EFFECT.
+On "why does SAID-EFFECT", why do EFFECT.
 
 
-On "do SIGN-EFFECT because SIGN-CAUSE":
+On "do SAID-EFFECT because SAID-CAUSE":
 	does EFFECT exist in _user causal list;
 	if not, reply "i'm sorry, it is not the case that EXT-EFFECT";
 	is EFFECT because CAUSE;
 	if not, reply "i'm sorry, it is not the case EXT-EFFECT because EXT-CAUSE";
 	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
-On "does SIGN-EFFECT because SIGN-CAUSE", do EFFECT because CAUSE.
+On "does SAID-EFFECT because SAID-CAUSE", do EFFECT because CAUSE.
 

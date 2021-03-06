@@ -44,7 +44,7 @@ public class Patterns extends ArrayList<Pattern> {
 	static public  final String  exprPrefix    = expr.toUpperCase( locale ) + "-";
 	static public  final String  plural        = Plural.NAME; // "plural";
 	static public  final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
-	static public  final String  sinsign       = "sign";
+	static public  final String  sinsign       = "said";
 	static public  final String  sinsignPrefix = sinsign.toUpperCase( locale ) + "-";
 	static public  final String  external      = "ext";
 	static public  final String  externPrefix  = external.toUpperCase( locale ) + "-";
@@ -85,7 +85,7 @@ public class Patterns extends ArrayList<Pattern> {
 				} else if (sw.equals( sinsign )) {
 					t.signIs();
 					if (wi.hasNext()) sw = wi.next();
-					else audit.ERROR( "ctor: SIGN, missing name." );
+					else audit.ERROR( "ctor: SAID, missing name." );
 				} else if (sw.equals( Reply.andConjunction() )) {
 					//audit.LOG( "found: "+ Reply.andConjunction() );
 					if (wi.hasNext()) {
@@ -208,7 +208,7 @@ public class Patterns extends ArrayList<Pattern> {
 					out.append( "and" ).append( word );						
 
 			// ... "why sentence because reason sentence" ???
-// SIGN IS NOT YET articulated! TODO:
+// SAID IS NOT YET articulated! TODO:
 //			else if (word.equals( "sign" ))
 //				if (wi.hasNext() && null != (word = wi.next()) && word.equals( "list" ))
 //					if (wi.hasNext() && null != (word = wi.next()) && word.equals( "variable" ))

@@ -3,4 +3,4 @@
 # BUG: Should be: CAUSE so WHAT, but this interferes with WHAT because CAUSE
 #      Leaking of values?  Values shouldn't be matched on load!?
 
-On "SIGN-SOCAUSE so SIGN-SOWHAT", SOWHAT because SOCAUSE.
+On "SAID-SOCAUSE so SAID-SOWHAT", SOWHAT because SOCAUSE.
