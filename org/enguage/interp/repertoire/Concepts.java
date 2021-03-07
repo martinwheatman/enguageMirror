@@ -26,45 +26,43 @@ public class Concepts {
 	static public  final String     NAME = "concepts";
 	static private       Audit     audit = new Audit( NAME );
 	
-	static private boolean isFlatpakLocation = false;
-	static public  void    isFlatpakLocation() { isFlatpakLocation = true; }
+	static private boolean isFlatpak = false;
+	static public  void    isFlatpak( boolean b ) {isFlatpak = b;}
 
 	static private TreeSet<String> names = new TreeSet<String>();
 	static public  void  remove( String name ) { names.remove( name );}
 	static public  void     add( String name ) { names.add(    name );}
 	static public  void  addAll( Strings nms ) { names.addAll(  nms );}
 	
-	static private String name( String loc, String name, String ext ) {
-		// would just return "concepts"/name.ext
-		String fname = loc + name +"."+ ext;
-		if (new File( fname ).exists())
-			return fname; // found, return existing
-		else {
-			String[] names = new File( loc ).list();
-			if (names != null) for (String dir : names) { // e.g. name="hello.txt"
-				String[] components = dir.split( "\\." );
-				if (components.length == 1 && new File( loc + components[ 0 ]+"/"+name+"."+ ext ).exists())
-					return loc + components[ 0 ]+"/"+name+"."+ ext; // found, return existing component
-		}	}
-		return fname; // not found, new filename
+	static public Strings tree( String base, String location ) {
+		Strings names = new Strings();
+		String[] files = new File( base+ "/" +location ).list();
+		for (String file : files)
+			if (file.endsWith( ".txt" ))
+				names.add( (!location.equals(".") ? location+"/" : "")+ file );
+			else if (new File( file ).isDirectory())
+				names.addAll( tree( base, location +"/"+ file ));
+		return names;
 	}
-	static public void addConcepts( String[] names) {
-		if (names != null) for ( String name : names ) { // e.g. name="hello.txt"
+
+	static public void addConcepts( String[] names ) {
+		if (names != null) for ( String name : names ) { // e.g. name="cpt/hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))
 				add( components[ 0 ]);
 	}	}
-	static final private String rwReps() {return Fs.root() +Repertoire.LOC+ File.separator;}
-	static public  String roRpts() {
-		return (isFlatpakLocation ? "/app/":"")+
-	                  Enguage.RO_SPACE +Repertoire.LOC+ File.separator;
+	static final private String rwRpts() {return Fs.root() +Repertoire.LOC+ File.separator;}
+	static public  String roRpts( String prefix ) {
+		return prefix+ Enguage.RO_SPACE +Repertoire.LOC+ File.separator;
 	}
-	static public  String writtenName( String name ) {return name( roRpts(), name, "txt" );}
-	static public  String spokenName( String s ) {return name( rwReps(), s, "txt" );}
+	static public  String writtenName( String name ) {
+		return roRpts( isFlatpak ? "/apps/":"" )+ name +".txt";
+	}
+	static public  String spokenName( String s ) {return rwRpts()+ s +".txt";}
 	static public void delete( String cname ) {
 		if (cname != null) {
 			File oldFile = new File( writtenName( cname )),
-			     newFile = new File( name( rwReps(), cname, "del" ));
+			     newFile = new File( rwRpts() + cname +".del" );
 			if (!oldFile.renameTo( newFile ))
 				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
 	}	}
@@ -95,7 +93,7 @@ public class Concepts {
 		
 		if (null != (is = getFile( spokenName( name ))))
 			Enguage.shell().interpret( is, from, to );
-		else if (null != (is = Assets.getAsset( writtenName( name ))))
+		else if (null != (is = Assets.getStream( writtenName( name ))))
 			Enguage.shell().interpret( is, from, to );
 		else
 			wasLoaded = false;

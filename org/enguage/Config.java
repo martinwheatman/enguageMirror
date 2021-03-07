@@ -74,7 +74,7 @@ public class Config {
 		int rc = -1;
 		audit.in( "load", fname );
 		String content = Fs.stringFromStream(
-				Assets.getAsset( Enguage.RO_SPACE+ File.separator + fname )
+				Assets.getStream( Enguage.RO_SPACE+ File.separator + fname )
 		);
 		if (content.equals( "" )) {
 			content = Fs.stringFromFile( "/app/etc/"+ fname );
