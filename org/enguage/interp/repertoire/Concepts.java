@@ -36,12 +36,12 @@ public class Concepts {
 	
 	static public Strings tree( String base, String location ) {
 		Strings names = new Strings();
-		String[] files = new File( base+ "/" +location ).list();
+		String[] files = new File( base + location ).list();
 		for (String file : files)
 			if (file.endsWith( ".txt" ))
 				names.add( (!location.equals(".") ? location+"/" : "")+ file );
-			else if (new File( file ).isDirectory())
-				names.addAll( tree( base, location +"/"+ file ));
+			else if (new File( base + location +"/"+file ).isDirectory())
+				names.addAll( tree( base, file ));
 		return names;
 	}
 
@@ -187,7 +187,8 @@ public class Concepts {
 		// matches: utt=[martin is a wally], candiates=[ "is_a+has_a" ] => add( is_a+has_a )
 		Strings matches = new Strings();
 		for (String candidate : names ) { // e.g. "is_a+has_a" OR "to_the_phrase-reply_with"
-			Strings candid = new Strings( candidate, '+' );
+			String[] candida = candidate.split( "/" );  // OR cloasAirSupport/egress
+			Strings  candid  = new Strings( candida[ candida.length-1 ], '+' );
 			// matching: "to my name is martin reply hello martin" with "to-reply-"
 			for (String c : candid) { // e.g. c="to_the_phrase-reply-"
 				if (matchesHyphenatedPattern(utterance, c))
