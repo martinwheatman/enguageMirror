@@ -28,14 +28,14 @@
 			XMLPRE="">
 			
 		<concepts>
-			<concept id="colloquia"         op="load"/>
-			<concept id="engine"            op="load"/>
-			<concept id="plural"            op="load"/>
-			<concept id="temporal"          op="load"/>
-			<concept id="is_transitive"     op="load"/>
-			<concept id="spatial+spatially" op="load"/>
-			<concept id="set+get+unset"     op="load"/>
-			<concept id="verbal/arithmetic" op="load"/>
+			<concept id="english/colloquia"              op="load"/>
+			<concept id="language/engine"                op="load"/>
+			<concept id="english/plural"                 op="load"/>
+			<concept id="qualifiers/temporal"            op="load"/>
+			<concept id="verbalReasoning/are_transitive" op="load"/>
+			<concept id="qualifiers/spatial+spatially"   op="load"/>
+			<concept id="objects/set+get+unset"          op="load"/>
+			<concept id="verbal/arithmetic"              op="load"/>
 		</concepts>
 	</config>
 </xml>
