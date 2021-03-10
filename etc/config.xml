@@ -22,8 +22,8 @@
 			ORLISTFORMAT=", :, or "
 			SERVER="localhost"
 			PORT="8080"
-			XXMLPOST="</SOAP-ENV:Body></SOAP-ENV:Envelope>"
-			XXMLPRE='<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:example="http://ws.cdyne.com/"><SOAP-ENV:Header/><SOAP-ENV:Body>'
+			XXMLPOST="/SOAP-ENV:Body>/SOAP-ENV:Envelope>"
+			XXMLPRE='SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:example="http://ws.cdyne.com/">SOAP-ENV:Header/>SOAP-ENV:Body>'
 			XMLPOST=""
 			XMLPRE="">
 			
