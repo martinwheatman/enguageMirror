@@ -1,4 +1,4 @@
-package org.enguage.web.users;
+package opt.web.admin.users;
 
 public class User {
 

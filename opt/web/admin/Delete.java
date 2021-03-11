@@ -1,9 +1,9 @@
-package org.enguage.web.actions;
+package opt.web.admin;
 
 import org.enguage.util.Audit;
-import org.enguage.web.users.Users;
+import opt.web.admin.users.Users;
 
-public class UserDelete {
+public class Delete {
 	public static final String widget = 
 			"<fieldset>\n"
 			+"<legend>\n"

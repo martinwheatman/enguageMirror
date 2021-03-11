@@ -1,8 +1,8 @@
-package org.enguage.web.actions;
+package opt.web.admin;
 
-import org.enguage.web.users.Users;
+import opt.web.admin.users.Users;
 
-public class UserAdd {
+public class Add {
 	public static final String widget =
 			"<fieldset>\n"
 			+ "<legend>Add User</legend>\n"

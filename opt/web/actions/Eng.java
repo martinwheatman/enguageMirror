@@ -1,9 +1,11 @@
-package org.enguage.web.actions;
+package opt.web.actions;
 
 import org.enguage.Enguage;
 import org.enguage.util.Strings;
 
-public class EnguagePage {
+import opt.web.Request;
+
+public class Eng {
 	public static final String engPage( String username ) {
 		return	"<fieldset>\n"
 				+ "		<legend>Say:</legend>\n"
@@ -32,7 +34,7 @@ public class EnguagePage {
 				+ "	}\n"
 				+ "</script><br>\n";
 	}
-	public static String form( String[] params ) {
+	private static String form( String[] params ) {
 		return "<center><strong>"
 				+ Enguage.mediate(
 						params[ 0 ].split( "=" )[ 1 ],
@@ -40,14 +42,29 @@ public class EnguagePage {
 				  )
 				+ "</strong></center></P>";
 	}
-	public static String direct( String uid, String[] params ) {
-		String reply = "";
-		reply = Enguage.mediate(
-						uid,
-						new Strings( params[ 0 ].split( "=" )[ 1 ].split( "%20" ))
-				).toString();
+	private static String direct( String uid, String[] params ) {
+		String reply =  Enguage.mediate(
+							uid,
+							new Strings( params[ 0 ].split( "=" )[ 1 ].split( "%20" ))
+						).toString();
 		// fix incase enguage (repertoire) is not so polite!
 		if (reply.equalsIgnoreCase( "i don't understand" ))
 			reply = "sorry, "+ reply;
+		return reply;
+	}
+	public static String getReply( Request r, String cmd, String[] params ) {
+		String reply = "";
+		if (cmd.equals( "enguage" )) {
+			reply = Request.validAttrs( params, 2 ) ?
+						Eng.form( params )
+						: ("<center>"
+							+ "(Try setting the value of utterance to something)"
+							+ "</center>");
+				
+		} else if (cmd.equals( "Enguage" )) { // verbal interaction
+			
+			if (Request.validAttrs( params, 1 ) && r.uid().length() > 0)
+				reply = Eng.direct( r.uid(), params );
+		}
 		return reply;
 }	}
