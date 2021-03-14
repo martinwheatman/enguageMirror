@@ -82,7 +82,7 @@ public class Request extends Thread {
 		String[] params =
 				reqs.length < 2 ?
 						new String[0] :
-							reqs[ 1 ].split("\\&"); // leading '/' ["", "addUser", "1001", "1234"]
+						reqs[ 1 ].split("\\&"); // leading '/' ["", "addUser", "1001", "1234"]
 			
 		if (sID().equals(""))
 			reply = Login.getLogin( this, cmd, params );

@@ -1,6 +1,13 @@
 package opt.web.actions;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import org.enguage.util.Audit;
+
 import opt.web.Request;
+import opt.web.Server;
 import opt.web.admin.Admin;
 import opt.web.admin.users.Users;
 
@@ -75,5 +82,13 @@ public class Login {
 							: Eng.engPage( r.uid() ))
 					+ logoutButton
 					+ end;
+		
+		else if (!Server.root().equals("")) {
+			File f = new File( Server.root() +File.separator+ cmd );
+			try (Scanner s = new Scanner( f )) {
+				while (s.hasNextLine())
+					reply += s.nextLine();
+			} catch(FileNotFoundException ignore) {}
+		}
 		return reply;
 }	}

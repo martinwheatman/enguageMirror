@@ -1,5 +1,6 @@
 package opt.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -20,14 +21,21 @@ public class Server {
 	
 	static private String root = "";
 	static public  String root() {return root;}
-	static public  void   root( String r ) {root = r;}
+	static public  void   root( String r ) {
+		if (!r.contains( ".." ))
+			new File( root = r ).mkdirs();
+	}
 	
 	static public void server( int port ) {
 
 		Enguage.init( Enguage.RW_SPACE );
 
 		try (ServerSocket server = new ServerSocket( port, 5 )) {	
-			Audit.LOG( "Server listening on port: "+ port );
+			Audit.LOG(
+				"Server listening on port: "
+				+ port
+				+(root.equals("") ?	"" : " (root="+root()+")")
+			);
 			while (true)
 				new Request( server.accept() ).run();
 		} catch (IOException e) {
