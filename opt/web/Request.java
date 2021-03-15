@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-import org.enguage.Enguage;
 import org.enguage.util.Audit;
 
 import opt.web.actions.Eng;
@@ -87,10 +86,6 @@ public class Request extends Thread {
 		if (sID().equals(""))
 			reply = Login.getLogin( this, cmd, params );
 		
-		else if (cmd.equals( "megan" ))
-			reply = "<input type='text' id='filter' placeholder='filter'></input><br/>\n"
-					+ "<button id='scan'>Scan</button>";
-			
 		else if (
 			"".equals(reply = Login.getReply( this, cmd, params )) &&
 			"".equals(reply = Admin.getReply( this, cmd, params )) &&
@@ -98,7 +93,7 @@ public class Request extends Thread {
 		{
 			Audit.log( "Unknown request: cmd='"+ cmd +"':" );
 			for (String s : params) Audit.log( " '"+ s +"'" );
-			reply = "404 : page not found :(";
+			reply = "Sorry, error 404: page not found.";
 			response( "404" );
 		}
 		return audit.out( reply );

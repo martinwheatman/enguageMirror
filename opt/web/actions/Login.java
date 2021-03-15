@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import org.enguage.util.Audit;
-
 import opt.web.Request;
 import opt.web.Server;
 import opt.web.admin.Admin;

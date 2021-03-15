@@ -34,7 +34,7 @@ public class Eng {
 				+ "	}\n"
 				+ "</script><br>\n";
 	}
-	private static String form( String[] params ) {
+	private static String viaForm( String[] params ) {
 		return "<center><strong>"
 				+ Enguage.mediate(
 						params[ 0 ].split( "=" )[ 1 ],
@@ -42,10 +42,10 @@ public class Eng {
 				  )
 				+ "</strong></center></P>";
 	}
-	private static String direct( String uid, String[] params ) {
+	private static String viaUrl( String uid, String[] params ) {
 		String reply =  Enguage.mediate(
 							uid,
-							new Strings( params[ 0 ].split( "=" )[ 1 ].split( "%20" ))
+							new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 						).toString();
 		// fix incase enguage (repertoire) is not so polite!
 		if (reply.equalsIgnoreCase( "i don't understand" ))
@@ -55,16 +55,17 @@ public class Eng {
 	public static String getReply( Request r, String cmd, String[] params ) {
 		String reply = "";
 		if (cmd.equals( "enguage" )) {
+			//URLDecoder.decode( in.nextLine(), "UTF-8" )
 			reply = Request.validAttrs( params, 2 ) ?
-						Eng.form( params )
+						Eng.viaForm( params )
 						: ("<center>"
 							+ "(Try setting the value of utterance to something)"
 							+ "</center>");
 				
-		} else if (cmd.equals( "Enguage" )) { // verbal interaction
+		} else if (cmd.equals( "Enguage" )) {
 			
-			if (Request.validAttrs( params, 1 ) && r.uid().length() > 0)
-				reply = Eng.direct( r.uid(), params );
+			if (Request.validAttrs( params, 2 ) && r.uid().length() > 0)
+				reply = Eng.viaUrl( r.uid(), params );
 		}
 		return reply;
 }	}
