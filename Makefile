@@ -5,7 +5,7 @@ SHAR=enguage.shar
 ANDLIBS=${HOME}/StudioProjects/Enguage/app/libs
 
 default:
-	@echo "Usage: make [ snap | jar | shar | android | flatpak | clean ]" >&2
+	@echo "Usage: make [ snap | jar | shar | swing | android | flatpak | clean ]" >&2
 
 install: jar
 
@@ -15,6 +15,13 @@ flatpak: jar
 android: ${ANDLIBS}/anduage.jar
 
 shar: ${SHAR}
+
+swing: jar
+	@javac opt/swing/EnguagePanel.java
+	@echo "#!/bin/sh"                                          > bin/swing
+	@echo "java -cp .:lib/enguage.jar opt.swing.EnguagePanel" >> bin/swing
+	@chmod +x bin/swing
+	@echo "Now run: bin/swing"
 
 jar: lib/enguage.jar
 
@@ -73,6 +80,8 @@ ${ANDLIBS}/anduage.jar: ${TMP}
 	)
 
 clean:
+	rm -f bin/swing
+	(cd opt/swing;   make clean)
 	(cd opt/flatpak; make clean)
 	(cd opt/snapcraft; snapcraft clean; rm -f enguage.tgz enguage_*.snap)
 	@rm -rf ${TMP} lib/ selftest/ variable var ${SHAR}
