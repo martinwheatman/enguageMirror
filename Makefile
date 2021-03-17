@@ -38,7 +38,7 @@ lib/enguage.jar: ${TMP} ${MANIFEST} lib
 		find com org -name \*.java -exec rm -f {} \;  ;\
 		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
 	)
-	rm -rf ${TMP}
+	#rm -rf ${TMP}
 
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc

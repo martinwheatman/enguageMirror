@@ -18,23 +18,26 @@ public class EnguagePanel extends JPanel {
 	public EnguagePanel() {
 		super(new BorderLayout());
  
-		buttonAction = new ButtonAction(
-							"Say",
-							null,
+		buttonAction = new ButtonAction( "Say", null,
 							"Click to interpret what you type above",
 							KeyEvent.VK_M );
 		
+		Font font1 = new Font("SansSerif", Font.PLAIN, 30);
+		
 		t1 = new JTextField("");
+		t1.setFont( font1 );
 		JPanel utterancePanel = new JPanel( new GridLayout( 1, 1 ));
 		utterancePanel.add( t1 );
 
 		b = new JButton( buttonAction );
 		if (b.getIcon() != null) b.setText( "" );
+		b.setFont( font1 );
 		JPanel buttonPanel = new JPanel( new GridLayout( 1, 1 ));
 		buttonPanel.add( b );
 
 		t2 = new JTextField("Reply");
 		t2.setEditable( false );
+		t2.setFont( font1 );
 		JPanel textFieldPanel = new JPanel( new GridLayout(1,1));
 		textFieldPanel.add( t2 );
  
@@ -55,11 +58,12 @@ public class EnguagePanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			String uid= "swing"; // see ./var/swing
 			Strings utterance = new Strings( t1.getText() );
-			Strings reply =  Enguage.mediate(
-					uid,
-					utterance
-				);
+			Strings reply =  Enguage.mediate( uid, utterance );
 			t2.setText( reply.toString() );
+//			if (t2.getBackground() == Color.LIGHT_GRAY)
+//				t2.setBackground( Color.YELLOW );
+//			else
+//				t2.setBackground( Color.LIGHT_GRAY );
 	}	}
 	
 	private static void createAndShowGUI() {
@@ -70,7 +74,7 @@ public class EnguagePanel extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane( pane );
 		frame.pack();
-		frame.setSize( 300, 100 );
+		frame.setSize( 800, 150 );
 		frame.setVisible( true );
 	}
 	public static void main(String[] args) {
