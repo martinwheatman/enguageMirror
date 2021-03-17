@@ -24,6 +24,7 @@ there’s no pesky JavaScript or corporate websites to get in the way!
 [Shar](doc/shar.md)<br/>
 SNAP (WIP)<br/>
 [flatpak](doc/flatpak.md)
+[Java Swing](doc/swing.md)
 
 ## Examples
 
