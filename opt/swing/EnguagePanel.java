@@ -32,11 +32,11 @@ public class EnguagePanel extends JPanel {
 	public EnguagePanel() {
 		super(new BorderLayout());
  
-		buttonAction = new ButtonAction( "Say... (try saying 'set the value of colour to red')", null,
+		buttonAction = new ButtonAction( "Click to say, e.g. 'set colour to red'", null,
 							"Click to interpret what you type above",
 							KeyEvent.VK_M );
 		
-		Font font1 = new Font("SansSerif", Font.PLAIN, 30);
+		Font font1 = new Font("SansSerif", Font.PLAIN, 24);
 		
 		t1 = new JTextField("");
 		t1.setFont( font1 );
@@ -62,14 +62,15 @@ public class EnguagePanel extends JPanel {
 	}
 	
 	private static Color whatColourShouldIbe( Color current ) {
-		Color color = current == Color.YELLOW ?
-				Color.LIGHT_GRAY : Color.YELLOW;
+		Color color = current;
 		
 		String colour = Variable.get( "COLOUR" );
-		     if (colour == null) ; // ignore a null return
+		     if (colour == null); // ignore a null return
 		else if (colour.equalsIgnoreCase(  "red" )) color = Color.RED;
 		else if (colour.equalsIgnoreCase( "blue" )) color = Color.BLUE;
-		
+		else if (colour.equalsIgnoreCase( "green" )) color = Color.green;
+		else if (colour.equalsIgnoreCase( "yellow" )) color = Color.yellow;
+						
 		return color;
 	}
 	

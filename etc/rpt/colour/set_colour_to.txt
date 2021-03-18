@@ -1,0 +1,12 @@
+On "COLOUR is a colour":
+	add COLOUR to my colour list.
+	
+red is a colour.
+yellow is a colour.
+green is a colour.
+blue is a colour.
+
+On "set colour to COLOUR":
+	does COLOUR exist in my colour list;
+	if not, reply "sorry, COLOUR is not a colour I know";
+	reply "ok, colour is set to COLOUR".

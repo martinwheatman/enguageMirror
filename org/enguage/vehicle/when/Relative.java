@@ -151,7 +151,7 @@ public class Relative {
 		return rc; //audit.out( rc );
 	}
 	static boolean doRelativeDay( When w, ListIterator<String> si ) {
-		audit.in( "doRelativeDay", "w="+ w.toString() +", si="+ si.nextIndex());
+		//audit.in( "doRelativeDay", "w="+ w.toString() +", si="+ si.nextIndex());
 		/* d    [NUMBER d/w/m/y/c/m [ago]] yesterday [morning/afternoon/evening]| // last night 
 		 *                                 tomorrow [morning/afternoon/evening/night] |
 		 *                                 today | this morning/afternoon/evening | tonight
@@ -204,5 +204,5 @@ public class Relative {
 		if (Strings.doString( "at", si ) && !Time.doTime( w, si ))
 			si.previous();
 
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 }	}

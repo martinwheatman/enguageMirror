@@ -114,14 +114,14 @@ public class Audit {
 		// sometimes this is tested at call time - preventing the string processing
 		// in the traceIn() call being performed at runtime.
 		stack.prepend( fn );
-		log( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
+		LOG( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
 		indent.incr();
 	}
 
     public String OUT() { return OUT( "" ); }
     public String OUT( String result ) {
     	indent.decr();
-		log( "OUT "+ name
+		LOG( "OUT "+ name
 				+ (stack.size()>1?"."+ stack.get( 0 ) +"()" : "")
 				+ (result==null || result.contentEquals("") ? "" : " => "+ result)
 			);

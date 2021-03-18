@@ -35,6 +35,7 @@
 			<concept id="verbalReasoning/are_transitive" op="load"/>
 			<concept id="qualifiers/spatial+spatially"   op="load"/>
 			<concept id="objects/set+get+unset"          op="load"/>
+			<concept id="objects/list"                   op="load"/>
 			<concept id="verbal/arithmetic"              op="load"/>
 		</concepts>
 	</config>
