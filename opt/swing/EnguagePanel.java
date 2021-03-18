@@ -32,7 +32,7 @@ public class EnguagePanel extends JPanel {
 	public EnguagePanel() {
 		super(new BorderLayout());
  
-		buttonAction = new ButtonAction( "Click to say, e.g. 'set colour to red'", null,
+		buttonAction = new ButtonAction( "Click to 'say' what's above, e.g. 'set colour to red'", null,
 							"Click to interpret what you type above",
 							KeyEvent.VK_M );
 		
