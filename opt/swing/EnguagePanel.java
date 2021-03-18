@@ -32,7 +32,7 @@ public class EnguagePanel extends JPanel {
 	public EnguagePanel() {
 		super(new BorderLayout());
  
-		buttonAction = new ButtonAction( "Say", null,
+		buttonAction = new ButtonAction( "Say... (try saying 'set the value of colour to red')", null,
 							"Click to interpret what you type above",
 							KeyEvent.VK_M );
 		
@@ -66,7 +66,8 @@ public class EnguagePanel extends JPanel {
 				Color.LIGHT_GRAY : Color.YELLOW;
 		
 		String colour = Variable.get( "COLOUR" );
-		     if (colour.equalsIgnoreCase(  "red" )) color = Color.RED;
+		     if (colour == null) ; // ignore a null return
+		else if (colour.equalsIgnoreCase(  "red" )) color = Color.RED;
 		else if (colour.equalsIgnoreCase( "blue" )) color = Color.BLUE;
 		
 		return color;
