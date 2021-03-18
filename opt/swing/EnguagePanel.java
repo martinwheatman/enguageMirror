@@ -1,10 +1,24 @@
 package opt.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.enguage.Enguage;
+import org.enguage.objects.Variable;
 import org.enguage.util.Strings;
 
 public class EnguagePanel extends JPanel {
@@ -47,6 +61,17 @@ public class EnguagePanel extends JPanel {
 		setBorder( BorderFactory.createEmptyBorder( 0, 0, 0, 0 ));
 	}
 	
+	private static Color whatColourShouldIbe( Color current ) {
+		Color color = current == Color.YELLOW ?
+				Color.LIGHT_GRAY : Color.YELLOW;
+		
+		String colour = Variable.get( "COLOUR" );
+		     if (colour.equalsIgnoreCase(  "red" )) color = Color.RED;
+		else if (colour.equalsIgnoreCase( "blue" )) color = Color.BLUE;
+		
+		return color;
+	}
+	
 	public class ButtonAction extends AbstractAction {
 		static final long serialVersionUID = 0L;
 		public ButtonAction( String text, ImageIcon icon,
@@ -60,10 +85,9 @@ public class EnguagePanel extends JPanel {
 			Strings utterance = new Strings( t1.getText() );
 			Strings reply =  Enguage.mediate( uid, utterance );
 			t2.setText( reply.toString() );
-//			if (t2.getBackground() == Color.LIGHT_GRAY)
-//				t2.setBackground( Color.YELLOW );
-//			else
-//				t2.setBackground( Color.LIGHT_GRAY );
+			t2.setBackground( 
+				whatColourShouldIbe( t2.getBackground() )
+			);
 	}	}
 	
 	private static void createAndShowGUI() {
