@@ -14,7 +14,7 @@ On "i am not meeting anyone",  _user is not meeting anybody.
 On "SUBJECT is meeting PHRASE-WHOM":
 	set output format to "WHOM,LOCATOR LOCATION,WHEN";
 	assert SUBJECT is meeting WHOM;
-	reply "i know";
+	reply "yes, i know";
 	if not, perform "items add SUBJECT meeting WHOM";
 	then, reply "ok, SUBJECT is meeting ...".
 On "i am meeting PHRASE-WHOM", _user is meeting WHOM.
@@ -50,7 +50,7 @@ On "where am i meeting PHRASE-WHOM", where is _user meeting WHOM.
 
 On "SUBJECT is not meeting PHRASE-WHOM":
 	perform "items remove SUBJECT meeting WHOM";
-	if not, "i know";
+	if not, "yes, i know";
 	then, reply "ok, SUBJECT is not meeting WHOM".
 On "i am not meeting PHRASE-WHOM", _user is not meeting WHOM.
 

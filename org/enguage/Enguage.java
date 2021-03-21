@@ -255,7 +255,7 @@ public class Enguage {
 			//         dead and alive are mutually exclusive
 			// mut ex: i am martin            - ok
 			//         i am martin wheatman   - ok
-			//         i am martin            - I know
+			//         i am martin            - yes, i know
 			//         i am harvey wallbanger - no you're martin
 			//         i've changed my name to harvey wallbanger - ok
 			// fat and thin and athletic are mutually exclusive.
@@ -362,9 +362,9 @@ public class Enguage {
 		}
 		if (runTheseTests( "Why/because, IJCSSA article example" )) {
 			audit.subtl( "Simple action demo" );
-			test( "i am baking a cake",     "i know", "ok, you're baking a cake" );
-			test( "am i baking a cake",     "yes, you're     baking a cake" );
-			test( "i am not baking a cake", "ok,  you're not baking a cake" );
+			test( "i am baking a cake",     "yes, i know", "ok, you're     baking a cake" );
+			test( "am i baking a cake",     "yes,               you're     baking a cake" );
+			test( "i am not baking a cake",                "ok, you're not baking a cake" );
 			
 			audit.title( "Why/because" );
 			test( "i am baking a cake so i need 3 eggs",
@@ -421,7 +421,7 @@ public class Enguage {
 					                            "ok, you need 2 cups of coffee and a biscuit");
 			test( "what do i need",             "you need 2 cups of coffee, and a biscuit");
 			test( "how many coffees do i need", "2, you need 2 coffees" );
-			test( "i need 2 coffees",           "i know" );
+			test( "i need 2 coffees",           "yes, i know" );
 			test( "i don't need any coffee",    "ok, you don't need any coffee" );
 			test( "what do i need",             "you need a biscuit" );
 
@@ -429,7 +429,7 @@ public class Enguage {
 			test( "i need to go to town",       "ok, you need to go to town" );
 			test( "what do i need",             "you need a biscuit, and to go to town" );
 			test( "i have the biscuit",         "ok, you don't need any biscuit" );
-			test( "i have to go to town",       "I know" );
+			test( "i have to go to town",       "yes, i know" );
 			test( "i don't need to go to town", "ok, you don't need to go to town" );
 			test( "what do i need",             "you don't need anything" );
 			
@@ -512,8 +512,8 @@ public class Enguage {
 			clearTheNeedsList();
 			test( "i need biscuits",       "ok, you need biscuits" );
 			test( "i need milk from the dairy aisle", "ok, you need milk from the dairy aisle" );
-			test( "i from the dairy aisle need milk", "i know" );
-			test( "from the dairy aisle i need milk", "i know" );
+			test( "i from the dairy aisle need milk", "yes, i know" );
+			test( "from the dairy aisle i need milk", "yes, i know" );
 			test( "what do i need",        "you need biscuits; and, milk from the dairy aisle" );
 			test( "from the dairy aisle what do i need",  "you need milk from the dairy aisle" );
 			test( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );
@@ -864,12 +864,12 @@ public class Enguage {
 		if (runTheseTests( "Polymorphism - setup new idea and save" )) { // code generation features
 			
 			clearTheNeedsList( "i don't want anything" );
-			test( "want is unlike need", "ok, want is unlike need", "i know" );
+			test( "want is unlike need", "ok, want is unlike need", "yes, i know" );
 			test( "what do i want",      "i'm sorry, i don't understand the question" );
 			
 			test( "want is like need",   "ok, want is like need" );
 			test( "what do i want",      "you want another pony", "you don't want anything" );
-			test( "i want another pony", "i know", "ok, you want another pony" );
+			test( "i want another pony", "yes, i know", "ok, you want another pony" );
 			test( "what do i want",      "you want another pony" );
 		}
 		if (runTheseTests( "On-the-fly Langauge Learning" )) { // 

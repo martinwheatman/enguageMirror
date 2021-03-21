@@ -51,7 +51,6 @@ public class Answer {
 			else if (s.equalsIgnoreCase( Reply.noStr()     )) type = Reply.NO;
 			else if (s.equalsIgnoreCase( Reply.dnuStr()    )) type = Reply.DNU;
 			else if (s.equalsIgnoreCase( Reply.failureStr())) type = Reply.FAIL;
-			else if (s.equalsIgnoreCase( Reply.ikStr()     )) type = Reply.IK;
 			else if (s.equalsIgnoreCase( Reply.dnkStr()    )) type = Reply.DNK;
 			else type = Reply.CHS;
 		}	
