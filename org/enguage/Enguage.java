@@ -187,6 +187,10 @@ public class Enguage {
 //			test( "", "" );
 //		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
+			test( "set colour to yellow", "ok, colour is set to yellow" );
+			test( "set colour to red",    "ok, colour is set to red" );
+			test( "set colour to fred",   "sorry, fred is not a colour i know" );
+			
 			// before logging in, test that we can't just affect things...
 			test( "switch to submarines screen",
 					                           "sorry, you need to be logged in" );
