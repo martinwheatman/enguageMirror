@@ -31,7 +31,7 @@ public class Month {
 		return 0;
 	}
 	public static boolean doMonth( When w, ListIterator<String> si ) {
-		audit.in( "doMonth", "w="+ w.toString() +", si="+ si.nextIndex());
+		//audit.in( "doMonth", "w="+ w.toString() +", si="+ si.nextIndex());
 		boolean rc = false;
 		if ( si.hasNext()) {
 			int n = number( si.next());
@@ -41,7 +41,7 @@ public class Month {
 			} else
 				si.previous();
 		}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	public static String toString( long time ) {
 		int month = Moment.monthValue( time );

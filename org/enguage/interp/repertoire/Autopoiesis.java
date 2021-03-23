@@ -8,10 +8,14 @@ import org.enguage.interp.sign.Sign;
 public class Autopoiesis {
 
 	public static final Sign[] spoken = {
-	//		On "interpret PHRASE-X thus":
-	//			set transformation to true;
-	//			perform "sign create X";
-	//			then, reply "go on".
+			
+			//	OPENING REMARKS
+			new Sign( "you can say", new Phrase( "X" ))
+				.appendIntention( Intention.thenThink, "set transformation to true" )
+				.appendIntention( Intention.thenDo,    "sign create X")
+				.appendIntention( Intention.thenReply, "go on" ),
+
+			
 			new Sign( "interpret", new Phrase( "x" ), "thus" )
 				.appendIntention( Intention.thenThink, "set transformation to true" )
 				.appendIntention( Intention.thenDo,    "sign create X")
@@ -22,13 +26,7 @@ public class Autopoiesis {
 				.appendIntention( Intention.thenDo,    "sign create X")
 				.appendIntention( Intention.thenReply, "go on" ),
 			
-	//		On "ok":
-	//			set transformation to false;
-	//			get the value of finalReply;
-	//			if not, reply "ok";
-	//			perform "sign reply ...";
-	//			unset the value of finalReply;
-	//			then, reply "ok".
+			// CONCLUDING REMARKS
 			new Sign( "that concludes interpretation" )
 				.appendIntention( Intention.thenThink, "get the value of finalReply" ) // only set on toXreply
 				.appendIntention( Intention.thenDo,    "sign reply ..." ) // transformation must be true!
@@ -38,118 +36,83 @@ public class Autopoiesis {
 				.appendIntention( Intention.elseReply, "ok" )
 				.appendIntention( Intention.thenReply, "ok" ),
 				
-	//		On "that is it", ok.
 			new Sign( "that is it" )
 				.appendIntention( Intention.thenThink, "that concludes interpretation" ),
 						
-	//		On "that is all", ok.
 			new Sign( "that is all" )
 				.appendIntention( Intention.thenThink, "that concludes interpretation" ),
 				
 					
 				
-	// THINK...
-	//		On "then PHRASE-X":
-	//			perform "sign think X";
-	//			then, reply "go on".
+			// THINK...
 			new Sign( "then", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign think X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 						
-	//		On "first PHRASE-X", then X.
 			new Sign( "first", new Phrase( "x" ))
 				.appendIntention( Intention.thenThink, "then X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
-	//		On "think PHRASE-X", then X.
 			new Sign( "think", new Phrase( "x" ))
 				.appendIntention( Intention.thenThink, "then X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
-	//		On "next  PHRASE-X", then X.
 			new Sign( "next", new Phrase( "x" ))
 				.appendIntention( Intention.thenThink, "then X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
-	//			On "then if not PHRASE-X":
-	//			get the value of transformation;
-	//			if not, reply "i do not understand";
-	//			perform "sign else think X";
-	//			then, reply "go on".
 			new Sign( "then if not", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo  ,  "sign else think X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
 				
-	// ...DO
-	//		On "then perform PHRASE-X":
-	//			perform "sign perform X";
-	//			then, reply "go on".
+			// ...DO
 			new Sign( "then perform", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 					
-	//		On "first perform PHRASE-X", then perform X.
 			new Sign( "first perform", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
-	//		On "next perform PHRASE-X", then perform X.
 			new Sign( "next perform", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 	
-	//			On "then if not perform PHRASE-X":
-	//			get the value of transformation;
-	//			if not, reply "i do not understand";
-	//			perform "sign else perform X";
-	//			then, reply "go on".
 			new Sign( "then if not perform", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign else perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 							
-				
-	// ...SAY
-	//		On "just reply PHRASE-X", then reply X. -- translation!
+			// ...SAY
 			new Sign( "just reply", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign reply X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
-	//		On "then reply PHRASE-X":
-	//			perform "sign reply X";
-	//			then, reply "go on".
 			new Sign( "then reply", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign reply X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 					
-	//			On "then if not reply PHRASE-X":
-	//			get the value of transformation;
-	//			if not, reply "i do not understand";
-	//			perform "sign else reply X";
-	//			then, reply "go on".
 			new Sign( "then if not reply", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign else reply X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 	
-	//		On "then whatever reply PHRASE-X", then reply X.
 			new Sign( "then whatever reply", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign else reply X" )
 				.appendIntention( Intention.thenDo,    "sign reply X" )
 				.appendIntention( Intention.thenThink, "that concludes interpretation" ),
 	
 				
-	//			On "finally PHRASE-X":
-	//			perform "sign finally X";
-	//			then, reply "ok".
 			new Sign( "finally", new Phrase( "x" ))
 				.appendIntention( Intention.thenDo,    "sign finally X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 	
-	//		On "this implies PHRASE-B":
-	//			perform "sign imply B ";
-	//			then, reply "go on".
-			new Sign( "this implies", new Phrase( "b" ))
-				.appendIntention( Intention.thenDo,    "sign imply B" )
+			// IMPLIES
+			new Sign( "this implies that", new Phrase( "IMPLICATION" ))
+				.appendIntention( Intention.thenDo,    "sign imply IMPLICATION" )
+				.appendIntention( Intention.thenReply, "go on" ),
+				
+			new Sign( "this implies that you", new Phrase( "IMPLICATION" ))
+				.appendIntention( Intention.thenDo,    "sign imply IMPLICATION" )
 				.appendIntention( Intention.thenReply, "go on" ),
 		};
 	

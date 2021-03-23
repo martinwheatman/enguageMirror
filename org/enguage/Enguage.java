@@ -187,21 +187,31 @@ public class Enguage {
 //			test( "", "" );
 //		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
+			
+			test( "you can say variable colour is a colour", "go on" );
+			test( "this implies that you add variable colour to your colour list", "go on" );
+			test( "and that is it",                             "ok" );
+			
+			test( "red is a colour", "ok" );
+			test( "blue is a colour", "ok" );
+			test( "green is a colour", "ok" );
+			test( "yellow is a colour", "ok" );
+			
 			test( "set colour to yellow", "ok, colour is set to yellow" );
 			test( "set colour to red",    "ok, colour is set to red" );
 			test( "set colour to fred",   "sorry, fred is not a colour i know" );
 			
+			//
 			// before logging in, test that we can't just affect things...
-			test( "switch to submarines screen",
-					                           "sorry, you need to be logged in" );
-			test( "clear the filter",          "sorry, you need to be logged in" );
+			test( "switch to submarines screen", "sorry, you need to be logged in" );
+			test( "clear the filter",            "sorry, you need to be logged in" );
 			
-			test( "login as megan",            "ok, you're logged in as megan" );
+			test( "login as megan",              "ok, you're logged in as megan" );
 			test( "switch to submarines screen", "ok, switched to submarines screen" );
 			test( "what is the value of screen", "submarines, the value of screen is submarines" );
-			test( "filter by submarines only", "ok, you're filtering by submarines only" );
+			test( "filter by submarines only",   "ok, you're filtering by submarines only" );
 			
-			test( "logout",                    "ok, you have logged out" );
+			test( "logout",                      "ok, you have logged out" );
 		}
 		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
 			
@@ -876,7 +886,7 @@ public class Enguage {
 			test( "i want another pony", "yes, i know", "ok, you want another pony" );
 			test( "what do i want",      "you want another pony" );
 		}
-		if (runTheseTests( "On-the-fly Langauge Learning" )) { // 
+		if (runTheseTests( "On-the-fly Language Learning" )) { // 
 			/* TODO: create filename from pattern:
 			 *    "i need phrase variable objects" => i_need-.txt (append? create overlay)
 			 *    "this is part of the need concept" => need.txt (append)
@@ -901,11 +911,12 @@ public class Enguage {
 
 
 			//...or to put it another way
-			test( "to the phrase i am called phrase variable name reply hi whatever", "ok" );
-			test( "this implies name gets set to variable name",   "go on" );
-			test( "this implies name is not set to variable name", "go on" );
-			test( "if not reply i already know this",              "go on" );
-			test( "ok",                                            "ok" );
+			test( "interpret i am called phrase variable name like this", "go on" );
+			test( "first reply hi whatever",                             "go on" );
+			test( "this implies that you set name to variable name",    "go on" );
+			test( "this implies that name is not set to variable name", "go on" );
+			test( "then if not reply i already know this",              "go on" );
+			test( "ok",                                                    "ok" );
 
 			test( "i am called martin", "i already know this" );
 
@@ -918,10 +929,10 @@ public class Enguage {
 
 			// 2. could this be built thus?
 			test( "to phrase variable this means phrase variable that reply ok", "ok" );
-			test( "this implies set transformation to false",                    "go on" );
-			test( "this implies ok perform sign think variable that",            "go on" );
-			test( "this implies ok perform sign create variable this",           "go on" );
-			test( "this implies set transformation to true",                     "go on" );
+			test( "this implies that you set transformation to false",        "go on" );
+			test( "this implies that you perform sign think variable that",   "go on" );
+			test( "this implies that you perform sign create variable this",  "go on" );
+			test( "this implies that you set transformation to true",         "go on" );
 			test( "ok", "ok" );
 
 			test( "just call me phrase variable name means i am called variable name", "ok" );

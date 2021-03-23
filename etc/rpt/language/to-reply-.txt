@@ -23,6 +23,3 @@ On "if not reply PHRASE-REPLY":
 	unset the value of headappending;
 	then, reply "go on".
 
-On "this implies PHRASE-IMPLICATION":
-	perform "sign imply IMPLICATION";
-	then, reply "go on".
