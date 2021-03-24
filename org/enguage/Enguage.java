@@ -188,14 +188,14 @@ public class Enguage {
 //		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
 			
-			test( "you can say variable colour is a colour", "go on" );
-			test( "this implies that you add variable colour to your colour list", "go on" );
-			test( "and that is it",                             "ok" );
-			
-			test( "red is a colour", "ok" );
-			test( "blue is a colour", "ok" );
-			test( "green is a colour", "ok" );
-			test( "yellow is a colour", "ok" );
+//			test( "you can say variable colour is a colour", "go on" );
+//			test( "this implies that you add variable colour to your colour list", "go on" );
+//			test( "and that is it",                             "ok" );
+//			
+//			test( "red is a colour", "ok" );
+//			test( "blue is a colour", "ok" );
+//			test( "green is a colour", "ok" );
+//			test( "yellow is a colour", "ok" );
 			
 			test( "set colour to yellow", "ok, colour is set to yellow" );
 			test( "set colour to red",    "ok, colour is set to red" );

@@ -1,3 +1,12 @@
+you can say variable colour is a colour.
+this implies that you add variable colour to your colour list.
+and that is it.
+			
+red is a colour.
+blue is a colour".
+green is a colour.
+yellow is a colour.
+
 On "set colour to COLOUR":
 	does COLOUR exist in your colour list;
 	if not, reply "sorry, COLOUR is not a colour I know";
