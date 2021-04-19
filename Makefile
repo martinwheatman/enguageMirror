@@ -2,7 +2,7 @@ TMP=tmp
 MANIFEST=${TMP}/META-INF/MANIFEST.MF
 INSTALL=${HOME}
 SHAR=enguage.shar
-ANDLIBS=${HOME}/StudioProjects/Enguage/app/libs
+ANDLIBS=lib
 
 default:
 	@echo "Usage: make [ snap | jar | shar | swing | android | flatpak | clean ]" >&2
@@ -76,7 +76,7 @@ ${ANDLIBS}/anduage.jar: ${TMP}
 		find org -name \*.java -exec rm -f {} \;  ;\
 		find org -name .DS_Store -exec rm -f {} \; ;\
 		find org -name .gitignore -exec rm -f {} \; ;\
-		jar -cf ${ANDLIBS}/anduage.jar org \
+		jar -cf ../${ANDLIBS}/anduage.jar org \
 	)
 
 clean:

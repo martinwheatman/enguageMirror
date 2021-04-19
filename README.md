@@ -17,13 +17,13 @@ there’s no pesky JavaScript or corporate websites to get in the way!
 [Installation](doc/install.md)
 
 ## Containers
-
+[Android](doc/android.md)
 [docker Webserver](doc/container.md)<br/>
-[Running jarfile](doc/jarfile.md)<br/>
+[Running the plain jarfile](doc/jarfile.md)<br/>
 [Web Server](doc/httpd.md)<br/>
 [Shar](doc/shar.md)<br/>
 SNAP (WIP)<br/>
-[flatpak](doc/flatpak.md)
+[flatpak](doc/flatpak.md)</br>
 [Java Swing](doc/swing.md)
 
 ## Examples
