@@ -22,6 +22,12 @@ In the enguage repo, create the Enguage Jarfile for android (without the Assets 
 <li> cp lib/anduage.jar $HOME/AndroidStudioProjects/Enguage/app/libs
 <li> Right click on this in Android Studio and select "Add as library"
 </ul>
+You will also need to add in the opt/android.app/assets directory (that is ./etc) into you android project
+<ul>
+<li> Right-click in Android Studio -> New -> Folder -> Assets Folder
+This will be, by default created in AndroidStudioProjecct/Engauge/app/src/main
+<li> Copy into this the content of &lt;your repo>/etc/, e.g. config.xml and rpt/
+</ul>
 Following this there may be XML resources to tidy up, such as:
 <ul>
 <li>Colors,
