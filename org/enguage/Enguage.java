@@ -187,7 +187,7 @@ public class Enguage {
 //			test( "", "" );
 //		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
-			
+			/*
 //			test( "you can say variable colour is a colour", "go on" );
 //			test( "this implies that you add variable colour to your colour list", "go on" );
 //			test( "and that is it",                             "ok" );
@@ -212,6 +212,9 @@ public class Enguage {
 			test( "filter by submarines only",   "ok, you're filtering by submarines only" );
 			
 			test( "logout",                      "ok, you have logged out" );
+			*/
+			test( "martin is a user", "ok");
+			test( "login as martin", "ok, martin is logged in");
 		}
 		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
 			
