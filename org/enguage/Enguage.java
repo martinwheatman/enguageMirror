@@ -213,8 +213,8 @@ public class Enguage {
 			
 			test( "logout",                      "ok, you have logged out" );
 			*/
-			test( "martin is a user", "ok");
-			test( "login as martin", "ok, martin is logged in");
+			test( "martin is a user",   "ok");
+			test( "set user as martin", "ok, martin is logged on");
 		}
 		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
 			
