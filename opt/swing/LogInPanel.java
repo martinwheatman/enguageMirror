@@ -26,10 +26,10 @@ public class LogInPanel extends JFrame implements ActionListener {
     JTextField replyField = new JTextField("");
     JButton confirmCommandButton = new JButton();
     protected Action buttonAction;
-    static JPanel pane = new JPanel(new GridBagLayout());
-    static GridBagConstraints c = new GridBagConstraints();
-    static JButton testone = new JButton("ahfeehgwgh0wh");
-    static JButton testtwo = new JButton("sgpojgrwghwni");
+//    static JPanel pane = new JPanel(new GridBagLayout());
+//    static GridBagConstraints c = new GridBagConstraints();
+//    static JButton testone = new JButton("ahfeehgwgh0wh");
+//    static JButton testtwo = new JButton("sgpojgrwghwni");
  
  
     LogInPanel() {
@@ -92,24 +92,8 @@ public class LogInPanel extends JFrame implements ActionListener {
 		String user = Variable.get( "USER" );
 		     if (user == null); // ignore a null return
 		else if (user.equals(  "admin-one" )) {
-			MainWindow frame = new MainWindow();
-//		    frame.setTitle("Main Window");
-//		    frame.setVisible(true);
-//		    frame.setBounds(100, 100, 1000, 600);
-//		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		    frame.setResizable(false);
-//		    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-//		    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-//		    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-//		    frame.setLocation(x, y);
-//		    c.fill = GridBagConstraints.HORIZONTAL;
-//		    c.gridx = 0;
-//		    c.gridy = 0;
-//		    pane.add(testone, c);
-//		    c.fill = GridBagConstraints.HORIZONTAL;
-//		    c.gridx = 0;
-//		    c.gridy = 1;
-//		    pane.add(testtwo, c);
+			MainWindow frame = new MainWindow("admin-one");
+
 		    mainFrame.dispose();
 		};
 		
