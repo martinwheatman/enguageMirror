@@ -1,8 +1,6 @@
 package opt.swing;
 
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -29,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.enguage.Enguage;
+import org.enguage.objects.Variable;
 import org.enguage.util.Strings;
 
 import opt.swing.LogInPanel.ButtonAction;
@@ -51,7 +50,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	 
 	 String User;
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"rawtypes", "unchecked" })
 	public MainWindow(String user) {
         setLayoutManager();
         User=user;
@@ -71,11 +70,11 @@ public class MainWindow extends JFrame implements ActionListener {
 				KeyEvent.VK_M );
 		confirmCommandButton = new JButton( buttonAction);
 	   
-		String[] screenList = { "WideBand", "Narrowband"};
+		String[] screenList = { "No Screen Selected", "WideBand", "Narrowband"};
 
 		
 		screens = new JComboBox(screenList);
-		screens.setSelectedIndex(1);
+		screens.setSelectedIndex(0);
 		
 		screens.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -95,19 +94,23 @@ public class MainWindow extends JFrame implements ActionListener {
 	    c.anchor =GridBagConstraints.WEST;
 	    c.gridx = 0;
 	    c.gridy = 1;
+	    c.gridwidth=1;
 	    this.add(inputCommand, c);
 	    c.fill = GridBagConstraints.HORIZONTAL;
 	    c.gridx = 0;
 	    c.gridy = 2;
+	    c.gridwidth=1;
 	    this.add(confirmCommandButton, c);
 	    c.fill = GridBagConstraints.HORIZONTAL;
 	    c.gridx = 0;
 	    c.gridy = 3;
+	    c.gridwidth=1;
 	    this.add(replyField,c);
 	 //   c.fill = GridBagConstraints.VERTICAL;
 	    c.anchor =GridBagConstraints.EAST;
 	    c.gridx = 1;
 	    c.gridy = 1;
+	    c.gridwidth=1;
 	    this.add(screens,c);
 	    c.fill = GridBagConstraints.HORIZONTAL;
 	    c.gridx=0;
@@ -190,5 +193,18 @@ public class MainWindow extends JFrame implements ActionListener {
 
 
 }
+		
+		public void switchScreen() {
+
+			String screen = Variable.get( "SCREEN" );
+			     if (screen == null); // ignore a null return
+			else if (screen.equals(  "narrowband" )) {
+			screens.setSelectedIndex(2);
+			
+			}
+			else if (screen.equals(  "wideband" )) {
+				screens.setSelectedIndex(1);
+				};
+		}
 		
 }
