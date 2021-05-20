@@ -26,12 +26,8 @@ public class LogInPanel extends JFrame implements ActionListener {
     JTextField replyField = new JTextField("");
     JButton confirmCommandButton = new JButton();
     protected Action buttonAction;
-//    static JPanel pane = new JPanel(new GridBagLayout());
-//    static GridBagConstraints c = new GridBagConstraints();
-//    static JButton testone = new JButton("ahfeehgwgh0wh");
-//    static JButton testtwo = new JButton("sgpojgrwghwni");
  
- 
+//constructor sizes and adds components and listeners 
     LogInPanel() {
         setLayoutManager();
         setLocationAndSize();
@@ -63,9 +59,6 @@ public class LogInPanel extends JFrame implements ActionListener {
         inputCommand.setBounds(100, 100, 400, 30);
         confirmCommandButton.setBounds(150, 150, 300, 30);
         replyField.setBounds(100, 400, 400, 30);
-        
- 
- 
     }
  
     public void addComponentsToContainer() {
