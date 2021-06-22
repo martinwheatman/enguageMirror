@@ -186,6 +186,9 @@ public class Enguage {
 //		if (runThisTest( "title" )) {
 //			test( "", "" );
 //		}
+		if (runTheseTests( "can - capabilities" )) {
+			test( "flowers can be yellow", "ok , flowers can be yellow" );
+		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
 			/*
 //			test( "you can say variable colour is a colour", "go on" );
