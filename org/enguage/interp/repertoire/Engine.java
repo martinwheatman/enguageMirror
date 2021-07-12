@@ -3,11 +3,12 @@ package org.enguage.interp.repertoire;
 import java.util.Locale;
 
 import org.enguage.Enguage;
+import org.enguage.Example;
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.intention.Redo;
-import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Variable;
 import org.enguage.objects.list.Item;
@@ -158,7 +159,7 @@ public class Engine {
 
 		if ( cmd.equals( "selfTest" )) {
 			
-			Enguage.selfTest();
+			Example.testRun();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
 			
 		} else if ( cmd.equals( "primeAnswer" )) {
