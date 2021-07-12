@@ -107,7 +107,16 @@ public class Example {
 //			test( "", "" );
 //		}
 		if (runTheseTests( "can - capabilities" )) {
-			testRun( "flowers can be yellow", "ok , flowers can be yellow" );
+			testRun( "flowers can    be yellow", "ok, flowers can   be yellow" );
+			testRun( "flowers cannot be green",  "ok, flowers can't be green" );
+			testRun( "flowers cannot be red",    "ok, flowers can't be red" );
+			testRun( "can flowers    be red",    "no, flowers can't be red" );
+			testRun( "no flowers can be red",    "ok, flowers can be red" );
+
+			testRun( "can flowers    be green",   "no, flowers can't be green" );
+			testRun( "can flowers    be yellow",  "yes, flowers can be yellow" );
+			testRun( "can flowers    be red",     "yes, flowers can be red" );
+			testRun( "can flowers    be blue",    "sorry, i don't know" );
 		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
 			/*

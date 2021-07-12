@@ -13,6 +13,7 @@ On "does                     PHRASE-OBJECT                 exist  in SUBJECT LIS
 On "does                     PHRASE-EFFECT                 exist  in SUBJECT causal list",                 perform " items    matches SUBJECT causal EFFECT".
 On "does                     PHRASE-OBJECT at PHRASE-WHERE exist  in SUBJECT LIST list",                   perform " items    matches SUBJECT LIST OBJECT WHERE WHEN".
 
+On "                         SOMEONE and SOMETHING         exist  in SUBJECT LIST list",                   perform " items    matches SUBJECT LIST SOMEONE SOMETHING".
 On "                                PHRASE-OBJECT          exists in SUBJECT LIST list",                   perform " items     exists SUBJECT LIST OBJECT".
 On "    NUMERIC-QUANTITY            PHRASE-OBJECT          exists in SUBJECT LIST list",                   perform " items     exists SUBJECT LIST OBJECT QUANTITY".
 On "    NUMERIC-QUANTITY    UNIT of PHRASE-OBJECT          exists in SUBJECT LIST list",                   perform " items     exists SUBJECT LIST OBJECT QUANTITY UNIT".
@@ -25,7 +26,7 @@ On "add                             PHRASE-OBJECT                 to SUBJECT LIS
 On "add    NUMERIC-QUANTITY         PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT QUANTITY";      reply "ok".
 On "add    NUMERIC-QUANTITY UNIT of PHRASE-OBJECT                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT QUANTITY UNIT"; reply "ok".
 On "add                             WHOM at WHERE                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST OBJECT";               reply "ok".
-On "add                             SOMEONE can be SOMETHING      to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST SOMEONE SOMETHING";    reply "ok".
+On "add                             SOMEONE can be SOMETHING      to SUBJECT LIST list": set op to    add; perform " items    addItem SUBJECT LIST SOMEONE SOMETHING";    reply "ok".
 
 On "remove                          PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " items     remove SUBJECT LIST OBJECT";               reply "ok".
 On "remove NUMERIC-QUANTITY         PHRASE-OBJECT               from SUBJECT LIST list": set op to remove; perform " items     remove SUBJECT LIST OBJECT QUANTITY";      reply "ok".
@@ -33,6 +34,7 @@ On "remove NUMERIC-QUANTITY UNIT of PHRASE-OBJECT               from SUBJECT LIS
 On "remove any                      PHRASE-OBJECT               from SUBJECT LIST list",                   perform " items  removeAny SUBJECT LIST OBJECT".
 On "remove the       NAME        of PHRASE-OBJECT               from SUBJECT LIST list",                   perform " items    delAttr SUBJECT LIST OBJECT NAME".
 On "remove everything                                           from SUBJECT LIST list",                   perform " items  removeAll SUBJECT LIST".
+On "remove                     SOMEONE and SOMETHING            from SUBJECT LIST list",                   perform " items removeItem SUBJECT LIST SOMEONE SOMETHING".
 
 On "get    the       cause       of PHRASE-EFFECT               from SUBJECT LIST list",                   perform " items getAttrVal SUBJECT LIST cause EFFECT".
 On "get    the       NAME        of PHRASE-WHOM                 from SUBJECT LIST list",                   perform " items getAttrVal SUBJECT LIST NAME WHOM".

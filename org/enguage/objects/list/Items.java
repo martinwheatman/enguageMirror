@@ -145,6 +145,16 @@ public class Items extends ArrayList<Item> {
 		value.set( toXml() );
 		return audit.out( rc );
 	}
+	private String addItem( Item item ) { 
+		String rc = item.toString()+ " "+ item.group(); // return what we've just said
+		audit.in( "addItem", item.toXml() +" ("+ rc +")" );
+		int n = index( item, true ); // exact match? Yes, don't add duplicates!
+		if (-1 == n) { 
+			add( item );
+		}
+		value.set( toXml() );
+		return audit.out( rc );
+	}
 	private String update( Item item ) { // adjusts attributes, e.g. quantity
 		String rc = item.toString(); // return what we've just said
 		int n = index( item, false ); // exact match? No!
@@ -402,6 +412,9 @@ public class Items extends ArrayList<Item> {
 					// must return those left... so need 10, have 6, return 4.
 					rca.add( list.removeQuantity( item, false ));
 					
+				} else if (cmd.equals( "removeItem" )) {
+					rca.add( list.removeQuantity( item, true ));
+					
 				} else if (cmd.equals( "removeAny" )) {
 					while (-1 != list.index( item, false ))
 						rca.add( list.removeQuantity( item, false ));
@@ -411,6 +424,9 @@ public class Items extends ArrayList<Item> {
 					
 				} else if (cmd.equals( "add" )) {
 					rca.add( list.append( item ));
+					
+				} else if (cmd.equals( "addItem" )) {
+					rca.add( list.addItem( item ));
 					
 				} else if (cmd.equals( "update" )) {
 					rca.add( list.update( item ));
