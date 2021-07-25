@@ -17,6 +17,7 @@ there’s no pesky JavaScript or corporate websites to get in the way!
 [Installation](doc/install.md)
 
 ## Containers
+  <a href="doc/android.md"> Android</a>
 [Android](doc/android.md)<br/>
 [docker Webserver](doc/container.md)<br/>
 [Running the plain jarfile](doc/jarfile.md)<br/>
