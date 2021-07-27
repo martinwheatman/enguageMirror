@@ -1,0 +1,8 @@
+On "i enjoy LIKE":
+	add LIKE to my like list;
+	reply "ok, you enjoy LIKE".
+
+On "do I enjoy LIKE":
+	does LIKE exist in my like list;
+	if not, reply "you haven't told me you enjoy LIKE";
+	reply "yes, you enjoy LIKE".

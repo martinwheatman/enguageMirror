@@ -10,7 +10,7 @@ import org.enguage.vehicle.pronoun.Pronoun;
 public class Example {
 	
 	private static Audit     audit = new Audit( "Example" );
-	private static   int     level = 0; // TODO: 0 = every level, -n = ignore level n
+	private static   int     level = 0;
 
 	public  static boolean   serverTest = false;
 
@@ -117,6 +117,13 @@ public class Example {
 			testRun( "can flowers    be yellow",  "yes, flowers can be yellow" );
 			testRun( "can flowers    be red",     "yes, flowers can be red" );
 			testRun( "can flowers    be blue",    "sorry, i don't know" );
+		}
+		if (runTheseTests( "Megan's Enjoy Example" )) {
+			testRun( "i enjoy yellow", "ok, you enjoy yellow" );
+			testRun( "i enjoy dogs",   "ok, you enjoy dogs" );
+
+			testRun( "do i enjoy yellow",    "yes, you enjoy yellow" );
+			testRun( "do i enjoy chocolate", "you haven't told me you enjoy chocolate" );
 		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
 			/*

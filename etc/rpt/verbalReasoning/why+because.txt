@@ -3,11 +3,9 @@ cause and effect are transitive.
 On "SAID-EFFECT because SAID-CAUSE":
 	is CAUSE because EFFECT;
 	reply "i'm sorry, EXT-CAUSE because EXT-EFFECT";
-	if not, ok;
-	is EFFECT because CAUSE;
+	if not, is EFFECT because CAUSE;
 	reply "i know";
-	if not, ok;
-	EFFECT;
+	if not, EFFECT;
 	if not, say so;
 	CAUSE;
 	if not, say so;
