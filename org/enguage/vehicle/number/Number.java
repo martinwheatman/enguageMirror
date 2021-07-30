@@ -53,7 +53,6 @@ public class Number {
 	static private final Strings      Cubed = new Strings(           "cubed" );
 	static private final Strings    Squared = new Strings(         "squared" );
 	static private final Strings    PowerOf = new Strings( "to the power of" );
-	static private final Strings  Factorial = new Strings(       "factorial" );
 	static public  final Strings NotANumber = new Strings(    "not a number" );
 	
 
@@ -212,9 +211,8 @@ public class Number {
 					for (int j=0; j<x; j++) si.next();
 					n+=x; // can only be 1
 				}
-				if (   0 != (x =     Cubed.peekwals( si ))
-				    || 0 != (x =   Squared.peekwals( si ))
-					|| 0 != (x = Factorial.peekwals( si ))) // we can say "all factorial"	
+				if (   0 != (x =   Cubed.peekwals( si ))
+				    || 0 != (x = Squared.peekwals( si )))
 				{
 					Strings.next( si, x );
 					oplen = (n+=x); // success!
