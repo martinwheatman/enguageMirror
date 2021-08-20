@@ -298,10 +298,8 @@ public class Example {
 			testRun( "hello",                          "hello to you too", "I don't understand" );
 			// Build a repertoire...
 			testRun( "to the phrase hello reply hello to you too", "ok" );
-			testRun( "ok",                             "ok" );
 			testRun( "hello",                          "hello to you too" );
 			testRun( "to the phrase my name is variable name reply hello variable name", "ok" );
-			testRun( "ok", "ok" );
 			// OK, now save this...
 			testRun( "save  spoken concepts as hello", "ok" );
 			
@@ -865,8 +863,7 @@ public class Example {
 			// ...means.../...the means to...
 			// 1. from the-means-to repertoire
 			testRun( "to the phrase phrase variable x the means to phrase variable y reply i really do not understand", "ok" );
-			testRun( "ok", "ok" );
-
+			
 			testRun( "do we have the means to become rich", "I really don't understand" );
 
 			// 2. could this be built thus?
