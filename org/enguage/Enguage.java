@@ -36,6 +36,8 @@ public class Enguage {
 	
 	public  static boolean verbose = false;
 	
+	public  static boolean imagined = false;
+	
 	public  static void init() {init( RW_SPACE );}
 	public  static void init( String root ) {
 		Fs.root( root );
@@ -49,6 +51,7 @@ public class Enguage {
 		Strings reply;
 		audit.in( "mediate", utterance.toString() );
 		
+		imagined = false;
 		Overlay.attach( uid );
 			
 		if (Server.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
@@ -64,7 +67,10 @@ public class Enguage {
 		// once processed, keep a copy
 		Utterance.previous( utterance );
 
-		if (Reply.isUnderstood()) {
+		if (imagined) {
+			Overlay.abortTxn( Redo.undoIsEnabled() );
+			Redo.disambOff();
+		} else if (Reply.isUnderstood()) {
 			Overlay.finishTxn( Redo.undoIsEnabled() );
 			Redo.disambOff();
 		} else {

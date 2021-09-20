@@ -103,9 +103,30 @@ public class Example {
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine  ruth" ));
 
-//		if (runThisTest( "title" )) {
-//			test( "", "" );
-//		}
+//		if (runTheseTests( "title" )) {
+//		testRun( "", "" );
+//	}
+		if (runTheseTests( "holding" )) {
+			testRun( "who are we",        "ok, we means you and i" );
+			testRun( "we are ruth and i", "ok, we means you and ruth" );
+			testRun( "who are we",        "ok, we means you and ruth" );
+			testRun( "we are you and i",  "ok, we means you and i"    );
+			testRun( "who are we",        "ok, we means you and i"    );
+			
+			testRun(     "martin is not holding hands with ruth", "yes, i know" );
+			testRun(     "martin is     holding hands with ruth", 
+					 "ok, martin is     holding hands with ruth" );
+			testRun(     "martin is not holding hands with ruth", 
+					 "ok, martin is not holding hands with ruth" );
+
+			testRun( "whose hand am i holding", "sorry, you're not holding hands" );
+			testRun( "we are holding hands",    "ok, we are holding hands" );
+			testRun( "whose hand am i holding", "ok, you're holding my hand" );
+			
+			testRun( "we are ruth and i",       "ok, we means you and ruth" );
+			testRun( "we are holding hands",    "ok, you're holding hands with ruth" );
+			testRun( "whose hand am i holding", "ok, you're holding ruth 's hand" );
+		}
 		if (runTheseTests( "can - capabilities" )) {
 			testRun( "flowers can    be yellow", "ok, flowers can   be yellow" );
 			testRun( "flowers cannot be green",  "ok, flowers can't be green" );
@@ -399,10 +420,7 @@ public class Example {
 			audit.title( "Correction" );
 			testRun( "i need another coffee", "ok, you need another coffee" );
 			testRun( "no i need another 3",   "ok, you need another 3 coffees" );
-			//Audit.allOn();
 			testRun( "what do i need",        "you need 6 coffees, and a cup of tea" );
-			//System.exit( 0 );
-			testRun( "prime the answer yes",  "ok, the next answer will be yes" );
 			testRun( "i don't need anything", "ok, you don't need anything" );
 			
 			audit.title( "Group-as-entity" );		
@@ -924,7 +942,7 @@ public class Example {
 			
 			testRun( "to the phrase ask me phrase variable question reply variable question", "ok" );
 
-			testRun( "prime the answer blue", "ok, the next answer will be blue" );
+			testRun( "the answer is blue", "ok, the next answer will be blue" );
 			testRun( "ask me what is the colour of the sky", "what is the colour of the sky" );
 			testRun( "blue", "i don't understand" );
 //

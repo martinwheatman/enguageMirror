@@ -141,7 +141,7 @@ public class Sign {
 	public void toVariable() {Variable.set( pattern.toFilename(), toString());}
 	
 	public Reply interpret( Reply r ) {
-		audit.in( "interpret", pattern().toString() );
+		//audit.in( "interpret", pattern().toString() );
 		Iterator<Intention> ai = programme.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();
@@ -157,7 +157,7 @@ public class Sign {
 				default: // thenFinally, think, do, say...
 					r = in.mediate( r );
 		}	}
-		return (Reply) audit.out( r );
+		return r; // (Reply) audit.out( r );
 	}
 	/*
 	 * This will handle "sign create X", found in interpret.txt

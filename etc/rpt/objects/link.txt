@@ -9,6 +9,11 @@ On "create a LINK link from A to B":
 	perform "link set A LINK B";
 	then, reply "ok".
 
+On "delete a LINK link from A to B":
+	perform "link delete A LINK B";
+	if not, reply "sorry, there is no LINK link from A to B";
+	then, reply "ok".
+
 On "a LINK link from CLASS exists":
 	perform "link exists CLASS LINK";
 	if not, reply "no, a LINK link from CLASS does not exist";

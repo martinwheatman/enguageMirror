@@ -320,6 +320,11 @@ public class Overlay {
 			inTxn = false;
 			compact();
 	}	}
+	static public void abortTxn( boolean undoIsEnabled ) {
+		if (undoIsEnabled) {
+			inTxn = false;
+			remove();
+	}	}
 	static public void startTxn( boolean undoIsEnabled ) {
 		if (undoIsEnabled) {
 			inTxn = true;

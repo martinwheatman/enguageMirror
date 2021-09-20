@@ -205,7 +205,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 	// a simple cognitive model ?
 	public Reply mediate( Utterance u ) {
-		//*
+		/*
 			audit.in( "mediate",
 				" ("+ name +"="+ size() +") "
 				+ " '"+ u.toString() +"' "
@@ -291,7 +291,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				} // matched	
 			}	
 		} // while more signs and not done
-		return (Reply) audit.out( r.answer( answer )); // r.answer( answer ); //
+		return r.answer( answer ); //(Reply) audit.out( r.answer( answer )); // 
 	}	
 	// help...
 

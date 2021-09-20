@@ -1,0 +1,39 @@
+On "X is holding hands with Y":
+	create a holdinghands link from X to Y;
+	the answer is Y;
+	reply "ok, X is holding hands with ...".
+
+On "i am holding hands with Y":
+	martin is holding hands with Y;
+	reply "ok, you are holding hands with Y".
+
+On "X is not holding hands with Y":
+	# delete a holdinghands link from X to Y;
+	perform "link delete X holdinghands Y";
+	if not, reply "yes, i know";
+	reply "ok, X is not holding hands with Y".
+
+On "whose hand am i holding":
+	perform "link exists martin holdinghands";
+	if not, reply "sorry, you are not holding hands";
+	perform "link get martin holdinghands";
+	set who to ...;
+	who is set to i;
+	reply "ok, you are holding my hand";
+	if not, reply "ok, you are holding WHO 's hand".
+	
+On "we are holding hands":
+	who are we;
+	set who to ...;
+	i am holding hands with WHO;
+	who is set to i;
+	reply "ok, we are holding hands";
+	if not, reply "ok, you are holding hands with WHO".
+
+	
+
+#On "i am not holding hands with Y":
+#	unset the value of holdinghands;
+#	reply "ok, you are not holding hands with Y"
+#We are not holding hands.
+#	unlink 

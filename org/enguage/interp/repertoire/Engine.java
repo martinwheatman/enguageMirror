@@ -32,16 +32,21 @@ public class Engine {
 			 */	
    			new Sign()
 				.pattern( new Pattern( "run a self test", "" ))
-	          		.appendIntention( Intention.allop, "selfTest" )
-	          		.concept( NAME ),
-		          	
+				.appendIntention( Intention.allop, "selfTest" )
+				.concept( NAME ),
+	          		
+			new Sign()
+				.pattern( new Pattern( "this is all imagined", "" ))
+				.appendIntention( Intention.allop, "imagined" )
+				.concept( NAME ),
+
    			new Sign()
 				.pattern( new Pattern( "remove the primed answer ", "" ))
 	          		.appendIntention( Intention.allop, "removePrimedAnswer" )
 	          		.concept( NAME ),
 		          	
 	    	new Sign()
-				.pattern( new Pattern( "prime the answer ", "answer" ).phrasedIs())
+				.pattern( new Pattern( "the answer is ", "answer" ).phrasedIs())
 		          	.appendIntention( Intention.allop, "primeAnswer ANSWER" )
 					.appendIntention( Intention.thenReply, "ok, the next answer will be ANSWER" )
 	          		.concept( NAME ),
@@ -157,15 +162,20 @@ public class Engine {
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
 
-		if ( cmd.equals( "selfTest" )) {
+		if ( cmd.equals( "imagined" )) {
+			
+			Enguage.imagined = true;
+			r.format( new Strings( "ok, this is all imagined" ));
+			
+		} else if ( cmd.equals( "selfTest" )) {
 			
 			Example.testRun();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
 			
 		} else if ( cmd.equals( "primeAnswer" )) {
 			
-			Question.primedAnswer( cmds.toString() ); // needs to be tidied up...
-			
+			Question.primedAnswer( cmds.toString() );
+			r.answer( cmds.toString() );
 			
 		} else if ( cmd.equals( "removePrimedAnswer" )) {
 			
