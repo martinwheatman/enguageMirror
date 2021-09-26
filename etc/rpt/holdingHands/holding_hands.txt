@@ -15,7 +15,7 @@ On "X is not holding hands with Y":
 
 On "whose hand am i holding":
 	perform "link exists martin holdinghands";
-	if not, reply "sorry, you are not holding hands";
+	if not, reply "sorry, you are not holding anyone's hand";
 	perform "link get martin holdinghands";
 	set who to ...;
 	who is set to i;
@@ -31,9 +31,7 @@ On "we are holding hands":
 	if not, reply "ok, you are holding hands with WHO".
 
 	
+On "i am not holding anyone's hand":
+	perform "link delete martin holdinghands";
+	reply "ok, you are not holding anyone's hand".
 
-#On "i am not holding hands with Y":
-#	unset the value of holdinghands;
-#	reply "ok, you are not holding hands with Y"
-#We are not holding hands.
-#	unlink 

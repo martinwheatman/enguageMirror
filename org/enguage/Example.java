@@ -119,13 +119,19 @@ public class Example {
 			testRun(     "martin is not holding hands with ruth", 
 					 "ok, martin is not holding hands with ruth" );
 
-			testRun( "whose hand am i holding", "sorry, you're not holding hands" );
+			testRun( "whose hand am i holding", "sorry, you're not holding anyone's hand" );
 			testRun( "we are holding hands",    "ok, we are holding hands" );
 			testRun( "whose hand am i holding", "ok, you're holding my hand" );
 			
 			testRun( "we are ruth and i",       "ok, we means you and ruth" );
 			testRun( "we are holding hands",    "ok, you're holding hands with ruth" );
 			testRun( "whose hand am i holding", "ok, you're holding ruth 's hand" );
+			
+			testRun( "i am not holding anyone's hand", "ok, you're not holding anyone's hand" );
+			testRun( "whose hand am i holding", "sorry, you're not holding anyone's hand" );
+			testRun( "if we are holding hands then whose hand am i holding",
+					 "ok, you're holding ruth 's hand" );
+			testRun( "whose hand am i holding", "sorry, you're not holding anyone's hand" );
 		}
 		if (runTheseTests( "can - capabilities" )) {
 			testRun( "flowers can    be yellow", "ok, flowers can   be yellow" );
