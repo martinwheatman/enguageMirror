@@ -20,7 +20,7 @@ On "whose hand am i holding":
 	set who to ...;
 	who is set to i;
 	reply "ok, you are holding my hand";
-	if not, reply "ok, you are holding WHO 's hand".
+	if not, reply "ok, you are holding WHO''s hand".
 	
 On "we are holding hands":
 	who are we;

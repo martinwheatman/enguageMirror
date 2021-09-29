@@ -38,6 +38,16 @@ public class Answer {
 			sa.replace( Strings.ellipsis, answers );
 		else if (sa.contains( Answer.placeholder() ))
 			sa.replace( Answer.placeholderAsStrings(), answers );
+		
+// If we need to inject answers into strings like "...'s"
+//	Pattern pattern = Pattern.compile( Strings.ELLIPSIS, Pattern.LITERAL );
+//	ListIterator<String> i = sa.listIterator();
+//	while (i.hasNext()) {
+//		Matcher matcher = pattern.matcher( i.next() );
+//		if (matcher.find())
+//			i.set(matcher.replaceAll( answers.toString() ));
+//	}
+		
 		return sa;
 	}
 	
