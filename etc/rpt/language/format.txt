@@ -1,4 +1,4 @@
-On "set output format to PHRASE-FORMAT":
+On "set output format to QUOTED-FORMAT":
 	perform "item set format FORMAT" ;
 	then, reply "ok". # todo: 'reply' on its own picks up "far" reply
 	
