@@ -9,7 +9,6 @@ this concept is temporal.
 ###############################################################################
 # Various singular additions
 On "i have eaten PHRASE-OBJECTS":
-	set output format to "QUANTITY,UNIT of,OBJECT,WHEN";
 	perform "context add when today";
 	if not, ok;
 	add OBJECTS to me eaten list;
@@ -17,21 +16,18 @@ On "i have eaten PHRASE-OBJECTS":
 	reply "ok, you have eaten ...".
 
 On "i have eaten NUMERIC-QUANTITY PHRASE-OBJECT":
-	set output format to "QUANTITY,UNIT of,OBJECT,WHEN";
 	perform "context add when today";
 	if not, ok;
 	add QUANTITY OBJECT to me eaten list;
 	reply "ok, you have eaten ... ".
 
 On "i have eaten NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
-	set output format to "QUANTITY,UNIT of,OBJECT,WHEN";
 	perform "context add when today";
 	if not, ok;
 	add QUANTITY UNIT of OBJECT to me eaten list;
 	reply "ok, you have eaten ...".
 	
 On "what have i eaten":
-	set output format to "QUANTITY,UNIT of,OBJECT,WHEN";
 	perform "context add when today";
 	if not, ok;
 	get me eaten list;

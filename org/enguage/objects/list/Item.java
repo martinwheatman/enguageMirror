@@ -16,17 +16,25 @@ import org.enguage.vehicle.where.Where;
 
 public class Item {
 
-	static private      Audit audit = new Audit("Item" );
-	static public final String NAME = "item";
-	static public final int      id = 171847; //Strings.hash( NAME );
+	private static      Audit audit = new Audit("Item" );
+	public static final String NAME = "item";
+	public static final int      id = 171847; //Strings.hash( NAME );
 	
-	static private Strings format = new Strings(); // e.g. "QUANTITY,UNIT of,,LOCATOR LOCATION"
-	static public  void    format( String csv ) { format = new Strings( csv, ',' ); }
-	static public  Strings format() { return format; }
+	/* The format has a default value "QUANTITY,UNIT of,OBJECT,LOCATOR LOCATION"
+	 * The reasoning is from a Radio4 piece a year or two back, that there is a
+	 * 'natural' order to qualifiers (adjectives?):-
+	 *    Why we say, "a big yellow taxi", and not, "a yellow big taxi" :-)
+	 */
+	private static String defFormat = "QUANTITY,UNIT of,OBJECT,LOCATOR LOCATION,WHEN";
+	public  static  void resetFormat() { format( defFormat ); }
+	
+	private static Strings   format = new Strings();
+	public  static  void      format( String csv ) { format = new Strings( csv, ',' );}
+	public  static  Strings   format() { return format; }
 
-	static private Strings groupOn = new Strings();
-	static public  void    groupOn( String groups ) { groupOn = new Strings( groups );}
-	static public  Strings groupOn() { return groupOn; }
+	private static Strings groupOn = new Strings();
+	public  static  void    groupOn( String groups ) { groupOn = new Strings( groups );}
+	public  static  Strings groupOn() { return groupOn; }
 	
 	// members: name, desc, attr
 	private String  name = new String( NAME );
@@ -37,16 +45,16 @@ public class Item {
 	public  Strings description() { return descr;}
 	public  Item    description( Strings s ) { descr=s; return this;}
 	
-	static private ArrayList<Strings> isStuff = new ArrayList<Strings>();
-	static private boolean isStuff( Strings s ) {return isStuff.contains( Plural.singular( s ));}
-	static private void    stuffIs( Strings s ) {
+	private static ArrayList<Strings> isStuff = new ArrayList<Strings>();
+	private static boolean isStuff( Strings s ) {return isStuff.contains( Plural.singular( s ));}
+	private static void    stuffIs( Strings s ) {
 		areThings.remove( Plural.plural( s ));
 		isStuff.add( Plural.singular( s ));
 	}
 	
-	static private ArrayList<Strings> areThings = new ArrayList<Strings>();
-	static private boolean areThings( Strings s ) {return areThings.contains( Plural.plural( s ));}
-	static private void    thingsAre( Strings s ) {
+	private static ArrayList<Strings> areThings = new ArrayList<Strings>();
+	private static boolean areThings( Strings s ) {return areThings.contains( Plural.plural( s ));}
+	private static void    thingsAre( Strings s ) {
 		isStuff.remove( Plural.singular( s ));
 		areThings.add( Plural.plural( s ));
 	}
@@ -76,7 +84,7 @@ public class Item {
 		description(  descr );
 		attributes( a );
 	}
-	static public Item next( ListIterator<String> si ) {
+	public static Item next( ListIterator<String> si ) {
 		Item it = null;
 		if (si.hasNext() && si.next().equals( "<" ) &&
 			si.hasNext() && si.next().equals( "item" )) // will be "/" on end list
@@ -173,6 +181,7 @@ public class Item {
 		return prevNum.isNaN() ? 1.0f : prevNum;
 	}
 	private Strings getFormatComponentValue( String composite ) { // e.g. "from LOCATION"
+		audit.in( "getFormatComponentValue", "composite="+ composite );
 		Strings value = new Strings();
 		for (String cmp : new Strings( composite ))
 			if ( Strings.isUpperCase( cmp )) { // variable e.g. "UNIT"
@@ -206,6 +215,7 @@ public class Item {
 				}	}
 			} else // lower case -- constant
 				value.add( cmp ); // e.g. "of"
+		audit.out( value );
 		return value;
 	}
 	public String toXml() { return "<"+name+attrs+">"+descr+"</"+name+">";}
@@ -276,7 +286,7 @@ public class Item {
 		return rc.toString( Strings.SPACED );
 	}
 	// ------------------------------------------------------------------------
-	static public Strings interpret( Strings cmds ) {
+	public static Strings interpret( Strings cmds ) {
 		String rc = Shell.FAIL;
 		if (cmds.size() > 2)
 		{
@@ -326,7 +336,7 @@ public class Item {
 		else
 			audit.passed( " PASSED: "+ ans );
 	}
-	public static void main( String args[] ) {
+	public  static void main( String args[] ) {
 		//Audit.allOn();
 		//Audit.traceAll( true );
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );

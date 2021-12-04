@@ -6,6 +6,7 @@ import org.enguage.interp.intention.Redo;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
+import org.enguage.objects.list.Item;
 import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -56,8 +57,9 @@ public class Enguage {
 			
 		if (Server.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
 		
-		// locations contextual per utterance
+		// locations contextual per utterance + reset output format...
 		Where.clearLocation();
+		Item.resetFormat();
 		
 		if (Reply.isUnderstood()) // from previous interpretation!
 			Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
@@ -131,6 +133,8 @@ public class Enguage {
 	
 	public static void main( String args[] ) {
 		
+		Example test = new Example();
+		
 		Audit.startupDebug = startupDebug;
 		Strings    cmds = new Strings( args );
 		String     cmd,
@@ -142,10 +146,10 @@ public class Enguage {
 				verbose = true;
 				cmds.remove( i );
 			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
-				Example.serverTest = true;
+				test.serverTest( true );
 				cmds.remove( i );
 				cmd = cmds.size()==0 ? "8080":cmds.remove( i );
-				Example.portNumber( cmd );
+				test.portNumber( cmd );
 			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
 				cmds.remove( i );
 				fsys = cmds.size()==0 ? fsys : cmds.remove( i );
@@ -165,7 +169,7 @@ public class Enguage {
 		else if (cmd.equals( "-t" )
 			  || cmd.equals( "--test" )
 			  || cmd.equals( "-T" ))
-			Example.selfTest( cmd, cmds );
+			test.selfTest( cmd, cmds );
 		
 		else if (cmd.equals( "-h" ) || cmd.equals( "--help" ))
 			Enguage.usage();
@@ -183,6 +187,6 @@ public class Enguage {
 			if (cmds.get( cmds.size()-1 ).equals( "." )) cmds.remove( cmds.size()-1 );
 
 			// ...reconstruct original commands and interpret
-			Example.testRun( cmds.prepend( cmd ));
+			test.run( cmds.prepend( cmd ));
 	}	}
 }
