@@ -986,11 +986,11 @@ public class Example {
 			// Construct a 'simple' approach to "should":
 			// afford "what should we do"
 			run( "to the phrase what should we do reply we should...", "" );
-			run( "this implies if not, reply i don't know", "");
+			run( "then if not reply i don't know what we should do", "");
 			run( "this implies that you get the value of should", "");
-
+			
 			// test this...
-			run( "what should we do", "i don't know" );
+			run( "what should we do", "i don't know what we should do" );
 
 			// afford "you should ..."
 			run( "to the phrase you should phrase variable action reply ok variable action", "" );
