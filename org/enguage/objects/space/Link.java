@@ -2,6 +2,7 @@ package org.enguage.objects.space;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.reply.Reply;
@@ -67,6 +68,11 @@ public class Link {
 					target = argc > 3 ? args.remove( 0 ) : "",
 					value  = argc > 4 ? args.remove( 0 ) : "";
 			
+			// We now get passed and un-stripped attribute...
+			if (Attribute.isAttribute( entity )) entity = new Attribute( entity ).value();
+			if (Attribute.isAttribute( attr   )) attr   = new Attribute( attr   ).value();
+			if (Attribute.isAttribute( target )) target = new Attribute( target ).value();
+					
 			if (cmd.equals("set") || cmd.equals( "create" ))
 				rc = new Value( entity, attr+EXT ).set( target ) ? Shell.SUCCESS : Shell.FAIL;
 				
@@ -79,7 +85,12 @@ public class Link {
 						: exists( entity, attr+EXT, target ) ? Reply.yesStr() : Reply.noStr();
 				
 			else if (cmd.equals("delete"))
-				new Value( entity, attr+EXT ).ignore();
+				if (target.equals( "" ))
+					new Value( entity, attr+EXT ).ignore();
+				else if (exists( entity, attr+EXT, target ))
+					new Value( entity, attr+EXT ).ignore();
+				else
+					rc =  Shell.FAIL;
 				
 			else if (cmd.equals("attribute"))
 				rc = attribute( entity, attr, target, value ) ? Shell.SUCCESS : Shell.FAIL;
@@ -104,9 +115,9 @@ public class Link {
 		
 		Overlay.attach( "Link" );
 		
-		test( "create martin loves ruth",   Shell.SUCCESS );
-		test( "create martin hates ruth",   Shell.SUCCESS );
-		test( "delete martin hates ruth",  Shell.SUCCESS );
+		test( "create martin loves ruth",          Shell.SUCCESS );
+		test( "create martin hates name=\"ruth\"", Shell.SUCCESS );
+		test( "delete martin hates ruth",          Shell.SUCCESS );
 		test( "exists martin hates",        "no" );
 		test( "exists martin hates ruth",   "no" );
 		test( "exists martin loves",        "yes" );

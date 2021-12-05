@@ -28,18 +28,6 @@ jar: lib/enguage.jar
 ${TMP}:
 	mkdir -p ${TMP}
 
-lib/enguage.jar: ${TMP} ${MANIFEST} lib
-	cp -a org com ${TMP}
-	( cd ${TMP} ;\
-		find com org -name \*.class -exec rm -f {} \; ;\
-		find com org -name .DS_Store -exec rm -f {} \; ;\
-		find com org -name .gitignore -exec rm -f {} \; ;\
-		javac org/enguage/Enguage.java ;\
-		find com org -name \*.java -exec rm -f {} \;  ;\
-		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
-	)
-	#rm -rf ${TMP}
-
 ${INSTALL}/etc:
 	mkdir ${INSTALL}/etc
 	
@@ -69,14 +57,28 @@ ${MANIFEST}:
 	echo "Class-Path: ."                   >> ${MANIFEST}
 	echo "Main-Class: org.enguage.Enguage" >> ${MANIFEST}
 
-${ANDLIBS}/anduage.jar: ${TMP}
+lib/enguage.jar: ${TMP} ${MANIFEST} lib
+	cp -a org com ${TMP}
+	( cd ${TMP} ;\
+		find com org -name \*.class -exec rm -f {} \; ;\
+		find com org -name .DS_Store -exec rm -f {} \; ;\
+		find com org -name .gitignore -exec rm -f {} \; ;\
+		javac org/enguage/Enguage.java ;\
+		#find com org -name \*.java -exec rm -f {} \;  ;\
+		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
+	)
+	#rm -rf ${TMP}
+
+${ANDLIBS}/anduage.jar: ${TMP} ${MANIFEST} lib
 	mkdir -p ${ANDLIBS}
 	cp -a org ${TMP}
 	( cd ${TMP} ;\
-		find org -name \*.java -exec rm -f {} \;  ;\
+		#find org -name \*.java -exec rm -f {} \;  ;\
 		find org -name .DS_Store -exec rm -f {} \; ;\
 		find org -name .gitignore -exec rm -f {} \; ;\
-		jar -cf ../${ANDLIBS}/anduage.jar org \
+		#javac org/enguage/Enguage.java ;\
+		#find com org -name \*.java -exec rm -f {} \;  ;\
+		jar -cmf META-INF/MANIFEST.MF ../${ANDLIBS}/anduage.jar META-INF org \
 	)
 
 clean:

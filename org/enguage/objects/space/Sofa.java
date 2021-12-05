@@ -44,7 +44,7 @@ public class Sofa extends Shell {
 				case lFail    :      return Shell.Fail;
 				case lSuccess :      return Shell.Success;
 				case Sign.id  :      return        Sign.interpret( Attribute.expand23( a ));
-				case Link.id  :      return        Link.interpret( Attribute.expand23( a ));
+				case Link.id  :      return        Link.interpret(                     a );
 				case Item.id  :      return        Item.interpret( Attribute.expand23( a ));
 				case Items.id :      return       Items.interpret(                     a  );
 				case Value.id :      return       Value.interpret( Attribute.expand23( a ));

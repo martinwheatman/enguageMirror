@@ -217,8 +217,8 @@ public class Reply { // a reply is basically a formatted answer
 					);
 		return cache;
 	}
-	private void handleDNU( Strings utterance ) {
-		if (Audit.detailedOn) audit.in( "handleDNU", utterance.toString( Strings.CSV ));
+	private Strings handleDNU( Strings utterance ) {
+		audit.in( "handleDNU", utterance.toString( Strings.CSV ));
 		verbatimIs( true );
 		if (Shell.terminators().get( 0 ).equals( Shell.terminatorIs( utterance )))
 			utterance = Shell.stripTerminator( utterance );
@@ -234,6 +234,10 @@ public class Reply { // a reply is basically a formatted answer
 		
 		verbatimIs( false );
 		if (Audit.detailedOn) audit.out();
+		return audit.out( cache = Utterance.externalise(
+				a.injectAnswer( f.ormat() ),
+				isVerbatim()
+			));
 	}
 	public Strings toStrings() {
 		Strings reply = encache();
@@ -242,7 +246,7 @@ public class Reply { // a reply is basically a formatted answer
 				previous( reply ); // never used
 			;
 		} else
-			handleDNU( Utterance.previous() );
+			reply = handleDNU( Utterance.previous() );
 		return reply;
 	}
 	public String toString() {return encache().toString();}
@@ -260,6 +264,11 @@ public class Reply { // a reply is basically a formatted answer
 				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
 				strangeThought("");
 			}
+
+			// Construct the DNU format
+			format( new Strings( Reply.dnu() + ", ..." ));
+			answer( thought.toString());
+			
 			type = FAIL;
 		
 		} else if ( NO == type() && a.toString().equalsIgnoreCase( ikStr()))
