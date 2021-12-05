@@ -982,10 +982,35 @@ public class Example {
 //			 * Ask: what is your name?
 //			 */
 		}
-		if (runTheseTests( "should-a" )) {
-			run( "to the phrase you should wear a mask reply ok wear a mask", "" );
-			run( "you should wear a mask because it prevents the spread of covid",
-				 "i don't understand, it prevents the spread of covid" );
+		if (runTheseTests( "should" )) {
+			// Construct a 'simple' approach to "should":
+			// afford "what should we do"
+			run( "to the phrase what should we do reply we should...", "" );
+			run( "this implies if not, reply i don't know", "");
+			run( "this implies that you get the value of should", "");
+
+			// test this...
+			run( "what should we do", "i don't know" );
+
+			// afford "you should ..."
+			run( "to the phrase you should phrase variable action reply ok variable action", "" );
+			run( "this implies that you set the value of should to variable action",         "" );
+			
+			// Construct an argument:
+			// afford "wearing a mask prevents the spread of covid"...
+			// for the purposes of this example, we're not going to provide "... does not prevent ..."
+			run( "to the phrase wearing a mask prevents the spread of covid reply ok wearing a mask prevents the spread of covid", "" );
+			// afford the premise: "a mask soaks up moisture from your breath"
+			run( "to the phrase a mask soaks up moisture from your breath reply ok a mask soaks up moisture from your breath", "");
+			
+			// Test the argument...
+			run( "wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath",
+			     "ok , wearing a mask prevents the spread of covid because a mask soaks up moisture from my breath" );
+			run( "you should wear a mask because wearing a mask prevents the spread of covid",
+				 "ok , i should wear a mask because wearing a mask prevents the spread of covid" );
+
+			// We can now conclude...
+			run( "what should we do", "we should wear a mask" );
 		}
 		
 		Audit.log( testGrp +" test group(s) found" );
