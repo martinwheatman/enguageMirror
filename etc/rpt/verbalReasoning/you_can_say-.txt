@@ -1,0 +1,6 @@
+On "you can say PHRASE-X":
+	perform "sign create X";
+	perform "sign reply ok";
+	reply "ok".
+
+			

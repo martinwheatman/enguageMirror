@@ -9,17 +9,19 @@ On "to            PHRASE-X reply      PHRASE-Y":
 	then, reply "ok".
 	
 On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
-	set prepending to true;
-	perform "sign else reply REPLY";
-	perform "sign imply IMPLICATION";
-	unset the value of prepending;
+	perform "sign prepend else reply REPLY";
+	perform "sign prepend imply IMPLICATION";
 	then, reply "go on".
 
 On "if not reply PHRASE-REPLY":
-	#get the value of translation;  # this will be forgotten in ttl
-	#if not, reply "i do not understand";
-	set headappending to true;
-	perform "sign else reply REPLY";
-	unset the value of headappending;
-	then, reply "go on".
+	perform "sign headappend else reply REPLY";
+	then, reply "ok".
 
+On "this implies that PHRASE-IMPLICATION":
+ 	perform "sign imply IMPLICATION";
+ 	then, reply "go on".
+
+On "this implies that you PHRASE-IMPLICATION":
+	perform "sign imply IMPLICATION";
+	reply "ok".
+ 	

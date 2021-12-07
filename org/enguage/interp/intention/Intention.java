@@ -59,6 +59,8 @@ public class Intention {
 	public static final int  prepend      =  0xb;
 	public static final int  append       =  0xc;
 	public static final int  headAppend   =  0xd;
+	
+	public static final int  head         =  0xe;
 
 	public Intention( int type, String value, int intnt ) { this( type, value ); intent = intnt;}	
 	public Intention( int nm, Strings vals ) { this( nm, vals.toString()); }
@@ -141,66 +143,44 @@ public class Intention {
 	private int intent = undef;
 	public  int intent() { return intent;}
 	
-	static private Sign s = null, voiced = null;
+	static private Sign s = null;
 	static public  void printSign() { Audit.LOG( "Autop().printSign:\n"+ s.pattern().toXml()); }
 	
 	static private String concept = "";
 	static public    void concept( String name ) { concept = name; }
 	static public  String concept() { return concept; }
 	
-	public Reply autopoiesis( Reply r ) {
+	public String autopoiesis() {
 		//audit.in( "autopoiesis", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
 		
-		switch (intent) { // manually adding a sign
-		case  create:
+		Strings sa = Context.deref( new Strings( value ));
+		switch (type) {
+		case create: {
+			String attr    = sa.remove( 0 ),
+			       pattern = sa.remove( 0 ),
+				   val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 			Repertoire.signs.insert(
-				voiced = new Sign()
-					.pattern( new Patterns( value ))
-					.concept( Repertoire.AUTOPOIETIC )
-			);
+					s = new Sign()
+							.pattern( new Patterns( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+							.concept( concept() )
+							.append( new Intention( Intention.nameToType( attr ), val )));
 			break;
-		case append:
-			if (null != voiced)
-				voiced.append( new Intention( type, Patterns.toPattern( new Strings( value ))));
-			break;
-		case prepend :
-			if (null != voiced)
-				voiced.prepend( new Intention( type, Patterns.toPattern( new Strings( value ))));
-			break;
-		case headAppend:
-			if (null != voiced) 
-				voiced.insert( 1, new Intention( type, Patterns.toPattern( new Strings( value ))));
-			break;
-		// following these are trad. autopoiesis...this need updating as above!!!
-		default:
-			Strings sa = Context.deref( new Strings( value ));
-			switch (type) {
-			case create: {
-				String attr    = sa.remove( 0 ),
-				       pattern = sa.remove( 0 ),
-					   val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-				Repertoire.signs.insert(
-						s = new Sign()
-								.pattern( new Patterns( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
-								.concept( concept() )
-								.append( new Intention( Intention.nameToType( attr ), val )));
-				break;
-			}
-			case append :
-			case prepend:
-				if (null == s)
-					// this should return DNU...
-					audit.ERROR( "adding to sign before creation" );
-				else {
-					String attr = sa.remove( 0 ),
-					       val = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-					if (type == append )
-						s.append( new Intention( nameToType(  attr ), val ));
-					else
-						s.prepend( new Intention( nameToType( attr ), val ));
-		}	}	}
+		}
+		case append :
+		case prepend:
+			if (null == s)
+				// this should return DNU...
+				audit.ERROR( "adding to sign before creation" );
+			else {
+				String attr = sa.remove( 0 ),
+				       val = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
+				if (type == append )
+					s.append( new Intention( nameToType(  attr ), val ));
+				else
+					s.insert( 0, new Intention( nameToType( attr ), val ));
+		}	}
 		//return (Reply) audit.out( r.answer( Reply.yes().toString() ));
-		return r.answer( "go on"/*Reply.yes().toString()*/ );
+		return "go on";
 	}
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
@@ -302,7 +282,7 @@ public class Intention {
 		while (!r.isDone() && ins.hasNext()) {
 			Intention in = ins.next();
 			Audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
-			r = new Intention( in, false, false ).autopoiesis( r );
+			r.answer( new Intention( in, false, false ).autopoiesis() );
 		}
 		return r;
 	}
@@ -321,13 +301,13 @@ public class Intention {
 		Audit.log( r.toString());
 		
 		audit.title( "manual sign creation... add each intention individually" );
-		r = new Reply();
-		r = new Intention( create,    "b variable pattern z", create ).autopoiesis( r );
-		r = new Intention( thenThink, "one two three four"  , append ).autopoiesis( r );
-		r = new Intention( elseReply, "two three four"      , append ).autopoiesis( r );
-		r = new Intention( thenReply, "three four"          , append ).autopoiesis( r );
+		String str;
+		str = new Intention( create,    "b variable pattern z", create ).autopoiesis();
+		str = new Intention( thenThink, "one two three four"  , append ).autopoiesis();
+		str = new Intention( elseReply, "two three four"      , append ).autopoiesis();
+		str = new Intention( thenReply, "three four"          , append ).autopoiesis();
 		Audit.log( Repertoire.signs.toString() );
-		Audit.log( r.toString());
+		Audit.log( str);
 		
 		
 		audit.title( "sign self-build II... add pairs of attributes" );
@@ -340,7 +320,7 @@ public class Intention {
 		String reply = "three four";
 		s.append( new Intention( thenReply, reply ));
 		// ...This implies COND
-		s.prepend( new Intention( thenThink, "one two three four" ));
+		s.insert( 0, new Intention( thenThink, "one two three four" ));
 		// ...if not reply EXECP REPLY
 		s.insert( 1, new Intention( elseReply, "two three four" ));
 		

@@ -1,6 +1,7 @@
 package org.enguage;
 
 import org.enguage.interp.repertoire.Autoload;
+import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -63,15 +64,17 @@ public class Example {
 	}
 	
 	private String testPrompt = "";
-	private String testPrompt() { return testPrompt;}
-	private void   testPrompt( String prompt) { testPrompt = prompt;}
+	private String testPrompt() {return testPrompt;}
+	private void   testPrompt( String prompt) {testPrompt = prompt;}
 	
 	private String replyPrompt = "";
 	private String replyPrompt() { return replyPrompt;}
 	private void   replyPrompt( String prompt) { replyPrompt = prompt;}
 	
-	public  void run( Strings cmd ) { run( cmd.toString(), null );}
-	private void run( String  cmd, String expected ) { run( cmd, expected, null );}
+	private void think( String cmd ) {run( cmd, null );}
+	private void youCanSay( String thgt ) {think( "you can say "+ thgt);}
+	
+	public  void run( String  cmd, String expected ) {run( cmd, expected, null );}
 	private void run( String  cmd, String expected, String unexpected ) {
 		// expected == null => silent!
 		if (expected != null)
@@ -81,9 +84,9 @@ public class Example {
 				new Strings( Server.client( "localhost", portNumber, cmd ))
 				: Enguage.mediate( new Strings( cmd ));
 
-		if (expected == null      ||
-			expected.equals( "" ) ||
-			reply.equalsIgnoreCase( new Strings( expected )))
+		if (expected == null) // don't check anything
+			;
+		else if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected )))
 		
 			audit.passed( replyPrompt()+ reply +"." );      // 1st success
 			
@@ -736,7 +739,6 @@ public class Example {
 			run( "what is the sum of x and y",      "the sum of x and y is 7" );
 			
 			audit.title( "Factorial Description" );
-			//Audit.allOn();
 			//mediate( "what is the factorial of 4",       "I don't know" );
 			/* Ideally, we want:
 			 * - the factorial of 1 is 1;
@@ -912,11 +914,11 @@ public class Example {
 
 			// 2. could this be built thus?
 			run( "to phrase variable this means phrase variable that reply ok", "ok" );
-			run( "this implies that you set transformation to false",        "go on" );
-			run( "this implies that you perform sign think variable that",   "go on" );
-			run( "this implies that you perform sign create variable this",  "go on" );
-			run( "this implies that you set transformation to true",         "go on" );
-			run( "ok", "ok" );
+			run( "this implies that you set transformation to false",        "ok" );
+			run( "this implies that you perform sign think variable that",   "ok" );
+			run( "this implies that you perform sign create variable this",  "ok" );
+			run( "this implies that you set transformation to true",         "ok" );
+			//run( "ok", "ok" );
 
 			run( "just call me phrase variable name means i am called variable name", "ok" );
 			run( "just call me martin", "i already know this" );
@@ -985,23 +987,25 @@ public class Example {
 		if (runTheseTests( "should" )) {
 			// Construct a 'simple' approach to "should":
 			// afford "what should we do"
-			run( "to the phrase what should we do reply we should...", "" );
-			run( "then if not reply i don't know what we should do", "");
-			run( "this implies that you get the value of should", "");
+			think( "to the phrase what should we do reply we should..." );
+			think( "this implies that you get the value of should" );
+			think( "then if not reply i don't know what we should do"   );
 			
 			// test this...
 			run( "what should we do", "i don't know what we should do" );
 
 			// afford "you should ..."
-			run( "to the phrase you should phrase variable action reply ok variable action", "" );
-			run( "this implies that you set the value of should to variable action",         "" );
+			think( "to the phrase you should phrase variable action reply ok variable action" );
+			think( "this implies that you set the value of should to variable action" );
 			
 			// Construct an argument:
 			// afford "wearing a mask prevents the spread of covid"...
-			// for the purposes of this example, we're not going to provide "... does not prevent ..."
-			run( "to the phrase wearing a mask prevents the spread of covid reply ok wearing a mask prevents the spread of covid", "" );
+			youCanSay( "wearing a mask prevents the spread of covid" );
+			youCanSay( "wearing a mask does not prevent the spread of covid" );
+
 			// afford the premise: "a mask soaks up moisture from your breath"
-			run( "to the phrase a mask soaks up moisture from your breath reply ok a mask soaks up moisture from your breath", "");
+			youCanSay( "a mask soaks up moisture from your breath" );
+			youCanSay( "a mask does not soak up moisture from your breath" );
 			
 			// Test the argument...
 			run( "wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath",

@@ -166,9 +166,9 @@ public class Enguage {
 		else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" ))
 			Server.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
-		else if (cmd.equals( "-t" )
+		else if (cmd.equals(  "-t" )
 			  || cmd.equals( "--test" )
-			  || cmd.equals( "-T" ))
+			  || cmd.equals(  "-T" ))
 			test.selfTest( cmd, cmds );
 		
 		else if (cmd.equals( "-h" ) || cmd.equals( "--help" ))
@@ -187,6 +187,5 @@ public class Enguage {
 			if (cmds.get( cmds.size()-1 ).equals( "." )) cmds.remove( cmds.size()-1 );
 
 			// ...reconstruct original commands and interpret
-			test.run( cmds.prepend( cmd ));
-	}	}
-}
+			test.run( cmds.prepend( cmd ).toString(), "" );
+}	}	}

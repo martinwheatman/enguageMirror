@@ -14,7 +14,6 @@ import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.pronoun.Pronoun;
@@ -24,7 +23,10 @@ public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
 	private static       Audit           audit = new Audit( "Signs" );
 	
-	public Signs( String nm ) { super(); name=nm; }
+	//private final String name;
+	
+	public Signs( String nm ) { super(); /*name=nm;*/ }
+
 	public Signs add( Sign[] signs ) {
 		for (Sign sign: signs)
 			insert( sign );
@@ -34,8 +36,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 	static private int   total = 0;
 	static private int clashes = 0;
 
-	private String name = "";
-	
 	public Signs insert( Sign insertMe ) {
 		int c = insertMe.cplex(),
 			i = 0;

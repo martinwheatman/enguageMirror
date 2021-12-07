@@ -140,6 +140,13 @@ public class Attribute {
 		}	}	}
 		return a;
 	}
+	static public Strings expand( Strings a ) {
+		// expand all attribute parameters
+		ListIterator<String> ci = a.listIterator();
+		while (ci.hasNext())
+			ci.set( Attribute.getValue( ci.next() ));
+		return a;
+	}
 	public boolean equalsIgnoreCase( Attribute cmp ) {
 		return this.name.equalsIgnoreCase( cmp.name ) &&
 						Plural.singular( this.value )

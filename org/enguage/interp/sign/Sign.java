@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.interp.intention.Intention;
-import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.repertoire.Engine;
+import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
@@ -46,15 +47,19 @@ public class Sign {
 		return this;
 	}
 
+	public static Sign voiced = null;
 	
-	private ArrayList<Intention> programme = new ArrayList<Intention>();
+	private ArrayList<Intention> ints = new ArrayList<Intention>();
 	
-	public  Sign append(        Intention intent ){ programme.add(    intent ); return this;}
-	//public Sign headAppend(   Intention intent ){ intentions.add( 1, intent ); return this;}
-	public  Sign prepend(       Intention intent ){ programme.add( 0, intent ); return this;}
-	public  Sign insert( int i, Intention intent ){ programme.add( i, intent ); return this;}
-	public  Sign appendIntention( int typ, String val ) {programme.add( new Intention(typ,val));return this;}
-
+	public  Sign append(        Intention in ){ ints.add(    in ); return this;}
+	public  Sign insert( int i, Intention in ){ ints.add( i==-1 ? 0 : i, in ); return this;}
+	// used in autopoiesis:
+	public  Sign appendIntention( int typ, String val ) {
+		ints.add( new Intention(typ,val));
+		return this;
+	}
+	public  Sign tailPrepend(    Intention in ){ints.add( ints.size(), in );return this;}
+	
 	
 	
 	// Set during autopoiesis - replaces 'id' attribute 
@@ -109,7 +114,7 @@ public class Sign {
 	public String toXml( int n, long complexity ) {
 		
 		String intentions = "";
-		for (Intention in : programme)
+		for (Intention in : ints)
 			intentions += "\n      " + Attribute.asString( Intention.typeToString( in.type() ), in.value() );
 		
 		return  indent +"<"+ NAME
@@ -121,14 +126,14 @@ public class Sign {
 	}
 	public String toString() {
 		String sign = "";
-		int sz = programme.size();
+		int sz = ints.size();
 		if (sz > 0) {
 			sign = "On \""+ pattern().toString() +"\"";
 			if (sz == 1)
-				sign += ", "+ programme.get(0);
+				sign += ", "+ ints.get(0);
 			else {
 				int line = 0;
-				for (Intention in : programme)
+				for (Intention in : ints)
 					sign += (line++ == 0 ? ":" : ";") + "\n" + indent + in;
 		}	}	
 		return sign +".\n";
@@ -142,7 +147,7 @@ public class Sign {
 	
 	public Reply interpret( Reply r ) {
 		//audit.in( "interpret", pattern().toString() );
-		Iterator<Intention> ai = programme.iterator();
+		Iterator<Intention> ai = ints.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();
 			switch (in.type()) {
@@ -152,7 +157,7 @@ public class Sign {
 				case Intention.create:
 				case Intention.prepend:
 				case Intention.append:
-					r = in.autopoiesis( r );
+					r.answer( in.autopoiesis());
 					break;
 				default: // thenFinally, think, do, say...
 					r = in.mediate( r );
@@ -162,133 +167,134 @@ public class Sign {
 	/*
 	 * This will handle "sign create X", found in interpret.txt
 	 */
-	static public Strings interpret( Strings args ) {
-		audit.in( "interpret", args.toString());
+	public static Strings interpret( Strings args ) {
+		//audit.in( "interpret", args.toString());
 		String rc = Shell.FAIL;
 		
 		if (args.size() > 0) {
-			String var1 = Variable.get( "prepending" ),
-			       var2 = Variable.get( "headAppending" );
-			boolean prepending    = var1 != null && var1.equals( "true" ),
-					headAppending = var2 != null && var2.equals( "true" );
+			
+			boolean  header = false,
+			        prepend = false,
+			         tailer = false, // should be the default?
+			         append = false; 
+			String cmd = args.remove( 0 );
+			if (cmd.equals( "header" ))
+				header = true;
+			else if (cmd.equals( "prepend" ))
+				prepend = true;
+			else if (cmd.equals( "tailer" ))
+				tailer = true;
+			else if (cmd.equals( "append" ))
+				append = true;
+			
+			if (header || prepend || tailer || append)
+				cmd = args.remove( 0 );
 			
 			boolean isElse = false;
-			Reply r = new Reply();
-			String cmd = args.remove( 0 );
 			if (cmd.equals( "else" )) {
 				isElse = true;
 				cmd = args.remove( 0 );
 			}
 				
 			if (cmd.equals( "create" )) {
-				audit.debug( "creating sign with: " +   args.toString());
-				rc = new Intention( Intention.create, args.toString(), Intention.create ).autopoiesis( r ).toString();
+				
+				Repertoire.signs.insert(
+					Sign.voiced = new Sign()
+						.pattern( new Patterns( args.toString() ))
+						.concept( Repertoire.AUTOPOIETIC )
+				);
+				rc = "go on";
 				
 			} else if (cmd.equals( "perform" )) {
-				audit.debug( "adding a conceptual "+    args.toString() );
-				rc = new Intention(
+				Intention intn = 
+						new Intention(
 							isElse ? Intention.elseDo : Intention.thenDo,
-							args.toString(),
-						   	prepending ?
-								Intention.prepend :
-							   	headAppending ?
-									Intention.headAppend :
-									Intention.append
-						).autopoiesis( r ).toString();
+							Patterns.toPattern( new Strings( args.toString() ))
+						);
+				
+				if (header)
+					voiced.insert( 1, intn );
+				else if (prepend)
+					voiced.insert( 0, intn );
+				else if (append)
+					voiced.insert( voiced.ints.size(), intn );
+				else
+					voiced.insert( voiced.ints.size()-1, intn );
+				
+				rc = "go on";
 				
 			} else if (cmd.equals( "reply" )) {
-				rc = new Intention(
+				Intention intn = 
+						new Intention(
 							isElse? Intention.elseReply : Intention.thenReply, 
-							args.toString(), 
-							prepending ?
-								Intention.prepend :
-								headAppending ?
-								Intention.headAppend :
-								Intention.append
-						  ).autopoiesis( r ).toString();
+							Patterns.toPattern( new Strings( args.toString() ))
+						);
+
+				if (header)
+					voiced.insert( 1, intn );
+				else if (prepend)
+					voiced.insert( 0, intn );
+				else if (append)
+					voiced.insert( voiced.ints.size(), intn );
+				else
+					voiced.insert( voiced.ints.size()-1, intn );
+
+				rc = "go on";
 				
 			} else if (cmd.equals( "think" )) {
 				audit.debug( "adding a thought "+ args.toString() );
-				rc = new Intention(
+				Intention intn = new Intention(
 							isElse? Intention.elseThink : Intention.thenThink,
-							args.toString(), 
-							prepending ?
-								Intention.prepend :
-								headAppending ?
-									Intention.headAppend :
-									Intention.append
-					  ).autopoiesis( r ).toString();
+							Patterns.toPattern( new Strings( args.toString() ))
+						);
+				
+				if (voiced != null) { //BUG: sign think called w/o voiced
+					if (header)
+						voiced.insert( 1, intn );
+					else if (prepend)
+						voiced.insert( 0, intn );
+					else if (append)
+						voiced.insert( voiced.ints.size(), intn );
+					else
+						voiced.insert( voiced.ints.size()-1, intn );
+				}
+				rc = "go on";
 				
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "prepending an implication '"+ args.toString() +"'");
-				rc = new Intention(
-						isElse? Intention.elseThink : Intention.thenThink,
-								args.toString(),
-						Intention.prepend
-					 ).autopoiesis( r ).toString();
+				voiced.insert(
+						0,
+						new Intention(
+								isElse? Intention.elseThink : Intention.thenThink,
+								Patterns.toPattern( new Strings( args.toString() ))
+				)		);
+				rc = "go on";
 				
 			} else if (cmd.equals( "finally" )) {
+				Intention intn;
 				audit.debug( "adding a final clause? "+ args.toString() );
 				if (cmd.length() > 7 && cmd.substring( 0, 7 ).equals( "perform" ))
-					rc = new Intention( isElse ? Intention.elseDo    : Intention.thenDo,    args.toString(), Intention.append ).autopoiesis( r ).toString();
+					intn = new Intention(
+							isElse ? Intention.elseDo    : Intention.thenDo,
+							Patterns.toPattern( new Strings( args.toString() ))
+						 );
+				
 				else if (cmd.equals( "reply" ))
-					rc = new Intention( isElse ? Intention.elseReply : Intention.thenReply, args.toString(), Intention.append ).autopoiesis( r ).toString();
+					intn = new Intention(
+							isElse ? Intention.elseReply : Intention.thenReply,
+							Patterns.toPattern( new Strings( args.toString() ))
+						 );
+				
 				else
-					rc = new Intention( isElse ? Intention.elseThink : Intention.thenThink, args.toString().toString(), Intention.append ).autopoiesis( r ).toString();
+					intn = new Intention(
+							isElse ? Intention.elseThink : Intention.thenThink,
+							Patterns.toPattern( new Strings( args.toString() ))
+						 );
+				voiced.append( intn ); // all finallys at the end :)
+				rc = "go on";
 			
 			} else
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
 		}
-		return audit.out( new Strings( rc ));
-	}
-	// --- test code below
-	public static void complexityTest( Patterns t ) {
-		Sign container = new Sign();
-		container.pattern( t );
-		Audit.log( "Complexity of "+ container.toXml( 0, container.cplex() ) +"\n" );
-	}
-	public static void main( String argv[]) {
-		Sign s = new Sign();
-		s.append( new Intention( Intention.thenDo, "person create martin" ));
-		s.append( new Intention( Intention.elseReply, "no, somethings gone wrong" ));
-		s.append( new Intention( Intention.thenReply, "ok, thank goodness" ));
-		s.pattern( new Pattern().prefix( new Strings( "hello" )));
-		Reply r = new Reply();
-		Intention intent = new Intention( Intention.thenReply, "hello world" );
-		r = intent.mediate( r );
-		Audit.log( "r="+ r.toString());
-		
-		Patterns ts = new Patterns();
-		ts.add( new Pattern( "this is a", "x" ).phrasedIs() );
-		complexityTest( ts );
-		s.pattern( new Pattern( "this is a", "x" ).phrasedIs() );
-		
-		ts = new Patterns();
-		ts.add( new Pattern( "this is a", "test" ));
-		complexityTest( ts );
-		
-		ts = new Patterns();
-		ts.add( new Pattern( "this is a test", "x" ).phrasedIs() );
-		complexityTest( ts );
-		
-		ts = new Patterns();
-		ts.add( new Pattern( "one small step for man", "" ));
-		complexityTest( ts );
-		
-		Audit.log( s.toString());
-		s.toFile();
-		
-		Sign s2 = new Sign();
-		s2.pattern( ts );
-		s2.append( new Intention( Intention.thenReply, "ok, thank goodness" ));
-		Audit.log( s2.toString());
-		s2.toVariable();
-		
-		interpret( new Strings( "this won't work!" ));
-		interpret( new Strings( "create variable whom needs phrase variable object" ));
-		interpret( new Strings( "reply  ok variable whom needs variable object" ));
-		interpret( new Strings( "imply  is variable object in variable name needs list" ));
-		//interpret( new Strings( "reply  i know" ));
-		//interpret( new Strings( "perform add variable object to variable name needs list" ));
-		Intention.printSign();
+		return new Strings( rc ); //audit.out( new Strings( rc ));
 }	}

@@ -10,12 +10,6 @@ public class Autopoiesis {
 	public static final Sign[] spoken = {
 			
 			//	OPENING REMARKS
-			new Sign( "you can say", new Phrase( "X" ))
-				.appendIntention( Intention.thenThink, "set transformation to true" )
-				.appendIntention( Intention.thenDo,    "sign create X")
-				.appendIntention( Intention.thenReply, "go on" ),
-
-			
 			new Sign( "interpret", new Phrase( "x" ), "thus" )
 				.appendIntention( Intention.thenThink, "set transformation to true" )
 				.appendIntention( Intention.thenDo,    "sign create X")
@@ -29,7 +23,7 @@ public class Autopoiesis {
 			// CONCLUDING REMARKS
 			new Sign( "that concludes interpretation" )
 				.appendIntention( Intention.thenThink, "get the value of finalReply" ) // only set on toXreply
-				.appendIntention( Intention.thenDo,    "sign reply ..." ) // transformation must be true!
+				.appendIntention( Intention.thenDo,    "sign append reply ..." ) // transformation must be true!
 				.appendIntention( Intention.thenThink, "unset the value of finalReply" )
 				.appendIntention( Intention.elseDo,    "variable set transformation false" )     // after sign reply...
 				.appendIntention( Intention.thenDo,    "variable set transformation false" )     // after sign reply...
@@ -46,7 +40,7 @@ public class Autopoiesis {
 				
 			// THINK...
 			new Sign( "then", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign think X" )
+				.appendIntention( Intention.thenDo,    "sign append think X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 						
 			new Sign( "first", new Phrase( "x" ))
@@ -62,43 +56,43 @@ public class Autopoiesis {
 				.appendIntention( Intention.thenReply, "go on" ),
 				
 			new Sign( "then if not", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo  ,  "sign else think X" )
+				.appendIntention( Intention.thenDo  ,  "sign append else think X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
 				
 			// ...DO
 			new Sign( "then perform", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign perform X" )
+				.appendIntention( Intention.thenDo,    "sign append perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 					
 			new Sign( "first perform", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign perform X" )
+				.appendIntention( Intention.thenDo,    "sign append perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
 			new Sign( "next perform", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign perform X" )
+				.appendIntention( Intention.thenDo,    "sign append perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 	
 			new Sign( "then if not perform", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign else perform X" )
+				.appendIntention( Intention.thenDo,    "sign append else perform X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 							
 			// ...SAY
 			new Sign( "just reply", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign reply X" )
+				.appendIntention( Intention.thenDo,    "sign append reply X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 				
 			new Sign( "then reply", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign reply X" )
+				.appendIntention( Intention.thenDo,    "sign append reply X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 					
 			new Sign( "then if not reply", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign else reply X" )
+				.appendIntention( Intention.thenDo,    "sign append else reply X" )
 				.appendIntention( Intention.thenReply, "go on" ),
 	
 			new Sign( "then whatever reply", new Phrase( "x" ))
-				.appendIntention( Intention.thenDo,    "sign else reply X" )
-				.appendIntention( Intention.thenDo,    "sign reply X" )
+				.appendIntention( Intention.thenDo,    "sign append else reply X" )
+				.appendIntention( Intention.thenDo,    "sign append reply X" )
 				.appendIntention( Intention.thenThink, "that concludes interpretation" ),
 	
 				

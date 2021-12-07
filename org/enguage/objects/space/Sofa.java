@@ -43,7 +43,7 @@ public class Sofa extends Shell {
 			switch (Strings.hash( type )) {
 				case lFail    :      return Shell.Fail;
 				case lSuccess :      return Shell.Success;
-				case Sign.id  :      return        Sign.interpret( Attribute.expand23( a ));
+				case Sign.id  :      return        Sign.interpret( Attribute.expand(   a ));
 				case Link.id  :      return        Link.interpret(                     a );
 				case Item.id  :      return        Item.interpret( Attribute.expand23( a ));
 				case Items.id :      return       Items.interpret(                     a  );
