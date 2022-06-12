@@ -1,7 +1,6 @@
 package org.enguage;
 
 import org.enguage.interp.repertoire.Autoload;
-import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -177,9 +176,8 @@ public class Example {
 		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
 			/*
-//			test( "you can say variable colour is a colour", "go on" );
-//			test( "this implies that you add variable colour to your colour list", "go on" );
-//			test( "and that is it",                             "ok" );
+//			test( "you can say variable colour is a colour", "ok" );
+//			test( "this implies that you add variable colour to your colour list", "ok" );
 //			
 //			test( "red is a colour", "ok" );
 //			test( "blue is a colour", "ok" );
@@ -222,19 +220,17 @@ public class Example {
 			run( "what do i want",        "i'm sorry, i don't understand the question" );
 			run( "want is like need",     "ok, want is like need" );
 			run( "what do i want",        "you don't want anything" );
-			
+
 			run( "interpret something can be variable quality thus", "" );
 			run( "first add variable quality to my quality list",    "" );
-			run( "and then reply ok variable quality is a quality",  "" );
-			run( "that concludes interpretation",                    "ok" );
+			run( "then reply ok variable quality is a quality",  "" );
 			
 			run( "something can be cool", "ok cool is a quality" );
 			
 			run( "interpret variable things are variable quality thus", "" );
 			run( "first add variable things to my variable quality list", "" );
 			run( "and then reply ok variable things are variable quality", "" );
-			run( "that concludes interpretation", "ok" );
-		
+			
 			run( "ferraris are cool",     "ok ferraris are cool" );
 			run( "want is like need",     "" );
 			run( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
@@ -566,54 +562,54 @@ public class Example {
 			 * Test 5.1 - IS
 			 */
 			// e.g. i am alive - 5.1
-			run( "interpret i am variable state thus",         "go on" );
-			run( "first add    variable state to   i am list", "go on" );
-			run( "then  remove variable state from i amNot list", "go on" );
-			run( "then whatever reply ok",                     "ok" );
+			run( "interpret i am variable state thus",         "ok" );
+			run( "first add    variable state to   i am list", "ok" );
+			run( "then  remove variable state from i amNot list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. i am not alive - 5.1
-			run( "interpret i am not variable state thus",        "go on" );
-			run( "first add    variable state to   i amNot list", "go on" );
-			run( "then  remove variable state from i am    list", "go on" );
-			run( "then whatever reply ok",                        "ok" );
+			run( "interpret i am not variable state thus",        "ok" );
+			run( "first add    variable state to   i amNot list", "ok" );
+			run( "then  remove variable state from i am    list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. am i alive? - 5.1
-			run( "interpret am i variable state thus",                "go on" );
-			run( "first variable state exists in i am list",          "go on" );
-			run( "then reply yes i am variable state",                "go on" );
-			run( "then if not variable state exists in i amNot list", "go on" );
-			run( "then if not reply i do not know",                   "go on" );
-			run( "then reply no i am not variable state",             "go on" );
+			run( "interpret am i variable state thus",                "ok" );
+			run( "first variable state exists in i am list",          "ok" );
+			run( "then reply yes i am variable state",                "ok" );
+			run( "then if not variable state exists in i amNot list", "ok" );
+			run( "then if not reply i do not know",                   "ok" );
+			run( "then reply no i am not variable state",             "ok" );
 			run( "ok", "ok" );
 			
 			//  e.g. martin is alive - 5.1
-			run( "interpret variable entity is variable state thus",            "go on" );
-			run( "first add    variable state to   variable entity is    list", "go on" );
-			run( "then  remove variable state from variable entity isNot list", "go on" );
-			run( "then whatever reply ok",                                      "ok" );
+			run( "interpret variable entity is variable state thus",            "ok" );
+			run( "first add    variable state to   variable entity is    list", "ok" );
+			run( "then  remove variable state from variable entity isNot list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. martin is not alive - 5.1
-			run( "interpret variable entity is not variable state thus",       "go on" );
-			run( "first add   variable state to   variable entity isNot list", "go on" );
-			run( "then remove variable state from variable entity is    list", "go on" );
-			run( "then whatever reply ok",                                     "ok" );
+			run( "interpret variable entity is not variable state thus",       "ok" );
+			run( "first add   variable state to   variable entity isNot list", "ok" );
+			run( "then remove variable state from variable entity is    list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. is martin alive - 5.1
-			run( "interpret is variable entity variable state thus",        "go on" );
-			run( "first variable state  exists in variable entity is list", "go on" );
-			run( "then reply yes variable entity is variable state",        "go on" );
-			run( "then if not variable state exists in variable entity isNot list", "go on" );
-			run( "then reply no variable entity is not variable state",     "go on" );
-			run( "then if not reply i do not know",                         "go on" );
+			run( "interpret is variable entity variable state thus",        "ok" );
+			run( "first variable state  exists in variable entity is list", "ok" );
+			run( "then reply yes variable entity is variable state",        "ok" );
+			run( "then if not variable state exists in variable entity isNot list", "ok" );
+			run( "then reply no variable entity is not variable state",     "ok" );
+			run( "then if not reply i do not know",                         "ok" );
 			run( "ok", "ok" );
 
 			// e.g. is martin not alive - 5.1
-			run( "interpret is variable entity not variable state thus",       "go on" );
-			run( "first variable state  exists in variable entity isNot list", "go on" );
-			run( "then reply yes variable entity is not variable state",        "go on" );
-			run( "then if not variable state exists in variable entity is list", "go on" );
-			run( "then reply no variable entity is variable state",             "go on" );
-			run( "then if not reply i do not know",                            "go on" );
+			run( "interpret is variable entity not variable state thus",       "ok" );
+			run( "first variable state  exists in variable entity isNot list", "ok" );
+			run( "then reply yes variable entity is not variable state",        "ok" );
+			run( "then if not variable state exists in variable entity is list", "ok" );
+			run( "then reply no variable entity is variable state",             "ok" );
+			run( "then if not reply i do not know",                            "ok" );
 			run( "ok", "ok" );
 
 			// test 5.1
@@ -635,33 +631,33 @@ public class Example {
 			 *  Test 5.2 was/was not
 			 */
 			//  e.g. martin was alive - 5.2
-			run( "interpret variable entity was variable state thus",            "go on" );
-			run( "first add    variable state to   variable entity was    list", "go on" );
-			run( "then  remove variable state from variable entity wasNot list", "go on" );
-			run( "then whatever reply ok",                                       "ok" );
+			run( "interpret variable entity was variable state thus",            "ok" );
+			run( "first add    variable state to   variable entity was    list", "ok" );
+			run( "then  remove variable state from variable entity wasNot list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. martin was not alive - 5.2
-			run( "interpret variable entity was not variable state thus",       "go on" );
-			run( "first add   variable state to   variable entity wasNot list", "go on" );
-			run( "then remove variable state from variable entity was    list", "go on" );
-			run( "then whatever reply ok",                                      "ok" );
+			run( "interpret variable entity was not variable state thus",       "ok" );
+			run( "first add   variable state to   variable entity wasNot list", "ok" );
+			run( "then remove variable state from variable entity was    list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. was martin alive - 5.2
-			run( "interpret was variable entity variable state thus",        "go on" );
-			run( "first variable state  exists in variable entity was list", "go on" );
-			run( "then reply yes variable entity was variable state",        "go on" );
-			run( "then if not variable state exists in variable entity wasNot list", "go on" );
-			run( "then reply no variable entity was not variable state",     "go on" );
-			run( "then if not reply i do not know",                          "go on" );
+			run( "interpret was variable entity variable state thus",        "ok" );
+			run( "first variable state  exists in variable entity was list", "ok" );
+			run( "then reply yes variable entity was variable state",        "ok" );
+			run( "then if not variable state exists in variable entity wasNot list", "ok" );
+			run( "then reply no variable entity was not variable state",     "ok" );
+			run( "then if not reply i do not know",                          "ok" );
 			run( "ok", "ok" );
 
 			// e.g. was martin not alive - 5.2
-			run( "interpret was variable entity not variable state thus",       "go on" );
-			run( "first variable state  exists in variable entity wasNot list", "go on" );
-			run( "then reply yes variable entity was not variable state",       "go on" );
-			run( "then if not variable state exists in variable entity was list", "go on" );
-			run( "then reply no variable entity was variable state",            "go on" );
-			run( "then if not reply i do not know",                             "go on" );
+			run( "interpret was variable entity not variable state thus",       "ok" );
+			run( "first variable state  exists in variable entity wasNot list", "ok" );
+			run( "then reply yes variable entity was not variable state",       "ok" );
+			run( "then if not variable state exists in variable entity was list", "ok" );
+			run( "then reply no variable entity was variable state",            "ok" );
+			run( "then if not reply i do not know",                             "ok" );
 			run( "ok", "ok" );
 
 			// test 5.2
@@ -676,33 +672,33 @@ public class Example {
 			 *  Test 5.3 will be/will not be
 			 */
 			//  e.g. martin will be alive - 5.3
-			run( "interpret variable entity will be variable state thus",           "go on" );
-			run( "first add    variable state to   variable entity willBe    list", "go on" );
-			run( "then  remove variable state from variable entity willNotBe list", "go on" );
-			run( "then whatever reply ok",                                          "ok" );
+			run( "interpret variable entity will be variable state thus",           "ok" );
+			run( "first add    variable state to   variable entity willBe    list", "ok" );
+			run( "then  remove variable state from variable entity willNotBe list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. martin will not be alive - 5.3
-			run( "interpret variable entity will not be variable state thus",      "go on" );
-			run( "first add   variable state to   variable entity willNotBe list", "go on" );
-			run( "then remove variable state from variable entity willBe    list", "go on" );
-			run( "then whatever reply ok",                                         "ok" );
+			run( "interpret variable entity will not be variable state thus",      "ok" );
+			run( "first add   variable state to   variable entity willNotBe list", "ok" );
+			run( "then remove variable state from variable entity willBe    list", "ok" );
+			run( "then reply ok", "ok" );
 			
 			// e.g. will martin be alive - 5.3
-			run( "interpret will variable entity be variable state thus",      "go on" );
-			run( "first variable state exists in variable entity willBe list", "go on" );
-			run( "then reply yes variable entity will be variable state",      "go on" );
-			run( "then if not variable state exists in variable entity willNotBe list", "go on" );
-			run( "then reply no variable entity will not be variable state",   "go on" );
-			run( "then if not reply i do not know",                            "go on" );
+			run( "interpret will variable entity be variable state thus",      "ok" );
+			run( "first variable state exists in variable entity willBe list", "ok" );
+			run( "then reply yes variable entity will be variable state",      "ok" );
+			run( "then if not variable state exists in variable entity willNotBe list", "ok" );
+			run( "then reply no variable entity will not be variable state",   "ok" );
+			run( "then if not reply i do not know",                            "ok" );
 			run( "ok", "ok" );
 
 			// e.g. will martin not be alive - 5.3
-			run( "interpret will variable entity not be variable state thus",      "go on" );
-			run( "first variable state  exists in variable entity willNotBe list", "go on" );
-			run( "then reply yes variable entity will not be variable state",      "go on" );
-			run( "then if not variable state exists in variable entity willBe list", "go on" );
-			run( "then reply no variable entity will be variable state",           "go on" );
-			run( "then if not reply i do not know",                                "go on" );
+			run( "interpret will variable entity not be variable state thus",      "ok" );
+			run( "first variable state  exists in variable entity willNotBe list", "ok" );
+			run( "then reply yes variable entity will not be variable state",      "ok" );
+			run( "then if not variable state exists in variable entity willBe list", "ok" );
+			run( "then reply no variable entity will be variable state",           "ok" );
+			run( "then if not reply i do not know",                                "ok" );
 			run( "ok", "ok" );
 
 			// test 5.3
@@ -722,7 +718,7 @@ public class Example {
 
 			// Test
 			// Event: to move is to was (traverse time quanta)
-			// interpret( "interpret when i am dead then move what i am to what i was thus", "go on" );
+			// interpret( "interpret when i am dead then move what i am to what i was thus", "ok" );
 		}
 		if (runTheseTests( "Verbal Arithmetic" )) {
 			run( "what's 1 + 2",                     "1 plus 2 is 3" );
@@ -751,8 +747,8 @@ public class Example {
 			run( "to the phrase what is the factorial of 0 reply 1", "ok" );
 			run( "what is the factorial of 0",  "1" );
 			
-			run( "interpret multiply numeric variable a by numeric variable b thus", "go on" );
-			run( "first evaluate variable a times variable b",                       "go on" );
+			run( "interpret multiply numeric variable a by numeric variable b thus", "ok" );
+			run( "first evaluate variable a times variable b",                       "ok" );
 			run( "ok", "ok" );
 			
 			run( "the product of x and y is x times y", "" );
@@ -763,19 +759,19 @@ public class Example {
 			run( "what is 2 times the square of 2", "2 times the square of 2 is 8" );
 			
 			// again, in longhand this is...
-			run( "interpret subtract numeric variable c from numeric variable d thus", "go on" );
-			run( "first evaluate variable d minus variable c",                         "go on" );
+			run( "interpret subtract numeric variable c from numeric variable d thus", "ok" );
+			run( "first evaluate variable d minus variable c",                         "ok" );
 			run( "ok", "ok" );
 			
 			run( "subtract 2 from 3", "1" );
 			
 			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
 			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
-//			mediate( "interpret what is the factorial of numeric variable n thus",  "go on" );
-//			mediate( "first subtract 1 from variable n",                            "go on" );
-//			mediate( "then what is the factorial of whatever",                      "go on" );
-//			mediate( "then multiply whatever by variable n",  "go on" );
-//			mediate( "then reply whatever the factorial of variable n is whatever", "go on" );
+//			mediate( "interpret what is the factorial of numeric variable n thus",  "ok" );
+//			mediate( "first subtract 1 from variable n",                            "ok" );
+//			mediate( "then what is the factorial of whatever",                      "ok" );
+//			mediate( "then multiply whatever by variable n",  "ok" );
+//			mediate( "then reply whatever the factorial of variable n is whatever", "ok" );
 //			mediate( "ok", "ok" );
 			
 			run( "the factorial of n is n times the factorial of n minus 1",
@@ -886,10 +882,10 @@ public class Example {
 			run( "unset the value of name",           "ok" );
 
 			// build-a-program...
-			run( "interpret my name is phrase variable name thus", "go on" );
-			run( "first set name to variable name",                "go on" );
-			run( "then get the value of name",                     "go on" ); // not strictly necessary!
-			run( "then reply hello whatever",                      "go on" );
+			run( "interpret my name is phrase variable name thus", "ok" );
+			run( "first set name to variable name",                "ok" );
+			run( "then get the value of name",                     "ok" ); // not strictly necessary!
+			run( "then reply hello whatever",                      "ok" );
 			run( "ok",                                             "ok"    );
 
 			run( "my name is ruth",   "hello   ruth" );
@@ -897,12 +893,11 @@ public class Example {
 
 
 			//...or to put it another way
-			run( "interpret i am called phrase variable name like this", "go on" );
-			run( "first reply hi whatever",                             "go on" );
-			run( "this implies that you set name to variable name",    "go on" );
-			run( "this implies that name is not set to variable name", "go on" );
-			run( "then if not reply i already know this",              "go on" );
-			run( "ok",                                                    "ok" );
+			run( "interpret i am called phrase variable name like this", "ok" );
+			run( "first reply hi whatever",                             "ok" );
+			run( "this implies that you set name to variable name",    "ok" );
+			run( "this implies that name is not set to variable name", "ok" );
+			run( "then if not reply i already know this",              "ok" );
 
 			run( "i am called martin", "i already know this" );
 
@@ -918,7 +913,6 @@ public class Example {
 			run( "this implies that you perform sign think variable that",   "ok" );
 			run( "this implies that you perform sign create variable this",  "ok" );
 			run( "this implies that you set transformation to true",         "ok" );
-			//run( "ok", "ok" );
 
 			run( "just call me phrase variable name means i am called variable name", "ok" );
 			run( "just call me martin", "i already know this" );

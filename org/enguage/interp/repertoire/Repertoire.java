@@ -2,11 +2,12 @@ package org.enguage.interp.repertoire;
 
 import org.enguage.interp.sign.Signs;
 import org.enguage.objects.Variable;
+import org.enguage.util.Audit;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 
 public class Repertoire {
-	//static private Audit audit = new Audit( "Repertoire" );
+	static private Audit audit = new Audit( "Repertoire" );
 
 	public  static final String        PREFIX = Reply.helpPrefix();
 	public  static final String PRONUNCIATION = "repper-to-are";  // better than  ~wah	
@@ -30,8 +31,7 @@ public class Repertoire {
 	 * in engine?
 	 */
 	static public Signs signs = new Signs( "user"  );
-	static public Signs autop = new Signs( "autop" ).add( Autopoiesis.written )
-			                                        .add( Autopoiesis.spoken );
+	static public Signs autop = new Signs( "autop" ).add( Autopoiesis.written );
 	static public Signs allop = new Signs( "allop" ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
@@ -48,46 +48,36 @@ public class Repertoire {
 		return b;
 	}
 
-	static private Variable translation = new Variable( "translation", FALSE );
-	static public  boolean  translation() {
-		return translation.get().equalsIgnoreCase( TRUE );
-	}
-	static public  boolean translation( boolean b ) {
-		translation.set( b ? TRUE : FALSE );
-		return b;
-	}
-
 	//
 	// Repertoire Management -- above
 	// *********************************************************** 
 
 	// entry point for Enguage, re-entry point for Intention
 	static public Reply mediate( Utterance u ) {
+		audit.in( "mediate", "utterance="+ u );
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
 		Reply r = new Reply();
-		if (transformation() || translation() || Autoload.ing()) {
+		r = autop.mediate( u );
+		if (Reply.DNU == r.type()) {
+			
+			if (!transformation()) {
+				Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
+				
+				/* At this point we need to rebuild utterance with the (auto)loaded concept,
+				 * with any colloquialisms it may have loaded...
+				 * Needs to be expanded in case we've expanded any parameters (e.g. whatever)
+				 */
+				u = new Utterance( u.expanded() );
+			}
+			
 			r = autop.mediate( u );
 			if (Reply.DNU == r.type()) {
 				r = signs.mediate( u );
 				if (Reply.DNU == r.type())
 					r = allop.mediate( u );
-			}
-		} else {
-			Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
-			
-			/* At this point we need to rebuild utterance with the (auto)loaded concept,
-			 * with any colloquialisms it may have loaded...
-			 * Needs to be expanded in case we've expanded any parameters (e.g. whatever)
-			 */
-			u = new Utterance( u.expanded() );
-			
-			r = signs.mediate( u );
-			if (Reply.DNU == r.type()) {
-				r = allop.mediate( u );
-				if (Reply.DNU == r.type())
-					r = autop.mediate( u );
 		}	}
+		audit.out( r );
 		return r;
 }	}

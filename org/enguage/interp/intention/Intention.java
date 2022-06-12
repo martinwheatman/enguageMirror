@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.interp.Context;
-import org.enguage.interp.pattern.Patterns;
+import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Variable;
@@ -161,7 +161,7 @@ public class Intention {
 				   val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 			Repertoire.signs.insert(
 					s = new Sign()
-							.pattern( new Patterns( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+							.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
 							.concept( concept() )
 							.append( new Intention( Intention.nameToType( attr ), val )));
 			break;
@@ -179,7 +179,7 @@ public class Intention {
 				else
 					s.insert( 0, new Intention( nameToType( attr ), val ));
 		}	}
-		//return (Reply) audit.out( r.answer( Reply.yes().toString() ));
+		//audit.out( r.answer( Reply.yes().toString() ));
 		return "go on";
 	}
 	private Strings formulate( String answer, boolean expand ) {
@@ -315,7 +315,7 @@ public class Intention {
 		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();
 		s = new Sign()
-				.pattern( new Patterns( "c variable pattern z" ))
+				.pattern( new Pattern( "c variable pattern z" ))
 				.concept( concept() );
 		String reply = "three four";
 		s.append( new Intention( thenReply, reply ));

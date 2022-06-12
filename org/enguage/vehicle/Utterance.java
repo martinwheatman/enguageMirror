@@ -1,8 +1,8 @@
 package org.enguage.vehicle;
 
 import org.enguage.interp.Context;
-import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.pattern.Pattern;
+import org.enguage.interp.pattern.Patte;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Temporal;
@@ -124,8 +124,8 @@ public class Utterance {
 		);
 
 		// create a meeting repertoire
-		Patterns ts = new Patterns();
-		ts.add( new Pattern( "i am meeting", "WHOM" ).phrasedIs() );
+		Pattern ts = new Pattern();
+		ts.add( new Patte( "i am meeting", "WHOM" ).phrasedIs() );
 		Sign s = new Sign().concept("meeting").pattern( ts );
 		Where.addConcept("meeting");
 		Temporal.addConcept("meeting");
@@ -135,8 +135,8 @@ public class Utterance {
 		test( s, "i am meeting my brother at the pub at 7" );
 		test( s, "i am meeting my sister  at the pub" );
 		
-		ts = new Patterns();
-		ts.add( new Pattern( "what is the factorial of", "N" ).numericIs() );
+		ts = new Pattern();
+		ts.add( new Patte( "what is the factorial of", "N" ).numericIs() );
 		s = new Sign().concept("meeting").pattern( ts );
 
 		test( s, "what is the factorial of whatever", new Strings( "3" ));

@@ -20,6 +20,7 @@ public class Audit {
  	static private Indent indent = new Indent();
  	static public  void   incr() { indent.incr(); }
  	static public  void   decr() { indent.decr(); }
+ 	static public  String indent() { return indent.toString();}
  	
  	// === logfile - write-only
  	static private String fname = "." + File.separator+"audit.log";

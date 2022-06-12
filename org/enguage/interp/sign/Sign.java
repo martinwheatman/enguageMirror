@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.interp.intention.Intention;
+import org.enguage.interp.pattern.Patte;
 import org.enguage.interp.pattern.Pattern;
-import org.enguage.interp.pattern.Patterns;
 import org.enguage.interp.repertoire.Engine;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.objects.Temporal;
@@ -25,23 +25,23 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-	public Sign( Pattern  patte  ) { this(); pattern( patte );}
-	public Sign( String prefix ) { this( new Pattern( prefix )); }
-	public Sign( String prefix, Pattern variable ) { this( variable.prefix( prefix ));}
-	public Sign( String prefix, Pattern variable, String postfix ) {
+	public Sign( Patte  patte  ) { this(); pattern( patte );}
+	public Sign( String prefix ) { this( new Patte( prefix )); }
+	public Sign( String prefix, Patte variable ) { this( variable.prefix( prefix ));}
+	public Sign( String prefix, Patte variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
 	}
-	public Sign( String prefix1, Pattern variable1,
-	             String prefix2, Pattern variable2 )
+	public Sign( String prefix1, Patte variable1,
+	             String prefix2, Patte variable2 )
 	{	this();
 		pattern( variable1.prefix( prefix1 ));
 		pattern( variable2.prefix( prefix2 ));
 	}
 	
-	private Patterns pattern = new Patterns();
-	public  Patterns pattern() {return pattern;}
-	public  Sign     pattern( Patterns ta ) { pattern = ta; return this; }
-	public  Sign     pattern( Pattern child ) {
+	private Pattern pattern = new Pattern();
+	public  Pattern pattern() {return pattern;}
+	public  Sign     pattern( Pattern ta ) { pattern = ta; return this; }
+	public  Sign     pattern( Patte child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
@@ -124,20 +124,27 @@ public class Sign {
 				+ intentions
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
 	}
-	public String toString() {
+	public String toStringIndented( String indent ) {
 		String sign = "";
 		int sz = ints.size();
 		if (sz > 0) {
-			sign = "On \""+ pattern().toString() +"\"";
+			Audit.incr();
+			sign = indent +"On \""+ pattern().toString() +"\"";
 			if (sz == 1)
 				sign += ", "+ ints.get(0);
 			else {
 				int line = 0;
 				for (Intention in : ints)
-					sign += (line++ == 0 ? ":" : ";") + "\n" + indent + in;
-		}	}	
-		return sign +".\n";
+					sign += (line++ == 0 ? ":" : ";") + "\n" + indent +"    "+ in;
+			}
+			Audit.decr();
+		}	
+		return sign +".";
 	}
+	public String toString() {
+		return toStringIndented( "" );
+	}
+		
 	public boolean toFile( String fname ){
 		//Audit.log( "creating: "+ loc + pattern.toFilename() +".txt" );
 		return Fs.stringAppendFile( fname, toString());
@@ -168,7 +175,7 @@ public class Sign {
 	 * This will handle "sign create X", found in interpret.txt
 	 */
 	public static Strings interpret( Strings args ) {
-		//audit.in( "interpret", args.toString());
+		audit.in( "interpret", args.toString());
 		String rc = Shell.FAIL;
 		
 		if (args.size() > 0) {
@@ -200,16 +207,16 @@ public class Sign {
 				
 				Repertoire.signs.insert(
 					Sign.voiced = new Sign()
-						.pattern( new Patterns( args.toString() ))
+						.pattern( new Pattern( args.toString() ))
 						.concept( Repertoire.AUTOPOIETIC )
 				);
-				rc = "go on";
+				rc = "ok";
 				
 			} else if (cmd.equals( "perform" )) {
 				Intention intn = 
 						new Intention(
 							isElse ? Intention.elseDo : Intention.thenDo,
-							Patterns.toPattern( new Strings( args.toString() ))
+							Pattern.toPattern( new Strings( args.toString() ))
 						);
 				
 				if (header)
@@ -221,13 +228,13 @@ public class Sign {
 				else
 					voiced.insert( voiced.ints.size()-1, intn );
 				
-				rc = "go on";
+				rc = "ok";
 				
 			} else if (cmd.equals( "reply" )) {
 				Intention intn = 
 						new Intention(
 							isElse? Intention.elseReply : Intention.thenReply, 
-							Patterns.toPattern( new Strings( args.toString() ))
+							Pattern.toPattern( new Strings( args.toString() ))
 						);
 
 				if (header)
@@ -239,13 +246,13 @@ public class Sign {
 				else
 					voiced.insert( voiced.ints.size()-1, intn );
 
-				rc = "go on";
+				rc = "ok";
 				
 			} else if (cmd.equals( "think" )) {
 				audit.debug( "adding a thought "+ args.toString() );
 				Intention intn = new Intention(
 							isElse? Intention.elseThink : Intention.thenThink,
-							Patterns.toPattern( new Strings( args.toString() ))
+							Pattern.toPattern( new Strings( args.toString() ))
 						);
 				
 				if (voiced != null) { //BUG: sign think called w/o voiced
@@ -258,7 +265,7 @@ public class Sign {
 					else
 						voiced.insert( voiced.ints.size()-1, intn );
 				}
-				rc = "go on";
+				rc = "ok";
 				
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "prepending an implication '"+ args.toString() +"'");
@@ -266,9 +273,9 @@ public class Sign {
 						0,
 						new Intention(
 								isElse? Intention.elseThink : Intention.thenThink,
-								Patterns.toPattern( new Strings( args.toString() ))
+								Pattern.toPattern( new Strings( args.toString() ))
 				)		);
-				rc = "go on";
+				rc = "ok";
 				
 			} else if (cmd.equals( "finally" )) {
 				Intention intn;
@@ -276,25 +283,26 @@ public class Sign {
 				if (cmd.length() > 7 && cmd.substring( 0, 7 ).equals( "perform" ))
 					intn = new Intention(
 							isElse ? Intention.elseDo    : Intention.thenDo,
-							Patterns.toPattern( new Strings( args.toString() ))
+							Pattern.toPattern( new Strings( args.toString() ))
 						 );
 				
 				else if (cmd.equals( "reply" ))
 					intn = new Intention(
 							isElse ? Intention.elseReply : Intention.thenReply,
-							Patterns.toPattern( new Strings( args.toString() ))
+							Pattern.toPattern( new Strings( args.toString() ))
 						 );
 				
 				else
 					intn = new Intention(
 							isElse ? Intention.elseThink : Intention.thenThink,
-							Patterns.toPattern( new Strings( args.toString() ))
+							Pattern.toPattern( new Strings( args.toString() ))
 						 );
 				voiced.append( intn ); // all finallys at the end :)
-				rc = "go on";
+				rc = "ok";
 			
 			} else
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
 		}
-		return new Strings( rc ); //audit.out( new Strings( rc ));
+		audit.out( new Strings( rc ));
+		return new Strings( rc ); 
 }	}

@@ -2,26 +2,17 @@ On "to the phrase PHRASE-X reply      PHRASE-Y", to X reply Y.
 On "to            PHRASE-X reply with PHRASE-Y", to X reply Y.
 On "to the phrase PHRASE-X reply with PHRASE-Y", to X reply Y.
 On "to            PHRASE-X reply      PHRASE-Y":
-	set translation to true;  # Feature: translation must be true!
 	perform "sign create X";
-	perform "sign reply Y";
-	set translation to false; # Feature: see object.Signs
-	then, reply "ok".
-	
-On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
-	perform "sign prepend else reply REPLY";
-	perform "sign prepend imply IMPLICATION";
-	then, reply "go on".
+	perform "sign reply Y".
 
-On "if not reply PHRASE-REPLY":
-	perform "sign headappend else reply REPLY";
-	then, reply "ok".
+# Three implies:
+#On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
+#	perform "sign prepend else reply REPLY";
+#	perform "sign prepend imply IMPLICATION".
 
-On "this implies that PHRASE-IMPLICATION":
- 	perform "sign imply IMPLICATION";
- 	then, reply "go on".
+On "this implies          SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that     SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that you SAID-IMPLICATION", perform "sign imply IMPLICATION".
 
-On "this implies that you PHRASE-IMPLICATION":
-	perform "sign imply IMPLICATION";
-	reply "ok".
+On "then if not reply SAID-X",     perform "sign append else reply X".
  	

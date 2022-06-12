@@ -50,16 +50,21 @@ public class Autoload {
 			Autoload.ing( true );
 			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
+			Strings concepts = new Strings();
 			for (String candidate : Concepts.matched( utterance ))
 				if (null == autoloaded.get( candidate ))  // Candidate already loaded, OR
 				{
 					String conceptName = Concepts.loadConcept( candidate, null, null );     // just loaded so...
-					if (!conceptName.equals( "" ))
+					if (!conceptName.equals( "" )) {
+						concepts.add( conceptName );
 						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0
-					else // ignore, if no repertoire!
+					} else // ignore, if no repertoire!
 						audit.ERROR( "failed to autoload: "+ candidate );
-				} else
+				} else {
+					concepts.add( candidate );
 					autoloaded.put( candidate, 0 ); // reset to age=0
+				}
+			if (concepts.size() > 0) audit.debug( "Autoload: "+ concepts );
 			
 			Similarity.autoload( utterance );			
 				
@@ -80,7 +85,6 @@ public class Autoload {
 	static public void unload() {
 		
 		if (!Repertoire.transformation() &&
-			!Repertoire.translation()    && // shouldn't be true?
 			!Autoload.ing())
 		{
 			Strings repsToRemove = new Strings();

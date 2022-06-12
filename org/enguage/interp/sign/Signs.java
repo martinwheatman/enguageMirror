@@ -9,8 +9,7 @@ import java.util.TreeMap;
 
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
-import org.enguage.interp.pattern.Pattern;
-import org.enguage.interp.repertoire.Autoload;
+import org.enguage.interp.pattern.Patte;
 import org.enguage.interp.repertoire.Concepts;
 import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
@@ -235,7 +234,10 @@ public class Signs extends TreeMap<Integer,Sign> {
 					Pronoun.update( match );
 					
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
-					audit.debug( "matched:\n"+ s +"Concept: "+s.concept()+", with "+ match.toString() +", and "+ Context.valueOf());
+					audit.debug( "matched:\n"+ s.toStringIndented( Audit.indent() ) );
+					audit.debug( "Concept: "+s.concept() +"," );
+					audit.debug( "   with: "+ match.toString() +"," );
+					audit.debug( "    and: "+ Context.valueOf());
 					
 					//audit.debug("setting "+ i +" to "+ here );
 					s.interpretation = here; // mark here first as this understanding may be toxic!
@@ -248,9 +250,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					//audit.debug( "Found@ "+ i +":"+ get( complexity ).content().toLine() +":"+ match.toString() +")");
 
 					//save the context here, for future use... before interp
-					if (!Autoload.ing() &&
-						 !Repertoire.translation() &&
-						 !Repertoire.transformation())
+					if (!Repertoire.transformation())
 						match.toVariables();
 					
 					// TODO: No need for context, now? read from (cached) variables?
@@ -300,18 +300,18 @@ public class Signs extends TreeMap<Integer,Sign> {
 		audit.tracing = true;
 		Signs r = new Signs( "test" );
 		r.insert(
-				new Sign().pattern( new Pattern(  "debug ", "x" ))
+				new Sign().pattern( new Patte(  "debug ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "debug X" ))
 			);
 		r.insert(
-				new Sign().pattern( new Pattern(  "describe ", "x" ))
+				new Sign().pattern( new Patte(  "describe ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "describe X" ))
 					.help( "where x is a repertoire" )
 			);
 		r.insert(
-			new Sign().pattern( new Pattern(  "list repertoires ", "" ))
+			new Sign().pattern( new Patte(  "list repertoires ", "" ))
 				.concept( "test" )
 				.append( new Intention( Intention.allop, "list repertoires" ))
 				.help( "" )

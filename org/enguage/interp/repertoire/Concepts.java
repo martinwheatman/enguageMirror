@@ -61,7 +61,7 @@ public class Concepts {
 	static public  String spokenName( String s ) {return rwRpts()+ s +".txt";}
 	static public void delete( String cname ) {
 		if (cname != null) {
-			File oldFile = new File( writtenName( cname )),
+			File oldFile = new File( spokenName( cname )),
 			     newFile = new File( rwRpts() + cname +".del" );
 			if (!oldFile.renameTo( newFile ))
 				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );

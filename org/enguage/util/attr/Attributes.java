@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.interp.pattern.Patterns;
+import org.enguage.interp.pattern.Pattern;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -187,10 +187,10 @@ public class Attributes extends ArrayList<Attribute> {
 			String orig = name;
 			// if we have QUOTED-X, retrieve X and leave answer QUOTED
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
-			boolean quoted   = name.contains( Patterns.quotedPrefix ),
-					plural   = name.contains( Patterns.pluralPrefix ),
-					external = name.contains( Patterns.externPrefix ),
-					grouped  = name.contains( Patterns.groupedPrefix );
+			boolean quoted   = name.contains( Pattern.quotedPrefix ),
+					plural   = name.contains( Pattern.pluralPrefix ),
+					external = name.contains( Pattern.externPrefix ),
+					grouped  = name.contains( Pattern.groupedPrefix );
 			
 			// remove all prefixes...
 			name = name.substring( name.lastIndexOf( "-" )+1 );
