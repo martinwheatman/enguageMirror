@@ -17,10 +17,10 @@ On "QUOTED-EX means QUOTED-IN", perform "colloquial both IN EX".
 "you'll"  means "you will".
 "fish AND chips" means "fish'n'chips".
 
-On "When user says QUOTED-EX user means QUOTED-IN", perform "colloquial user IN EX".
-When user says   "my" user means "_user_s".
-When user says "your" user means "_host_s".
-When user says   "an" user means "a".
+On "When you say QUOTED-EX you mean QUOTED-IN", perform "colloquial user IN EX".
+When you say   "my" you mean "_user_s".
+When you say "your" you mean "_host_s".
+When you say   "an" you mean "a".
 
 On "When host says QUOTED-IN host means QUOTED-EX", perform "colloquial host IN EX".
 # beware: this is order sensitive - should be based on longest first
