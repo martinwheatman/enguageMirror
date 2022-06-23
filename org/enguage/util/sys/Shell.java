@@ -152,9 +152,9 @@ public class Shell {
 		
 		// create a primary and a list of secondaries
 		boolean isPrimary = true;
-		Strings primary = new Strings(),
-				secondary = new Strings ();
-		for (String s : sentence) {
+		Strings primary = new Strings(),    // On "a B c" (:)
+				secondary = new Strings (); // {if so, do something[;|.]}
+		for (String s : sentence) 
 			if (s.equals(":")) {
 				isPrimary = false;
 			} else if (s.equals(";")) {
@@ -164,7 +164,7 @@ public class Shell {
 				primary.add( s );
 			} else {
 				secondary.add( s );
-		}	}
+			}
 		if (secondary.size() > 0) rc.add( secondary );
 		
 		// if we've found no semi-colon separated list...
@@ -184,13 +184,15 @@ public class Shell {
 			// re-jig list, adding-in primary and secondary with connector on subsequent lists
 			for (int i=0; i<rcSz; i++) {
 				Strings tmp = new Strings();
-				if (i>0 && !connector.equals(""))
+				if (i==0)
+					tmp.addAll( primary );
+				else
 					tmp.add( 0, connector );
-				tmp.addAll( primary );
 				tmp.add( "," );
 				tmp.addAll( rc.get( i ));
 				rc.set( i, tmp );
 		}	}
+		//audit.OUT( rc );
 		return rc;
 	}
 	private static void test( String string ) {
@@ -201,14 +203,15 @@ public class Shell {
 			Audit.log( ">>>"+ s.toString( Strings.SPACED ) );
 	}	}
 	public static void main( String args[]) {
-		test( "I need coffee" );
+//		test( "I need coffee" );
+		test( "on this, here there and everywhere" );
 		test( "on this: do here; there; and, everywhere" );
-		test( "On \"X needs PHRASE-Y\":"
-				+"	if Y exists in X needs list, reply \"I know\";"
-				+"	if not, add Y to X needs list;"
-				+"	then, reply \"ok, X needs Y\"." );
-		test( "On \"X needs PHRASE-Y\":"
-				+"	if Y exists in X needs list, reply \"I know\";"
-				+"	if not, add Y to X needs list;"
-				+"	reply \"ok, X needs Y\"." );
+//		test( "On \"X needs PHRASE-Y\":"
+//				+"	if Y exists in X needs list, reply \"I know\";"
+//				+"	if not, add Y to X needs list;"
+//				+"	then, reply \"ok, X needs Y\"." );
+//		test( "On \"X needs PHRASE-Y\":"
+//				+"	if Y exists in X needs list, reply \"I know\";"
+//				+"	if not, add Y to X needs list;"
+//				+"	reply \"ok, X needs Y\"." );
 }	}

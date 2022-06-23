@@ -1,5 +1,9 @@
 package org.enguage.interp.repertoire;
 
+import org.enguage.interp.intention.Intention;
+import org.enguage.interp.pattern.Phrase;
+import org.enguage.interp.pattern.Quote;
+import org.enguage.interp.sign.Sign;
 import org.enguage.interp.sign.Signs;
 import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
@@ -9,6 +13,51 @@ import org.enguage.vehicle.reply.Reply;
 public class Repertoire {
 	static private Audit audit = new Audit( "Repertoire" );
 
+	private static final Sign[] autopoiesis = {
+		// 3 x 3 signs (think/do/say * start/subseq/infelicit) + 1 "finally"
+		new Sign( "On ", new Quote( "x" ), ",", new Phrase( "y" ))
+			.append( new Intention( Intention.create, Intention.THINK +" X Y" )),
+			
+		new Sign( "On ",new Quote( "x" ), ", perform ", new Quote( "y" ))
+			.append( new Intention( Intention.create, Intention.DO +" X Y" )),
+			
+		new Sign( "On ", new Quote( "x" ), ", reply ", new Quote( "y" ))
+			.append( new Intention( Intention.create, Intention.REPLY +" X Y" )),
+			
+		new Sign( "Then, ", new Phrase( "y" ))
+			.append( new Intention( Intention.append, Intention.THINK +" Y" )),
+			
+		new Sign( "Then, perform ",  new Quote( "y" ))
+			.append( new Intention( Intention.append, Intention.DO +" Y" )),
+			
+		new Sign( "Then, reply   ", new Quote("y" ))
+			.append( new Intention( Intention.append, Intention.REPLY+" Y" )),
+			
+		new Sign( "Then, if not, ",  new Phrase( "y" ))
+			.append( new Intention( Intention.append, Intention.ELSE_THINK +" Y" )),
+			
+		new Sign( "Then, if not, perform ", new Quote( "y" ))
+			.append( new Intention( Intention.append, Intention.ELSE_DO +" Y" )),
+					
+		new Sign( "Then, if not, reply ", new Quote( "y" ))
+			.append( new Intention( Intention.append, Intention.ELSE_REPLY +" Y")),
+			
+		new Sign( "Then, if not, say so" )
+			.append( new Intention( Intention.append, Intention.ELSE_REPLY +" \"\" ")),
+			
+		new Sign( " Finally,   perform ", new Quote( "y" ))
+			.append( new Intention( Intention.append, Intention.FINALLY+" Y" )),
+			
+		//	Added 3 new signs for the running of applications external to enguage...
+		new Sign( "On ", new Quote( "x" ), ", run ", new Quote( "y" ))
+			.append( new Intention( Intention.create, Intention.RUN +" X Y" )),
+		
+		new Sign( "Then, run ", new Quote( "y" ))
+			.append( new Intention( Intention.append, Intention.RUN +" Y" )),
+	
+		new Sign( "Then, if not, run ", new Quote( "y" ))
+			.append( new Intention( Intention.append, Intention.ELSE_RUN +" Y" ))
+	};
 	public  static final String        PREFIX = Reply.helpPrefix();
 	public  static final String PRONUNCIATION = "repper-to-are";  // better than  ~wah	
 	public  static final String PLURALISATION = "repper-to-wahs"; // better than ~ares
@@ -31,7 +80,7 @@ public class Repertoire {
 	 * in engine?
 	 */
 	static public Signs signs = new Signs( "user"  );
-	static public Signs autop = new Signs( "autop" ).add( Autopoiesis.written );
+	static public Signs autop = new Signs( "autop" ).add( autopoiesis );
 	static public Signs allop = new Signs( "allop" ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.

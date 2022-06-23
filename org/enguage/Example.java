@@ -1,6 +1,7 @@
 package org.enguage;
 
 import org.enguage.interp.repertoire.Autoload;
+import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -83,25 +84,25 @@ public class Example {
 				new Strings( Server.client( "localhost", portNumber, cmd ))
 				: Enguage.mediate( new Strings( cmd ));
 
-		if (expected == null) // don't check anything
+		if (expected == null) { // don't check anything
 			;
-		else if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected )))
+		} else if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected ))) {
 		
 			audit.passed( replyPrompt()+ reply +"." );      // 1st success
 			
-		else if (unexpected == null)                        // no second chance
+		} else if (unexpected == null) {                      // no second chance
 			//Repertoire.signs.show();
 			audit.FATAL(
 				"reply: '"+    reply    +"',\n             "+
 				"expected: '"+ expected +"' "
 			);
 		
-		else if (unexpected.equals( "" ) ||
-				 reply.equalsIgnoreCase( new Strings( unexpected )))
+		} else if (unexpected.equals( "" ) ||
+				 reply.equalsIgnoreCase( new Strings( unexpected ))) {
 		
 			audit.passed( replyPrompt()+ reply +".\n" );
 		
-		else                                           // second chance failed too!
+		} else                                           // second chance failed too!
 			//Repertoire.signs.show();
 			audit.FATAL(
 				"reply: '"      + reply      +"'\n             "+
@@ -135,10 +136,10 @@ public class Example {
 			run( "we are you and i",  "ok, we means you and i"    );
 			run( "who are we",        "ok, we means you and i"    );
 			
-			run(     "martin is not holding hands with ruth", "yes, i know" );
-			run(     "martin is     holding hands with ruth", 
+			run( "martin is not holding hands with ruth", "yes, i know" );
+			run( "martin is     holding hands with ruth", 
 					 "ok, martin is     holding hands with ruth" );
-			run(     "martin is not holding hands with ruth", 
+			run( "martin is not holding hands with ruth", 
 					 "ok, martin is not holding hands with ruth" );
 
 			run( "whose hand am i holding", "sorry, you're not holding anyone's hand" );
@@ -360,7 +361,7 @@ public class Example {
 			// ...and its gone. We're clean again!
 			run( "hello",                          "i don't understand" );
 		}
-		if (runTheseTests( "Why/because, IJCSSA article example" )) {
+		if (runTheseTests( "Why/because, IJCSSA article" )) {
 			audit.subtl( "Simple action demo" );
 			run( "i am baking a cake",     "yes, i know", "ok, you're     baking a cake" );
 			run( "am i baking a cake",     "yes,               you're     baking a cake" );
@@ -521,7 +522,7 @@ public class Example {
 			run( "i need an apple", "" );
 			run( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
 		}
-//		if (runThisTest( "james's experimental example" )) { // variables, arithmetic and lambda tests
+//		if (runThisTest( "james's experiment" )) { // variables, arithmetic and lambda tests
 //			//interpret( "england is a country",  "ok, england is a country" );
 //			test( "preston is in england", "ok, preston is in england" );
 //			test( "i am in preston",       "ok, you're in england" );
@@ -1009,6 +1010,12 @@ public class Example {
 
 			// We can now conclude...
 			run( "what should we do", "we should wear a mask" );
+		}
+		if (runTheseTests( "business scripts" )) {
+			Audit.LOG( System.getenv( "PATH" ));
+			run( "to the phrase my engine is 1598cc reply ok your engine is 1598cc", "ok" );
+			run( "this implies that you run value engine/capacity ", "ok" );
+			//run( "my engine is 1598cc", "ok" );
 		}
 		
 		Audit.log( testGrp +" test group(s) found" );
