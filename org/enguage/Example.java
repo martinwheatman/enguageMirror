@@ -1,6 +1,7 @@
 package org.enguage;
 
 import org.enguage.interp.repertoire.Autoload;
+import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -83,25 +84,25 @@ public class Example {
 				new Strings( Server.client( "localhost", portNumber, cmd ))
 				: Enguage.mediate( new Strings( cmd ));
 
-		if (expected == null) // don't check anything
+		if (expected == null) { // don't check anything
 			;
-		else if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected )))
+		} else if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected ))) {
 		
 			audit.passed( replyPrompt()+ reply +"." );      // 1st success
 			
-		else if (unexpected == null)                        // no second chance
+		} else if (unexpected == null) {                      // no second chance
 			//Repertoire.signs.show();
 			audit.FATAL(
 				"reply: '"+    reply    +"',\n             "+
 				"expected: '"+ expected +"' "
 			);
 		
-		else if (unexpected.equals( "" ) ||
-				 reply.equalsIgnoreCase( new Strings( unexpected )))
+		} else if (unexpected.equals( "" ) ||
+				 reply.equalsIgnoreCase( new Strings( unexpected ))) {
 		
 			audit.passed( replyPrompt()+ reply +".\n" );
 		
-		else                                           // second chance failed too!
+		} else                                           // second chance failed too!
 			//Repertoire.signs.show();
 			audit.FATAL(
 				"reply: '"      + reply      +"'\n             "+
@@ -135,10 +136,10 @@ public class Example {
 			run( "we are you and i",  "ok, we means you and i"    );
 			run( "who are we",        "ok, we means you and i"    );
 			
-			run(     "martin is not holding hands with ruth", "yes, i know" );
-			run(     "martin is     holding hands with ruth", 
+			run( "martin is not holding hands with ruth", "yes, i know" );
+			run( "martin is     holding hands with ruth", 
 					 "ok, martin is     holding hands with ruth" );
-			run(     "martin is not holding hands with ruth", 
+			run( "martin is not holding hands with ruth", 
 					 "ok, martin is not holding hands with ruth" );
 
 			run( "whose hand am i holding", "sorry, you're not holding anyone's hand" );
@@ -155,93 +156,118 @@ public class Example {
 					 "ok, you're holding ruth's hand" );
 			run( "whose hand am i holding", "sorry, you're not holding anyone's hand" );
 		}
-		if (runTheseTests( "can - capabilities" )) {
-			run( "flowers can    be yellow", "ok, flowers can   be yellow" );
-			run( "flowers cannot be green",  "ok, flowers can't be green" );
-			run( "flowers cannot be red",    "ok, flowers can't be red" );
-			run( "can flowers    be red",    "no, flowers can't be red" );
-			run( "no flowers can be red",    "ok, flowers can be red" );
-
-			run( "can flowers    be green",   "no, flowers can't be green" );
-			run( "can flowers    be yellow",  "yes, flowers can be yellow" );
-			run( "can flowers    be red",     "yes, flowers can be red" );
-			run( "can flowers    be blue",    "sorry, i don't know" );
-		}
-		if (runTheseTests( "Megan's Enjoy Example" )) {
-			run( "i enjoy yellow", "ok, you enjoy yellow" );
-			run( "i enjoy dogs",   "ok, you enjoy dogs" );
-
-			run( "do i enjoy yellow",    "yes, you enjoy yellow" );
-			run( "do i enjoy chocolate", "you haven't told me you enjoy chocolate" );
-		}
-		if (runTheseTests( "Megan's Thales Experiment" )) {
-			/*
-//			test( "you can say variable colour is a colour", "ok" );
-//			test( "this implies that you add variable colour to your colour list", "ok" );
-//			
-//			test( "red is a colour", "ok" );
-//			test( "blue is a colour", "ok" );
-//			test( "green is a colour", "ok" );
-//			test( "yellow is a colour", "ok" );
+		if (runTheseTests( "The Non-Computable concept of Need" )) { // 
 			
-			test( "set colour to yellow", "ok, colour is set to yellow" );
-			test( "set colour to red",    "ok, colour is set to red" );
-			test( "set colour to fred",   "sorry, fred is not a colour i know" );
-			
-			//
-			// before logging in, test that we can't just affect things...
-			test( "switch to submarines screen", "sorry, you need to be logged in" );
-			test( "clear the filter",            "sorry, you need to be logged in" );
-			
-			test( "login as megan",              "ok, you're logged in as megan" );
-			test( "switch to submarines screen", "ok, switched to submarines screen" );
-			test( "what is the value of screen", "submarines, the value of screen is submarines" );
-			test( "filter by submarines only",   "ok, you're filtering by submarines only" );
-			
-			test( "logout",                      "ok, you have logged out" );
-			*/
-			run( "martin is a user",   "ok");
-			run( "set user as martin", "ok, martin is logged on");
-		}
-		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
-			
-			run( "to the phrase hello reply hello to you too", "" );
-			run( "hello",                 "hello to you too" );
-			run( "to the phrase my name is variable name reply hello variable name", "" );
-			run( "please my name is martin", "hello martin" );
+			// regression test: "do i need" != >do i need OBJECT<
+			// blank var at end of utterance
+			run( "do i need",                  "i'm sorry, i don't understand the question" );
 			
 			clearTheNeedsList();
-			run( "what do i need",        "you don't need anything" );
-			run( "i need a coffee",       "ok, you need a coffee" );
-			run( "what do i need",        "you need a coffee" );
-			
-			run( "what do i think",       "i'm sorry, I don't understand the question" );
-			
-			run( "what do i want",        "i'm sorry, i don't understand the question" );
-			run( "want is like need",     "ok, want is like need" );
-			run( "what do i want",        "you don't want anything" );
+			run( "what do i need",	            "you don't need anything" );
+			run( "i need 2 cups of coffee and a biscuit",
+					                            "ok, you need 2 cups of coffee and a biscuit");
+			run( "what do i need",             "you need 2 cups of coffee, and a biscuit");
+			run( "how many coffees do i need", "2, you need 2 coffees" );
+			run( "i need 2 coffees",           "yes, i know" );
+			run( "i don't need any coffee",    "ok, you don't need any coffee" );
+			run( "what do i need",             "you need a biscuit" );
 
-			run( "interpret something can be variable quality thus", "" );
-			run( "first add variable quality to my quality list",    "" );
-			run( "then reply ok variable quality is a quality",  "" );
+			audit.title( "Semantic Thrust" );
+			run( "i need to go to town",       "ok, you need to go to town" );
+			run( "what do i need",             "you need a biscuit, and to go to town" );
+			run( "i have the biscuit",         "ok, you don't need any biscuit" );
+			run( "i have to go to town",       "yes, i know" );
+			run( "i don't need to go to town", "ok, you don't need to go to town" );
+			run( "what do i need",             "you don't need anything" );
 			
-			run( "something can be cool", "ok cool is a quality" );
+			audit.title( "Numerical Context" );
+			clearTheNeedsList();
+			run( "i need a coffee",     "ok, you need a coffee" );
+			run( "and another",         "ok, you need another coffee" );
+			run( "how many coffees do i need", "2, you need 2 coffees" );
+			run( "i need a cup of tea", "ok, you need a cup of tea" );
+			run( "and another coffee",  "ok, you need another coffee" );
+			run( "what do i need",      "You need 3 coffees , and a cup of tea" );
 			
-			run( "interpret variable things are variable quality thus", "" );
-			run( "first add variable things to my variable quality list", "" );
-			run( "and then reply ok variable things are variable quality", "" );
+			audit.title( "Correction" );
+			run( "i need another coffee", "ok, you need another coffee" );
+			run( "no i need another 3",   "ok, you need another 3 coffees" );
+			run( "what do i need",        "you need 6 coffees, and a cup of tea" );
+			run( "i don't need anything", "ok, you don't need anything" );
 			
-			run( "ferraris are cool",     "ok ferraris are cool" );
-			run( "want is like need",     "" );
-			run( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
-			run( "why do I want a ferrari", "because ferraris are cool" );
+			audit.title( "Group-as-entity" );		
+			clearTheNeedsList( "MartinAndRuth does not need anything" );
 			
-			// Tidy up...
-			run( "I don't want anything", "ok, you don't want anything" );
-			run( "want is not like need", "ok, want is not like need" );
-			run( "what do i want",        "i'm sorry, i don't understand the question" );
+			run( "martin and ruth need a coffee and a tea",
+			         "ok, martin and ruth need a coffee and a tea" );
+			
+			run( "what do martin and ruth need",
+			         "martin and ruth need a coffee , and a tea" );
+			
+			run( "martin and ruth do not need a tea", 
+			         "ok, martin and ruth don't need a tea" );
+			
+			run( "what do martin and ruth need",
+			         "martin and ruth need a coffee" );
+			
+			run( "martin and ruth need some biscuits",
+			         "ok, martin and ruth need some biscuits" );
+			
+			run( "what do martin and ruth need",
+			         "martin and ruth need a coffee, and some biscuits" );
+			// Tidy up
+			run( "martin and ruth do not need anything", "ok , martin and ruth don't need anything" );
+
+			audit.title( "Combos, multiple singular entities");
+			run( "james and martin and ruth all need a chocolate biscuit",
+			         "ok, james and martin and ruth all need a chocolate biscuit" );
+			
+			run( "martin and ruth both need a cocoa and a chocolate biscuit",
+			         "ok, martin and ruth both need a cocoa and a chocolate biscuit" );
+			
+			run( "what does martin need",
+					 "martin needs a chocolate biscuit, and a cocoa" );
+			clearTheNeedsList( "james  doesn't need anything" );
+			clearTheNeedsList( "martin doesn't need anything" );
+			clearTheNeedsList( "ruth   doesn't need anything" );
+			
+			audit.title( "Pronouns - see need+needs.txt" );
+			clearTheNeedsList();
+			
+			run( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
+			run( "they are from Sainsbury's",  "ok, they are from sainsbury's" );
+			run( "i need a pint of milk",      "ok, you need a pint of milk" );
+			run( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
+			run( "i need cheese and eggs from the dairy aisle",
+					                               "ok, you need cheese and eggs" );
+			//mediate( "group by",                   "i'm sorry, i need to know what to group by" );
+			run( "group by location",          "ok" );
+			
+			run( "what do i need from sainsbury's",
+					   "you need biscuits, and coffee from sainsbury's" );
+			
+			run( "what do i need from the dairy aisle",
+					   "you need a pint of milk, cheese, and eggs from the dairy aisle" );
+			
+			run( "i don't need anything from the dairy aisle",
+					   "ok, you don't need anything from the dairy aisle" );
+			
+			audit.title( "Late Binding Floating Qualifiers" );
+			clearTheNeedsList();
+			run( "i need biscuits",       "ok, you need biscuits" );
+			run( "i need milk from the dairy aisle", "ok, you need milk from the dairy aisle" );
+			run( "i from the dairy aisle need milk", "yes, i know" );
+			run( "from the dairy aisle i need milk", "yes, i know" );
+			run( "what do i need",        "you need biscuits; and, milk from the dairy aisle" );
+			run( "from the dairy aisle what do i need",  "you need milk from the dairy aisle" );
+			run( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );
+			run( "what do i need from the dairy aisle",  "you need milk from the dairy aisle" );
+			
+			audit.title( "Numbers ERROR!" );
+			clearTheNeedsList();
+			run( "i need an apple", "" );
+			run( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
 		}
-		
 		if (runTheseTests( "Simple Food Diary" )) {
 			run( "i just ate breakfast",             "ok, you have eaten breakfast today" );
 			run( "today i have eaten a mars bar",    "ok, you have eaten a mars bar today" );
@@ -360,168 +386,7 @@ public class Example {
 			// ...and its gone. We're clean again!
 			run( "hello",                          "i don't understand" );
 		}
-		if (runTheseTests( "Why/because, IJCSSA article example" )) {
-			audit.subtl( "Simple action demo" );
-			run( "i am baking a cake",     "yes, i know", "ok, you're     baking a cake" );
-			run( "am i baking a cake",     "yes,               you're     baking a cake" );
-			run( "i am not baking a cake",                "ok, you're not baking a cake" );
-			
-			audit.title( "Why/because" );
-			run( "i am baking a cake so i need 3 eggs",
-					   "ok, you need 3 eggs because you're baking a cake" );
-			
-			run( "am i baking a cake",      "yes, you're baking a cake" );
-			run( "how many eggs do i need", "3, you need 3 eggs" );
-			
-			run( "so why do i need 3 eggs", "because you're baking a cake" );
-			run( "do I need 3 eggs because I am baking a cake",
-				       "yes, you need 3 eggs because you're baking a cake" );
-			// simple check for infinite loops
-			run( "i am baking a cake because i need 3 eggs",
-					   "i'm sorry, you need 3 eggs because you're baking a cake" );
-			
-			audit.subtl( "Distinguishing negative responses" );
-			// I do understand, "sophie needs dr martens", but
-			// I don't understand, "sophie is very fashionable"
-			run( "sophie needs dr martens because sophie is very fashionable",
-                       "I don't understand, sophie is very fashionable" );
-			run( "sophie is very fashionable because sophie needs dr martens",
-                       "I don't understand, sophie is very fashionable" );
-			run( "do i need 250 grams of flour because i am baking a cake",
-                       "i'm sorry, it is not the case that you need 250 grams of flour" );
-			run( "why am i heating the oven",
-					   "i'm sorry, i didn't know you're heating the oven" );
-			
-			audit.subtl( "Transitivity" );
-			run( "i need to go to the shops because i need 3 eggs",
-					   "ok, you need to go to the shops because you need 3 eggs" );
-			run( "do i need to go to the shops because i need 3 eggs",
-					   "yes, you need to go to the shops because you need 3 eggs" );
-			// this test steps over one reason...
-			run( "do i need to go to the shops because i am baking a cake",
-					   "yes, you need to go to the shops because you're baking a cake" );
-			
-			audit.subtl( "Why might.../abduction" );
-			run( "i am not baking a cake",  "ok, you're not baking a cake" );
-			run( "am i baking a cake",      "no, you're not baking a cake" );
-			run( "i do not need any eggs",  "ok, you don't need any eggs" );
-			run( "why do i need 3 eggs",    "no, you don't need 3 eggs" );
-			run( "why might i need 3 eggs", "because you're baking a cake" );
-			
-		}
-		if (runTheseTests( "The Non-Computable concept of Need" )) { // 
-			
-			// regression test: "do i need" != >do i need OBJECT<
-			// blank var at end of utterance
-			run( "do i need",                  "i'm sorry, i don't understand the question" );
-			
-			clearTheNeedsList();
-			run( "what do i need",	            "you don't need anything" );
-			run( "i need 2 cups of coffee and a biscuit",
-					                            "ok, you need 2 cups of coffee and a biscuit");
-			run( "what do i need",             "you need 2 cups of coffee, and a biscuit");
-			run( "how many coffees do i need", "2, you need 2 coffees" );
-			run( "i need 2 coffees",           "yes, i know" );
-			run( "i don't need any coffee",    "ok, you don't need any coffee" );
-			run( "what do i need",             "you need a biscuit" );
-
-			audit.title( "Semantic Thrust" );
-			run( "i need to go to town",       "ok, you need to go to town" );
-			run( "what do i need",             "you need a biscuit, and to go to town" );
-			run( "i have the biscuit",         "ok, you don't need any biscuit" );
-			run( "i have to go to town",       "yes, i know" );
-			run( "i don't need to go to town", "ok, you don't need to go to town" );
-			run( "what do i need",             "you don't need anything" );
-			
-			audit.title( "Numerical Context" );
-			clearTheNeedsList();
-			run( "i need a coffee",     "ok, you need a coffee" );
-			run( "and another",         "ok, you need another coffee" );
-			run( "how many coffees do i need", "2, you need 2 coffees" );
-			run( "i need a cup of tea", "ok, you need a cup of tea" );
-			run( "and another coffee",  "ok, you need another coffee" );
-			run( "what do i need",      "You need 3 coffees , and a cup of tea" );
-			
-			audit.title( "Correction" );
-			run( "i need another coffee", "ok, you need another coffee" );
-			run( "no i need another 3",   "ok, you need another 3 coffees" );
-			run( "what do i need",        "you need 6 coffees, and a cup of tea" );
-			run( "i don't need anything", "ok, you don't need anything" );
-			
-			audit.title( "Group-as-entity" );		
-			clearTheNeedsList( "MartinAndRuth does not need anything" );
-			
-			run( "martin and ruth need a coffee and a tea",
-			         "ok, martin and ruth need a coffee and a tea" );
-			
-			run( "what do martin and ruth need",
-			         "martin and ruth need a coffee , and a tea" );
-			
-			run( "martin and ruth do not need a tea", 
-			         "ok, martin and ruth don't need a tea" );
-			
-			run( "what do martin and ruth need",
-			         "martin and ruth need a coffee" );
-			
-			run( "martin and ruth need some biscuits",
-			         "ok, martin and ruth need some biscuits" );
-			
-			run( "what do martin and ruth need",
-			         "martin and ruth need a coffee, and some biscuits" );
-			// Tidy up
-			run( "martin and ruth do not need anything", "ok , martin and ruth don't need anything" );
-
-			audit.title( "Combos, multiple singular entities");
-			run( "james and martin and ruth all need a chocolate biscuit",
-			         "ok, james and martin and ruth all need a chocolate biscuit" );
-			
-			run( "martin and ruth both need a cocoa and a chocolate biscuit",
-			         "ok, martin and ruth both need a cocoa and a chocolate biscuit" );
-			
-			run( "what does martin need",
-					 "martin needs a chocolate biscuit, and a cocoa" );
-			clearTheNeedsList( "james  doesn't need anything" );
-			clearTheNeedsList( "martin doesn't need anything" );
-			clearTheNeedsList( "ruth   doesn't need anything" );
-			
-			audit.title( "Pronouns - see need+needs.txt" );
-			clearTheNeedsList();
-			
-			run( "i need biscuits and coffee", "ok, you need biscuits and coffee" );
-			run( "they are from Sainsbury's",  "ok, they are from sainsbury's" );
-			run( "i need a pint of milk",      "ok, you need a pint of milk" );
-			run( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
-			run( "i need cheese and eggs from the dairy aisle",
-					                               "ok, you need cheese and eggs" );
-			//mediate( "group by",                   "i'm sorry, i need to know what to group by" );
-			run( "group by location",          "ok" );
-			
-			run( "what do i need from sainsbury's",
-					   "you need biscuits, and coffee from sainsbury's" );
-			
-			run( "what do i need from the dairy aisle",
-					   "you need a pint of milk, cheese, and eggs from the dairy aisle" );
-			
-			run( "i don't need anything from the dairy aisle",
-					   "ok, you don't need anything from the dairy aisle" );
-			
-			audit.title( "Late Binding Floating Qualifiers" );
-			clearTheNeedsList();
-			run( "i need biscuits",       "ok, you need biscuits" );
-			run( "i need milk from the dairy aisle", "ok, you need milk from the dairy aisle" );
-			run( "i from the dairy aisle need milk", "yes, i know" );
-			run( "from the dairy aisle i need milk", "yes, i know" );
-			run( "what do i need",        "you need biscuits; and, milk from the dairy aisle" );
-			run( "from the dairy aisle what do i need",  "you need milk from the dairy aisle" );
-			run( "what from the dairy aisle do i need",  "you need milk from the dairy aisle" );
-			run( "what do i need from the dairy aisle",  "you need milk from the dairy aisle" );
-			
-			audit.title( "Numbers ERROR!" );
-			clearTheNeedsList();
-			run( "i need an apple", "" );
-			run( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
-		}
-//		if (runThisTest( "james's experimental example" )) { // variables, arithmetic and lambda tests
+//		if (runThisTest( "james's experiment" )) { // variables, arithmetic and lambda tests
 //			//interpret( "england is a country",  "ok, england is a country" );
 //			test( "preston is in england", "ok, preston is in england" );
 //			test( "i am in preston",       "ok, you're in england" );
@@ -977,6 +842,141 @@ public class Example {
 //			 *                p v name            => set user name NAME
 //			 * Ask: what is your name?
 //			 */
+		}
+		if (runTheseTests( "Why/because, IJCSSA article" )) {
+			audit.subtl( "Simple action demo" );
+			run( "i am baking a cake",     "yes, i know", "ok, you're     baking a cake" );
+			run( "am i baking a cake",     "yes,               you're     baking a cake" );
+			run( "i am not baking a cake",                "ok, you're not baking a cake" );
+			
+			audit.title( "Why/because" );
+			run( "i am baking a cake so i need 3 eggs",
+					   "ok, you need 3 eggs because you're baking a cake" );
+			
+			run( "am i baking a cake",      "yes, you're baking a cake" );
+			run( "how many eggs do i need", "3, you need 3 eggs" );
+			
+			run( "so why do i need 3 eggs", "because you're baking a cake" );
+			run( "do I need 3 eggs because I am baking a cake",
+				       "yes, you need 3 eggs because you're baking a cake" );
+			// simple check for infinite loops
+			run( "i am baking a cake because i need 3 eggs",
+					   "i'm sorry, you need 3 eggs because you're baking a cake" );
+			
+			audit.subtl( "Distinguishing negative responses" );
+			// I do understand, "sophie needs dr martens", but
+			// I don't understand, "sophie is very fashionable"
+			run( "sophie needs dr martens because sophie is very fashionable",
+                       "I don't understand, sophie is very fashionable" );
+			run( "sophie is very fashionable because sophie needs dr martens",
+                       "I don't understand, sophie is very fashionable" );
+			run( "do i need 250 grams of flour because i am baking a cake",
+                       "i'm sorry, it is not the case that you need 250 grams of flour" );
+			run( "why am i heating the oven",
+					   "i'm sorry, i didn't know you're heating the oven" );
+			
+			audit.subtl( "Transitivity" );
+			run( "i need to go to the shops because i need 3 eggs",
+					   "ok, you need to go to the shops because you need 3 eggs" );
+			run( "do i need to go to the shops because i need 3 eggs",
+					   "yes, you need to go to the shops because you need 3 eggs" );
+			// this test steps over one reason...
+			run( "do i need to go to the shops because i am baking a cake",
+					   "yes, you need to go to the shops because you're baking a cake" );
+			
+			audit.subtl( "Why might.../abduction" );
+			run( "i am not baking a cake",  "ok, you're not baking a cake" );
+			run( "am i baking a cake",      "no, you're not baking a cake" );
+			run( "i do not need any eggs",  "ok, you don't need any eggs" );
+			run( "why do i need 3 eggs",    "no, you don't need 3 eggs" );
+			run( "why might i need 3 eggs", "because you're baking a cake" );
+			
+		}
+		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
+			
+			run( "to the phrase hello reply hello to you too", "" );
+			run( "hello",                 "hello to you too" );
+			run( "to the phrase my name is variable name reply hello variable name", "" );
+			run( "please my name is martin", "hello martin" );
+			
+			clearTheNeedsList();
+			run( "what do i need",        "you don't need anything" );
+			run( "i need a coffee",       "ok, you need a coffee" );
+			run( "what do i need",        "you need a coffee" );
+			
+			run( "what do i think",       "i'm sorry, I don't understand the question" );
+			
+			run( "what do i want",        "i'm sorry, i don't understand the question" );
+			run( "want is like need",     "ok, want is like need" );
+			run( "what do i want",        "you don't want anything" );
+
+			run( "interpret something can be variable quality thus", "" );
+			run( "first add variable quality to my quality list",    "" );
+			run( "then reply ok variable quality is a quality",  "" );
+			
+			run( "something can be cool", "ok cool is a quality" );
+			
+			run( "interpret variable things are variable quality thus", "" );
+			run( "first add variable things to my variable quality list", "" );
+			run( "and then reply ok variable things are variable quality", "" );
+			
+			run( "ferraris are cool",     "ok ferraris are cool" );
+			run( "want is like need",     "" );
+			run( "i want a ferrari because ferraris are cool", "ok, you want a ferrari because ferraris are cool" );
+			run( "why do I want a ferrari", "because ferraris are cool" );
+			
+			// Tidy up...
+			run( "I don't want anything", "ok, you don't want anything" );
+			run( "want is not like need", "ok, want is not like need" );
+			run( "what do i want",        "i'm sorry, i don't understand the question" );
+		}
+		if (runTheseTests( "can - capabilities" )) {
+			run( "flowers can    be yellow", "ok, flowers can   be yellow" );
+			run( "flowers cannot be green",  "ok, flowers can't be green" );
+			run( "flowers cannot be red",    "ok, flowers can't be red" );
+			run( "can flowers    be red",    "no, flowers can't be red" );
+			run( "no flowers can be red",    "ok, flowers can be red" );
+
+			run( "can flowers    be green",   "no, flowers can't be green" );
+			run( "can flowers    be yellow",  "yes, flowers can be yellow" );
+			run( "can flowers    be red",     "yes, flowers can be red" );
+			run( "can flowers    be blue",    "sorry, i don't know" );
+		}
+		if (runTheseTests( "Megan's Thales Experiment" )) {
+			/*
+//			test( "you can say variable colour is a colour", "ok" );
+//			test( "this implies that you add variable colour to your colour list", "ok" );
+//			
+//			test( "red is a colour", "ok" );
+//			test( "blue is a colour", "ok" );
+//			test( "green is a colour", "ok" );
+//			test( "yellow is a colour", "ok" );
+			
+			test( "set colour to yellow", "ok, colour is set to yellow" );
+			test( "set colour to red",    "ok, colour is set to red" );
+			test( "set colour to fred",   "sorry, fred is not a colour i know" );
+			
+			//
+			// before logging in, test that we can't just affect things...
+			test( "switch to submarines screen", "sorry, you need to be logged in" );
+			test( "clear the filter",            "sorry, you need to be logged in" );
+			
+			test( "login as megan",              "ok, you're logged in as megan" );
+			test( "switch to submarines screen", "ok, switched to submarines screen" );
+			test( "what is the value of screen", "submarines, the value of screen is submarines" );
+			test( "filter by submarines only",   "ok, you're filtering by submarines only" );
+			
+			test( "logout",                      "ok, you have logged out" );
+			*/
+			run( "martin is a user",   "ok");
+			run( "set user as martin", "ok, martin is logged on");
+		}
+		if (runTheseTests( "Megan's Enjoy Example" )) {
+			run( "i enjoy yellow", "ok, you enjoy yellow" );
+			run( "i enjoy dogs",   "ok, you enjoy dogs" );
+
+			run( "do i enjoy yellow",    "yes, you enjoy yellow" );
+			run( "do i enjoy chocolate", "you haven't told me you enjoy chocolate" );
 		}
 		if (runTheseTests( "should" )) {
 			// Construct a 'simple' approach to "should":
