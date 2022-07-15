@@ -32,10 +32,32 @@ public class Server {
 		httpRequest = true;
 		server( port, "" );
 	}
+	private static String getUid( BufferedReader in ){
+		String uid = "";
+		String cookiesString = "";
+		try {	do {
+					cookiesString = in.readLine();
+				} while (!cookiesString.equals( "" ) &&
+					     !cookiesString.startsWith( "Cookie:" ));
+		} catch( Exception ex ) {
+			audit.ERROR( "Error in child socket: getUid()");
+		}
+		if (!cookiesString.equals( "" )) { // found cookies
+			String[] cookies = cookiesString.split(";");
+			for (String cookie : cookies)
+				if (cookie.startsWith( "enguid=" )) {
+					uid = cookie.split( "=" )[ 1 ];
+					break;
+		}		}
+		return uid;
+	}
 	static public void server( String port ) { server( port, "" );}
 	static public void server( String port, String prefix ) {
 		
 		serverOn = true;
+
+		Enguage.init( Enguage.RW_SPACE );
+
 		try (ServerSocket server = new ServerSocket( Integer.valueOf( port ));)
 		{
 			Audit.LOG( "Server listening on port: "+ port );
@@ -55,26 +77,9 @@ public class Server {
 						utterances = new Strings( URLDecoder.decode( utterances.toString(), "UTF-8" ));
 						
 						// parse header for cookies...
-						boolean found = false;
-						String enguid = "";
+						String enguid = getUid( in );
 						String setCookie = "";
-						String cookiesString = in.readLine();
-						while (!(found = cookiesString.startsWith( "Cookie:" ))) {
-							cookiesString = in.readLine();
-							if (cookiesString.equals( "" ))
-								break;
-						}
-						if (found) {
-							// parse cookies for enguid
-							found = false;
-							String[] cookies = cookiesString.split(";");
-							for (String cookie : cookies)
-								if (cookie.startsWith( "enguid=" )) {
-									enguid = cookie.split( "=" )[ 1 ];
-									found = true;
-									break;
-						}		}
-						if (!found) {
+						if (enguid.equals( "" )) {
 							enguid    = "" + random.nextInt();
 							setCookie = "Set-cookie: enguid=\""+ enguid +"\"\n";
 						}
@@ -83,7 +88,7 @@ public class Server {
 								 + setCookie +"\n";
 						reply = Enguage.mediate( enguid,  utterances ).toString();
 					} else
-						reply = Repertoire.mediate( new Utterance( new Strings( in.readLine() ))).toString();
+						reply = Enguage.mediate( new Strings( in.readLine() )).toString();
 					
 					Audit.LOG( "Relying with: "+ reply );
 					out.writeBytes( prefix + reply + "\n" );
@@ -117,7 +122,7 @@ public class Server {
 					BufferedReader in = new BufferedReader( new InputStreamReader( connection.getInputStream()));
 			) {
 				audit.debug( "  writing: "+ data );
-				out.writeBytes( data );
+				out.writeBytes( data + "\n" );
 				out.flush();
 				
 				audit.debug( "  reading..." );

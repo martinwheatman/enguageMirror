@@ -180,6 +180,8 @@ public class Sign {
 		
 		if (args.size() > 0) {
 			
+			rc = "ok";
+			
 			boolean  header = false,
 			        prepend = false,
 			         tailer = false, // should be the default?
@@ -210,7 +212,6 @@ public class Sign {
 						.pattern( new Pattern( args.toString() ))
 						.concept( Repertoire.AUTOPOIETIC )
 				);
-				rc = "ok";
 				
 			} else if (cmd.equals( "perform" )) {
 				Intention intn = 
@@ -228,7 +229,6 @@ public class Sign {
 				else
 					voiced.insert( voiced.ints.size()-1, intn );
 				
-				rc = "ok";
 				
 			} else if (cmd.equals( "reply" )) {
 				Intention intn = 
@@ -246,7 +246,6 @@ public class Sign {
 				else
 					voiced.insert( voiced.ints.size()-1, intn );
 
-				rc = "ok";
 				
 			} else if (cmd.equals( "think" )) {
 				audit.debug( "adding a thought "+ args.toString() );
@@ -265,7 +264,6 @@ public class Sign {
 					else
 						voiced.insert( voiced.ints.size()-1, intn );
 				}
-				rc = "ok";
 				
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "prepending an implication '"+ args.toString() +"'");
@@ -275,7 +273,15 @@ public class Sign {
 								isElse? Intention.elseThink : Intention.thenThink,
 								Pattern.toPattern( new Strings( args.toString() ))
 				)		);
-				rc = "ok";
+				
+			} else if (cmd.equals( "run" )) {
+				audit.debug( "appending a script to run: '"+ args.toString() +"'");
+				voiced.insert(
+						0, // "implies that you run"
+						new Intention(
+								isElse? Intention.elseRun : Intention.thenRun,
+								Pattern.toPattern( new Strings( args.toString() ))
+				)		);
 				
 			} else if (cmd.equals( "finally" )) {
 				Intention intn;
@@ -298,11 +304,11 @@ public class Sign {
 							Pattern.toPattern( new Strings( args.toString() ))
 						 );
 				voiced.append( intn ); // all finallys at the end :)
-				rc = "ok";
 			
-			} else
+			} else {
+				rc = Shell.FAIL;
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
-		}
+		}	}
 		audit.out( new Strings( rc ));
 		return new Strings( rc ); 
 }	}

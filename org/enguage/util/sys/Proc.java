@@ -34,6 +34,7 @@ public class Proc {
 		return Variable.deref( Strings.getStrings( cmd ))
 				.replace( new Strings( "SOFA" ), new Strings( java() ))
 				.replace( Strings.ellipsis, runningAns )
+				.contract( "/" )
 				.toString();
 	}
 	private String deconceptualise( String rawAns ) {

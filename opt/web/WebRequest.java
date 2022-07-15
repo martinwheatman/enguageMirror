@@ -11,14 +11,14 @@ import opt.web.actions.Login;
 import opt.web.admin.Admin;
 import opt.web.admin.users.User;
 
-public class Request extends Thread {
+public class WebRequest extends Thread {
 	
 	static final private String  name = "Request";
 	static       private Audit  audit = new Audit( name );
 
 	private Socket connection;
 	
-	public  Request( Socket conn ) {connection = conn;}
+	public  WebRequest( Socket conn ) {connection = conn;}
 
 	private String sID = "";
 	public  String sID() {return sID;}

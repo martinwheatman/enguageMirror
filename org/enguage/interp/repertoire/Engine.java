@@ -169,7 +169,7 @@ public class Engine {
 			
 		} else if ( cmd.equals( "selfTest" )) {
 			
-			new Example().run();
+			new Example().test();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
 			
 		} else if ( cmd.equals( "primeAnswer" )) {

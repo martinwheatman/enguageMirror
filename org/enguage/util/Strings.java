@@ -433,9 +433,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		int sz=size()-1;
 		for( int i=1; i<sz; i++ )
 			if (get( i ).equals( item )) {
-				set( i-1, get( i-1 )+ item +remove( i+1 ) );
-				remove( i );
+				// from: [ ..., i-1:'name',   i:'=',   i+1:'value', ... ]
+				//   to: [ ..., i-1:'name="value"', ... ]
+				set( i-1, get(i-1) + item + remove(i+1) );
+				remove(i); // remove this second!
 				sz -= 2;
+				i--; // move back to i-1: dir / dir /dir / file
 			}
 		return this;
 	}

@@ -8,7 +8,7 @@ import org.enguage.Enguage;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
-public class Server {
+public class WebServer {
 	
 	static private int     port = 8080;
 	static public  int     port() {return port;}
@@ -37,7 +37,7 @@ public class Server {
 				+(root.equals("") ?	"" : " (root="+root()+")")
 			);
 			while (true)
-				new Request( server.accept() ).run();
+				new WebRequest( server.accept() ).run();
 		} catch (IOException e) {
 			e.printStackTrace();
 	}	}

@@ -5,14 +5,19 @@ On "to            PHRASE-X reply      PHRASE-Y":
 	perform "sign create X";
 	perform "sign reply Y".
 
+On "to the phrase SAID-X think      SAID-Y":
+	perform "sign create X";
+	perform "sign think  Y".
+
 # Three implies:
 #On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
 #	perform "sign prepend else reply REPLY";
 #	perform "sign prepend imply IMPLICATION".
 
-On "this implies          SAID-IMPLICATION", perform "sign imply IMPLICATION".
-On "this implies that     SAID-IMPLICATION", perform "sign imply IMPLICATION".
-On "this implies that you SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies              SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that         SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that you     SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that you run SAID-IMPLICATION", perform "sign run   IMPLICATION".
 
 On "then if not reply SAID-X",     perform "sign append else reply X".
  	

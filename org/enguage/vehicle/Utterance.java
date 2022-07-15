@@ -47,7 +47,7 @@ public class Utterance {
 					.contract( "=" );                  // [ name, =, "value" ] => [ name="value" ]
 
 		// insert answer, e.g. "abc whatever xyz" + prevAnswer='42' => "abc 42 xyz"
-		if (null != prevAnswer && expanded.contains( Answer.placeholder()))
+		if (null != prevAnswer && prevAnswer.size()!=0 && expanded.contains( Answer.placeholder()))
 			expanded.replace( Answer.placeholderAsStrings(), new Strings( prevAnswer ));
 			
 		temporal  = new Strings( expanded );
