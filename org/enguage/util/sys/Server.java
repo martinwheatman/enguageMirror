@@ -11,7 +11,6 @@ import java.util.Random;
 
 import org.enguage.Enguage;
 import org.enguage.interp.Context;
-import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Utterance;
@@ -56,7 +55,7 @@ public class Server {
 		
 		serverOn = true;
 
-		Enguage.init( Enguage.RW_SPACE );
+		Enguage e = new Enguage();
 
 		try (ServerSocket server = new ServerSocket( Integer.valueOf( port ));)
 		{
@@ -86,17 +85,17 @@ public class Server {
 						prefix = "HTTP/2.0 200 OK\n"
 								 + "Content-type: text/html\n"
 								 + setCookie +"\n";
-						reply = Enguage.mediate( enguid,  utterances ).toString();
+						reply = e.mediate( enguid,  utterances ).toString();
 					} else
-						reply = Enguage.mediate( new Strings( in.readLine() )).toString();
+						reply = e.mediate( new Strings( in.readLine() )).toString();
 					
 					Audit.LOG( "Relying with: "+ reply );
 					out.writeBytes( prefix + reply + "\n" );
 					
-				} catch (Exception e) {
+				} catch (Exception ex) {
 					audit.ERROR( "Error in child socket");
 			}	}
-		} catch (IOException e) {
+		} catch (IOException ex) {
 			audit.ERROR( "Engauge.main():IO error in TCP socket operation" );
 		}
 		serverOn = false;

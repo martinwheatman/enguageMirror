@@ -36,14 +36,14 @@ public class Eng {
 	}
 	private static String viaForm( String[] params ) {
 		return "<center><strong>"
-				+ Enguage.mediate(
+				+ Enguage.e.mediate(
 						params[ 0 ].split( "=" )[ 1 ],
 						new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 				  )
 				+ "</strong></center></P>";
 	}
 	private static String viaUrl( String uid, String[] params ) {
-		String reply =  Enguage.mediate(
+		String reply =  Enguage.e.mediate(
 							uid,
 							new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 						).toString();

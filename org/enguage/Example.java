@@ -11,7 +11,6 @@ public class Example {
 	
 	private static Audit   audit = new Audit( "Example" );
 
-
 	public  void      selfTest( String cmd, Strings cmds ) {
 		// If we're sanity testing, remove yet preserve persistent data...
 		String fsys = "./selftest";
@@ -34,15 +33,15 @@ public class Example {
 	
 	// Call this direct, so it's not counted!
 	private static final String ihe =  "I have everything";
-	private static void clearTheNeedsList() { clearTheNeedsList( ihe );}
-	private static void clearTheNeedsList( String s ) { Enguage.mediate( new Strings( s ));	}
-	private static void tidyUpViolenceTest( String fname ) {
-		Enguage.mediate( new Strings( "delete "+ fname +" advocate list" ));
-		Enguage.mediate( new Strings( "delete "+ fname +" fear     list" ));
-		Enguage.mediate( new Strings( "delete _user causal list" ));
-		Enguage.mediate( new Strings( "unset the value of they" ));
+	private void clearTheNeedsList() { clearTheNeedsList( ihe );}
+	private void clearTheNeedsList( String s ) { Enguage.e.mediate( new Strings( s ));	}
+	private void tidyUpViolenceTest( String fname ) {
+		Enguage.e.mediate( new Strings( "delete "+ fname +" advocate list" ));
+		Enguage.e.mediate( new Strings( "delete "+ fname +" fear     list" ));
+		Enguage.e.mediate( new Strings( "delete _user causal list" ));
+		Enguage.e.mediate( new Strings( "unset the value of they" ));
 	}
-	private static void tidyUpViolenceTest() { tidyUpViolenceTest( "violence" ); }
+	private void tidyUpViolenceTest() { tidyUpViolenceTest( "violence" ); }
 	
 	private int       level = 0;
 	private int     testGrp = 0;
@@ -74,7 +73,7 @@ public class Example {
 		if (expected != null)
 			Audit.log( testPrompt()+ cmd +".");
 		
-		Strings reply = Enguage.mediate( new Strings( cmd ));
+		Strings reply = Enguage.e.mediate( new Strings( cmd ));
 
 		if (expected == null) { // don't check anything
 			;

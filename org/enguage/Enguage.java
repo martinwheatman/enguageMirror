@@ -23,6 +23,8 @@ public class Enguage {
 	
 	private static String copyright = "Martin Wheatman, 2001-4, 2011-22";
 
+	public  static Enguage e;
+	
 	public  static final String      RO_SPACE = Assets.LOCATION;
 	public  static final String      RW_SPACE = "var"+ File.separator;
 	
@@ -45,15 +47,15 @@ public class Enguage {
 	
 	private static int port = 0;
 	
-	public  static void init() {init( RW_SPACE );}
-	public  static void init( String root ) {
+	public  Enguage() {this( RW_SPACE );}
+	public  Enguage( String root ) {
 		Fs.root( root );
 		Concepts.addConcepts( Assets.listConcepts() );
 		Config.load( "config.xml" );
 	}
 	
-	public static Strings mediate( Strings said ) { return mediate( "uid", said );}
-	public static Strings mediate( String uid, Strings utterance ) {
+	public Strings mediate( Strings said ) { return mediate( "uid", said );}
+	public Strings mediate( String uid, Strings utterance ) {
 		Strings reply;
 		audit.in( "mediate", utterance.toString() );
 		
@@ -186,7 +188,7 @@ public class Enguage {
 				i++;
 		}
 
-		init( fsys );
+		e = new Enguage( fsys );
 				
 		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		

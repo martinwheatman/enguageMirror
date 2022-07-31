@@ -428,7 +428,7 @@ public class Engine {
 
 			r.format( // think( "that concludes interprtation" );
 				new Variable( "transformation" ).isSet( "true" ) ?
-						Enguage.mediate( new Strings( "that concludes interpretation" )).toString()
+						Enguage.e.mediate( new Strings( "that concludes interpretation" )).toString()
 						: "ok"
 			);
 
