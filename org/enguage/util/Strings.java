@@ -429,7 +429,26 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			audit.ERROR( "trying to remove "+ n +" elements at the "+ i +(i%10==1&&i!=11?"st":i%10==2&&i!=12?"nd":i%10==3&&i!=13?"rd":"th")+ " position in list of "+ size() +" items" );
 		return strs;
 	}
+	public Strings linuxSwitches() {
+		// [..., "-", "d", ...] =>[..., "-d", ...]
+		boolean doNext = false;
+		ListIterator<String> si = listIterator();
+		while (si.hasNext()) {
+			String tmp;
+			if ((tmp = si.next()).equals( "--" ))
+				break;
+			else if (tmp.equals( "-" )) {
+				si.remove();
+				doNext = true;
+			} else if (doNext) {
+				si.set( "-"+tmp );
+				doNext = false;
+		}	}
+		return this;
+	}
 	public Strings contract( String item ) {
+		// from: [ ..., "name",   "=",   "'value'", ... ]
+		//   to: [ ...,       "name='value'",       ... ]
 		int sz=size()-1;
 		for( int i=1; i<sz; i++ )
 			if (get( i ).equals( item )) {

@@ -86,9 +86,11 @@ public class Engine {
 					.pattern( new Patte(   "load ", "NAME" ))
 					.appendIntention( Intention.allop,    "load NAME" )
 			  		.concept( NAME ),
-	/*		new Sign().concept( NAME ).content( new Patternette( "unload ", "NAME" )).attribute( new Intention( Intention.allop, "unload NAME" ),
-			new Sign().concept( NAME ).content( new Patternette( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
-	// */ new Sign()
+			new Sign().concept( NAME )
+					.pattern( new Patte( "unload ", "NAME" ))
+					.appendIntention( Intention.allop, "unload NAME" ),
+	//		new Sign().concept( NAME ).content( new Patternette( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
+	        new Sign()
 				.concept( NAME )
 				.appendIntention( Intention.allop, "saveAs NAME" )
 				.pattern( new Patte( "save spoken concepts as ", "NAME", "" ).phrasedIs()),
@@ -237,12 +239,12 @@ public class Engine {
 			audit.debug( "loading "+ files.toString( Strings.CSV ));
 			for(int i=0; i<files.size(); i++)
 				Concepts.load( files.get( i ));
-/*			 
+			 
 		} else if (cmd.equals( "unload" )) {
 			Strings files = cmds.copyAfter( 0 );
 			for(int i=0; i<files.size(); i++)
-				Concept.unload( files.get( i ));
-
+				Autoload.unload( files.get( i ));
+			/*
 		} else if (cmd.equals( "reload" )) {
 			Strings files = cmds.copyAfter( 0 );
 			for(int i=0; i<files.size(); i++) Concept.unload( files.get( i ));

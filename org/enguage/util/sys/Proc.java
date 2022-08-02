@@ -30,14 +30,15 @@ public class Proc {
 	static public  void   shell( String sh ) { shell = sh; }
 	static public  String shell() { return shell; }
 	
-	private String conceptualise( String runningAns ) {
+	private String stringToCommand( String runningAns ) {
 		return Variable.deref( Strings.getStrings( cmd ))
 				.replace( new Strings( "SOFA" ), new Strings( java() ))
 				.replace( Strings.ellipsis, runningAns )
 				.contract( "/" )
+				.linuxSwitches()
 				.toString();
 	}
-	private String deconceptualise( String rawAns ) {
+	private String resultToReply( String rawAns ) {
 	 	return Moment.valid( rawAns ) ?                 // 88888888198888 -> 7pm
 			new When( rawAns ).rep( Reply.dnkStr() ).toString()
 			: rawAns.equals( "" ) ? // silence is golden :-)
@@ -72,7 +73,7 @@ public class Proc {
 	public Reply run( Reply r ) {
 		audit.in( "run", "value='"+ cmd +"', ["+ Context.valueOf() +"]" );
 		String ans = "", log;
-		String cmdline = conceptualise( r.a.toString());
+		String cmdline = stringToCommand( r.a.toString());
 		int rc = 0;
 		try {
 			Process p = run( cmdline );
@@ -86,22 +87,22 @@ public class Proc {
 			e.printStackTrace();
 			rc = -1;
 		}
-		
-		ans = rc == 0 ? deconceptualise( ans )
+		ans = rc == 0 ? resultToReply( ans )
 			: Reply.failure() +" , "+ cmdline +" , has failed with a return code of "+ rc;
 
 		return (Reply) audit.out( r.answer( ans ));
 	}
 	public static void main( String args []) {
 		Reply.failure( "sorry" );
-		Proc.classpath( "/home/martin/ws/Enguage/bin" );
-		Proc.java( "java org.enguage.Enguage" );
+		Reply.success( "ok" );
+//		Proc.classpath( "/home/martin/ws/Enguage/bin" );
+//		Proc.java( "java org.enguage.Enguage" );
 
 		Reply r = new Reply();
 
-		r = new Proc( "pwd" ).run( r );
+		r = new Proc( "value -D selftest martin/engine/capacity 1598cc" ).run( r );
 		Audit.log( r.toString());
 
-		r = new Proc( "SOFA run" ).run( r );
-		Audit.log( r.toString());
+//		r = new Proc( "SOFA run" ).run( r );
+//		Audit.log( r.toString());
 }	}

@@ -149,9 +149,7 @@ public class Enguage {
 		String     cmd,
 		           fsys = RW_SPACE;
 		boolean useHttp = false;
-		
-		System.out.println( "PROCESSING" );
-		
+				
 		// traverse args and strip switches: -v -d -H -p -s
 		int i = 0;
 		while (i < cmds.size()) {

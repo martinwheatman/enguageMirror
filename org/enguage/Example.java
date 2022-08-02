@@ -1,6 +1,5 @@
 package org.enguage;
 
-import org.enguage.interp.repertoire.Autoload;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -63,10 +62,7 @@ public class Example {
 	private String replyPrompt = "";
 	private String replyPrompt() { return replyPrompt;}
 	private void   replyPrompt( String prompt) { replyPrompt = prompt;}
-	
-	private void think( String cmd ) {test( cmd, null );}
-	private void youCanSay( String thgt ) {think( "you can say "+ thgt);}
-	
+		
 	public  void test( String  cmd, String expected ) {test( cmd, expected, null );}
 	private void test( String  cmd, String expected, String unexpected ) {
 		// expected == null => silent!
@@ -342,7 +338,7 @@ public class Example {
 			test( "save  spoken concepts as hello", "ok" );
 			
 			// then remove the cached concept...
-			Autoload.unload( "hello" );
+			test( "unload hello", "" );
 			
 			// So, this will reload from the saved repertoire
 			test( "hello",                          "hello to you too" );
@@ -971,25 +967,25 @@ public class Example {
 		if (runTheseTests( "should" )) {
 			// Construct a 'simple' approach to "should":
 			// afford "what should we do"
-			think( "to the phrase what should we do reply we should ..." );
-			think( "this implies that you get the value of should" );
-			think( "then if not reply i don't know what we should do"   );
+			test( "to the phrase what should we do reply we should ...", null );
+			test( "this implies that you get the value of should", null );
+			test( "then if not reply i don't know what we should do", null );
 			
 			// test this...
 			test( "what should we do", "i don't know what we should do" );
 
 			// afford "you should ..."
-			think( "to the phrase you should phrase variable action reply ok variable action" );
-			think( "this implies that you set the value of should to variable action" );
+			test( "to the phrase you should phrase variable action reply ok variable action", null  );
+			test( "this implies that you set the value of should to variable action", null  );
 			
 			// Construct an argument:
 			// afford "wearing a mask prevents the spread of covid"...
-			youCanSay( "wearing a mask prevents the spread of covid" );
-			youCanSay( "wearing a mask does not prevent the spread of covid" );
+			test( "you can say wearing a mask prevents the spread of covid", null );
+			test( "you can say wearing a mask does not prevent the spread of covid", null );
 
 			// afford the premise: "a mask soaks up moisture from your breath"
-			youCanSay( "a mask soaks up moisture from your breath" );
-			youCanSay( "a mask does not soak up moisture from your breath" );
+			test( "you can say a mask soaks up moisture from your breath", null );
+			test( "you can say a mask does not soak up moisture from your breath", null );
 			
 			// Test the argument...
 			test( "wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath",

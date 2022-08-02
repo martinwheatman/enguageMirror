@@ -1,6 +1,7 @@
-On "you can say PHRASE-X":
-	perform "sign create X";
-	perform "sign reply ok";
+On "you can say SAID-UTTERANCE":
+	perform "sign create UTTERANCE";
+	perform "sign reply ok UTTERANCE";
 	reply "ok".
 
 			
+load implies.
