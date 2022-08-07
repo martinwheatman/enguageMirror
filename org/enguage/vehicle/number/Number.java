@@ -381,7 +381,7 @@ public class Number {
 		//audit.out();
 	}
 	private static Strings getActualParams( ListIterator<String> si ) {
-		audit.in( "getActualParams", Strings.peek( si ));
+		//audit.in( "getActualParams", Strings.peek( si ));
 		Strings params = null;
 		boolean andRead = false;
 		
@@ -400,7 +400,7 @@ public class Number {
 					break;
 		}	}	}
 		if (andRead) si.previous();
-		return audit.out( params ); // returns null or param list
+		return params; // audit.out( params ); // returns null or param list
 	}
 	private boolean appendFunction( ListIterator<String> si ) {
 		//audit.in( "doFunction", Strings.peek( si ));

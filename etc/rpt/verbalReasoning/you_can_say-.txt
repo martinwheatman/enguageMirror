@@ -1,7 +1,11 @@
 On "you can say SAID-UTTERANCE":
 	perform "sign create UTTERANCE";
+	reply "ok".
+
+On "to this you reply SAID-UTTERANCE":
 	perform "sign reply ok UTTERANCE";
 	reply "ok".
 
-			
+On "this is temporal", perform "sign temporal".
+
 load implies.

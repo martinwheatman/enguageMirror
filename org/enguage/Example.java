@@ -1,5 +1,6 @@
 package org.enguage;
 
+import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -1007,6 +1008,8 @@ public class Example {
 			
 			test( "my engine is 1598cc", "ok martin's engine is 1598 cc" );
 			test( "what is my engine capacity", "ok martin's engine is 1598 cc" );
+
+			test( "i drove to work today", "ok today you drove to work" );
 		}
 		
 		Audit.log( testGrp +" test group(s) found" );

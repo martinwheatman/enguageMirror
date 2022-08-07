@@ -234,7 +234,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					Pronoun.update( match );
 					
 					// here: match=[ x="a", y="b+c+d", z="e+f" ]
-					audit.debug( "matched:\n"+ s.toStringIndented( Audit.indent() ) );
+					audit.debug( "matched:\n"+ s.toStringIndented() );
 					audit.debug( "Concept: "+s.concept() +"," );
 					audit.debug( "   with: "+ match.toString() +"," );
 					audit.debug( "    and: "+ Context.valueOf());
@@ -253,10 +253,12 @@ public class Signs extends TreeMap<Integer,Sign> {
 					if (!Repertoire.transformation())
 						match.toVariables();
 					
-					// TODO: No need for context, now? read from (cached) variables?
 					
 					r = new Reply();
+					r.type( Reply.YES ); // if we've matched we must have understood/recognised
+					r.answer( "ok" );
 					
+					// TODO: No need for context, now? read from (cached) variables?
 					Context.push( match );
 					r = s.interpret( r ); // may pass back DNU
 					Context.pop();

@@ -1,5 +1,7 @@
 package org.enguage.vehicle.reply;
 
+import java.util.Locale;
+
 import org.enguage.Enguage;
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Redo;
@@ -11,8 +13,6 @@ import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;
-
-import java.util.Locale;
 
 public class Reply { // a reply is basically a formatted answer
 	
@@ -108,9 +108,9 @@ public class Reply { // a reply is basically a formatted answer
 	static public  void    referencers( Strings sa ) { referencers = sa; }
 	static public  Strings referencers() { return referencers; }
 
-	static private String listSep = "/";
-	static public  void   listSep( String s ) { listSep = s; }
-	static public  String listSep() { return listSep; }
+	static private String  listSep = "/";
+	static public  void    listSep( String s ) { listSep = s; }
+	static public  String  listSep() { return listSep; }
 
 	/* previous() is used to retrieve the reply from the previous thought. It is
 	 * used in implementing imagination.  If the imagination session goes ok,
@@ -140,6 +140,7 @@ public class Reply { // a reply is basically a formatted answer
 	
 	private int     type = DNU;
 	public  int     type() { return type; }
+	public  void    type( int t ) { type = t; }
 	public  Reply   type( Strings response ) {
 		
 		if (type == UDU) return this;
@@ -157,8 +158,8 @@ public class Reply { // a reply is basically a formatted answer
 	public  boolean negative() {return  FAIL == type || NO == type ||  DNK == type || type == UDU; } // != !positive() !!!!!
 	public  void userDNU() { type = UDU; }// forces us out to I don't know?
 
-
 	private Strings cache = null;
+
 	/** Answer:
 	 * Multiple answers should now be implemented in a Replies class!
 	 *                                     or in List class, below.

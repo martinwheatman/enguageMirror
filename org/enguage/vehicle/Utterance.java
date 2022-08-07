@@ -45,11 +45,6 @@ public class Utterance {
 						new Strings( orig ).normalise() // "i am/." becomes "i/am/."
 					).decap()                          // deref anything in the environment?
 					.contract( "=" );                  // [ name, =, "value" ] => [ name="value" ]
-
-		// insert answer, e.g. "abc whatever xyz" + prevAnswer='42' => "abc 42 xyz"
-		if (null != prevAnswer && prevAnswer.size()!=0 && expanded.contains( Answer.placeholder()))
-			expanded.replace( Answer.placeholderAsStrings(), new Strings( prevAnswer ));
-			
 		temporal  = new Strings( expanded );
 		when      = When.getWhen( temporal ); // removes temporal content
 		whenAttrs = when.toAttributes();

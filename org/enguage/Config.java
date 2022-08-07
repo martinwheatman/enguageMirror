@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.ListIterator;
 import java.util.Locale;
 
+import org.enguage.interp.intention.Commands;
 import org.enguage.interp.intention.Redo;
 import org.enguage.interp.repertoire.Autoload;
 import org.enguage.interp.repertoire.Concepts;
@@ -16,7 +17,6 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Proc;
 import org.enguage.util.sys.Shell;
 import org.enguage.util.tag.Tag;
 
@@ -50,16 +50,16 @@ public class Config {
 				else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
 				else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
 				else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));
-				else if (name.equals( "CLASSPATH" )) Proc.classpath( value );
+				else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
 				else if (name.equals( "LOCATION"  )) Fs.location( value );
 				else if (name.equals( "HPREFIX" )) Reply.helpPrefix( value );
 				else if (name.equals( "SUCCESS" )) Reply.success( value );
 				else if (name.equals( "FAILURE" )) Reply.failure( value );
 				else if (name.equals( "NOTVARS" )) Variable.exceptionAdd( new Strings( value ));
 				else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
-				else if (name.equals(   "SHELL" )) Proc.shell( value );
+				else if (name.equals(   "SHELL" )) Commands.shell( value );
 				else if (name.equals(    "TERMS")) Shell.terminators( new Strings( value ));
-				else if (name.equals(    "SOFA" )) Proc.java( value );
+				else if (name.equals(    "SOFA" )) Commands.java( value );
 				else if (name.equals(     "TTL" )) Autoload.ttl( value );
 				else if (name.equals(     "DNU" )) Reply.dnu( value );
 				else if (name.equals(     "DNK" )) Reply.dnk( value );

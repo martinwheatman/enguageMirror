@@ -12,7 +12,6 @@ import org.enguage.objects.space.Sofa;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
-import org.enguage.util.sys.Proc;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
 
@@ -185,9 +184,8 @@ public class Intention {
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"
-						new Strings( value ).replace(
-								Strings.ellipsis,
-								answer ),
+						new Strings( value )
+								.replace( Strings.ellipsis, answer ),
 						expand
 				)	);
 	}
@@ -237,7 +235,10 @@ public class Intention {
 		r.doneIs( r.type() != Reply.DNU );
 		return r; //(Reply) audit.out( r );
 	}
-	
+	private Reply run( Reply r ) {
+		return new Commands( formulate( r.a.toString(), false ).toString())
+				.run( r );
+	}
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", typeToString( type ) +"='"+ value +"'" );
 		
@@ -249,17 +250,17 @@ public class Intention {
 		
 		else if (r.negative())
 			switch (type) {
-				case elseThink: r = think( r );					break;
-				case elseDo:	r = perform( r );				break;
-				case elseRun:	r = new Proc( value ).run( r ); break;
-				case elseReply:	r = reply( r ); // break;
+				case elseThink: r = think(   r ); break;
+				case elseDo:	r = perform( r ); break;
+				case elseRun:	r = run(     r ); break;
+				case elseReply:	r = reply(   r ); break;
 			}
  		else // train of thought is neutral/positive
 			switch (type) {
-				case thenThink:	r = think( r );					break;
-				case thenDo: 	r = perform( r );				break;
-				case thenRun:	r = new Proc( value ).run( r );	break;
-				case thenReply:	r = reply( r ); // break;
+				case thenThink:	r = think(   r ); break;
+				case thenDo: 	r = perform( r ); break;
+				case thenRun:	r = run(     r ); break;
+				case thenReply:	r = reply(   r ); break;
 			}
 		return (Reply) audit.out( r );
 	}

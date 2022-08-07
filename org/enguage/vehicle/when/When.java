@@ -61,7 +61,16 @@ public class When {
 	public When( Attributes a ) { this( a.value( "when" )); }
 	public Attributes toAttributes() { return new Attributes().add( "when", valueOf());}
 	
-
+	public static boolean valid( String s ) {
+		if (s != null && s.length() == 29) {
+			for (char ch : s.toCharArray() )
+				if (!Character.isDigit( ch ) && ch != '-')
+					return false;
+			return true;
+		}
+		return false;
+	}
+	
 	// helper ("non-static factory") methods
 	public When today() {
 		//audit.in( "today", "w="+ toString());
