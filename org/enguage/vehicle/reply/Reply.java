@@ -2,7 +2,6 @@ package org.enguage.vehicle.reply;
 
 import java.util.Locale;
 
-import org.enguage.Enguage;
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Redo;
 import org.enguage.util.Audit;
@@ -16,110 +15,56 @@ import org.enguage.vehicle.when.When;
 
 public class Reply { // a reply is basically a formatted answer
 	
-	static private Audit audit = new Audit( "Reply" );
+	private static  Audit audit = new Audit( "Reply" );
 
-	static public final int FAIL = -1; // FALSE -- -ve
-	static public final int   NO =  0; // FALSE -- -ve
-	static public final int  YES =  1; // TRUE  -- +ve
-	static public final int  DNU =  2; // DO NOT UNDERSTAND
-	static public final int  DNK =  3; // NOT KNOWN -- init
-	static public final int  CHS =  4; // use stored expression
-	static public final int  UDU =  5; // user does not understand
+	private static  boolean verbatim = false; // set to true in handleDNU()
+	public  static  boolean isVerbatim() { return verbatim; }
+	public  static  void    verbatimIs( boolean val ) { verbatim = val; }
 	
-	static private boolean verbatim = false; // set to true in handleDNU()
-	static public  boolean isVerbatim() { return verbatim; }
-	static public  void    verbatimIs( boolean val ) { verbatim = val; }
+	private static  boolean understood = true;
+	public  static  boolean understoodIs( boolean was ) { return understood = was;}
+	public  static  boolean isUnderstood() { return Reply.understood; }
 	
-	static private boolean understood = true;
-	static public  boolean understoodIs( boolean was ) { return understood = was;}
-	static public  boolean isUnderstood() { return Reply.understood; }
+	private static  String  strangeThought = "DNU";
+	public  static  void    strangeThought( String thought ) { strangeThought = thought; }
+	public  static  String  strangeThought(){ return strangeThought; }
+
+	private static  String  repeatFormat = "i said, ... .";
+	public  static  void    repeatFormat( String s ) { repeatFormat = s.toLowerCase( Locale.getDefault() ); }
+	public  static  String  repeatFormat() { return repeatFormat; }
+
+	private static  String  andConjunction = new String( "and" );
+	public  static  void    andConjunction( String s ) { andConjunction = s.toLowerCase( Locale.getDefault() ); }
+	public  static  String  andConjunction() { return andConjunction; }
+
+	private static  Strings andListFormat = new Strings( ", /, and ", '/' );
+	public  static  void    andListFormat( String s ) { andListFormat = new Strings( s, listSep().charAt( 0 )); }
+	public  static  Strings andListFormat() { return andListFormat; }
+
+	private static  Strings orConjunctions = new Strings( ", or" );
+	public  static  void    orConjunctions( Strings sa ) { orConjunctions = sa; }
+	public  static  Strings orConjunctions() { return orConjunctions; }
 	
-	static private String strangeThought = "DNU";
-	static public  void   strangeThought( String thought ) { strangeThought = thought; }
-	static public  String strangeThought(){ return strangeThought; }
+	private static  Strings orListFormat = new Strings( ", /, or ", '/' );
+	public  static  void    orListFormat( String s ) { orListFormat = new Strings( s, listSep().charAt( 0 )); }
+	public  static  Strings orListFormat() { return orListFormat; }
 
-	static private Strings dnu = new Strings( Enguage.DNU );
-	static private String  dnuStr = Enguage.DNU;
-	static public  void    dnu( String s ) { dnu = new Strings( dnuStr = s.toLowerCase( Locale.getDefault() )); }
-	static public  Strings dnu(){ return dnu; }
-	static public  String  dnuStr(){ return dnuStr; }
+	private static  Strings referencers = new Strings( "the" );
+	public  static  void    referencers( Strings sa ) { referencers = sa; }
+	public  static  Strings referencers() { return referencers; }
 
-	static private Strings dnk = new Strings( "DNK" );
-	static private String  dnkStr = "DNK";
-	static public  void    dnk( String s ) { dnk = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() )); }
-	static public  Strings dnk() { return dnk; }
-	static public  String  dnkStr() { return dnkStr; }
-
-	static private Strings ik = new Strings( "IK" );
-	static private String  ikStr = "IK";
-	static public  void    ik( String s ) { ik = new Strings( ikStr = s.toLowerCase( Locale.getDefault()));}
-	static public  Strings ik() { return ik; }
-	static public  String  ikStr() { return ikStr; }
-
-	static private Strings no = new Strings( "no" );
-	static private String  noStr = "no";
-	static public  void    no(  String s ) { no = new Strings( noStr = s.toLowerCase( Locale.getDefault() )); }
-	static public  Strings no() { return no; }
-	static public  String  noStr() { return noStr; }
-	
-	static private Strings yes    = new Strings( "yes" );
-	static private String  yesStr = "yes";
-	static public  void    yes( String s ) { yes = new Strings( yesStr = s.toLowerCase( Locale.getDefault() )); }
-	static public  Strings yes() { return yes; }
-	static public  String  yesStr() { return yesStr; }
-
-	static private Strings failure   = new Strings( Shell.FAIL );
-	static private String  failureStr = Shell.FAIL;
-	static public  void    failure(  String s ) { failure = new Strings( failureStr = s.toLowerCase( Locale.getDefault() )); }
-	static public  Strings failure() { return failure; }
-	static public  String  failureStr() { return failureStr; }
-	
-	static private Strings success    = new Strings( Shell.SUCCESS );
-	static private String  successStr = Shell.SUCCESS;
-	static public  void    success( String s ) { success = new Strings( successStr = s.toLowerCase( Locale.getDefault() )); }
-	static public  Strings success() { return success; }
-	static public  String  successStr() { return successStr; }
-
-	static private String repeatFormat = "i said, ... .";
-	static public  void   repeatFormat( String s ) { repeatFormat = s.toLowerCase( Locale.getDefault() ); }
-	static public  String repeatFormat() { return repeatFormat; }
-
-	static private String helpPrefix = "you can say, ";
-	static public  void   helpPrefix( String s ) { helpPrefix = s.toLowerCase( Locale.getDefault() ); }
-	static public  String helpPrefix() { return helpPrefix; }
-
-	static private String  andConjunction = new String( "and" );
-	static public  void    andConjunction( String s ) { andConjunction = s.toLowerCase( Locale.getDefault() ); }
-	static public  String  andConjunction() { return andConjunction; }
-
-	static private Strings andListFormat = new Strings( ", /, and ", '/' );
-	static public  void    andListFormat( String s ) { andListFormat = new Strings( s, listSep().charAt( 0 )); }
-	static public  Strings andListFormat() { return andListFormat; }
-
-	static private Strings orConjunctions = new Strings( ", or" );
-	static public  void    orConjunctions( Strings sa ) { orConjunctions = sa; }
-	static public  Strings orConjunctions() { return orConjunctions; }
-	
-	static private Strings orListFormat = new Strings( ", /, or ", '/' );
-	static public  void    orListFormat( String s ) { orListFormat = new Strings( s, listSep().charAt( 0 )); }
-	static public  Strings orListFormat() { return orListFormat; }
-
-	static private Strings referencers = new Strings( "the" );
-	static public  void    referencers( Strings sa ) { referencers = sa; }
-	static public  Strings referencers() { return referencers; }
-
-	static private String  listSep = "/";
-	static public  void    listSep( String s ) { listSep = s; }
-	static public  String  listSep() { return listSep; }
+	private static  String  listSep = "/";
+	public  static  void    listSep( String s ) { listSep = s; }
+	public  static  String  listSep() { return listSep; }
 
 	/* previous() is used to retrieve the reply from the previous thought. It is
 	 * used in implementing imagination.  If the imagination session goes ok,
 	 * we need the reply from that session. Was implemented with the equiv 
 	 * intention in previous C incarnation.
 	 */
-	static private Strings previous = new Strings( "" );
-	static public  Strings previous( Strings rep ) { return previous = rep; }
-	static public  Strings previous() { return previous; }
+	private static  Strings previous = new Strings( "" );
+	public  static  Strings previous( Strings rep ) { return previous = rep; }
+	public  static  Strings previous() { return previous; }
 
 	private boolean repeated = false;
 	public  void    repeated( boolean s ) { repeated = s; }
@@ -129,36 +74,23 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
 	
-	static private Strings say = new Strings();
-	static public  Strings say() { return say; }
-	static public  void    say( Strings sa ) {
+	private static  Strings say = new Strings();
+	public static   Strings say() { return say; }
+	public static  void    say( Strings sa ) {
 		if (sa == null)  // null to reset it!
 			say = new Strings();
 		else
 			say.addAll( Shell.addTerminator( sa ));
 	}
 	
-	private int     type = DNU;
-	public  int     type() { return type; }
-	public  void    type( int t ) { type = t; }
-	public  Reply   type( Strings response ) {
-		
-		if (type == UDU) return this;
-
-		     if (response.beginsIgnoreCase(    yes )) type = YES;
-		else if (response.beginsIgnoreCase( success)) type = YES;
-		else if (response.beginsIgnoreCase( failure)) type =FAIL;
-		else if (response.beginsIgnoreCase(    dnu )) type = DNU;
-		else if (response.beginsIgnoreCase(     no )) type =  NO;
-		else if (response.beginsIgnoreCase(    dnk )) type = DNK;
-		else type = CHS;
-
-		return this;
-	}
-	public  boolean negative() {return  FAIL == type || NO == type ||  DNK == type || type == UDU; } // != !positive() !!!!!
-	public  void userDNU() { type = UDU; }// forces us out to I don't know?
-
 	private Strings cache = null;
+	
+	private Response response = new Response();
+	public  int      response() {return response.response();} 
+	public  Reply    response( int i ) {response.response( i ); return this;}
+	public  Reply    response( Strings strs ) {response.response( strs ); return this;}
+
+	public  boolean  felicitous() {return response() >= Response.OK;}
 
 	/** Answer:
 	 * Multiple answers should now be implemented in a Replies class!
@@ -174,21 +106,21 @@ public class Reply { // a reply is basically a formatted answer
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			type = (type == UDU) ? UDU : a.type();
+			response( (response() == Response.UDU) ? Response.UDU : a.type());
 		}
 		return this;
 	}
 	public  Reply   rawAnswer( String rc, String method ) {
 		answer( Moment.valid( rc ) ? // 88888888198888 -> 7pm
-					new When( rc ).rep( Reply.dnkStr() ).toString()
+					new When( rc ).rep( Response.dnkStr() ).toString()
 					: rc.equals( "" ) &&
 					  (method.equals( "get" ) ||
 				       method.equals( "getAttrVal" )) ?
-						Reply.dnkStr()
+						Response.dnkStr()
 						: rc.equals( Shell.FAIL ) ?
-							Reply.failureStr()
+								Response.failureStr()
 							:	rc.equals( Shell.SUCCESS ) ?
-									Reply.successStr()
+									Response.successStr()
 									: rc );
 		return this;
 	}
@@ -225,7 +157,7 @@ public class Reply { // a reply is basically a formatted answer
 			utterance = Shell.stripTerminator( utterance );
 		
 		// Construct the DNU format
-		format( new Strings( Reply.dnu() + ", ..." ));
+		format( new Strings( Response.dnu() + ", ..." ));
 		answer( utterance.toString());
 		
 		/* Take this out for the moment... ...needs more thought:
@@ -242,7 +174,7 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public Strings toStrings() {
 		Strings reply = encache();
-		if (understoodIs( Reply.DNU != type() )) {
+		if (understoodIs( Response.DNU != response() )) {
 			if (!repeated())
 				previous( reply ); // never used
 			;
@@ -255,7 +187,7 @@ public class Reply { // a reply is basically a formatted answer
 	public void conclude( Strings thought ) {
 		strangeThought("");
 
-		if ( DNU == type()) {
+		if ( Response.DNU == response()) {
 			// put this into reply via Reply.strangeThought()
 			audit.ERROR( "Strange thought: I don't understand: '"+ thought.toString() +"'" );
 			strangeThought( thought.toString() );
@@ -267,13 +199,13 @@ public class Reply { // a reply is basically a formatted answer
 			}
 
 			// Construct the DNU format
-			format( new Strings( Reply.dnu() + ", ..." ));
+			format( new Strings( Response.dnu() + ", ..." ));
 			answer( thought.toString());
 			
-			type = FAIL;
+			response( Response.FAIL );
 		
-		} else if ( NO == type() && a.toString().equalsIgnoreCase( ikStr()))
-			answer( yesStr());
+		}// else if ( Response.NO == Response.response() && a.toString().equalsIgnoreCase( Response.ikStr()))
+		//	answer( Response.yesStr());
 	}
 	public static void main( String args[] ) {
 		Audit.allOn();
@@ -281,10 +213,10 @@ public class Reply { // a reply is basically a formatted answer
 		Reply r = new Reply();
 		Audit.log( "Initially: "+ r.toString());
 
-		Reply.dnu( "Pardon?" );
-		Reply.dnk( "Dunno" );
-		Reply.no(  "No" );
-		Reply.yes( "Yes" );
+		Response.dnu( "Pardon?" );
+		Response.dnk( "Dunno" );
+		Response.no(  "No" );
+		Response.yes( "Yes" );
 		
 		Audit.log( "Initially: "+ r.toString());
 		r.format( new Strings( "ok" ));

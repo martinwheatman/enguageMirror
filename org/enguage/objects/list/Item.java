@@ -8,7 +8,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.config.Plural;
 import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.when.Moment;
 import org.enguage.vehicle.when.When;

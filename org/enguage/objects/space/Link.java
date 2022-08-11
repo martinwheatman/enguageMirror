@@ -5,7 +5,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Link {
 	static public  final String NAME = "link";
@@ -81,8 +81,8 @@ public class Link {
 				
 			else if (cmd.equals("exists"))
 				rc = target.equals( "" ) ?
-						new Value( entity, attr+EXT ).exists() ? Reply.yesStr() : Reply.noStr()
-						: exists( entity, attr+EXT, target ) ? Reply.yesStr() : Reply.noStr();
+						new Value( entity, attr+EXT ).exists() ? Response.yesStr() : Response.noStr()
+						: exists( entity, attr+EXT, target ) ? Response.yesStr() : Response.noStr();
 				
 			else if (cmd.equals("delete"))
 				if (target.equals( "" ))

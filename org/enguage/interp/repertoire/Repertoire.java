@@ -9,6 +9,7 @@ import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Repertoire {
 	static private Audit audit = new Audit( "Repertoire" );
@@ -58,7 +59,6 @@ public class Repertoire {
 		new Sign( "Then, if not, run ", new Quote( "y" ))
 			.append( new Intention( Intention.append, Intention.ELSE_RUN +" Y" ))
 	};
-	public  static final String        PREFIX = Reply.helpPrefix();
 	public  static final String PRONUNCIATION = "repper-to-are";  // better than  ~wah	
 	public  static final String PLURALISATION = "repper-to-wahs"; // better than ~ares
 	public  static final String          NAME = "repertoire";
@@ -109,7 +109,7 @@ public class Repertoire {
 		// 2. during runtime, do user signs first
 		Reply r = new Reply();
 		r = autop.mediate( u );
-		if (Reply.DNU == r.type()) {
+		if (Response.DNU == r.response()) {
 			
 			if (!transformation()) {
 				Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
@@ -122,9 +122,9 @@ public class Repertoire {
 			}
 			
 			r = autop.mediate( u );
-			if (Reply.DNU == r.type()) {
+			if (Response.DNU == r.response()) {
 				r = signs.mediate( u );
-				if (Reply.DNU == r.type())
+				if (Response.DNU == r.response())
 					r = allop.mediate( u );
 		}	}
 		audit.out( r );

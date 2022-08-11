@@ -7,11 +7,5 @@ On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
 	perform "sign prepend else reply REPLY";
 	perform "sign prepend imply IMPLICATION".
 
-On "this implies that SAID-IMPLICATION", perform "sign imply IMPLICATION".
-On "this implies that you SAID-IMPLICATION", perform "sign imply IMPLICATION".
-
-On "first             SAID-X", perform "sign append think X".
-On "then              SAID-X", perform "sign append think X".
-On "then if not       SAID-X", perform "sign append else think X".
-On "then        reply SAID-X", perform "sign append reply X".
-On "then if not reply SAID-X", perform "sign append else reply X".
+load implies.
+load first+then.

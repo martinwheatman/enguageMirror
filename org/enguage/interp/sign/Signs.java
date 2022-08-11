@@ -17,6 +17,7 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.pronoun.Pronoun;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
@@ -255,7 +256,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					
 					
 					r = new Reply();
-					r.type( Reply.YES ); // if we've matched we must have understood/recognised
+					r.response( Response.OK ); // if we've matched we must have understood/recognised
 					r.answer( "ok" );
 					
 					// TODO: No need for context, now? read from (cached) variables?
@@ -276,7 +277,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					 */
 					
 					// if reply is DNU, this meaning is not appropriate!
-					if (r.type() == Reply.DNU) {
+					if (r.response() == Response.DNU) {
 						audit.debug( "Signs.interpretation() returned DNU" );
 						/* Comodification error?
 						 * If, during interpretation, we've modified the repertoire

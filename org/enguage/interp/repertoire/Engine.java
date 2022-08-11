@@ -3,7 +3,6 @@ package org.enguage.interp.repertoire;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.Example;
 import org.enguage.interp.Context;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.intention.Redo;
@@ -16,10 +15,13 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Server;
-import org.enguage.vehicle.Language;
 import org.enguage.vehicle.Question;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.config.Englishisms;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
+
+import opt.test.Example;
 
 public class Engine {
 	
@@ -159,7 +161,7 @@ public class Engine {
 		 };
 	
 	static public Reply interp( Intention in, Reply r ) {
-		r.answer( Reply.yesStr()); // bland default reply to stop debug output look worrying
+		r.answer( Response.yesStr()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
@@ -199,18 +201,18 @@ public class Engine {
 			
 			r.format( new Strings( answer ));
 			if (!answers.contains( answer ))
-				r.userDNU();
+				r.response( Response.DNU );
 			
 		} else if ( cmd.equals( "groupby" )) {
 			
-			r.format( Reply.success());
+			r.format( Response.success());
 			if (cmds.size() > 0 && !cmds.get( 0 ).equals( "X" ))
 				Item.groupOn( cmds.get( 0 ).toUpperCase( Locale.getDefault()));
 			else
-				r.format( new Strings( Reply.failure() +", i need to know what to group by" ));
+				r.format( new Strings( Response.failure() +", i need to know what to group by" ));
 			
 		} else if ( cmd.equals( "undo" )) {
-			r.format( Reply.success() );
+			r.format( Response.success() );
 			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
 				Redo.undoEnabledIs( true );
 			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
@@ -218,13 +220,13 @@ public class Engine {
 			else if (cmds.size() == 0 && Redo.undoIsEnabled()) {
 				if (Overlay.number() < 2) { // if there isn't an overlay to be removed
 					audit.debug( "overlay count( "+ Overlay.number() +" ) < 2" ); // audit
-					r.answer( Reply.noStr() );
+					r.answer( Response.noStr() );
 				} else {
 					audit.debug("ok - restarting transaction");
 					Overlay.reStartTxn();
 				}
 			} else if (!Redo.undoIsEnabled())
-				r.format( Reply.dnu() );
+				r.format( Response.dnu() );
 			else
 				r = Redo.unknownCommand( r, cmd, cmds );
 			
@@ -259,7 +261,7 @@ public class Engine {
 			r.format(	Repertoire.signs.saveAs(
 								Repertoire.AUTOPOIETIC,
 								name
-						) ? Reply.success() : Reply.failure()
+						) ? Response.success() : Response.failure()
 					);
 
 		} else if (cmd.equals( "delete" )) {
@@ -269,10 +271,10 @@ public class Engine {
 			Concepts.remove( concept );
 			Concepts.delete( concept );
 			Repertoire.signs.remove( concept );
-			r.format( Reply.success() );
+			r.format( Response.success() );
 
 		} else if (cmd.equals( "spell" )) {
-			r.format( new Strings( Language.spell( cmds.get( 0 ), true )));
+			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));
 			
 		} else if (cmd.equals( "iknow" )) {
 			
@@ -318,7 +320,7 @@ public class Engine {
 				Audit.detailedOn = true;
 				Audit.timings = true;
 			}
-			r.format( Reply.success() );
+			r.format( Response.success() );
 			
 		} else if (cmd.equals( "tracing" )) {
 			Audit.log( cmd +" "+ cmds.toString());
@@ -332,7 +334,7 @@ public class Engine {
 				Audit.runtimeDebug = true;
 				Audit.allTracing = true;
 			}
-			r.format( Reply.success() );
+			r.format( Response.success() );
 			
 		} else if (cmd.equals( "detailed" )) {
 			
@@ -348,7 +350,7 @@ public class Engine {
 				Audit.allTracing = true;
 				Audit.detailedOn = true;
 			}
-			r.format( Reply.success() );
+			r.format( Response.success() );
 			
 		} else if (cmd.equals( "debug" )) {
 			
@@ -366,7 +368,7 @@ public class Engine {
 				Audit.allOn();
 				Audit.runtimeDebug = true;
 			}
-			r.format( Reply.success() );
+			r.format( Response.success() );
 			
 			
 		} else if (cmd.equals( "show" )) {
@@ -376,34 +378,34 @@ public class Engine {
 				String option = cmds.get( 0 ).substring(0,4);
 				if (option.equals( "auto" )) {
 					Repertoire.autop.show();
-					r.format( Reply.success() );
+					r.format( Response.success() );
 				} else if (   option.equals( "sign" )
 				           || option.equals( "user" )) {
 					Repertoire.signs.show();
-					r.format( Reply.success() );
+					r.format( Response.success() );
 				} else if (option.equals( "engi" )) {
 					Repertoire.allop.show();
-					r.format( Reply.success() );
+					r.format( Response.success() );
 				} else if (option.equals( "all" )) {
 					Repertoire.autop.show();
 					Repertoire.allop.show();
 					Repertoire.signs.show();
-					r.format( Reply.success() );
+					r.format( Response.success() );
 				} else if (option.equals( "vari" )) {
 					Variable.interpret( new Strings( "show" ));
-					r.format( Reply.success());
+					r.format( Response.success());
 				} else
 					audit.ERROR( "option: "+ option +" doesn't match anything" );
 			} else {
 				Repertoire.signs.show();
-				r.format( Reply.success() );
+				r.format( Response.success() );
 			}
 
 
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
 				Audit.log("Allop:repeating dnu");
-				r.format( Reply.dnu());
+				r.format( Response.dnu());
 			} else {
 				Audit.log("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );

@@ -1,6 +1,6 @@
-package org.enguage;
+package opt.test;
 
-import org.enguage.interp.repertoire.Repertoire;
+import org.enguage.Enguage;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -28,7 +28,7 @@ public class Example {
 				test();
 				
 			} catch (NumberFormatException nfe) {
-				Audit.LOG( "Insanity: "+ nfe.toString() );
+				Audit.LOG( "Insanity: "+ nfe );
 	}		}
 	
 	// Call this direct, so it's not counted!
@@ -567,7 +567,10 @@ public class Example {
 			test( "first variable state exists in i am list",          "ok" );
 			test( "then reply yes i am variable state",                "ok" );
 			test( "then if not variable state exists in i amNot list", "ok" );
+//			Repertoire.signs.show();
+//			Audit.allOn();
 			test( "then if not reply i do not know",                   "ok" );
+//			Audit.allOff();
 			test( "then reply no i am not variable state",             "ok" );
 			test( "ok", "ok" );
 			

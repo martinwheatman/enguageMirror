@@ -8,6 +8,7 @@ import org.enguage.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 import org.enguage.vehicle.when.When;
 
 public class Commands {
@@ -79,8 +80,8 @@ public class Commands {
 					while ((line = error.readLine()) != null)
 						errTxt += line;
 								
-				rc = p.waitFor() == 0 ? Reply.YES : Reply.FAIL;
-				result = deconceptualise( (rc==Reply.YES? result : errTxt ));
+				rc = p.waitFor() == 0 ? Response.OK : Response.FAIL;
+				result = deconceptualise( (rc==Response.OK? result : errTxt ));
 
 			} catch (Exception e) {
 				audit.ERROR( "exception: "+ e.toString());
@@ -88,12 +89,12 @@ public class Commands {
 				throw new Exception();
 			}
 		} catch (Exception iox) {
-			rc = Reply.FAIL;
+			rc = Response.FAIL;
 			result = "I can't run this command: "+ cmdline;
 		}
 		r.answer( result );
 		r.format( result );
-		r.type( rc );
+		r.response( rc );
 		return r; //(Reply) audit.OUT( r );
 	}
 
@@ -107,8 +108,8 @@ public class Commands {
 	}
 	// ---
 	public static void main( String args []) {
-		Reply.failure( "sorry" );
-		Reply.success( "ok" );
+		Response.failure( "sorry" );
+		Response.success( "ok" );
 
 		Reply r = new Reply();
 		r = new Commands( "value -D selftest martin/engine/capacity 1598cc" ).run( r );

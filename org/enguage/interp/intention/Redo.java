@@ -5,6 +5,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Redo {
 
@@ -14,7 +15,7 @@ public class Redo {
 	// this supports the command="" attribute loaded in the creation of command data structure
 	// needs "command //delete "...". -- to remove a tag, to support '"X" is meaningless.'
 	static public Reply unknownCommand( Reply r, String cmd, Strings args ) {
-		return r.format( Reply.dnu() );
+		return r.format( Response.dnu() );
 	}
 		
 	// are we taking the hit of creating / deleting overlays

@@ -6,7 +6,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.config.Plural;
 
 public class Pronoun {
 	static private Audit audit = new Audit( "Pronoun" );

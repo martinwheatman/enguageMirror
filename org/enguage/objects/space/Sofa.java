@@ -15,8 +15,8 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Colloquial;
-import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.config.Colloquial;
+import org.enguage.vehicle.config.Plural;
 import org.enguage.vehicle.where.Where;
 
 public class Sofa extends Shell {

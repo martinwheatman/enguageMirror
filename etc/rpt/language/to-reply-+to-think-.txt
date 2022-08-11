@@ -10,6 +10,4 @@ On "to the phrase SAID-X think      SAID-Y":
 	perform "sign think  Y".
 
 load implies.
-
-On "then if not reply SAID-X",     perform "sign append else reply X".
- 	
+load first+then.

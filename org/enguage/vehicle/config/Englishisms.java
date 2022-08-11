@@ -1,4 +1,4 @@
-package org.enguage.vehicle;
+package org.enguage.vehicle.config;
 
 import java.util.ListIterator;
 import java.util.Locale;
@@ -8,7 +8,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
 
 
-public class Language {  // English-ism!
+public class Englishisms {  // English-ism!
 	
 	//static private Audit audit = new Audit( "Language" );
 
@@ -91,7 +91,7 @@ public class Language {  // English-ism!
 				ans.set( i, isVowel( ans.get( 1+i ).charAt( 0 )) ? "an" : "a" );
 		return ans;
 	}
-	public static String spell( String a ) { return Language.spell( a, false ); }
+	public static String spell( String a ) { return Englishisms.spell( a, false ); }
 	public static String spell( String a, boolean slowly ) {
 		String b = "";
 		for (int i=0; i<a.length(); i++)

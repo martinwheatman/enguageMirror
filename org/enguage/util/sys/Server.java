@@ -14,7 +14,7 @@ import org.enguage.interp.Context;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Server {
 	
@@ -108,10 +108,10 @@ public class Server {
 		data=Utterance.externalise( new Strings( data ), false ).toString();
 		audit.debug( "data is: "+ data);
 		
-		String rc = Reply.failureStr();
+		String rc = Response.failureStr();
 		
 		if (port == TestPort) { // test value
-			rc = Reply.successStr(); // assume we've stuffed the server intentionally
+			rc = Response.successStr(); // assume we've stuffed the server intentionally
 			
 		} else if (port > 1024 && port < 65536) {
 			addr = addr==null || addr.equals( "" ) ? "localhost" : addr;

@@ -32,7 +32,7 @@ public class Answer {
 		if (0 == sa.size()) {
 			sa = new Strings( answers ); // use the raw answer
 			if (sa.size() == 0) // so a was equal to ""
-				sa = Reply.dnu();
+				sa = Response.dnu();
 		} else if (sa.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 			sa.replace( Strings.ellipsis, answers );
 		else if (sa.contains( Answer.placeholder() ))
@@ -40,18 +40,18 @@ public class Answer {
 		return sa;
 	}
 	
-	private int    type = Reply.DNK;
+	private int    type = Response.DNK;
 	public  int    type() { return type; }
 	private String setType( String s ) {
 		// This sets type to first non-NK type
-		if (type == Reply.DNK) {
-			     if (s.equalsIgnoreCase( Reply.yesStr()    )) type = Reply.YES;
-			else if (s.equalsIgnoreCase( Reply.successStr())) type = Reply.YES;
-			else if (s.equalsIgnoreCase( Reply.noStr()     )) type = Reply.NO;
-			else if (s.equalsIgnoreCase( Reply.dnuStr()    )) type = Reply.DNU;
-			else if (s.equalsIgnoreCase( Reply.failureStr())) type = Reply.FAIL;
-			else if (s.equalsIgnoreCase( Reply.dnkStr()    )) type = Reply.DNK;
-			else type = Reply.CHS;
+		if (type == Response.DNK) {
+			     if (s.equalsIgnoreCase( Response.yesStr()    )) type = Response.OK;
+			else if (s.equalsIgnoreCase( Response.successStr())) type = Response.OK;
+			else if (s.equalsIgnoreCase( Response.noStr()     )) type = Response.NO;
+			else if (s.equalsIgnoreCase( Response.dnuStr()    )) type = Response.DNU;
+			else if (s.equalsIgnoreCase( Response.failureStr())) type = Response.FAIL;
+			else if (s.equalsIgnoreCase( Response.dnkStr()    )) type = Response.DNK;
+			else type = Response.CHS;
 		}	
 		return s;
 	}

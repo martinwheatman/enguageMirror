@@ -9,7 +9,7 @@ import org.enguage.util.Indent;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
-import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.config.Plural;
 
 public class Tag {
 	public static final String emptyPrefix = "";

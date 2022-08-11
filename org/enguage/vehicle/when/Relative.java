@@ -4,7 +4,7 @@ import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.config.Plural;
 import org.enguage.vehicle.number.Number;
 
 public class Relative {

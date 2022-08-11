@@ -1,8 +1,8 @@
 package org.enguage.vehicle;
 
 import org.enguage.interp.Context;
-import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.pattern.Patte;
+import org.enguage.interp.pattern.Pattern;
 import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Temporal;
@@ -12,7 +12,8 @@ import org.enguage.objects.space.Sofa;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
-import org.enguage.vehicle.reply.Answer;
+import org.enguage.vehicle.config.Colloquial;
+import org.enguage.vehicle.config.Englishisms;
 import org.enguage.vehicle.when.When;
 import org.enguage.vehicle.where.Where;
 
@@ -84,8 +85,8 @@ public class Utterance {
 		// ...deref any context...
 		
 		// English-dependent processing...
-		reply = Language.indefiniteArticleVowelSwap(
-					Language.pronunciation( reply ));
+		reply = Englishisms.indefiniteArticleVowelSwap(
+					Englishisms.pronunciation( reply ));
 		
 		// TODO: to Strings, or move up into derefOrPop?
 		Strings tmp = new Strings();
@@ -93,7 +94,7 @@ public class Utterance {
 			tmp.add( Strings.fromCamelCase( r ));
 		reply = tmp;
 		
-		return Language.asStrings( Numeric.deref( reply )).contract( Language.APOSTROPHE );
+		return Englishisms.asStrings( Numeric.deref( reply )).contract( Englishisms.APOSTROPHE );
 	}
 
 	// test code...

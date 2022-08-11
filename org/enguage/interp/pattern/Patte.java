@@ -7,8 +7,8 @@ import org.enguage.util.Audit;
 import org.enguage.util.Indent;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Plural;
+import org.enguage.vehicle.config.Englishisms;
+import org.enguage.vehicle.config.Plural;
 import org.enguage.vehicle.reply.Reply;
 
 public class Patte {
@@ -118,7 +118,7 @@ public class Patte {
 		boolean rc = false;
 		if (ui.hasNext()) {
 			String candidate = ui.next();
-			rc = (  quoted() && !Language.isQuoted( candidate ))
+			rc = (  quoted() && !Englishisms.isQuoted( candidate ))
 			  || (isPlural() && Plural.isSingular(  candidate ));
 			if (ui.hasPrevious()) ui.previous();
 		}

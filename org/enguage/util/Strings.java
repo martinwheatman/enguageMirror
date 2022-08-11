@@ -23,10 +23,10 @@ import org.enguage.objects.space.Value;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Colloquial;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.config.Colloquial;
+import org.enguage.vehicle.config.Englishisms;
+import org.enguage.vehicle.config.Plural;
 import org.enguage.vehicle.reply.Answer;
 import org.enguage.vehicle.where.Where;
 
@@ -732,8 +732,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		int len=a.length();
 		for (int i=0; i<len; i++) {
 			// TODO: l'eau
-			if ((ch = a.charAt( i )) == Language.APOSTROPHE_CH && i == len-2)
-				return a.endsWith( Language.Apostrophed() );
+			if ((ch = a.charAt( i )) == Englishisms.APOSTROPHE_CH && i == len-2)
+				return a.endsWith( Englishisms.Apostrophed() );
 			if (!Character.isUpperCase( ch ) && ch != '-' && ch !='_' )
 				return false;
 		}

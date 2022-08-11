@@ -14,10 +14,13 @@ import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Server;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.config.Config;
 import org.enguage.vehicle.reply.Reply;
 import org.enguage.vehicle.where.Where;
 
 import com.yagadi.Assets;
+
+import opt.test.Example;
 
 public class Enguage {
 	
@@ -112,10 +115,10 @@ public class Enguage {
 	
 	public static void usage() {
 		Audit.LOG( "Usage: java [-jar enguage.jar|org.enguage.Enguage]" );
-		Audit.LOG("            --help |" );
-		Audit.LOG("            --verbose --data <path>" ); 
-		Audit.LOG("            --port <port> [--httpd [--server <name>]] |" );
-		Audit.LOG("            --test | [<utterance>]" );
+		Audit.LOG( "            --help |" );
+		Audit.LOG( "            --verbose --data <path>" ); 
+		Audit.LOG( "            --port <port> [--httpd [--server <name>]] |" );
+		Audit.LOG( "            --test | [<utterance>]" );
 		Audit.LOG( "Options are:" );
 		Audit.LOG( "       -h, --help" );
 		Audit.LOG( "          displays this message\n" );
@@ -191,16 +194,15 @@ public class Enguage {
 		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		
 		if (port != 0 && server.equals( "" )) { // run as local server
-			
 			if (useHttp) Server.httpd( ""+ port );
 			Server.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
 		
-		} else if (cmd.equals(  "-t" )
-			  || cmd.equals( "--test" )
-			  || cmd.equals(  "-T" ))
+		} else if (cmd.equals(  "-t"    ) ||
+			       cmd.equals( "--test" ) ||
+			       cmd.equals(  "-T"    )) {
 			test.selfTest( cmd, cmds );
 		
-		else if (cmd.equals( "" )) {
+		} else if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
 			shell.aloudIs( true ).run();
 		
