@@ -23,10 +23,10 @@ import org.enguage.objects.space.Value;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Colloquial;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.config.Colloquial;
+import org.enguage.vehicle.config.Englishisms;
+import org.enguage.vehicle.config.Plural;
 import org.enguage.vehicle.reply.Answer;
 import org.enguage.vehicle.where.Where;
 
@@ -429,13 +429,35 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			audit.ERROR( "trying to remove "+ n +" elements at the "+ i +(i%10==1&&i!=11?"st":i%10==2&&i!=12?"nd":i%10==3&&i!=13?"rd":"th")+ " position in list of "+ size() +" items" );
 		return strs;
 	}
+	public Strings linuxSwitches() {
+		// [..., "-", "d", ...] =>[..., "-d", ...]
+		boolean doNext = false;
+		ListIterator<String> si = listIterator();
+		while (si.hasNext()) {
+			String tmp;
+			if ((tmp = si.next()).equals( "--" ))
+				break;
+			else if (tmp.equals( "-" )) {
+				si.remove();
+				doNext = true;
+			} else if (doNext) {
+				si.set( "-"+tmp );
+				doNext = false;
+		}	}
+		return this;
+	}
 	public Strings contract( String item ) {
+		// from: [ ..., "name",   "=",   "'value'", ... ]
+		//   to: [ ...,       "name='value'",       ... ]
 		int sz=size()-1;
 		for( int i=1; i<sz; i++ )
 			if (get( i ).equals( item )) {
-				set( i-1, get( i-1 )+ item +remove( i+1 ) );
-				remove( i );
+				// from: [ ..., i-1:'name',   i:'=',   i+1:'value', ... ]
+				//   to: [ ..., i-1:'name="value"', ... ]
+				set( i-1, get(i-1) + item + remove(i+1) );
+				remove(i); // remove this second!
 				sz -= 2;
+				i--; // move back to i-1: dir / dir /dir / file
 			}
 		return this;
 	}
@@ -710,8 +732,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		int len=a.length();
 		for (int i=0; i<len; i++) {
 			// TODO: l'eau
-			if ((ch = a.charAt( i )) == Language.APOSTROPHE_CH && i == len-2)
-				return a.endsWith( Language.Apostrophed() );
+			if ((ch = a.charAt( i )) == Englishisms.APOSTROPHE_CH && i == len-2)
+				return a.endsWith( Englishisms.Apostrophed() );
 			if (!Character.isUpperCase( ch ) && ch != '-' && ch !='_' )
 				return false;
 		}

@@ -7,7 +7,7 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
-import org.enguage.vehicle.Language;
+import org.enguage.vehicle.config.Englishisms;
 
 public class Number {
 	/*
@@ -115,7 +115,7 @@ public class Number {
 			if (value.substring( value.length()-2 ).equals( ".0" ))
 				value = value.substring( 0, value.length()-2 );
 			if (-1 != (i = value.indexOf( "." )))
-				value = value.substring( 0, i ) + " point " + Language.spell( value.substring( i+1 )); 
+				value = value.substring( 0, i ) + " point " + Englishisms.spell( value.substring( i+1 )); 
 		}
 		//return audit.out( value );
 		return value;
@@ -381,7 +381,7 @@ public class Number {
 		//audit.out();
 	}
 	private static Strings getActualParams( ListIterator<String> si ) {
-		audit.in( "getActualParams", Strings.peek( si ));
+		//audit.in( "getActualParams", Strings.peek( si ));
 		Strings params = null;
 		boolean andRead = false;
 		
@@ -400,7 +400,7 @@ public class Number {
 					break;
 		}	}	}
 		if (andRead) si.previous();
-		return audit.out( params ); // returns null or param list
+		return params; // audit.out( params ); // returns null or param list
 	}
 	private boolean appendFunction( ListIterator<String> si ) {
 		//audit.in( "doFunction", Strings.peek( si ));

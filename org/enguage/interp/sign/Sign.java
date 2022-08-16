@@ -49,18 +49,16 @@ public class Sign {
 
 	public static Sign voiced = null;
 	
-	private ArrayList<Intention> ints = new ArrayList<Intention>();
+	private ArrayList<Intention> intents = new ArrayList<Intention>();
 	
-	public  Sign append(        Intention in ){ ints.add(    in ); return this;}
-	public  Sign insert( int i, Intention in ){ ints.add( i==-1 ? 0 : i, in ); return this;}
+	public  Sign append(        Intention in ){ intents.add(    in ); return this;}
+	public  Sign insert( int i, Intention in ){ intents.add( i==-1 ? 0 : i, in ); return this;}
 	// used in autopoiesis:
 	public  Sign appendIntention( int typ, String val ) {
-		ints.add( new Intention(typ,val));
+		intents.add( new Intention(typ,val));
 		return this;
 	}
-	public  Sign tailPrepend(    Intention in ){ints.add( ints.size(), in );return this;}
-	
-	
+	public  Sign tailPrepend(    Intention in ){intents.add( intents.size(), in );return this;}
 	
 	// Set during autopoiesis - replaces 'id' attribute 
 	private String  concept = "";
@@ -69,6 +67,7 @@ public class Sign {
 	
 	private boolean temporalSet = false;
 	private boolean temporal = false;
+	private void    temporalIs( boolean b ) {temporal = b; temporalSet = true;}
 	public  boolean isTemporal() {
 		if (!temporalSet && !concept.equals( "" )) {
 			temporal = Temporal.isConcept( concept );
@@ -76,7 +75,6 @@ public class Sign {
 		}
 		return temporal;
 	}
-
 	private boolean spatialSet = false;
 	private boolean spatial = false;
 	public  boolean isSpatial() {
@@ -114,47 +112,40 @@ public class Sign {
 	public String toXml( int n, long complexity ) {
 		
 		String intentions = "";
-		for (Intention in : ints)
+		for (Intention in : intents)
 			intentions += "\n      " + Attribute.asString( Intention.typeToString( in.type() ), in.value() );
 		
 		return  indent +"<"+ NAME
 				+" "+ Attribute.asString( "n" , ""+n )
 				+" "+ Attribute.asString( "complexity", ""+complexity )
-				+" "+ Attribute.asString( "repertoire", concept() )
+				+" "+ Attribute.asString( "repertoire", concept())
+				+    (isTemporal()?" "+Attribute.asString( "temporal", "true"):"")
 				+ intentions
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
 	}
-	public String toStringIndented( String indent ) {
-		String sign = "";
-		int sz = ints.size();
-		if (sz > 0) {
-			Audit.incr();
-			sign = indent +"On \""+ pattern().toString() +"\"";
-			if (sz == 1)
-				sign += ", "+ ints.get(0);
-			else {
-				int line = 0;
-				for (Intention in : ints)
-					sign += (line++ == 0 ? ":" : ";") + "\n" + indent +"    "+ in;
-			}
-			Audit.decr();
-		}	
+	public String toStringIndented() {
+		Audit.incr();
+		String sign = Audit.indent() +"On \""+ pattern().toString() +"\"";
+		int sz = intents.size();
+		if (sz == 1)
+			sign += ", "+ intents.get(0);
+		else if (sz > 1) {
+			int line = 0;
+			for (Intention in : intents)
+				sign += (line++ == 0 ? ":" : ";") + "\n" + Audit.indent() +"    "+ in;
+		}
+		Audit.decr();
 		return sign +".";
 	}
-	public String toString() {
-		return toStringIndented( "" );
-	}
+	public String toString() {return toStringIndented();}
 		
-	public boolean toFile( String fname ){
-		//Audit.log( "creating: "+ loc + pattern.toFilename() +".txt" );
-		return Fs.stringAppendFile( fname, toString());
-	}
-	public void toFile() {Fs.stringToFile( pattern.toFilename(), toString());}
-	public void toVariable() {Variable.set( pattern.toFilename(), toString());}
+	public boolean toFile( String fname ){return Fs.stringAppendFile( fname, toString());}
+	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toString());}
+	public void    toVariable() {Variable.set( pattern.toFilename(), toString());}
 	
 	public Reply interpret( Reply r ) {
 		//audit.in( "interpret", pattern().toString() );
-		Iterator<Intention> ai = ints.iterator();
+		Iterator<Intention> ai = intents.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();
 			switch (in.type()) {
@@ -179,6 +170,8 @@ public class Sign {
 		String rc = Shell.FAIL;
 		
 		if (args.size() > 0) {
+			
+			rc = "ok";
 			
 			boolean  header = false,
 			        prepend = false,
@@ -210,7 +203,6 @@ public class Sign {
 						.pattern( new Pattern( args.toString() ))
 						.concept( Repertoire.AUTOPOIETIC )
 				);
-				rc = "ok";
 				
 			} else if (cmd.equals( "perform" )) {
 				Intention intn = 
@@ -224,11 +216,10 @@ public class Sign {
 				else if (prepend)
 					voiced.insert( 0, intn );
 				else if (append)
-					voiced.insert( voiced.ints.size(), intn );
+					voiced.insert( voiced.intents.size(), intn );
 				else
-					voiced.insert( voiced.ints.size()-1, intn );
+					voiced.insert( voiced.intents.size()-1, intn );
 				
-				rc = "ok";
 				
 			} else if (cmd.equals( "reply" )) {
 				Intention intn = 
@@ -242,11 +233,10 @@ public class Sign {
 				else if (prepend)
 					voiced.insert( 0, intn );
 				else if (append)
-					voiced.insert( voiced.ints.size(), intn );
+					voiced.insert( voiced.intents.size(), intn );
 				else
-					voiced.insert( voiced.ints.size()-1, intn );
+					voiced.insert( voiced.intents.size()-1, intn );
 
-				rc = "ok";
 				
 			} else if (cmd.equals( "think" )) {
 				audit.debug( "adding a thought "+ args.toString() );
@@ -261,11 +251,10 @@ public class Sign {
 					else if (prepend)
 						voiced.insert( 0, intn );
 					else if (append)
-						voiced.insert( voiced.ints.size(), intn );
+						voiced.insert( voiced.intents.size(), intn );
 					else
-						voiced.insert( voiced.ints.size()-1, intn );
+						voiced.insert( voiced.intents.size()-1, intn );
 				}
-				rc = "ok";
 				
 			} else if (cmd.equals( "imply" )) {
 				audit.debug( "prepending an implication '"+ args.toString() +"'");
@@ -275,7 +264,17 @@ public class Sign {
 								isElse? Intention.elseThink : Intention.thenThink,
 								Pattern.toPattern( new Strings( args.toString() ))
 				)		);
-				rc = "ok";
+				
+			} else if (cmd.equals( "run" )) {
+				audit.debug( "appending a script to run: '"+ args.toString() +"'");
+				voiced.insert(
+						0, // "implies that you run"
+						new Intention(
+								isElse? Intention.elseRun : Intention.thenRun,
+								Pattern.toPattern( new Strings( args.toString() ))
+				)		);
+			} else if (cmd.equals( "temporal")) {
+				voiced.temporalIs( true );
 				
 			} else if (cmd.equals( "finally" )) {
 				Intention intn;
@@ -298,11 +297,11 @@ public class Sign {
 							Pattern.toPattern( new Strings( args.toString() ))
 						 );
 				voiced.append( intn ); // all finallys at the end :)
-				rc = "ok";
 			
-			} else
+			} else {
+				rc = Shell.FAIL;
 				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
-		}
+		}	}
 		audit.out( new Strings( rc ));
 		return new Strings( rc ); 
 }	}

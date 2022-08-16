@@ -1,0 +1,13 @@
+On "to the phrase PHRASE-X reply      PHRASE-Y", to X reply Y.
+On "to            PHRASE-X reply with PHRASE-Y", to X reply Y.
+On "to the phrase PHRASE-X reply with PHRASE-Y", to X reply Y.
+On "to            PHRASE-X reply      PHRASE-Y":
+	perform "sign create X";
+	perform "sign reply Y".
+
+On "to the phrase SAID-X think      SAID-Y":
+	perform "sign create X";
+	perform "sign think  Y".
+
+load implies.
+load first+then.

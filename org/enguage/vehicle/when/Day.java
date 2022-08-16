@@ -6,7 +6,7 @@ import java.util.ListIterator;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Language;
+import org.enguage.vehicle.config.Englishisms;
 
 public class Day {
 
@@ -224,7 +224,7 @@ public class Day {
 	}
 	public static String toString( long time ) {
 		int day = Moment.dayValue( time );
-		return (day == Time.unassigned) ? "" : String.format( "the %d%s ", day, Language.nthEnding( day ));
+		return (day == Time.unassigned) ? "" : String.format( "the %d%s ", day, Englishisms.nthEnding( day ));
 	}
 	public static void main( String args[]) {
 		//Audit.log("days to end of year: "+ daysToEndOfYear( 20161231000000L ));

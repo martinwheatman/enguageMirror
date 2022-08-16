@@ -1,4 +1,4 @@
-package org.enguage.vehicle;
+package org.enguage.vehicle.config;
 
 import java.util.Iterator;
 import java.util.ListIterator;

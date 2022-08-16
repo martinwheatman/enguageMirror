@@ -12,9 +12,9 @@ import org.enguage.objects.space.Sofa;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
-import org.enguage.util.sys.Proc;
 import org.enguage.vehicle.Utterance;
 import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Intention {
 	
@@ -185,9 +185,8 @@ public class Intention {
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"
-						new Strings( value ).replace(
-								Strings.ellipsis,
-								answer ),
+						new Strings( value )
+								.replace( Strings.ellipsis, answer ),
 						expand
 				)	);
 	}
@@ -203,12 +202,12 @@ public class Intention {
 		else
 			r = tmpr;
 		
-		r.type( new Strings( r.toString()) )
+		r.response( new Strings( r.toString()) )
 		 .conclude( thought );
 		
 		// If we've returned DNU, we want to continue
 		r.doneIs( Strings.isUCwHyphUs( value ) // critical!
-		          && r.type() == Reply.FAIL );
+		          && r.response() == Response.FAIL );
 
 		return r; //(Reply) audit.out( r );
 	}
@@ -233,11 +232,14 @@ public class Intention {
 	private Reply reply( Reply r ) {
 		//audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
 		r.format( value.equals( "" ) ? r.toString() : value );
-		r.type( new Strings( value ));
-		r.doneIs( r.type() != Reply.DNU );
+		r.response( new Strings( value ));
+		r.doneIs( r.response() != Response.DNU );
 		return r; //(Reply) audit.out( r );
 	}
-	
+	private Reply run( Reply r ) {
+		return new Commands( formulate( r.a.toString(), false ).toString())
+				.run( r );
+	}
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", typeToString( type ) +"='"+ value +"'" );
 		
@@ -247,20 +249,21 @@ public class Intention {
 		else if (r.isDone())
 			audit.debug( "skipping >"+ value +"< reply already found" );
 		
-		else if (r.negative())
-			switch (type) {
-				case elseThink: r = think( r );					break;
-				case elseDo:	r = perform( r );				break;
-				case elseRun:	r = new Proc( value ).run( r ); break;
-				case elseReply:	r = reply( r ); // break;
+		else if (r.felicitous())
+ 			switch (type) {
+				case thenThink:	r = think(   r ); break;
+				case thenDo: 	r = perform( r ); break;
+				case thenRun:	r = run(     r ); break;
+				case thenReply:	r = reply(   r ); break;
 			}
- 		else // train of thought is neutral/positive
+ 		else
 			switch (type) {
-				case thenThink:	r = think( r );					break;
-				case thenDo: 	r = perform( r );				break;
-				case thenRun:	r = new Proc( value ).run( r );	break;
-				case thenReply:	r = reply( r ); // break;
-			}
+			case elseThink: r = think(   r ); break;
+			case elseDo:	r = perform( r ); break;
+			case elseRun:	r = run(     r ); break;
+			case elseReply:	r = reply(   r ); break;
+		}
+
 		return (Reply) audit.out( r );
 	}
 	public String toString() {
@@ -325,7 +328,7 @@ public class Intention {
 		s.insert( 1, new Intention( elseReply, "two three four" ));
 		
 		Repertoire.signs.insert( s );
-		r.answer( Reply.yes().toString() );
+		r.answer( Response.yes().toString() );
 
 		
 		Audit.log( Repertoire.signs.toString() );

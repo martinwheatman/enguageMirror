@@ -3,7 +3,7 @@ package opt.web.actions;
 import org.enguage.Enguage;
 import org.enguage.util.Strings;
 
-import opt.web.Request;
+import opt.web.WebRequest;
 
 public class Eng {
 	public static final String engPage( String username ) {
@@ -36,14 +36,14 @@ public class Eng {
 	}
 	private static String viaForm( String[] params ) {
 		return "<center><strong>"
-				+ Enguage.mediate(
+				+ Enguage.e.mediate(
 						params[ 0 ].split( "=" )[ 1 ],
 						new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 				  )
 				+ "</strong></center></P>";
 	}
 	private static String viaUrl( String uid, String[] params ) {
-		String reply =  Enguage.mediate(
+		String reply =  Enguage.e.mediate(
 							uid,
 							new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 						).toString();
@@ -52,11 +52,11 @@ public class Eng {
 			reply = "sorry, "+ reply;
 		return reply;
 	}
-	public static String getReply( Request r, String cmd, String[] params ) {
+	public static String getReply( WebRequest r, String cmd, String[] params ) {
 		String reply = "";
 		if (cmd.equals( "enguage" )) {
 			//URLDecoder.decode( in.nextLine(), "UTF-8" )
-			reply = Request.validAttrs( params, 2 ) ?
+			reply = WebRequest.validAttrs( params, 2 ) ?
 						Eng.viaForm( params )
 						: ("<center>"
 							+ "(Try setting the value of utterance to something)"
@@ -64,7 +64,7 @@ public class Eng {
 				
 		} else if (cmd.equals( "Enguage" )) {
 			
-			if (Request.validAttrs( params, 2 ) && r.uid().length() > 0)
+			if (WebRequest.validAttrs( params, 2 ) && r.uid().length() > 0)
 				reply = Eng.viaUrl( r.uid(), params );
 		}
 		return reply;

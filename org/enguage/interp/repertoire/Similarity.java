@@ -5,8 +5,8 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
-import org.enguage.vehicle.Plural;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.config.Plural;
+import org.enguage.vehicle.reply.Response;
 
 public class Similarity {
 	static public final String NAME = "similarity";
@@ -43,11 +43,11 @@ public class Similarity {
 	}
 	static public Strings interpret( Strings cmds ) {
 		// e.g. ["create", "want", "need"]
-		Strings rc = Reply.failure();
+		Strings rc = Response.failure();
 		int     sz = cmds.size();
 		if (sz > 0) {
 			String cmd = cmds.remove( 0 );
-			rc = Reply.success();
+			rc = Response.success();
 			
 			if (cmd.equals( "between" ) && sz>3) {
 				// e.g. "create want / need"
@@ -68,7 +68,7 @@ public class Similarity {
 			else if (cmd.equals( "recall" ))
 				similarities = new Attributes( Variable.get( NAME ));
 			
-			else rc = Reply.failure();				
+			else rc = Response.failure();				
 		}
 		return rc;
 	}

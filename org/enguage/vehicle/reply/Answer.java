@@ -15,8 +15,7 @@ public class Answer {
 	static public  Strings placeholderAsStrings() { return placeholderAsStrings; }
 	static private String  placeholder = defaultPlaceholder;
 	static public  String  placeholder() { return placeholder; }
-	static public  void    placeholder( String ph ) {placeholderAsStrings = new Strings( placeholder = ph );
-	}
+	static public  void    placeholder( String ph ) {placeholderAsStrings = new Strings( placeholder = ph );}
 
 	private boolean appending = false;
 	public  boolean isAppending() { return appending; }
@@ -33,36 +32,26 @@ public class Answer {
 		if (0 == sa.size()) {
 			sa = new Strings( answers ); // use the raw answer
 			if (sa.size() == 0) // so a was equal to ""
-				sa = Reply.dnu();
+				sa = Response.dnu();
 		} else if (sa.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 			sa.replace( Strings.ellipsis, answers );
 		else if (sa.contains( Answer.placeholder() ))
 			sa.replace( Answer.placeholderAsStrings(), answers );
-		
-// If we need to inject answers into strings like "...'s"
-//	Pattern pattern = Pattern.compile( Strings.ELLIPSIS, Pattern.LITERAL );
-//	ListIterator<String> i = sa.listIterator();
-//	while (i.hasNext()) {
-//		Matcher matcher = pattern.matcher( i.next() );
-//		if (matcher.find())
-//			i.set(matcher.replaceAll( answers.toString() ));
-//	}
-		
 		return sa;
 	}
 	
-	private int    type = Reply.DNK;
+	private int    type = Response.DNK;
 	public  int    type() { return type; }
 	private String setType( String s ) {
 		// This sets type to first non-NK type
-		if (type == Reply.DNK) {
-			     if (s.equalsIgnoreCase( Reply.yesStr()    )) type = Reply.YES;
-			else if (s.equalsIgnoreCase( Reply.successStr())) type = Reply.YES;
-			else if (s.equalsIgnoreCase( Reply.noStr()     )) type = Reply.NO;
-			else if (s.equalsIgnoreCase( Reply.dnuStr()    )) type = Reply.DNU;
-			else if (s.equalsIgnoreCase( Reply.failureStr())) type = Reply.FAIL;
-			else if (s.equalsIgnoreCase( Reply.dnkStr()    )) type = Reply.DNK;
-			else type = Reply.CHS;
+		if (type == Response.DNK) {
+			     if (s.equalsIgnoreCase( Response.yesStr()    )) type = Response.OK;
+			else if (s.equalsIgnoreCase( Response.successStr())) type = Response.OK;
+			else if (s.equalsIgnoreCase( Response.noStr()     )) type = Response.NO;
+			else if (s.equalsIgnoreCase( Response.dnuStr()    )) type = Response.DNU;
+			else if (s.equalsIgnoreCase( Response.failureStr())) type = Response.FAIL;
+			else if (s.equalsIgnoreCase( Response.dnkStr()    )) type = Response.DNK;
+			else type = Response.CHS;
 		}	
 		return s;
 	}

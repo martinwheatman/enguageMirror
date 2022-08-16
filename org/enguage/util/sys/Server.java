@@ -11,11 +11,10 @@ import java.util.Random;
 
 import org.enguage.Enguage;
 import org.enguage.interp.Context;
-import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Server {
 	
@@ -32,10 +31,32 @@ public class Server {
 		httpRequest = true;
 		server( port, "" );
 	}
+	private static String getUid( BufferedReader in ){
+		String uid = "";
+		String cookiesString = "";
+		try {	do {
+					cookiesString = in.readLine();
+				} while (!cookiesString.equals( "" ) &&
+					     !cookiesString.startsWith( "Cookie:" ));
+		} catch( Exception ex ) {
+			audit.ERROR( "Error in child socket: getUid()");
+		}
+		if (!cookiesString.equals( "" )) { // found cookies
+			String[] cookies = cookiesString.split(";");
+			for (String cookie : cookies)
+				if (cookie.startsWith( "enguid=" )) {
+					uid = cookie.split( "=" )[ 1 ];
+					break;
+		}		}
+		return uid;
+	}
 	static public void server( String port ) { server( port, "" );}
 	static public void server( String port, String prefix ) {
 		
 		serverOn = true;
+
+		Enguage e = new Enguage();
+
 		try (ServerSocket server = new ServerSocket( Integer.valueOf( port ));)
 		{
 			Audit.LOG( "Server listening on port: "+ port );
@@ -55,43 +76,26 @@ public class Server {
 						utterances = new Strings( URLDecoder.decode( utterances.toString(), "UTF-8" ));
 						
 						// parse header for cookies...
-						boolean found = false;
-						String enguid = "";
+						String enguid = getUid( in );
 						String setCookie = "";
-						String cookiesString = in.readLine();
-						while (!(found = cookiesString.startsWith( "Cookie:" ))) {
-							cookiesString = in.readLine();
-							if (cookiesString.equals( "" ))
-								break;
-						}
-						if (found) {
-							// parse cookies for enguid
-							found = false;
-							String[] cookies = cookiesString.split(";");
-							for (String cookie : cookies)
-								if (cookie.startsWith( "enguid=" )) {
-									enguid = cookie.split( "=" )[ 1 ];
-									found = true;
-									break;
-						}		}
-						if (!found) {
+						if (enguid.equals( "" )) {
 							enguid    = "" + random.nextInt();
 							setCookie = "Set-cookie: enguid=\""+ enguid +"\"\n";
 						}
 						prefix = "HTTP/2.0 200 OK\n"
 								 + "Content-type: text/html\n"
 								 + setCookie +"\n";
-						reply = Enguage.mediate( enguid,  utterances ).toString();
+						reply = e.mediate( enguid,  utterances ).toString();
 					} else
-						reply = Repertoire.mediate( new Utterance( new Strings( in.readLine() ))).toString();
+						reply = e.mediate( new Strings( in.readLine() )).toString();
 					
 					Audit.LOG( "Relying with: "+ reply );
 					out.writeBytes( prefix + reply + "\n" );
 					
-				} catch (Exception e) {
+				} catch (Exception ex) {
 					audit.ERROR( "Error in child socket");
 			}	}
-		} catch (IOException e) {
+		} catch (IOException ex) {
 			audit.ERROR( "Engauge.main():IO error in TCP socket operation" );
 		}
 		serverOn = false;
@@ -104,10 +108,10 @@ public class Server {
 		data=Utterance.externalise( new Strings( data ), false ).toString();
 		audit.debug( "data is: "+ data);
 		
-		String rc = Reply.failureStr();
+		String rc = Response.failureStr();
 		
 		if (port == TestPort) { // test value
-			rc = Reply.successStr(); // assume we've stuffed the server intentionally
+			rc = Response.successStr(); // assume we've stuffed the server intentionally
 			
 		} else if (port > 1024 && port < 65536) {
 			addr = addr==null || addr.equals( "" ) ? "localhost" : addr;
@@ -117,7 +121,7 @@ public class Server {
 					BufferedReader in = new BufferedReader( new InputStreamReader( connection.getInputStream()));
 			) {
 				audit.debug( "  writing: "+ data );
-				out.writeBytes( data );
+				out.writeBytes( data + "\n" );
 				out.flush();
 				
 				audit.debug( "  reading..." );

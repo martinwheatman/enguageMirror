@@ -8,7 +8,7 @@ import org.enguage.Enguage;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
-public class Server {
+public class WebServer {
 	
 	static private int     port = 8080;
 	static public  int     port() {return port;}
@@ -28,7 +28,7 @@ public class Server {
 	
 	static public void server( int port ) {
 
-		Enguage.init( Enguage.RW_SPACE );
+		Enguage.e = new Enguage();
 
 		try (ServerSocket server = new ServerSocket( port, 5 )) {	
 			Audit.LOG(
@@ -37,7 +37,7 @@ public class Server {
 				+(root.equals("") ?	"" : " (root="+root()+")")
 			);
 			while (true)
-				new Request( server.accept() ).run();
+				new WebRequest( server.accept() ).run();
 		} catch (IOException e) {
 			e.printStackTrace();
 	}	}

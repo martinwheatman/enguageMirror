@@ -9,7 +9,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Shell;
 import org.enguage.vehicle.number.Number;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Function {
 	
@@ -86,12 +86,12 @@ public class Function {
 	}
 	static private Strings evaluate( String name, Strings argv ) {
 		audit.in( "evaluate", "name="+ name +", args='"+ argv +"'" );
-		Strings  rc = Reply.dnk();
+		Strings  rc = Response.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {
 			rc = new Number( ss.listIterator() ).valueOf();
 			if (rc.equals( Number.NotANumber ))
-				rc = Reply.dnk();
+				rc = Response.dnk();
 		}
 		return audit.out( rc );
 	}
@@ -128,14 +128,14 @@ public class Function {
 	static private void testQuery( String fn, String actuals ) {
 		Audit.log( "What is the "+ fn +" of "+ actuals );
 		Strings eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
-		Audit.log( eval.equals( new Strings( Reply.dnk())) ?
+		Audit.log( eval.equals( new Strings( Response.dnk())) ?
 			eval.toString() : "The "+ fn +" of "+ actuals +" is "+ eval.toString() +"\n" );
 	}
 	static public void main( String args[]) {
 		Overlay.Set( Overlay.Get());
 		Overlay.attach( NAME );
 		
-		Reply.dnk( "I do not know\n" );
+		Response.dnk( "I do not know\n" );
 		testQuery(  "sum", "1 , 1" ); // error!
 		
 		testCreate( "sum", "a and b", "a + b" );

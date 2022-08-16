@@ -7,7 +7,7 @@ import java.util.Iterator;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.reply.Reply;
+import org.enguage.vehicle.reply.Response;
 
 public class Question {
 	
@@ -43,7 +43,7 @@ public class Question {
 	public String ask() {
 		Audit.LOG( question() + prompt());
 		Question.logPrimedAns();
-		return primedAnswer != null ? primedAnswer() : getLine( Reply.dnuStr());
+		return primedAnswer != null ? primedAnswer() : getLine( Response.dnuStr());
 	}
 	
 	// helper functions...

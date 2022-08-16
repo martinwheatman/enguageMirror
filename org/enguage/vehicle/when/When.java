@@ -23,8 +23,11 @@ class Strings extends ArrayList<String> {
 }
 // */
 public class When {
-	public static final String NAME = "when";
-	public static final String ID   = "WHEN";
+	public static final String NAME   = "when";
+	public static final String ID     = "WHEN";
+	public static final String MO_SEP = "/";
+	public static final char   mo_sep = MO_SEP.charAt( 0 );
+	
 	// types - used in constructing When (FROM implies TO also)
 	public static final int   AT = 0; // inital type - a moment
 	public static final int FROM = 1;
@@ -47,7 +50,7 @@ public class When {
 	public When() { scale( Time.DAY );	}
 	public When( Moment m ) { this( m, m ); }
 	public When( String s ) { // s = output from valueOf(), e.g. "19630818073088-20480905070088"
-		Strings sa = new Strings( s, '-' ); // s.size() == 2 -> from/to
+		Strings sa = new Strings( s, mo_sep ); // s.size() == 2 -> from/to
 		int size = sa.size();
 		if (size==1)
 			to = from = new Moment( sa.get( 0 ));
@@ -61,7 +64,16 @@ public class When {
 	public When( Attributes a ) { this( a.value( "when" )); }
 	public Attributes toAttributes() { return new Attributes().add( "when", valueOf());}
 	
-
+	public static boolean valid( String s ) {
+		if (s != null && s.length() == 29) {
+			for (char ch : s.toCharArray() )
+				if (!Character.isDigit( ch ) && ch != mo_sep)
+					return false;
+			return true;
+		}
+		return false;
+	}
+	
 	// helper ("non-static factory") methods
 	public When today() {
 		//audit.in( "today", "w="+ toString());
@@ -275,7 +287,7 @@ public class When {
 	}
 	public String valueOf() {
 		String rc = from.valueOf();
-		if (from.moment() != to.moment()) rc += "-"+ to.valueOf();
+		if (from.moment() != to.moment()) rc += MO_SEP + to.valueOf();
 		return rc;
 	}
 

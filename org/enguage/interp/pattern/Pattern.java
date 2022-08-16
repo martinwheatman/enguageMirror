@@ -13,9 +13,9 @@ import org.enguage.util.Strings;
 import org.enguage.util.algorithm.Expression;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
-import org.enguage.vehicle.Language;
-import org.enguage.vehicle.Plural;
 import org.enguage.vehicle.Utterance;
+import org.enguage.vehicle.config.Englishisms;
+import org.enguage.vehicle.config.Plural;
 import org.enguage.vehicle.number.Number;
 import org.enguage.vehicle.pronoun.Gendered;
 import org.enguage.vehicle.pronoun.Pronoun;
@@ -115,7 +115,7 @@ public class Pattern extends ArrayList<Patte> {
 					sw = wi.next();
 				}
 				
-				Strings apostrophes = new Strings( sw, Language.APOSTROPHE.charAt( 0 ));
+				Strings apostrophes = new Strings( sw, Englishisms.APOSTROPHE.charAt( 0 ));
 				if (apostrophes.size() == 2 && apostrophes.get( 1 ).equals( "s" )) {
 					sw = apostrophes.get( 0 );
 					t.apostrophedIs( apostrophes.get( 1 ));
@@ -140,7 +140,7 @@ public class Pattern extends ArrayList<Patte> {
 	// want to move to u.c. but preserve l.c. apostrophe...
 	static private String toUpperCase( String word ) {
 		// "martin's" => "MARTIN's"
-		Strings uppers = new Strings( word, Language.APOSTROPHE.charAt( 0 ));
+		Strings uppers = new Strings( word, Englishisms.APOSTROPHE.charAt( 0 ));
 		uppers.set( 0, uppers.get( 0 ).toUpperCase( locale ));
 		return uppers.toString( Strings.CONCAT );
 	}
@@ -461,7 +461,7 @@ public class Pattern extends ArrayList<Patte> {
 		String val = vals.toString();
 		// TODO: ...again "l'eau"
 		if (t.isApostrophed())
-			val = val.endsWith( Language.Apostrophed() ) ? val.substring( 0, val.length()-2 ) : null;
+			val = val.endsWith( Englishisms.Apostrophed() ) ? val.substring( 0, val.length()-2 ) : null;
 		
 		return val;
 	}

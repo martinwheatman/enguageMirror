@@ -1,6 +1,6 @@
 package opt.web.admin;
 
-import opt.web.Request;
+import opt.web.WebRequest;
 import opt.web.admin.users.Users;
 
 public class Admin {
@@ -13,7 +13,7 @@ public class Admin {
 					+ outputArea;
 
 	public static String getReply(
-			Request r,
+			WebRequest r,
 			String cmd,
 			String[] params )
 	{
