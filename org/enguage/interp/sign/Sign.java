@@ -1,8 +1,8 @@
 package org.enguage.interp.sign;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.enguage.interp.Interpretant;
 import org.enguage.interp.intention.Intention;
 import org.enguage.interp.pattern.Patte;
 import org.enguage.interp.pattern.Pattern;
@@ -40,26 +40,20 @@ public class Sign {
 	
 	private Pattern pattern = new Pattern();
 	public  Pattern pattern() {return pattern;}
-	public  Sign     pattern( Pattern ta ) { pattern = ta; return this; }
-	public  Sign     pattern( Patte child ) {
+	public  Sign    pattern( Pattern ta ) { pattern = ta; return this; }
+	public  Sign    pattern( Patte child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
 	}
 
+	public Interpretant intents = new Interpretant();
+	public Sign  insert( int n, Intention intent ) {intents.insert( n, intent ); return this;}
+	public Sign  append( Intention intent ) {intents.add( intent ); return this;}
+	public Sign  appendIntention( int type, String pattern ) {intents.appendIntention( type, pattern ); return this;}
+ 	
 	public static Sign voiced = null;
-	
-	private ArrayList<Intention> intents = new ArrayList<Intention>();
-	
-	public  Sign append(        Intention in ){ intents.add(    in ); return this;}
-	public  Sign insert( int i, Intention in ){ intents.add( i==-1 ? 0 : i, in ); return this;}
-	// used in autopoiesis:
-	public  Sign appendIntention( int typ, String val ) {
-		intents.add( new Intention(typ,val));
-		return this;
-	}
-	public  Sign tailPrepend(    Intention in ){intents.add( intents.size(), in );return this;}
-	
+		
 	// Set during autopoiesis - replaces 'id' attribute 
 	private String  concept = "";
 	public  String  concept() { return concept; }
