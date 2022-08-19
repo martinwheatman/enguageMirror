@@ -2,9 +2,9 @@ package org.enguage.util.algorithm;
 
 import java.util.ListIterator;
 
+import org.enguage.signs.vehicle.number.Number;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.number.Number;
 
 public class Expression {
 	

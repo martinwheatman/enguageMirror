@@ -1,10 +1,10 @@
 package org.enguage.objects;
 
+import org.enguage.signs.vehicle.when.Day;
+import org.enguage.signs.vehicle.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.when.Day;
-import org.enguage.vehicle.when.When;
 
 import com.yagadi.Assets;
 

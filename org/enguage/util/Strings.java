@@ -7,7 +7,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TreeSet;
 
-import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Expand;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Temporal;
@@ -20,15 +19,16 @@ import org.enguage.objects.space.Entity;
 import org.enguage.objects.space.Link;
 import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
+import org.enguage.signs.Sign;
+import org.enguage.signs.vehicle.Utterance;
+import org.enguage.signs.vehicle.config.Colloquial;
+import org.enguage.signs.vehicle.config.Englishisms;
+import org.enguage.signs.vehicle.config.Plural;
+import org.enguage.signs.vehicle.reply.Answer;
+import org.enguage.signs.vehicle.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.config.Colloquial;
-import org.enguage.vehicle.config.Englishisms;
-import org.enguage.vehicle.config.Plural;
-import org.enguage.vehicle.reply.Answer;
-import org.enguage.vehicle.where.Where;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	

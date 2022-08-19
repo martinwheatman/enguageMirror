@@ -4,12 +4,12 @@ import java.util.ListIterator;
 
 import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
+import org.enguage.signs.vehicle.number.Number;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.number.Number;
 
 public class Numeric extends Value {
 	public static  final String NAME = "numeric";

@@ -1,53 +1,99 @@
 package opt.test;
 
 import org.enguage.Enguage;
+import org.enguage.objects.space.Overlay;
+import org.enguage.signs.vehicle.pronoun.Pronoun;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Server;
-import org.enguage.vehicle.pronoun.Pronoun;
 
 public class Example {
 	
 	private static Audit   audit = new Audit( "Example" );
 
-	public  void      selfTest( String cmd, Strings cmds ) {
-		// If we're sanity testing, remove yet preserve persistent data...
-		String fsys = "./selftest";
-		Fs.root( fsys );
+	public static void main( String[] args ) {
 		
-		if (!Fs.destroy( fsys ))
-			audit.FATAL( "failed to remove old database - "+ fsys );
-		else
-			try {
-				if (cmd.equals( "-T" ))
-					testName = cmds.size()==0 ? testName : cmds.remove( 0 );
-				else
-					level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
+		Strings    cmds = new Strings( args );
+		String     cmd,
+		           fsys = Enguage.RW_SPACE;
+		
+		// traverse args and strip switches: -v -d -H -p -s
+		int i = 0;
+		while (i < cmds.size()) {
+			
+			cmd = cmds.get( i );
+			
+			if (cmd.equals( "-h" ) || cmd.equals( "--help" )) {
+				Enguage.usage();
+				System.exit( 0 );
+			
+			} else if (cmd.equals( "-v" ) || cmd.equals( "--verbose" )) {
+				cmds.remove( i );
+				Enguage.verbose = true;
+					
+			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
+				cmds.remove( i );
+				fsys = cmds.size()==0 ? fsys : cmds.remove( i );
 				
-				test();
+			} else
+				i++;
+		}
+
+		Enguage.set( new Enguage( fsys ));
 				
-			} catch (NumberFormatException nfe) {
-				Audit.LOG( "Insanity: "+ nfe );
-	}		}
+		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
+		
+		if (cmd.equals(  "-t"    ) ||
+			cmd.equals( "--test" ) ||
+			cmd.equals(  "-T"    ))
+		{	
+			// sanity testing, remove yet preserve persistent data...
+			fsys = "./selftest";
+			Fs.root( fsys );
+			
+			if (!Fs.destroy( fsys ))
+				audit.FATAL( "failed to remove old database - "+ fsys );
+			else
+				try {
+					if (cmd.equals( "-T" ))
+						testName = cmds.size()==0 ? testName : cmds.remove( 0 );
+					else
+						level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
+					
+					test(); // full selftest
+					
+				} catch (NumberFormatException nfe) {
+					Audit.LOG( "Insanity: "+ nfe );
+				}
+		
+		} else if (cmd.equals( "" )) {
+			Overlay.attach( "uid" );
+			Enguage.shell().aloudIs( true ).run();
+		
+		} else {
+			// Command line parameters exists...
+			// reconstruct original commands and interpret...
+			// - remove full stop, if one given -
+			cmds.prepend( cmd );
+			cmds = new Strings( cmds.toString() );
+			Audit.LOG( "cmds: "+ cmds.toString() );
+			if (cmds.get( cmds.size()-1 ).equals( "." ))
+				cmds.remove( cmds.size()-1 );
+
+			// ...reconstruct original commands and interpret
+			test( cmds.toString(), "" );
+	}	}
 	
-	// Call this direct, so it's not counted!
-	private static final String ihe =  "I have everything";
-	private void clearTheNeedsList() { clearTheNeedsList( ihe );}
-	private void clearTheNeedsList( String s ) { Enguage.e.mediate( new Strings( s ));	}
-	private void tidyUpViolenceTest( String fname ) {
-		Enguage.e.mediate( new Strings( "delete "+ fname +" advocate list" ));
-		Enguage.e.mediate( new Strings( "delete "+ fname +" fear     list" ));
-		Enguage.e.mediate( new Strings( "delete _user causal list" ));
-		Enguage.e.mediate( new Strings( "unset the value of they" ));
-	}
-	private void tidyUpViolenceTest() { tidyUpViolenceTest( "violence" ); }
-	
-	private int       level = 0;
-	private int     testGrp = 0;
-	private String testName = null;
-	private boolean runTheseTests() {return runTheseTests( null );}
-	private boolean runTheseTests( String title ) {
+	/* 
+	 * Test groups -
+	 */
+	private static int       level = 0;
+	private static int     testGrp = 0;
+	private static String testName = null;
+
+	private static boolean runTheseTests() {return runTheseTests( null );}
+	private static boolean runTheseTests( String title ) {
 		++testGrp;
 		boolean runTheseTests = testName != null ?
 				title != null && title.contains( testName )
@@ -56,21 +102,24 @@ public class Example {
 		return runTheseTests;
 	}
 	
-	private String testPrompt = "";
-	private String testPrompt() {return testPrompt;}
-	private void   testPrompt( String prompt) {testPrompt = prompt;}
+	/*
+	 * Individual Enguage test harness...
+	 */
+	private static String testPrompt = "";
+	private static String testPrompt() {return testPrompt;}
+	private static void   testPrompt( String prompt) {testPrompt = prompt;}
 	
-	private String replyPrompt = "";
-	private String replyPrompt() { return replyPrompt;}
-	private void   replyPrompt( String prompt) { replyPrompt = prompt;}
-		
-	public  void test( String  cmd, String expected ) {test( cmd, expected, null );}
-	private void test( String  cmd, String expected, String unexpected ) {
+	private static String replyPrompt = "";
+	private static String replyPrompt() { return replyPrompt;}
+	private static void   replyPrompt( String prompt) { replyPrompt = prompt;}
+
+	public  static void test( String  cmd, String expected ) {test( cmd, expected, null );}
+	private static void test( String  cmd, String expected, String unexpected ) {
 		// expected == null => silent!
 		if (expected != null)
 			Audit.log( testPrompt()+ cmd +".");
 		
-		Strings reply = Enguage.e.mediate( new Strings( cmd ));
+		Strings reply = Enguage.get().mediate( new Strings( cmd ));
 
 		if (expected == null) { // don't check anything
 			;
@@ -99,7 +148,25 @@ public class Example {
 			);
 	}
 	
-	public  void test() {
+	/* Test helper functions -
+	 *    Call these 'directly', so it's not counted!
+	 */
+	private static final String ihe =  "I have everything";
+	private static void clearTheNeedsList() { clearTheNeedsList( ihe );}
+	private static void clearTheNeedsList( String s ) { Enguage.get().mediate( new Strings( s ));	}
+	private static void tidyUpViolenceTest( String fname ) {
+		Enguage e = Enguage.get();
+		e.mediate( new Strings( "delete "+ fname +" advocate list" ));
+		e.mediate( new Strings( "delete "+ fname +" fear     list" ));
+		e.mediate( new Strings( "delete _user causal list" ));
+		e.mediate( new Strings( "unset the value of they" ));
+	}
+	private static void tidyUpViolenceTest() {tidyUpViolenceTest( "violence" );}
+	
+	/*
+	 * Full self-test...
+	 */
+	public static void test() {
 		// ...useful ephemera...
 		//interpret( "detail on" );
 		//interpret( "tracing on" );

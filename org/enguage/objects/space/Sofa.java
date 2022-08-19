@@ -1,8 +1,5 @@
 package org.enguage.objects.space;
 
-import org.enguage.interp.Context;
-import org.enguage.interp.repertoire.Similarity;
-import org.enguage.interp.sign.Sign;
 import org.enguage.objects.Expand;
 import org.enguage.objects.Numeric;
 import org.enguage.objects.Temporal;
@@ -11,13 +8,16 @@ import org.enguage.objects.expr.Function;
 import org.enguage.objects.list.Item;
 import org.enguage.objects.list.Items;
 import org.enguage.objects.list.Transitive;
+import org.enguage.repertoire.Similarity;
+import org.enguage.signs.Sign;
+import org.enguage.signs.vehicle.config.Colloquial;
+import org.enguage.signs.vehicle.config.Plural;
+import org.enguage.signs.vehicle.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Context;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.config.Colloquial;
-import org.enguage.vehicle.config.Plural;
-import org.enguage.vehicle.where.Where;
 
 public class Sofa extends Shell {
 	static private Audit audit = new Audit( "Sofa" );

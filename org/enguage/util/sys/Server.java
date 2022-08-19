@@ -10,11 +10,11 @@ import java.net.URLDecoder;
 import java.util.Random;
 
 import org.enguage.Enguage;
-import org.enguage.interp.Context;
+import org.enguage.signs.vehicle.Utterance;
+import org.enguage.signs.vehicle.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Response;
+import org.enguage.util.attr.Context;
 
 public class Server {
 	

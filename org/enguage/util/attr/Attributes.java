@@ -5,11 +5,11 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.interp.pattern.Pattern;
 import org.enguage.objects.Variable;
+import org.enguage.signs.vehicle.config.Plural;
+import org.enguage.signs.vehicle.pattern.Pattern;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.config.Plural;
 
 public class Attributes extends ArrayList<Attribute> {
 	static private Audit audit = new Audit( "Attributes" );

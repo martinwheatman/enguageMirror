@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.interp.pattern.Pattern;
 import org.enguage.objects.space.Overlay;
 import org.enguage.objects.space.Value;
+import org.enguage.signs.vehicle.pattern.Pattern;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;

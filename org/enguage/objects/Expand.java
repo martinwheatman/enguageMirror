@@ -38,7 +38,7 @@ public class Expand {
 				// re-issue rebuilt utterance
 				
 				// N.B. need to 'expandValues' here..
-				Strings reply = Enguage.e.mediate( Attributes.expandValues( sa.reinsert( m, "{", "}" ) ) );
+				Strings reply = Enguage.get().mediate( Attributes.expandValues( sa.reinsert( m, "{", "}" ) ) );
 				//audit.debug( "individual reply => "+ reply );
 				if (reply.equals( /*Enguage.DNU*/ new Strings( "I don't understand" )) ||
 					reply.get(0).toLowerCase( Locale.getDefault()).startsWith( "sorry" ))

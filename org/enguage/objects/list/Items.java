@@ -3,16 +3,16 @@ package org.enguage.objects.list;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.interp.Context;
 import org.enguage.objects.space.Value;
+import org.enguage.signs.vehicle.number.Number;
+import org.enguage.signs.vehicle.reply.Reply;
+import org.enguage.signs.vehicle.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
+import org.enguage.util.attr.Context;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.number.Number;
-import org.enguage.vehicle.reply.Reply;
-import org.enguage.vehicle.where.Where;
 
 public class Items extends ArrayList<Item> {
 	static final long serialVersionUID = 0L;

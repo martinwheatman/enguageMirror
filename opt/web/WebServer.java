@@ -28,7 +28,7 @@ public class WebServer {
 	
 	static public void server( int port ) {
 
-		Enguage.e = new Enguage();
+		Enguage.set( new Enguage() );
 
 		try (ServerSocket server = new ServerSocket( port, 5 )) {	
 			Audit.LOG(

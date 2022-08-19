@@ -6,11 +6,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import org.enguage.interp.repertoire.Repertoire;
+import org.enguage.repertoire.Repertoire;
+import org.enguage.signs.vehicle.Utterance;
+import org.enguage.signs.vehicle.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
 
 public class Shell {
 

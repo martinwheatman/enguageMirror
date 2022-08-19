@@ -2,31 +2,31 @@ package org.enguage;
 
 import java.io.File;
 
-import org.enguage.interp.intention.Redo;
-import org.enguage.interp.repertoire.Autoload;
-import org.enguage.interp.repertoire.Concepts;
-import org.enguage.interp.repertoire.Repertoire;
 import org.enguage.objects.list.Item;
 import org.enguage.objects.space.Overlay;
+import org.enguage.repertoire.Autoload;
+import org.enguage.repertoire.Concepts;
+import org.enguage.repertoire.Repertoire;
+import org.enguage.signs.intention.Redo;
+import org.enguage.signs.vehicle.Utterance;
+import org.enguage.signs.vehicle.config.Config;
+import org.enguage.signs.vehicle.reply.Reply;
+import org.enguage.signs.vehicle.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Server;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.config.Config;
-import org.enguage.vehicle.reply.Reply;
-import org.enguage.vehicle.where.Where;
 
 import com.yagadi.Assets;
-
-import opt.test.Example;
 
 public class Enguage {
 	
 	private static String copyright = "Martin Wheatman, 2001-4, 2011-22";
 
-	public  static Enguage e;
+	private static Enguage enguage;
+	public  static Enguage get() {return enguage;}
+	public  static void    set( Enguage e ) {enguage = e;}
 	
 	public  static final String      RO_SPACE = Assets.LOCATION;
 	public  static final String      RW_SPACE = "var"+ File.separator;
@@ -45,10 +45,12 @@ public class Enguage {
 	public  static boolean imagined = false;
 	
 	private static String server = "";
-	private static String server() {return server;}
-	private static void   server( String s ) {server = s;}
+	public  static String server() {return server;}
+	public  static void   server( String s ) {server = s;}
 	
 	private static int port = 0;
+	public  static int port() {return port;}
+	public  static void port( int n) {port = n;}
 	
 	public  Enguage() {this( RW_SPACE );}
 	public  Enguage( String root ) {
@@ -131,11 +133,6 @@ public class Enguage {
 		Audit.LOG( "       -s, --server <host> <port>" );
 		Audit.LOG( "          switch to send speech to a server." );
 		Audit.LOG( "          (Needs to be initialised with -p nnnn);\n" );
-		Audit.LOG( "       -t, --test <n>, -T <name>" );
-		Audit.LOG( "          runs a self test, where" );
-		Audit.LOG( "           n is the test number, or" );
-		Audit.LOG( "          -n excludes a test, or" );
-		Audit.LOG( "          -T <name> is part of the test name.\n" );
 		Audit.LOG( "       [<utterance>]" );
 		Audit.LOG( "          with an utterance it runs one-shot;" );
 		Audit.LOG( "          with no utterance it runs as a shell," );
@@ -145,14 +142,12 @@ public class Enguage {
 	
 	public static void main( String args[] ) {
 		
-		Example test = new Example();
-		
 		Audit.startupDebug = startupDebug;
 		Strings    cmds = new Strings( args );
 		String     cmd,
 		           fsys = RW_SPACE;
 		boolean useHttp = false;
-				
+		
 		// traverse args and strip switches: -v -d -H -p -s
 		int i = 0;
 		while (i < cmds.size()) {
@@ -189,18 +184,13 @@ public class Enguage {
 				i++;
 		}
 
-		e = new Enguage( fsys );
+		enguage = new Enguage( fsys );
 				
 		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
 		
 		if (port != 0 && server.equals( "" )) { // run as local server
 			if (useHttp) Server.httpd( ""+ port );
 			Server.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
-		
-		} else if (cmd.equals(  "-t"    ) ||
-			       cmd.equals( "--test" ) ||
-			       cmd.equals(  "-T"    )) {
-			test.selfTest( cmd, cmds );
 		
 		} else if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
@@ -217,5 +207,5 @@ public class Enguage {
 				cmds.remove( cmds.size()-1 );
 
 			// ...reconstruct original commands and interpret
-			test.test( cmds.toString(), "" );
+			Enguage.get().mediate( cmds );
 }	}	}
