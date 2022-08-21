@@ -1,4 +1,4 @@
-package org.enguage.signs.intention;
+package org.enguage.signs.interpretant;
 
 import org.enguage.repertoire.Repertoire;
 import org.enguage.signs.vehicle.Utterance;
@@ -35,7 +35,7 @@ public class Redo {
 	public  static void    disambFound( boolean b ) { disambFound = b; }
 	public  static boolean disambFound() { return disambFound; }
 	
-	static public void disambOn( Strings cmd ) {
+	public static void disambOn( Strings cmd ) {
 		//simply turn disambiguation on if this thought is same as last...
 		audit.debug( "Allop:disambFound():REDOING:"+(disambFound()?"ON":"OFF")+":"+ Utterance.previous() +" =? "+ cmd +")" );
 		if (	( Utterance.previous()                  .equals( cmd  )) //    X == (redo) X     -- case 1

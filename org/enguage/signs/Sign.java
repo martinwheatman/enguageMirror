@@ -6,8 +6,8 @@ import org.enguage.objects.Temporal;
 import org.enguage.objects.Variable;
 import org.enguage.repertoire.Engine;
 import org.enguage.repertoire.Repertoire;
-import org.enguage.signs.intention.Intention;
-import org.enguage.signs.intention.Interpretant;
+import org.enguage.signs.interpretant.Intention;
+import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.vehicle.pattern.Patte;
 import org.enguage.signs.vehicle.pattern.Pattern;
 import org.enguage.signs.vehicle.reply.Reply;
@@ -47,7 +47,7 @@ public class Sign {
 		return this;
 	}
 
-	public Interpretant intents = new Interpretant();
+	public Intentions intents = new Intentions();
 	public Sign  insert( int n, Intention intent ) {intents.insert( n, intent ); return this;}
 	public Sign  append( Intention intent ) {intents.add( intent ); return this;}
 	public Sign  appendIntention( int type, String pattern ) {intents.appendIntention( type, pattern ); return this;}
@@ -101,35 +101,25 @@ public class Sign {
 	 */
 	public int interpretation = Signs.noInterpretation;
 	
-	public int cplex() { return pattern().cplex(); }
+	public int cplex() {return pattern().cplex();}
 	
 	public String toXml( int n, long complexity ) {
-		
-		String intentions = "";
-		for (Intention in : intents)
-			intentions += "\n      " + Attribute.asString( Intention.typeToString( in.type() ), in.value() );
-		
 		return  indent +"<"+ NAME
 				+" "+ Attribute.asString( "n" , ""+n )
 				+" "+ Attribute.asString( "complexity", ""+complexity )
 				+" "+ Attribute.asString( "repertoire", concept())
 				+    (isTemporal()?" "+Attribute.asString( "temporal", "true"):"")
-				+ intentions
+				+ intents.toXml()
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toStringIndented() {
 		Audit.incr();
-		String sign = Audit.indent() +"On \""+ pattern().toString() +"\"";
-		int sz = intents.size();
-		if (sz == 1)
-			sign += ", "+ intents.get(0);
-		else if (sz > 1) {
-			int line = 0;
-			for (Intention in : intents)
-				sign += (line++ == 0 ? ":" : ";") + "\n" + Audit.indent() +"    "+ in;
-		}
+		String sign = Audit.indent()
+				+ "On \""+ pattern().toString()+ "\""
+				+ intents.toStringIndented() 
+				+ ".";
 		Audit.decr();
-		return sign +".";
+		return sign;
 	}
 	public String toString() {return toStringIndented();}
 		
@@ -138,23 +128,17 @@ public class Sign {
 	public void    toVariable() {Variable.set( pattern.toFilename(), toString());}
 	
 	public Reply interpret( Reply r ) {
-		//audit.in( "interpret", pattern().toString() );
 		Iterator<Intention> ai = intents.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();
 			switch (in.type()) {
-				case Intention.allop :
-					r = Engine.interp( in, r );
-					break;
-				case Intention.create:
-				case Intention.prepend:
-				case Intention.append:
-					r.answer( in.autopoiesis());
-					break;
-				default: // thenFinally, think, do, say...
-					r = in.mediate( r );
+				case Intention.allop  : r = Engine.interp( in, r ); break;
+				case Intention.create : r.answer( in.create() ); break;
+				case Intention.prepend: r.answer( in.prepend()); break;
+				case Intention.append : r.answer( in.append() ); break;
+				default: r = in.mediate( r ); // thenFinally, think, do, say...
 		}	}
-		return r; // (Reply) audit.out( r );
+		return r;
 	}
 	/*
 	 * This will handle "sign create X", found in interpret.txt

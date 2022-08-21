@@ -7,7 +7,7 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.repertoire.Autoload;
 import org.enguage.repertoire.Concepts;
 import org.enguage.repertoire.Repertoire;
-import org.enguage.signs.intention.Redo;
+import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.config.Config;
 import org.enguage.signs.vehicle.reply.Reply;
@@ -42,8 +42,10 @@ public class Enguage {
 	
 	public  static boolean verbose = false;
 	
-	public  static boolean imagined = false;
-	
+	private static boolean imagined = false;
+	public  static boolean imagined() {return imagined;}
+	public  static void    imagined( boolean img ) {imagined = img;}
+		
 	private static String server = "";
 	public  static String server() {return server;}
 	public  static void   server( String s ) {server = s;}
@@ -63,58 +65,50 @@ public class Enguage {
 	public Strings mediate( String uid, Strings utterance ) {
 		Strings reply;
 		audit.in( "mediate", utterance.toString() );
+	
+		imagined = false;
+		Overlay.attach( uid );
+		Where.clearLocation();
+		Item.resetFormat();
 		
-		if (!server().equals( "" )) {
-			reply = new Strings( Server.client( server, port, utterance.toString() ));
+		if (Reply.isUnderstood()) // from previous interpretation!
+			Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 		
+		Reply r = Repertoire.mediate( new Utterance( utterance ));
+
+		// once processed, keep a copy
+		Utterance.previous( utterance );
+
+		if (imagined) {
+			Overlay.abortTxn( Redo.undoIsEnabled() );
+			Redo.disambOff();
+			
+		} else if (Reply.isUnderstood()) {
+			Overlay.finishTxn( Redo.undoIsEnabled() );
+			Redo.disambOff();
+			
 		} else {
-			imagined = false;
-			Overlay.attach( uid );
-				
-			if (Server.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
+			// really lost track?
+			audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
+			             +Repertoire.signs.ignore().toString() );
+			Repertoire.signs.ignoreNone();
+			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
+		}
+
+		// auto-unload here - autoloading() in Repertoire.interpret() 
+		// asymmetry: load as we go; tidy-up once finished
+		Autoload.unload();
+
+		reply = Reply.say().appendAll( r.toStrings());
+		Reply.say( null );
+		Overlay.detach();
 			
-			// locations contextual per utterance + reset output format...
-			Where.clearLocation();
-			Item.resetFormat();
-			
-			if (Reply.isUnderstood()) // from previous interpretation!
-				Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
-			
-			Reply r = Repertoire.mediate( new Utterance( utterance ));
-	
-			// once processed, keep a copy
-			Utterance.previous( utterance );
-	
-			if (imagined) {
-				Overlay.abortTxn( Redo.undoIsEnabled() );
-				Redo.disambOff();
-			} else if (Reply.isUnderstood()) {
-				Overlay.finishTxn( Redo.undoIsEnabled() );
-				Redo.disambOff();
-			} else {
-				// really lost track?
-				audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
-				             +Repertoire.signs.ignore().toString() );
-				Repertoire.signs.ignoreNone();
-				shell.aloudIs( true ); // sets aloud for whole session if reading from fp
-			}
-	
-			// auto-unload here - autoloading() in Repertoire.interpret() 
-			// asymmetry: load as we go; tidy-up once finished
-			Autoload.unload();
-	
-			reply = Reply.say().appendAll( r.toStrings());
-			Reply.say( null );
-			
-			if (Server.serverOn()) Audit.log( "Server replied: "+ reply );
-				
-			Overlay.detach();
-		}	
 		return audit.out( reply );
 	}
 	
-	// test code....
-	
+	/*
+	 *  test code....
+	 */
 	public static void usage() {
 		Audit.LOG( "Usage: java [-jar enguage.jar|org.enguage.Enguage]" );
 		Audit.LOG( "            --help |" );

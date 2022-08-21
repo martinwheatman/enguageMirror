@@ -1,4 +1,4 @@
-package org.enguage.signs.intention;
+package org.enguage.signs.interpretant;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

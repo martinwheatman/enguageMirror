@@ -70,9 +70,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
 	public Strings( Strings orig ) {
 		super();
-		if (null != orig)
-			for (int i=0; i<orig.size(); i++)
-				add( orig.get( i ));
+		Iterator<String> i = orig.iterator();
+		while (i.hasNext())
+			add( i.next());
 	}
 	public Strings( String[] sa ) {
 		super();

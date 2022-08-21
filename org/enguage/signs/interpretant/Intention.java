@@ -1,4 +1,4 @@
-package org.enguage.signs.intention;
+package org.enguage.signs.interpretant;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,133 +59,118 @@ public class Intention {
 	public static final int  prepend      =  0xb;
 	public static final int  append       =  0xc;
 	public static final int  headAppend   =  0xd;
-	
 	public static final int  head         =  0xe;
 
-	public Intention( int type, String value, int intnt ) { this( type, value ); intent = intnt;}	
-	public Intention( int nm, Strings vals ) { this( nm, vals.toString()); }
-	public Intention( int nm, String val ) { type=nm; value = val; }
+	public Intention( int t, Strings vals ) { this( t, vals.toString()); }
+	public Intention( int t, String v ) { type=t; value=v; values=new Strings(v);}
 	public Intention( Intention in, boolean temp, boolean spatial ) {
 		this( in.type(), in.value() );
 		temporalIs( temp );
 		spatialIs( spatial );
 	}
 	
-	protected int    type  = 0;
-	public    int    type() { return type; }
+	protected final int    type;
+	public          int    type() {return type;}
 	
-	protected String value = "";
-	public    String value() { return value; }
+	protected final String value;
+	public          String value() {return value;}
 	
-	static public String typeToString( int type ) {
+	protected final Strings values;
+	public          Strings values() {return values;}
+	
+	public static String typeToString( int type ) {
 		switch (type) {
-			case thenReply : return REPLY;
-			case elseReply : return ELSE_REPLY;
-			case thenThink : return THINK;
-			case elseThink : return ELSE_THINK;
-			case thenDo    : return DO;
-			case elseDo    : return ELSE_DO;
-			case thenRun   : return RUN;
-			case elseRun   : return ELSE_RUN;
-			case allop     : return Repertoire.ALLOP;
-			case autop     : return Repertoire.AUTOP;
-			case create    : return NEW;
-			case prepend   : return PREPEND;
-			case append    : return APPEND;
+			case thenReply   : return REPLY;
+			case elseReply   : return ELSE_REPLY;
+			case thenThink   : return THINK;
+			case elseThink   : return ELSE_THINK;
+			case thenDo      : return DO;
+			case elseDo      : return ELSE_DO;
+			case thenRun     : return RUN;
+			case elseRun     : return ELSE_RUN;
+			case allop       : return Repertoire.ALLOP;
+			case autop       : return Repertoire.AUTOP;
+			case create      : return NEW;
+			case prepend     : return PREPEND;
+			case append      : return APPEND;
 			case thenFinally : return FINALLY;
 			default:
 				audit.FATAL( "Intention: still returning undefined" );
 				return UNDEF;
 	}	}
 	
-	static public int nameToType( String name ) {
-		if ( name.equals( REPLY ))
-			return thenReply;
-		else if ( name.equals( ELSE_REPLY ))
-			return elseReply;
-		else if ( name.equals( THINK ))
-			return thenThink;
-		else if ( name.equals( ELSE_THINK ))
-			return elseThink;
-		else if ( name.equals( DO))
-			return thenDo; 
-		else if ( name.equals( ELSE_DO ))
-			return elseDo; 
-		else if ( name.equals( RUN ))
-			return thenRun; 
-		else if ( name.equals( ELSE_RUN ))
-			return elseRun;
-		else if ( name.equals( FINALLY ))
-			return thenFinally;
-		else if ( name.equals( Repertoire.ALLOP ))
-			return allop;
-		else if ( name.equals( Repertoire.AUTOP ))
-			return autop;
-		else if ( name.equals( NEW ))
-			return create;
-		else if ( name.equals( APPEND ))
-			return append;
-		else if ( name.equals( PREPEND ))
-			return prepend;
+	public static int nameToType( String name ) {
+		     if (name.equals( REPLY            )) return thenReply;
+		else if (name.equals( ELSE_REPLY       )) return elseReply;
+		else if (name.equals( THINK            )) return thenThink;
+		else if (name.equals( ELSE_THINK       )) return elseThink;
+		else if (name.equals( DO               )) return thenDo; 
+		else if (name.equals( ELSE_DO          )) return elseDo; 
+		else if (name.equals( RUN              )) return thenRun; 
+		else if (name.equals( ELSE_RUN         )) return elseRun;
+		else if (name.equals( FINALLY          )) return thenFinally;
+		else if (name.equals( Repertoire.ALLOP )) return allop;
+		else if (name.equals( Repertoire.AUTOP )) return autop;
+		else if (name.equals( NEW              )) return create;
+		else if (name.equals( APPEND           )) return append;
+		else if (name.equals( PREPEND          )) return prepend;
 		else {
 			audit.FATAL( "typing undef" );
 			return undef;
 	}	}
 	
-	public boolean   temporal = false;
-	public boolean   isTemporal() { return temporal; }
-	public Intention temporalIs( boolean b ) { temporal = b; return this; }
+	public  boolean   temporal = false;
+	public  boolean   isTemporal() {return temporal;}
+	public  Intention temporalIs( boolean b ) {temporal = b; return this;}
 
-	public boolean   spatial = false;
-	public boolean   isSpatial() { return spatial; }
-	public Intention spatialIs( boolean s ) { spatial = s; return this; }
+	public  boolean   spatial = false;
+	public  boolean   isSpatial() {return spatial;}
+	public  Intention spatialIs( boolean s ) {spatial = s; return this;}
 
-	private int intent = undef;
-	public  int intent() { return intent;}
+	private static Sign latest = null;
 	
-	static private Sign s = null;
-	static public  void printSign() { Audit.LOG( "Autop().printSign:\n"+ s.pattern().toXml()); }
-	
-	static private String concept = "";
-	static public    void concept( String name ) { concept = name; }
-	static public  String concept() { return concept; }
-	
-	public String autopoiesis() {
-		//audit.in( "autopoiesis", "NAME="+ Repertoire.AUTOP +", value="+ value +", "+ Context.valueOf());
-		
-		Strings sa = Context.deref( new Strings( value ));
-		switch (type) {
-		case create: {
-			String attr    = sa.remove( 0 ),
-			       pattern = sa.remove( 0 ),
-				   val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
+	private static String concept = "";
+	public  static void   concept( String name ) { concept = name; }
+	public  static String concept() { return concept; }
+
+	public String create() {
+		Strings sa      = Context.deref( new Strings( values ));
+		String  attr    = sa.remove( 0 ),
+		        pattern = sa.remove( 0 ),
+			    val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 			Repertoire.signs.insert(
-					s = new Sign()
+					latest = new Sign()
 							.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
 							.concept( concept() )
 							.append( new Intention( Intention.nameToType( attr ), val )));
-			break;
+		return "ok";
+	}
+	public String append() {
+		if (null == latest)
+			audit.ERROR( "adding to sign before creation" );
+		else {
+			Strings  sa = Context.deref( new Strings( values ));
+			String attr = sa.remove( 0 ),
+			       val  = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
+			latest.append( new Intention( nameToType(  attr ), val ));
 		}
-		case append :
-		case prepend:
-			if (null == s)
-				// this should return DNU...
-				audit.ERROR( "adding to sign before creation" );
-			else {
-				String attr = sa.remove( 0 ),
-				       val = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-				if (type == append )
-					s.append( new Intention( nameToType(  attr ), val ));
-				else
-					s.insert( 0, new Intention( nameToType( attr ), val ));
-		}	}
-		//audit.out( r.answer( Reply.yes().toString() ));
-		return "go on";
+		return "ok";
+	}
+	public String prepend() {
+		if (null == latest)
+			audit.ERROR( "adding to sign before creation" );
+		else {
+			Strings  sa = Context.deref( new Strings( values ));
+			String attr = sa.remove( 0 ),
+			       val  = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
+			latest.insert( 0, new Intention( nameToType( attr ), val ));
+		}
+		return "ok";
 	}
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"
-						new Strings( value )
+						new Strings( values )
 								.replace( Strings.ellipsis, answer ),
 						expand
 				)	);
@@ -194,7 +179,7 @@ public class Intention {
 		//audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" );
 		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
-		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
+		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		Reply tmpr = Repertoire.mediate( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
 		
 		if (r.a.isAppending())
@@ -202,14 +187,11 @@ public class Intention {
 		else
 			r = tmpr;
 		
-		r.response( new Strings( r.toString()) )
-		 .conclude( thought );
-		
-		// If we've returned DNU, we want to continue
-		r.doneIs( Strings.isUCwHyphUs( value ) // critical!
-		          && r.response() == Response.FAIL );
-
-		return r; //(Reply) audit.out( r );
+		// If we've returned FAIL (DNU), we want to continue
+		return r.response( new Strings( r.toString()) )
+		        .conclude( thought.toString() )
+		        .doneIs( Strings.isUCwHyphUs( value ) // critical!
+		                 && r.response() == Response.FAIL );
 	}
 	
 	private Reply perform( Reply r ) { return perform( r, false ); }
@@ -229,27 +211,27 @@ public class Intention {
 
 		return r; //(Reply) audit.out( r ); //
 	}
-	private Reply reply( Reply r ) {
-		//audit.in( "reply", "value='"+ value +"', ["+ Context.valueOf() +"]" );
-		r.format( value.equals( "" ) ? r.toString() : value );
-		r.response( new Strings( value ));
-		r.doneIs( r.response() != Response.DNU );
-		return r; //(Reply) audit.out( r );
+	private Reply reply( Reply reply ) {
+		return reply.format( value.equals( "" ) ? reply.toString() : value )
+		        .doneIs( reply.response() != Response.DNU )
+		        .response( values );
 	}
 	private Reply run( Reply r ) {
 		return new Commands( formulate( r.a.toString(), false ).toString())
 				.run( r );
 	}
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", typeToString( type ) +"='"+ value +"'" );
+		if (Audit.allAreOn())
+			audit.in( "mediate", typeToString( type ) +"='"+ value +"'" );
 		
 		if (type == thenFinally)
 			andFinally( r );
 
-		else if (r.isDone())
-			audit.debug( "skipping >"+ value +"< reply already found" );
+		else if (r.isDone()) {
+			if (Audit.allAreOn())
+				audit.debug( "skipping >"+ value +"< reply already found" );
 		
-		else if (r.felicitous())
+		} else if (r.felicitous())
  			switch (type) {
 				case thenThink:	r = think(   r ); break;
 				case thenDo: 	r = perform( r ); break;
@@ -258,28 +240,40 @@ public class Intention {
 			}
  		else
 			switch (type) {
-			case elseThink: r = think(   r ); break;
-			case elseDo:	r = perform( r ); break;
-			case elseRun:	r = run(     r ); break;
-			case elseReply:	r = reply(   r ); break;
-		}
+				case elseThink: r = think(   r ); break;
+				case elseDo:	r = perform( r ); break;
+				case elseRun:	r = run(     r ); break;
+				case elseReply:	r = reply(   r ); break;
+			}
 
-		return (Reply) audit.out( r );
+		if (Audit.allAreOn())
+			audit.out( r );
+		return r;
 	}
 	public String toString() {
-		String type = Intention.typeToString( type() );
-		if (type.equals(      REPLY )) return         "reply \""+   value +"\"";
-		if (type.equals( ELSE_REPLY )) return "if not, reply \""+   value +"\"";
-		if (type.equals(      DO    )) return         "perform \""+ value +"\"";
-		if (type.equals( ELSE_DO    )) return "if not, perform \""+ value +"\"";
-		if (type.equals(      RUN   )) return         "run \""+     value +"\"";
-		if (type.equals( ELSE_RUN   )) return "if not, run \""+     value +"\"";
-		if (type.equals(      THINK )) return                       value;
-		if (type.equals( ELSE_THINK )) return "if not, "+           value;
-		if (type.equals(    FINALLY )) return "finally, "+          value;
-		return Attribute.asString( type, value() );
+		switch (type) {
+			case thenReply  : return         "reply \""+   value +"\"";
+			case elseReply  : return "if not, reply \""+   value +"\"";
+			case thenDo     : return         "perform \""+ value +"\"";
+			case elseDo     : return "if not, perform \""+ value +"\"";
+			case thenRun    : return         "run \""+     value +"\"";
+			case elseRun    : return "if not, run \""+     value +"\"";
+			case thenThink  : return                       value;
+			case elseThink  : return "if not, "+           value;
+			case thenFinally: return "finally, "+          value;
+			default : return Attribute.asString( typeToString( type ), value() );
+	}	}
+	/*
+	 * Test code...
+	 */
+	public String autopoiesis() {
+		switch (type) {
+			case create : create();  break;
+			case append : append();  break;
+			case prepend: prepend(); break;
+		}
+		return "ok";
 	}
-	// ---
 	public static Reply test(Reply r, ArrayList<Intention> intents) {
 		Iterator<Intention> ins = intents.iterator();
 		while (!r.isDone() && ins.hasNext()) {
@@ -303,31 +297,21 @@ public class Intention {
 		Audit.log( Repertoire.signs.toString() );
 		Audit.log( r.toString());
 		
-		audit.title( "manual sign creation... add each intention individually" );
-		String str;
-		str = new Intention( create,    "b variable pattern z", create ).autopoiesis();
-		str = new Intention( thenThink, "one two three four"  , append ).autopoiesis();
-		str = new Intention( elseReply, "two three four"      , append ).autopoiesis();
-		str = new Intention( thenReply, "three four"          , append ).autopoiesis();
-		Audit.log( Repertoire.signs.toString() );
-		Audit.log( str);
-		
-		
 		audit.title( "sign self-build II... add pairs of attributes" );
 		// now built like this...
 		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();
-		s = new Sign()
+		latest = new Sign()
 				.pattern( new Pattern( "c variable pattern z" ))
 				.concept( concept() );
 		String reply = "three four";
-		s.append( new Intention( thenReply, reply ));
+		latest.append( new Intention( thenReply, reply ));
 		// ...This implies COND
-		s.insert( 0, new Intention( thenThink, "one two three four" ));
+		latest.insert( 0, new Intention( thenThink, "one two three four" ));
 		// ...if not reply EXECP REPLY
-		s.insert( 1, new Intention( elseReply, "two three four" ));
+		latest.insert( 1, new Intention( elseReply, "two three four" ));
 		
-		Repertoire.signs.insert( s );
+		Repertoire.signs.insert( latest );
 		r.answer( Response.yes().toString() );
 
 		

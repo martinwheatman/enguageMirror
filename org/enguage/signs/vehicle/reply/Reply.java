@@ -2,7 +2,7 @@ package org.enguage.signs.vehicle.reply;
 
 import java.util.Locale;
 
-import org.enguage.signs.intention.Redo;
+import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.when.Moment;
 import org.enguage.signs.vehicle.when.When;
@@ -85,14 +85,17 @@ public class Reply { // a reply is basically a formatted answer
 	
 	private Strings cache = null;
 	
+	/*
+	 * Response
+	 */
 	private Response response = new Response();
-	public  int      response() {return response.response();} 
-	public  Reply    response( int i ) {response.response( i ); return this;}
-	public  Reply    response( Strings strs ) {response.response( strs ); return this;}
+	public  int      response() {return response.value();} 
+	public  Reply    response( int i ) {response.value( i ); return this;}
+	public  Reply    response( Strings strs ) {response.value( strs ); return this;}
 
-	public  boolean  felicitous() {return response() >= Response.OK;}
+	public  boolean  felicitous() {return response.value() >= Response.OK;}
 
-	/** Answer:
+	/* Answer:
 	 * Multiple answers should now be implemented in a Replies class!
 	 *                                     or in List class, below.
 	 * e.g. You need tea and biscuits and you are meeting your brother at 7pm.
@@ -106,7 +109,7 @@ public class Reply { // a reply is basically a formatted answer
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			response( (response() == Response.UDU) ? Response.UDU : a.type());
+			response.value( (response.value() == Response.UDU) ? Response.UDU : a.type());
 		}
 		return this;
 	}
@@ -118,15 +121,15 @@ public class Reply { // a reply is basically a formatted answer
 				       method.equals( "getAttrVal" )) ?
 						Response.dnkStr()
 						: rc.equals( Shell.FAIL ) ?
-								Response.failureStr()
-							:	rc.equals( Shell.SUCCESS ) ?
-									Response.successStr()
-									: rc );
+							Response.failureStr()
+							: rc.equals( Shell.SUCCESS ) ?
+								Response.successStr()
+								: rc );
 		return this;
 	}
 	
-	/** Format
-	 * 
+	/* 
+	 * Format
 	 */
 	private Format f = new Format();
 	
@@ -174,7 +177,7 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public Strings toStrings() {
 		Strings reply = encache();
-		if (understoodIs( Response.DNU != response() )) {
+		if (understoodIs( Response.DNU != response.value() )) {
 			if (!repeated())
 				previous( reply ); // never used
 			;
@@ -184,13 +187,13 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public String toString() {return encache().toString();}
 	
-	public void conclude( Strings thought ) {
+	public Reply conclude( String thought ) {
 		strangeThought("");
 
-		if ( Response.DNU == response()) {
+		if ( Response.DNU == response.value()) {
 			// put this into reply via Reply.strangeThought()
-			audit.ERROR( "Strange thought: I don't understand: '"+ thought.toString() +"'" );
-			strangeThought( thought.toString() );
+			audit.ERROR( "Strange thought: I don't understand: '"+ thought +"'" );
+			strangeThought( thought );
 
 			// remove strange thought from Reply - just say DNU
 			if (Redo.disambFound()) {
@@ -200,12 +203,12 @@ public class Reply { // a reply is basically a formatted answer
 
 			// Construct the DNU format
 			format( new Strings( Response.dnu() + ", ..." ));
-			answer( thought.toString());
+			answer( thought );
 			
-			response( Response.FAIL );
+			response.value( Response.FAIL );
 		
-		}// else if ( Response.NO == Response.response() && a.toString().equalsIgnoreCase( Response.ikStr()))
-		//	answer( Response.yesStr());
+		}
+		return this;
 	}
 	public static void main( String args[] ) {
 		Audit.allOn();

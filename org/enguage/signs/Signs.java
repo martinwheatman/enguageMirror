@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import org.enguage.repertoire.Concepts;
 import org.enguage.repertoire.Repertoire;
-import org.enguage.signs.intention.Intention;
+import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.pattern.Patte;
 import org.enguage.signs.vehicle.pronoun.Pronoun;
@@ -254,10 +254,11 @@ public class Signs extends TreeMap<Integer,Sign> {
 					if (!Repertoire.transformation())
 						match.toVariables();
 					
-					
-					r = new Reply();
-					r.response( Response.OK ); // if we've matched we must have understood/recognised
-					r.answer( "ok" );
+					// if we've matched we must have understood/recognised
+					r = new Reply()
+							.answer( "ok" )
+							.response( Response.OK );
+							
 					
 					// TODO: No need for context, now? read from (cached) variables?
 					Context.push( match );
@@ -296,10 +297,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 		} // while more signs and not done
 		return r.answer( answer ); //(Reply) audit.out( r.answer( answer )); // 
 	}	
-	// help...
-
+	
 	public static void main( String[] args ) {
-		// help test...
 		audit.tracing = true;
 		Signs r = new Signs( "test" );
 		r.insert(
@@ -311,14 +310,10 @@ public class Signs extends TreeMap<Integer,Sign> {
 				new Sign().pattern( new Patte(  "describe ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "describe X" ))
-					.help( "where x is a repertoire" )
 			);
 		r.insert(
 			new Sign().pattern( new Patte(  "list repertoires ", "" ))
 				.concept( "test" )
 				.append( new Intention( Intention.allop, "list repertoires" ))
-				.help( "" )
 		);
-//		Audit.log( r.helpedToString( "test" ));
-//		Audit.log( r.helpedToHtml(   "test" ));
 }	}

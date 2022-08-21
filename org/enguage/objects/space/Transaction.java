@@ -1,6 +1,6 @@
 package org.enguage.objects.space;
 
-import org.enguage.signs.intention.Redo;
+import org.enguage.signs.interpretant.Redo;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;

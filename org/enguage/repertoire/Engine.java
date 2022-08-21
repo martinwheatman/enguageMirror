@@ -7,8 +7,8 @@ import org.enguage.objects.Variable;
 import org.enguage.objects.list.Item;
 import org.enguage.objects.space.Overlay;
 import org.enguage.signs.Sign;
-import org.enguage.signs.intention.Intention;
-import org.enguage.signs.intention.Redo;
+import org.enguage.signs.interpretant.Intention;
+import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.vehicle.Question;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.config.Englishisms;
@@ -168,12 +168,12 @@ public class Engine {
 
 		if ( cmd.equals( "imagined" )) {
 			
-			Enguage.imagined = true;
+			Enguage.imagined( true );
 			r.format( new Strings( "ok, this is all imagined" ));
 			
 		} else if ( cmd.equals( "selfTest" )) {
 			
-			new Example().test();
+			Example.test();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
 			
 		} else if ( cmd.equals( "primeAnswer" )) {
