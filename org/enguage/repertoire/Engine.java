@@ -9,7 +9,6 @@ import org.enguage.objects.space.Overlay;
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
-import org.enguage.signs.vehicle.Question;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.config.Englishisms;
 import org.enguage.signs.vehicle.pattern.Patte;
@@ -42,23 +41,6 @@ public class Engine {
 				.appendIntention( Intention.allop, "imagined" )
 				.concept( NAME ),
 
-   			new Sign()
-				.pattern( new Patte( "remove the primed answer ", "" ))
-	          		.appendIntention( Intention.allop, "removePrimedAnswer" )
-	          		.concept( NAME ),
-		          	
-	    	new Sign()
-				.pattern( new Patte( "the answer is ", "answer" ).phrasedIs())
-		          	.appendIntention( Intention.allop, "primeAnswer ANSWER" )
-					.appendIntention( Intention.thenReply, "ok, the next answer will be ANSWER" )
-	          		.concept( NAME ),
-				          	
-			new Sign()
-				.pattern( new Patte( "answering", "answers" ).phrasedIs())
-				.pattern( new Patte( "ask", "question" ).phrasedIs())
-		          	.appendIntention( Intention.allop, "ask answering ANSWERS , QUESTION" )
-	          		.concept( NAME ),
-		          	
 			new Sign().pattern( new Patte( "ok" ))
 					.appendIntention( Intention.allop, "ok" )
 					.concept( NAME ),
@@ -91,7 +73,6 @@ public class Engine {
 			new Sign().concept( NAME )
 					.pattern( new Patte( "unload ", "NAME" ))
 					.appendIntention( Intention.allop, "unload NAME" ),
-	//		new Sign().concept( NAME ).content( new Patternette( "reload ", "NAME" )).attribute( NAME, "reload NAME" ),
 	        new Sign()
 				.concept( NAME )
 				.appendIntention( Intention.allop, "saveAs NAME" )
@@ -175,33 +156,6 @@ public class Engine {
 			
 			Example.test();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
-			
-		} else if ( cmd.equals( "primeAnswer" )) {
-			
-			Question.primedAnswer( cmds.toString() );
-			r.answer( cmds.toString() );
-			
-		} else if ( cmd.equals( "removePrimedAnswer" )) {
-			
-			Question.primedAnswer( null ); // tidy up any primed answer...
-			
-			
-		} else if ( cmd.equals( "ask" )) {
-			
-			String question = cmds.toString();
-			audit.debug( "Question is: "+ question );
-			// question => concept
-			
-			Strings answers = Question.extractPotentialAnswers( cmds );
-			audit.debug( "potential ANSWERs are ["+ answers.toString( Strings.DQCSV ) +"]");
-
-			// question => answer
-			String answer = new Question( question ).ask();
-			Question.primedAnswer( null ); // tidy up any primed answer...
-			
-			r.format( new Strings( answer ));
-			if (!answers.contains( answer ))
-				r.response( Response.DNU );
 			
 		} else if ( cmd.equals( "groupby" )) {
 			

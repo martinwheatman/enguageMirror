@@ -1,0 +1,15 @@
+On "the ENAME is PHRASE-EVAL":
+	run "value the/ENAME EVAL";
+	reply "ok, the ENAME is EVAL".
+	
+On "the ENT ATTR is PHRASE-EVAL":
+	run "value the/ENT/ATTR EVAL";
+	reply "ok, the ENT ATTR is EVAL".
+	
+On "what is the ENAME":
+	run "value the/ENAME";
+	reply "ok, the ENAME is ...".
+	
+On "what is the ENT ATTR":
+	run "value the/ENT/ATTR";
+	reply "ok, the ENT ATTR is ...".

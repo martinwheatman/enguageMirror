@@ -1015,19 +1015,13 @@ public class Example {
 			test( "hello", "i don't understand" );
 		}
 		if (runTheseTests( "Ask: Confirmation" )) {
-//
 			test( "the colour of the sky is blue", "ok, the colour of the sky is blue" );
 			test( "what is the colour of the sky", "blue , the colour of the sky is blue" );
 			
 			test( "to the phrase ask me phrase variable question reply variable question", "ok" );
 
-			test( "the answer is blue", "ok, the next answer will be blue" );
 			test( "ask me what is the colour of the sky", "what is the colour of the sky" );
-			test( "blue", "i don't understand, blue" );
-//
-//			//interpret( "prime the answer i do not understand", "ok, the next answer will be i don't understand" );
-//			//interpret( "i have everything", "Ok , let us leave things as they are" );
-//
+
 //			/* TODO:
 //			 * To the phrase: i am p v name       => set user name NAME
 //			 *                my name is p v name => set user name NAME
@@ -1080,6 +1074,16 @@ public class Example {
 			test( "what is my engine capacity", "ok martin's engine is 1598 cc" );
 
 			test( "i drove to work today", "ok today you drove to work" );
+			
+			test( "the agency is morson", "ok, the agency is morson" );
+			test( "the vat rate is 20 percent", "ok, the vat rate is 20 percent" );
+			test( "what is the vat rate", "ok, the vat rate is 20 percent" );
+			test( "the date is today", "ok, the date is today" );
+			test( "the hours worked are 37", "ok, the hours worked are 37" );
+			test( "what are the hours worked", "ok, the hours worked are 37" );
+			test( "the net value is the hours worked times the hourly rate",
+					"ok, the net value is the hours worked times the hourly rate" );
+			
 		}
 		
 		Audit.log( testGrp +" test group(s) found" );
