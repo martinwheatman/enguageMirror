@@ -1,9 +1,9 @@
-package org.enguage.objects;
+package org.enguage.signs.objects;
 
 import java.util.ListIterator;
 
-import org.enguage.objects.space.Overlay;
-import org.enguage.objects.space.Value;
+import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.space.Value;
 import org.enguage.signs.vehicle.number.Number;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;

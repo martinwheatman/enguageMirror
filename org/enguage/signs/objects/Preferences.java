@@ -1,4 +1,4 @@
-package org.enguage.objects;
+package org.enguage.signs.objects;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;

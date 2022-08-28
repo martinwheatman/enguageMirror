@@ -1,15 +1,15 @@
-package org.enguage.objects.space;
+package org.enguage.signs.objects.space;
 
-import org.enguage.objects.Expand;
-import org.enguage.objects.Numeric;
-import org.enguage.objects.Temporal;
-import org.enguage.objects.Variable;
-import org.enguage.objects.expr.Function;
-import org.enguage.objects.list.Item;
-import org.enguage.objects.list.Items;
-import org.enguage.objects.list.Transitive;
 import org.enguage.repertoire.Similarity;
 import org.enguage.signs.Sign;
+import org.enguage.signs.objects.Expand;
+import org.enguage.signs.objects.Numeric;
+import org.enguage.signs.objects.Temporal;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.expr.Function;
+import org.enguage.signs.objects.list.Item;
+import org.enguage.signs.objects.list.Items;
+import org.enguage.signs.objects.list.Transitive;
 import org.enguage.signs.vehicle.config.Colloquial;
 import org.enguage.signs.vehicle.config.Plural;
 import org.enguage.signs.vehicle.where.Where;

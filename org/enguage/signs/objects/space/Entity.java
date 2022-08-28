@@ -1,7 +1,7 @@
-package org.enguage.objects.space;
+package org.enguage.signs.objects.space;
 
-import org.enguage.objects.space.Entity;
-import org.enguage.objects.space.EntityShell;
+import org.enguage.signs.objects.space.Entity;
+import org.enguage.signs.objects.space.EntityShell;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;

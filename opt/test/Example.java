@@ -1,7 +1,7 @@
 package opt.test;
 
 import org.enguage.Enguage;
-import org.enguage.objects.space.Overlay;
+import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.vehicle.pronoun.Pronoun;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -1060,6 +1060,11 @@ public class Example {
 
 			// We can now conclude...
 			test( "what should we do", "we should wear a mask" );
+		}
+		if (runTheseTests( "these" )) {
+			//test( "you can say choose a number from phrase variable these", "ok" );
+			//test( "to this you reply the first of these", "ok" );
+			test( "choose a number from one and two and three", "the first of these is one. ok the rest are two and three" );
 		}
 		if (runTheseTests( "yagadi scripts" )) {
 			test( "to the phrase my engine is variable capacity cc think martin's engine is variable capacity cc", "ok" );

@@ -1,11 +1,11 @@
 package org.enguage.signs.vehicle;
 
-import org.enguage.objects.Numeric;
-import org.enguage.objects.Temporal;
-import org.enguage.objects.Variable;
-import org.enguage.objects.space.Overlay;
-import org.enguage.objects.space.Sofa;
 import org.enguage.signs.Sign;
+import org.enguage.signs.objects.Numeric;
+import org.enguage.signs.objects.Temporal;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.space.Sofa;
 import org.enguage.signs.vehicle.config.Colloquial;
 import org.enguage.signs.vehicle.config.Englishisms;
 import org.enguage.signs.vehicle.pattern.Patte;

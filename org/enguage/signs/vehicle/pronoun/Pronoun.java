@@ -115,7 +115,8 @@ public class Pronoun {
 	static private int nameOs( String name ) {
 		// TODO: equals and check pluraled
 		return name.startsWith( subject ) ? SUBJECTIVE  :
-		       name.startsWith(  object ) ? OBJECTIVE   :
+		       name.equals(     object  ) ||
+		       name.equals(     objects ) ? OBJECTIVE   :
 		   	   name.equals(  possession ) ? POSSESSIVE  : -1; 
 	}
 	
@@ -124,7 +125,7 @@ public class Pronoun {
 	static private String subject = "subject";
 	static public  void   subjective( String nm ) { subject = nm; }
 	
-	static private String object = "object";
+	static private String object = "this";
 	static public  void   objective( String nm ) { object = nm; }
 	
 	// These are the names of the parameters to use with plural
@@ -132,7 +133,7 @@ public class Pronoun {
 	static private String subjects = "subjects";
 	static public  void   subjectives( String nm ) { subjects = nm; }
 	static public  String subjectives() { return subjects; }
-	static private String objects = "objects";
+	static private String objects = "these";
 	static public  void   objectives( String nm ) { objects = nm; }
 	static public  String objectives() { return objects; }
 	

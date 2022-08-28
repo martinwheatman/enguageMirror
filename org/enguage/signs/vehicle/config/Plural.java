@@ -169,6 +169,7 @@ public class Plural {
 		Plural.addRule( "ss", "sses" );
 		Plural.addException( "colloquial", "colloquia" ); // the plural of X is Y
 		Plural.addException( "james",      "jameses" );   // the plural of X is Y
+		Plural.addException( "this",       "these" );
 
 		System.out.println( " ==== Plural tests:" );
 		ptest( "colloquial" );
@@ -177,6 +178,7 @@ public class Plural {
 		ptest( "princess" );
 		ptest( "prince" );
 		ptest( "james" );
+		ptest( "these" );
 		
 		System.out.println( " ==== Singular tests:" );
 		stest( "colloquia" );
@@ -185,6 +187,7 @@ public class Plural {
 		stest( "princesses" );
 		stest( "princes" );
 		stest( "james" );
+		stest( "this" );
 		
 		Strings s = new Strings("4 , you need 4 cup of black coffee" );
 		s = ise( s );

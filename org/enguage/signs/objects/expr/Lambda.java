@@ -1,11 +1,11 @@
-package org.enguage.objects.expr;
+package org.enguage.signs.objects.expr;
 
 import java.util.ListIterator;
 
 import org.enguage.Enguage;
-import org.enguage.objects.Variable;
-import org.enguage.objects.space.Overlay;
-import org.enguage.objects.space.Value;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.space.Value;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

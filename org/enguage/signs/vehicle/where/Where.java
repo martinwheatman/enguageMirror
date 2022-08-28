@@ -3,8 +3,8 @@ package org.enguage.signs.vehicle.where;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.objects.Variable;
-import org.enguage.objects.space.Overlay;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

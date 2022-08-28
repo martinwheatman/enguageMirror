@@ -1,4 +1,4 @@
-package org.enguage.objects.space;
+package org.enguage.signs.objects.space;
 
 import java.io.File;
 

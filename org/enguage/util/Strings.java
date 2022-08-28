@@ -7,19 +7,19 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TreeSet;
 
-import org.enguage.objects.Expand;
-import org.enguage.objects.Numeric;
-import org.enguage.objects.Temporal;
-import org.enguage.objects.Variable;
-import org.enguage.objects.expr.Function;
-import org.enguage.objects.list.Item;
-import org.enguage.objects.list.Items;
-import org.enguage.objects.list.Transitive;
-import org.enguage.objects.space.Entity;
-import org.enguage.objects.space.Link;
-import org.enguage.objects.space.Overlay;
-import org.enguage.objects.space.Value;
 import org.enguage.signs.Sign;
+import org.enguage.signs.objects.Expand;
+import org.enguage.signs.objects.Numeric;
+import org.enguage.signs.objects.Temporal;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.expr.Function;
+import org.enguage.signs.objects.list.Item;
+import org.enguage.signs.objects.list.Items;
+import org.enguage.signs.objects.list.Transitive;
+import org.enguage.signs.objects.space.Entity;
+import org.enguage.signs.objects.space.Link;
+import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.space.Value;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.config.Colloquial;
 import org.enguage.signs.vehicle.config.Englishisms;
@@ -738,6 +738,25 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				return false;
 		}
 		return true;
+	}
+	public Strings before( String word ) {
+		Strings before = new Strings();
+		for (String s : this)
+			if (s.equals( word ))
+				break;
+			else
+				before.add( s );
+		return before;
+	}
+	public Strings after( String word ) {
+		Strings after = new Strings();
+		boolean found = false;
+		for (String s : this)
+			if (found)
+				after.add( s );
+			else if (s.equals( word ))
+				found = true;
+		return after;
 	}
 	public Strings trimAll( char ch ) {
 		int i=0;

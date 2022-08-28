@@ -2,8 +2,8 @@ package org.enguage.signs.vehicle.number;
 
 import java.util.ListIterator;
 
-import org.enguage.objects.expr.Function;
-import org.enguage.objects.space.Overlay;
+import org.enguage.signs.objects.expr.Function;
+import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.vehicle.config.Englishisms;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;

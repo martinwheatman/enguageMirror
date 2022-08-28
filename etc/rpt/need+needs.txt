@@ -8,27 +8,27 @@ When host says "_user does not need" host means "you do not need".
 
 ###############################################################################
 # Multiple singular additions
-On "SUBJECT needs AND-LIST-OBJECTS": #a cup of coffee and some biscuits
-	perform "expand SUBJECT needs { OBJECTS }";
+On "SUBJECT needs AND-LIST-THESE": #a cup of coffee and some biscuits
+	perform "expand SUBJECT needs { THESE }";
 	if not, reply "i do not understand";
-	reply "ok, SUBJECT needs OBJECTS".
+	reply "ok, SUBJECT needs THESE".
 
 ###############################################################################
 # GROUP additions - singular group
 # martin and ruth need a coffee and a tea
-On "AND-LIST-SUBJECTS need PHRASE-OBJECTS":
-	GROUPED-SUBJECTS needs OBJECTS;
-	reply "ok, SUBJECTS need OBJECTS".
+On "AND-LIST-SUBJECTS need PHRASE-THESE":
+	GROUPED-SUBJECTS needs THESE;
+	reply "ok, SUBJECTS need THESE".
 
 On "what do AND-LIST-SUBJECTS need":
 	get GROUPED-SUBJECTS needs list;
 	if not, reply "SUBJECTS do not need anything";
 	reply "SUBJECTS need ...".
 
-On "AND-LIST-SUBJECTS do not need PHRASE-OBJECTS":
-	OBJECTS exists in GROUPED-SUBJECTS needs list;
+On "AND-LIST-SUBJECTS do not need PHRASE-THESE":
+	THESE exists in GROUPED-SUBJECTS needs list;
 	if not, reply "yes, i know";
-	remove OBJECTS from GROUPED-SUBJECTS needs list;
+	remove THESE from GROUPED-SUBJECTS needs list;
 	reply "ok, SUBJECTS do not need ...".
 
 On "AND-LIST-SUBJECTS do not need anything":
@@ -38,65 +38,65 @@ On "AND-LIST-SUBJECTS do not need anything":
 ###############################################################################
 # Combinations - multiple single subjects, phrased objects
 # martin and james and ruth all need a coffee and a tea.
-On "AND-LIST-SUBJECTS all need PHRASE-OBJECTS":
-	perform "expand { SUBJECTS } needs OBJECTS";
+On "AND-LIST-SUBJECTS all need PHRASE-THESE":
+	perform "expand { SUBJECTS } needs THESE";
 	if not, reply "i do not understand";
-	reply "ok, SUBJECTS all need OBJECTS".
+	reply "ok, SUBJECTS all need THESE".
 
 # martin and ruth both need a coffee and a tea.
-On "AND-LIST-SUBJECTS both need PHRASE-OBJECTS":
-	SUBJECTS all need OBJECTS;
-	reply "ok, SUBJECTS both need OBJECTS".
+On "AND-LIST-SUBJECTS both need PHRASE-THESE":
+	SUBJECTS all need THESE;
+	reply "ok, SUBJECTS both need THESE".
 
 ###############################################################################
 # Various singular additions
-On "SUBJECT needs PHRASE-OBJECTS":
-	OBJECTS exists in SUBJECT needs list;
+On "SUBJECT needs PHRASE-THESE":
+	THESE exists in SUBJECT needs list;
 	reply "yes, i know";
-	if not, add OBJECTS to SUBJECT needs list;
-	if not, append OBJECTS onto SUBJECT needs list;
+	if not, add THESE to SUBJECT needs list;
+	if not, append THESE onto SUBJECT needs list;
 	reply "ok, SUBJECT needs ...".
 
-On "SUBJECT needs NUMERIC-QUANTITY PHRASE-OBJECT":
-	QUANTITY OBJECT exists in SUBJECT needs list;
+On "SUBJECT needs NUMERIC-QUANTITY PHRASE-THIS":
+	QUANTITY THIS exists in SUBJECT needs list;
 	reply "yes, i know";
-	if not, add QUANTITY OBJECT to SUBJECT needs list;
+	if not, add QUANTITY THIS to SUBJECT needs list;
 	reply "ok, SUBJECT needs ... ".
 
-On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
-	QUANTITY UNIT of OBJECT exists in SUBJECT needs list;
+On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-THIS":
+	QUANTITY UNIT of THIS exists in SUBJECT needs list;
 	reply "yes, i know";
-	if not, add QUANTITY UNIT of OBJECT to SUBJECT needs list;
+	if not, add QUANTITY UNIT of THIS to SUBJECT needs list;
 	reply "ok, SUBJECT needs ...".
 
 ## Elaboration of subsequent utterances
 On "and NUMERIC-QUANTITY":
-	SUBJECT needs QUANTITY OBJECT;
+	SUBJECT needs QUANTITY THIS;
 	reply "ok, SUBJECT needs ...".
 
-On "and NUMERIC-QUANTITY OBJECT":
-	SUBJECT needs QUANTITY OBJECT;
+On "and NUMERIC-QUANTITY THIS":
+	SUBJECT needs QUANTITY THIS;
 	reply "ok, SUBJECT needs ...".
 
-On "and NUMERIC-QUANTITY UNITS of PHRASE-OBJECT":
-	SUBJECT needs QUANTITY UNITS of OBJECT;
+On "and NUMERIC-QUANTITY UNITS of PHRASE-THIS":
+	SUBJECT needs QUANTITY UNITS of THIS;
 	reply "ok, SUBJECT needs ...".
 
 ###### Pronoun ancillaries - it is/they are from X #######
-On "the PHRASE-OBJECT is": #  LOCATOR LOCATION are implied anyway!
-	perform "items update SUBJECT needs OBJECT";
-	reply "ok, OBJECT is LOCATOR LOCATION".
+On "the PHRASE-THIS is": #  LOCATOR LOCATION are implied anyway!
+	perform "items update SUBJECT needs THIS";
+	reply "ok, THIS is LOCATOR LOCATION".
 
 On "it is":
-	the OBJECT is;
+	the THIS is;
 	reply "ok, it is LOCATOR LOCATION".
 
-On "the PHRASE-OBJECTS are":
-	perform "expand the {OBJECTS} is";
-	reply "ok, OBJECTS are LOCATOR LOCATION".
+On "the PHRASE-THESE are":
+	perform "expand the {THESE} is";
+	reply "ok, THESE are LOCATOR LOCATION".
 	
 On "they are":
-	the OBJECTS are;
+	the THESE are;
 	reply "ok, they are LOCATOR LOCATION".
 	
 ### does not need... removals
@@ -106,33 +106,33 @@ On "SUBJECT does not need anything":
 	remove everything from SUBJECT needs list;
 	reply "ok, SUBJECT does not need anything [LOCATOR LOCATION]".
 
-On "SUBJECT does not need PHRASE-OBJECTS":
-	OBJECTS exists in SUBJECT needs list;
+On "SUBJECT does not need PHRASE-THESE":
+	THESE exists in SUBJECT needs list;
 	if not, reply "yes, i know";
-	remove OBJECTS from SUBJECT needs list;
-	if not, reply "ok, SUBJECT does not need OBJECTS";
+	remove THESE from SUBJECT needs list;
+	if not, reply "ok, SUBJECT does not need THESE";
 	reply "ok, SUBJECT does not need ...".
 
-On "SUBJECT does not need NUMERIC-QUANTITY PHRASE-OBJECT":
-	OBJECT exists in SUBJECT needs list;
+On "SUBJECT does not need NUMERIC-QUANTITY PHRASE-THIS":
+	THIS exists in SUBJECT needs list;
 	if not, reply "yes, i know";
-	remove QUANTITY OBJECT from SUBJECT needs list;
-	if not, reply "i'm sorry, SUBJECT does not need QUANTITY OBJECT";
+	remove QUANTITY THIS from SUBJECT needs list;
+	if not, reply "i'm sorry, SUBJECT does not need QUANTITY THIS";
 	reply "ok, SUBJECT does not need ...".
 
-On "SUBJECT does not need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
-	OBJECT exists in SUBJECT needs list;
+On "SUBJECT does not need NUMERIC-QUANTITY UNIT of PHRASE-THIS":
+	THIS exists in SUBJECT needs list;
 	if not, reply "yes, i know";
-	remove QUANTITY UNIT of OBJECT from SUBJECT needs list;
-	if not, reply "i'm sorry, SUBJECT does not need QUANTITY UNIT of OBJECT";
+	remove QUANTITY UNIT of THIS from SUBJECT needs list;
+	if not, reply "i'm sorry, SUBJECT does not need QUANTITY UNIT of THIS";
 	reply "ok, SUBJECT does not need ...".
 
-On "SUBJECT does not need any PHRASE-OBJECT":
-	OBJECT exists in SUBJECT needs list;
+On "SUBJECT does not need any PHRASE-THIS":
+	THIS exists in SUBJECT needs list;
 	if not, reply "yes, i know";
-	remove any OBJECT from SUBJECT needs list;
-	if not, reply "i'm sorry, SUBJECT does not need any OBJECT";
-	reply "ok, SUBJECT does not need any OBJECT".
+	remove any THIS from SUBJECT needs list;
+	if not, reply "i'm sorry, SUBJECT does not need any THIS";
+	reply "ok, SUBJECT does not need any THIS".
 
 ### does X need .../how many
 On "what does SUBJECT need":
@@ -140,61 +140,61 @@ On "what does SUBJECT need":
 	if not, reply "SUBJECT does not need anything";
 	reply "SUBJECT needs ...".
 
-On "does SUBJECT need PHRASE-OBJECT":
-	perform "items exists SUBJECT needs OBJECT";
-	if not, reply "no, SUBJECT does not need OBJECT";
-	reply "yes, SUBJECT needs OBJECT".
+On "does SUBJECT need PHRASE-THIS":
+	perform "items exists SUBJECT needs THIS";
+	if not, reply "no, SUBJECT does not need THIS";
+	reply "yes, SUBJECT needs THIS".
 
-On "does SUBJECT need NUMERIC-QUANTITY PHRASE-OBJECT":
-	perform "items exists SUBJECT needs OBJECT QUANTITY";
-	if not, reply "no, SUBJECT does not need QUANTITY OBJECT";
-	reply "yes, SUBJECT needs QUANTITY OBJECT".
+On "does SUBJECT need NUMERIC-QUANTITY PHRASE-THIS":
+	perform "items exists SUBJECT needs THIS QUANTITY";
+	if not, reply "no, SUBJECT does not need QUANTITY THIS";
+	reply "yes, SUBJECT needs QUANTITY THIS".
 
-On "does SUBJECT need NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
-	perform "items exists SUBJECT needs OBJECT QUANTITY UNIT";
-	if not, reply "no, SUBJECT does not need QUANTITY UNIT of OBJECT";
-	reply "yes, SUBJECT needs QUANTITY UNIT of OBJECT".
+On "does SUBJECT need NUMERIC-QUANTITY UNIT of PHRASE-THIS":
+	perform "items exists SUBJECT needs THIS QUANTITY UNIT";
+	if not, reply "no, SUBJECT does not need QUANTITY UNIT of THIS";
+	reply "yes, SUBJECT needs QUANTITY UNIT of THIS".
 
-On "how many UNIT of PHRASE-OBJECT does SUBJECT need":
-	perform "items exists SUBJECT needs OBJECT";
-	if not, reply "SUBJECT does not need OBJECT";
-	how many UNIT of OBJECT in SUBJECT needs list;
-	reply "..., SUBJECT needs ... UNIT of OBJECT".
+On "how many UNIT of PHRASE-THIS does SUBJECT need":
+	perform "items exists SUBJECT needs THIS";
+	if not, reply "SUBJECT does not need THIS";
+	how many UNIT of THIS in SUBJECT needs list;
+	reply "..., SUBJECT needs ... UNIT of THIS".
 
-On "how many PHRASE-OBJECT does SUBJECT need":
-	perform "items exists SUBJECT needs OBJECT";
-	if not, reply "SUBJECT does not need OBJECT";
-	how many OBJECT in SUBJECT needs list;
-	reply "..., SUBJECT needs ... OBJECT".
+On "how many PHRASE-THIS does SUBJECT need":
+	perform "items exists SUBJECT needs THIS";
+	if not, reply "SUBJECT does not need THIS";
+	how many THIS in SUBJECT needs list;
+	reply "..., SUBJECT needs ... THIS".
 
 ######################################
 # First person utterances
 ######################################
-On "_user    needs       NUMERIC-QUANTITY", _user needs QUANTITY OBJECT.
+On "_user    needs       NUMERIC-QUANTITY", _user needs QUANTITY THIS.
 
-On "i        need        PHRASE-OBJECTS", _user needs OBJECTS.
+On "i        need        PHRASE-THESE", _user needs THESE.
 #On "help", reply "to add items to the list".
 
 On "i        need        help", help.
 
-On "i        need to      PHRASE-OBJECT", _user needs to OBJECT.
-On "i        need to get  PHRASE-OBJECT", _user needs OBJECT.
-On "i do not need to get  PHRASE-OBJECT", _user does not need OBJECT.
+On "i        need to      PHRASE-THIS", _user needs to THIS.
+On "i        need to get  PHRASE-THIS", _user needs THIS.
+On "i do not need to get  PHRASE-THIS", _user does not need THIS.
 
-On "i do not need         PHRASE-OBJECT", _user does not need OBJECT.
-On "i do not need any     PHRASE-OBJECT", _user does not need any OBJECT.
+On "i do not need         PHRASE-THIS", _user does not need THIS.
+On "i do not need any     PHRASE-THIS", _user does not need any THIS.
 On "i do not need anything",              _user does not need anything.
 #On "help", reply "to clear the list".
 
 On "what  do   i   need", what does _user need.
 #On "help", reply "to find out what is on the list".
 
-On "do i need PHRASE-OBJECT", does _user need OBJECT.
-On "how many PHRASE-OBJECT do i need", how many OBJECT does _user need.
+On "do i need PHRASE-THIS", does _user need THIS.
+On "how many PHRASE-THIS do i need", how many THIS does _user need.
 #On "help", reply "to find out if something specific is on the list".
 
-On "we need PHRASE-OBJECT", i need OBJECT. # a fix for now
+On "we need PHRASE-THIS", i need THIS. # a fix for now
 On "what do we need", what do i need.
-On "do we need PHRASE-OBJECTS", do i need OBJECTS.
-On "we do not need PHRASE-OBJECTS", do i need OBJECTS.
+On "do we need PHRASE-THESE", do i need THESE.
+On "we do not need PHRASE-THESE", do i need THESE.
 On "we do not need anything", i do not need anything.

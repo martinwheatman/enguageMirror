@@ -1,4 +1,4 @@
-package org.enguage.objects.list;
+package org.enguage.signs.objects.list;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -20,12 +20,12 @@ public class Item {
 	public static final String NAME = "item";
 	public static final int      id = 171847; //Strings.hash( NAME );
 	
-	/* The format has a default value "QUANTITY,UNIT of,OBJECT,LOCATOR LOCATION"
+	/* The format has a default value "QUANTITY,UNIT of,THIS,LOCATOR LOCATION"
 	 * The reasoning is from a Radio4 piece a year or two back, that there is a
 	 * 'natural' order to qualifiers (adjectives?):-
 	 *    Why we say, "a big yellow taxi", and not, "a yellow big taxi" :-)
 	 */
-	private static String defFormat = "QUANTITY,UNIT of,OBJECT,LOCATOR LOCATION,WHEN";
+	private static String defFormat = "QUANTITY,UNIT of,THIS,LOCATOR LOCATION,WHEN";
 	public  static  void resetFormat() { format( defFormat ); }
 	
 	private static Strings   format = new Strings();

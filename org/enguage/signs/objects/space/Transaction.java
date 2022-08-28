@@ -1,4 +1,4 @@
-package org.enguage.objects.space;
+package org.enguage.signs.objects.space;
 
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.util.Audit;

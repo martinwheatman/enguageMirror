@@ -37,6 +37,10 @@ public class Pattern extends ArrayList<Patte> {
 	static public  final String  ungrpedPrefix = ungrouped.toUpperCase( locale ) + "-";
 	static public  final String  phrase        = "phrase";
 	static public  final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
+	static public  final String  first         = "first-of";
+	static public  final String  firstPrefix   = first.toUpperCase( locale ) + "-";
+	static public  final String  rest          = "rest-of";
+	static public  final String  restPrefix    = rest.toUpperCase( locale ) + "-";
 	static public  final String  numeric       = "numeric";
 	static public  final String  numericPrefix = numeric.toUpperCase( locale ) + "-";
 	static public  final String  expression    = "expression";
@@ -543,7 +547,7 @@ public class Pattern extends ArrayList<Patte> {
 					if (patti.hasNext()) next = patti.next();
 				}
 				
-			} else if (!utti.hasNext() && t.named()) { // "do i need" == "do i need OBJECT"
+			} else if (!utti.hasNext() && t.named()) { // "do i need" == "do i need THIS"
 				
 				notMatched = 20;
 				return null;
@@ -553,7 +557,9 @@ public class Pattern extends ArrayList<Patte> {
 				String val = getValue( t, patti, utti, spatial );
 				if (val == null) return null;
 				
-				matched( t.matchedAttr( val ));
+				Attribute a = t.matchedAttr( val );
+				audit.debug( "FOUND: "+ a );
+				matched( a );
 			}
 			
 			if (!matchBoilerplate( t.postfix(), utti, spatial )) {
@@ -795,28 +801,28 @@ public class Pattern extends ArrayList<Patte> {
 		
 		Where.doLocators("at/from/in");
 		Where.addConcept( "need+needs" );
-		Pattern p = new Pattern( "i need PHRASE-OBJECTS" );
+		Pattern p = new Pattern( "i need PHRASE-THESE" );
 		Audit.log( "pattern is: "+ p.toXml());
 		
 		Audit.allOn();
 		matchTest(
 				"i need",
-				"PHRASE-OBJECTS",
+				"PHRASE-THESE",
 				"need+needs",
 				"i need milk" );
 		matchTest(
 				"i need",
-				"PHRASE-OBJECTS",
+				"PHRASE-THESE",
 				"need+needs",
 				"i need milk from the dairy aisle" );
 		matchTest(
 				"i need",
-				"PHRASE-OBJECTS",
+				"PHRASE-THESE",
 				"need+needs",
 				"i from the dairy aisle need milk" );
 		matchTest(
 				"i need",
-				"PHRASE-OBJECTS",
+				"PHRASE-THESE",
 				"need+needs",
 				"from the dairy aisle i need milk" );
 		Audit.allOff();

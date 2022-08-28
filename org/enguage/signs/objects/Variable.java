@@ -1,4 +1,4 @@
-package org.enguage.objects;
+package org.enguage.signs.objects;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.objects.space.Overlay;
-import org.enguage.objects.space.Value;
+import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.space.Value;
 import org.enguage.signs.vehicle.pattern.Pattern;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -82,12 +82,28 @@ public class Variable {
 	static public void unset( String name ) { new Variable( name ).unset(); }
 	static public String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
 	static public String get( String name, String def ) {
-		boolean reflectValue = name.startsWith( Pattern.externPrefix );
-		if (reflectValue)
+		boolean reflect = name.startsWith( Pattern.externPrefix );
+		if (reflect)
 			name = name.substring( Pattern.externPrefix.length() );
-		String value = cache.get( name );   // raw name, so "compass" not set, but "COMPASS" is
-		if (reflectValue)
+		
+		boolean first = name.startsWith( Pattern.firstPrefix );
+		if (first)
+			name = name.substring( Pattern.firstPrefix.length() );
+		
+		boolean rest = name.startsWith( Pattern.restPrefix );
+		if (rest)
+			name = name.substring( Pattern.restPrefix.length() );
+		
+		String value = cache.get( name );
+		if (reflect)
 			value = Attributes.reflect( new Strings( value )).toString();
+		
+		if (first)
+			value = new Strings( value ).before( "and" ).toString();
+		
+		if (rest)
+			value = new Strings( value ).after( "and" ).toString();
+		
 		return value==null || value.equals("") ? def : value;
 	}
 	static public boolean isSet( String name, String value ) {

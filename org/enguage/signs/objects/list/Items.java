@@ -1,9 +1,9 @@
-package org.enguage.objects.list;
+package org.enguage.signs.objects.list;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.objects.space.Value;
+import org.enguage.signs.objects.space.Value;
 import org.enguage.signs.vehicle.number.Number;
 import org.enguage.signs.vehicle.reply.Reply;
 import org.enguage.signs.vehicle.where.Where;
@@ -361,13 +361,6 @@ public class Items extends ArrayList<Item> {
 			
 			for (Strings params : paramsList.divide( "and" )) {
 				
-//				// Expand param 0 if attr, e.g. if param="OBJECT='black coffee'"
-//				if (Attribute.isAttribute( params.get(0) )) {
-//					Attribute a = new Attribute( params.get( 0 ));
-//					if (!Strings.isUpperCaseWithHyphens( a.name() ))
-//						params.set( 0, a.value() );
-//				}
-				
 				Item item = new Item( params );
 				
 				if (cmd.equals( "exists" )) {
@@ -389,7 +382,7 @@ public class Items extends ArrayList<Item> {
 						}
 						
 				} else if (cmd.equals( "delAttr" )) {
-					// Typically: delAttr SUBJECT LIST OBJECT NAME
+					// Typically: delAttr SUBJECT LIST THIS NAME
 					list.delAttr(
 							item,
 							new Attribute( sa.get( 1 )).value()
@@ -398,7 +391,7 @@ public class Items extends ArrayList<Item> {
 					
 				} else if (cmd.equals( "getAttrVal" )) {
 					
-					// Typically: getAttrVal SUBJECT LIST NAME OBJECT
+					// Typically: getAttrVal SUBJECT LIST NAME THIS
 					rca.add( list.getAttrVal(
 								item,
 								Attribute.getValue( attrName ) // Expand: n='v' => v
@@ -475,7 +468,7 @@ public class Items extends ArrayList<Item> {
 		Audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
 		
 		audit.title( "SHOPPING LIST TESTS..." );
-		Item.format( "QUANTITY,UNIT of,OBJECT,from FROM" );
+		Item.format( "QUANTITY,UNIT of,THIS,from FROM" );
 		test( 51, "delete martin needs", "TRUE" );
 		test( 52, "add martin needs object='coffee' quantity='1'", "a coffee" );
 		test( 53, "add martin needs object='coffee' quantity='another'", "another coffee" );

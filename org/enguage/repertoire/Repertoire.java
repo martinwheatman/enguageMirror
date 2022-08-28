@@ -1,9 +1,9 @@
 package org.enguage.repertoire;
 
-import org.enguage.objects.Variable;
 import org.enguage.signs.Sign;
 import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Intention;
+import org.enguage.signs.objects.Variable;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.pattern.Phrase;
 import org.enguage.signs.vehicle.pattern.Quote;

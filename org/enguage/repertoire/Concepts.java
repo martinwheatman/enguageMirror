@@ -8,9 +8,9 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.enguage.Enguage;
-import org.enguage.objects.Variable;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
+import org.enguage.signs.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;

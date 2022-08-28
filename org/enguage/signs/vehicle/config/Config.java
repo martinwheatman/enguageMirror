@@ -7,13 +7,13 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.objects.Variable;
-import org.enguage.objects.space.Overlay;
 import org.enguage.repertoire.Autoload;
 import org.enguage.repertoire.Concepts;
 import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Commands;
 import org.enguage.signs.interpretant.Redo;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.vehicle.reply.Answer;
 import org.enguage.signs.vehicle.reply.Reply;
 import org.enguage.signs.vehicle.reply.Response;
@@ -55,7 +55,6 @@ public class Config {
 				else if (name.equals( "LOCATION"  )) Fs.location( value );
 				else if (name.equals( "SUCCESS" )) Response.success( value );
 				else if (name.equals( "FAILURE" )) Response.failure( value );
-				else if (name.equals( "NOTVARS" )) Variable.exceptionAdd( new Strings( value ));
 				else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
 				else if (name.equals(   "SHELL" )) Commands.shell( value );
 				else if (name.equals(    "TERMS")) Shell.terminators( new Strings( value ));

@@ -1,4 +1,4 @@
-package org.enguage.objects;
+package org.enguage.signs.objects;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -19,7 +19,7 @@ public class Expand {
 		String rc = Shell.FAIL;
 		//audit.in( "forEvery", "sa=[ "+ sa.toString( Strings.SQCSV ) +" ]" );
 		/* "martin needs a cup of coffee and a biscuit" +
-		 * perform "every : { SUBJECTS } needs { OBJECTS }"; =>
+		 * perform "every : { SUBJECTS } needs { THIS }"; =>
 		 * { subject='martin' } needs { objects='a cup of coffee and a biscuit' } LOCATOR...
 		 * recall each joined combination, e.g.:
 		 *      martin needs a cup of coffee
@@ -58,4 +58,10 @@ public class Expand {
 		audit.in( "interpret", sa.toString());
 		//sa.remove( 0 ); // ":"
 		return audit.out( new Strings( forEvery( sa ) ));
+	}
+	public static void main( String[] args ) {
+		Strings sa = new Strings( "subject='_user' needs { these='2 cups of coffee and a biscuit' }" );
+		sa = sa.contract ( "=" );
+		Audit.allOn();
+		forEvery( sa );
 }	}

@@ -1,4 +1,4 @@
-package org.enguage.objects;
+package org.enguage.signs.objects;
 
 import org.enguage.signs.vehicle.when.Day;
 import org.enguage.signs.vehicle.when.When;

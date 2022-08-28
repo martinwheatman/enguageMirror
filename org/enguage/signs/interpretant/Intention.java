@@ -3,10 +3,10 @@ package org.enguage.signs.interpretant;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.enguage.objects.Variable;
-import org.enguage.objects.space.Sofa;
 import org.enguage.repertoire.Repertoire;
 import org.enguage.signs.Sign;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.space.Sofa;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.pattern.Pattern;
 import org.enguage.signs.vehicle.reply.Reply;

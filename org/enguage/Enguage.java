@@ -2,12 +2,12 @@ package org.enguage;
 
 import java.io.File;
 
-import org.enguage.objects.list.Item;
-import org.enguage.objects.space.Overlay;
 import org.enguage.repertoire.Autoload;
 import org.enguage.repertoire.Concepts;
 import org.enguage.repertoire.Repertoire;
 import org.enguage.signs.interpretant.Redo;
+import org.enguage.signs.objects.list.Item;
+import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.config.Config;
 import org.enguage.signs.vehicle.reply.Reply;

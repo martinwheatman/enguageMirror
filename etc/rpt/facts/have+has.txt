@@ -1,21 +1,21 @@
-On "i        have to have PHRASE-OBJECT", _user needs OBJECT.
-On "SUBJECT  has  to have PHRASE-OBJECT", SUBJECT needs OBJECT.
+On "i        have to have PHRASE-THIS", _user needs THIS.
+On "SUBJECT  has  to have PHRASE-THIS", SUBJECT needs THIS.
 
-On "i        have to      PHRASE-OBJECT", _user needs to OBJECT.
-On "i do not have to      PHRASE-OBJECT", _user does not need to OBJECT.
-On "i        have to get  PHRASE-OBJECT", _user needs OBJECT.
-On "i do not have to get  PHRASE-OBJECT", _user does not need OBJECT.
+On "i        have to      PHRASE-THIS", _user needs to THIS.
+On "i do not have to      PHRASE-THIS", _user does not need to THIS.
+On "i        have to get  PHRASE-THIS", _user needs THIS.
+On "i do not have to get  PHRASE-THIS", _user does not need THIS.
 
-On "i        have got     PHRASE-OBJECT", _user does not need OBJECT.
-On "i        have         PHRASE-OBJECT", _user does not need OBJECT.
-On "i        have the     PHRASE-OBJECT", _user does not need any OBJECT.
+On "i        have got     PHRASE-THIS", _user does not need THIS.
+On "i        have         PHRASE-THIS", _user does not need THIS.
+On "i        have the     PHRASE-THIS", _user does not need any THIS.
 
 On "i        have got        everything", _user has everything.
 On "i        have            everything", _user has everything.
 
 On "What do i have", reply "i do not remember what you have".
 
-On "SUBJECT has PHRASE-OBJECT", SUBJECT does not need OBJECT.
+On "SUBJECT has PHRASE-THIS", SUBJECT does not need THIS.
 
 On "SUBJECT has everything", SUBJECT does not need anything.
 

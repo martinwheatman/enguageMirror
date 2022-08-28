@@ -3,12 +3,12 @@ package org.enguage.repertoire;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.objects.Variable;
-import org.enguage.objects.list.Item;
-import org.enguage.objects.space.Overlay;
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.list.Item;
+import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.config.Englishisms;
 import org.enguage.signs.vehicle.pattern.Patte;
@@ -367,12 +367,15 @@ public class Engine {
 				r.answer( Reply.previous().toString());
 			}
 			
-//		} else if (cmd.equals( "help" )) {
-//			Redo.helped( true );
-//			r.format( Repertoire.allop.helpedToString( Repertoire.ALLOP ));
-
 		} else if (cmd.equals( "say" )) {
-			Reply.say( cmds );
+			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'
+			// so we need to trim the quoted speech...
+			if (cmds.size() == 1)
+				Reply.say( Variable.deref(
+						new Strings( Strings.trim( cmds.get( 0 ), Strings.DOUBLE_QUOTE ))
+				 )				 );
+			else
+				Reply.say( Variable.deref( new Strings( cmds )));
 
 		} else if ( cmd.equals( "list" )) {
 			//Strings reps = Enguage.e.signs.toIdList();

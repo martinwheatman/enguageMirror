@@ -2,12 +2,12 @@ package org.enguage.signs;
 
 import java.util.Iterator;
 
-import org.enguage.objects.Temporal;
-import org.enguage.objects.Variable;
 import org.enguage.repertoire.Engine;
 import org.enguage.repertoire.Repertoire;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
+import org.enguage.signs.objects.Temporal;
+import org.enguage.signs.objects.Variable;
 import org.enguage.signs.vehicle.pattern.Patte;
 import org.enguage.signs.vehicle.pattern.Pattern;
 import org.enguage.signs.vehicle.reply.Reply;

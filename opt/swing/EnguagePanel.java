@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.enguage.Enguage;
-import org.enguage.objects.Variable;
+import org.enguage.signs.objects.Variable;
 import org.enguage.util.Strings;
 
 public class EnguagePanel extends JPanel {
