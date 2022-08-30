@@ -167,34 +167,32 @@ On "how many PHRASE-THIS does SUBJECT need":
 	how many THIS in SUBJECT needs list;
 	reply "..., SUBJECT needs ... THIS".
 
-######################################
-# First person utterances
-######################################
-On "_user    needs       NUMERIC-QUANTITY", _user needs QUANTITY THIS.
+#########################################
+# First person utterances => third-person
+#########################################
+On "_user    needs        NUMERIC-QUANTITY", _user needs QUANTITY THIS.
+On "i        need         PHRASE-THESE", _user needs THESE.
+On "i        need         nothing",      _user does not need anything.
 
-On "i        need        PHRASE-THESE", _user needs THESE.
-#On "help", reply "to add items to the list".
-
-On "i        need        help", help.
+On "i do not need         PHRASE-THIS", _user does not need THIS.
+On "i do not need any     PHRASE-THIS", _user does not need any THIS.
+On "i        need anything",            _user does not need anything.
+On "i do not need anything",            _user does not need anything.
 
 On "i        need to      PHRASE-THIS", _user needs to THIS.
 On "i        need to get  PHRASE-THIS", _user needs THIS.
 On "i do not need to get  PHRASE-THIS", _user does not need THIS.
 
-On "i do not need         PHRASE-THIS", _user does not need THIS.
-On "i do not need any     PHRASE-THIS", _user does not need any THIS.
-On "i do not need anything",              _user does not need anything.
-#On "help", reply "to clear the list".
-
-On "what  do   i   need", what does _user need.
-#On "help", reply "to find out what is on the list".
-
-On "do i need PHRASE-THIS", does _user need THIS.
+On "what  do   i   need",            what does _user need.
+On "do i need PHRASE-THIS",          does _user need THIS.
 On "how many PHRASE-THIS do i need", how many THIS does _user need.
-#On "help", reply "to find out if something specific is on the list".
 
-On "we need PHRASE-THIS", i need THIS. # a fix for now
-On "what do we need", what do i need.
-On "do we need PHRASE-THESE", do i need THESE.
-On "we do not need PHRASE-THESE", do i need THESE.
-On "we do not need anything", i do not need anything.
+########################
+# we => i, a fix for now
+########################
+On "we need PHRASE-THIS",         i need THIS.
+On "what do we need",             what do i need.
+On "do we need PHRASE-THESE",     do i need THESE.
+On "we do not need PHRASE-THESE", i do not need THESE.
+On "we do not need anything",     i do not need anything.
+On "we do nothing",               i need nothing.

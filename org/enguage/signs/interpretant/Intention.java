@@ -11,10 +11,13 @@ import org.enguage.signs.vehicle.Utterance;
 import org.enguage.signs.vehicle.pattern.Pattern;
 import org.enguage.signs.vehicle.reply.Reply;
 import org.enguage.signs.vehicle.reply.Response;
+import org.enguage.signs.vehicle.when.Moment;
+import org.enguage.signs.vehicle.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
+import org.enguage.util.sys.Shell;
 
 public class Intention {
 	
@@ -197,28 +200,42 @@ public class Intention {
 	private Reply perform( Reply r ) { return perform( r, false ); }
 	private Reply andFinally( Reply r ) { return perform( r, true ); }
 	
+	public  String formatAnswer( String rc, String method ) {
+		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
+				new When( rc ).rep( Response.dnkStr() ).toString()
+				: rc.equals( "" ) &&
+				  (method.equals( "get" ) ||
+			       method.equals( "getAttrVal" )) ?
+					Response.dnkStr()
+					: rc.equals( Shell.FAIL ) ?
+						Response.failureStr()
+						: rc.equals( Shell.SUCCESS ) ?
+							Response.successStr()
+							: rc;
+	}
+
 	private Reply perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"));
-		String answer = r.a.toString();
-		Strings cmd = formulate( answer, true ); // DO expand, UNIT => unit='non-null value'
+		Strings cmd = formulate( r.a.toString(), true ); // DO expand, UNIT => unit='non-null value'
 		
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
 		Strings rawAnswer = new Sofa().doCall( new Strings( cmd ));
-		if (!ignore) r.rawAnswer( rawAnswer.toString(), cmd.get( 1 ));
+		if (!ignore) r.answer( formatAnswer( rawAnswer.toString(), cmd.get( 1 )));
 
 		return r; //(Reply) audit.out( r ); //
 	}
 	private Reply reply( Reply reply ) {
-		return reply.format( value.equals( "" ) ? reply.toString() : value )
-		        .doneIs( reply.response() != Response.DNU )
-		        .response( values );
+		return reply
+				.format( value.equals( "" ) ? reply.toString() : value )
+				.doneIs( reply.response() != Response.DNU )
+				.response( values );
 	}
 	private Reply run( Reply r ) {
 		return new Commands( formulate( r.a.toString(), false ).toString())
-				.run( r );
+				.run( r.a.toString() );
 	}
 	public Reply mediate( Reply r ) {
 		if (Audit.allAreOn())

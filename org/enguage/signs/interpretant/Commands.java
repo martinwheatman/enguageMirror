@@ -9,10 +9,9 @@ import org.enguage.signs.vehicle.reply.Response;
 import org.enguage.signs.vehicle.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.attr.Context;
 
 public class Commands {
-	static private Audit audit = new Audit( "commands" );
+	//static private Audit audit = new Audit( "commands" );
 	
 	public Commands (String command) { cmd = command; }
 
@@ -40,19 +39,31 @@ public class Commands {
 				.toString();
 	}
 	
-	private String deconceptualise( String rawAns ) {
-		//audit.IN( "decon", rawAns );
-		String whn = rawAns.replace( " ", "" );
-		//Audit.log( ">"+ whn +"<"+ new When( whn ).toString() +">"+ When.valid( whn ));
-	 	String rc = When.valid( whn ) ?				 // 88888888198888 -> 7pm
-				new When( whn ).toString()
-						: rawAns;					  // chs
-	 	return rc; //audit.OUT( rc );
-	}
-
-	private Reply run( String cmdline ) {
+	private Reply runResult( int rc, String result, String errtxt ) {
+		//audit.IN( "runresult", "rc="+ rc +", result="+ result +", error="+ errtxt );
 		Reply r = new Reply();
-		int rc = 255;
+		
+		rc = (rc == 0) ? Response.OK 
+				: (rc == 1) ? Response.DNK
+						: Response.FAIL;
+		
+		String whn = result.replace( " ", "" );
+		result = When.valid( whn ) ?				 // 88888888198888 -> 7pm
+				new When( whn ).toString()
+				: rc == Response.DNK ?
+						Response.dnkStr()
+						: result;					  // chs
+	 	
+		r.answer( result );
+		r.format( result );
+		r.response( rc );
+
+	 	return r;
+	}
+	
+	public Reply run( String s ) {
+		String cmdline = stringToCommand( s );
+		Reply r = new Reply();
 		Process p;
 		String result = "";
 		String errTxt = "";
@@ -79,40 +90,25 @@ public class Commands {
 				if (result.equals( "" ))
 					while ((line = error.readLine()) != null)
 						errTxt += line;
-								
-				rc = p.waitFor() == 0 ? Response.OK : Response.FAIL;
-				result = deconceptualise( (rc==Response.OK? result : errTxt ));
-
+				
+				r = runResult( p.waitFor(), result, errTxt );
+				
 			} catch (Exception e) {
-				audit.ERROR( "exception: "+ e.toString());
-				e.printStackTrace();
-				throw new Exception();
+				r = runResult( 255, "", "Command failed: "+ cmdline );
 			}
 		} catch (Exception iox) {
-			rc = Response.FAIL;
-			result = "I can't run this command: "+ cmdline;
+			r = runResult( 255, "", "I can't run: "+ cmdline );
 		}
-		r.answer( result );
-		r.format( result );
-		r.response( rc );
-		return r; //(Reply) audit.OUT( r );
+		return r;
 	}
 
-	public Reply run( Reply r ) {
-		audit.in( "run", "value='"+ cmd +"', ["+ Context.valueOf() +"]" );
-		String cmdline = stringToCommand( r.a.toString());
-		//Audit.log( "Running: "+ cmdline );
-		r = run( cmdline );
-		//Audit.log( " return: "+ r.a.toString() +"(rc="+ (r.type()==Reply.YES? 0 : -1) +")" );
-		return (Reply) audit.out( r );
-	}
 	// ---
 	public static void main( String args []) {
 		Response.failure( "sorry" );
 		Response.success( "ok" );
 
 		Reply r = new Reply();
-		r = new Commands( "value -D selftest martin/engine/capacity 1598cc" ).run( r );
-		r = new Commands( "value -D selftest martin/engine/capacity"        ).run( r );
+		r = new Commands( "value -D selftest martin/engine/capacity 1598cc" ).run( r.a.toString());
+		r = new Commands( "value -D selftest martin/engine/capacity"        ).run( r.a.toString());
 		Audit.log( r.toString());
 }	}

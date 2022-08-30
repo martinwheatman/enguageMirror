@@ -5,11 +5,17 @@ On "the ENAME are PHRASE-EVAL":
 On "the ENT ATTR are PHRASE-EVAL":
 	run "value the/ENT/ATTR EVAL";
 	reply "ok, the ENT ATTR are EVAL".
+
+On "the ENT ATTR are wrong":
+	run "value -d the/ENT/ATTR";
+	reply "ok, we don't know the ENT ATTR".
 	
 On "what are the ENAME":
 	run "value the/ENAME";
+	if not, reply "sorry, i do not know";
 	reply "ok, the ENAME are ...".
 	
 On "what are the ENT ATTR":
 	run "value the/ENT/ATTR";
+	if not, reply "sorry, i do not know";
 	reply "ok, the ENT ATTR are ...".

@@ -4,8 +4,6 @@ import java.util.Locale;
 
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.vehicle.Utterance;
-import org.enguage.signs.vehicle.when.Moment;
-import org.enguage.signs.vehicle.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
@@ -109,22 +107,8 @@ public class Reply { // a reply is basically a formatted answer
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			response.value( (response.value() == Response.UDU) ? Response.UDU : a.type());
+			response.value( response.value() == Response.UDU ? Response.UDU : a.type());
 		}
-		return this;
-	}
-	public  Reply   rawAnswer( String rc, String method ) {
-		answer( Moment.valid( rc ) ? // 88888888198888 -> 7pm
-					new When( rc ).rep( Response.dnkStr() ).toString()
-					: rc.equals( "" ) &&
-					  (method.equals( "get" ) ||
-				       method.equals( "getAttrVal" )) ?
-						Response.dnkStr()
-						: rc.equals( Shell.FAIL ) ?
-							Response.failureStr()
-							: rc.equals( Shell.SUCCESS ) ?
-								Response.successStr()
-								: rc );
 		return this;
 	}
 	

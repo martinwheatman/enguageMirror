@@ -1063,32 +1063,39 @@ public class Example {
 		}
 		if (runTheseTests( "these" )) {
 			//test( "you can say choose a number from phrase variable these", "ok" );
-			//test( "to this you reply the first of these", "ok" );
+			//test( "to which you reply with the first of these", "ok" );
 			test( "choose a number from one and two and three", "the first of these is one. ok the rest are two and three" );
 		}
 		if (runTheseTests( "yagadi scripts" )) {
+			/*
+			 * Because these tests use the Yagadi.Ltd/bin scripts, and run them via a Process,
+			 * the scripts need to be on the vanilla path, e.g. in (or loinked into) ~/bin
+			 */
 			test( "to the phrase my engine is variable capacity cc think martin's engine is variable capacity cc", "ok" );
 			test( "to the phrase martin's engine is variable capacity cc reply ok martin's engine is variable capacity cc", "ok" );
 			test( "this implies that you run value martin/engine/capacity variable capacity cc", "ok" );
 
-			test( "to the phrase what is my engine capacity think what is martin's engine capacity", "ok" );
+			test( "to the phrase what is my engine capacity think what is martin's engine capacity",     "ok" );
 			test( "to the phrase what is martin's engine capacity reply ok martin's engine is whatever", "ok" );
 			test( "this implies that you run value martin/engine/capacity", "ok" );
 			
-			test( "my engine is 1598cc", "ok martin's engine is 1598 cc" );
+			test( "my engine is 1598cc",        "ok martin's engine is 1598 cc" );
 			test( "what is my engine capacity", "ok martin's engine is 1598 cc" );
 
-			test( "i drove to work today", "ok today you drove to work" );
+			test( "i drove to work today",      "ok today you drove to work" );
 			
-			test( "the agency is morson", "ok, the agency is morson" );
+			test( "the agency is morson",       "ok, the agency is morson" );
 			test( "the vat rate is 20 percent", "ok, the vat rate is 20 percent" );
-			test( "what is the vat rate", "ok, the vat rate is 20 percent" );
-			test( "the date is today", "ok, the date is today" );
-			test( "the hours worked are 37", "ok, the hours worked are 37" );
-			test( "what are the hours worked", "ok, the hours worked are 37" );
+			test( "what is the vat rate",       "ok, the vat rate is 20 percent" );
+			test( "the date is today",          "ok, the date is today" );
+			
+			test( "the hours worked is wrong",  "ok, we don't know the hours worked" );
+			test( "what are the hours worked",  "sorry, i don't know" );
+			test( "the hours worked are 37",    "ok, the hours worked are 37" );
+			test( "what are the hours worked",  "ok, the hours worked are 37" );
+			
 			test( "the net value is the hours worked times the hourly rate",
 					"ok, the net value is the hours worked times the hourly rate" );
-			
 		}
 		
 		Audit.log( testGrp +" test group(s) found" );
