@@ -1,6 +1,7 @@
 package opt.test;
 
 import org.enguage.Enguage;
+import org.enguage.repertoire.Repertoire;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.vehicle.pronoun.Pronoun;
 import org.enguage.util.Audit;
@@ -259,16 +260,21 @@ public class Example {
 			test( "martin is a user",   "ok");
 			test( "set user as martin", "ok, martin is logged on");
 		}
+		
 		if (runTheseTests( "BCS HCI Workshop" )) { // code generation features
-			
-			test( "to the phrase hello reply hello to you too", "" );
+			test( "hello",                 "i don't understand" );
+			test( "to the phrase hello reply hello to you too", "ok" );
 			test( "hello",                 "hello to you too" );
+			test( "to the phrase hi think hello", "ok" );
+			test( "hi", "hello to you too" );
 			test( "to the phrase my name is variable name reply hello variable name", "" );
 			test( "please my name is martin", "hello martin" );
 			
 			clearTheNeedsList();
 			test( "what do i need",        "you don't need anything" );
-			test( "i need a coffee",       "ok, you need a coffee" );
+			test( "i need a tea",          "ok, you need a tea" );
+			test( "no i need a coffee",    "ok, you need a coffee" );
+			test( "i need a coffee",       "yes, I know" );
 			test( "what do i need",        "you need a coffee" );
 			
 			test( "what do i think",       "i'm sorry, I don't understand the question" );
