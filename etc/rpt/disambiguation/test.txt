@@ -1,8 +1,3 @@
-     On "this is a test", run "SOFA list add _user needs meaning one".
-Then on "this is a test", reply "ok, this reaches meaning one".
-
-     On "this is a test", run "SOFA list add _user needs meaning two".
-Then on "this is a test", reply "ok, this reaches meaning two".
-
-     On "this is a test", run "SOFA list add _user needs meaning three".
-Then on "this is a test", reply "ok, this reaches meaning three".
+On "this is a test", reply "ok, this reaches meaning one".
+On "this is a test", reply "ok, this reaches meaning two".
+On "this is a test", reply "ok, this reaches meaning three".

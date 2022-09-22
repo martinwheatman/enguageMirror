@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
-import java.util.Random;
 
 import org.enguage.signs.Sign;
 import org.enguage.signs.vehicle.Utterance;
@@ -251,18 +250,16 @@ public class Pattern extends ArrayList<Patte> {
 	 *  Using a random number (less processing?/more random?)  Make it least
 	 *  
 	 *  Finite:
-	 *  |-----------+-----------+------------------|
-	 *  | Tags 0-99 |Words 0-99 | Random num 0-99  |
-	 *  |-----------+-----------+------------------|
+	 *  |-----------+-----------+
+	 *  | Tags 0-99 |Words 0-99 |
+	 *  |-----------+-----------+
 	 *  
 	 *  Infinite:
-	 *  |----------|   |------------+-----------|------------------+
-	 *  | 1000000  | - | Words 0-99 | Tags 0-99 | Random num 0-99  |
-	 *  |----------|   |------------+-----------|------------------+
-	 *  Range at 1000, random component is 1-100 * 10 - 100 -1000 with 1-99 being
-	 *  the count element 
+	 *  |----------|   |------------+-----------|
+	 *  | 1000000  | - | Words 0-99 | Tags 0-99 |
+	 *  |----------|   |------------+-----------|
+	 *  Range at 1000, 1-99 count element 
 	 */
-	private static Random rn = new Random();
 	private static final int RANGE = 1000; // means full range will be up to 1 billion
 	private static final int INFTY = RANGE*RANGE*RANGE;
 	private static final int LARGE = RANGE*RANGE;
@@ -271,8 +268,7 @@ public class Pattern extends ArrayList<Patte> {
 	public int cplex() {
 		boolean infinite = false;
 		int cons = 0,
-		    vars = 0,
-		    rand = rn.nextInt( RANGE );
+		    vars = 0;
 		
 		for (Patte t : this) {
 			cons += t.nconsts();
@@ -281,8 +277,8 @@ public class Pattern extends ArrayList<Patte> {
 			else if (!t.name().equals( "" ))
 				vars++; // count non-phrase named tags as words
 		}
-		return rand + (infinite ? INFTY - LARGE*cons - SMALL*vars
-				                : LARGE*vars - SMALL*cons);
+		return (infinite ? INFTY - LARGE*cons - SMALL*vars
+				         : LARGE*vars - SMALL*cons);
 	}
 	
 	// initialise with values from Pronoun, provide functions to update from pronoun...

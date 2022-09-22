@@ -908,12 +908,18 @@ public class Example {
 			test( "a queen is a monarch", "ok, a queen is a monarch" );
 		}
 		if (runTheseTests( "Disambiguation" )) {
-			test( "the eagle has landed",    ""   /* "Are you an ornithologist" */);
-			test( "no the eagle has landed", "" /* "So , you're talking about the novel" */ );
-			test( "no the eagle has landed", "" /*"So you're talking about Apollo 11" */	);
-			test( "no the eagle has landed", "" /* "I don't understand" */ );
-			// Issue here: on DNU, we need to advance this on "the eagle has landed"
-			// i.e. w/o "no ..."
+			test( "this is a test",    "ok, this reaches meaning one" );
+			test( "no this is a test", "ok, this reaches meaning two" );
+			test( "no this is a test", "ok, this reaches meaning three" );
+			test( "no this is a test", "ok, this is a test" ); // BUG: creates an instance
+			test( "no this is a test", "i don't understand, this is a test" );
+			// BUG: this shouldn't be an instance of a class:
+			test( "this is a test",    "ok, this reaches meaning one", "no, this is a class" );
+			
+			test( "the eagle has landed",    "So, you're talking about Apollo 11"   );
+			test( "no the eagle has landed", "So , you're talking about the novel" );
+			test( "no the eagle has landed", "so, Are you an ornithologist" );
+			test( "no the eagle has landed", "I don't understand, the eagle has landed" );
 		}
 		if (runTheseTests( "TCP/IP test" )) {
 			// bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!

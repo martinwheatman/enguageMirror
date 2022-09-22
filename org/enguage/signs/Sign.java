@@ -46,6 +46,14 @@ public class Sign {
 			pattern.add( child );
 		return this;
 	}
+	public Sign     pattern( String prefix, String name ) {
+		pattern( new Patte( prefix, name ));
+		return this;
+	}
+	public Sign     pattern( String prefix, String name, String postfix ) {
+		pattern( new Patte( prefix, name, postfix ));
+		return this;
+	}
 
 	public Intentions intents = new Intentions();
 	public Sign  insert( int n, Intention intent ) {intents.insert( n, intent ); return this;}

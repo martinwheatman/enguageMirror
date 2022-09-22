@@ -32,24 +32,21 @@ public class Engine {
 			 * interpretations and so are built here alongside those interpretations.
 			 */	
    			new Sign()
-				.pattern( new Patte( "run a self test", "" ))
-				.appendIntention( Intention.allop, "selfTest" )
-				.concept( NAME ),
-	          		
-			new Sign()
-				.pattern( new Patte( "this is all imagined", "" ))
-				.appendIntention( Intention.allop, "imagined" )
-				.concept( NAME ),
-
-			new Sign().pattern( new Patte( "ok" ))
-					.appendIntention( Intention.allop, "ok" )
+					.pattern( new Patte( "run a self test", "" ))
+					.appendIntention( Intention.allop, "selfTest" )
 					.concept( NAME ),
-					 
+			new Sign()
+					.pattern( new Patte( "this is all imagined", "" ))
+					.appendIntention( Intention.allop, "imagined" )
+					.concept( NAME ),
+			new Sign()
+					.pattern( new Patte( "ok" ))
+					.appendIntention( Intention.allop, "ok" )
+					.concept( NAME ), 
 			new Sign()
 					.pattern( new Patte( "list repertoires","" ))
 					.appendIntention( Intention.allop, "list" )
-	          		.concept( NAME )
-					.help( "" ),
+					.concept( NAME ),
 			new Sign()
 					.pattern( new Patte(         "help", "" ))
 					.appendIntention( Intention.allop, "help" )
@@ -62,26 +59,26 @@ public class Engine {
 					.pattern( new Patte(         "say", "SAID" ).phrasedIs() /*.quotedIs()*/ )
 					.appendIntention( Intention.allop, "say SAID")
 			  		.concept( NAME ),
-			new Sign().pattern( new Patte( "what can i say", "" ))
-					 .appendIntention( Intention.allop, "repertoire"  )
-		          	.concept( NAME )
-					 .help( "" ),
+			new Sign()
+					.pattern( new Patte( "what can i say", "" ))
+					.appendIntention( Intention.allop, "repertoire"  )
+		          	.concept( NAME ),
 			new Sign()
 					.pattern( new Patte(   "load ", "NAME" ))
 					.appendIntention( Intention.allop,    "load NAME" )
 			  		.concept( NAME ),
-			new Sign().concept( NAME )
-					.pattern( new Patte( "unload ", "NAME" ))
-					.appendIntention( Intention.allop, "unload NAME" ),
-	        new Sign()
-				.concept( NAME )
-				.appendIntention( Intention.allop, "saveAs NAME" )
-				.pattern( new Patte( "save spoken concepts as ", "NAME", "" ).phrasedIs()),
-																 		
 			new Sign()
-				.concept( NAME )
-				.appendIntention( Intention.allop, "delete NAME" )
-				.pattern( new Patte( "delete spoken concept ", "NAME", "" ).phrasedIs()),
+					.pattern( "unload ", "NAME" )
+					.appendIntention( Intention.allop, "unload NAME" )
+					.concept( NAME ),
+			new Sign()
+					.pattern( new Patte( "save spoken concepts as ", "NAME", "" ).phrasedIs())
+					.appendIntention( Intention.allop, "saveAs NAME" )
+					.concept( NAME ),										 		
+			new Sign()
+					.appendIntention( Intention.allop, "delete NAME" )
+					.pattern( new Patte( "delete spoken concept ", "NAME", "" ).phrasedIs())
+					.concept( NAME ),
 																 		
 			new Sign().pattern( new Patte(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
 			new Sign().pattern( new Patte(        "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),

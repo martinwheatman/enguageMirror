@@ -38,15 +38,17 @@ public class Redo {
 	public static void disambOn( Strings cmd ) {
 		//simply turn disambiguation on if this thought is same as last...
 		audit.debug( "Allop:disambFound():REDOING:"+(disambFound()?"ON":"OFF")+":"+ Utterance.previous() +" =? "+ cmd +")" );
-		if (	( Utterance.previous()                  .equals( cmd  )) //    X == (redo) X     -- case 1
-		    ||	(    Utterance.previous().copyAfter( 0 ).equals( cmd  )  // no X == (redo) X...  -- case 2
-		    	  && Utterance.previous().get(    0    ).equals( "no" )  // ..&& last[ 0 ] = "no"
-		)	)	{
-			if (Repertoire.signs.lastFoundAt() != -1) { // just in case!
-				Repertoire.signs.ignore( Repertoire.signs.lastFoundAt() );
-				audit.debug("Allop:disambOn():REDOING: Signs to avoid now: "+ Repertoire.signs.ignore().toString() );
-				disambFound( true );
-	}	}	}
+		if (Utterance.previous() != null) {
+			if (	( Utterance.previous()                  .equals( cmd  )) //    X == (redo) X     -- case 1
+			    ||	(    Utterance.previous().copyAfter( 0 ).equals( cmd  )  // no X == (redo) X...  -- case 2
+			    	  && Utterance.previous().get(    0    ).equals( "no" )  // ..&& last[ 0 ] = "no"
+			)	)	{
+				if (Repertoire.signs.lastFoundAt() != -1) { // just in case!
+					Repertoire.signs.ignore( Repertoire.signs.lastFoundAt() );
+					audit.debug("Allop:disambOn():REDOING: Signs to avoid now: "+ Repertoire.signs.ignore().toString() );
+					disambFound( true );
+		}	}	}
+	}
 	/* now, we have disamb found (ignore list has increased) so we are still adjusting
 	 * the list AND the list itself! This is called at the end of an utterance
 	 */
