@@ -28,11 +28,11 @@ public class Enguage {
 	public  static Enguage get() {return enguage;}
 	public  static void    set( Enguage e ) {enguage = e;}
 	
-	public  static final String      RO_SPACE = Assets.LOCATION;
-	public  static final String      RW_SPACE = "var"+ File.separator;
+	public  static final String      RO_SPACE  = Assets.LOCATION;
+	public  static final String      RW_SPACE  = "var"+ File.separator;
 	
-	public  static final String           DNU = "DNU";
-	private static final boolean startupDebug = false;
+	public  static final String           DNU  = "DNU";
+	private static final boolean STARTUP_DEBUG = false;
 	
 	private static Audit     audit = new Audit( "Enguage" );
 	public  static Overlay       o = Overlay.Get();
@@ -40,11 +40,13 @@ public class Enguage {
 	private static Shell   shell   = new Shell( "Enguage", copyright );
 	public  static Shell   shell() {return shell;}
 	
-	public  static boolean verbose = false;
+	private static  boolean verbose = false;
+	public  static  boolean isVerbose() {return verbose;}
+	public  static  void    verboseIs(boolean b) {verbose = b;}
 	
-	private static boolean imagined = false;
-	public  static boolean imagined() {return imagined;}
-	public  static void    imagined( boolean img ) {imagined = img;}
+	private boolean imagined = false;
+	public  boolean imagined() {return imagined;}
+	public  void    imagined( boolean img ) {imagined = img;}
 		
 	private static String server = "";
 	public  static String server() {return server;}
@@ -66,7 +68,7 @@ public class Enguage {
 		Strings reply;
 		audit.in( "mediate", utterance.toString() );
 	
-		imagined = false;
+		imagined( false );
 		Overlay.attach( uid );
 		Where.clearLocation();
 		Item.resetFormat();
@@ -79,7 +81,7 @@ public class Enguage {
 		// once processed, keep a copy
 		Utterance.previous( utterance );
 
-		if (imagined) {
+		if (imagined()) {
 			Overlay.abortTxn( Redo.undoIsEnabled() );
 			Redo.disambOff();
 			
@@ -134,12 +136,12 @@ public class Enguage {
 		Audit.LOG( "             terminate utterances." );
 	}
 	
-	public static void main( String args[] ) {
+	public static void main( String[] args ) {
 		
-		Audit.startupDebug = startupDebug;
+		Audit.startupDebug = STARTUP_DEBUG;
 		Strings    cmds = new Strings( args );
-		String     cmd,
-		           fsys = RW_SPACE;
+		String     cmd;
+		String     fsys = RW_SPACE;
 		boolean useHttp = false;
 		
 		// traverse args and strip switches: -v -d -H -p -s
@@ -158,11 +160,11 @@ public class Enguage {
 					
 			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
 				cmds.remove( i );
-				fsys = cmds.size()==0 ? fsys : cmds.remove( i );
+				fsys = cmds.isEmpty() ? fsys : cmds.remove( i );
 				
 			} else if (cmd.equals( "-p" ) || cmd.equals( "--port" )) {
 				cmds.remove( i );
-				port = cmds.size()==0 ? 8080 : Integer.valueOf( cmds.remove( i ));
+				port = cmds.isEmpty() ? 8080 : Integer.valueOf( cmds.remove( i ));
 				Audit.LOG( "Using port: "+ port );
 		
 			} else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" )) {
@@ -171,7 +173,7 @@ public class Enguage {
 
 			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
 				cmds.remove( i );
-				server( cmds.size()==0 ? "localhost" : cmds.remove( i ) );
+				server( cmds.isEmpty() ? "localhost" : cmds.remove( i ) );
 				Audit.LOG( "Sending to server: "+ server );
 				
 			} else
@@ -180,11 +182,11 @@ public class Enguage {
 
 		enguage = new Enguage( fsys );
 				
-		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
+		cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
 		
 		if (port != 0 && server.equals( "" )) { // run as local server
 			if (useHttp) Server.httpd( ""+ port );
-			Server.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
+			Server.server( cmds.isEmpty() ? "8080" : cmds.remove( 0 ));
 		
 		} else if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );

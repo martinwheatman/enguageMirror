@@ -12,7 +12,7 @@ import org.enguage.signs.vehicle.reply.Response;
 import org.enguage.util.Audit;
 
 public class Repertoire {
-	static private Audit audit = new Audit( "Repertoire" );
+	private static Audit audit = new Audit( "Repertoire" );
 
 	private static final Sign[] autopoiesis = {
 		// 3 x 3 signs (think/do/say * start/subseq/infelicit) + 1 "finally"
@@ -79,20 +79,20 @@ public class Repertoire {
 	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 
 	 * in engine?
 	 */
-	static public Signs signs = new Signs( "user"  );
-	static public Signs autop = new Signs( "autop" ).add( autopoiesis );
-	static public Signs allop = new Signs( "allop" ).add( Engine.commands );
+	public static Signs signs = new Signs( "user"  );
+	public static Signs autop = new Signs( "autop" ).add( autopoiesis );
+	public static Signs allop = new Signs( "allop" ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
 	 */
-	private final static String FALSE = Boolean.toString( false );
-	private final static String  TRUE = Boolean.toString( true  );
+	private static final String FALSE = Boolean.toString( false );
+	private static final String  TRUE = Boolean.toString( true  );
 	
-	static private Variable transformation = new Variable( "transformation", FALSE );
-	static public  boolean  transformation() {
+	private static Variable transformation = new Variable( "transformation", FALSE );
+	public  static  boolean  transformation() {
 		return transformation.get().equalsIgnoreCase( TRUE );
 	}
-	static public  boolean transformation( boolean b ) {
+	public static  boolean transformation( boolean b ) {
 		transformation.set( b ? TRUE : FALSE );
 		return b;
 	}
@@ -102,7 +102,7 @@ public class Repertoire {
 	// *********************************************************** 
 
 	// entry point for Enguage, re-entry point for Intention
-	static public Reply mediate( Utterance u ) {
+	public static Reply mediate( Utterance u ) {
 		audit.in( "mediate", "utterance="+ u );
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup

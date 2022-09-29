@@ -86,7 +86,7 @@ public class Config {
 		long then = new GregorianCalendar().getTimeInMillis();
 		Redo.undoEnabledIs( false );
 		
-		if (Enguage.verbose)
+		if (Enguage.isVerbose())
 			Audit.log(
 				welcome(
 					Enguage.shell().copyright() +
@@ -95,7 +95,7 @@ public class Config {
 
 		Tag t = new Tag( new Strings( content ).listIterator());
 
-		if (t != null && (t = t.findByName( NAME )) != null) {
+		if ((t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
 			Concepts.load( t.findByName( "concepts" ));
 			rc = content.length();
@@ -104,7 +104,7 @@ public class Config {
 		Redo.undoEnabledIs( true );
 		long now = new GregorianCalendar().getTimeInMillis();
 		
-		if (Enguage.verbose) {
+		if (Enguage.isVerbose()) {
 			Audit.log( "Initialisation in: " + (now - then) + "ms" );
 			Audit.log( Signs.stats() );
 		}

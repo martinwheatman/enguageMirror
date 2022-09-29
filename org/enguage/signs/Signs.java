@@ -2,6 +2,7 @@ package org.enguage.signs;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
@@ -33,8 +34,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 		return this;
 	}
 
-	static private int   total = 0;
-	static private int clashes = 0;
+	private static int   total = 0;
+	private static int clashes = 0;
 
 	public Signs insert( Sign insertMe ) {
 		int c = insertMe.cplex(),
@@ -48,7 +49,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		return this;
 	}
 	
-	static public String stats() { return clashes +" clashes in a total of "+ total +" signs"; }
+	public static String stats() { return clashes +" clashes in a total of "+ total +" signs"; }
 	
 	private void swap( int a, int b) {
 		if (a<0 || b<0 || a>=size() || b>=size()) {
@@ -61,7 +62,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			put( b, tmp );
 	}	}
 	public void reorder() {
-		if (ignore().size() > 0) { // not needed unless we've no signs
+		if (ignore().isEmpty()) { // not needed unless we've no signs
 			/* OK, here we've said "tiat", foundAt=35
 			 * AND...
 			 * THEN we've said "No, tiat" - ignoring [35], foundAt=42
@@ -148,32 +149,33 @@ public class Signs extends TreeMap<Integer,Sign> {
 	
 	// ---------------------------------------------
 	// used to save the positions of signs to ignore - now keys of signs to ignore
-	private ArrayList<Integer> ignore = new ArrayList<Integer>();
-	public  ArrayList<Integer> ignore() { return ignore; }
+	private ArrayList<Integer> ignore = new ArrayList<>();
+	public       List<Integer> ignore() {return ignore;}
 	public  void               ignore( int i ) {
 		if (i == -1)
 			ignoreNone();
 		else {
-			//audit.debug("Sign.numToAvoid( "+ i +" )");
+			//audit.debug("Sign.numToAvoid( "+ i +" )")
 			ignore.add( i );
 	}	}
-	public  void               ignoreNone() { ignore.clear(); }
+	public  void               ignoreNone() {ignore.clear();}
 	// ---------------------------------------------
 
-	static public  final int noInterpretation = 0;
-	static private       int interpretation   = noInterpretation;
-	static private       int interpretation() { return ++interpretation; }
+	public static  final int noInterpretation = 0;
+	private static       int interpretation   = noInterpretation;
+	private static       int interpretation() { return ++interpretation; }
 	
+	@Override
 	public String toString() {
-		String str = "";
+		StringBuilder str = new StringBuilder();
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
 		while( i.hasNext()) {
-			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
-			str += me.getValue().toString();
-			if (i.hasNext()) str += "\n";
+			Map.Entry<Integer,Sign> me = i.next();
+			str.append( me.getValue().toString());
+			if (i.hasNext()) str.append( "\n" );
 		}
-		return str;
+		return str.toString();
 	}
 	private Sign reassign( int here ) {
 		/* Comodification error?
@@ -215,7 +217,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		int here = interpretation(); // an ID for this interpretation
 		
 		Reply       r = new Reply();
-		String answer = new String();
+		String answer = "";
 		
 		boolean done = false;
 		Set<Map.Entry<Integer,Sign>> entries = entrySet();
@@ -229,7 +231,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				//TODO: removed noInter check -- need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
 				if (null == match) {
-					;//	audit.debug( "NO match: "+ s.pattern().toString() );
+					;//	audit.debug( "NO match: "+ s.pattern().toString() )
 				} else { // we have found a meaning! So I do understand...!
 					
 					Pronoun.update( match );

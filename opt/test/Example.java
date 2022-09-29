@@ -1,7 +1,6 @@
 package opt.test;
 
 import org.enguage.Enguage;
-import org.enguage.repertoire.Repertoire;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.vehicle.pronoun.Pronoun;
 import org.enguage.util.Audit;
@@ -16,8 +15,8 @@ public class Example {
 	public static void main( String[] args ) {
 		
 		Strings    cmds = new Strings( args );
-		String     cmd,
-		           fsys = Enguage.RW_SPACE;
+		String     cmd;
+		String     fsys = Enguage.RW_SPACE;
 		
 		// traverse args and strip switches: -v -d -H -p -s
 		int i = 0;
@@ -35,7 +34,7 @@ public class Example {
 					
 			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
 				cmds.remove( i );
-				fsys = cmds.size()==0 ? fsys : cmds.remove( i );
+				fsys = cmds.isEmpty() ? fsys : cmds.remove( i );
 				
 			} else
 				i++;
@@ -43,7 +42,7 @@ public class Example {
 
 		Enguage.set( new Enguage( fsys ));
 				
-		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
+		cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
 		
 		if (cmd.equals(  "-t"    ) ||
 			cmd.equals( "--test" ) ||
@@ -58,9 +57,9 @@ public class Example {
 			else
 				try {
 					if (cmd.equals( "-T" ))
-						testName = cmds.size()==0 ? testName : cmds.remove( 0 );
+						testName = cmds.isEmpty() ? testName : cmds.remove( 0 );
 					else
-						level = cmds.size()==0 ? level : Integer.valueOf( cmds.remove( 0 ));
+						level = cmds.isEmpty() ? level : Integer.valueOf( cmds.remove( 0 ));
 					
 					test(); // full selftest
 					
@@ -122,38 +121,39 @@ public class Example {
 		
 		Strings reply = Enguage.get().mediate( new Strings( cmd ));
 
-		if (expected == null) { // don't check anything
-			;
-		} else if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected ))) {
+		if (expected != null) {
 		
-			audit.passed( replyPrompt()+ reply +"." );// 1st success
+			if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected ))) {
+		
+				audit.passed( replyPrompt()+ reply +"." );// 1st success
+				
+			} else if (unexpected == null) {              // no second chance
+				//Repertoire.signs.show()
+				audit.FATAL(
+					"reply: '"+    reply    +"',\n             "+
+					"expected: '"+ expected +"' "
+				);
+		
+			} else if (unexpected.equals( "" ) ||
+					 reply.equalsIgnoreCase( new Strings( unexpected ))) {
 			
-		} else if (unexpected == null) {              // no second chance
-			//Repertoire.signs.show();
-			audit.FATAL(
-				"reply: '"+    reply    +"',\n             "+
-				"expected: '"+ expected +"' "
-			);
-		
-		} else if (unexpected.equals( "" ) ||
-				 reply.equalsIgnoreCase( new Strings( unexpected ))) {
-		
-			audit.passed( replyPrompt()+ reply +".\n" );
-		
-		} else                                        // second chance failed too!
-			//Repertoire.signs.show();
-			audit.FATAL(
-				"reply: '"      + reply      +"'\n             "+
-				"expected: '"   + expected   +"'\n          "+
-				"alternately: '"+ unexpected +"'\n          "
-			);
+				audit.passed( replyPrompt()+ reply +".\n" );
+			
+			} else                                        // second chance failed too!
+				//Repertoire.signs.show()
+				audit.FATAL(
+					"reply: '"      + reply      +"'\n             "+
+					"expected: '"   + expected   +"'\n          "+
+					"alternately: '"+ unexpected +"'\n          "
+				);
+		}
 	}
 	
 	/* Test helper functions -
 	 *    Call these 'directly', so it's not counted!
 	 */
-	private static final String ihe =  "I have everything";
-	private static void clearTheNeedsList() { clearTheNeedsList( ihe );}
+	private static final String IHE =  "I have everything";
+	private static void clearTheNeedsList() { clearTheNeedsList( IHE );}
 	private static void clearTheNeedsList( String s ) { Enguage.get().mediate( new Strings( s ));	}
 	private static void tidyUpViolenceTest( String fname ) {
 		Enguage e = Enguage.get();
@@ -169,10 +169,10 @@ public class Example {
 	 */
 	public static void test() {
 		// ...useful ephemera...
-		//interpret( "detail on" );
-		//interpret( "tracing on" );
-		//Audit.allOn();
-		//Repertoire.signs.show( "OTF" );
+		//interpret( "detail on" )
+		//interpret( "tracing on" )
+		//Audit.allOn()
+		//Repertoire.signs.show( "OTF" )
 		
 		Audit.interval(); // reset timer
 		testPrompt(  "\nuser> "    );
@@ -182,9 +182,9 @@ public class Example {
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine  ruth" ));
 
-//		if (runTheseTests( "title" )) {
-//		testRun( "", "" );
-//	}
+//		if run These Tests( "title" ) 
+//		testRun( "", "" )
+//	
 		if (runTheseTests( "holding" )) {
 			test( "who are we",        "ok, we means you and i" );
 			test( "we are ruth and i", "ok, we means you and ruth" );
@@ -233,29 +233,29 @@ public class Example {
 		}
 		if (runTheseTests( "Megan's Thales Experiment" )) {
 			/*
-//			test( "you can say variable colour is a colour", "ok" );
-//			test( "this implies that you add variable colour to your colour list", "ok" );
+//			test( "you can say variable colour is a colour", "ok" )
+//			test( "this implies that you add variable colour to your colour list", "ok" )
 //			
-//			test( "red is a colour", "ok" );
-//			test( "blue is a colour", "ok" );
-//			test( "green is a colour", "ok" );
-//			test( "yellow is a colour", "ok" );
+//			test( "red is a colour", "ok" )
+//			test( "blue is a colour", "ok" )
+//			test( "green is a colour", "ok" )
+//			test( "yellow is a colour", "ok" )
 			
-			test( "set colour to yellow", "ok, colour is set to yellow" );
-			test( "set colour to red",    "ok, colour is set to red" );
-			test( "set colour to fred",   "sorry, fred is not a colour i know" );
+			test( "set colour to yellow", "ok, colour is set to yellow" )
+			test( "set colour to red",    "ok, colour is set to red" )
+			test( "set colour to fred",   "sorry, fred is not a colour i know" )
 			
 			//
 			// before logging in, test that we can't just affect things...
-			test( "switch to submarines screen", "sorry, you need to be logged in" );
-			test( "clear the filter",            "sorry, you need to be logged in" );
+			test( "switch to submarines screen", "sorry, you need to be logged in" )
+			test( "clear the filter",            "sorry, you need to be logged in" )
 			
-			test( "login as megan",              "ok, you're logged in as megan" );
-			test( "switch to submarines screen", "ok, switched to submarines screen" );
-			test( "what is the value of screen", "submarines, the value of screen is submarines" );
-			test( "filter by submarines only",   "ok, you're filtering by submarines only" );
-			
-			test( "logout",                      "ok, you have logged out" );
+			test( "login as megan",              "ok, you're logged in as megan" )
+			test( "switch to submarines screen", "ok, switched to submarines screen" )
+			test( "what is the value of screen", "submarines, the value of screen is submarines" )
+			test( "filter by submarines only",   "ok, you're filtering by submarines only" )
+		
+			test( "logout",                      "ok, you have logged out" )
 			*/
 			test( "martin is a user",   "ok");
 			test( "set user as martin", "ok, martin is logged on");
@@ -555,7 +555,7 @@ public class Example {
 			test( "it is from the dairy aisle", "ok, it is from the dairy aisle" );
 			test( "i need cheese and eggs from the dairy aisle",
 					                               "ok, you need cheese and eggs" );
-			//mediate( "group by",                   "i'm sorry, i need to know what to group by" );
+			//mediate( "group by",                   "i'm sorry, i need to know what to group by" )
 			test( "group by location",          "ok" );
 			
 			test( "what do i need from sainsbury's",
@@ -583,11 +583,11 @@ public class Example {
 			test( "i need an apple", "" );
 			test( "how many apples do i need",  "1, you need 1 apples" ); // <<<<<<<<< see this!
 		}
-//		if (runThisTest( "james's experiment" )) { // variables, arithmetic and lambda tests
-//			//interpret( "england is a country",  "ok, england is a country" );
-//			test( "preston is in england", "ok, preston is in england" );
-//			test( "i am in preston",       "ok, you're in england" );
-//		}
+//		if runThisTest( "james's experiment" )) variables, arithmetic and lambda tests
+//			//interpret( "england is a country",  "ok, england is a country" )
+//			test( "preston is in england", "ok, preston is in england" )
+//			test( "i am in preston",       "ok, you're in england" )
+//		
 		if (runTheseTests( "Simple Variables" )) { // 
 			test( "the value of name is fred",       "ok, name is set to fred" );
 			test( "get the value of name",           "fred" );
@@ -640,10 +640,10 @@ public class Example {
 			test( "first variable state exists in i am list",          "ok" );
 			test( "then reply yes i am variable state",                "ok" );
 			test( "then if not variable state exists in i amNot list", "ok" );
-//			Repertoire.signs.show();
-//			Audit.allOn();
+//			Repertoire.signs.show()
+//			Audit.allOn()
 			test( "then if not reply i do not know",                   "ok" );
-//			Audit.allOff();
+//			Audit.allOff()
 			test( "then reply no i am not variable state",             "ok" );
 			test( "ok", "ok" );
 			
@@ -783,7 +783,7 @@ public class Example {
 
 			// Test
 			// Event: to move is to was (traverse time quanta)
-			// interpret( "interpret when i am dead then move what i am to what i was thus", "ok" );
+			// interpret( "interpret when i am dead then move what i am to what i was thus", "ok" )
 		}
 		if (runTheseTests( "Verbal Arithmetic" )) {
 			test( "what's 1 + 2",                     "1 plus 2 is 3" );
@@ -800,11 +800,11 @@ public class Example {
 			test( "what is the sum of x and y",      "the sum of x and y is 7" );
 			
 			audit.title( "Factorial Description" );
-			//mediate( "what is the factorial of 4",       "I don't know" );
+			//mediate( "what is the factorial of 4",       "I don't know" )
 			/* Ideally, we want:
-			 * - the factorial of 1 is 1;
-			 * - the factorial of n is n times the factorial of n - 1;
-			 * - what is the factorial of 3.
+			 * the factorial of 1 is 1;
+			 * the factorial of n is n times the factorial of n - 1;
+			 * what is the factorial of 3.
 			 */
 			test( "the factorial of 1 is 1",          "ok, the factorial of 1 is 1" );
 			
@@ -819,7 +819,7 @@ public class Example {
 			test( "the product of x and y is x times y", "" );
 			test( "what is the product of 3 and 4",  "the product of 3 and 4 is 12" );
 			//TODO:
-			//interpret( "what is the product of x and y",  "the product of x and y is x times y" );
+			//interpret( "what is the product of x and y",  "the product of x and y is x times y" )
 			test( "the square of x is x times x",    "Ok, the square of x is x times x" );
 			test( "what is 2 times the square of 2", "2 times the square of 2 is 8" );
 			
@@ -830,14 +830,14 @@ public class Example {
 			
 			test( "subtract 2 from 3", "1" );
 			
-			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" );
-			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" );
-//			mediate( "interpret what is the factorial of numeric variable n thus",  "ok" );
-//			mediate( "first subtract 1 from variable n",                            "ok" );
-//			mediate( "then what is the factorial of whatever",                      "ok" );
-//			mediate( "then multiply whatever by variable n",  "ok" );
-//			mediate( "then reply whatever the factorial of variable n is whatever", "ok" );
-//			mediate( "ok", "ok" );
+			// interpret( "the factorial of n is n times the factorial of n - 1", "ok" )
+			// interpret( "what is the factorial of n",   "n is n times the factorial of n minus 1" )
+//			mediate( "interpret what is the factorial of numeric variable n thus",  "ok" )
+//			mediate( "first subtract 1 from variable n",                            "ok" )
+//			mediate( "then what is the factorial of whatever",                      "ok" )
+//			mediate( "then multiply whatever by variable n",  "ok" )
+//			mediate( "then reply whatever the factorial of variable n is whatever", "ok" )
+//			mediate( "ok", "ok" )
 			
 			test( "the factorial of n is n times the factorial of n minus 1",
 					"ok, the factorial of n is n times the factorial of n minus 1" );
@@ -845,7 +845,7 @@ public class Example {
 		}
 		if (runTheseTests( "Temporal interpret" )) {
 			test( "what day is christmas day", "" );
-			//testInterpret( "what day is it today" );
+			//testInterpret( "what day is it today" )
 			// my date of birth is
 			// how old am i.
 			// age is the given date minus the date of inception
@@ -926,7 +926,7 @@ public class Example {
 			// config port get chosen over this one???
 			test( "tcpip localhost "+ Server.TestPort +" \"a test port address\"", "ok" );
 			test( "tcpip localhost 5678 \"this is a test, which will fail\"",  "i'm sorry" );
-			test( "simon says put your hands on your head", "" ); //, "ok, success" );
+			test( "simon says put your hands on your head", "" ); //, "ok, success" )
 		}
 		if (runTheseTests( "Polymorphism - setup new idea and save" )) { // code generation features
 			
@@ -1012,8 +1012,8 @@ public class Example {
 					"egress is back into the wheel . "+
 					"ok" );
 			
-//			test( "no friendlies",                "ok, no friendlies are present" );
-//			test( "where are friendlies",         "no friendlies are present" );
+//			test( "no friendlies",                "ok, no friendlies are present" )
+//			test( "where are friendlies",         "no friendlies are present" )
 			test( "what is the target elevation", "142 feet, target elevation is 142 feet"     );
 			test( "where are friendlies",         "30 clicks east of target, friendlies are 30 clicks east of target" );
 		}
@@ -1074,8 +1074,8 @@ public class Example {
 			test( "what should we do", "we should wear a mask" );
 		}
 		if (runTheseTests( "these" )) {
-			//test( "you can say choose a number from phrase variable these", "ok" );
-			//test( "to which you reply with the first of these", "ok" );
+			//test( "you can say choose a number from phrase variable these", "ok" )
+			//test( "to which you reply with the first of these", "ok" )
 			test( "choose a number from one and two and three", "the first of these is one. ok the rest are two and three" );
 		}
 		if (runTheseTests( "yagadi scripts" )) {

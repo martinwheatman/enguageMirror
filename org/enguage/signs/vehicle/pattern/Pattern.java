@@ -554,7 +554,7 @@ public class Pattern extends ArrayList<Patte> {
 				if (val == null) return null;
 				
 				Attribute a = t.matchedAttr( val );
-				audit.debug( "FOUND: "+ a );
+				//audit.debug( "FOUND value: "+ a );
 				matched( a );
 			}
 			

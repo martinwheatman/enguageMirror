@@ -22,12 +22,12 @@ import org.enguage.util.sys.Server;
 
 import opt.test.Example;
 
-public class Engine {
+public final class Engine {
 	
-	public  static final String NAME = Repertoire.ALLOP;
-	private static Audit audit = new Audit( NAME );
+	public    static final String NAME = Repertoire.ALLOP;
+	private   static Audit audit = new Audit( NAME );
 	
-	public static final Sign commands[] = {
+	protected static final Sign[] commands = {
 			/* These could be accompanied in a repertoire, but they have special 
 			 * interpretations and so are built here alongside those interpretations.
 			 */	
@@ -138,7 +138,7 @@ public class Engine {
 						.appendIntention( Intention.thenThink,  "X"    )
 		 };
 	
-	static public Reply interp( Intention in, Reply r ) {
+	public static Reply interp( Intention in, Reply r ) {
 		r.answer( Response.yesStr()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
@@ -146,7 +146,7 @@ public class Engine {
 
 		if ( cmd.equals( "imagined" )) {
 			
-			Enguage.imagined( true );
+			Enguage.get().imagined( true );
 			r.format( new Strings( "ok, this is all imagined" ));
 			
 		} else if ( cmd.equals( "selfTest" )) {
@@ -157,18 +157,19 @@ public class Engine {
 		} else if ( cmd.equals( "groupby" )) {
 			
 			r.format( Response.success());
-			if (cmds.size() > 0 && !cmds.get( 0 ).equals( "X" ))
+			if (!cmds.isEmpty() && !cmds.get( 0 ).equals( "X" ))
 				Item.groupOn( cmds.get( 0 ).toUpperCase( Locale.getDefault()));
 			else
 				r.format( new Strings( Response.failure() +", i need to know what to group by" ));
 			
 		} else if ( cmd.equals( "undo" )) {
+			
 			r.format( Response.success() );
 			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
 				Redo.undoEnabledIs( true );
 			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
 				Redo.undoEnabledIs( false );
-			else if (cmds.size() == 0 && Redo.undoIsEnabled()) {
+			else if (cmds.isEmpty() && Redo.undoIsEnabled()) {
 				if (Overlay.number() < 2) { // if there isn't an overlay to be removed
 					audit.debug( "overlay count( "+ Overlay.number() +" ) < 2" ); // audit
 					r.answer( Response.noStr() );
@@ -197,12 +198,12 @@ public class Engine {
 			Strings files = cmds.copyAfter( 0 );
 			for(int i=0; i<files.size(); i++)
 				Autoload.unload( files.get( i ));
-			/*
-		} else if (cmd.equals( "reload" )) {
-			Strings files = cmds.copyAfter( 0 );
-			for(int i=0; i<files.size(); i++) Concept.unload( files.get( i ));
-			for(int i=0; i<files.size(); i++) Concept.load( files.get( i ));
-*/
+		/*
+		 *else if (cmd.equals( "reload" )) 
+		 *	Strings files = cmds.copyAfter( 0 )
+		 *	for(int i=0; i<files.size(); i++) Concept.unload( files.get( i ))
+		 *	for(int i=0; i<files.size(); i++) Concept.load( files.get( i ))
+		 */
 
 		} else if (cmd.equals( "saveAs" )) {
 			
@@ -324,7 +325,7 @@ public class Engine {
 			
 		} else if (cmd.equals( "show" )) {
 			
-			//audit.audit( "cmds:"+ cmds +":sz="+ cmds.size() );
+			//audit.audit( "cmds:"+ cmds +":sz="+ cmds.size() )
 			if (1==cmds.size() && cmds.get( 0 ).length()>=4) {
 				String option = cmds.get( 0 ).substring(0,4);
 				if (option.equals( "auto" )) {
@@ -375,16 +376,16 @@ public class Engine {
 				Reply.say( Variable.deref( new Strings( cmds )));
 
 		} else if ( cmd.equals( "list" )) {
-			//Strings reps = Enguage.e.signs.toIdList();
+			//Strings reps = Enguage.e.signs.toIdList()
 			/* This becomes less important as the interesting stuff becomes auto loaded 
 			 * Don't want to list all repertoires once the repertoire base begins to grow?
 			 * May want to ask "is there a repertoire for needs" ?
 			 */
 			r.format( new Strings( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() )));
 			
-		} else if ( cmd.equals( "ok" ) && cmds.size() == 0) {
+		} else if ( cmd.equals( "ok" ) && cmds.isEmpty()) {
 
-			r.format( // think( "that concludes interprtation" );
+			r.format( // think( "that concludes interprtation" )
 				new Variable( "transformation" ).isSet( "true" ) ?
 						Enguage.get().mediate( new Strings( "that concludes interpretation" )).toString()
 						: "ok"

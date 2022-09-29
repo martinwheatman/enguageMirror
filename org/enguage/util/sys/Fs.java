@@ -13,43 +13,51 @@ import java.io.PrintWriter;
 import org.enguage.util.Audit;
 
 public class Fs {
-	static Audit audit = new Audit( "Fs" );
 	
-	static private String  location = "";
-	static public  String  location() { return location; }
-	static public  boolean location( String s ) {
+	private Fs() {}
+	
+	private static Audit audit = new Audit( "Fs" );
+	
+	private static String  location = "";
+	public static  String  location() { return location; }
+	public static  boolean location( String s ) {
 		location = s;
 		return s != null && new File( s ).exists();
 	}
 
-	static private String root = ".";
-	static public  String root() { return root; }
-	static public  void   root( String name ) {
-		new File( root = name + File.separator ).mkdirs();
+	private static String root = ".";
+	public static  String root() { return root; }
+	public static  void   root( String name ) {
+		root = name + File.separator;
+		new File( root ).mkdirs();
 	}
 
 	// Composite specific
-	static public boolean createEntity( String name ) { return new File( name ).mkdirs(); }
-	static public boolean renameEntity( String from, String to ) { return new File( from ).renameTo( new File( to )); }
-	static public boolean existsEntity( String name ) { return new File( name ).isDirectory(); }
-	static public boolean destroyEntity( String name ) { return new File( name ).delete(); }
+	public static boolean createEntity( String name ) { return new File( name ).mkdirs(); }
+	public static boolean renameEntity( String from, String to ) { return new File( from ).renameTo( new File( to )); }
+	public static boolean existsEntity( String name ) { return new File( name ).isDirectory(); }
+	public static boolean destroyEntity( String name ) { return new File( name ).delete(); }
 	// General
-	static public boolean create( String name ) { if (name == null) name = "."; return new File( name ).mkdirs(); }
-	static public boolean rename( String from, String to ) { return new File( from ).renameTo( new File( to )); }
-	//static public boolean exists( String NAME ) { return new File( NAME ).isDirectory() || new File( NAME ).isFile(); }
-	static public boolean exists( String fname ) { return fname != null && new File( fname ).exists(); } // ultimately less File() creation!
-	static public boolean destroy( String name ) {
+	public static boolean create( String name ) {
+		if (name == null)
+			name = ".";
+		return new File( name ).mkdirs();
+	}
+	public static boolean rename( String from, String to ) { return new File( from ).renameTo( new File( to )); }
+	public static boolean exists( String fname ) { return fname != null && new File( fname ).exists(); } // ultimately less File() creation!
+	public static boolean destroy( String name ) {
 		boolean rc = true;
 		File dir = new File( name );
 		if (dir.exists()) {
 			String[] list = dir.list();
-			if (list != null) for (int i=0; i<list.length; i++)
-				destroy( name+ File.separator +list[ i ]);
+			if (list != null)
+				for (int i=0; i<list.length; i++)
+					destroy( name+ File.separator +list[ i ]);
 			rc = dir.delete();
 		}
 		return rc;
 	}
-	static public boolean stringToFile( String fname, String value ) {
+	public static boolean stringToFile( String fname, String value ) {
 		boolean rc = true;
 		create( new File( fname ).getParent());
 		try {
@@ -61,47 +69,46 @@ public class Fs {
 		}
 		return rc;
 	}
-	static public boolean stringAppendFile( String fname, String value ) {
+	public static boolean stringAppendFile( String fname, String value ) {
 		boolean rc = true;
 		create( new File( fname ).getParent());
-		try {
-			BufferedWriter pw = new BufferedWriter( new FileWriter( fname, true ));
+		try (BufferedWriter pw = new BufferedWriter( new FileWriter( fname, true ))) {
 			pw.append( value );
-			pw.close();
 		} catch (IOException e) {rc = false;}
 		return rc;
 	}
-	static public String stringFromFile( String fname ) {
-		//audit.IN("stringFromFile", "name="+fname );
-		String value = ""; // need to check elsewhere if file exists
-		try {
-			FileInputStream fis = new FileInputStream( fname );
+	public static String stringFromFile( String fname ) {
+		//audit.IN("stringFromFile", "name="+fname )
+		String value = ""; 
+		try (FileInputStream fis = new FileInputStream( fname )) {
 			value = stringFromStream( fis );
-			fis.close();
-		} catch (Exception e) {} // just ignore non-existant files...
-		//audit.OUT( value );
+		} catch (Exception e) {
+			;//audit.debug( "file not found: "+ fname )
+		}
+		//audit.OUT( value )
 		return value;
 	}
-	static public String stringFromStream( InputStream is ) {
-		//audit.in( "stringFromStream" );
+	public static String stringFromStream( InputStream is ) {
+		//audit.in( "stringFromStream" )
 		String value = "";
 		try {
 			int n;
-			byte buf[] = new byte[ 1024 ];
+			byte[] buf = new byte[ 1024 ];
+			StringBuilder sb = new StringBuilder();
 			while (-1 != (n = is.read(buf))) {
 				for (int i=n; i<1024; i++) buf[ i ] = ' ';
-				value += new String( buf );
+				sb.append( new String( buf ));
 			}
-			value = value.trim(); // remove trailing blanks?
+			value = sb.toString().trim(); // remove trailing blanks?
 		} catch (IOException e) {
 			// just ignore non-existent files...
-			//audit.log( "Fs::stringFromInputStream(): IO exception: "+ e );
+			//audit.log( "Fs::stringFromInputStream(): IO exception: "+ e )
 			value = "";
 		}
-		//audit.out( value );
+		//audit.out( value )
 		return value;
 	}
-	static public byte[] fileToBytes( File f ) {
+	public static byte[] fileToBytes( File f ) {
 		// possibly used in the webserver
 		byte[] value = new byte[ // truncate this at 2Gib
 			(int)(f.length() <= Integer.MAX_VALUE ? f.length() : Integer.MAX_VALUE)
@@ -110,6 +117,6 @@ public class Fs {
 			DataInputStream fis = new DataInputStream( new FileInputStream( f ))
 		) {
 			fis.readFully( value );
-		} catch (IOException e) {}
+		} catch (IOException e) {;}
 		return value;
 }	}

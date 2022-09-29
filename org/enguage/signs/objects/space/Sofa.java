@@ -50,7 +50,7 @@ public class Sofa extends Shell {
 				case Value.id :      return       Value.interpret( Attribute.expand23( a ));
 				case Where.id :      return       Where.interpret( Attribute.expand23( a ));
 				case Plural.id :     return      Plural.interpret( Attribute.expand23( a ));
-				case Entity.id :     return      Entity.interpret( Attribute.expand23( a ));
+				case Entity.ID :     return      Entity.interpret( Attribute.expand23( a ));
 				case Expand.id :     return      Expand.interpret(                     a  );
 				case Context.id :    return     Context.interpret( Attribute.expand23( a ));
 				case Numeric.id  :   return     Numeric.interpret( Attribute.expand23( a ));

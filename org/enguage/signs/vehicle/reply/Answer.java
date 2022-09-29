@@ -26,12 +26,12 @@ public class Answer {
 	
 	public  Strings valueOf() {return answers;}
 	public  void    add( String s ) { answers.add( setType( s ));}
-	public  boolean none() { return answers.size() == 0; }
+	public  boolean none() { return answers.isEmpty(); }
 	
 	public Strings injectAnswer( Strings sa ) {
-		if (0 == sa.size()) {
+		if (sa.isEmpty()) {
 			sa = new Strings( answers ); // use the raw answer
-			if (sa.size() == 0) // so a was equal to ""
+			if (sa.isEmpty()) // so a was equal to ""
 				sa = Response.dnu();
 		} else if (sa.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 			sa.replace( Strings.ellipsis, answers );
