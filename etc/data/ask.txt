@@ -1,0 +1,13 @@
+the colour of the sky is blue: ok, the colour of the sky is blue.
+what is the colour of the sky: blue , the colour of the sky is blue.
+			
+to the phrase ask me phrase variable question reply variable question: ok.
+
+ask me what is the colour of the sky: what is the colour of the sky.
+
+#			/* TODO:
+#			 * To the phrase: i am p v name       => set user name NAME
+#			 *                my name is p v name => set user name NAME
+#			 *                p v name            => set user name NAME
+#			 * Ask: what is your name?
+#			 */

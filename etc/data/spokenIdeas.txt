@@ -1,0 +1,20 @@
+# First, check we're clean!  -- may not be the case with BCS HCI code
+hello:                          hello to you too/I don't understand.
+# Build a repertoire...
+to the phrase hello reply hello to you too: ok.
+hello:                          hello to you too.
+to the phrase my name is variable name reply hello variable name: ok.
+# OK, now save this...
+save  spoken concepts as hello: ok.
+			
+# then remove the cached concept...
+unload hello.
+			
+# So, this will reload from the saved repertoire
+hello:                          hello to you too.
+			
+# OK, now delete the repertoire (and the sign)
+delete spoken concept hello:    ok.
+# ...and its gone. We're clean again!
+hello:                          i don't understand.
+

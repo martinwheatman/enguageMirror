@@ -1,0 +1,176 @@
+delete martin was       list: ok.
+delete martin wasNot    list: ok.
+delete i      am        list: ok.
+delete i      amNot     list: ok.
+delete martin is        list: ok.
+delete martin isNot     list: ok.
+delete i      willBe    list: ok.
+delete i      willNotBe list: ok.
+delete martin willBe    list: ok.
+delete martin willNotBe list: ok.
+			
+#			/*
+#			 * Test 5.1 - IS
+#			 */
+# e.g. i am alive - 5.1
+interpret i am variable state thus:         ok.
+first add    variable state to   i am list: ok.
+then  remove variable state from i amNot list: ok.
+then reply ok: ok.
+			
+# e.g. i am not alive - 5.1
+interpret i am not variable state thus:        ok.
+first add    variable state to   i amNot list: ok.
+then  remove variable state from i am    list: ok.
+then reply ok: ok.
+			
+# e.g. am i alive? - 5.1
+interpret am i variable state thus:                ok.
+first variable state exists in i am list:          ok.
+then reply yes i am variable state:                ok.
+then if not variable state exists in i amNot list: ok.
+#			Repertoire.signs.show()
+#			Audit.allOn()
+then if not reply i do not know:                   ok.
+#			Audit.allOff()
+then reply no i am not variable state:             ok.
+ok: ok.
+			
+#  e.g. martin is alive - 5.1
+interpret variable entity is variable state thus:            ok.
+first add    variable state to   variable entity is    list: ok.
+then  remove variable state from variable entity isNot list: ok.
+then reply ok: ok.
+			
+# e.g. martin is not alive - 5.1
+interpret variable entity is not variable state thus:       ok.
+first add   variable state to   variable entity isNot list: ok.
+then remove variable state from variable entity is    list: ok.
+then reply ok: ok.
+			
+# e.g. is martin alive - 5.1
+interpret is variable entity variable state thus:        ok.
+first variable state  exists in variable entity is list: ok.
+then reply yes variable entity is variable state:        ok.
+then if not variable state exists in variable entity isNot list: ok.
+then reply no variable entity is not variable state:     ok.
+then if not reply i do not know:                         ok.
+ok: ok.
+
+# e.g. is martin not alive - 5.1
+interpret is variable entity not variable state thus:       ok.
+first variable state  exists in variable entity isNot list: ok.
+then reply yes variable entity is not variable state:        ok.
+then if not variable state exists in variable entity is list: ok.
+then reply no variable entity is variable state:             ok.
+then if not reply i do not know:                            ok.
+ok: ok.
+
+# test 5.1
+am i alive:     i don't know.
+i am alive:     ok.
+am i alive:     yes i'm alive.
+i am not alive: ok.
+am i alive:     no i'm not alive.
+			
+# test 5.1
+is martin alive: i don't know.
+martin is alive: ok.
+is martin alive: yes martin is alive.
+martin is not alive: ok.
+is martin alive:     no martin is not alive.
+is martin not alive: yes martin is not alive.
+			
+#
+#  Test 5.2 was/was not
+#
+#  e.g. martin was alive - 5.2
+interpret variable entity was variable state thus:            ok.
+first add    variable state to   variable entity was    list: ok.
+then  remove variable state from variable entity wasNot list: ok.
+then reply ok: ok.
+			
+# e.g. martin was not alive - 5.2
+interpret variable entity was not variable state thus:       ok.
+first add   variable state to   variable entity wasNot list: ok.
+then remove variable state from variable entity was    list: ok.
+then reply ok: ok.
+			
+# e.g. was martin alive - 5.2
+interpret was variable entity variable state thus:        ok.
+first variable state  exists in variable entity was list: ok.
+then reply yes variable entity was variable state:        ok.
+then if not variable state exists in variable entity wasNot list: ok.
+then reply no variable entity was not variable state:     ok.
+then if not reply i do not know:                          ok.
+ok: ok.
+
+# e.g. was martin not alive - 5.2
+interpret was variable entity not variable state thus:       ok.
+first variable state  exists in variable entity wasNot list: ok.
+then reply yes variable entity was not variable state:       ok.
+then if not variable state exists in variable entity was list: ok.
+then reply no variable entity was variable state:            ok.
+then if not reply i do not know:                             ok.
+ok: ok.
+
+# test 5.2
+was martin alive:     i don't know.
+martin was alive:     ok.
+was martin alive:     yes martin was alive.
+martin was not alive: ok.
+was martin alive:     no martin was not alive.
+was martin not alive: yes martin was not alive.
+			
+#
+#  Test 5.3 will be/will not be
+#
+#  e.g. martin will be alive - 5.3
+interpret variable entity will be variable state thus:           ok.
+first add    variable state to   variable entity willBe    list: ok.
+then  remove variable state from variable entity willNotBe list: ok.
+then reply ok: ok.
+			
+# e.g. martin will not be alive - 5.3
+interpret variable entity will not be variable state thus:      ok.
+first add   variable state to   variable entity willNotBe list: ok.
+then remove variable state from variable entity willBe    list: ok.
+then reply ok: ok.
+			
+# e.g. will martin be alive - 5.3
+interpret will variable entity be variable state thus:      ok.
+first variable state exists in variable entity willBe list: ok.
+then reply yes variable entity will be variable state:      ok.
+then if not variable state exists in variable entity willNotBe list: ok.
+then reply no variable entity will not be variable state:   ok.
+then if not reply i do not know:                            ok.
+ok: ok.
+
+# e.g. will martin not be alive - 5.3
+interpret will variable entity not be variable state thus:      ok.
+first variable state  exists in variable entity willNotBe list: ok.
+then reply yes variable entity will not be variable state:      ok.
+then if not variable state exists in variable entity willBe list: ok.
+then reply no variable entity will be variable state:           ok.
+then if not reply i do not know:                                ok.
+ok: ok.
+
+# test 5.3
+will i be alive:     i don't know.
+i will be alive:     ok.
+will i be alive:     yes you'll be alive.
+i will not be alive: ok.
+will i be alive:     no you'll not be alive.
+will i not be alive: yes you'll not be alive.
+
+will martin be alive:     i don't know.
+martin will be alive:     ok.
+will martin be alive:     yes martin will be alive.
+martin will not be alive: ok.
+will martin be alive:     no martin will not be alive.
+will martin not be alive: yes martin will not be alive.
+
+# Test
+# Event: to move is to was (traverse time quanta)
+# interpret( interpret when i am dead then move what i am to what i was thus: ok )
+

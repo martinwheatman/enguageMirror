@@ -1,0 +1,88 @@
+# TODO: WSC - alternative states tests
+# mut ex: dead is the opposite of alive, no?
+#         dead and alive are mutually exclusive
+# mut ex: i am martin            - ok
+#         i am martin wheatman   - ok
+#         i am martin            - yes, i know
+#         i am harvey wallbanger - no you're martin
+#         i've changed my name to harvey wallbanger - ok
+# fat and thin and athletic are mutually exclusive.
+#         I am fat.     Am I thin. No
+#         I am not fat. Am i thin. I don't know
+echo Contradiction test... can't swap between states directly.
+			
+demonstrators fear violence:        ok, demonstrators fear violence.
+demonstrators advocate violence:    no, demonstrators fear violence.
+demonstrators do not fear violence: ok, demonstrators don't fear violence.
+demonstrators advocate violence:    ok, demonstrators advocate violence.
+demonstrators fear violence:        no, demonstrators advocate violence.
+demonstrators don't advocate violence: 
+					 ok, demonstrators don't advocate violence.
+
+tidy up violence test.
+			
+# ----------------------------------------------------------------
+echo Openly stated - opposing views.
+the councillors   fear     violence: ok, the councillors       fear violence.
+the demonstrators advocate violence: ok, the demonstrators advocate violence.
+# test 1
+the councillors refused the demonstrators a permit because they fear violence:
+					 ok, the councillors refused the demonstrators a permit because they fear violence.
+who are they: they are the councillors.
+# test 2
+the councillors refused the demonstrators a permit because they advocate violence:
+					 ok, the councillors refused the demonstrators a permit because they advocate violence.
+who are they: they are the demonstrators.
+
+tidy up violence test.
+			
+# ----------------------------------------------------------------
+echo Openly stated - aligned views - advocate.
+the councillors   advocate violence: ok, the councillors   advocate violence.
+the demonstrators advocate violence: ok, the demonstrators advocate violence.
+			
+# test  1
+the councillors refused the demonstrators a permit because they fear violence:
+					 i'm sorry, I don't think they fear violence.
+who are they: I don't know.
+			
+# test 2
+the councillors refused the demonstrators a permit because they advocate violence:
+					 ok, the councillors refused the demonstrators a permit because they advocate violence.
+who are they: they are the councillors , and the demonstrators.
+			
+# tidy up
+tidy up violence test.
+			
+# ----------------------------------------------------------------
+echo Openly stated - aligned views - fear.
+the councillors fear violence because the voters fear violence:
+					 ok, the councillors fear violence because the voters fear violence.
+the demonstrators fear violence: ok, the demonstrators fear violence.
+			
+# test 1
+the councillors refused the demonstrators a permit because they fear violence:
+					 ok, the councillors refused the demonstrators a permit because they fear violence.
+who are they: they are the councillors , the voters , and the demonstrators.
+			
+# test 2
+the councillors refused the demonstrators a permit because they advocate violence:
+					 i'm sorry, I don't think they advocate violence.
+who are they: i don't know.
+			
+# tidy up
+tidy up violence test.
+			
+# ----------------------------------------------------------------
+echo the common sense view.
+# This should be configured within the repertoire...
+common sense would suggest the councillors fear violence:
+					 ok, common sense would suggest the councillors fear violence.
+			
+the councillors refused the demonstrators a permit because they fear violence:
+					 ok, the councillors refused the demonstrators a permit because they fear violence.
+who are they: they are the councillors.
+			
+# tidy up - N.B. these will affect previous tests on re-runs
+tidy up violence test.
+

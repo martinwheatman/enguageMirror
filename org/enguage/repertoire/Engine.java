@@ -1,5 +1,6 @@
 package org.enguage.repertoire;
 
+import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.Enguage;
@@ -24,13 +25,19 @@ import opt.test.Example;
 
 public final class Engine {
 	
+	private Engine() {}
+	
 	public    static final String NAME = Repertoire.ALLOP;
 	private   static Audit audit = new Audit( NAME );
 	
 	protected static final Sign[] commands = {
 			/* These could be accompanied in a repertoire, but they have special 
 			 * interpretations and so are built here alongside those interpretations.
-			 */	
+			 */
+   			new Sign()
+					.pattern( new Patte( "echo", "SAID" ).phrasedIs())
+					.appendIntention( Intention.allop, "echo SAID" )
+					.concept( NAME ),
    			new Sign()
 					.pattern( new Patte( "run a self test", "" ))
 					.appendIntention( Intention.allop, "selfTest" )
@@ -151,7 +158,7 @@ public final class Engine {
 			
 		} else if ( cmd.equals( "selfTest" )) {
 			
-			Example.test();
+			Example.unitTests();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
 			
 		} else if ( cmd.equals( "groupby" )) {
@@ -365,6 +372,14 @@ public final class Engine {
 				r.answer( Reply.previous().toString());
 			}
 			
+		} else if (cmd.equals( "echo" )) {
+			ListIterator<String> li = cmds.listIterator();
+			while (li.hasNext()) {
+				String s = li.next();
+				li.set( s.toUpperCase());
+			}	
+			audit.title( cmds.toString() );
+
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'
 			// so we need to trim the quoted speech...
