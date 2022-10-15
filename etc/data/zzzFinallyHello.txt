@@ -1,3 +1,0 @@
-# see if we've remembered hello... shouldn't have
-hello: i don't understand.
-

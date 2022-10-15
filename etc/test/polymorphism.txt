@@ -7,3 +7,7 @@ what do i want:      you want another pony/ you don't want anything.
 i want another pony: yes, i know/ ok, you want another pony.
 what do i want:      you want another pony.
 
+subtitle tidying up.
+want is unlike need: ok, want is unlike need.
+i don't want anything: I don't understand, i don't want anything.
+

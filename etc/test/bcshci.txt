@@ -19,17 +19,22 @@ what do i want:        i'm sorry, i don't understand the question.
 want is like need:     ok, want is like need.
 what do i want:        you don't want anything.
 
+# this needs to be on the 'can' list???
 interpret something can be variable quality thus.
 first add variable quality to my quality list.
 then reply ok variable quality is a quality.
 
 something can be cool: ok cool is a quality.
-			
+
+# need to check that quality is in my quality list???
 interpret variable things are variable quality thus.
 first add variable things to my variable quality list.
-and then reply ok variable things are variable quality.
-			
+and then reply ok variable things are variable quality.	
+
 ferraris are cool:     ok ferraris are cool.
+
+debug off.
+
 want is like need.
 i want a ferrari because ferraris are cool: ok, you want a ferrari because ferraris are cool.
 why do I want a ferrari: because ferraris are cool.

@@ -2,8 +2,6 @@ package opt.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
 
@@ -93,9 +91,9 @@ public class Example {
 		}
 	}
 
-	private static void runTestFile(String fname) {
-		List<String> lines = new ArrayList<>();
-
+	private static boolean runTestFile(String fname) {
+		boolean rc = true;
+		
 		File f = new File( fname );
 		if (f.exists()) {
 			try (Scanner file = new Scanner( f )) {
@@ -117,29 +115,21 @@ public class Example {
 				}
 	
 			} catch (FileNotFoundException fnf) {
-				lines.add( "<<Error: " + fnf + ">>" );
+				rc = false;
 			}
 		}
+		return rc;
 	}
 
 	/*
 	 * Full self-test...
 	 */
-	private static final String TEST_DIR = "etc/data/";
+	private static final String TEST_DIR = "etc/test/";
 	private static final String TEST_EXT = ".txt";
 	
 	public static void unitTest( Strings tests ) {
-		// ...useful ephemera...
-		//interpret( "detail on" )
-		//interpret( "tracing on" )
-		//Audit.allOn()
-		//Repertoire.signs.show( "OTF" )
-		/* 
-		 * Test groups -
-		 */
 		int testGrp = 0;
-
-
+		
 		Audit.interval(); // reset timer
 		testPrompt(  "\nuser> "    );
 		replyPrompt( "enguage> " );
@@ -156,8 +146,8 @@ public class Example {
 			if (!Fs.destroy( fsys ))
 				audit.FATAL( "failed to remove old database - "+ fsys );
 			audit.title( "TEST: "+ test );
-			runTestFile( TEST_DIR+ test +TEST_EXT );
-			testGrp++;
+			if (runTestFile( TEST_DIR+ test +TEST_EXT ))
+				testGrp++;
 		}
 
 		Audit.log( testGrp +" test group(s) found" );

@@ -35,8 +35,16 @@ public final class Engine {
 			 * interpretations and so are built here alongside those interpretations.
 			 */
    			new Sign()
-					.pattern( new Patte( "echo", "SAID" ).phrasedIs())
-					.appendIntention( Intention.allop, "echo SAID" )
+					.pattern( new Patte( "entitle", "SAID" ).phrasedIs())
+					.appendIntention( Intention.allop, "entitle SAID" )
+					.concept( NAME ),
+   			new Sign()
+					.pattern( new Patte( "subtitle", "SAID" ).phrasedIs())
+					.appendIntention( Intention.allop, "subtitle SAID" )
+					.concept( NAME ),
+   			new Sign()
+					.pattern( new Patte( "subtitle", "SAID" ).phrasedIs())
+					.appendIntention( Intention.allop, "subtitle SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( new Patte( "run a self test", "" ))
@@ -372,13 +380,29 @@ public final class Engine {
 				r.answer( Reply.previous().toString());
 			}
 			
-		} else if (cmd.equals( "echo" )) {
+		} else if (cmd.equals( "entitle" )) {
 			ListIterator<String> li = cmds.listIterator();
 			while (li.hasNext()) {
 				String s = li.next();
 				li.set( s.toUpperCase());
 			}	
 			audit.title( cmds.toString() );
+
+		} else if (cmd.equals( "subtitle" )) {
+			ListIterator<String> li = cmds.listIterator();
+			while (li.hasNext()) {
+				String s = li.next();
+				li.set( s.toUpperCase());
+			}	
+			audit.subtl( cmds.toString() );
+
+		} else if (cmd.equals( "echo" )) {
+			ListIterator<String> li = cmds.listIterator();
+			while (li.hasNext()) {
+				String s = li.next();
+				li.set( s.toUpperCase());
+			}	
+			Audit.log( cmds.toString() );
 
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'
