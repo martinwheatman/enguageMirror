@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import org.enguage.Enguage;
 import org.enguage.signs.objects.space.Overlay;
-import org.enguage.signs.vehicle.pronoun.Pronoun;
+import org.enguage.signs.symbol.pronoun.Pronoun;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;

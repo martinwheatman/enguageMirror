@@ -6,8 +6,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.vehicle.config.Plural;
-import org.enguage.signs.vehicle.pattern.Pattern;
+import org.enguage.signs.symbol.config.Plural;
+import org.enguage.signs.symbol.pattern.Pattern;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

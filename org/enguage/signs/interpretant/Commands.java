@@ -4,14 +4,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.vehicle.reply.Reply;
-import org.enguage.signs.vehicle.reply.Response;
-import org.enguage.signs.vehicle.when.When;
+import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.signs.symbol.reply.Response;
+import org.enguage.signs.symbol.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Commands {
-	//static private Audit audit = new Audit( "commands" );
+	static private Audit audit = new Audit( "commands" );
 	
 	public Commands (String command) { cmd = command; }
 
@@ -44,8 +44,7 @@ public class Commands {
 		Reply r = new Reply();
 		
 		rc = (rc == 0) ? Response.OK 
-				: (rc == 1) ? Response.DNK
-						: Response.FAIL;
+				: Response.FAIL;
 		
 		String whn = result.replace( " ", "" );
 		result = When.valid( whn ) ?				 // 88888888198888 -> 7pm
@@ -53,11 +52,11 @@ public class Commands {
 				: rc == Response.DNK ?
 						Response.dnkStr()
 						: result;					  // chs
-	 	
+	 	//Audit.LOG( "result="+ result +", rc="+ rc );
 		r.answer( result );
 		r.format( result );
 		r.response( rc );
-
+		//audit.OUT( r );
 	 	return r;
 	}
 	
@@ -71,17 +70,17 @@ public class Commands {
 		try {
 			p = pb.start();
 			try (
-					BufferedReader reader =
-							new BufferedReader(
+				BufferedReader reader =
+						new BufferedReader(
+							new InputStreamReader(
+									p.getInputStream()
+						)	);
+				BufferedReader  error =
+						new BufferedReader(
 								new InputStreamReader(
-										p.getInputStream()
-							)	);
-					BufferedReader  error =
-							new BufferedReader(
-									new InputStreamReader(
-											p.getErrorStream()
-							)		);
-					) {
+										p.getErrorStream()
+						)		);
+			) {
 		
 				String line;
 				while ((line = reader.readLine()) != null)

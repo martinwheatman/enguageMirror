@@ -1,6 +1,6 @@
 package org.enguage.signs.objects.space;
 
-import org.enguage.signs.vehicle.reply.Response;
+import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

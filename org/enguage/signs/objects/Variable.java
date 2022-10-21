@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.objects.space.Value;
-import org.enguage.signs.vehicle.pattern.Pattern;
+import org.enguage.signs.symbol.pattern.Pattern;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;

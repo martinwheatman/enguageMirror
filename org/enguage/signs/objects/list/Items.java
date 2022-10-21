@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.enguage.signs.objects.space.Value;
-import org.enguage.signs.vehicle.number.Number;
-import org.enguage.signs.vehicle.reply.Reply;
-import org.enguage.signs.vehicle.where.Where;
+import org.enguage.signs.symbol.number.Number;
+import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

@@ -4,11 +4,11 @@ import org.enguage.signs.Sign;
 import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.vehicle.Utterance;
-import org.enguage.signs.vehicle.pattern.Phrase;
-import org.enguage.signs.vehicle.pattern.Quote;
-import org.enguage.signs.vehicle.reply.Reply;
-import org.enguage.signs.vehicle.reply.Response;
+import org.enguage.signs.symbol.Utterance;
+import org.enguage.signs.symbol.pattern.Phrase;
+import org.enguage.signs.symbol.pattern.Quote;
+import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
 
 public class Repertoire {

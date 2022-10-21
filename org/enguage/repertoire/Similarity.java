@@ -1,8 +1,8 @@
 package org.enguage.repertoire;
 
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.vehicle.config.Plural;
-import org.enguage.signs.vehicle.reply.Response;
+import org.enguage.signs.symbol.config.Plural;
+import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

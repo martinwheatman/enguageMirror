@@ -10,13 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
-import org.enguage.util.Audit;
-
 public class Fs {
 	
 	private Fs() {}
 	
-	private static Audit audit = new Audit( "Fs" );
+	//private static Audit audit = new Audit( "Fs" );
 	
 	private static String  location = "";
 	public static  String  location() { return location; }

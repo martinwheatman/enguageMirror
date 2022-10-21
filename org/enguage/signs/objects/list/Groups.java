@@ -2,7 +2,7 @@ package org.enguage.signs.objects.list;
 
 import java.util.ArrayList;
 
-import org.enguage.signs.vehicle.reply.Reply;
+import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

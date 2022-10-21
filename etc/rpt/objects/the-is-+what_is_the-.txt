@@ -8,6 +8,7 @@ On "the ENT ATTR is PHRASE-EVAL":
 	
 On "the ENT ATTR is wrong":
 	run "value -d the/ENT/ATTR";
+	if not, reply "ok, we don't know the ENT ATTR";
 	reply "ok, we don't know the ENT ATTR".
 	
 On "what is the ENAME":

@@ -4,8 +4,8 @@ import java.util.ListIterator;
 
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.objects.space.Overlay;
-import org.enguage.signs.vehicle.number.Number;
-import org.enguage.signs.vehicle.reply.Response;
+import org.enguage.signs.symbol.number.Number;
+import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

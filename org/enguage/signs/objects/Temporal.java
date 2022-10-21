@@ -1,7 +1,7 @@
 package org.enguage.signs.objects;
 
-import org.enguage.signs.vehicle.when.Day;
-import org.enguage.signs.vehicle.when.When;
+import org.enguage.signs.symbol.when.Day;
+import org.enguage.signs.symbol.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import org.enguage.repertoire.Repertoire;
-import org.enguage.signs.vehicle.Utterance;
-import org.enguage.signs.vehicle.reply.Reply;
+import org.enguage.signs.symbol.Utterance;
+import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

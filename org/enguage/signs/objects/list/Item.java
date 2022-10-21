@@ -3,11 +3,11 @@ package org.enguage.signs.objects.list;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.signs.vehicle.config.Plural;
-import org.enguage.signs.vehicle.number.Number;
-import org.enguage.signs.vehicle.when.Moment;
-import org.enguage.signs.vehicle.when.When;
-import org.enguage.signs.vehicle.where.Where;
+import org.enguage.signs.symbol.config.Plural;
+import org.enguage.signs.symbol.number.Number;
+import org.enguage.signs.symbol.when.Moment;
+import org.enguage.signs.symbol.when.When;
+import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
