@@ -15,7 +15,7 @@ public class Join {
 	
 	static private ArrayList<ArrayList<Integer>> combinations( ArrayList<Integer> dimensions ) {
 		//if (Audit.detailedDebug) audit.in( "combinations", dimensions.toString());
-		/* If we save as OBJECT.0, ... OBJECT.n need to do a join on SUBJECT.m needs OBJECT.n
+		/* If we save as THIS.0, ... THIS.n need to do a join on SUBJECT.m needs THIS.n
 		 *   e.g. martin and james need a beer and a packet of crisps.
 		 *        martin needs a beer.
 		 *        james  needs a beer.
@@ -79,7 +79,7 @@ public class Join {
 			 * -- pass values into combinations() and annotate there!
 			 */
 			
-			// first we get loaded=["SUBJECTS","OBJECTS"]
+			// first we get loaded=["SUBJECTS","THESE"]
 			Strings names = match.names();
 			
 			ArrayList<ArrayList<Strings>> values = match.valuesAsLists( sep );
@@ -118,17 +118,19 @@ public class Join {
 		
 		on = true;
 		
+		//audit.title( "singular subjects" );
 		Attributes match = new Attributes();
 		match.add( new Attribute( "SUBJECT", "martin" ));
-		match.add( new Attribute(  "OBJECT", "2 coffees, a pot of tea and biscuits" ));
+		match.add( new Attribute(   "THESE", "2 coffees and a pot of tea and biscuits" ));
 		
 		Audit.log( "Context is:\n\t"+ match );
 		ArrayList<Attributes> ala = join( match, "and" );
 		Audit.log( "Combinations of which are:\n\t"+ ala.toString() );
 		
+		//audit.title( "plural subjects" );
 		match = new Attributes();
 		match.add( new Attribute( "SUBJECTS", "martin and ruth" ));
-		match.add( new Attribute(  "OBJECTS", "2 coffees and a pot of tea and biscuits" ));
+		match.add( new Attribute(    "THESE", "2 coffees and a pot of tea and biscuits" ));
 		
 		Audit.log( "Context is:\n\t"+ match );
 		ala = join( match, "and" );

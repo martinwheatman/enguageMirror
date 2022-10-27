@@ -1,7 +1,6 @@
 On "X is holding hands with Y":
 	create a holdinghands link from X to Y;
-	the answer is Y;
-	reply "ok, X is holding hands with ...".
+	reply "ok, X is holding hands with Y".
 
 On "i am holding hands with Y":
 	martin is holding hands with Y;

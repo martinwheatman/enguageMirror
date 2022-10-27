@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.enguage.Enguage;
-import org.enguage.objects.Variable;
+import org.enguage.signs.objects.Variable;
 import org.enguage.util.Strings;
 
 public class EnguagePanel extends JPanel {
@@ -85,7 +85,7 @@ public class EnguagePanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			String uid= "swing"; // see ./var/swing
 			Strings utterance = new Strings( t1.getText() );
-			Strings reply =  Enguage.e.mediate( uid, utterance );
+			Strings reply =  Enguage.get().mediate( uid, utterance );
 			t2.setText( reply.toString() );
 			t2.setBackground( 
 				whatColourShouldIbe( t2.getBackground() )
@@ -105,7 +105,7 @@ public class EnguagePanel extends JPanel {
 	}
 	public static void main(String[] args) {
 		
-		Enguage.e = new Enguage( Enguage.RW_SPACE );
+		Enguage.set( new Enguage( Enguage.RW_SPACE ));
 		
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {

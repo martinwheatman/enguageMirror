@@ -2,11 +2,11 @@ package org.enguage.util.attr;
 
 import java.util.ListIterator;
 
+import org.enguage.signs.symbol.config.Plural;
+import org.enguage.signs.symbol.when.Moment;
+import org.enguage.signs.symbol.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.config.Plural;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.When;
 
 public class Attribute {
 	

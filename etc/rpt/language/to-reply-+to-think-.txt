@@ -5,7 +5,7 @@ On "to            PHRASE-X reply      PHRASE-Y":
 	perform "sign create X";
 	perform "sign reply Y".
 
-On "to the phrase SAID-X think      SAID-Y":
+On "to the phrase SAID-X think SAID-Y":
 	perform "sign create X";
 	perform "sign think  Y".
 

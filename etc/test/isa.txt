@@ -1,0 +1,7 @@
+#/* TODO:
+# *  create a queen called elizabeth the first  (eliz = woman's name, a queen is a monarch => person)
+# *  she died in 1603
+# *  she reigned for 45 years (so she ascended/came to the throne in 1548!)
+# */
+a queen is a monarch: ok, a queen is a monarch.
+

@@ -1,0 +1,5 @@
+i enjoy yellow:       ok, you enjoy yellow.
+i enjoy dogs:         ok, you enjoy dogs.
+
+do i enjoy yellow:    yes, you enjoy yellow.
+do i enjoy chocolate: you haven't told me you enjoy chocolate.

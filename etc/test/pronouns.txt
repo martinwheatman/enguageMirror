@@ -1,0 +1,18 @@
+martin doesn't need anything.
+martin needs a coffee: ok, martin needs a coffee.
+what does he need:     martin needs a coffee.
+martin doesn't need anything.
+			
+ruth needs a tea:      ok, ruth needs a tea.
+what does she need:    ruth needs a tea.
+ruth  doesn't need anything.
+			
+laurel and hardy need a coffee and a tea:
+			         ok, laurel and hardy need a coffee and a tea.
+			
+what do they need:     laurel and hardy need a coffee , and a tea.
+			MartinAndRuth does not need anything.
+			
+james needs 3 eggs because he is baking a cake:
+					 ok, james needs 3 eggs because he is baking a cake.
+

@@ -2,38 +2,38 @@
 ### Concept: i have eaten ... / i have had ...
 ####################################################
 
-#On "i have had PHRASE_OBJECTS", i have eaten OBJECTS.
+#On "i have had PHRASE_THESE", i have eaten THESE.
 
 this concept is temporal.
 
 ###############################################################################
 # Various singular additions
-On "i have eaten PHRASE-OBJECTS":
+On "i have eaten PHRASE-THESE":
 	perform "context add when today";
 	if not, ok;
-	add OBJECTS to me eaten list;
-	if not, append OBJECTS onto me eaten list;
+	add THESE to my eaten list;
+	if not, append THESE onto my eaten list;
 	reply "ok, you have eaten ...".
 
-On "i have eaten NUMERIC-QUANTITY PHRASE-OBJECT":
+On "i have eaten NUMERIC-QUANTITY PHRASE-THIS":
 	perform "context add when today";
 	if not, ok;
-	add QUANTITY OBJECT to me eaten list;
+	add QUANTITY THIS to my eaten list;
 	reply "ok, you have eaten ... ".
 
-On "i have eaten NUMERIC-QUANTITY UNIT of PHRASE-OBJECT":
+On "i have eaten NUMERIC-QUANTITY UNIT of PHRASE-THIS":
 	perform "context add when today";
 	if not, ok;
-	add QUANTITY UNIT of OBJECT to me eaten list;
+	add QUANTITY UNIT of THIS to my eaten list;
 	reply "ok, you have eaten ...".
 	
 On "what have i eaten":
 	perform "context add when today";
 	if not, ok;
-	get me eaten list;
+	get my eaten list;
 	if not, reply "you have not eaten anything";
 	reply "you have eaten ...".
 	
-On "i have just eaten PHRASE-OBJECTS", today i have eaten OBJECTS.
-On "i just ate PHRASE-OBJECTS", i have just eaten OBJECTS.
-On "i ate PHRASE-OBJECTS", i have eaten OBJECTS.
+On "i have just eaten PHRASE-THESE", today i have eaten THESE.
+On "i just ate PHRASE-THESE", i have just eaten THESE.
+On "i ate PHRASE-THESE", i have eaten THESE.

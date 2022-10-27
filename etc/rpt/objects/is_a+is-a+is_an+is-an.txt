@@ -30,17 +30,17 @@ On "X is a Y":
 	create an instanceof link from X to Y;
 	then, reply "ok, X is a Y".
 
-On "is OBJECT a CLASS":
+On "is THIS a CLASS":
 	perform "an isa link from CLASS exists";
 	if not, reply "i'm sorry, CLASS is not a class";
-	perform "entity OBJECT exists";
-	if not, reply "i'm sorry, OBJECT does not exist"
-	perform "link exists OBJECT instanceof CLASS";
-	reply "yes, OBJECT is an instance of a CLASS";
-	perform "link get OBJECT instanceof";
+	perform "entity THIS exists";
+	if not, reply "i'm sorry, THIS does not exist"
+	perform "link exists THIS instanceof CLASS";
+	reply "yes, THIS is an instance of a CLASS";
+	perform "link get THIS instanceof";
 	perform "link transExists ... isa CLASS";
-	reply "no, OBJECT is not a CLASS";
-	then, reply "yes, OBJECT is a CLASS".
+	reply "no, THIS is not a CLASS";
+	then, reply "yes, THIS is a CLASS".
 	
 On "is CLASS a class":
 	entity CLASS exists;

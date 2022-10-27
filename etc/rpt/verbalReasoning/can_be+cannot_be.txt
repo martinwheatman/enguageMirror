@@ -1,3 +1,5 @@
+# Repertoire: CAN/CANNOT
+#
 On "SOMEONE can be SOMETHING":
 	SOMEONE and SOMETHING exist in my incapable list;
 	reply "no, SOMEONE cannot be SOMETHING";
@@ -23,6 +25,17 @@ On "can SOMEONE be SOMETHING":
 	reply "yes, SOMEONE can be SOMETHING";
 	if not, reply "sorry, i do not know".
 	
+# Test Driven Development:
+#
+#] flowers can    be yellow: ok, flowers can   be yellow.
+#] flowers cannot be green:  ok, flowers can't be green.
+#] flowers cannot be red:    ok, flowers can't be red.
+#] can flowers    be red:    no, flowers can't be red.
+#] no flowers can be red:    ok, flowers can be red.
+##
+#] can flowers    be green:   no, flowers can't be green.
+#] can flowers    be yellow:  yes, flowers can be yellow.
+#] can flowers    be red:     yes, flowers can be red.
+#] can flowers    be blue:    sorry, i don't know.
 
 
-	

@@ -5,11 +5,11 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.interp.pattern.Pattern;
-import org.enguage.objects.Variable;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.symbol.config.Plural;
+import org.enguage.signs.symbol.pattern.Pattern;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.config.Plural;
 
 public class Attributes extends ArrayList<Attribute> {
 	static private Audit audit = new Audit( "Attributes" );
@@ -100,7 +100,7 @@ public class Attributes extends ArrayList<Attribute> {
 		return value( from.name() ).equalsIgnoreCase( from.value() )
 			&& value(   to.name() ).equalsIgnoreCase(   to.value() );
 	}
-		public Attribute first() {
+	public Attribute first() {
 		ListIterator<Attribute> li = listIterator();
 		return li.hasNext() ? li.next() : null; 
 	}
@@ -187,7 +187,9 @@ public class Attributes extends ArrayList<Attribute> {
 			String orig = name;
 			// if we have QUOTED-X, retrieve X and leave answer QUOTED
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
-			boolean quoted   = name.contains( Pattern.quotedPrefix ),
+			boolean first    = name.contains( Pattern.firstPrefix ),
+					rest     = name.contains( Pattern.restPrefix  ),
+					quoted   = name.contains( Pattern.quotedPrefix ),
 					plural   = name.contains( Pattern.pluralPrefix ),
 					external = name.contains( Pattern.externPrefix ),
 					grouped  = name.contains( Pattern.groupedPrefix );
@@ -203,6 +205,10 @@ public class Attributes extends ArrayList<Attribute> {
 			if (value == null || value.equals( "" ))
 				value = orig;
 			else {
+				if (first)
+					value = new Strings( value ).before( "and" ).toString();
+				if (rest)
+					value = new Strings( value ).after(  "and" ).toString();
 				if (external)
 					value = reflect( new Strings(
 								Attribute.isAttribute( value ) ? new Attribute( value ).value() : value
@@ -245,7 +251,7 @@ public class Attributes extends ArrayList<Attribute> {
 	// ---- join():  => 
 	public ArrayList<ArrayList<Strings>> valuesAsLists( String sep ) {
 		/* Called from join -- note plurality of attribute loaded:
-		 * ([ SUBJECT="martin and ruth", OBJECTS="coffee and decaf tea" ], "and" ) =>
+		 * ([ SUBJECT="martin and ruth", THESE="coffee and decaf tea" ], "and" ) =>
 		 *      [[[martin and ruth], [coffee], [decaf tea]]
 		 */
 		/* Here we have raw arrays, of values and loaded. To limit the join combinations,

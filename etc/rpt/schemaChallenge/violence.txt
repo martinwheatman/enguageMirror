@@ -1,4 +1,5 @@
 # fear and advocacy - alternative states
+
 ### ADVOCATE
 On "PHRASE-WHOM advocate violence":
 	# check for a contradiction...

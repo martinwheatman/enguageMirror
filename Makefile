@@ -53,19 +53,21 @@ uninstall:
 
 ${MANIFEST}:
 	mkdir -p `dirname ${MANIFEST}`
-	echo "Manifest-Version: 1.0"           >  ${MANIFEST}
-	echo "Class-Path: ."                   >> ${MANIFEST}
-	echo "Main-Class: org.enguage.Enguage" >> ${MANIFEST}
+	echo "Manifest-Version: 1.0"        >  ${MANIFEST}
+	echo "Class-Path: ."                >> ${MANIFEST}
+	echo "Main-Class: opt.test.Example" >> ${MANIFEST}
 
 lib/enguage.jar: ${TMP} ${MANIFEST} lib
 	cp -a org com ${TMP}
+	mkdir ${TMP}/opt
+	cp -a opt/test ${TMP}/opt
 	( cd ${TMP} ;\
 		find com org -name \*.class -exec rm -f {} \; ;\
 		find com org -name .DS_Store -exec rm -f {} \; ;\
 		find com org -name .gitignore -exec rm -f {} \; ;\
-		javac org/enguage/Enguage.java ;\
+		javac opt/test/Example.java ;\
 		#find com org -name \*.java -exec rm -f {} \;  ;\
-		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com \
+		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com opt \
 	)
 	#rm -rf ${TMP}
 

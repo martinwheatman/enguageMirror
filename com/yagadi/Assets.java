@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.enguage.interp.repertoire.Concepts;
+import org.enguage.repertoire.Concepts;
 import org.enguage.util.Strings;
 
 public class Assets {

@@ -1,0 +1,82 @@
+#!/bin/bash
+# Copyright (c) Martin Wheatman 2022
+usage() {
+	echo "Usage: $(basename $0) [-D <db>] [<row> <col>|-a|-s|-d] <n/a/m/e> [<val...>]" >&2
+	echo "Where: -a = append" >&2
+	echo "     : -s = append and sort" >&2
+	echo "     : -d = delete given pattern" >&2
+	echo "     : <row col> are coordinates in a csv" >&2
+	exit 1
+}
+
+## ATTACH...
+DB="$(values value)"
+if [ "$1" == "-D" ]; then
+	DB=$(echo $2 | sed -e 's/~/'$(echo $HOME | sed -e 's/\//\\\//g')'/g')
+	if [ -d "$DB" ]; then
+		values create $DB
+		DB=$DB/values
+		shift 2
+	else
+		echo "Error: \$2 ($2) is not a dir" >&2
+		usage
+	fi
+fi
+cd ${DB}
+
+if [ "$#" -eq 0 ]; then
+	usage $0
+else
+	opt=$1
+	if [ "$opt" == "-a" -o "$opt" == "-d" ]; then
+		shift
+	elif echo "$1"|grep "^[1-9][0-9]*$" >/dev/null && \
+	     echo "$2"|grep "^[1-9][0-9]*$" >/dev/null
+	then
+		rown=$1; shift
+		coln=$1; shift
+	fi
+	
+	NAME="$1"; shift
+			
+	if [ -n "$rown" ]; then
+		touch $NAME
+		$HOME/java/enguage/bin/csv $rown $coln $NAME $*
+		
+	elif [ "$opt" == "-d" ]; then               # DELETE ..
+		if [ ! -f "$NAME" ]; then
+			exit 1
+		elif [ -s "$NAME" -a -n "$*" ]; then ## strip value...
+			grep -v "$*" $NAME > $NAME.new
+			mv $NAME.new $NAME
+			if [ ! -s "$NAME" ]; then      ## remove empty file
+				rm -f "$NAME"
+			fi
+		elif [ -z "$*" -a $(wc -l $NAME|cut -f1 -d\ ) -lt 2 ]; then
+			rm -f "$NAME"                  # removing value file
+		fi
+		
+	elif [ -n "$*" ]; then                 # WRITE...
+		mkdir -p $(dirname "$NAME") 2>/dev/null
+		touch $NAME
+		if [ "$opt" == "-a" -o "$opt" == "-s" ]; then
+			echo $* >> "$NAME"             ## append
+			if [ "$opt" == "-s" ]; then
+				sort -n "${NAME}" > "${NAME}.sorted"
+				mv "${NAME}.sorted" "${NAME}"
+			fi
+		else
+			echo $*  > "$NAME"             ## overwrite
+		fi
+		if [ $? -ne 0 ]; then
+			echo "Error: failed writing to $NAME: schema failure?" >&2
+		fi
+		
+	elif [ -d "$NAME" ]; then              # RETRIEVE list
+		ls "$NAME" 2>/dev/null
+		
+	else                                   # READ content
+		cat "$NAME" 2>/dev/null
+		
+	fi
+fi

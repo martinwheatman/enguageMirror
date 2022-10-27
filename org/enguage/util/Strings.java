@@ -7,33 +7,33 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TreeSet;
 
-import org.enguage.interp.sign.Sign;
-import org.enguage.objects.Expand;
-import org.enguage.objects.Numeric;
-import org.enguage.objects.Temporal;
-import org.enguage.objects.Variable;
-import org.enguage.objects.expr.Function;
-import org.enguage.objects.list.Item;
-import org.enguage.objects.list.Items;
-import org.enguage.objects.list.Transitive;
-import org.enguage.objects.space.Entity;
-import org.enguage.objects.space.Link;
-import org.enguage.objects.space.Overlay;
-import org.enguage.objects.space.Value;
+import org.enguage.signs.Sign;
+import org.enguage.signs.objects.Expand;
+import org.enguage.signs.objects.Numeric;
+import org.enguage.signs.objects.Temporal;
+import org.enguage.signs.objects.Variable;
+import org.enguage.signs.objects.expr.Function;
+import org.enguage.signs.objects.list.Item;
+import org.enguage.signs.objects.list.Items;
+import org.enguage.signs.objects.list.Transitive;
+import org.enguage.signs.objects.space.Entity;
+import org.enguage.signs.objects.space.Link;
+import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.space.Value;
+import org.enguage.signs.symbol.Utterance;
+import org.enguage.signs.symbol.config.Colloquial;
+import org.enguage.signs.symbol.config.Englishisms;
+import org.enguage.signs.symbol.config.Plural;
+import org.enguage.signs.symbol.reply.Answer;
+import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.config.Colloquial;
-import org.enguage.vehicle.config.Englishisms;
-import org.enguage.vehicle.config.Plural;
-import org.enguage.vehicle.reply.Answer;
-import org.enguage.vehicle.where.Where;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
 	public static final long serialVersionUID = 0;
-	static private Audit audit = new Audit( "Strings" );
+	private static Audit audit = new Audit( "Strings" );
 	
 	public final static int MAXWORD = 1024;
 	
@@ -70,9 +70,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
 	public Strings( Strings orig ) {
 		super();
-		if (null != orig)
-			for (int i=0; i<orig.size(); i++)
-				add( orig.get( i ));
+		Iterator<String> i = orig.iterator();
+		while (i.hasNext())
+			add( i.next());
 	}
 	public Strings( String[] sa ) {
 		super();
@@ -260,6 +260,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			( n == UNDERSC ) ? toString(   "",      "_",   "" ) :
 			"Strings.toString( "+ toString( CSV ) +", n="+ n +"? )";
 	}
+	@Override
 	public String toString() { return toString( SPACED ); }
 	public String toString( Strings seps ) {
 		if (size() == 0)
@@ -272,11 +273,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			String rc = "";
 			ListIterator<String> li = listIterator();
 			if (li.hasNext()) {
-				rc = (String) li.next();
+				rc = li.next();
 				String first = seps.get( 0 ),
 				       last = seps.get( 1 );
 				while (li.hasNext()) {
-					String tmp = (String) li.next();
+					String tmp = li.next();
 					rc += (li.hasNext() ? first : last) + tmp;
 			}  }
 			return rc;
@@ -299,13 +300,13 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return true;
 	}
-	static public boolean isNumeric( String s ) {
+	public static boolean isNumeric( String s ) {
 		try {
 			return !Float.isNaN( Float.parseFloat( s ));
 		} catch (NumberFormatException nfe) {
 			return false;
 	}	}
-	static public Float valueOf( String s ) {
+	public static Float valueOf( String s ) {
 		try {
 			return Float.parseFloat( s );
 		} catch (NumberFormatException nfe) {
@@ -323,7 +324,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		while (si.nextIndex() > i) si.previous();
 		return rc && !sai.hasNext() ? size() : 0; // we haven't failed AND got to end of strings
 	}
-	static public String getString( ListIterator<String> si, int n ) {
+	public static String getString( ListIterator<String> si, int n ) {
 		Strings sa = new Strings();
 		for (int i=0; i<n; i++)
 			if (si.hasNext())
@@ -361,11 +362,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	// EITHER:
 	// (a=[ "One Two Three", "Ay Bee Cee", "Alpha Beta" ], val= "Bee") => "Ay Bee Cee";
-	//static public String getContext( String[] a, String val ) {
+	//public static String getContext( String[] a, String val ) {
 	//	return "incomplete";
 	//}
 	// OR: (outer=[ "a", "strong", "beer" ], inner=[ "strong", "beer" ]) => true
-/*	static public boolean xcontainsStrings( String[] outer, String[] inner ) {
+/*	public static boolean xcontainsStrings( String[] outer, String[] inner ) {
 		if (outer.length == 0 && 0 == inner.length)
 			return true;
 		else if (outer.length >= inner.length)
@@ -409,6 +410,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			}
 		return this;
 	}
+	@Override
 	public String remove( int i ) {
 		String str = "";
 		if (i >= 0 && i<size()) {
@@ -526,7 +528,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return b;
 	}
-	static public Strings copyUntil( ListIterator<String> si, String until ) {
+	public static Strings copyUntil( ListIterator<String> si, String until ) {
 		// until is separator, it is consumed
 		String tmp;
 		Strings sa = new Strings();
@@ -535,7 +537,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			sa.append( tmp );
 		return sa;
 	}
-	static public Strings fromNonWS( String buf ) {
+	public static Strings fromNonWS( String buf ) {
 		Strings a = new Strings();
 		if (buf != null) {
 			StringBuffer word = null;
@@ -739,14 +741,33 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return true;
 	}
+	public Strings before( String word ) {
+		Strings before = new Strings();
+		for (String s : this)
+			if (s.equals( word ))
+				break;
+			else
+				before.add( s );
+		return before;
+	}
+	public Strings after( String word ) {
+		Strings after = new Strings();
+		boolean found = false;
+		for (String s : this)
+			if (found)
+				after.add( s );
+			else if (s.equals( word ))
+				found = true;
+		return after;
+	}
 	public Strings trimAll( char ch ) {
 		int i=0;
 		for( String s : this )
 			set( i++, trim( s, ch ));
 		return this;
 	}
-	static public String trim( String a, char ch ) { return triml( a, a.length(), ch ); }
-	static public String triml( String a, int asz, char ch ) {
+	public static String trim( String a, char ch ) { return triml( a, a.length(), ch ); }
+	public static String triml( String a, int asz, char ch ) {
 		// (a="\"hello\"", ch='"') => "hello"; ( "ohio", 'o' ) => "hi"
 		char ch0 = a.charAt( 0 );
 		if (asz == 2 && ch0 == ch && a.charAt( 1 ) == ch)
@@ -756,7 +777,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		else
 			return a;
 	}
-	static public String stripQuotes( String s ) {
+	public static String stripQuotes( String s ) {
 		int sz = s.length();
 		if (sz>1) {
 			char ch = s.charAt( 0 );
@@ -961,7 +982,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return audit.out( this );
 	}
-	static public String peek( ListIterator<String> li ) {
+	public static String peek( ListIterator<String> li ) {
 		String s = "";
 		if (li.hasNext()) {
 			s = li.next();
@@ -969,14 +990,14 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return s;
 	}
-	static public void unload( ListIterator<String> li, Strings sa ) {
+	public static void unload( ListIterator<String> li, Strings sa ) {
 		// this assumes all things got have been added to sa
 		int sz=sa.size();
 		while (0 != sz--) {
 			sa.remove( 0 );
 			li.previous();
 	}	}
-	static public boolean getWord( ListIterator<String> si, String word, Strings rep ) {
+	public static boolean getWord( ListIterator<String> si, String word, Strings rep ) {
 		audit.in( "getWord", peek( si )+", word="+word );
 		if (si.hasNext())
 			if (si.next().equals( word )) {
@@ -987,7 +1008,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				si.previous();
 		return audit.out( false );
 	}
-	static public String getName( ListIterator<String> si, Strings rep ) {
+	public static String getName( ListIterator<String> si, Strings rep ) {
 		String s = si.hasNext() ? si.next() : null;
 		if (s != null)
 			rep.add( s );
@@ -995,7 +1016,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			unload( si, rep );
 		return s;
 	}
-	static public String getLetter( ListIterator<String> si, Strings rep ) {
+	public static String getLetter( ListIterator<String> si, Strings rep ) {
 		String s = si.hasNext() ? si.next() : null;
 		if (s != null)
 			rep.add( s );
@@ -1003,10 +1024,10 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			unload( si, rep );
 		return s;
 	}
-	static public Strings getWords( ListIterator<String> li, String term, Strings rep ) {
+	public static Strings getWords( ListIterator<String> li, String term, Strings rep ) {
 		return getWords( li, 99, term, rep );
 	}
-	static public Strings getWords( ListIterator<String> li, int sanity, String term, Strings rep ) {
+	public static Strings getWords( ListIterator<String> li, int sanity, String term, Strings rep ) {
 		Strings sa = new Strings();
 		String  s  = "";
 		
@@ -1089,7 +1110,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return output;
 	}
 	
-	static public long lash( String s ) {
+	public static long lash( String s ) {
 		final char upper = 'z', lower = 'a';
 		long lhsh  = 0;
 		char ch;
@@ -1100,7 +1121,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				lhsh = lhsh*rng + ch - lower + 1;
 		return lhsh;
 	}
-	static public int hash( String s ) {
+	public static int hash( String s ) {
 		//final int MAXINT = 2147483647;
 		final char upper = 'z', lower = 'a';
 		int ihsh  = 0;
@@ -1187,8 +1208,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		//audit.audit( "===> ["+ sa2.toString( Strings.SQCSV ) +"] <===" );
 	
 		
-		//static public String[] removeAt( String[] a, int n ) ;
-		//static public String[] removeAll( String[] a, String val ) ;
+		//public static String[] removeAt( String[] a, int n ) ;
+		//public static String[] removeAll( String[] a, String val ) ;
 		// EITHER:
 		//String[] a = new String[] {"One Two Three", "this test passes", "Alpha Beta" };
 		//String  val= "passes";
@@ -1199,33 +1220,33 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		audit.audit( "containsStrings test "+ (outer.containsMatched( inner ) ? "passes" : "fails" ));
 		// ...OR: -------------------------------------------
 		// a=[ "One Two Three", "Aye Bee Cee", "Alpha Beta" ], val= "Bee" => b = [ "One Two Three", "Alpha Beta" ];
-		//static public String[] removeAllMatched( String[] a, String val ) ;
+		//public static String[] removeAllMatched( String[] a, String val ) ;
 		// ---------------------------------------------
-		//static public String[] removeFirst( String[] a, String val ) ;
+		//public static String[] removeFirst( String[] a, String val ) ;
 		//audit.audit( toString( removeFirst( Strings.fromString( "this test passes" ), "test" ), SPACED ));
-		//static public String[] append( String[] a, String str ) ;
+		//public static String[] append( String[] a, String str ) ;
 		//audit.audit( toString( append( Strings.fromString( "this test " ), "passes" ), SPACED ));
-		//static public String[] append( String[] a, String sa[] ) ;
+		//public static String[] append( String[] a, String sa[] ) ;
 		//audit.audit( toString( append( fromString( "this test " ), fromString( "passes" )), SPACED ));
-		//static public String[] prepend( String[] a, String str ) ;
+		//public static String[] prepend( String[] a, String str ) ;
 		//audit.audit( toString( prepend( fromString( "test passes" ), "this" ), Strings.SPACED ));
-		//static public String[] copyAfter( String[] a, int n ) ;
+		//public static String[] copyAfter( String[] a, int n ) ;
 		//audit.audit( toString( copyAfter( fromString( "error this test passes" ), 0 ), SPACED ));
-		//static public String[] copyFromUntil( String[] a, int n, String until ) ;
+		//public static String[] copyFromUntil( String[] a, int n, String until ) ;
 		//Strings xxx = new Strings( "error this test passes error" );
 		//audit.audit( toString( xxx.copyFromUntil( 1, "passes" ), SPACED ));
-		//static public String[] fromNonWS( String buf ) ;
+		//public static String[] fromNonWS( String buf ) ;
 	/*	audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
-		//static public String[] insertAt( String[] a, int pos, String str ) ;
+		//public static String[] insertAt( String[] a, int pos, String str ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
-		//static public String[] reverse( String[] a ) ;
+		//public static String[] reverse( String[] a ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
 		// replace( [ "hello", "martin", "!" ], [ "martin" ], [ "to", "you" ]) => [ "hello", "to", "you", "!" ]
-		//static public String[] replace( String[] a, String[] b, String[] c ) ;
+		//public static String[] replace( String[] a, String[] b, String[] c ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
-		//static public int indexOf( String[] a, String s ) ;
+		//public static int indexOf( String[] a, String s ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
-		//static public boolean contain( String[] a, String s ) ; return -1 != indexOf( a, s ); }
+		//public static boolean contain( String[] a, String s ) ; return -1 != indexOf( a, s ); }
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
 		
 		// deals with matched and unmatched values:
@@ -1234,12 +1255,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		// [ "a", "$unmatch", ".",  "b" ] => [ "a", "_USER", "." ] += [ "b", "." ] -- add period like Tag.c::newTagFromDesc...()
 		// [ "we are holding hands", "."  ] => [ "we", "are", "holding", "hands", "." ] -- jik - just in case!
 		// matches are from tags, *ap contains mixed case - any UPPERCASE items should match matches OR envvars.
-		//static public String[][] split( String[] a, String[] terminators ) ;
+		//public static String[][] split( String[] a, String[] terminators ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
 
 		// [ 'some', 'bread', '+', 'fish'n'chips', '+', 'some', 'milk' ], "+"  => [  'some bread', 'fish and chips', 'some milk' ]
-		//static public String[] rejig( String[] a, String ipSep, String opSep ) ;
-		//static public String[] rejig( String[] a, String sep ) ;
+		//public static String[] rejig( String[] a, String ipSep, String opSep ) ;
+		//public static String[] rejig( String[] a, String sep ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
 		// todo: remove rejig, above? Or, combine with expand() and normalise()/
 		// NO: Need Stringses to Strings & vv [ "some", "beer", "+", "some crisps" ] => "some beer", "some crisps" ]
@@ -1248,16 +1269,16 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		// I need to go to the gym and the jewellers =>
 		// (I need to go to the gym and I need to go to the jewellers =>)
 		// I need to go to the gym. I need to go to the jewellers.
-		//static public String[][] expand( String[][] a ) ;
+		//public static String[][] expand( String[][] a ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
 
 		// [ "one", "two three" ] => [ "one", "two", "three" ]
 		// todo: a bit like re-jig aove???
-		//static public String[] normalise( String[] sa ) ;
+		//public static String[] normalise( String[] sa ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
-		//static public boolean isUpperCase( String a ) ;
+		//public static boolean isUpperCase( String a ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
-		//static public boolean isUpperCaseWithHyphens( String a ) ;
+		//public static boolean isUpperCaseWithHyphens( String a ) ;
 		audit.audit( toString( ( Strings.fromString( "this test " ), "passes" ), Strings.SPACED ));
 		 *
 		 */
