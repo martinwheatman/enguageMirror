@@ -6,25 +6,30 @@ This convention is based on the idea that we think in utterances,
 and it is directed by our reaction to those thoughts.
 
 <center>
-utterance --> {thoughts} --> {replies} </br>
+
+utterance --> {thoughts|references} --> {replies} </br>
 ------ felicity ------->
+
 </center>
 
 ## Utterance
 Thoughts and replies are just utterances. An utterance is just any string 
-of words, there is no need for it to conform to any syntax - this is 
-arbtrary mapping.
+of words, there is no need for it to conform to any syntax - this is an
+arbtrary mapping initiated by utteranes.
 
 ## Thought
 Thoughts are unspoken utterances, used to interpret utterances, and are 
 interpreted themsleves.
+
+## Reference
+References refer to further unspoken utterances, 
 
 ## Reply
 A reply is a formatted answer. A different reply (format) will be provided
 at each level of interpretation.
 
 ### Answer
-An answer will be passed up, verbatim, through the interpretation (layers 
+An answer is a ( list of ) data items will be passed up, verbatim, through the interpretation (layers 
 of thought.) 
 
 ## Felicity
@@ -37,11 +42,6 @@ but are not necessarily, prefixed by "if so, ".
 + U-T-R: is essentially the Triadic Sign model, of Sign, Object and Interpretant
 by Charles Sanders Peirce (1839-1914), as illustrated by C. K. Ogden and 
 I. A. Richards in their 1923 publication, The Meaning of Meaning.
-
-<img src="./triOfRef.png">
-<center>
-Fig. 1. The Semiotic Tringle, c/f The Meaning of Meaning, 1923.
-</center>
 
 + Felicity - was introduced by John Langshaw Austin, in his 1955 
 William James Lectures at Harvard University, Boston, MA. 
@@ -57,5 +57,5 @@ This was taken up and advances as Speech Act Theory by John Searle.
 + 2018 - Because and Why - Advanced example of vocal reasoning.
 + 2019 - Pronoun disabmiguation - Winograd Schema Challenge example.
 
-Plus many more available on [ReserchGate.org](https://www.researchgate.net/profile/Martin_Wheatman) and
-[Academia.com](https://reading.academia.edu/MartinJWheatman)
+Plus many more available on [ReserchGate.org](https://www.researchgate.net/profile/Martin_Wheatman)
+
