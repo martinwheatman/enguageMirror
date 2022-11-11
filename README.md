@@ -2,9 +2,9 @@
 
 Enguage is an engine for creating language: a virtual machine for voice.
 
-<centre>
+<center>
 ![Semiotic Triangle](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Ogden_semiotic_triangle.png/1024px-Ogden_semiotic_triangle.png "Semiotic Triangle")
-</centre>
+</center>
 
 The [basic principle](doc/principle.md) is that it uses speech utterances to 
 create speech utterances. Utterances are used to elevate speech as thoughts and
