@@ -9,10 +9,8 @@ import org.enguage.signs.symbol.pattern.Phrase;
 import org.enguage.signs.symbol.pattern.Quote;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
-import org.enguage.util.Audit;
 
 public class Repertoire {
-	private static Audit audit = new Audit( "Repertoire" );
 
 	private static final Sign[] autopoiesis = {
 		// 3 x 3 signs (think/do/say * start/subseq/infelicit) + 1 "finally"
@@ -103,7 +101,7 @@ public class Repertoire {
 
 	// entry point for Enguage, re-entry point for Intention
 	public static Reply mediate( Utterance u ) {
-		audit.in( "mediate", "utterance="+ u );
+		//audit.in( "mediate", "utterance="+ u );
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
@@ -127,6 +125,6 @@ public class Repertoire {
 				if (Response.DNU == r.response())
 					r = allop.mediate( u );
 		}	}
-		audit.out( r );
+		//audit.out( r );
 		return r;
 }	}
