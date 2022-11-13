@@ -74,7 +74,9 @@ echo Pronouns - see need+needs.txt.
 i need nothing.
 			
 i need biscuits and coffee: ok, you need biscuits and coffee.
-they are from Sainsbury's:  ok, they are from sainsbury's.
+#debug on.
+#they are from Sainsbury's:  ok, they are from sainsbury's.
+#debug off.
 i need a pint of milk:      ok, you need a pint of milk.
 it is from the dairy aisle: ok, it is from the dairy aisle.
 i need cheese and eggs from the dairy aisle:
@@ -82,8 +84,8 @@ i need cheese and eggs from the dairy aisle:
 #mediate( group by:                   i'm sorry, i need to know what to group by )
 group by location:          ok.
 			
-what do i need from sainsbury's:
-					   you need biscuits, and coffee from sainsbury's.
+#what do i need from sainsbury's:
+#					   you need biscuits, and coffee from sainsbury's.
 			
 what do i need from the dairy aisle:
 					   you need a pint of milk, cheese, and eggs from the dairy aisle.
