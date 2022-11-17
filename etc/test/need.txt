@@ -74,9 +74,7 @@ echo Pronouns - see need+needs.txt.
 i need nothing.
 			
 i need biscuits and coffee: ok, you need biscuits and coffee.
-#debug on.
-#they are from Sainsbury's:  ok, they are from sainsbury's.
-#debug off.
+they are from Sainsbury's:  ok, they are from sainsbury's.
 i need a pint of milk:      ok, you need a pint of milk.
 it is from the dairy aisle: ok, it is from the dairy aisle.
 i need cheese and eggs from the dairy aisle:

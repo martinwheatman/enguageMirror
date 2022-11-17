@@ -11,7 +11,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Commands {
-	static private Audit audit = new Audit( "commands" );
+	//static private Audit audit = new Audit( "commands" )
 	
 	public Commands (String command) { cmd = command; }
 

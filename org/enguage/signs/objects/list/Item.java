@@ -181,7 +181,7 @@ public class Item {
 		return prevNum.isNaN() ? 1.0f : prevNum;
 	}
 	private Strings getFormatComponentValue( String composite ) { // e.g. "from LOCATION"
-		audit.in( "getFormatComponentValue", "composite="+ composite );
+		//audit.in( "getFormatComponentValue", "composite="+ composite )
 		Strings value = new Strings();
 		for (String cmp : new Strings( composite ))
 			if ( Strings.isUpperCase( cmp )) { // variable e.g. "UNIT"
@@ -215,7 +215,7 @@ public class Item {
 				}	}
 			} else // lower case -- constant
 				value.add( cmp ); // e.g. "of"
-		audit.out( value );
+		//audit.out( value )
 		return value;
 	}
 	public String toXml() { return "<"+name+attrs+">"+descr+"</"+name+">";}

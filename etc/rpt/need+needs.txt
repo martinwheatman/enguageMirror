@@ -8,8 +8,8 @@ When host says "_user does not need" host means "you do not need".
 
 ###############################################################################
 # Multiple singular additions
+On "the are", reply "ok". # safely terminate loop!
 On "SUBJECT needs AND-LIST-THESE": #a cup of coffee and some biscuits
-	#perform "expand SUBJECT needs { THESE }";
 	SUBJECT needs FIRST-OF-THESE;
 	SUBJECT needs REST-OF-THESE; 
 	if not, reply "i do not understand";
@@ -40,8 +40,10 @@ On "AND-LIST-SUBJECTS do not need anything":
 ###############################################################################
 # Combinations - multiple single subjects, phrased objects
 # martin and james and ruth all need a coffee and a tea.
+On "SUBJECT all need PHRASE-THESE", SUBJECT needs THESE.
 On "AND-LIST-SUBJECTS all need PHRASE-THESE":
-	perform "expand { SUBJECTS } needs THESE";
+	FIRST-OF-SUBJECTS needs THESE;
+	REST-OF-SUBJECTS all need THESE;
 	if not, reply "i do not understand";
 	reply "ok, SUBJECTS all need THESE".
 
@@ -94,7 +96,6 @@ On "it is":
 	reply "ok, it is LOCATOR LOCATION".
 
 On "the PHRASE-THESE are":
-#	perform "expand the {THESE} is";
 	the FIRST-OF-THESE is;
 	the REST-OF-THESE are;	
 	reply "ok, THESE are LOCATOR LOCATION".
