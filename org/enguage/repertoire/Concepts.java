@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import org.enguage.Enguage;
@@ -192,15 +194,39 @@ public class Concepts {
 				if (matchesHyphenatedPattern(utterance, c))
 					matches.add( candidate );
 		}	}
-		//return audit.out( matches );
+		//audit.out( matches )
 		return matches;
+	}
+	public static List<Strings> conjuntionAlley( Strings s ) {
+		ArrayList<Strings> ls = new ArrayList<>();
+		boolean found = false;
+		Strings ss = new Strings();
+		List<Strings> tmps = s.nonNullSplit( "and" );
+		for (Strings tmp : tmps) {
+			if (!found) {
+				if (!ss.isEmpty()) ss.add( "and" );
+				ss.addAll( tmp );
+				found = !matched(tmp).isEmpty();
+				
+			} else if (matched(tmp).isEmpty()) {
+				ss.add( "and" );
+				ss.addAll( tmp );
+				
+			} else {
+				ls.add( ss );
+				ss = tmp;
+				found = false;
+		}	}
+		if (!ss.isEmpty()) ls.add( ss );
+		
+		return ls;
 	}
 	/*
 	 *  --- test code
 	 */
 	private static void test( String s, boolean matchesToReply ) {
 		Strings sa = matched( new Strings( s ));
-		Audit.log( sa.size() == 0 ? "Doesn't match" :
+		Audit.log( sa.isEmpty() ? "Doesn't match" :
 			       ("matches: " 
 		            +sa.toString( Strings.DQCSV ) 
 		            +(matchesToReply ? " should":" shouldn't")

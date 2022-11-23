@@ -22,9 +22,9 @@ public class Entity {
 	}
 
 	public static boolean create( String name ) {
-		audit.IN( "create", "name='"+ name +"' ("+ Overlay.fname( name, Overlay.MODE_WRITE ) +")" );
+		audit.in( "create", "name='"+ name +"' ("+ Overlay.fname( name, Overlay.MODE_WRITE ) +")" );
 		boolean rc = Fs.create( Overlay.fname( name, Overlay.MODE_WRITE ));
-		audit.OUT( rc );
+		audit.out( rc );
 		return rc;
 	}
 	

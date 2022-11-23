@@ -31,7 +31,6 @@ public class Enguage {
 	public  static final String      RO_SPACE  = Assets.LOCATION;
 	public  static final String      RW_SPACE  = "var"+ File.separator;
 	
-	public  static final String           DNU  = "DNU";
 	private static final boolean STARTUP_DEBUG = false;
 	
 	private static Audit     audit = new Audit( "Enguage" );
@@ -63,10 +62,8 @@ public class Enguage {
 		Config.load( "config.xml" );
 	}
 	
-	public Strings mediate( Strings said ) { return mediate( "uid", said );}
-	public Strings mediate( String uid, Strings utterance ) {
+	private Strings mediateSingle( String uid, Strings utterance ) {
 		Strings reply;
-		audit.in( "mediate", utterance.toString() );
 	
 		imagined( false );
 		Overlay.attach( uid );
@@ -105,7 +102,19 @@ public class Enguage {
 		Reply.say( null );
 		Overlay.detach();
 			
-		return audit.out( reply );
+		return reply;
+	}
+	public Strings mediate( Strings said ) { return mediate( "uid", said );}
+	public Strings mediate( String uid, Strings said ) {
+		audit.in( "mediate", said.toString() );
+		Strings reply = new Strings();
+		for (Strings conj : Concepts.conjuntionAlley( said )) {
+			if (!reply.isEmpty()) reply.add( "and" );
+			Strings tmp = mediateSingle( uid, conj );
+			reply.addAll( tmp );
+		}
+		audit.out( reply );
+		return reply;
 	}
 	
 	/*

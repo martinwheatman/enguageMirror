@@ -33,8 +33,6 @@ and then reply ok variable things are variable quality.
 
 ferraris are cool:     ok ferraris are cool.
 
-debug off.
-
 want is like need.
 i want a ferrari because ferraris are cool: ok, you want a ferrari because ferraris are cool.
 why do I want a ferrari: because ferraris are cool.

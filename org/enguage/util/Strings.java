@@ -3,6 +3,7 @@ package org.enguage.util;
 // todo: remove use of ArrayList??? or use in throughout??? or LinkedList?
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TreeSet;
@@ -1093,6 +1094,22 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			rc = new Strings();
 		}
 		return rc;
+	}
+	public List<Strings> nonNullSplit( String splitter ) {
+		/* we don't want empty strings in the list.
+		 * Only split if we've collected 'something'.
+		 */
+		ArrayList<Strings> ls = new ArrayList<>();
+		Strings tmp = new Strings();
+		for (String s : this) {
+			if (s.equals( splitter ) && !tmp.isEmpty()) {
+				ls.add( tmp );
+				tmp = new Strings();
+			} else // will add a second splitter in a row
+				tmp.add(s);			
+		}
+		if (!tmp.isEmpty()) ls.add( tmp );
+		return ls;
 	}
 	public Strings divvy( String sep ) {
 		// ["a", "b", "and", "c"].divvy( "and" ) => [ "a", "b", "c" ]

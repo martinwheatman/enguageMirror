@@ -2,7 +2,6 @@ package org.enguage.signs.symbol.reply;
 
 import java.util.Locale;
 
-import org.enguage.Enguage;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
 
@@ -15,8 +14,8 @@ public class Response {
 	public  static final int   OK =  0; // TRUE  -- +ve
 	public  static final int  CHS =  1; // narrative verdict
 	
-	private static Strings dnu = new Strings( Enguage.DNU );
-	private static String  dnuStr = Enguage.DNU;
+	private static String  dnuStr = "DNU";
+	private static Strings dnu = new Strings( dnuStr );
 	public  static void    dnu( String s ) { dnu = new Strings( dnuStr = s.toLowerCase( Locale.getDefault() )); }
 	public  static Strings dnu(){ return dnu; }
 	public  static String  dnuStr(){ return dnuStr; }
