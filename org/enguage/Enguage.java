@@ -3,7 +3,7 @@ package org.enguage;
 import java.io.File;
 
 import org.enguage.repertoire.Autoload;
-import org.enguage.repertoire.Concepts;
+import org.enguage.repertoire.ConceptNames;
 import org.enguage.repertoire.Repertoire;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.list.Item;
@@ -58,7 +58,7 @@ public class Enguage {
 	public  Enguage() {this( RW_SPACE );}
 	public  Enguage( String root ) {
 		Fs.root( root );
-		Concepts.addConcepts( Assets.listConcepts() );
+		ConceptNames.addConcepts( Assets.listConcepts() );
 		Config.load( "config.xml" );
 	}
 	
@@ -108,7 +108,7 @@ public class Enguage {
 	public Strings mediate( String uid, Strings said ) {
 		audit.in( "mediate", said.toString() );
 		Strings reply = new Strings();
-		for (Strings conj : Concepts.conjuntionAlley( said )) {
+		for (Strings conj : ConceptNames.conjuntionAlley( said )) {
 			if (!reply.isEmpty()) reply.add( "and" );
 			Strings tmp = mediateSingle( uid, conj );
 			reply.addAll( tmp );

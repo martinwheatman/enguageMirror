@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import org.enguage.Enguage;
 import org.enguage.repertoire.Autoload;
-import org.enguage.repertoire.Concepts;
+import org.enguage.repertoire.ConceptNames;
 import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Commands;
 import org.enguage.signs.interpretant.Redo;
@@ -97,7 +97,7 @@ public class Config {
 
 		if ((t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
-			Concepts.load( t.findByName( "concepts" ));
+			ConceptNames.load( t.findByName( "concepts" ));
 			rc = content.length();
 		}
 

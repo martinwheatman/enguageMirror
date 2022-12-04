@@ -51,10 +51,10 @@ public class Autoload {
 			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
 			Strings concepts = new Strings();
-			for (String candidate : Concepts.matched( utterance ))
+			for (String candidate : ConceptNames.match( utterance ))
 				if (null == autoloaded.get( candidate ))  // Candidate already loaded, OR
 				{
-					String conceptName = Concepts.loadConcept( candidate, null, null );     // just loaded so...
+					String conceptName = ConceptNames.loadConcept( candidate, null, null );     // just loaded so...
 					if (!conceptName.equals( "" )) {
 						concepts.add( conceptName );
 						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0

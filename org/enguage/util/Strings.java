@@ -35,31 +35,31 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public static final long serialVersionUID = 0;
 	private static Audit audit = new Audit( "Strings" );
 	
-	public final static int MAXWORD = 1024;
+	public static final int MAXWORD = 1024;
 	
-	public final static int     CSV = 0;
-	public final static int   SQCSV = 1;
-	public final static int   DQCSV = 2;
-	public final static int  SPACED = 3;
-	public final static int    PATH = 4;
-	public final static int   LINES = 5;
-	public final static int  CONCAT = 6;
-	public final static int ABSPATH = 7;
-	public final static int OUTERSP = 8;
-	public final static int UNDERSC = 9;
+	public static final int     CSV = 0;
+	public static final int   SQCSV = 1;
+	public static final int   DQCSV = 2;
+	public static final int  SPACED = 3;
+	public static final int    PATH = 4;
+	public static final int   LINES = 5;
+	public static final int  CONCAT = 6;
+	public static final int ABSPATH = 7;
+	public static final int OUTERSP = 8;
+	public static final int UNDERSC = 9;
 		
-	public final static String      lineTerm = "\n";
-	public final static String           AND = "&&";
-	public final static String            OR = "||";
-	public final static String    PLUS_ABOUT = "+~";
-	public final static String   MINUS_ABOUT = "-~";
-	public final static String   PLUS_EQUALS = "+=";
-	public final static String  MINUS_EQUALS = "-=";
-	public final static String      ELLIPSIS = "...";
-	public final static Strings ellipsis = new Strings( ELLIPSIS, '/' );
+	public static final String      lineTerm = "\n";
+	public static final String           AND = "&&";
+	public static final String            OR = "||";
+	public static final String    PLUS_ABOUT = "+~";
+	public static final String   MINUS_ABOUT = "-~";
+	public static final String   PLUS_EQUALS = "+=";
+	public static final String  MINUS_EQUALS = "-=";
+	public static final String      ELLIPSIS = "...";
+	public static final Strings ellipsis = new Strings( ELLIPSIS, '/' );
 	
-	public final static char    SINGLE_QUOTE = '\'';
-	public final static char    DOUBLE_QUOTE = '"';
+	public static final char    SINGLE_QUOTE = '\'';
+	public static final char    DOUBLE_QUOTE = '"';
 	
 	private String[] tokens = {
 			ELLIPSIS,    AND,  OR,

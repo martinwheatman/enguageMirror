@@ -2,6 +2,7 @@ package org.enguage.repertoire;
 
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.TreeSet;
 
 import org.enguage.Enguage;
 import org.enguage.signs.Sign;
@@ -207,7 +208,7 @@ public final class Engine {
 			Strings files = cmds;
 			audit.debug( "loading "+ files.toString( Strings.CSV ));
 			for(int i=0; i<files.size(); i++)
-				Concepts.load( files.get( i ));
+				ConceptNames.load( files.get( i ));
 			 
 		} else if (cmd.equals( "unload" )) {
 			Strings files = cmds.copyAfter( 0 );
@@ -224,7 +225,7 @@ public final class Engine {
 			
 			String name = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Saving concepts as "+ name );
-			Concepts.add( name );
+			ConceptNames.add( name );
 			r.format(	Repertoire.signs.saveAs(
 								Repertoire.AUTOPOIETIC,
 								name
@@ -235,8 +236,8 @@ public final class Engine {
 			 
 			String concept = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Deleting "+ concept +" concept");
-			Concepts.remove( concept );
-			Concepts.delete( concept );
+			ConceptNames.remove( concept );
+			ConceptNames.delete( concept );
 			Repertoire.signs.remove( concept );
 			r.format( Response.success() );
 
@@ -420,7 +421,7 @@ public final class Engine {
 			 * Don't want to list all repertoires once the repertoire base begins to grow?
 			 * May want to ask "is there a repertoire for needs" ?
 			 */
-			r.format( new Strings( "loaded repertoires include "+ new Strings( Concepts.loaded()).toString( Reply.andListFormat() )));
+			r.format( new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)ConceptNames.loaded()).toString( Reply.andListFormat() )));
 			
 		} else if ( cmd.equals( "ok" ) && cmds.isEmpty()) {
 
