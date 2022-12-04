@@ -1,5 +1,7 @@
 package org.enguage.repertoire;
 
+import org.enguage.repertoire.concept.Autoload;
+import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.config.Plural;
 import org.enguage.signs.symbol.reply.Response;
@@ -19,7 +21,7 @@ public class Similarity {
 		if (null != Autoload.get( name ))
 			return true;
 		else {
-			String conceptName = Concepts.loadConcept( load, from, to );
+			String conceptName = Load.loadConcept( load, from, to );
 			if (!conceptName.equals( "" )) {
 				Autoload.put( conceptName );
 				return true;

@@ -1,4 +1,4 @@
-package org.enguage.repertoire;
+package org.enguage.repertoire.concept;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.Enguage;
+import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoire.Similarity;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.util.Audit;
@@ -38,23 +40,23 @@ public class Autoload {
 	public  static void remove( String name ) { autoloaded.remove( name );}
 	public  static boolean containsKey( String name ) { return autoloaded.containsKey( name );}
 	
-	static public Strings loaded() {
+	public static Strings loaded() {
 		Strings out = new Strings();
 		for(Map.Entry<String,Integer> entry : autoloaded.entrySet())
 			out.add( " "+ entry.getKey());
 		return out;
 	}
 
-	static public void load( Strings utterance ) {
+	public static void load( Strings utterance ) {
 		if (!ing()) {
 			Autoload.ing( true );
 			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
 			Strings concepts = new Strings();
-			for (String candidate : Concepts.matched( utterance ))
+			for (String candidate : Names.match( utterance ))
 				if (null == autoloaded.get( candidate ))  // Candidate already loaded, OR
 				{
-					String conceptName = Concepts.loadConcept( candidate, null, null );     // just loaded so...
+					String conceptName = Load.loadConcept( candidate, null, null );     // just loaded so...
 					if (!conceptName.equals( "" )) {
 						concepts.add( conceptName );
 						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0
@@ -71,18 +73,18 @@ public class Autoload {
 			Redo.undoEnabledIs( true );
 			Autoload.ing( false );
 	}	}
-	static public void unload( String name ) {
+	public static void unload( String name ) {
 		Repertoire.signs.remove( name );
 		remove( name );
 	}
-	static boolean unloadConditionally( String name ) {
+	public static boolean unloadConditionally( String name ) {
 		if (containsKey( name )) {
 			unload( name );
 			return true;
 		}
 		return false;
 	}
-	static public void unload() {
+	public static void unload() {
 		
 		if (!Repertoire.transformation() &&
 			!Autoload.ing())

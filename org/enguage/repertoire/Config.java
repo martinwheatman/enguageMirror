@@ -1,4 +1,4 @@
-package org.enguage.signs.symbol.config;
+package org.enguage.repertoire;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,8 +7,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.repertoire.Autoload;
-import org.enguage.repertoire.Concepts;
+import org.enguage.repertoire.concept.Autoload;
+import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Commands;
 import org.enguage.signs.interpretant.Redo;
@@ -97,7 +97,7 @@ public class Config {
 
 		if ((t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
-			Concepts.load( t.findByName( "concepts" ));
+			Load.loadTag( t.findByName( "concepts" ));
 			rc = content.length();
 		}
 
@@ -113,7 +113,6 @@ public class Config {
 		if (Audit.runtimeDebug) Audit.allOn();
 		return audit.out( rc );
 	}
-	
 	public static void main( String args[]) {
 		Overlay.Set( Overlay.Get());
 		Overlay.attach( NAME );
