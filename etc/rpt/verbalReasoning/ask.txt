@@ -1,0 +1,16 @@
+#] ask do you need a coffee: do you need a coffee.
+#] yes                     : ok.
+#] do i need a coffee      : yes, you need a coffee.
+
+
+On "ask do you SAID-QUESTION":
+	yes implies i QUESTION;
+	no implies no i don't QUESTION;
+	reply "do you QUESTION".
+	
+On "SAID-RESPONSE implies SAID-IMPLICATION":
+	perform "sign create RESPONSE";
+	perform "sign reply ok";              ## right way around...
+	perform "sign imply IMPLICATION";     ## ...with this?
+	reply "ok".
+	
