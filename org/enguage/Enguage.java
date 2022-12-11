@@ -48,14 +48,6 @@ public class Enguage {
 	public  boolean imagined() {return imagined;}
 	public  void    imagined( boolean img ) {imagined = img;}
 		
-	private static String server = "";
-	public  static String server() {return server;}
-	public  static void   server( String s ) {server = s;}
-	
-	private static int port = 0;
-	public  static int port() {return port;}
-	public  static void port( int n) {port = n;}
-	
 	public  Enguage() {this( RW_SPACE );}
 	public  Enguage( String root ) {
 		Fs.root( root );
@@ -153,6 +145,8 @@ public class Enguage {
 		String     cmd;
 		String     fsys = RW_SPACE;
 		boolean useHttp = false;
+		int port = 0;
+		String server = "";
 		
 		// traverse args and strip switches: -v -d -H -p -s
 		int i = 0;
@@ -183,7 +177,7 @@ public class Enguage {
 
 			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
 				cmds.remove( i );
-				server( cmds.isEmpty() ? "localhost" : cmds.remove( i ) );
+				server = cmds.isEmpty() ? "localhost" : cmds.remove( i );
 				Audit.LOG( "Sending to server: "+ server );
 				
 			} else
