@@ -1,13 +1,11 @@
 package com.yagadi;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,14 +21,12 @@ import org.enguage.util.Strings;
 import java.util.ArrayList;
 import java.util.Locale;
 
-
-import com.yagadi.Assets;
-import com.yagadi.Enguage.R;
-
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
 
     private static final int REQUEST_SPEECH = 1;
     static private Audit     audit = new Audit( "Enguage" );
+
+    private Enguage e; // created in onInit()
 
     public TextToSpeech tts = null;
     private boolean ttsInitialised = false;
@@ -63,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
 
         Assets.context( this );
-        Enguage.init( this.getExternalFilesDir( null ).getPath() );
+        e = new Enguage( this.getExternalFilesDir( null ).getPath() );
 
         // read the config in the background...
         //new MainActivity.ReadConfig( this ).execute();
@@ -72,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public void onInit(int code) {
         if (TextToSpeech.SUCCESS == code) {
             ttsInitialised = true;
-    }    }
+        }    }
 
     @Override
     public void onResume() {
@@ -134,26 +130,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                     // interpret what is said...
                     // ...in case of config failure, repeat what was said
-
-                    Strings truText = Enguage.mediate( new Strings( said ));
+                    Audit.allOn();
+                    Strings truText = e.mediate( new Strings( said ));
                     String  toSpeak = truText.equals( Enguage.DNU ) ? said : truText.toString();
 
                     if (toSpeak.equals( "I don't understand." ))
                         toSpeak += (" " + said);
 
-                    Toast.makeText( getApplicationContext(), truText.toString(), Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( getApplicationContext(), toSpeak, Toast.LENGTH_SHORT ).show();
                     Log.e ( ">>>>>>>>>>>REPLY>>> ", toSpeak );
 
                     //display messages in IM format in linear layout
-                    ll_messages.addView( createTv( said,    getResources().getColor(R.color.teal_200), true ));
-                    ll_messages.addView( createTv( toSpeak, getResources().getColor(R.color.teal_700), false));
+                    ll_messages.addView( createTv( said,    getResources().getColor(R.color.colorPrimary), true ));
+                    ll_messages.addView( createTv( toSpeak, getResources().getColor(R.color.colorPrimaryDark), false));
 
                     if (null != tts) {
                         tts.stop();
                         tts.speak( toSpeak, TextToSpeech.QUEUE_FLUSH, null );
-                }    }
+                    }    }
                 break;
-    }    }
+            default:
+                throw new IllegalStateException("Unexpected value: " + requestCode);
+        }    }
 
     @Override
     public void onPause() {
