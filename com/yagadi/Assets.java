@@ -5,7 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.enguage.repertoire.ConceptNames;
+import org.enguage.repertoire.concept.Load;
+import org.enguage.repertoire.concept.Names;
 import org.enguage.util.Strings;
 
 public class Assets {
@@ -29,10 +30,10 @@ public class Assets {
 		return is;
 	}
 	public static String[] listConcepts() {
-		Strings names = ConceptNames.tree( ConceptNames.roRpts( "" ), "." );
+		Strings names = Names.tree( Load.roRpts( "" ), "." );
 		if (names.isEmpty()) { // try flatpak location
-			names = ConceptNames.tree( ConceptNames.roRpts( "/app/" ), "." );
-			ConceptNames.isFlatpak( !names.isEmpty() );
+			names = Names.tree( Load.roRpts( "/app/" ), "." );
+			Load.isFlatpak( !names.isEmpty() );
 		}
 		String[] array = new String[ names.size() ];
 		return names.toArray( array );

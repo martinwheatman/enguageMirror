@@ -23,10 +23,10 @@ public class Assets {
     static public  void      context( Activity activity ) { context = activity; }
 
     static public InputStream getStream( String name ) {
-        
+
         // fix: applied 21/04/2021
         if (name.charAt( 0 ) == '/') name = name.substring( 1 );
-        
+
         InputStream is = null;
         try {
             is = context().getAssets().open( name );
@@ -51,4 +51,4 @@ public class Assets {
             audit.ERROR( "listConcepts: rpt not found" );
         }
         return names;
-}    }
+    }    }
