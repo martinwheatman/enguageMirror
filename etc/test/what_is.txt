@@ -1,0 +1,2 @@
+the colour of the sky is blue: ok, the colour of the sky is blue.
+what is the colour of the sky: blue , the colour of the sky is blue.
