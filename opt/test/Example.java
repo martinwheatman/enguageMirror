@@ -32,37 +32,34 @@ public class Example {
 	public  static void test( String  cmd, String expected ) {test( cmd, expected, null );}
 	private static void test( String  cmd, String expected, String unexpected ) {
 		// expected == null => silent!
-		if (expected != null)
+		if (expected == null || !expected.equals( "-" ))
 			Audit.log( testPrompt()+ cmd +".");
 		
 		Strings reply = Enguage.get().mediate( new Strings( cmd ));
 
-		if (expected != null) {
+		if (expected == null || !expected.equals( "-" ))
 		
-			if (expected.equals( "" ) || reply.equalsIgnoreCase( new Strings( expected ))) {
-		
+			if (expected == null || reply.equalsIgnoreCase( new Strings( expected )))
 				audit.passed( replyPrompt()+ reply +"." );// 1st success
 				
-			} else if (unexpected == null) {              // no second chance
+			else if (unexpected == null)                // no second chance
 				//Repertoire.signs.show()
 				audit.FATAL(
 					"reply: '"+    reply    +"',\n             "+
 					"expected: '"+ expected +"' "
 				);
 		
-			} else if (unexpected.equals( "" ) ||
-					 reply.equalsIgnoreCase( new Strings( unexpected ))) {
+			else if (reply.equalsIgnoreCase( new Strings( unexpected )))
 			
 				audit.passed( replyPrompt()+ reply +".\n" );
 			
-			} else                                        // second chance failed too!
+			else                                        // second chance failed too!
 				//Repertoire.signs.show()
 				audit.FATAL(
 					"reply: '"      + reply      +"'\n             "+
 					"expected: '"   + expected   +"'\n          "+
 					"alternately: '"+ unexpected +"'\n          "
 				);
-		}
 	}
 		
 	private static final String COMMENT_START = "#";
@@ -78,16 +75,16 @@ public class Example {
 		else {	
 			String[] replies = values[ 1 ].split( IN_REPLY_SEP );
 			if (replies.length == 1)
-				test( values[0], replies[ 0 ]);
+				test( values[0], replies[ 0 ].trim());
+			
 			else if (replies.length == 2)
-				test( values[0], replies[ 0 ], replies[ 1 ]);
-			else  if (replies.length == 0) {
+				test( values[0], replies[ 0 ].trim(), replies[ 1 ].trim());
+			
+			else  if (replies.length == 0)
 				audit.FATAL( "Too few replies provided" );
-				System.exit( 1 );
-			} else {
+			
+			else
 				audit.FATAL( "Too many replies ("+ replies.length +") provided" );
-				System.exit( 1 );
-			}
 		}
 	}
 
