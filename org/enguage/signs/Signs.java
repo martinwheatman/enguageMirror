@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.repertoire.ConceptNames;
 import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.pattern.Patte;
@@ -133,7 +133,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			Sign s = me.getValue();
 			if (s.concept().equals(simpleFilter)) {
 				String fname = cname==null ? s.pattern().toFilename() : cname;
-				if (s.toFile( ConceptNames.spokenName( fname ))) {
+				if (s.toFile( Load.spokenName( fname ))) {
 					s.concept( fname );
 					rc = true;
 		}	}	}

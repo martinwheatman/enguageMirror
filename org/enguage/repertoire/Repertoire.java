@@ -1,5 +1,6 @@
 package org.enguage.repertoire;
 
+import org.enguage.repertoire.concept.Autoload;
 import org.enguage.signs.Sign;
 import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Intention;

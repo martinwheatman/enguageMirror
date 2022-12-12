@@ -599,42 +599,47 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	public Strings replace( Strings a, String b ) { return replace( a, new Strings( b ));}
 	public boolean contains( Strings a ) {
-		int len = size(), alen = a.size();
-		for (int i=0; i <= len - alen; i++) {
-			boolean found = true;
-			int j=0;
-			for (j=0; j<alen && found; j++)
-				if (!get( i+j ).equalsIgnoreCase( a.get( j )))
-					found=false;
-			if (found) return true;
+		
+		boolean found = false;
+		int n = 1 + size() - a.size();
+		ListIterator<String> ti = this.listIterator();
+		while (n-- > 0 && !found) {
+			
+			int i=0;
+			found = true;
+			Iterator<String> ai = a.iterator();
+			while (ai.hasNext() && found) {
+				i++;
+				found = ti.next().equalsIgnoreCase( ai.next());
+			}
+			
+			if (!found) while (--i>0) ti.previous();
 		}
-		return false;
+		return found;
 	}
+
 	public static void removes( ListIterator<String> si, int n ) {
-		for (int i=0; i<n; i++) si.remove();
+		while (n-->0) si.remove();
 	}
 	public static void previous( ListIterator<String> si, int n ) {
-		for (int i=0; i<n; i++) si.previous();
+		while (n-->0) si.previous();
 	}
 	public static void next( ListIterator<String> si, int n ) {
-		for (int i=0; i<n; i++) si.next();
+		while (n-->0) si.next();
 	}
 	
 	// count the number of matching strings - due for Strings class!!!
 	public int matches( ListIterator<String> li ) {
-		//audit.in( "matches", "'"+ toString( Strings.SPACED ) +"', "+ li.toString());
-		int n = 0, m=0;
+		int n = 0;
 		ListIterator<String> pi = listIterator();
 		while (li.hasNext() && pi.hasNext()) {
-			m++;
 			if (li.next().equals( pi.next() ))
 				n++;
 			else
 				break;
 		}
-		//put li back
-		previous( li, m );
-		//return audit.out( pi.hasNext() ? 0 : n );
+		while (n-- > 0) li.previous();
+
 		return pi.hasNext() ? 0 : n;
 	}
 	
@@ -654,25 +659,19 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		if (size() > 0) {
 			int i = 0;
 			String value = get( 0 ); //
-			//audit.audit(":gotVal:"+ value +":");
 			String localSep = opSep; // ""; // only use op sep on appending subsequent strings
 			while (++i < size()) {
 				String tmp = get( i );
-				//audit.audit(":gotTmp:"+ tmp +":");
 				if (tmp.equals( ipSep )) {
-					//audit.audit("normalise():adding:"+ value +":");
 					values.add( value );
 					value = "";
 					localSep = "";
 				} else {
 					value += ( localSep + tmp );
 					localSep = opSep;
-					//audit.audit(":valNow:"+ value +":");
 			}	}
-			//audit.audit("normalise():adding:"+ value +":");
 			values.add( value );
 		}
-		//return audit.traceOut( values );
 		return values;
 	}
 	/*
@@ -1090,7 +1089,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				break;
 			}
 		if (loci.hasNext()) { // we've failed!
-			previous( ui, rc.size());
+			int n = rc.size();
+			while (n-- > 0) ui.previous(); //previous( ui, rc.size());
 			rc = new Strings();
 		}
 		return rc;

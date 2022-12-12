@@ -5,6 +5,9 @@ import java.util.Locale;
 import java.util.TreeSet;
 
 import org.enguage.Enguage;
+import org.enguage.repertoire.concept.Autoload;
+import org.enguage.repertoire.concept.Load;
+import org.enguage.repertoire.concept.Names;
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
@@ -206,9 +209,9 @@ public final class Engine {
 			 * support their interpretation
 			 */
 			Strings files = cmds;
-			audit.debug( "loading "+ files.toString( Strings.CSV ));
+			//audit.debug( "loading "+ files.toString( Strings.CSV ));
 			for(int i=0; i<files.size(); i++)
-				ConceptNames.load( files.get( i ));
+				Load.load( files.get( i ));
 			 
 		} else if (cmd.equals( "unload" )) {
 			Strings files = cmds.copyAfter( 0 );
@@ -225,7 +228,7 @@ public final class Engine {
 			
 			String name = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Saving concepts as "+ name );
-			ConceptNames.add( name );
+			Names.add( name );
 			r.format(	Repertoire.signs.saveAs(
 								Repertoire.AUTOPOIETIC,
 								name
@@ -236,8 +239,8 @@ public final class Engine {
 			 
 			String concept = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Deleting "+ concept +" concept");
-			ConceptNames.remove( concept );
-			ConceptNames.delete( concept );
+			Names.remove( concept );
+			Load.delete( concept );
 			Repertoire.signs.remove( concept );
 			r.format( Response.success() );
 
@@ -421,7 +424,7 @@ public final class Engine {
 			 * Don't want to list all repertoires once the repertoire base begins to grow?
 			 * May want to ask "is there a repertoire for needs" ?
 			 */
-			r.format( new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)ConceptNames.loaded()).toString( Reply.andListFormat() )));
+			r.format( new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Load.loaded()).toString( Reply.andListFormat() )));
 			
 		} else if ( cmd.equals( "ok" ) && cmds.isEmpty()) {
 
