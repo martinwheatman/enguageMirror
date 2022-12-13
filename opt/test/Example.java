@@ -14,33 +14,33 @@ import org.enguage.util.sys.Fs;
 
 public class Example {
 	
+	private Example() {}
+	
 	private static Audit   audit = new Audit( "Example" );
-	
-	/*
-	 * Individual Enguage test harness...
-	 */
-	private static String testPrompt = "";
-	private static String testPrompt() {return testPrompt;}
-	private static void   testPrompt( String prompt) {testPrompt = prompt;}
-	
-	private static String replyPrompt = "";
-	private static String replyPrompt() { return replyPrompt;}
-	private static void   replyPrompt( String prompt) { replyPrompt = prompt;}
+
+	private static final String COMMENT_START = "#";
+	private static final String LINE_TERM = ".";
+	private static final String IN_UR_SEP = ":";
+	private static final String IN_REPLY_SEP = "/"; // doesn't like '|'
+	private static final String TEST_DIR = "etc/test/";
+	private static final String TEST_EXT = ".txt";
+	private static final String  TEST_PROMPT = "\nuser> ";
+	private static final String REPLY_PROMPT = "enguage> ";
 
 	
 	public  static void test( String  cmd ) {test( cmd, null );}
 	public  static void test( String  cmd, String expected ) {test( cmd, expected, null );}
 	private static void test( String  cmd, String expected, String unexpected ) {
-		// expected == null => silent!
+		// expected == null => don't check reply, expected == '-' => silent!
 		if (expected == null || !expected.equals( "-" ))
-			Audit.log( testPrompt()+ cmd +".");
+			Audit.log( TEST_PROMPT+ cmd +".");
 		
 		Strings reply = Enguage.get().mediate( new Strings( cmd ));
 
 		if (expected == null || !expected.equals( "-" ))
 		
 			if (expected == null || reply.equalsIgnoreCase( new Strings( expected )))
-				audit.passed( replyPrompt()+ reply +"." );// 1st success
+				audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
 				
 			else if (unexpected == null)                // no second chance
 				//Repertoire.signs.show()
@@ -51,7 +51,7 @@ public class Example {
 		
 			else if (reply.equalsIgnoreCase( new Strings( unexpected )))
 			
-				audit.passed( replyPrompt()+ reply +".\n" );
+				audit.passed( REPLY_PROMPT+ reply +".\n" );
 			
 			else                                        // second chance failed too!
 				//Repertoire.signs.show()
@@ -62,31 +62,25 @@ public class Example {
 				);
 	}
 		
-	private static final String COMMENT_START = "#";
-	private static final String LINE_TERM = ".";
-	private static final String IN_UR_SEP = ":";
-	private static final String IN_REPLY_SEP = "/"; // doesn't like '|'
-
 	private static void runTestLine( String line ) {
 		line = line.substring( 0, line.length() - 1 ); // remove "."
 		String[] values = line.split( IN_UR_SEP );
 		if (1 == values.length)
-			test( values[ 0 ]);
+			test( values[ 0 ].trim());
 		else {	
 			String[] replies = values[ 1 ].split( IN_REPLY_SEP );
 			if (replies.length == 1)
-				test( values[0], replies[ 0 ].trim());
+				test( values[0].trim(), replies[ 0 ].trim());
 			
 			else if (replies.length == 2)
-				test( values[0], replies[ 0 ].trim(), replies[ 1 ].trim());
+				test( values[0].trim(), replies[ 0 ].trim(), replies[ 1 ].trim());
 			
 			else  if (replies.length == 0)
 				audit.FATAL( "Too few replies provided" );
 			
 			else
 				audit.FATAL( "Too many replies ("+ replies.length +") provided" );
-		}
-	}
+	}	}
 
 	private static boolean runTestFile(String fname) {
 		boolean rc = true;
@@ -121,15 +115,10 @@ public class Example {
 	/*
 	 * Full self-test...
 	 */
-	private static final String TEST_DIR = "etc/test/";
-	private static final String TEST_EXT = ".txt";
-	
 	public static void unitTest( Strings tests ) {
 		int testGrp = 0;
 		
 		Audit.interval(); // reset timer
-		testPrompt(  "\nuser> "    );
-		replyPrompt( "enguage> " );
 
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
@@ -188,15 +177,14 @@ public class Example {
 		}
 		return fsys;
 	}
+	
 	public static void main( String[] args ) {
-		
 		Strings    cmds = new Strings( args );
-		String     cmd;
 		String     fsys = doArgs( cmds );
 
 		Enguage.set( new Enguage( fsys ));
 				
-		cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
+		String     cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
 		
 		if (cmd.equals(  "-t"    ) ||
 			cmd.equals( "--test" )   )

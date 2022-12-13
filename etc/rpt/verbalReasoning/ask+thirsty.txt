@@ -1,9 +1,11 @@
-#] ask do you need a coffee: do you need a coffee.
-#] yes                     : ok.
-#] do i need a coffee      : yes, you need a coffee.
+#] i am thirsty      : do you need a drink.
+#] yes               : ok.
+#] do i need a drink : yes, you need a drink.
 
+On "I am thirsty":
+	ask do you need a drink.
 
-On "ask do you SAID-QUESTION":
+On "ask do you PHRASE-QUESTION":
 	yes implies i QUESTION;
 	no implies no i don't QUESTION;
 	reply "do you QUESTION".
