@@ -12,7 +12,7 @@ import org.enguage.repertoire.Repertoire;
 import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
-import org.enguage.signs.symbol.pattern.Patte;
+import org.enguage.signs.symbol.pattern.Frag;
 import org.enguage.signs.symbol.pronoun.Pronoun;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
@@ -304,17 +304,17 @@ public class Signs extends TreeMap<Integer,Sign> {
 		audit.tracing = true;
 		Signs r = new Signs( "test" );
 		r.insert(
-				new Sign().pattern( new Patte(  "debug ", "x" ))
+				new Sign().pattern( new Frag(  "debug ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "debug X" ))
 			);
 		r.insert(
-				new Sign().pattern( new Patte(  "describe ", "x" ))
+				new Sign().pattern( new Frag(  "describe ", "x" ))
 					.concept( "test" )
 					.append( new Intention( Intention.allop, "describe X" ))
 			);
 		r.insert(
-			new Sign().pattern( new Patte(  "list repertoires ", "" ))
+			new Sign().pattern( new Frag(  "list repertoires ", "" ))
 				.concept( "test" )
 				.append( new Intention( Intention.allop, "list repertoires" ))
 		);

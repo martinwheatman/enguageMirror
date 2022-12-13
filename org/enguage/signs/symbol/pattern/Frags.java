@@ -21,7 +21,7 @@ import org.enguage.util.algorithm.Expression;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 
-public class Pattern extends ArrayList<Patte> {
+public class Frags extends ArrayList<Frag> {
 	static final         long serialVersionUID = 0;
 	static private       Audit           audit = new Audit( "Pattern" );
 	
@@ -52,11 +52,11 @@ public class Pattern extends ArrayList<Patte> {
 	static public  final String  external      = "ext";
 	static public  final String  externPrefix  = external.toUpperCase( locale ) + "-";
 	
-	public Pattern() { super(); }
-	public Pattern( Strings words ) {
+	public Frags() { super(); }
+	public Frags( Strings words ) {
 		
 		// "if X do Y" -> [ <x prefix=["if"]/>, <y prefix=["do"] postfix="."/> ]
-		Patte t = new Patte();
+		Frag t = new Frag();
 		for ( String word : words ) {
 			
 			if (word.equals( "an" )) word = "a";
@@ -125,7 +125,7 @@ public class Pattern extends ArrayList<Patte> {
 				}
 				
 				add( t.name( sw ));
-				t = new Patte();
+				t = new Frag();
 				
 			} else
 				t.prefixAppend( word );
@@ -137,7 +137,7 @@ public class Pattern extends ArrayList<Patte> {
 	// if variable x do phrase variable y => if X do PHRASE-Y
 	// i need numeric variable quantity variable units of phrase variable needs.
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
-	public Pattern( String str ) { this( toPattern( new Strings( str ))); }
+	public Frags( String str ) { this( toPattern( new Strings( str ))); }
 	
 	// TODO: not quite right, what about "l'eau" - the water
 	// want to move to u.c. but preserve l.c. apostrophe...
@@ -270,7 +270,7 @@ public class Pattern extends ArrayList<Patte> {
 		int cons = 0,
 		    vars = 0;
 		
-		for (Patte t : this) {
+		for (Frag t : this) {
 			cons += t.nconsts();
 			if (t.isPhrased())
 				infinite = true;
@@ -343,7 +343,7 @@ public class Pattern extends ArrayList<Patte> {
 		return rep == null ? "" : rep.toString();
 
 	}
-	private String doList( ListIterator<Patte> patti,
+	private String doList( ListIterator<Frag> patti,
 	                       ListIterator<String>      utti  ) 
 	{
 		String  word = utti.next();
@@ -419,7 +419,7 @@ public class Pattern extends ArrayList<Patte> {
 		notMatched = 12;
 		return !bpi.hasNext();
 	}
-	private Strings getNextBoilerplate( Patte t, ListIterator<Patte> ti ) {
+	private Strings getNextBoilerplate( Frag t, ListIterator<Frag> ti ) {
 		Strings term = null;
 		if (t.postfix().size() != 0)
 			term = t.postfix();
@@ -430,8 +430,8 @@ public class Pattern extends ArrayList<Patte> {
 		return term;
 	}
 	private String getVariable(
-			Patte t,
-			ListIterator<Patte> ti,
+			Frag t,
+			ListIterator<Frag> ti,
 			ListIterator<String> said,
 			boolean spatial )
 	{
@@ -466,8 +466,8 @@ public class Pattern extends ArrayList<Patte> {
 		return val;
 	}
 	private String getValue(
-			Patte t,
-			ListIterator<Patte> patti,
+			Frag t,
+			ListIterator<Frag> patti,
 			ListIterator<String> utti,
 			boolean spatial)
 	{
@@ -519,13 +519,13 @@ public class Pattern extends ArrayList<Patte> {
 		 * ???NAME="an/array/or/list"	... <NAME array="array"/>
 		 * ???NAME="value one/value two/value three" <NAME phrased="phrased" array="array"/>
 		 */
-		ListIterator<Patte> patti = listIterator();           // [ 'this    is    a   <test/>' ]
+		ListIterator<Frag> patti = listIterator();           // [ 'this    is    a   <test/>' ]
 		ListIterator<String>       utti = utterance.listIterator(); // [ "this", "is", "a", "test"   ]
 		
-		Patte next = null;
+		Frag next = null;
 		while (patti.hasNext() && utti.hasNext()) {
 			
-			Patte t = (next != null) ? next : patti.next();
+			Frag t = (next != null) ? next : patti.next();
 			next = null;
 			
 			if (!matchBoilerplate( t.prefix(), utti, spatial )) { // ...match prefix
@@ -580,9 +580,9 @@ public class Pattern extends ArrayList<Patte> {
 	public String toXml( Indent indent ) {
 		String oldName = "";
 		String str  = "\n"+indent.toString();
-		Iterator<Patte> ti = iterator();
+		Iterator<Frag> ti = iterator();
 		while (ti.hasNext()) {
-			Patte t = ti.next();
+			Frag t = ti.next();
 			str += (t.name().equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent );
 			oldName = t.name();
 		}
@@ -590,7 +590,7 @@ public class Pattern extends ArrayList<Patte> {
 	}
 	public String toString() {
 		String tmp, str="";
-		Iterator<Patte> ti = iterator();
+		Iterator<Frag> ti = iterator();
 		while (ti.hasNext())
 			if (!(tmp = ti.next().toString()).equals(""))
 				str += tmp +(ti.hasNext() ? " " : "");
@@ -598,7 +598,7 @@ public class Pattern extends ArrayList<Patte> {
 	}
 	public String toFilename() {
 		String tmp, str="";
-		Iterator<Patte> ti = iterator();
+		Iterator<Frag> ti = iterator();
 		while (ti.hasNext())
 			if (!(tmp = ti.next().toPattern()).equals(""))
 				str += tmp +(ti.hasNext() ? "_" : "");
@@ -606,7 +606,7 @@ public class Pattern extends ArrayList<Patte> {
 	}
 	public String toText() {
 		String str="";
-		Iterator<Patte> ti = iterator();
+		Iterator<Frag> ti = iterator();
 		while (ti.hasNext()) {
 			str += ti.next().toText();
 			if (ti.hasNext()) str += " ";
@@ -615,9 +615,9 @@ public class Pattern extends ArrayList<Patte> {
 	}
 	public String toLine() {
 		String str="";
-		Iterator<Patte> ti = iterator();
+		Iterator<Frag> ti = iterator();
 		while (ti.hasNext()) {
-			Patte t = ti.next();
+			Frag t = ti.next();
 			str += ( " "+t.prefix().toString()+" <"+t.name() +" "
 			//+ t.attributes().toString()
 					+"/> "+t.postfix().toString());
@@ -626,7 +626,7 @@ public class Pattern extends ArrayList<Patte> {
 	}
 	
 	// --- test code...
-	static public void printTagsAndValues( Pattern interpretant, String phrase, Attributes expected ) {
+	static public void printTagsAndValues( Frags interpretant, String phrase, Attributes expected ) {
 		audit.in( "printTagsAndValues", "ta="+ interpretant.toString() +", phr="+ phrase +", expected="+ 
 				(expected == null ? "":expected.toString()) );
 		Attributes values = interpretant.matchValues( new Strings( phrase ), true );
@@ -661,7 +661,7 @@ public class Pattern extends ArrayList<Patte> {
 		Utterance u = new Utterance( new Strings( utterance ));
 		Audit.log( "Utterance: "+ utterance );
 		
-		Sign s = new Sign( new Patte( pref, var ));
+		Sign s = new Sign( new Frag( pref, var ));
 		s.concept( concept );
 		Audit.log( "     Sign: "+ s.toXml(0, -1) );
 		
@@ -672,7 +672,7 @@ public class Pattern extends ArrayList<Patte> {
 		audit.out();
 	}
 	static private void complexityTest( String str ) {
-		Pattern patt = new Pattern( toPattern( new Strings( str )));
+		Frags patt = new Frags( toPattern( new Strings( str )));
 		Audit.LOG( "pattern: "+ patt );
 		//audit.LOG( "    Xml: "+ patt.toXml() );
 		Audit.LOG( " cmplxy: "+ patt.cplex() );
@@ -797,7 +797,7 @@ public class Pattern extends ArrayList<Patte> {
 		
 		Where.doLocators("at/from/in");
 		Where.addConcept( "need+needs" );
-		Pattern p = new Pattern( "i need PHRASE-THESE" );
+		Frags p = new Frags( "i need PHRASE-THESE" );
 		Audit.log( "pattern is: "+ p.toXml());
 		
 		Audit.allOn();

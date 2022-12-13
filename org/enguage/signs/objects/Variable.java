@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.objects.space.Value;
-import org.enguage.signs.symbol.pattern.Pattern;
+import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
@@ -82,17 +82,17 @@ public class Variable {
 	static public void unset( String name ) { new Variable( name ).unset(); }
 	static public String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
 	static public String get( String name, String def ) {
-		boolean reflect = name.startsWith( Pattern.externPrefix );
+		boolean reflect = name.startsWith( Frags.externPrefix );
 		if (reflect)
-			name = name.substring( Pattern.externPrefix.length() );
+			name = name.substring( Frags.externPrefix.length() );
 		
-		boolean first = name.startsWith( Pattern.firstPrefix );
+		boolean first = name.startsWith( Frags.firstPrefix );
 		if (first)
-			name = name.substring( Pattern.firstPrefix.length() );
+			name = name.substring( Frags.firstPrefix.length() );
 		
-		boolean rest = name.startsWith( Pattern.restPrefix );
+		boolean rest = name.startsWith( Frags.restPrefix );
 		if (rest)
-			name = name.substring( Pattern.restPrefix.length() );
+			name = name.substring( Frags.restPrefix.length() );
 		
 		String value = cache.get( name );
 		if (reflect)

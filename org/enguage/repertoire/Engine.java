@@ -16,8 +16,8 @@ import org.enguage.signs.objects.list.Item;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.config.Englishisms;
-import org.enguage.signs.symbol.pattern.Patte;
-import org.enguage.signs.symbol.pattern.Pattern;
+import org.enguage.signs.symbol.pattern.Frag;
+import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
@@ -39,51 +39,51 @@ public final class Engine {
 			 * interpretations and so are built here alongside those interpretations.
 			 */
    			new Sign()
-					.pattern( new Patte( "entitle", "SAID" ).phrasedIs())
+					.pattern( new Frag( "entitle", "SAID" ).phrasedIs())
 					.appendIntention( Intention.allop, "entitle SAID" )
 					.concept( NAME ),
    			new Sign()
-					.pattern( new Patte( "subtitle", "SAID" ).phrasedIs())
+					.pattern( new Frag( "subtitle", "SAID" ).phrasedIs())
 					.appendIntention( Intention.allop, "subtitle SAID" )
 					.concept( NAME ),
    			new Sign()
-					.pattern( new Patte( "subtitle", "SAID" ).phrasedIs())
+					.pattern( new Frag( "subtitle", "SAID" ).phrasedIs())
 					.appendIntention( Intention.allop, "subtitle SAID" )
 					.concept( NAME ),
    			new Sign()
-					.pattern( new Patte( "run a self test", "" ))
+					.pattern( new Frag( "run a self test", "" ))
 					.appendIntention( Intention.allop, "selfTest" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Patte( "this is all imagined", "" ))
+					.pattern( new Frag( "this is all imagined", "" ))
 					.appendIntention( Intention.allop, "imagined" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Patte( "ok" ))
+					.pattern( new Frag( "ok" ))
 					.appendIntention( Intention.allop, "ok" )
 					.concept( NAME ), 
 			new Sign()
-					.pattern( new Patte( "list repertoires","" ))
+					.pattern( new Frag( "list repertoires","" ))
 					.appendIntention( Intention.allop, "list" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Patte(         "help", "" ))
+					.pattern( new Frag(         "help", "" ))
 					.appendIntention( Intention.allop, "help" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Patte(         "hello", "" ))
+					.pattern( new Frag(         "hello", "" ))
 					.appendIntention( Intention.allop, "hello")
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Patte(         "say", "SAID" ).phrasedIs() /*.quotedIs()*/ )
+					.pattern( new Frag(         "say", "SAID" ).phrasedIs() /*.quotedIs()*/ )
 					.appendIntention( Intention.allop, "say SAID")
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Patte( "what can i say", "" ))
+					.pattern( new Frag( "what can i say", "" ))
 					.appendIntention( Intention.allop, "repertoire"  )
 		          	.concept( NAME ),
 			new Sign()
-					.pattern( new Patte(   "load ", "NAME" ))
+					.pattern( new Frag(   "load ", "NAME" ))
 					.appendIntention( Intention.allop,    "load NAME" )
 			  		.concept( NAME ),
 			new Sign()
@@ -91,37 +91,37 @@ public final class Engine {
 					.appendIntention( Intention.allop, "unload NAME" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Patte( "save spoken concepts as ", "NAME", "" ).phrasedIs())
+					.pattern( new Frag( "save spoken concepts as ", "NAME", "" ).phrasedIs())
 					.appendIntention( Intention.allop, "saveAs NAME" )
 					.concept( NAME ),										 		
 			new Sign()
 					.appendIntention( Intention.allop, "delete NAME" )
-					.pattern( new Patte( "delete spoken concept ", "NAME", "" ).phrasedIs())
+					.pattern( new Frag( "delete spoken concept ", "NAME", "" ).phrasedIs())
 					.concept( NAME ),
 																 		
-			new Sign().pattern( new Patte(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
-			new Sign().pattern( new Patte(        "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
-			new Sign().pattern( new Patte(   "enable undo",  "" )).appendIntention( Intention.allop, "undo enable"  ),
-			new Sign().pattern( new Patte(  "disable undo",  "" )).appendIntention( Intention.allop, "undo disable" ),
-			new Sign().concept( NAME ).pattern( new Patte(          "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
-			new Sign().concept( NAME ).pattern( new Patte( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
-			new Sign().concept( NAME ).pattern( new Patte( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
-			new Sign().concept( NAME ).pattern( new Patte(    "group by", "x" )).appendIntention( Intention.allop, "groupby X" ),
+			new Sign().pattern( new Frag(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
+			new Sign().pattern( new Frag(        "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
+			new Sign().pattern( new Frag(   "enable undo",  "" )).appendIntention( Intention.allop, "undo enable"  ),
+			new Sign().pattern( new Frag(  "disable undo",  "" )).appendIntention( Intention.allop, "undo disable" ),
+			new Sign().concept( NAME ).pattern( new Frag(          "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
+			new Sign().concept( NAME ).pattern( new Frag( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
+			new Sign().concept( NAME ).pattern( new Frag( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
+			new Sign().concept( NAME ).pattern( new Frag(    "group by", "x" )).appendIntention( Intention.allop, "groupby X" ),
 						
-			new Sign().concept( NAME ).pattern( new Patte(  "timing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
-			new Sign().concept( NAME ).pattern( new Patte(  "timing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
-			new Sign().concept( NAME ).pattern( new Patte( "tracing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
-			new Sign().concept( NAME ).pattern( new Patte( "tracing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
-			new Sign().concept( NAME ).pattern( new Patte(  "detail  on",  "" )).appendIntention( Intention.allop, "detailed on" ),
-			new Sign().concept( NAME ).pattern( new Patte(  "detail off",  "" )).appendIntention( Intention.allop, "detailed off" ),
+			new Sign().concept( NAME ).pattern( new Frag(  "timing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
+			new Sign().concept( NAME ).pattern( new Frag(  "timing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
+			new Sign().concept( NAME ).pattern( new Frag( "tracing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
+			new Sign().concept( NAME ).pattern( new Frag( "tracing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
+			new Sign().concept( NAME ).pattern( new Frag(  "detail  on",  "" )).appendIntention( Intention.allop, "detailed on" ),
+			new Sign().concept( NAME ).pattern( new Frag(  "detail off",  "" )).appendIntention( Intention.allop, "detailed off" ),
 			new Sign().concept( NAME )
-					.pattern( new Patte( "tcpip ",  "address" ))
-					.pattern( new Patte(      " ",  "port" ))
-					.pattern( new Patte(      " ",  "data" ).quotedIs())
+					.pattern( new Frag( "tcpip ",  "address" ))
+					.pattern( new Frag(      " ",  "port" ))
+					.pattern( new Frag(      " ",  "data" ).quotedIs())
 						.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" ),
-			new Sign().concept( NAME ).pattern( new Patte(              "show ", "x" ).phrasedIs())
+			new Sign().concept( NAME ).pattern( new Frag(              "show ", "x" ).phrasedIs())
 					.appendIntention( Intention.allop, "show X" ),
-			new Sign().concept( NAME ).pattern( new Patte(         "debug ", "x" ).phrasedIs())
+			new Sign().concept( NAME ).pattern( new Frag(         "debug ", "x" ).phrasedIs())
 					.appendIntention( Intention.allop, "debug X" ),
 			/* 
 			 * it is possible to arrive at the following construct:   think="reply 'I know'"
@@ -130,23 +130,23 @@ public final class Engine {
 			 * representamen: "if X, reply Y", then Y is just the quoted string.
 			 * However, the following should deal with this situation.
 			 */
-			new Sign().concept( NAME ).pattern( new Patte( Intention.REPLY +" ", "x" ).quotedIs())
+			new Sign().concept( NAME ).pattern( new Frag( Intention.REPLY +" ", "x" ).quotedIs())
 					.appendIntention( Intention.thenReply, "X" ),
 			
 			// fix to allow better reading of autopoietic  
-			new Sign().concept( NAME ).pattern( new Patte( "if so, ", "x" ).phrasedIs())
+			new Sign().concept( NAME ).pattern( new Frag( "if so, ", "x" ).phrasedIs())
 					.appendIntention( Intention.thenThink, "X" ),
 
-			new Sign().concept( NAME ).pattern( new Patte( "if i know, ", "x" ).phrasedIs())
+			new Sign().concept( NAME ).pattern( new Frag( "if i know, ", "x" ).phrasedIs())
 					.appendIntention( Intention.allop, "iknow X" ),
 
 			// for vocal description of concepts... autopoiesis!		
-			new Sign().concept( NAME ).pattern( new Patte( "perform ", "args" ).phrasedIs())
+			new Sign().concept( NAME ).pattern( new Frag( "perform ", "args" ).phrasedIs())
 					.appendIntention( Intention.thenDo, "ARGS" ),
 			/* 
 			 * REDO: undo and do again, or disambiguate
 			 */
-			new Sign().concept( NAME ).pattern( new Patte( "No ", "x" ).phrasedIs())
+			new Sign().concept( NAME ).pattern( new Frag( "No ", "x" ).phrasedIs())
 						.appendIntention( Intention.allop, "undo" )
 						.appendIntention( Intention.elseReply, "undo is not available" )
 						/* On thinking the below, if X is the same as what was said before,
@@ -333,7 +333,7 @@ public final class Engine {
 				Audit.detailedOn = false;
 				
 			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
-				Pattern.debug( !Pattern.debug() );
+				Frags.debug( !Frags.debug() );
 				
 			} else {
 				Audit.allOn();

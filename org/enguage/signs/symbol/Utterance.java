@@ -8,8 +8,8 @@ import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.objects.space.Sofa;
 import org.enguage.signs.symbol.config.Colloquial;
 import org.enguage.signs.symbol.config.Englishisms;
-import org.enguage.signs.symbol.pattern.Patte;
-import org.enguage.signs.symbol.pattern.Pattern;
+import org.enguage.signs.symbol.pattern.Frag;
+import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.when.When;
 import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
@@ -120,8 +120,8 @@ public class Utterance {
 		);
 
 		// create a meeting repertoire
-		Pattern ts = new Pattern();
-		ts.add( new Patte( "i am meeting", "WHOM" ).phrasedIs() );
+		Frags ts = new Frags();
+		ts.add( new Frag( "i am meeting", "WHOM" ).phrasedIs() );
 		Sign s = new Sign().concept("meeting").pattern( ts );
 		Where.addConcept("meeting");
 		Temporal.addConcept("meeting");
@@ -131,8 +131,8 @@ public class Utterance {
 		test( s, "i am meeting my brother at the pub at 7" );
 		test( s, "i am meeting my sister  at the pub" );
 		
-		ts = new Pattern();
-		ts.add( new Patte( "what is the factorial of", "N" ).numericIs() );
+		ts = new Frags();
+		ts.add( new Frag( "what is the factorial of", "N" ).numericIs() );
 		s = new Sign().concept("meeting").pattern( ts );
 
 		test( s, "what is the factorial of whatever", new Strings( "3" ));

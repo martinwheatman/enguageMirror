@@ -8,8 +8,8 @@ import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.objects.Temporal;
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.symbol.pattern.Patte;
-import org.enguage.signs.symbol.pattern.Pattern;
+import org.enguage.signs.symbol.pattern.Frag;
+import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
@@ -25,33 +25,33 @@ public class Sign {
 	private static final String indent = "    ";
 
 	public Sign() { super(); }
-	public Sign( Patte  patte  ) { this(); pattern( patte );}
-	public Sign( String prefix ) { this( new Patte( prefix )); }
-	public Sign( String prefix, Patte variable ) { this( variable.prefix( prefix ));}
-	public Sign( String prefix, Patte variable, String postfix ) {
+	public Sign( Frag  patte  ) { this(); pattern( patte );}
+	public Sign( String prefix ) { this( new Frag( prefix )); }
+	public Sign( String prefix, Frag variable ) { this( variable.prefix( prefix ));}
+	public Sign( String prefix, Frag variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
 	}
-	public Sign( String prefix1, Patte variable1,
-	             String prefix2, Patte variable2 )
+	public Sign( String prefix1, Frag variable1,
+	             String prefix2, Frag variable2 )
 	{	this();
 		pattern( variable1.prefix( prefix1 ));
 		pattern( variable2.prefix( prefix2 ));
 	}
 	
-	private Pattern pattern = new Pattern();
-	public  Pattern pattern() {return pattern;}
-	public  Sign    pattern( Pattern ta ) { pattern = ta; return this; }
-	public  Sign    pattern( Patte child ) {
+	private Frags pattern = new Frags();
+	public  Frags pattern() {return pattern;}
+	public  Sign    pattern( Frags ta ) { pattern = ta; return this; }
+	public  Sign    pattern( Frag child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
 	}
 	public Sign     pattern( String prefix, String name ) {
-		pattern( new Patte( prefix, name ));
+		pattern( new Frag( prefix, name ));
 		return this;
 	}
 	public Sign     pattern( String prefix, String name, String postfix ) {
-		pattern( new Patte( prefix, name, postfix ));
+		pattern( new Frag( prefix, name, postfix ));
 		return this;
 	}
 
@@ -186,7 +186,7 @@ public class Sign {
 				
 				Repertoire.signs.insert(
 					Sign.voiced = new Sign()
-						.pattern( new Pattern( args.toString() ))
+						.pattern( new Frags( args.toString() ))
 						.concept( Repertoire.AUTOPOIETIC )
 				);
 				
@@ -194,7 +194,7 @@ public class Sign {
 				Intention intn = 
 						new Intention(
 							isElse ? Intention.elseDo : Intention.thenDo,
-							Pattern.toPattern( new Strings( args.toString() ))
+							Frags.toPattern( new Strings( args.toString() ))
 						);
 				
 				if (header)
@@ -211,7 +211,7 @@ public class Sign {
 				Intention intn = 
 						new Intention(
 							isElse? Intention.elseReply : Intention.thenReply, 
-							Pattern.toPattern( new Strings( args.toString() ))
+							Frags.toPattern( new Strings( args.toString() ))
 						);
 
 				if (header)
@@ -225,10 +225,10 @@ public class Sign {
 
 				
 			} else if (cmd.equals( "think" )) {
-				audit.debug( "adding a thought "+ args.toString() );
+				//audit.debug( "adding a thought "+ args.toString() );
 				Intention intn = new Intention(
 							isElse? Intention.elseThink : Intention.thenThink,
-							Pattern.toPattern( new Strings( args.toString() ))
+							Frags.toPattern( new Strings( args.toString() ))
 						);
 				
 				if (voiced != null) { //BUG: sign think called w/o voiced
@@ -243,44 +243,44 @@ public class Sign {
 				}
 				
 			} else if (cmd.equals( "imply" )) {
-				audit.debug( "prepending an implication '"+ args.toString() +"'");
+				//audit.debug( "prepending an implication '"+ args.toString() +"'");
 				voiced.insert(
 						0,
 						new Intention(
 								isElse? Intention.elseThink : Intention.thenThink,
-								Pattern.toPattern( new Strings( args.toString() ))
+								Frags.toPattern( new Strings( args.toString() ))
 				)		);
 				
 			} else if (cmd.equals( "run" )) {
-				audit.debug( "appending a script to run: '"+ args.toString() +"'");
+				//audit.debug( "appending a script to run: '"+ args.toString() +"'");
 				voiced.insert(
 						0, // "implies that you run"
 						new Intention(
 								isElse? Intention.elseRun : Intention.thenRun,
-								Pattern.toPattern( new Strings( args.toString() ))
+								Frags.toPattern( new Strings( args.toString() ))
 				)		);
 			} else if (cmd.equals( "temporal")) {
 				voiced.temporalIs( true );
 				
 			} else if (cmd.equals( "finally" )) {
 				Intention intn;
-				audit.debug( "adding a final clause? "+ args.toString() );
+				//audit.debug( "adding a final clause? "+ args.toString() );
 				if (cmd.length() > 7 && cmd.substring( 0, 7 ).equals( "perform" ))
 					intn = new Intention(
 							isElse ? Intention.elseDo    : Intention.thenDo,
-							Pattern.toPattern( new Strings( args.toString() ))
+							Frags.toPattern( new Strings( args.toString() ))
 						 );
 				
 				else if (cmd.equals( "reply" ))
 					intn = new Intention(
 							isElse ? Intention.elseReply : Intention.thenReply,
-							Pattern.toPattern( new Strings( args.toString() ))
+							Frags.toPattern( new Strings( args.toString() ))
 						 );
 				
 				else
 					intn = new Intention(
 							isElse ? Intention.elseThink : Intention.thenThink,
-							Pattern.toPattern( new Strings( args.toString() ))
+							Frags.toPattern( new Strings( args.toString() ))
 						 );
 				voiced.append( intn ); // all finallys at the end :)
 			

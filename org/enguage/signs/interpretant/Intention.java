@@ -8,7 +8,7 @@ import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.objects.space.Sofa;
 import org.enguage.signs.symbol.Utterance;
-import org.enguage.signs.symbol.pattern.Pattern;
+import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.signs.symbol.when.Moment;
@@ -143,7 +143,7 @@ public class Intention {
 			    val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 			Repertoire.signs.insert(
 					latest = new Sign()
-							.pattern( new Pattern( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+							.pattern( new Frags( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
 							.concept( concept() )
 							.append( new Intention( Intention.nameToType( attr ), val )));
 		return "ok";
@@ -319,7 +319,7 @@ public class Intention {
 		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();
 		latest = new Sign()
-				.pattern( new Pattern( "c variable pattern z" ))
+				.pattern( new Frags( "c variable pattern z" ))
 				.concept( concept() );
 		String reply = "three four";
 		latest.append( new Intention( thenReply, reply ));
