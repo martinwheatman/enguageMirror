@@ -2,7 +2,7 @@
 #] yes               : ok.
 #] do i need a drink : yes, you need a drink.
 
-On "I am thirsty":
+On "i am thirsty":
 	ask do you need a drink.
 
 On "ask do you PHRASE-QUESTION":
