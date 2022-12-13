@@ -38,35 +38,45 @@ public class Sign {
 		pattern( variable2.prefix( prefix2 ));
 	}
 	
+	/* 
+	 * Member - PATTERN
+	 */
 	private Frags pattern = new Frags();
 	public  Frags pattern() {return pattern;}
-	public  Sign    pattern( Frags ta ) { pattern = ta; return this; }
-	public  Sign    pattern( Frag child ) {
+	public  Sign  pattern( Frags ta ) { pattern = ta; return this; }
+	public  Sign  pattern( Frag child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
 	}
-	public Sign     pattern( String prefix, String name ) {
+	public Sign   pattern( String prefix, String name ) {
 		pattern( new Frag( prefix, name ));
 		return this;
 	}
-	public Sign     pattern( String prefix, String name, String postfix ) {
+	public Sign   pattern( String prefix, String name, String postfix ) {
 		pattern( new Frag( prefix, name, postfix ));
 		return this;
 	}
+	public Sign split( String word ) {pattern( pattern.split( word )); return this;} 
 
+	/*
+	 * Member - Intentions - THOUGHTS and REFERENCES
+	 */
 	public Intentions intents = new Intentions();
 	public Sign  insert( int n, Intention intent ) {intents.insert( n, intent ); return this;}
 	public Sign  append( Intention intent ) {intents.add( intent ); return this;}
 	public Sign  appendIntention( int type, String pattern ) {intents.appendIntention( type, pattern ); return this;}
  	
 	public static Sign voiced = null;
-		
+	
 	// Set during autopoiesis - replaces 'id' attribute 
 	private String  concept = "";
 	public  String  concept() { return concept; }
 	public  Sign    concept( String name ) { concept = name; return this; }
 	
+	/*
+	 * Members - spatio-temporal
+	 */
 	private boolean temporalSet = false;
 	private boolean temporal = false;
 	private void    temporalIs( boolean b ) {temporal = b; temporalSet = true;}
@@ -87,9 +97,9 @@ public class Sign {
 		return spatial;
 	}
 
-	private String help = null; // "" is valid output
-	public  String help() { return help; }
-	public  Sign   help( String str ) { help = str; return this; }
+//	private String help = null; // "" is valid output
+//	public  String help() { return help; }
+//	public  Sign   help( String str ) { help = str; return this; }
 	
 	
 	/* To protect against being interpreted twice on resetting the iterator

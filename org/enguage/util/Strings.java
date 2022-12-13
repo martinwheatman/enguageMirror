@@ -517,6 +517,25 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			b.add( get( i ));
 		return b;
 	}
+	public Strings copyBefore( String word ) {
+		Strings b = new Strings();
+		for (String a : this)
+			if (a.equals( word ))
+				break;
+			else
+				b.add( a );
+		return b;
+	}
+	public Strings copyAfter( String word ) {
+		Strings b = new Strings();
+		boolean found = false;
+		for (String a : this)
+			if (found)
+				b.add( a );
+			else if (a.equals( word ))
+				found = true;
+		return b;
+	}
 	public Strings copyFromUntil( int n, String until ) {
 		Strings b = new Strings();
 		for (int i=n, sz = size(); i<sz; i++) {

@@ -12,7 +12,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 
 public class Frag {
-	private static Audit audit = new Audit( "Patternette" );
+	private static Audit audit = new Audit( "Frag" );
 	
 	
 	// -- constructors...
@@ -30,10 +30,29 @@ public class Frag {
 	public Frag( String pre, String nm ) { this( new Strings( pre ), nm );}
 	public Frag( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
 
+	public Frag( Frag orig ) { // copy constructor
+		prefix = new Strings( orig.prefix());
+		postfix = new Strings( orig.postfix());
+		name    = new String( orig.name());
+		isNumeric = orig.isNumeric();
+		isExpr    = orig.isExpr();
+		isSign    = orig.isSign();
+		isList    = orig.isList();
+		isQuoted  = orig.isQuoted();
+		isPlural  = orig.isPlural();
+		isPhrased  = orig.isPhrased();
+		isGrouped   = orig.isGrouped();
+		conjunction  = orig.conjunction();
+		isApostrophed = orig.isApostrophed;
+	}
+	
 	private int  preSz  = 0;
 	private int  postSz = 0;
 	public  int  nconsts() {return preSz + postSz;}
 	
+	/*
+	 *  Members:
+	 */
 	private Strings     prefix = new Strings();
 	public  Strings     prefix() { return prefix; }
 	public  Frag prefix( Strings s ) { prefix = s.toLowerCase(); preSz = prefix.size(); return this; }
@@ -69,7 +88,7 @@ public class Frag {
 	public  Frag exprIs() { isExpr = true; return this; }
 
 	private boolean     isQuoted = false;
-	public  boolean     quoted() { return isQuoted;}
+	public  boolean     isQuoted() { return isQuoted;}
 	public  Frag quotedIs( boolean b ) { isQuoted = b; return this; }
 	public  Frag quotedIs() { isQuoted = true; return this; }
 	
@@ -118,7 +137,7 @@ public class Frag {
 		boolean rc = false;
 		if (ui.hasNext()) {
 			String candidate = ui.next();
-			rc = (  quoted() && !Englishisms.isQuoted( candidate ))
+			rc = (  isQuoted() && !Englishisms.isQuoted( candidate ))
 			  || (isPlural() && Plural.isSingular(  candidate ));
 			if (ui.hasPrevious()) ui.previous();
 		}
