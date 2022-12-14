@@ -32,10 +32,10 @@ import org.enguage.util.sys.Shell;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
-	public static final long serialVersionUID = 0;
+	public  static final long serialVersionUID = 0;
 	private static Audit audit = new Audit( "Strings" );
 	
-	public static final int MAXWORD = 1024;
+	public  static final int MAXWORD = 1024;
 	
 	public static final int     CSV = 0;
 	public static final int   SQCSV = 1;
@@ -88,6 +88,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			add( i.next());
 	}
 	public Strings( String buf, char sep ) {
+		super();
 		if (null != buf) {
 			int sz = buf.length();
 			if (0 < sz) {
@@ -108,6 +109,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return (i+tsz <= sz) && token.equals( buf.substring( i, i+tsz ));
 	}
 	public Strings( String s ) {
+		super();
 		if (s != null && !s.equals( "" )) { // NB this doesn't tie up with parsing in Attributes.c!!!!
 			char[] buffer = s.toCharArray();
 			int  i = 0, sz = buffer.length;
@@ -119,8 +121,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 					if (Character.isLetter( buffer[ i ])
 						|| (   ('_' == buffer[ i ] || '$' == buffer[ i ])
 							&& 1+i<sz && Character.isLetter( buffer[ 1+i ])))
-					{	//audit.audit("reading AlphaNumeric including embedded: '.-_");
-						word.append( buffer[ i++ ]);
+					{	word.append( buffer[ i++ ]);
 						while (i<sz && (
 							Character.isLetter( buffer[ i ])
 							|| Character.isDigit(  buffer[ i ])
@@ -141,31 +142,19 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 								 && (	buffer[ i ] =='-'   // -ve numbers
 								 	 || buffer[ i ] =='+')) // +ve numbers
 							)
-					{	//audit.audit("reading NUMBER");
-						word.append( buffer[ i++ ]);
+					{	word.append( buffer[ i++ ]);
 						boolean pointDone = false;
-						//int     colonsDone = 0;
 						while (i<sz
 								&& (Character.isDigit( buffer[ i ])
 									|| (  !pointDone && buffer[ i ] =='.'
 								        && i+1<sz
 								        && Character.isDigit( buffer[ 1+i ]))
-								        
-							//		|| (  colonsDone < 2 && buffer[ i ] ==':'
-							//	        && i+2<sz
-							//	        && Character.isDigit( buffer[ 1+i ])
-							//	        && Character.isDigit( buffer[ 2+i ]))
 							  )    )
 						{
 							if (buffer[ i ] == '.') {
 								pointDone = true;
 								word.append( buffer[ i++ ]); // point,
 								word.append( buffer[ i++ ]); // first decimal
-							//} else if (buffer[ i ] == ':') {
-							//	colonsDone++;
-							//	word.append( buffer[ i++ ]); // one colon,
-							//	word.append( buffer[ i++ ]); // two...
-							//	word.append( buffer[ i++ ]); // ...decimals.
 							} else
 								word.append( buffer[ i++ ]);
 						}
@@ -180,7 +169,6 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 						} else {
 							// embedded apostrophes: check "def'def", " 'def" or "...def'[ ,.?!]" 
 							// quoted string with embedded apostrophes 'no don't'
-							//audit.audit("SQ string");
 							word.append( buffer[ i++ ]);
 							while( i<sz &&
 							      !(SINGLE_QUOTE == buffer[ i ] && // ' followed by WS OR embedded
@@ -236,15 +224,13 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return ss;
 	}
 	public String toString( String fore, String mid, String aft ) {
-		String as = "";
-		int sz = size();
-		if (sz > 0) {
-			as = fore;
-			for (int i=0; i<sz; i++)
-				as += ((i == 0 ? "" : mid) + get( i ));
-			as += aft;
-		}
-		return as;
+		StringBuilder as = new StringBuilder();
+		int i = 0;
+		as.append( fore );
+		for (String s : this)
+			as.append((i++ == 0 ? "" : mid) + s);
+		as.append( aft );
+		return as.toString();
 	}
 	public String toString( int n ) {
 		return
@@ -270,17 +256,17 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		else if (seps.size() == 1)
 			return toString( "", seps.get( 0 ), "" );
 		else if (seps.size() == 2) { // oxford comma: ", ", ", and "
-			String rc = "";
+			StringBuilder rc = new StringBuilder();
 			ListIterator<String> li = listIterator();
 			if (li.hasNext()) {
-				rc = li.next();
+				rc.append( li.next() );
 				String first = seps.get( 0 ),
 				       last = seps.get( 1 );
 				while (li.hasNext()) {
 					String tmp = li.next();
-					rc += (li.hasNext() ? first : last) + tmp;
+					rc.append((li.hasNext() ? first : last) + tmp);
 			}  }
-			return rc;
+			return rc.toString();
 		} else if (seps.size() == 4) {
 			Strings tmp = new Strings();
 			tmp.add( seps.get( 1 ));
@@ -354,27 +340,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	public Strings removeAll( String val ) {
 		Iterator<String> ai = iterator();
-		while (ai.hasNext()) {
+		while (ai.hasNext())
 			if (ai.next().equals( val ))
 				ai.remove();
-		}
 		return this;
 	}
-	// EITHER:
-	// (a=[ "One Two Three", "Ay Bee Cee", "Alpha Beta" ], val= "Bee") => "Ay Bee Cee";
-	//public static String getContext( String[] a, String val ) {
-	//	return "incomplete";
-	//}
-	// OR: (outer=[ "a", "strong", "beer" ], inner=[ "strong", "beer" ]) => true
-/*	public static boolean xcontainsStrings( String[] outer, String[] inner ) {
-		if (outer.length == 0 && 0 == inner.length)
-			return true;
-		else if (outer.length >= inner.length)
-			for (int o=0; o<=outer.length-inner.length; o++)
-				for (int i=0; i<inner.length; i++)
-					if (outer[ o + i ].equals( inner[ i ])) return true;
-		return false;
-	} // */
 	public boolean containsMatched( Strings inner ) {
 		boolean rc = false;
 		if (size() == 0 && 0 == inner.size())
@@ -395,9 +365,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public Strings removeAllMatched( String val ) {
 		Strings b = new Strings();
 		Strings valItems = new Strings( val );
-		for (int ai=0; ai<size(); ai++) 
-			if (!new Strings( get( ai )).containsMatched( valItems ))
-				b.add( get( ai ));
+		for (String ai : this) 
+			if (!new Strings( ai ).containsMatched( valItems ))
+				b.add( ai );
 		return b;
 	}
 	// ---------------------------------------------
@@ -410,25 +380,10 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			}
 		return this;
 	}
-	@Override
-	public String remove( int i ) {
-		String str = "";
-		if (i >= 0 && i<size()) {
-			str = get( i );
-			super.remove( i );
-		} else
-			audit.ERROR( "trying to remove "+ i +(i%10==1&&i!=11?"st":i%10==2&&i!=12?"nd":i%10==3&&i!=13?"rd":"th")+ " element of list of "+ size() +" items" );
-		return str;
-	}
 	public Strings remove( int i, int n ) {
 		Strings strs = new Strings();
-		if (i >= 0 && (i + n) <= size())
-			for (int j=0; j<n; j++ ) {
-				strs.add( get( i ));
-				super.remove( i );
-			}
-		else if (n > 0)
-			audit.ERROR( "trying to remove "+ n +" elements at the "+ i +(i%10==1&&i!=11?"st":i%10==2&&i!=12?"nd":i%10==3&&i!=13?"rd":"th")+ " position in list of "+ size() +" items" );
+		for (int j=0; j<n; j++ ) 
+			strs.add( remove( i ));
 		return strs;
 	}
 	public Strings linuxSwitches() {
@@ -464,8 +419,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return this;
 	}
 	public Strings replace( int i, String s ) {
-		remove( i );
-		if (null != s) add( i, s );
+		if (null != s) set( i, s );
 		return this;
 	}
 	public Strings replaceIgnoreCase( String s1, String s2 ) {
@@ -489,11 +443,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public Strings appendAll( Strings sa ) {
 		if (null != sa)
 			for( String s : sa )
-				append( s );
+				add( s );
 		return this;
 	}
 	public Strings append( String s ) {
-		if (null != s && !s.equals( "" )) add( s );
+		if (null != s && !s.equals( "" ))
+			add( s );
 		return this;
 	}
 	public void append( ListIterator<String> si, int n ) {
@@ -502,7 +457,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				append( si.next() );
 	}
 	public Strings prepend( String str ) {
-		if (null != str && !str.equals( "" )) add( 0, str );
+		if (null != str && !str.equals( "" ))
+			add( 0, str );
 		return this;
 	}
 	public Strings copyFrom( int n ) {
@@ -559,22 +515,21 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public static Strings fromNonWS( String buf ) {
 		Strings a = new Strings();
 		if (buf != null) {
-			StringBuffer word = null;
+			char ch;
 			for (int i=0, sz=buf.length(); i<sz; i++ ) {
-				word = new StringBuffer();
-				while( i<sz &&  Character.isWhitespace( buf.charAt( i ))) i++;
-				while( i<sz && !Character.isWhitespace( buf.charAt( i ))) { word.append( buf.charAt( i )); i++; }
-				
-				if (null != word)
-					a.add( word.toString());
+				StringBuffer word = new StringBuffer();
+				while( i<sz &&  Character.isWhitespace( buf.charAt( i++ )));
+				while( i<sz && !Character.isWhitespace( ch = buf.charAt( i++ )))
+					word.append( ch );
+				a.add( word.toString());
 		}	}
 		return a;
 	}
 	public String camelise( Strings strs ) {
-		String rc = "";
+		StringBuilder rc = new StringBuilder();
 		for( String s : strs )
-			rc += Character.toUpperCase( s.charAt( 0 )) +  s.substring( 1 );
-		return rc;
+			rc.append( Character.toUpperCase( s.charAt( 0 )) +  s.substring( 1 ));
+		return rc.toString();
 	}
 	public Strings decamelise( String s ) {
 		Strings strs = new Strings();
@@ -671,7 +626,6 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	// [ 'some', 'bread', '+', 'fish'n'chips', '+', 'some', 'milk' ], "+"
 	//                                => [  'some bread', 'fish and chips', 'some milk' ]
 	private Strings normalise( String ipSep, String opSep ) {
-		//audit.traceIn( "normalise", "ipSep='"+ ipSep +"' opSep='"+ opSep +"'");
 		// remember, if sep='+', 'fish', '+', 'chips' => 'fish+chips' (i.e. NOT 'fish + chips')
 		// here: some coffee + fish + chips => some coffee + fish and chips
 		Strings values = new Strings();
@@ -736,7 +690,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return false;
 	}
 	public static boolean isUpperCase( String a ) {
-		for (int i=0; i<a.length(); i++)
+		for (int i=0, sz=a.length(); i<sz; i++)
 			if (!Character.isUpperCase( a.charAt( i )) )
 				return false;
 		return true;
