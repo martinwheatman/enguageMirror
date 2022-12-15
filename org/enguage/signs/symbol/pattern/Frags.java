@@ -142,6 +142,36 @@ public class Frags extends ArrayList<Frag> {
 	/*
 	 * This is a constructor to split a frag into two...
 	 */
+	public Frags( Frag frag, String word, String type ) {
+		if (frag.prefix().contains( word )) {
+			
+			if (type.equals(phrase)) {
+				add( new Frag( frag.prefix().copyBefore( word ), word ).phrasedIs());
+				add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+			} else if (type.equals(numeric)) {
+				add( new Frag( frag.prefix().copyBefore( word ), word ).numericIs());
+				add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+			} else { // not type - a singlton?
+				add( new Frag( frag.prefix().copyBefore( word ), word ));
+				add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+			}
+			
+		} else if (frag.postfix().contains( word )) {
+			
+			if (type.equals(phrase)) {
+				add( new Frag( frag ).postfix( frag.postfix().copyBefore( word )));
+				add( new Frag( frag.postfix().copyAfter( word ), word ).phrasedIs());
+			} else if (type.equals(numeric)) {
+				add( new Frag( frag ).postfix( frag.postfix().copyBefore( word )));
+				add( new Frag( frag.postfix().copyAfter( word ), word ).numericIs());
+			} else {
+				add( new Frag( frag ).postfix( frag.postfix().copyBefore( word )));
+				add( new Frag( frag.postfix().copyAfter( word ), word ));
+			}
+			
+		} else // 
+			add( frag );
+	}
 	public Frags( Frag frag, String word ) {
 		if (frag.prefix().contains( word )) {
 			add( new Frag( frag.prefix().copyBefore( word ), word ));
@@ -158,6 +188,13 @@ public class Frags extends ArrayList<Frag> {
 		Frags ff = new Frags();
 		for (Frag f : this) {
 			ff.addAll( new Frags( f, word ));
+		}
+		return ff;
+	}
+	public Frags split( String word, String type ) {
+		Frags ff = new Frags();
+		for (Frag f : this) {
+			ff.addAll( new Frags( f, word, type ));
 		}
 		return ff;
 	}

@@ -354,6 +354,9 @@ public final class Engine {
 				           || option.equals( "user" )) {
 					Repertoire.signs.show();
 					r.format( Response.success() );
+				} else if (cmds.get( 0 ).equals( "otf" )) {
+					Repertoire.signs.show(Repertoire.AUTOPOIETIC);
+					r.format( Response.success() );
 				} else if (option.equals( "engi" )) {
 					Repertoire.allop.show();
 					r.format( Response.success() );

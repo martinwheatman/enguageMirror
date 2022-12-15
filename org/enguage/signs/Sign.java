@@ -173,7 +173,9 @@ public class Sign {
 			        prepend = false,
 			         tailer = false, // should be the default?
 			         append = false; 
+			
 			String cmd = args.remove( 0 );
+			
 			if (cmd.equals( "header" ))
 				header = true;
 			else if (cmd.equals( "prepend" ))
@@ -199,6 +201,22 @@ public class Sign {
 						.pattern( new Frags( args.toString() ))
 						.concept( Repertoire.AUTOPOIETIC )
 				);
+				
+			} else if (cmd.equals( "split" )) {
+				
+				if (args.size() == 1) {
+					
+					Sign.voiced.pattern(
+							Sign.voiced.pattern().split(args.get( 0 ))
+					);
+				} else 	if (args.size() > 1) {
+					
+					Sign.voiced.pattern(
+							Sign.voiced.pattern().split(args.get( 0 ), args.get( 1 ))
+					);
+				} else {
+					audit.ERROR( "missing" );
+				}
 				
 			} else if (cmd.equals( "perform" )) {
 				Intention intn = 
