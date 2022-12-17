@@ -1,5 +1,5 @@
 #debug on.
 
-i can say someone is a wally: ok.
+i can say someone is a wally  : ok.
 where that someone is a phrase: ok.
-show OTF : ok.
+show OTF.

@@ -119,7 +119,7 @@ public final class Engine {
 					.pattern( new Frag(      " ",  "port" ))
 					.pattern( new Frag(      " ",  "data" ).quotedIs())
 						.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" ),
-			new Sign().concept( NAME ).pattern( new Frag(              "show ", "x" ).phrasedIs())
+			new Sign().concept( NAME ).pattern( new Frag(          "show ", "x" ).phrasedIs())
 					.appendIntention( Intention.allop, "show X" ),
 			new Sign().concept( NAME ).pattern( new Frag(         "debug ", "x" ).phrasedIs())
 					.appendIntention( Intention.allop, "debug X" ),
@@ -344,9 +344,8 @@ public final class Engine {
 			
 		} else if (cmd.equals( "show" )) {
 			
-			//audit.audit( "cmds:"+ cmds +":sz="+ cmds.size() )
-			if (1==cmds.size() && cmds.get( 0 ).length()>=4) {
-				String option = cmds.get( 0 ).substring(0,4);
+			if (1==cmds.size()) {
+				String option = cmds.get( 0 );
 				if (option.equals( "auto" )) {
 					Repertoire.autop.show();
 					r.format( Response.success() );
@@ -354,10 +353,10 @@ public final class Engine {
 				           || option.equals( "user" )) {
 					Repertoire.signs.show();
 					r.format( Response.success() );
-				} else if (cmds.get( 0 ).equals( "otf" )) {
+				} else if (cmds.get( 0 ).equals( Repertoire.AUTOPOIETIC )) {
 					Repertoire.signs.show(Repertoire.AUTOPOIETIC);
 					r.format( Response.success() );
-				} else if (option.equals( "engi" )) {
+				} else if (option.equals( Repertoire.ALLOP )) {
 					Repertoire.allop.show();
 					r.format( Response.success() );
 				} else if (option.equals( "all" )) {
@@ -365,7 +364,7 @@ public final class Engine {
 					Repertoire.allop.show();
 					Repertoire.signs.show();
 					r.format( Response.success() );
-				} else if (option.equals( "vari" )) {
+				} else if (option.equals( "variable" )) {
 					Variable.interpret( new Strings( "show" ));
 					r.format( Response.success());
 				} else
