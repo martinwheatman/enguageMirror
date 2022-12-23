@@ -31,7 +31,7 @@ why am i heating the oven:
 					   i'm sorry, i didn't know you're heating the oven.
 			
 echo Transitivity.
-i need to go to the shops because i need 3 eggs:
+i need 3 eggs therefore i need to go to the shops :
 					   ok, you need to go to the shops because you need 3 eggs.
 do i need to go to the shops because i need 3 eggs:
 					   yes, you need to go to the shops because you need 3 eggs.

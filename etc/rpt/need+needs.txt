@@ -74,16 +74,16 @@ On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-THIS":
 	reply "ok, SUBJECT needs ...".
 
 ## Elaboration of subsequent utterances
-On "and NUMERIC-QUANTITY":
-	SUBJECT needs QUANTITY THIS;
+On "another":
+	SUBJECT needs another THIS;
 	reply "ok, SUBJECT needs ...".
 
-On "and NUMERIC-QUANTITY THIS":
-	SUBJECT needs QUANTITY THIS;
+On "another THIS":
+	SUBJECT needs another THIS;
 	reply "ok, SUBJECT needs ...".
 
-On "and NUMERIC-QUANTITY UNITS of PHRASE-THIS":
-	SUBJECT needs QUANTITY UNITS of THIS;
+On "another UNITS of PHRASE-THIS":
+	SUBJECT needs another UNITS of THIS;
 	reply "ok, SUBJECT needs ...".
 
 ###### Pronoun ancillaries - it is/they are from X #######

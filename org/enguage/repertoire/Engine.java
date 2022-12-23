@@ -95,8 +95,8 @@ public final class Engine {
 					.appendIntention( Intention.allop, "saveAs NAME" )
 					.concept( NAME ),										 		
 			new Sign()
-					.appendIntention( Intention.allop, "delete NAME" )
 					.pattern( new Frag( "delete spoken concept ", "NAME", "" ).phrasedIs())
+					.appendIntention( Intention.allop, "delete NAME" )
 					.concept( NAME ),
 																 		
 			new Sign().pattern( new Frag(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
