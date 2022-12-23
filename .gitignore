@@ -1,4 +1,6 @@
 bin/
+lib/
+tmp/
 selftest
 variable
 **.class
