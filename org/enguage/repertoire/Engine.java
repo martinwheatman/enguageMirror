@@ -47,8 +47,8 @@ public final class Engine {
 					.appendIntention( Intention.allop, "subtitle SAID" )
 					.concept( NAME ),
    			new Sign()
-					.pattern( new Frag( "subtitle", "SAID" ).phrasedIs())
-					.appendIntention( Intention.allop, "subtitle SAID" )
+					.pattern( new Frag( "echo", "SAID" ).phrasedIs())
+					.appendIntention( Intention.allop, "echo SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( new Frag( "run a self test", "" ))
@@ -387,28 +387,15 @@ public final class Engine {
 			}
 			
 		} else if (cmd.equals( "entitle" )) {
-			ListIterator<String> li = cmds.listIterator();
-			while (li.hasNext()) {
-				String s = li.next();
-				li.set( s.toUpperCase());
-			}	
+			cmds.toUpperCase();
 			audit.title( cmds.toString() );
 
 		} else if (cmd.equals( "subtitle" )) {
-			ListIterator<String> li = cmds.listIterator();
-			while (li.hasNext()) {
-				String s = li.next();
-				li.set( s.toUpperCase());
-			}	
+			cmds.toUpperCase();
 			audit.subtl( cmds.toString() );
 
 		} else if (cmd.equals( "echo" )) {
-			ListIterator<String> li = cmds.listIterator();
-			while (li.hasNext()) {
-				String s = li.next();
-				li.set( s.toUpperCase());
-			}	
-			Audit.log( cmds.toString() );
+			audit.subtl( cmds.toString() );
 
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'

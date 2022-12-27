@@ -12,7 +12,7 @@ i need 2 coffees:           yes, i know.
 i don't need any coffee:    ok, you don't need any coffee.
 what do i need:             you need a biscuit.
 
-echo Semantic Thrust.
+echo Semantic Thrust:-.
 i need to go to town:       ok, you need to go to town.
 what do i need:             you need a biscuit, and to go to town.
 i have the biscuit:         ok, you don't need any biscuit.
@@ -20,7 +20,7 @@ i have to go to town:       yes, i know.
 i don't need to go to town: ok, you don't need to go to town.
 what do i need:             you don't need anything.
 			
-echo Numerical Context.
+echo Numerical Context:-.
 i need nothing.
 i need a coffee:     ok, you need a coffee.
 and another:         ok, you need another coffee.
@@ -29,13 +29,13 @@ i need a cup of tea: ok, you need a cup of tea.
 and another coffee:  ok, you need another coffee.
 what do i need:      You need 3 coffees , and a cup of tea.
 			
-echo Correct values.
+echo Correct values:-.
 i need another coffee: ok, you need another coffee.
 no i need another 3:   ok, you need another 3 coffees.
 what do i need:        you need 6 coffees, and a cup of tea.
 i don't need anything: ok, you don't need anything.
 			
-echo Group-as-entity.		
+echo Group-as-entity:-.	
 MartinAndRuth does not need anything.
 			
 martin and ruth need a coffee and a tea:
@@ -55,10 +55,10 @@ martin and ruth need some biscuits:
 			
 what do martin and ruth need:
 			         martin and ruth need a coffee, and some biscuits.
-echo Tidy up.
+echo Tidy up:-.
 martin and ruth do not need anything: ok , martin and ruth don't need anything.
 
-echo Combos, multiple singular entities.
+echo Combos, multiple singular entities:-.
 james and martin and ruth all need a chocolate biscuit:
 			         ok, james and martin and ruth all need a chocolate biscuit.
 			
@@ -70,7 +70,7 @@ james  doesn't need anything.
 martin doesn't need anything.
 ruth   doesn't need anything.
 			
-echo Pronouns - see need+needs.txt.
+echo Pronouns - see need+needs.txt:-.
 i need nothing.
 			
 i need biscuits and coffee: ok, you need biscuits and coffee.
@@ -91,7 +91,7 @@ what do i need from the dairy aisle:
 i don't need anything from the dairy aisle:
 					   ok, you don't need anything from the dairy aisle.
 			
-echo Late Binding Floating Qualifiers.
+echo Late Binding Floating Qualifiers:-.
 i need nothing.
 i need biscuits:       ok, you need biscuits.
 i need milk from the dairy aisle: ok, you need milk from the dairy aisle.
@@ -102,7 +102,7 @@ from the dairy aisle what do i need:  you need milk from the dairy aisle.
 what from the dairy aisle do i need:  you need milk from the dairy aisle.
 what do i need from the dairy aisle:  you need milk from the dairy aisle.
 			
-echo Numbers ERROR!.
+echo Numbers ERROR!:-.
 i need nothing.
 i need an apple.
 how many apples do i need:  1, you need 1 apples. # <<<<<<<<< see this!
