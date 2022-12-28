@@ -4,7 +4,7 @@ Enguage is an engine for creating language: a virtual machine for voice.
 
 <center>
 
-<img alt="Semiotic Triangle - c/f. Meaning of Meaning, Ogden and Richards, 1923" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Ogden_semiotic_triangle.png" width="200"/>
+![Semiotic Triangle - c/f. Meaning of Meaning, Ogden and Richards, 1923](doc/triOfRef.png "Semiotic Triangle - c/f. Meaning of Meaning, Ogden and Richards, 1923")
 
 </center>
 
