@@ -1,0 +1,3 @@
+Load entity.
+
+On "restore NAME", restore entity NAME.

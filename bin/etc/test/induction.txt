@@ -1,0 +1,46 @@
+#TODO: create filename from pattern:
+#   i need phrase variable objects => i_need-.txt (append? create overlay)
+#   this is part of the need concept => need.txt (append)
+#   Enguage.interpret() => overlay
+#   Conceept.load() => can this outlive Enguage overlay???
+#
+#
+# First, what we can't say yet...
+my name is martin:                 I don't understand, my name is martin.
+if not  reply i already know this: I don't understand, if not reply i already know this.
+unset the value of name:           ok.
+
+# build-a-program...
+interpret my name is phrase variable name thus: ok.
+first set name to variable name:                ok.
+then get the value of name:                     ok. # not strictly necessary!
+then reply hello whatever:                      ok.
+ok:                                             ok.
+
+my name is ruth:   hello   ruth.
+my name is martin: hello martin.
+
+
+#...or to put it another way
+interpret i am called phrase variable name like this: ok.
+first reply hi whatever:                             ok.
+this implies that you set name to variable name:    ok.
+this implies that name is not set to variable name: ok.
+then if not reply i already know this:              ok.
+
+i am called martin: i already know this.
+
+# ...means.../...the means to...
+# 1. from the-means-to repertoire
+to the phrase phrase variable x the means to phrase variable y reply i really do not understand: ok.
+			
+do we have the means to become rich: I really don't understand.
+
+# 2. could this be built thus?
+to phrase variable this means phrase variable that reply ok: ok.
+this implies that you perform sign think variable that:   ok.
+this implies that you perform sign create variable this:  ok.
+
+just call me phrase variable name means i am called variable name: ok.
+just call me martin: i already know this.
+

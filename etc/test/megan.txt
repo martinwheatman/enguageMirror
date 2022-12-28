@@ -1,0 +1,2 @@
+martin is a user:   ok.
+set user as martin: ok, martin is logged on.

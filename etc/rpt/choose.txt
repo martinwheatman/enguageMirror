@@ -1,0 +1,3 @@
+On "choose a number from AND-LIST-THESE":
+	say "the first of these is FIRST-OF-THESE";
+	reply "ok the rest are REST-OF-THESE".

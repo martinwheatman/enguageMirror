@@ -1,0 +1,53 @@
+## Simple calculation
+On "evaluate NUMERIC-X":
+	perform "numeric evaluate X";
+	then, if not, reply "i did not get that".
+On "calculate NUMERIC-X", evaluate X.
+
+## Typical description
+On "what is NUMERIC-X":
+	perform "numeric evaluate X";
+	perform "variable set subtotal ...";
+	reply "X is ...";
+	then, if not, reply "i did not get that".
+#On "help", reply "to calculate a numeric phrase".
+
+## Running total...
+On "NUMERIC-X", perform "variable set subtotal X".
+    
+On "+ NUMERIC-X":
+	perform "numeric evaluate SUBTOTAL plus X";
+	perform "variable set subtotal ...";
+	then, reply "plus X makes SUBTOTAL".
+
+On "add NUMERIC-X", + X.
+#On "help", reply "and so on, to keep a running total".
+     
+##
+On "minus NUMERIC-X":
+	perform "numeric evaluate SUBTOTAL minus X";
+	perform "variable set subtotal ...";
+	then, reply "minus X makes SUBTOTAL".
+    
+On "take away NUMERIC-X", minus X.
+    
+##
+On "times NUMERIC-X":
+	perform "numeric evaluate SUBTOTAL times X";
+	perform "variable set subtotal ...";
+	then, reply "times X makes SUBTOTAL".
+    
+On "times by      NUMERIC-X":
+	times X;
+	then, reply "times by X makes SUBTOTAL".
+
+On "multiplied by NUMERIC-X":
+	times X.
+	then, reply "multiplied by X makes SUBTOTAL".
+
+On "equals", reply "SUBTOTAL".
+
+##
+     On "divided by NUMERIC-X", perform "numeric evaluate SUBTOTAL divided by X".
+Then on "divided by NUMERIC-X", perform "variable set subtotal ...".
+Then on "divided by NUMERIC-X", reply "divided by X makes SUBTOTAL".

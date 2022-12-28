@@ -1,0 +1,3 @@
+Load entity.
+
+On "does NAME exist",  entity NAME exists.

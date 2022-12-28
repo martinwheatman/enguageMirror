@@ -2,32 +2,37 @@ package org.enguage;
 
 import java.io.File;
 
-import org.enguage.interp.intention.Redo;
-import org.enguage.interp.repertoire.Autoload;
-import org.enguage.interp.repertoire.Concepts;
-import org.enguage.interp.repertoire.Repertoire;
-import org.enguage.objects.list.Item;
-import org.enguage.objects.space.Overlay;
+import org.enguage.repertoire.Config;
+import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoire.concept.Autoload;
+import org.enguage.repertoire.concept.Conjunction;
+import org.enguage.repertoire.concept.Names;
+import org.enguage.signs.interpretant.Redo;
+import org.enguage.signs.objects.list.Item;
+import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.symbol.Utterance;
+import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Server;
 import org.enguage.util.sys.Shell;
-import org.enguage.vehicle.Utterance;
-import org.enguage.vehicle.reply.Reply;
-import org.enguage.vehicle.where.Where;
 
 import com.yagadi.Assets;
 
 public class Enguage {
 	
-	private static String copyright = "Martin Wheatman, 2001-4, 2011-21";
+	private static String copyright = "Martin Wheatman, 2001-4, 2011-22";
 
-	public  static final String      RO_SPACE = Assets.LOCATION;
-	public  static final String      RW_SPACE = "var"+ File.separator;
+	private static Enguage enguage;
+	public  static Enguage get() {return enguage;}
+	public  static void    set( Enguage e ) {enguage = e;}
 	
-	public  static final String           DNU = "DNU";
-	private static final boolean startupDebug = false;
+	public  static final String      RO_SPACE  = Assets.LOCATION;
+	public  static final String      RW_SPACE  = "var"+ File.separator;
+	
+	private static final boolean STARTUP_DEBUG = false;
 	
 	private static Audit     audit = new Audit( "Enguage" );
 	public  static Overlay       o = Overlay.Get();
@@ -35,29 +40,26 @@ public class Enguage {
 	private static Shell   shell   = new Shell( "Enguage", copyright );
 	public  static Shell   shell() {return shell;}
 	
-	public  static boolean verbose = false;
+	private static  boolean verbose = false;
+	public  static  boolean isVerbose() {return verbose;}
+	public  static  void    verboseIs(boolean b) {verbose = b;}
 	
-	public  static boolean imagined = false;
-	
-	public  static void init() {init( RW_SPACE );}
-	public  static void init( String root ) {
+	private boolean imagined = false;
+	public  boolean imagined() {return imagined;}
+	public  void    imagined( boolean img ) {imagined = img;}
+		
+	public  Enguage() {this( RW_SPACE );}
+	public  Enguage( String root ) {
 		Fs.root( root );
-		Concepts.addConcepts( Assets.listConcepts() );
+		Names.addConcepts( Assets.listConcepts() );
 		Config.load( "config.xml" );
 	}
 	
-	public static Strings mediate( Strings said ) { return mediate( "uid", said );}
-	public static Strings mediate( String uid, Strings utterance ) {
-				
+	private Strings mediateSingle( String uid, Strings utterance ) {
 		Strings reply;
-		audit.in( "mediate", utterance.toString() );
-		
-		imagined = false;
+	
+		imagined( false );
 		Overlay.attach( uid );
-			
-		if (Server.serverOn()) Audit.log( "Server  given: " + utterance.toString() );
-		
-		// locations contextual per utterance + reset output format...
 		Where.clearLocation();
 		Item.resetFormat();
 		
@@ -69,12 +71,14 @@ public class Enguage {
 		// once processed, keep a copy
 		Utterance.previous( utterance );
 
-		if (imagined) {
+		if (imagined()) {
 			Overlay.abortTxn( Redo.undoIsEnabled() );
 			Redo.disambOff();
+			
 		} else if (Reply.isUnderstood()) {
 			Overlay.finishTxn( Redo.undoIsEnabled() );
 			Redo.disambOff();
+			
 		} else {
 			// really lost track?
 			audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
@@ -89,41 +93,44 @@ public class Enguage {
 
 		reply = Reply.say().appendAll( r.toStrings());
 		Reply.say( null );
-		
-		if (Server.serverOn()) Audit.log( "Server replied: "+ reply );
-			
 		Overlay.detach();
-		
-		return audit.out( reply );
+			
+		return reply;
+	}
+	public Strings mediate( Strings said ) { return mediate( "uid", said );}
+	public Strings mediate( String uid, Strings said ) {
+		audit.in( "mediate", said.toString() );
+		Strings reply = new Strings();
+		for (Strings conj : Conjunction.conjuntionAlley( said )) {
+			if (!reply.isEmpty()) reply.add( "and" );
+			Strings tmp = mediateSingle( uid, conj );
+			reply.addAll( tmp );
+		}
+		audit.out( reply );
+		return reply;
 	}
 	
-	// test code....
-	
+	/*
+	 *  test code....
+	 */
 	public static void usage() {
-		Audit.LOG(
-			 "Usage: java [-jar enguage.jar|org.enguage.Enguage]\n"  // program
-			+"            --verbose --data <path> --server <port>\n" // switches
-			+"            [-h | --port <port> | --httpd <port> | [<utterance>] | --test ]" //optis
-		);
-		Audit.LOG( "Switches are:" );
-		Audit.LOG( "       -v, --verbose\n" );
-		Audit.LOG( "       -d, --data <path> specifies the data volume to use\n" );
-		Audit.LOG( "       -s, --server <port>" );
-		Audit.LOG( "          switch to send test commands to a server." );
-		Audit.LOG( "          This is only a test, and is on localhost." );
-		Audit.LOG( "          (Needs to be initialised with -p nnnn);\n" );
+		Audit.LOG( "Usage: java [-jar enguage.jar|org.enguage.Enguage]" );
+		Audit.LOG( "            --help |" );
+		Audit.LOG( "            --verbose --data <path>" ); 
+		Audit.LOG( "            --port <port> [--httpd [--server <name>]] |" );
+		Audit.LOG( "            --test | [<utterance>]" );
 		Audit.LOG( "Options are:" );
 		Audit.LOG( "       -h, --help" );
 		Audit.LOG( "          displays this message\n" );
+		Audit.LOG( "       -v, --verbose\n" );
+		Audit.LOG( "       -d, --data <path> specifies the data volume to use\n" );
 		Audit.LOG( "       -p, --port <port>" );
-		Audit.LOG( "          listens on local TCP/IP port number\n" );
-		Audit.LOG( "       -H, --httpd [<port>]" );
-		Audit.LOG( "          webserver on port number, default to 8080\n" );
-		Audit.LOG( "       -t, --test <n>, -T <name>" );
-		Audit.LOG( "          runs a self test, where" );
-		Audit.LOG( "           n is the test number, or" );
-		Audit.LOG( "          -n excludes a test, or" );
-		Audit.LOG( "          -T <name> is part of the test name.\n" );
+		Audit.LOG( "          defines a TCP/IP port number\n" );
+		Audit.LOG( "       -H, --httpd" );
+		Audit.LOG( "          use webserver protocols\n" );
+		Audit.LOG( "       -s, --server <host> <port>" );
+		Audit.LOG( "          switch to send speech to a server." );
+		Audit.LOG( "          (Needs to be initialised with -p nnnn);\n" );
 		Audit.LOG( "       [<utterance>]" );
 		Audit.LOG( "          with an utterance it runs one-shot;" );
 		Audit.LOG( "          with no utterance it runs as a shell," );
@@ -131,62 +138,74 @@ public class Enguage {
 		Audit.LOG( "             terminate utterances." );
 	}
 	
-	public static void main( String args[] ) {
+	public static void main( String[] args ) {
 		
-		Example test = new Example();
-		
-		Audit.startupDebug = startupDebug;
+		Audit.startupDebug = STARTUP_DEBUG;
 		Strings    cmds = new Strings( args );
-		String     cmd,
-		           fsys = RW_SPACE;
+		String     cmd;
+		String     fsys = RW_SPACE;
+		boolean useHttp = false;
+		int port = 0;
+		String server = "";
+		
+		// traverse args and strip switches: -v -d -H -p -s
 		int i = 0;
 		while (i < cmds.size()) {
+			
 			cmd = cmds.get( i );
-			if (cmd.equals( "-v" ) || cmd.equals( "--verbose" )) {
+			
+			if (cmd.equals( "-h" ) || cmd.equals( "--help" )) {
+				Enguage.usage();
+				System.exit( 0 );
+			
+			} else if (cmd.equals( "-v" ) || cmd.equals( "--verbose" )) {
+				cmds.remove( i );
 				verbose = true;
-				cmds.remove( i );
-			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
-				test.serverTest( true );
-				cmds.remove( i );
-				cmd = cmds.size()==0 ? "8080":cmds.remove( i );
-				test.portNumber( cmd );
+					
 			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
 				cmds.remove( i );
-				fsys = cmds.size()==0 ? fsys : cmds.remove( i );
+				fsys = cmds.isEmpty() ? fsys : cmds.remove( i );
+				
+			} else if (cmd.equals( "-p" ) || cmd.equals( "--port" )) {
+				cmds.remove( i );
+				port = cmds.isEmpty() ? 8080 : Integer.valueOf( cmds.remove( i ));
+				Audit.LOG( "Using port: "+ port );
+		
+			} else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" )) {
+				cmds.remove( i );
+				useHttp = true;
+
+			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
+				cmds.remove( i );
+				server = cmds.isEmpty() ? "localhost" : cmds.remove( i );
+				Audit.LOG( "Sending to server: "+ server );
+				
 			} else
 				i++;
 		}
 
-		init( fsys );
+		enguage = new Enguage( fsys );
 				
-		cmd = cmds.size()==0 ? "":cmds.remove( 0 );
-		if (cmd.equals( "-p" ) || cmd.equals( "--port" ))
-			Server.server( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
+		cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
 		
-		else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" ))
-			Server.httpd( cmds.size() == 0 ? "8080" : cmds.remove( 0 ));
+		if (port != 0 && server.equals( "" )) { // run as local server
+			if (useHttp) Server.httpd( ""+ port );
+			Server.server( cmds.isEmpty() ? "8080" : cmds.remove( 0 ));
 		
-		else if (cmd.equals( "-t" )
-			  || cmd.equals( "--test" )
-			  || cmd.equals( "-T" ))
-			test.selfTest( cmd, cmds );
-		
-		else if (cmd.equals( "-h" ) || cmd.equals( "--help" ))
-			Enguage.usage();
-		
-		else if (cmd.equals( "" )) {
+		} else if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
 			shell.aloudIs( true ).run();
 		
 		} else {
 			// Command line parameters exists...
 			// reconstruct original commands and interpret...
-
 			// - remove full stop, if one given -
+			cmds.prepend( cmd );
 			cmds = new Strings( cmds.toString() );
-			if (cmds.get( cmds.size()-1 ).equals( "." )) cmds.remove( cmds.size()-1 );
+			Audit.LOG( "cmds: "+ cmds.toString() );
+			if (cmds.get( cmds.size()-1 ).equals( "." ))
+				cmds.remove( cmds.size()-1 );
 
 			// ...reconstruct original commands and interpret
-			test.run( cmds.prepend( cmd ));
-	}	}
-}
+			Enguage.get().mediate( cmds );
+}	}	}

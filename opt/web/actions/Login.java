@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import opt.web.Request;
-import opt.web.Server;
+import opt.web.WebRequest;
+import opt.web.WebServer;
 import opt.web.admin.Admin;
 import opt.web.admin.users.Users;
 
@@ -45,11 +45,11 @@ public class Login {
 			+ "}"
 			+ "</script>";
 	
-	public static String getLogin( Request r, String cmd, String[] params) {
+	public static String getLogin( WebRequest r, String cmd, String[] params) {
 		String reply = begin;
 		
 		if (cmd.equals( "login" )
-			&& Request.validAttrs( params, 2 ))
+			&& WebRequest.validAttrs( params, 2 ))
 		{
 			String  uname  = params[ 0 ].split("=")[ 1 ],
 					passwd = r.param();
@@ -66,7 +66,7 @@ public class Login {
 		
 		return reply;
 	}
-	public static String getReply( Request r, String cmd, String[] params) {
+	public static String getReply( WebRequest r, String cmd, String[] params) {
 		String reply = "";
 		
 		if (cmd.equals( "logout" )) {
@@ -81,8 +81,8 @@ public class Login {
 					+ logoutButton
 					+ end;
 		
-		else if (!Server.root().equals("")) {
-			File f = new File( Server.root() +File.separator+ cmd );
+		else if (!WebServer.root().equals("")) {
+			File f = new File( WebServer.root() +File.separator+ cmd );
 			try (Scanner s = new Scanner( f )) {
 				while (s.hasNextLine())
 					reply += s.nextLine();

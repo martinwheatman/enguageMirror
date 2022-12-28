@@ -1,0 +1,22 @@
+On "X is spatial", perform "where add X".
+
+On "this concept is spatial", perform "where addCurrent".
+
+On "spatially something can be PHRASE-LOCATOR":
+	perform "where locator LOCATOR";
+	then, reply "ok".
+	
+spatially something can be to the right of.
+spatially something can be to the left of.
+spatially something can be in front of.
+spatially something can be underneath.
+spatially something can be on top of.
+spatially something can be behind.
+spatially something can be below.
+spatially something can be under.
+spatially something can be from.
+spatially something can be over.
+spatially something can be on.
+spatially something can be in.
+spatially something can be at.
+	

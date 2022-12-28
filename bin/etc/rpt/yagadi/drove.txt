@@ -1,0 +1,7 @@
+this concept is temporal.
+
+On "i drove to work":
+	run "value martin/journey/when WHEN";
+	run "value martin/journey/when";
+	reply "ok ... you drove to work".
+	

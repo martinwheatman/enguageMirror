@@ -1,0 +1,3 @@
+Load entity.
+
+On "delete NAME", delete entity NAME.

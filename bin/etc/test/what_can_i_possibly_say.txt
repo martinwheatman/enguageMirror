@@ -1,0 +1,7 @@
+# a coffee is a drink
+# coffee is a drink
+# coffee is a commodity.
+# perform list item user needs => ANSWER
+# are any of whatever a drink
+# 	is FIRST-OF-THESE a drink
+# 	are any of REST-OF-THESE a drink

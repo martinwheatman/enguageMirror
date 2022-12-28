@@ -1,0 +1,50 @@
+# VARIABLES
+# E.g set name to martin
+
+On "set VAR to PHRASE-VALUE":
+	perform "variable set VAR VALUE";
+	then, reply "ok, VAR is set to VALUE".
+On "set VAR to QUOTED-VALUE":
+	perform "variable set VAR VALUE";
+	then, reply "ok, VAR is set to VALUE".
+
+# Anomaly number four:
+On "set VAR to for", set VAR to 4.
+
+On "set   the value of VAR to PHRASE-VALUE", set VAR to VALUE.
+On "get   the value of VAR", perform "variable get VAR".
+On "unset the value of VAR", perform "variable unset VAR".
+
+On "is VAR set":
+	perform "variable exists VAR";
+	reply "yes";
+	if not, reply "no".
+	
+On "is VAR not set to PHRASE-VALUE":
+	perform "variable equals VAR VALUE";
+	reply "no, VAR is set to VALUE";
+	then, if not, reply "yes, VAR is not set to VALUE".
+
+On "is VAR set to PHRASE-VALUE":
+	perform "variable equals VAR VALUE";
+	reply "yes, VAR is set to VALUE";
+	then, if not, reply "no, VAR is not set to VALUE".
+
+# this implies
+On "VAR is not set to PHRASE-VALUE":
+	perform "variable equals VAR VALUE";
+	reply "no, VAR is set to VALUE";
+	then, if not, reply "yes, VAR is not set to VALUE".
+
+On "VAR is set to PHRASE-VALUE":
+	perform "variable equals VAR VALUE";
+	reply "yes, VAR is set to VALUE";
+	then, if not, reply "no, VAR is not set to VALUE".
+
+#colloquialisms...
+On "VAR gets set to PHRASE-VALUE", set VAR to VALUE.
+
+#################################
+# ENTITY's ATTRIBUTE
+On "set the ATTRIBUTE of ENTITY to PHRASE-VALUE", attribute set ENTITY ATTRIBUTE VALUE.
+On "get the ATTRIBUTE of ENTITY", attribute get ENTITY ATTRIBUTE.

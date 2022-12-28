@@ -1,0 +1,7 @@
+i just ate breakfast:             ok, you have eaten breakfast today.
+today i have eaten a mars bar:    ok, you have eaten a mars bar today.
+i have eaten 2 packets of crisps: ok, you have eaten 2 packets of crisps today.
+			
+what have i eaten today:
+			      you have eaten breakfast today , a mars bar today , and 2 packets of crisps today.
+

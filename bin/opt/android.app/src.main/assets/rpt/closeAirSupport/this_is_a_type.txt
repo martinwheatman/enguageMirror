@@ -1,0 +1,21 @@
+# DVI prototype...
+On "PHRASE-NAME this is a PHRASE-TYPE control":
+	set the value of control_type to TYPE;
+	set the value of pilot_name  to NAME;
+	set the value of nine_lines to initial_point;
+	reply "ok, go ahead".
+
+# Correction...
+On "correction PHRASE-NAME this is a PHRASE-TYPE control":
+	is nine_lines set to initial_point;
+	if not, reply "i do not understand";
+	set the value of control_type to TYPE;
+	set the value of pilot_name  to NAME;
+	reply "ok, go ahead".
+
+On "correction this is a PHRASE-TYPE control":
+	is nine_lines set to initial_point;
+	if not, reply "i do not understand";
+	set the value of control_type to TYPE;
+	reply "ok, go ahead".
+	

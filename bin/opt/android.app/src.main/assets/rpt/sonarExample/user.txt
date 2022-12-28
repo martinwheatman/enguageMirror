@@ -1,0 +1,10 @@
+On "USER is a user":
+              add USER to my user list.
+             
+admin-one is a user.
+user-one is a user.
+
+On "set user as USER":
+              does USER exist in my user list;
+              if not, reply "sorry, USER is not a registered account";
+              reply "ok, USER is logged on".

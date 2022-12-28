@@ -1,0 +1,6 @@
+On "switch to SCREEN screen":
+	are you logged in;
+	if not, reply "sorry, you need to be logged in";
+	set the value of screen to SCREEN;
+	reply "ok, switched to SCREEN screen".
+	

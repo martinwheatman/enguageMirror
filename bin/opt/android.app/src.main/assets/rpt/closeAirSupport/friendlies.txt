@@ -1,0 +1,33 @@
+# DVI prototype...
+
+On "no friendlies":
+	is nine_lines set to friendlies;
+	if not, reply "i do not understand";
+	unset the value of friendlies;
+	set the value of nine_lines to egress;
+	reply "ok, no friendlies are present".
+
+On "friendlies are PHRASE-LOCATION":
+	is nine_lines set to friendlies;
+	if not, reply "i do not understand";
+	set friendlies to LOCATION;
+	set the value of nine_lines to egress;
+	reply "ok, friendlies are present".
+
+On "where are friendlies":
+	get the value of friendlies;
+	reply "..., friendlies are ...";
+	if not, reply "i'm sorry, no friendlies are present".
+
+# Corrections...
+On "correction friendlies are PHRASE-LOCATION":
+	is nine_lines set to egress;
+	if not, reply "i do not understand";
+	set friendlies to LOCATION;
+	reply "ok, friendlies are present".
+
+On "correction no friendlies":
+	is nine_lines set to egress;
+	if not, reply "i do not understand";
+	unset the value of friendlies;
+	reply "ok, no friendlies are present".

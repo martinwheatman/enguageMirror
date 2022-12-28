@@ -2,11 +2,11 @@ package org.enguage.util.attr;
 
 import java.util.ListIterator;
 
+import org.enguage.signs.symbol.config.Plural;
+import org.enguage.signs.symbol.when.Moment;
+import org.enguage.signs.symbol.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.vehicle.Plural;
-import org.enguage.vehicle.when.Moment;
-import org.enguage.vehicle.when.When;
 
 public class Attribute {
 	
@@ -138,6 +138,13 @@ public class Attribute {
 					attr = ci.next();                  // 2
 					ci.set( Attribute.getValue( attr ));
 		}	}	}
+		return a;
+	}
+	static public Strings expand( Strings a ) {
+		// expand all attribute parameters
+		ListIterator<String> ci = a.listIterator();
+		while (ci.hasNext())
+			ci.set( Attribute.getValue( ci.next() ));
 		return a;
 	}
 	public boolean equalsIgnoreCase( Attribute cmp ) {

@@ -1,0 +1,44 @@
+hello:                 i don't understand.
+to the phrase hello reply hello to you too: ok.
+hello:                 hello to you too.
+to the phrase hi think hello: ok.
+hi: hello to you too.
+to the phrase my name is variable name reply hello variable name.
+my name is martin: hello martin.
+			
+i need nothing.
+what do i need:        you don't need anything.
+i need a tea:          ok, you need a tea.
+no i need a coffee:    ok, you need a coffee.
+i need a coffee:       yes, I know.
+what do i need:        you need a coffee.
+			
+what do i think:       i'm sorry, I don't understand the question.
+			
+what do i want:        i'm sorry, i don't understand the question.
+want is like need:     ok, want is like need.
+what do i want:        you don't want anything.
+
+# this needs to be on the 'can' list???
+interpret something can be variable quality thus.
+first add variable quality to my quality list.
+then reply ok variable quality is a quality.
+
+something can be cool: ok cool is a quality.
+
+# need to check that quality is in my quality list???
+interpret variable things are variable quality thus.
+first add variable things to my variable quality list.
+and then reply ok variable things are variable quality.	
+
+ferraris are cool:     ok ferraris are cool.
+
+want is like need.
+i want a ferrari because ferraris are cool: ok, you want a ferrari because ferraris are cool.
+why do I want a ferrari: because ferraris are cool.
+
+echo Tidy up...
+I don't want anything: ok, you don't want anything.
+want is not like need: ok, want is not like need.
+what do i want:        i'm sorry, i don't understand the question.
+

@@ -1,0 +1,30 @@
+havoc 1 this is a Type II control:  ok, go ahead.
+lines 1 through 3 are not applicable:
+					 ok, lines 1 through 3 are not applicable.
+target elevation is 142 feet:      ok, target elevation is 142 feet.
+target description is vehicle in the open:
+					 ok, target description is vehicle in the open.
+target location is three zero uniform, whiskey Foxtrot, 15933 13674:
+					 ok, target location is three zero uniform, whiskey Foxtrot, 15933 13674.
+none:                              ok, mark type is none.
+friendlies are 30 clicks east of target:
+					 ok, friendlies are present.
+egress back into the wheel:        ok, egress back into the wheel.
+			
+#read back:
+#					line 1 is not applicable . +
+#					line 2 is not applicable . +
+#					line 3 is not applicable . +
+#					target elevation is 142 feet . +
+#					target description is vehicle in the open . +
+#					target location is three zero uniform , whiskey foxtrot , 15933 13674 . +
+#					none . +
+#					friendlies are 30 clicks east of target . +
+#					egress is back into the wheel . +
+#					ok.
+			
+#no friendlies:                ok, no friendlies are present )
+#where are friendlies:         no friendlies are present )
+what is the target elevation: 142 feet, target elevation is 142 feet.
+where are friendlies:         30 clicks east of target, friendlies are 30 clicks east of target.
+

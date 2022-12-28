@@ -1,0 +1,12 @@
+#you can say variable colour is a colour: ok.
+#this implies that you add variable colour to your colour list: ok.
+#			
+#red is a colour: ok.
+#blue is a colour: ok.
+#green is a colour: ok.
+#yellow is a colour: ok.
+
+set colour to yellow: ok, colour is set to yellow.
+set colour to red:    ok, colour is set to red.
+set colour to fred:   sorry, fred is not a colour i know.
+

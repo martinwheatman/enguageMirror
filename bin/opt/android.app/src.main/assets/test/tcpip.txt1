@@ -1,0 +1,6 @@
+# bug here??? config.xml has to be 8080 (matching this) so does  // <<<< see this!
+# config port get chosen over this one???
+tcpip localhost "+ Server.TestPort +" \"a test port address\": "ok.
+tcpip localhost 5678 \"this is a test, which will fail\""; "i'm sorry.
+simon says put your hands on your head", ". //, "ok, success" )
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+# eng - calling Enguage
+
+java -jar lib/enguage.jar $*

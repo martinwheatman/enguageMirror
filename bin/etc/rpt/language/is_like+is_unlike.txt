@@ -1,0 +1,14 @@
+# synonyms: "want is like need"
+#
+On "PHRASE-SIMILAR is like PHRASE-EXISTING":
+	perform "similarity between SIMILAR and EXISTING";
+	reply "ok, SIMILAR is like EXISTING".
+
+On "PHRASE-SIMILAR is unlike PHRASE-EXISTING":
+	perform "similarity destroy SIMILAR";
+	reply "ok, SIMILAR is unlike EXISTING".
+			
+On "PHRASE-SIMILAR is not like PHRASE-EXISTING":
+	perform "similarity destroy SIMILAR";
+	reply "ok, SIMILAR is not like EXISTING".			
+			

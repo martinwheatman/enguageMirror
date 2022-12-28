@@ -1,0 +1,9 @@
+what day is christmas day.
+
+#testInterpret( what day is it today )
+# my date of birth is
+# how old am i.
+# age is the given date minus the date of inception
+# if no date given, use the current date.
+# persons age given in years
+# what is my age [in <epoch default=years/>]

@@ -1,0 +1,3 @@
+i am thirsty      : do you need a drink.
+yes               : ok.
+do i need a drink : yes, you need a drink.

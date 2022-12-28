@@ -1,0 +1,40 @@
+{ "name": "Let's Enguage with the Web",
+  "short_name" : "Enguage the Web",
+  "description": "A vocal Webpage interface. Press Ctrl+Shift+space and say, 'Hello'",
+  "version": "0.98.0",
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "background": {
+    "scripts": ["kbTx.js"],
+    "persistent": true
+  },
+  "content_scripts": [
+    { "matches" : ["*://*/*"],
+      "js": ["interp.js"]
+  } ],
+  "permissions": [
+    "activeTab",
+    "contentSettings",
+    "desktopCapture",
+    "tabCapture",
+    "tabs",
+    "tts"
+  ],
+  "browser_action": {
+    "default_icon": "images/layzee512.png",
+    "default_title": "Press Ctrl+Shift+Space and say, 'Hello'"
+  },
+  "commands": {
+    "enguage": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Space",
+        "mac": "MacCtrl+Shift+Space"
+      },
+      "description": "single utterance"
+  } },
+  "icons": {
+    "16": "images/layzee16.png",
+    "48": "images/layzee48.png",
+    "128": "images/layzee128.png",
+    "512": "images/layzee512.png"
+} }

@@ -1,0 +1,45 @@
+package org.enguage.signs.objects.space;
+
+import org.enguage.signs.interpretant.Redo;
+import org.enguage.util.Audit;
+import org.enguage.util.Strings;
+import org.enguage.util.sys.Shell;
+
+public class Transaction {
+	
+	static public final String    NAME = "transaction";
+	static public final int         id = 245880623; //Strings.hash( NAME );
+	static private      Audit    audit = new Audit( NAME );
+	static private      boolean inprog = false;
+	
+	static private void    create() {
+		if (!inprog) {
+			inprog = true;
+			Overlay.startTxn( Redo.undoIsEnabled());
+	}	}
+	static private void    abort() {
+		if (inprog) {
+			inprog = false;
+			Overlay.remove(); //Enguage.o.destroy();
+	}	}
+	static private void    commit() {
+		if (inprog) {
+			inprog = false;
+			Overlay.compact();
+	}	}
+	
+	static public Strings interpret( Strings args ) {
+		audit.in( "interpret", args.toString() );
+		String rc = Shell.SUCCESS;
+		String cmd = args.remove(0);
+		if (cmd.equals( "create" ))
+			create();
+		else if (cmd.equals( "abort" )) {
+			abort();
+			rc = Shell.FAIL;// propagate the failure
+		} else if (cmd.equals( "commit" ))
+			commit();
+		else
+			rc = Shell.FAIL;
+		return audit.out( new Strings( rc ));
+}	}

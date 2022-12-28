@@ -1,0 +1,10 @@
+switch to submarines screen: sorry, you need to be logged in.
+clear the filter:            sorry, you need to be logged in.
+			
+login as megan:              ok, you're logged in as megan.
+switch to submarines screen: ok, switched to submarines screen.
+what is the value of screen: submarines, the value of screen is submarines.
+filter by submarines only:   ok, you're filtering by submarines only.
+		
+logout:                      ok, you have logged out.
+

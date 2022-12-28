@@ -1,0 +1,71 @@
+# DVI prototype...
+
+On "line 1 is not applicable":
+	is nine_lines set to initial_point;
+	if not, reply "i do not understand";
+	unset the value of initial_point;
+	set the value of nine_lines to heading;
+	reply "ok, line 1 is not applicable".
+	
+On "line 2 is not applicable":
+	is nine_lines set to heading;
+	if not, reply "i do not understand";
+	unset the value of heading;
+	set the value of nine_lines to distance;
+	reply "ok, line 2 is not applicable".
+	
+On "line 3 is not applicable":
+	is nine_lines set to distance;
+	if not, reply "i do not understand";
+	unset the value of distance;
+	set the value of nine_lines to target_elevation;
+	reply "ok, line 3 is not applicable".
+	
+On "line 4 is not applicable":
+	is nine_lines set to target_elevation;
+	if not, reply "i do not understand";
+	unset the value of target_elevation;
+	set the value of nine_lines to target_description;
+	reply "ok, line 4 is not applicable".
+	
+On "line 5 is not applicable":
+	is nine_lines set to target_description;
+	if not, reply "i do not understand";
+	unset the value of target_description;
+	set the value of nine_lines to target_location;
+	reply "ok, line 5 is not applicable".
+	
+On "line 6 is not applicable":
+	is nine_lines set to target_location;
+	if not, reply "i do not understand";
+	unset the value of target_location;
+	set the value of nine_lines to mark_type;
+	reply "ok, line 6 is not applicable".
+	
+On "line 7 is not applicable":
+	is nine_lines set to mark_type;
+	if not, reply "i do not understand";
+	unset the value of mark_type;
+	set the value of nine_lines to friendlies;
+	reply "ok, line 7 is not applicable".
+	
+On "line 8 is not applicable":
+	is nine_lines set to friendlies;
+	if not, reply "i do not understand";
+	unset the value of friendlies;
+	set the value of nine_lines to egress;
+	reply "ok, line 8 is not applicable".
+	
+On "line 9 is not applicable":
+	is nine_lines set to egress;
+	if not, reply "i do not understand";
+	unset the value of egress;
+	unset the value of nine_lines;
+	reply "ok, line 9 is not applicable".
+
+On "lines 1 through 3 are not applicable":
+	line 1 is not applicable;
+	line 2 is not applicable;
+	line 3 is not applicable;
+	reply "ok, lines 1 through 3 are not applicable".
+	

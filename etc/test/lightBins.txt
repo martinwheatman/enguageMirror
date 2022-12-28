@@ -1,0 +1,4 @@
+there are 6 light bins:        ok, there are 6 light bins.
+how many light bins are there: 6,  there are 6 light bins.
+show me light bin 6:           ok, light bin 6 is flashing/i'm sorry.
+

@@ -1,0 +1,3 @@
+On "show me all files":
+	run "ls";
+	then, reply "ok, ...".

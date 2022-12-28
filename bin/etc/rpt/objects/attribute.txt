@@ -1,0 +1,10 @@
+On "attribute set ENT ATTR PHRASE-X":
+	perform "value set ENT ATTR X";
+	then, reply "ok".
+	
+On "attribute get ENT ATTR":
+	perform "value get ENT ATTR";
+	then, reply "ok, the ATTR of ENT is ...".
+
+# attribute unset martin name X
+# attribute isset martin name X

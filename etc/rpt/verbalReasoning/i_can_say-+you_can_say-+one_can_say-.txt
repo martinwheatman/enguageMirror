@@ -1,0 +1,19 @@
+On "one can say SAID-UTTERANCE":
+	perform "sign create UTTERANCE";
+	reply "ok".
+
+On "i can say SAID-UTTERANCE", one can say UTTERANCE.
+On "you can say SAID-UTTERANCE", one can say UTTERANCE.
+
+On "to this one replies SAID-UTTERANCE":
+	perform "sign reply ok UTTERANCE";
+	reply "ok".
+
+On "to which  i  reply   SAID-UTTERANCE", to this one replies UTTERANCE.
+On "to which you reply   SAID-UTTERANCE", to this one replies UTTERANCE.
+On "to which one replies SAID-UTTERANCE", to this one replies UTTERANCE.
+
+On "this is temporal", perform "sign temporal".
+
+load implies.
+load first+then.

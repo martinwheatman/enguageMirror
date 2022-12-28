@@ -1,0 +1,9 @@
+# Three implies:
+#On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
+#	perform "sign prepend else reply REPLY";
+#	perform "sign prepend imply IMPLICATION".
+
+On "this implies              SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that         SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that you     SAID-IMPLICATION", perform "sign imply IMPLICATION".
+On "this implies that you run SAID-IMPLICATION", perform "sign run   IMPLICATION".

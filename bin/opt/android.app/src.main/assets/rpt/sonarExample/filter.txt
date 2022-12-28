@@ -1,0 +1,19 @@
+On "filter by AND-LIST-FILTER":
+	are you logged in;
+	if not, reply "sorry, you need to be logged in";
+	perform "items add USERNAME filter FILTER";
+	reply "ok, filtering by FILTER".
+	
+On "clear the filter":
+	are you logged in;
+	if not, reply "sorry, you need to be logged in";
+	perform "items removeAll USERNAME filter".
+	
+On "filter by FILTER only":
+	are you logged in;
+	if not, reply "sorry, you need to be logged in";
+	clear the filter;
+	perform "items add USERNAME filter FILTER";
+	reply "ok, you are filtering by FILTER only".
+	
+	 

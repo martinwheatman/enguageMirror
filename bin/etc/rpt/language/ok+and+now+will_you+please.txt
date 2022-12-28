@@ -1,0 +1,7 @@
+# this is part of the engine, really.
+On "and      SAID-X", X.
+On "so       SAID-X", X.
+On "now      SAID-X", X.
+On "will you SAID-X", X.
+On "please   SAID-X", X.
+On "ok       SAID-X", X.

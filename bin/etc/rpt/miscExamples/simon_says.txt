@@ -1,0 +1,3 @@
+On "simon says PHRASE-X":
+	tcpip localhost 8080 QUOTED-X;
+	then, reply "ok, ...".

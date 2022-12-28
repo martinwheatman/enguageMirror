@@ -1,0 +1,1 @@
+On "where that WORD is a TYPE", perform "sign split WORD TYPE".

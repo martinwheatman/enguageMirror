@@ -1,0 +1,15 @@
+Enguage - Natural Language Understanding
+========================================
+
+Privacy Policy
+--------------
+
+This product does not collect data.
+
+It submits speech-to-text requests via the Android API, which may make
+or might not your activity available to you on myactivity.google.com
+
+
+Martin Wheatman
+Enguage.org
+2019/10/30

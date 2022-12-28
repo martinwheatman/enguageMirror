@@ -1,0 +1,7 @@
+On "if PHRASE-X then PHRASE-Y":
+	perform "overlay create";
+	X;
+	if not, say so;
+	Y;
+	if not, say so;
+	perform "overlay destroy".

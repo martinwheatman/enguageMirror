@@ -1,0 +1,6 @@
+//		if runThisTest( james's experiment )) variables, arithmetic and lambda tests
+//			//interpret( england is a country:  ok, england is a country )
+//preston is in england: ok, preston is in england )
+//i am in preston:       ok, you're in england )
+//		
+

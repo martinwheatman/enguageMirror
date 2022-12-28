@@ -1,0 +1,18 @@
+#] i am thirsty      : do you need a drink.
+#] yes               : ok.
+#] do i need a drink : yes, you need a drink.
+
+On "i am thirsty":
+	ask do you need a drink.
+
+On "ask do you PHRASE-QUESTION":
+	yes implies i QUESTION;
+	no implies no i don't QUESTION;
+	reply "do you QUESTION".
+	
+On "SAID-RESPONSE implies SAID-IMPLICATION":
+	perform "sign create RESPONSE";
+	perform "sign reply ok";              ## right way around...
+	perform "sign imply IMPLICATION";     ## ...with this?
+	reply "ok".
+	
