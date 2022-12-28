@@ -6,36 +6,36 @@ import java.util.GregorianCalendar;
 
 public class Audit {
 	private              String     name = "";
-	static private       Strings   stack = new Strings( "zeroStack" );
+	private static        Strings   stack = new Strings( "zeroStack" );
 
 	// === global DEBUG switches...
-	static       public  boolean  startupDebug = false;
-	static final public  boolean  numericDebug = false;
-	static       public  boolean       timings = false;
-	static       public  boolean  runtimeDebug = false;
-    static       public  boolean    detailedOn = false;
-                 public  boolean detailedRegis = false;
+	public  static       boolean  startupDebug = false;
+	public  static final boolean  numericDebug = false;
+	public  static       boolean       timings = false;
+	public  static       boolean  runtimeDebug = false;
+	public  static       boolean    detailedOn = false;
+    public  boolean detailedRegis = false;
 	
  	// === indent
- 	static private Indent indent = new Indent();
- 	static public  void   incr() { indent.incr(); }
- 	static public  void   decr() { indent.decr(); }
- 	static public  String indent() { return indent.toString();}
+ 	private static  Indent indent = new Indent();
+ 	public  static   void   incr() { indent.incr(); }
+ 	public  static   void   decr() { indent.decr(); }
+ 	public  static   String indent() { return indent.toString();}
  	
  	// === logfile - write-only
- 	static private String fname = "." + File.separator+"audit.log";
- 	static public  void delete() {
+ 	private static  String fname = "." + File.separator+"audit.log";
+ 	public  static   void delete() {
  		File f = new File( fname );
  		if (f.exists()) f.delete();
  	}
- 	static public  void location( String l ) {
+ 	public  static   void location( String l ) {
  		delete();
  		fname = l + File.separator+"audit.log";
  	}
 
 	// === timestamp
-	static private long then = new GregorianCalendar().getTimeInMillis();
-	static public  long interval() {
+	private static  long then = new GregorianCalendar().getTimeInMillis();
+	public  static   long interval() {
 		long now = new GregorianCalendar().getTimeInMillis();
 		long rc = now - then;
 		then = now;
@@ -43,35 +43,30 @@ public class Audit {
 	}
 	
 	// === debug and detail - "auditing"
-	static private int     suspended = 0; 
-	static public  void    suspend() { suspended++; }
-	static public  void    resume() {  if (suspended()) suspended--;  }
-	static public  boolean suspended() { return suspended > 0; }
+	private static  int     suspended = 0; 
+	public  static  void    suspend() { suspended++; }
+	public  static  void    resume() {  if (suspended()) suspended--;  }
+	public  static  boolean suspended() { return suspended > 0; }
 	
 	public Audit( String nm ) { name = Character.toUpperCase( nm.charAt(0)) + nm.substring(1); }
 	public Audit( String nm, boolean t ) { this( nm ); tracing = t; }
 	public Audit( String nm, boolean t, boolean d ) { this( nm ); tracing = t; auditOn = d;}
 	public Audit( String nm, boolean t, boolean d, boolean detail ) { this( nm ); tracing = t; auditOn = d; detailedRegis = detail;}
 	
-	static private String LOG( PrintStream ps, String info ) { // ignores suspended value
+	private static  String LOG( PrintStream ps, String info ) { // ignores suspended value
 		indent.print( ps );
 		ps.append( info + (timings ? " -- "+interval()+"ms" : "") +"\n" );
 		return info;
 	}
-	static public String log( String info ) {
+	public  static  String log( String info ) {
 		if (!suspended()) {
 			LOG( System.out, info );
-			/*
-			 try {
-				LOG( new PrintStream( new FileOutputStream( Overlay.fsname("audit.log", Overlay.MODE_APPEND), true )), info );
-			} catch (Exception e) { LOG( System.out, info ); }
-			// */
 		}
 		return info;
 	}
-	static public int    log( int     info ) { log( ""+ info ); return info; }
-	static public String LOG( String  info ) { return LOG( System.out, info );}
-	static public String log( Strings info ) { return log( info.toString()); }
+	public  static  int    log( int     info ) { log( ""+ info ); return info; }
+	public  static  String LOG( String  info ) { return LOG( System.out, info );}
+	public  static  String log( Strings info ) { return log( info.toString()); }
 	
 	// test count
 	private int  numberOfTests = 0;
@@ -103,8 +98,8 @@ public class Audit {
 	}
 	
 	// === tracing
-    static       public  boolean    allTracing = false;
-    static       public  void         traceAll( boolean b ) { allTracing = b; }
+	public  static  boolean    allTracing = false;
+	public  static  void         traceAll( boolean b ) { allTracing = b; }
     
 	public  boolean  tracing = Audit.allTracing;
     public  void       trace( boolean b ) { tracing = b ? true : Audit.allTracing; }
@@ -144,10 +139,10 @@ public class Audit {
 	
 	// === allOn - tracing AND debug
 	// allOn vs. auditOn - turning auditOn when allOn, suppresses for this level
-	static private boolean allOn = false;
-	static public  void    allOff() { allOn = false; allTracing = false; indent.reset(); }
-	static public  void    allOn() {  allOn = true; allTracing = true; }
-	static public  boolean allAreOn() { return allOn; }
+	private static  boolean allOn = false;
+	public  static  void    allOff() { allOn = false; allTracing = false; indent.reset(); }
+	public  static  void    allOn() {  allOn = true; allTracing = true; }
+	public  static  boolean allAreOn() { return allOn; }
 	
 	// === title/underline
 	public void title( String title ) { log( "\n" ); underline( title, '=' );}
@@ -155,13 +150,11 @@ public class Audit {
 	public void underline( String title ) { underline( title, '-' );}
 	public void underline( String title, char ch ) {
 		log( title );
-		String underline = "";
-		for (int i = 0; i < title.length(); i++) underline += ch;
-		log( underline );
+		StringBuilder underline = new StringBuilder();
+		for (int i = 0; i < title.length(); i++) underline.append( ch );
+		log( underline.toString() );
 	}
 
-	//public String toString() { return Overlay.series();}
-	// -- test code...
 	public static void main( String[] agrs ) {
 		Audit audit = new Audit( "Audit" ); // <= needs setting as $DEBUG to test
 		Audit.allOn();

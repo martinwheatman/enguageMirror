@@ -767,6 +767,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			str = Strings.trim( str, quoteCh );
 		return str;
 	}
+	public  void toUpperCase() {
+		ListIterator<String> li = this.listIterator();
+		while (li.hasNext())
+			li.set( li.next().toUpperCase());
+	}
 	public Strings strip( String from, String to ) {
 		// this {one} and {two} is => one two
 		boolean adding = false;

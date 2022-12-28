@@ -9,7 +9,7 @@
 # fat and thin and athletic are mutually exclusive.
 #         I am fat.     Am I thin. No
 #         I am not fat. Am i thin. I don't know
-echo Contradiction test... can't swap between states directly.
+echo Contradiction test... can't swap between states directly:-.
 			
 demonstrators fear violence:        ok, demonstrators fear violence.
 demonstrators advocate violence:    no, demonstrators fear violence.
@@ -22,7 +22,7 @@ demonstrators don't advocate violence:
 tidy up violence test.
 			
 # ----------------------------------------------------------------
-echo Openly stated - opposing views.
+echo Openly stated - opposing views:-.
 the councillors   fear     violence: ok, the councillors       fear violence.
 the demonstrators advocate violence: ok, the demonstrators advocate violence.
 # test 1
@@ -37,7 +37,7 @@ who are they: they are the demonstrators.
 tidy up violence test.
 			
 # ----------------------------------------------------------------
-echo Openly stated - aligned views - advocate.
+echo Openly stated - aligned views - advocate:-.
 the councillors   advocate violence: ok, the councillors   advocate violence.
 the demonstrators advocate violence: ok, the demonstrators advocate violence.
 			
@@ -55,7 +55,7 @@ who are they: they are the councillors , and the demonstrators.
 tidy up violence test.
 			
 # ----------------------------------------------------------------
-echo Openly stated - aligned views - fear.
+echo Openly stated - aligned views - fear:-.
 the councillors fear violence because the voters fear violence:
 					 ok, the councillors fear violence because the voters fear violence.
 the demonstrators fear violence: ok, the demonstrators fear violence.
@@ -74,7 +74,7 @@ who are they: i don't know.
 tidy up violence test.
 			
 # ----------------------------------------------------------------
-echo the common sense view.
+echo the common sense view:-.
 # This should be configured within the repertoire...
 common sense would suggest the councillors fear violence:
 					 ok, common sense would suggest the councillors fear violence.

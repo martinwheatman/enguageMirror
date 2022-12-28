@@ -46,11 +46,12 @@ public class Load {
 	private static  String writtenName( String name ) {
 		return roRpts( isFlatpak ? "/apps/":"" )+ name +".txt";
 	}
-	public static  String spokenName( String s ) {return rwRpts()+ s +".txt";}
-	public static void delete( String cname ) {
+	public  static  String spokenName( String s ) {return rwRpts()+ s +".txt";}
+	private static  String deleteName( String s ) {return rwRpts()+ s +".del";}
+	public  static void delete( String cname ) {
 		if (cname != null) {
 			File oldFile = new File( spokenName( cname ));
-			File newFile = new File( rwRpts() + cname +".del" );
+			File newFile = new File( deleteName( cname ));
 			if (!oldFile.renameTo( newFile ))
 				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
 	}	}
