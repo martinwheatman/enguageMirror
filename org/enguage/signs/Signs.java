@@ -95,7 +95,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
 		while(i.hasNext()) {
-			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
+			Map.Entry<Integer,Sign> me = i.next();
 			if ( id.equals( me.getValue().concept() ))
 				removes.add( me.getKey() );
 		}
@@ -109,7 +109,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
 		while( i.hasNext()) {
-			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
+			Map.Entry<Integer,Sign> me = i.next();
 			Sign s = me.getValue();
 			Audit.LOG( s.toXml( n++, me.getKey() ));
 	}	}
@@ -118,7 +118,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
 		while( i.hasNext()) {
-			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
+			Map.Entry<Integer,Sign> me = i.next();
 			Sign s = me.getValue();
 			if (s.concept().equals(simpleFilter))
 				Audit.LOG( s.toXml( n++, me.getKey() ));
@@ -129,7 +129,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
 		while( i.hasNext()) {
-			Map.Entry<Integer,Sign> me = (Map.Entry<Integer,Sign>)i.next();
+			Map.Entry<Integer,Sign> me = i.next();
 			Sign s = me.getValue();
 			if (s.concept().equals(simpleFilter)) {
 				String fname = cname==null ? s.pattern().toFilename() : cname;
@@ -196,7 +196,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		Set<Map.Entry<Integer,Sign>> entries = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> ei = entries.iterator();
 		while( ei.hasNext()) {
-			Map.Entry<Integer,Sign> e = (Map.Entry<Integer,Sign>)ei.next();
+			Map.Entry<Integer,Sign> e = ei.next();
 			s = e.getValue();
 			if( s.interpretation == here ) { // we are back "here"
 				s.interpretation = noInterpretation; // tidy up this sign.
@@ -223,7 +223,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		Set<Map.Entry<Integer,Sign>> entries = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> ei = entries.iterator();
 		while( ei.hasNext() && !done) {
-			Map.Entry<Integer,Sign> e = (Map.Entry<Integer,Sign>)ei.next();
+			Map.Entry<Integer,Sign> e = ei.next();
 			int complexity = e.getKey();
 
 			if (!ignore.contains( complexity )) {

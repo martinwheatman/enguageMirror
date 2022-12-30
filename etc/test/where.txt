@@ -1,7 +1,3 @@
-#debug on.
-
 i can say  someone is a wally    : ok.
 where that someone is a phrase   : ok.
 and where that  wally  is a value: ok.
-
-show OTF.

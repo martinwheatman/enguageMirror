@@ -56,7 +56,7 @@ public class Sofa extends Shell {
 				case Temporal.id :   return    Temporal.interpret( Attribute.expand23( a ));
 				case Function.id :   return    Function.interpret( Attribute.expand23( a ));
 				case Variable.id :   return    Variable.interpret( Attribute.expand23( a ));
-				case Similarity.id:  return  Similarity.interpret( Attribute.expand23( a ));
+				case Similarity.ID:  return  Similarity.interpret( Attribute.expand23( a ));
 				case Colloquial.id:  return  Colloquial.interpret(                     a  );
 				case Transitive.id:  return  Transitive.interpret( Attribute.expand23( a ));
 				case Transaction.id: return Transaction.interpret( Attribute.expand23( a ));

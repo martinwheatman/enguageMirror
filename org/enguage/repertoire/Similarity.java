@@ -11,24 +11,22 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 
 public class Similarity {
-	static public final String NAME = "similarity";
-	//static private      Audit audit = new Audit( NAME );
-	static public final int      id = 230093813; //Strings.hash( "similarity" );
+	public  static final String NAME = "similarity";
+	public  static final int      ID = 230093813; //Strings.hash( "similarity" )
 
-	static private Attributes similarities = new Attributes();
+	private  static Attributes similarities = new Attributes();
 	
 	private static boolean load( String name, String load, String from, String to ) {
-		if (null != Autoload.get( name ))
-			return true;
-		else {
+		boolean loaded = (null != Autoload.get( name ));
+		if (!loaded) {
 			String conceptName = Load.loadConcept( load, from, to );
 			if (!conceptName.equals( "" )) {
 				Autoload.put( conceptName );
-				return true;
+				loaded = true;
 		}	}
-		return false;
+		return loaded;
 	}
-	static public void autoload( Strings utterance ) {
+	public  static void autoload( Strings utterance ) {
 		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
 		for (String synonym : similarities.matchNames( utterance )) {
 			String existing = similarities.value( synonym );
@@ -38,12 +36,12 @@ public class Similarity {
 				!load( Plural.plural(  synonym )+"+"+synonym,
 				       Plural.plural( existing )+"+"+existing, existing, synonym ));
 	}	}
-	static private void autoUnload( String name ) {
+	private  static void autoUnload( String name ) {
 		if (Autoload.unloadConditionally( name ) ||
 			Autoload.unloadConditionally( name+"+"+Plural.plural( name )) ||
 			Autoload.unloadConditionally( Plural.plural( name )+"+"+name )) ;
 	}
-	static public Strings interpret( Strings cmds ) {
+	public  static Strings interpret( Strings cmds ) {
 		// e.g. ["create", "want", "need"]
 		Strings rc = Response.failure();
 		int     sz = cmds.size();
@@ -74,16 +72,12 @@ public class Similarity {
 		}
 		return rc;
 	}
-	static public void test( String cmd ) {
+	public  static void test( String cmd ) {
 		interpret( new Strings( cmd ));
 	}
-	public static void main( String args[]) {
+	public static void main( String[] args ) {
 		Audit.allOn();
 		test( "create want / need" );
 		test( "save" );
-//		autoload( w/"I want a coffee" ); // -->loads need+needs, with need="want"
-//		//...
-//		unload();
 		test( "destroy want" );
-}
-}
+}	}

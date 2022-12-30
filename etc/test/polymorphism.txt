@@ -1,13 +1,14 @@
-i don't want anything.
-want is unlike need: ok, want is unlike need/ yes, i know.
-what do i want:      i'm sorry, i don't understand the question.
-			
+what do i want:      i don't understand, what do i want.
+
+subtitle polymorphism:-.			
 want is like need:   ok, want is like need.
-what do i want:      you want another pony/ you don't want anything.
-i want another pony: yes, i know/ ok, you want another pony.
+what do i want:      you don't want anything.
+i want another pony: ok, you want another pony.
 what do i want:      you want another pony.
+i want another pony: yes, i know.
 
 subtitle tidying up:-.
+i don't want anything.
 want is unlike need: ok, want is unlike need.
 i don't want anything: I don't understand, i don't want anything.
 

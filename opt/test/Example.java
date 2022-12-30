@@ -19,14 +19,13 @@ public class Example {
 	private static Audit   audit = new Audit( "Example" );
 
 	private static final String COMMENT_START = "#";
-	private static final String LINE_TERM = ".";
-	private static final String IN_UR_SEP = ":";
-	private static final String IN_REPLY_SEP = "/"; // doesn't like '|'
-	private static final String TEST_DIR = "etc/test/";
-	private static final String TEST_EXT = ".txt";
-	private static final String  TEST_PROMPT = "\nuser> ";
-	private static final String REPLY_PROMPT = "enguage> ";
-
+	private static final String     LINE_TERM = ".";
+	private static final String     IN_UR_SEP = ":";
+	private static final String  IN_REPLY_SEP = "/"; // doesn't like '|'
+	private static final String      TEST_DIR = "etc/test/";
+	private static final String      TEST_EXT = ".txt";
+	private static final String   TEST_PROMPT = "\nuser> ";
+	private static final String  REPLY_PROMPT = "enguage> ";
 	
 	public  static void test( String  cmd ) {test( cmd, null );}
 	public  static void test( String  cmd, String expected ) {test( cmd, expected, null );}
@@ -116,26 +115,24 @@ public class Example {
 	 * Full self-test...
 	 */
 	public static void unitTest( Strings tests ) {
-		int testGrp = 0;
-		
-		Audit.interval(); // reset timer
-
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine  ruth" ));
 
-		// sanity testing, remove yet preserve persistent data...
+		// remove old test data
 		String fsys = "./selftest";
 		Fs.root( fsys );
+		if (!Fs.destroy( fsys ))
+			audit.FATAL( "failed to remove old database - "+ fsys );
 
+		//run test groups
+		Audit.interval(); // reset timer
+		int testGrp = 0;
 		for (String test : tests) {
-			if (!Fs.destroy( fsys ))
-				audit.FATAL( "failed to remove old database - "+ fsys );
 			audit.title( "TEST: "+ test );
 			if (runTestFile( TEST_DIR+ test +TEST_EXT ))
 				testGrp++;
 		}
-
 		Audit.log( testGrp +" test group(s) found" );
 		audit.PASSED();
 	}

@@ -25,24 +25,24 @@ public class Autoload {
 	 */
 	private static int  ttl = 5;
 	public  static void ttl( String age ) {try {ttl = Integer.valueOf( age );} catch (Exception e){}}
-	public  static int ttl() { return ttl;}
+	public  static int ttl() {return ttl;}
 	
 	/**
 	 * autoloading - Simple flag to prevent autoloading when autoloading.
 	 */
 	public static boolean autoloading = false;
-	public static void    ing( boolean al ) { autoloading = al; }
-	public static boolean ing() { return autoloading; }
+	public static void    ing( boolean al ) {autoloading = al;}
+	public static boolean ing() {return autoloading;}
 
-	private static TreeMap<String,Integer> autoloaded = new TreeMap<String,Integer>();
-	public  static Integer get( String name ) { return autoloaded.get( name );}
-	public  static void    put( String name ) { autoloaded.put( name, 0 );}
-	public  static void remove( String name ) { autoloaded.remove( name );}
-	public  static boolean containsKey( String name ) { return autoloaded.containsKey( name );}
+	private static TreeMap<String,Integer> autoloaded = new TreeMap<>();
+	public  static Integer get( String name ) {return autoloaded.get( name );}
+	public  static void    put( String name ) {autoloaded.put( name, 0 );}
+	public  static void remove( String name ) {autoloaded.remove( name );}
+	public  static boolean containsKey( String name ) {return autoloaded.containsKey( name );}
 	
 	public static Strings loaded() {
 		Strings out = new Strings();
-		for(Map.Entry<String,Integer> entry : autoloaded.entrySet())
+		for (Map.Entry<String,Integer> entry : autoloaded.entrySet())
 			out.add( " "+ entry.getKey());
 		return out;
 	}
@@ -66,7 +66,7 @@ public class Autoload {
 					concepts.add( candidate );
 					autoloaded.put( candidate, 0 ); // reset to age=0
 				}
-			if (concepts.size() > 0) audit.debug( "Autoload: "+ concepts );
+			if (!concepts.isEmpty()) audit.debug( "Autoload: "+ concepts );
 			
 			Similarity.autoload( utterance );			
 				
@@ -95,7 +95,7 @@ public class Autoload {
 			Set<Map.Entry<String,Integer>> set = autoloaded.entrySet();
 			Iterator<Map.Entry<String,Integer>> i = set.iterator();
 			while(i.hasNext()) {
-				Map.Entry<String,Integer> me = (Map.Entry<String,Integer>)i.next();
+				Map.Entry<String,Integer> me = i.next();
 				String repertoire = me.getKey();
 				Integer nextVal = me.getValue() + 1;
 				if (nextVal > ttl)

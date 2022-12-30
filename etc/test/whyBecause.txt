@@ -1,6 +1,6 @@
 echo Simple action demo:-.
 
-i am baking a cake:     yes, i know/ ok, you're     baking a cake.
+i am baking a cake:     i know/ ok, you're     baking a cake.
 am i baking a cake:     yes,               you're     baking a cake.
 i am not baking a cake:                ok, you're not baking a cake.
 			

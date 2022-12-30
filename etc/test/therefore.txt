@@ -1,0 +1,4 @@
+#debug on.
+therefore is like so.
+i am baking a cake so i need 3 eggs.
+#debug off.

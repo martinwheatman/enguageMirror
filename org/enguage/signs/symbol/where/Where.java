@@ -1,6 +1,7 @@
 package org.enguage.signs.symbol.where;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.enguage.signs.objects.Variable;
@@ -16,13 +17,13 @@ public class Where {
 	/** e.g. i need milk locator='from' location="the dairy aisle"
 	 */
 
-	static public final String  NAME = "where";
-	static public final int       id = 10654909; //Strings.hash( NAME );
-	static public       Audit  audit = new Audit( NAME );
+	public  static final String  NAME = "where";
+	public  static final int       id = 10654909; //Strings.hash( NAME )
+	public  static       Audit  audit = new Audit( NAME );
 	
-	static public final String LOCTR = "LOCATOR";
-	static public final String LOCTN = "LOCATION";
-	static public void clearLocation() {
+	public  static final String LOCTR = "LOCATOR";
+	public  static final String LOCTN = "LOCATION";
+	public  static void clearLocation() {
 		Variable.unset( Where.LOCTN );
 		Variable.unset( Where.LOCTR );
 	}
@@ -34,16 +35,16 @@ public class Where {
 	}
 	// all possible locators: spatially something can be ... .
 	// e.g. [ ["in"], ["at"], ["in", "front", "of"], ...
-	static private ArrayList<Strings> locators = new ArrayList<Strings>();
-	static private Strings isLocator( ListIterator<String> li ) {
-		Strings rc = new Strings();
+	private  static ArrayList<Strings> locators = new ArrayList<>();
+	private  static Strings isLocator( ListIterator<String> li ) {
+		Strings rc;
 		for (Strings locator : locators)
-			if (0 != (rc = locator.extract( li )).size())
+			if (!(rc = locator.extract( li )).isEmpty())
 				return rc;
-		return null;
+		return new Strings();
 	}
-	static private void locatorIs( String l ) { locatorIs( new Strings( l )); }
-	static public  void locatorIs( Strings l ){ if (l.size() > 0) locators.add( l ); }
+	private  static void locatorIs( String l ) { locatorIs( new Strings( l )); }
+	public  static  void locatorIs( Strings l ){ if (!l.isEmpty()) locators.add( l ); }
 
 	private boolean assigned = false;
 	public  boolean assigned() { return assigned; }
@@ -56,8 +57,8 @@ public class Where {
 	
 	// Was: location=["the", "pub"]
 	// Now: location=[ ["the", pub"] ]
-	private ArrayList<Strings> location = new ArrayList<Strings>();
-	public  ArrayList<Strings> location() { return location; }
+	private ArrayList<Strings> location = new ArrayList<>();
+	public  List<Strings>      location() { return location; }
 	private Where           addLocation( Strings l ) { location.add( l ); return this; }
 	public  String             locationAsString( int n ) {return location.get( n ).toString();}
 	
@@ -73,7 +74,7 @@ public class Where {
 		Where w = null;
 		if (said.hasNext()) {
 			Strings locr = Where.isLocator( said );
-			if (null != locr) {
+			if (!locr.isEmpty()) {
 				if (said.hasNext()) {
 					Strings locn = new Strings();
 					String word = said.next(); // typically "the"
@@ -110,10 +111,10 @@ public class Where {
 	}
 	public static String list() { return concepts.toString( Strings.CSV );}
 
-	static public Strings interpret( Strings args ) {
-		audit.in( "interpret", args.toString() );
+	public  static Strings interpret( Strings args ) {
+		//audit.in( "interpret", args.toString() )
 		String rc = Shell.IGNORE;
-		if (args.size() > 0) {
+		if (!args.isEmpty()) {
 			String cmd = args.remove( 0 );
 			rc = Shell.SUCCESS;
 			if (cmd.equals( "add" ))
@@ -125,11 +126,11 @@ public class Where {
 			else
 				rc = Shell.FAIL;
 		}
-		audit.out( rc );
+		//audit.out( rc )
 		return new Strings( rc );
 	}
 
-	static public void doLocators( String locators ) {
+	public  static void doLocators( String locators ) {
 		Strings locs = new Strings( locators, '/' );
 		for (String l : locs) 
 			locatorIs( l );
@@ -137,7 +138,7 @@ public class Where {
 	//
 	// -- test code
 	//
-	static private void testDoLocators() {
+	private  static void testDoLocators() {
 		// locators need to be in decreasing length...
 		locatorIs( "to the left of" );
 		locatorIs( "to the right of" );
@@ -152,7 +153,7 @@ public class Where {
 		locatorIs( "over" );
 		locatorIs( "at" );
 	}
-	public static void main( String args[]) {
+	public static void main( String[] args) {
 		Overlay.Set( Overlay.Get());
 		Overlay.attach( NAME );
 		testDoLocators();

@@ -1,6 +1,7 @@
 # synonyms: "want is like need"
 #
 On "PHRASE-SIMILAR is like PHRASE-EXISTING":
+#	echo similarity SIMILAR and EXISTING;
 	perform "similarity between SIMILAR and EXISTING";
 	reply "ok, SIMILAR is like EXISTING".
 
