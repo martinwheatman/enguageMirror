@@ -72,7 +72,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			 */
 			int swap = ignore().get( 0 ), // 35
 				with = lastFoundAt();     // 42
-			//audit.debug( "OK SWAPPING "+ swap +" WITH "+ with );
+			//audit.debug( "OK SWAPPING "+ swap +" WITH "+ with )
 			swap( swap, with );	
 			/*
 			 * TO	sign order=..., 42, ..., 35, ..., 53,
@@ -80,9 +80,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 			 * BUT ignore remains as [35]?
 			 * Therefore replace INGORE val 35 with 42.
 			 */
-			//audit.debug("Ignores was "+ ignore().toString());
+			//audit.debug("Ignores was "+ ignore().toString())
 			ignore().set( ignore().indexOf( swap ), with );
-			//audit.debug("Ignores now "+ Enguage.e.signs.ignore().toString());
+			//audit.debug("Ignores now "+ Enguage.e.signs.ignore().toString())
 			
 			// readjust where this was found too!
 			foundAt( swap );

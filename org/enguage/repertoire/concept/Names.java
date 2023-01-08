@@ -36,7 +36,7 @@ public class Names {
 			if (components.length > 1 && components[ 1 ].equals("txt"))
 				add( components[ 0 ]);
 	}	}
-	public static boolean matchAnyBoilerplate( Strings utt, Strings bplt, char sep ) {
+	private static boolean matchAnyBoilerplate( Strings utt, Strings bplt, char sep ) {
 		Iterator<String> ui  = utt.iterator();
 		Iterator<String> bi = bplt.iterator();
 		boolean first = true;
