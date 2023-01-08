@@ -1,4 +1,4 @@
-hello:                 i don't understand.
+hello:                 i don't understand, hello.
 to the phrase hello reply hello to you too: ok.
 hello:                 hello to you too.
 to the phrase hi think hello: ok.

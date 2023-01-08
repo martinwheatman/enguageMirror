@@ -102,6 +102,7 @@ public class Load {
 			// loading won't use undo - disable
 			Redo.undoEnabledIs( false );
 			
+			audit.debug( ">>>>>LOADING "+ name );
 			String conceptName = loadConcept( name );
 			if (!conceptName.equals( "" ))
 				loaded( conceptName );

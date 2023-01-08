@@ -70,10 +70,6 @@ public final class Engine {
 					.appendIntention( Intention.allop, "help" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag(         "hello", "" ))
-					.appendIntention( Intention.allop, "hello")
-			  		.concept( NAME ),
-			new Sign()
 					.pattern( new Frag(         "say", "SAID" ).phrasedIs() /*.quotedIs()*/ )
 					.appendIntention( Intention.allop, "say SAID")
 			  		.concept( NAME ),

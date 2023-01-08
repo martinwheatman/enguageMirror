@@ -131,15 +131,17 @@ public class Sign {
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toStringIndented() {
-		Audit.incr();
 		String sign = Audit.indent()
 				+ "On \""+ pattern().toString()+ "\""
 				+ intents.toStringIndented() 
 				+ ".";
-		Audit.decr();
 		return sign;
 	}
-	public String toString() {return toStringIndented();}
+	public String toString() {
+		return "On \""+ pattern().toString()+ "\""
+				+ intents.toStringIndented() 
+				+ ".\n";
+	}
 		
 	public boolean toFile( String fname ){return Fs.stringAppendFile( fname, toString());}
 	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toString());}

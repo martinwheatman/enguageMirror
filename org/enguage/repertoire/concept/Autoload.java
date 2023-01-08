@@ -74,6 +74,7 @@ public class Autoload {
 			Autoload.ing( false );
 	}	}
 	public static void unload( String name ) {
+		audit.debug( ">>>>> Auto Unloading "+ name );
 		Repertoire.signs.remove( name );
 		remove( name );
 	}
