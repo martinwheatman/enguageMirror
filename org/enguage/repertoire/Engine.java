@@ -86,11 +86,11 @@ public final class Engine {
 					.appendIntention( Intention.allop, "unload NAME" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "save spoken concepts as ", "NAME", "" ).phrasedIs())
+					.pattern( new Frag( "save this idea as", "NAME", "" ).phrasedIs())
 					.appendIntention( Intention.allop, "saveAs NAME" )
 					.concept( NAME ),										 		
 			new Sign()
-					.pattern( new Frag( "delete spoken concept ", "NAME", "" ).phrasedIs())
+					.pattern( new Frag( "delete the idea of", "NAME", "" ).phrasedIs())
 					.appendIntention( Intention.allop, "delete NAME" )
 					.concept( NAME ),
 																 		
