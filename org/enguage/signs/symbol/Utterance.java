@@ -116,7 +116,7 @@ public class Utterance {
 		Where.doLocators( "behind/in/on/under/underneath/over/at" );
 		
 		Audit.log("Creating a pub:" +
-						new Sofa().interpret(new Strings("entity create pub"))
+						Sofa.interpret(new Strings("entity create pub"))
 		);
 
 		// create a meeting repertoire

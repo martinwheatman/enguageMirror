@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import org.enguage.repertoire.Engine;
 import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoire.concept.Load;
+import org.enguage.repertoire.concept.Names;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.objects.Temporal;
@@ -11,6 +13,7 @@ import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.pattern.Frag;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.signs.symbol.reply.Response;
 import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -131,11 +134,10 @@ public class Sign {
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toStringIndented() {
-		String sign = Audit.indent()
+		return Audit.indent()
 				+ "On \""+ pattern().toString()+ "\""
 				+ intents.toStringIndented() 
 				+ ".";
-		return sign;
 	}
 	public String toString() {
 		return "On \""+ pattern().toString()+ "\""
@@ -177,7 +179,6 @@ public class Sign {
 			         append = false; 
 			
 			String cmd = args.remove( 0 );
-			
 			if (cmd.equals( "header" ))
 				header = true;
 			else if (cmd.equals( "prepend" ))

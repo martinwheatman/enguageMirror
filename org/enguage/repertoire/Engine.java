@@ -4,9 +4,7 @@ import java.util.Locale;
 import java.util.TreeSet;
 
 import org.enguage.Enguage;
-import org.enguage.repertoire.concept.Autoload;
 import org.enguage.repertoire.concept.Load;
-import org.enguage.repertoire.concept.Names;
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
@@ -77,22 +75,6 @@ public final class Engine {
 					.pattern( new Frag( "what can i say", "" ))
 					.appendIntention( Intention.allop, "repertoire"  )
 		          	.concept( NAME ),
-			new Sign()
-					.pattern( new Frag(   "load ", "NAME" ))
-					.appendIntention( Intention.allop,    "load NAME" )
-			  		.concept( NAME ),
-			new Sign()
-					.pattern( "unload ", "NAME" )
-					.appendIntention( Intention.allop, "unload NAME" )
-					.concept( NAME ),
-			new Sign()
-					.pattern( new Frag( "save this idea as", "NAME", "" ).phrasedIs())
-					.appendIntention( Intention.allop, "saveAs NAME" )
-					.concept( NAME ),										 		
-			new Sign()
-					.pattern( new Frag( "delete the idea of", "NAME", "" ).phrasedIs())
-					.appendIntention( Intention.allop, "delete NAME" )
-					.concept( NAME ),
 																 		
 			new Sign().pattern( new Frag(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
 			new Sign().pattern( new Frag(        "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
@@ -199,46 +181,6 @@ public final class Engine {
 		} else if (cmd.equals( Redo.DISAMBIGUATE )) {
 			Redo.disambOn( cmds );
 		
-		} else if (cmd.equals( "load" )) {
-			/* load is used by create, delete, ignore and restore to
-			 * support their interpretation
-			 */
-			Strings files = cmds;
-			//audit.debug( "loading "+ files.toString( Strings.CSV ));
-			for(int i=0; i<files.size(); i++)
-				Load.load( files.get( i ));
-			 
-		} else if (cmd.equals( "unload" )) {
-			Strings files = cmds.copyAfter( 0 );
-			for(int i=0; i<files.size(); i++)
-				Autoload.unload( files.get( i ));
-		/*
-		 *else if (cmd.equals( "reload" )) 
-		 *	Strings files = cmds.copyAfter( 0 )
-		 *	for(int i=0; i<files.size(); i++) Concept.unload( files.get( i ))
-		 *	for(int i=0; i<files.size(); i++) Concept.load( files.get( i ))
-		 */
-
-		} else if (cmd.equals( "saveAs" )) {
-			
-			String name = cmds.toString( Strings.UNDERSC );
-			audit.debug( "Saving concepts as "+ name );
-			Names.add( name );
-			r.format(	Repertoire.signs.saveAs(
-								Repertoire.AUTOPOIETIC,
-								name
-						) ? Response.success() : Response.failure()
-					);
-
-		} else if (cmd.equals( "delete" )) {
-			 
-			String concept = cmds.toString( Strings.UNDERSC );
-			audit.debug( "Deleting "+ concept +" concept");
-			Names.remove( concept );
-			Load.delete( concept );
-			Repertoire.signs.remove( concept );
-			r.format( Response.success() );
-
 		} else if (cmd.equals( "spell" )) {
 			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));
 			
@@ -337,39 +279,6 @@ public final class Engine {
 			r.format( Response.success() );
 			
 			
-		} else if (cmd.equals( "show" )) {
-			
-			if (1==cmds.size()) {
-				String option = cmds.get( 0 );
-				if (option.equals( "auto" )) {
-					Repertoire.autop.show();
-					r.format( Response.success() );
-				} else if (   option.equals( "sign" )
-				           || option.equals( "user" )) {
-					Repertoire.signs.show();
-					r.format( Response.success() );
-				} else if (cmds.get( 0 ).equals( Repertoire.AUTOPOIETIC )) {
-					Repertoire.signs.show(Repertoire.AUTOPOIETIC);
-					r.format( Response.success() );
-				} else if (option.equals( Repertoire.ALLOP )) {
-					Repertoire.allop.show();
-					r.format( Response.success() );
-				} else if (option.equals( "all" )) {
-					Repertoire.autop.show();
-					Repertoire.allop.show();
-					Repertoire.signs.show();
-					r.format( Response.success() );
-				} else if (option.equals( "variable" )) {
-					Variable.interpret( new Strings( "show" ));
-					r.format( Response.success());
-				} else
-					audit.ERROR( "option: "+ option +" doesn't match anything" );
-			} else {
-				Repertoire.signs.show();
-				r.format( Response.success() );
-			}
-
-
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
 				Audit.log("Allop:repeating dnu");

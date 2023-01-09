@@ -1,0 +1,6 @@
+On "save this  idea  as PHRASE-NAME", save these ideas as NAME.
+On "save these ideas as PHRASE-NAME":
+	perform "ideas saveAs NAME";
+	reply "ok".
+
+On "delete the idea of PHRASE-NAME", perform "ideas delete NAME".

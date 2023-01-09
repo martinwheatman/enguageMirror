@@ -102,7 +102,7 @@ public class Intention {
 				return UNDEF;
 	}	}
 	
-	public static int nameToType( String name ) {
+	private static int nameToType( String name ) {
 		     if (name.equals( REPLY            )) return thenReply;
 		else if (name.equals( ELSE_REPLY       )) return elseReply;
 		else if (name.equals( THINK            )) return thenThink;
@@ -222,7 +222,7 @@ public class Intention {
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
-		Strings rawAnswer = new Sofa().doCall( new Strings( cmd ));
+		Strings rawAnswer = Sofa.interpret( new Strings( cmd ));
 		if (!ignore) r.answer( formatAnswer( rawAnswer.toString(), cmd.get( 1 )));
 
 		return r; //(Reply) audit.out( r ); //
@@ -251,14 +251,14 @@ public class Intention {
 		} else if (r.felicitous())
  			switch (type) {
 				case thenThink:	r = think(   r ); break;
-				case thenDo: 	r = perform( r ); break;
+				case thenDo: 	    perform( r ); break;
 				case thenRun:	r = run(     r ); break;
 				case thenReply:	r = reply(   r ); break;
 			}
  		else
 			switch (type) {
 				case elseThink: r = think(   r ); break;
-				case elseDo:	r = perform( r ); break;
+				case elseDo:	    perform( r ); break;
 				case elseRun:	r = run(     r ); break;
 				case elseReply:	r = reply(   r ); break;
 			}
