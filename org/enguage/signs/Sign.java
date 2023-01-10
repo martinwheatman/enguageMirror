@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import org.enguage.repertoire.Engine;
 import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoire.concept.Load;
+import org.enguage.repertoire.concept.Names;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.objects.Temporal;
@@ -11,6 +13,7 @@ import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.pattern.Frag;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.signs.symbol.reply.Response;
 import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -131,11 +134,10 @@ public class Sign {
 				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toStringIndented() {
-		String sign = Audit.indent()
+		return Audit.indent()
 				+ "On \""+ pattern().toString()+ "\""
 				+ intents.toStringIndented() 
 				+ ".";
-		return sign;
 	}
 	public String toString() {
 		return "On \""+ pattern().toString()+ "\""
@@ -167,7 +169,7 @@ public class Sign {
 		audit.in( "interpret", args.toString());
 		String rc = Shell.FAIL;
 		
-		if (args.size() > 0) {
+		if (!args.isEmpty()) {
 			
 			rc = "ok";
 			
@@ -177,7 +179,6 @@ public class Sign {
 			         append = false; 
 			
 			String cmd = args.remove( 0 );
-			
 			if (cmd.equals( "header" ))
 				header = true;
 			else if (cmd.equals( "prepend" ))
@@ -198,11 +199,10 @@ public class Sign {
 				
 			if (cmd.equals( "create" )) {
 				
-				Repertoire.signs.insert(
-					Sign.voiced = new Sign()
+				voiced = new Sign()
 						.pattern( new Frags( args.toString() ))
-						.concept( Repertoire.AUTOPOIETIC )
-				);
+						.concept( Repertoire.AUTOPOIETIC );
+				Repertoire.signs.insert( voiced );
 				
 			} else if (cmd.equals( "split" )) {
 				
@@ -255,7 +255,7 @@ public class Sign {
 
 				
 			} else if (cmd.equals( "think" )) {
-				//audit.debug( "adding a thought "+ args.toString() );
+				//audit.debug( "adding a thought "+ args.toString() )
 				Intention intn = new Intention(
 							isElse? Intention.elseThink : Intention.thenThink,
 							Frags.toPattern( new Strings( args.toString() ))
@@ -273,7 +273,7 @@ public class Sign {
 				}
 				
 			} else if (cmd.equals( "imply" )) {
-				//audit.debug( "prepending an implication '"+ args.toString() +"'");
+				//audit.debug( "prepending an implication '"+ args.toString() +"'")
 				voiced.insert(
 						0,
 						new Intention(
@@ -282,7 +282,7 @@ public class Sign {
 				)		);
 				
 			} else if (cmd.equals( "run" )) {
-				//audit.debug( "appending a script to run: '"+ args.toString() +"'");
+				//audit.debug( "appending a script to run: '"+ args.toString() +"'")
 				voiced.insert(
 						0, // "implies that you run"
 						new Intention(
@@ -294,7 +294,7 @@ public class Sign {
 				
 			} else if (cmd.equals( "finally" )) {
 				Intention intn;
-				//audit.debug( "adding a final clause? "+ args.toString() );
+				//audit.debug( "adding a final clause? "+ args.toString() )
 				if (cmd.length() > 7 && cmd.substring( 0, 7 ).equals( "perform" ))
 					intn = new Intention(
 							isElse ? Intention.elseDo    : Intention.thenDo,
@@ -312,7 +312,7 @@ public class Sign {
 							isElse ? Intention.elseThink : Intention.thenThink,
 							Frags.toPattern( new Strings( args.toString() ))
 						 );
-				voiced.append( intn ); // all finallys at the end :)
+				voiced.append( intn ); // all finals at the end :)
 			
 			} else {
 				rc = Shell.FAIL;

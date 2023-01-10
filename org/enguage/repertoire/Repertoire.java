@@ -12,7 +12,7 @@ import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 
 public class Repertoire {
-
+	
 	private static final Sign[] autopoiesis = {
 		// 3 x 3 signs (think/do/say * start/subseq/infelicit) + 1 "finally"
 		new Sign( "On ", new Quote( "x" ), ",", new Phrase( "y" ))

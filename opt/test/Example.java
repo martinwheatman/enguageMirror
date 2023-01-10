@@ -114,7 +114,7 @@ public class Example {
 	/*
 	 * Full self-test...
 	 */
-	public static void unitTest( Strings tests ) {
+	private static void unitTest( Strings tests ) {
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine  ruth" ));
