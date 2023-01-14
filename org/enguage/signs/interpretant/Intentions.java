@@ -1,7 +1,10 @@
 package org.enguage.signs.interpretant;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.enguage.repertoire.Engine;
+import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attribute;
 
@@ -23,6 +26,19 @@ public class Intentions extends ArrayList<Intention> {
 		for (Intention in : this)
 			intentions += "\n      " + Attribute.asString( Intention.typeToString( in.type() ), in.value() );
 		return intentions;
+	}
+	public Reply mediate( Reply r ) {
+		Iterator<Intention> ai = this.iterator();
+		while (ai.hasNext()) {
+			Intention in = ai.next();
+			switch (in.type()) {
+				case Intention.allop  : r = Engine.interp( in, r ); break;
+				case Intention.create : r.answer( in.create() ); break;
+				case Intention.prepend: r.answer( in.prepend()); break;
+				case Intention.append : r.answer( in.append() ); break;
+				default: r = in.mediate( r ); // thenFinally, think, do, say...
+		}	}
+		return r;
 	}
 	public String toStringIndented() {
 		String intents = "";

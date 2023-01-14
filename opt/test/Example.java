@@ -16,7 +16,7 @@ public class Example {
 	
 	private Example() {}
 	
-	private static Audit   audit = new Audit( "Example" );
+	private static final Audit          audit = new Audit( "Example" );
 
 	private static final String COMMENT_START = "#";
 	private static final String     LINE_TERM = ".";
@@ -122,13 +122,15 @@ public class Example {
 		// remove old test data
 		String fsys = "./selftest";
 		Fs.root( fsys );
-		if (!Fs.destroy( fsys ))
-			audit.FATAL( "failed to remove old database - "+ fsys );
 
 		//run test groups
 		Audit.interval(); // reset timer
 		int testGrp = 0;
 		for (String test : tests) {
+			
+			if (!Fs.destroy( fsys ))
+				audit.FATAL( "failed to remove old database - "+ fsys );
+			
 			audit.title( "TEST: "+ test );
 			if (runTestFile( TEST_DIR+ test +TEST_EXT ))
 				testGrp++;

@@ -138,14 +138,14 @@ public class Intention {
 
 	public String create() {
 		Strings sa      = Context.deref( new Strings( values ));
-		String  attr    = sa.remove( 0 ),
-		        pattern = sa.remove( 0 ),
-			    val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-			Repertoire.signs.insert(
-					latest = new Sign()
-							.pattern( new Frags( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
-							.concept( concept() )
-							.append( new Intention( Intention.nameToType( attr ), val )));
+		String  attr    = sa.remove( 0 );
+		String  pattern = sa.remove( 0 );
+		String  val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
+		latest = new Sign()
+				.pattern( new Frags( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
+				.concept( concept() )
+				.append( new Intention( Intention.nameToType( attr ), val ));
+		Repertoire.signs.insert( latest );
 		return "ok";
 	}
 	public String append() {
@@ -283,20 +283,11 @@ public class Intention {
 	/*
 	 * Test code...
 	 */
-	public String autopoiesis() {
-		switch (type) {
-			case create : create();  break;
-			case append : append();  break;
-			case prepend: prepend(); break;
-		}
-		return "ok";
-	}
 	public static Reply test(Reply r, ArrayList<Intention> intents) {
 		Iterator<Intention> ins = intents.iterator();
 		while (!r.isDone() && ins.hasNext()) {
 			Intention in = ins.next();
 			Audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
-			r.answer( new Intention( in, false, false ).autopoiesis() );
 		}
 		return r;
 	}
@@ -306,7 +297,7 @@ public class Intention {
 		
 		audit.title( "trad autopoiesis... add to a list and then add that list" );
 		r = new Reply();
-		ArrayList<Intention> a = new ArrayList<Intention>();
+		ArrayList<Intention> a = new ArrayList<>();
 		a.add( new Intention( create, THINK      +" \"a PATTERN z\" \"one two three four\""   ));
 		a.add( new Intention( append, ELSE_REPLY +" \"two three four\""   ));
 		a.add( new Intention( append, REPLY      +" \"three four\"" ));

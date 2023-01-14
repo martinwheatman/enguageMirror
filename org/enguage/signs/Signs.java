@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoire.concept.Autoload;
 import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
@@ -17,6 +18,7 @@ import org.enguage.signs.symbol.pronoun.Pronoun;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
+import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 
@@ -24,9 +26,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
 	private static       Audit           audit = new Audit( "Signs" );
 	
-	//private final String name;
+	private final String name;
 	
-	public Signs( String nm ) { super(); /*name=nm;*/ }
+	public Signs( String nm ) {super(); name=nm;}
 
 	public Signs add( Sign[] signs ) {
 		for (Sign sign: signs)
@@ -89,7 +91,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	}	}
 	
 	public void remove( String id ) {
-		ArrayList<Integer> removes = new ArrayList<Integer>();
+		ArrayList<Integer> removes = new ArrayList<>();
 		
 		// to prevent co-mod errors, load a list with the keys of those to be removed...
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
@@ -120,7 +122,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		while( i.hasNext()) {
 			Map.Entry<Integer,Sign> me = i.next();
 			Sign s = me.getValue();
-			if (s.concept().equals(simpleFilter))
+			if (s.concept().contains(simpleFilter))
 				Audit.LOG( s.toXml( n++, me.getKey() ));
 	}	}
 	public boolean save( String simpleFilter ) {return saveAs( simpleFilter, null );}
@@ -161,8 +163,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public  void               ignoreNone() {ignore.clear();}
 	// ---------------------------------------------
 
-	public static  final int noInterpretation = 0;
-	private static       int interpretation   = noInterpretation;
+	public  static final int NO_INTERPRETATION = 0;
+	private static       int interpretation   = NO_INTERPRETATION;
 	private static       int interpretation() { return ++interpretation; }
 	
 	@Override
@@ -177,21 +179,21 @@ public class Signs extends TreeMap<Integer,Sign> {
 		}
 		return str.toString();
 	}
-	private Sign reassign( int here ) {
-		/* Comodification error?
+	/*private Sign reassign( int here ) {
+		 Comodification error?
 		 * If, during interpretation, we've modified the repertoire
 		 * by autoloading and we've not understood this we've 
 		 * screwed the repertoire we're currently half-way through.
-		 */
+		 
 		// Reassign s here!
-		/* Then find our way back "here". The sign-scape will be 
+		 Then find our way back "here". The sign-scape will be 
 		 * peppered with new signs, so there may not be a complete 
 		 * trail of signs where skipme == true. We can work our way 
 		 * back to this point as ahead of us there will be a complete 
 		 * trail of signs where skipme == noId.
 		 * N.B. There is no "jump to the end", so this alg involves 
 		 * one read through of the whole list.
-		 */
+		 
 		Sign s = null;
 		Set<Map.Entry<Integer,Sign>> entries = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> ei = entries.iterator();
@@ -199,21 +201,21 @@ public class Signs extends TreeMap<Integer,Sign> {
 			Map.Entry<Integer,Sign> e = ei.next();
 			s = e.getValue();
 			if( s.interpretation == here ) { // we are back "here"
-				s.interpretation = noInterpretation; // tidy up this sign.
+				s.interpretation = NO_INTERPRETATION; // tidy up this sign.
 				break; // return to processing the list...
 		}	}
 		return s;
-	}
+	}*/
 
 	// a simple cognitive model ?
 	public Reply mediate( Utterance u ) {
-		/*
+		if (Audit.allAreOn()) {
 			audit.in( "mediate",
 				" ("+ name +"="+ size() +") "
 				+ " '"+ u.toString() +"' "
 		 		+ (ignore.size()==0?"":("avoiding "+ignore)));
 			audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
-		// -- */
+		}
 		int here = interpretation(); // an ID for this interpretation
 		
 		Reply       r = new Reply();
@@ -228,7 +230,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 			if (!ignore.contains( complexity )) {
 				Sign s = e.getValue(); // s knows if it is temporal!	
-				//TODO: removed noInter check -- need to check if we're repeating ourselves?
+				// do we need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
 				if (null == match) {
 					;//	audit.debug( "NO match: "+ s.pattern().toString() )
@@ -236,21 +238,23 @@ public class Signs extends TreeMap<Integer,Sign> {
 					
 					Pronoun.update( match );
 					
-					// here: match=[ x="a", y="b+c+d", z="e+f" ]
-					audit.debug( "matched:\n"+ s.toStringIndented() );
-					audit.debug( "Concept: "+s.concept() +"," );
-					audit.debug( "   with: "+ match.toString() +"," );
-					audit.debug( "    and: "+ Context.valueOf());
+					if (Audit.allAreOn()) {
+						// here: match=[ x="a", y="b+c+d", z="e+f" ]
+						audit.debug( "matched:\n"+ s.toStringIndented() );
+						audit.debug( "Concept: "+s.concept() +"," );
+						if (match.isEmpty()) audit.debug( "   with: "+ match.toString() +"," );
+						if (Context.context().isEmpty()) audit.debug( "    and: "+ Context.valueOf());
+					}
 					
-					//audit.debug("setting "+ i +" to "+ here );
+					//audit.debug("setting "+ i +" to "+ here )
 					s.interpretation = here; // mark here first as this understanding may be toxic!
-					//audit.debug( "interpreting i="+ i +": "+ s.toText());
+					//audit.debug( "interpreting i="+ i +": "+ s.toText())
 					
 					foundAt( complexity ); /* This MUST be recorded before interpretation,
 					 * below: this will be overwritten during interpretation, eventually
 					 * being left with the last in the chain of signs in an interpretation.
 					 */
-					//audit.debug( "Found@ "+ i +":"+ get( complexity ).content().toLine() +":"+ match.toString() +")");
+					//audit.debug( "Found@ "+ i +":"+ get( complexity ).content().toLine() +":"+ match.toString() +")")
 
 					//save the context here, for future use... before interp
 					if (!Repertoire.transformation())
@@ -262,9 +266,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 							.response( Response.OK );
 							
 					
-					// TODO: No need for context, now? read from (cached) variables?
 					Context.push( match );
-					r = s.interpret( r ); // may pass back DNU
+					r = s.intentions().mediate( r ); // may pass back DNU
 					Context.pop();
 					
 					r.a.appendingIs( true );
@@ -287,9 +290,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 						 * by autoloading and we've not understood this we've 
 						 * screwed the repertoire we're currently half-way through.
 						 */
-						s = reassign( here );
+						//s = reassign( here );
 					} else {
-						s.interpretation = noInterpretation; // tidy as we go
+						s.interpretation = NO_INTERPRETATION; // tidy as we go
 						answer = r.a.toString();
 						done = true;
 					}
@@ -297,11 +300,12 @@ public class Signs extends TreeMap<Integer,Sign> {
 				} // matched	
 			}	
 		} // while more signs and not done
-		return r.answer( answer ); //(Reply) audit.out( r.answer( answer )); // 
+		if (Audit.allAreOn()) audit.out( r.answer( answer ));
+		return r.answer( answer );  
 	}	
 	
 	public static void main( String[] args ) {
-		audit.tracing = true;
+		Audit.allOn();
 		Signs r = new Signs( "test" );
 		r.insert(
 				new Sign().pattern( new Frag(  "debug ", "x" ))

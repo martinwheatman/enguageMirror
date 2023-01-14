@@ -112,7 +112,6 @@ public class Autoload {
 	}	}
 	public static void main( String args[] ) {
 		Audit.allOn();
-		Audit.allTracing = true;
 		if (!Fs.location( Enguage.RO_SPACE ))
 			audit.FATAL( Enguage.RO_SPACE +": not found" );
 		else {

@@ -218,7 +218,7 @@ public class Attributes extends ArrayList<Attribute> {
 					value = Strings.toCamelCase( value );
 				if (plural)   value = Plural.plural( value );
 				if (quoted)   value = Attribute.DEF_QUOTE_CH+ value +Attribute.DEF_QUOTE_CH;
-				if (Audit.detailedOn) audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
+				//audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
 				//I'd like to have:
 				//   I'm meeting whom="James" where="home"
 				//but returning below is not a good idea.

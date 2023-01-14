@@ -103,7 +103,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   answer( String ans ) {
 		if (ans != null && !ans.equals( Shell.IGNORE )) {
 			if (!a.isAppending())
-				a = new Answer(); // a.nswer = new Strings();
+				a = new Answer(); // a.nswer = new Strings()
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
@@ -147,17 +147,17 @@ public class Reply { // a reply is basically a formatted answer
 		format( new Strings( Response.dnu() + ", ..." ));
 		answer( utterance.toString());
 		
-		/* Take this out for the moment... ...needs more thought:
-		 * if (!strangeThought.equals( "" ))
-		 *	fmt.add( " when thinking about "+ strangeThought());
+		/* Take this out for the moment... ...needs more thought
+		 * if !strangeThought.equals( "" )
+		 *	fmt.add( " when thinking about "+ strangeThought())
 		 */
 		
 		verbatimIs( false );
-		if (Audit.detailedOn) audit.out();
-		return audit.out( cache = Utterance.externalise(
+		cache = Utterance.externalise(
 				a.injectAnswer( f.ormat() ),
 				isVerbatim()
-			));
+		);
+		return audit.out( cache );
 	}
 	public Strings toStrings() {
 		Strings reply = encache();
@@ -174,7 +174,7 @@ public class Reply { // a reply is basically a formatted answer
 	public Reply conclude( String thought ) {
 		strangeThought("");
 
-		if ( Response.DNU == response.value()) {
+		if (Response.DNU == response.value()) {
 			// put this into reply via Reply.strangeThought()
 			audit.ERROR( "Strange thought: I don't understand: '"+ thought +"'" );
 			strangeThought( thought );
@@ -190,11 +190,10 @@ public class Reply { // a reply is basically a formatted answer
 			answer( thought );
 			
 			response.value( Response.FAIL );
-		
 		}
 		return this;
 	}
-	public static void main( String args[] ) {
+	public static void main( String[] args ) {
 		Audit.allOn();
 
 		Reply r = new Reply();

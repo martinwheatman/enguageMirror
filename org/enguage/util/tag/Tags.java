@@ -3,7 +3,7 @@ package org.enguage.util.tag;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.enguage.util.Indent;
+import org.enguage.util.Indentation;
 
 public class Tags extends ArrayList<Tag> {
 	
@@ -22,7 +22,7 @@ public class Tags extends ArrayList<Tag> {
 	}
 	public boolean matches( Tags patterns ) {
 		if (patterns.size() == 0) return true; // ALL = "" 
-		if (patterns == null || size() < patterns.size()) return false;
+		if (size() < patterns.size()) return false;
 		Iterator<Tag> it = iterator(),
 				pit = patterns.iterator();
 		while (it.hasNext()) // ordered by patterns
@@ -34,7 +34,7 @@ public class Tags extends ArrayList<Tag> {
 	// with postfix boilerplate:
 	// typically { [ ">>>", "name1" ], [ "/", "name2" ], [ "/", "name3" ], [ "<<<", "" ] }.
 	// could be  { [ ">>>", "name1", "" ], [ "/", "name2", "" ], [ "/", "name3", "<<<" ] }.
-	public String toXml( Indent indent ) {
+	public String toXml( Indentation indent ) {
 		String oldName = "";
 		String str  = "\n"+indent.toString();
 		Iterator<Tag> ti = iterator();

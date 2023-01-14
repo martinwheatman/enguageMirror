@@ -27,61 +27,73 @@ import org.enguage.util.tag.Tag;
 import com.yagadi.Assets;
 
 public class Config {
-	static       private Audit audit = new Audit( "Config" );
-	static final private String NAME = "config";
+	private static final Audit audit = new Audit( "Config" );
+	private static final String NAME = "config";
 	
-	static private String welcome = "welcome";
-	static public  String welcome() { return welcome; }
-	static public  String welcome( String w ) { return welcome = w; }
+	private static  String welcome = "welcome";
+	public  static  String welcome() {return welcome;}
+	public  static  String welcome( String w ) {return welcome = w;}
 
-	static private boolean firstRun = true;
-	static public  boolean firstRun() { return firstRun; }
-	static public  void    firstRun( boolean b ) { firstRun = b; }
+	private static  boolean firstRun = true;
+	public  static  boolean firstRun() { return firstRun; }
+	public  static  void    firstRun( boolean b ) { firstRun = b; }
 	
+	private static boolean setValues( String name, String value ) {
+		     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
+		else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunction( value );
+		else if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value ));
+		else if (name.equals("ANDLISTFORMAT" )) Reply.andListFormat( value);
+		else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
+		else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
+		else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));
+		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
+		else if (name.equals( "LOCATION"  )) Fs.location( value );
+		else if (name.equals( "SUCCESS" )) Response.success( value );
+		else if (name.equals( "FAILURE" )) Response.failure( value );
+		else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
+		else if (name.equals(   "SHELL" )) Commands.shell( value );
+		else if (name.equals(    "TERMS")) Shell.terminators( new Strings( value ));
+		else if (name.equals(    "SOFA" )) Commands.java( value );
+		else if (name.equals(     "TTL" )) Autoload.ttl( value );
+		else if (name.equals(     "DNU" )) Response.dnu( value );
+		else if (name.equals(     "DNK" )) Response.dnk( value );
+		else if (name.equals(     "YES" )) Response.yes( value );
+		else if (name.equals(      "NO" )) Response.no(  value );
+		else
+			return false;
+		return true;
+	}
 	private static void setContext( ArrayList<Attribute> aa ) {
-		if (null != aa) {
-			ListIterator<Attribute> pi = aa.listIterator();
-			while (pi.hasNext()) {
-				Attribute a = pi.next();
-				String name = a.name().toUpperCase( Locale.getDefault()), value=a.value();
-				     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
-				else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunction( value );
-				else if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value ));
-				else if (name.equals("ANDLISTFORMAT" )) Reply.andListFormat( value);
-				else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
-				else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
-				else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));
-				else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
-				else if (name.equals( "LOCATION"  )) Fs.location( value );
-				else if (name.equals( "SUCCESS" )) Response.success( value );
-				else if (name.equals( "FAILURE" )) Response.failure( value );
-				else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
-				else if (name.equals(   "SHELL" )) Commands.shell( value );
-				else if (name.equals(    "TERMS")) Shell.terminators( new Strings( value ));
-				else if (name.equals(    "SOFA" )) Commands.java( value );
-				else if (name.equals(     "TTL" )) Autoload.ttl( value );
-				else if (name.equals(     "DNU" )) Response.dnu( value );
-				else if (name.equals(     "DNK" )) Response.dnk( value );
-				else if (name.equals(     "YES" )) Response.yes( value );
-				else if (name.equals(      "NO" )) Response.no(  value );
-				//else if (name.equals(      "IK" )) Response.ik(  value );
-				else
-					Variable.set( name,  value );
-	}	}	}
+		ListIterator<Attribute> pi = aa.listIterator();
+		while (pi.hasNext()) {
+			Attribute a = pi.next();
+			String name = a.name().toUpperCase( Locale.getDefault()),
+			       value=a.value();
+			if (!setValues( name, value))
+				Variable.set( name,  value );
+	}	}	
+	private static void loadTag( Tag concepts ) {
+		Repertoire.transformation( true );
+		for (Tag t : concepts.content()) {
+			if (t.name.equals( "concept" )) {
+				String op = t.attribute( "op" );
+				String id = t.attribute( "id" );
 
+				if (!op.equals( "ignore" ))
+					Load.load( id );
+		}	}
+		Repertoire.transformation( false );
+	}
 	public static int load( String fname ) {
 		int rc = -1;
-		audit.in( "load", fname );
 		String content = Fs.stringFromStream(
-				Assets.getStream( Enguage.RO_SPACE+ File.separator + fname )
+			Assets.getStream( Enguage.RO_SPACE+ File.separator + fname )
 		);
 		if (content.equals( "" )) {
 			content = Fs.stringFromFile( "/app/etc/"+ fname );
 			if (content.equals( "" ))
 				audit.ERROR( "config not found" );
 		}
-		Audit.allOff();
-		if (Audit.startupDebug) Audit.allOn();
 		
 		long then = new GregorianCalendar().getTimeInMillis();
 		Redo.undoEnabledIs( false );
@@ -97,7 +109,7 @@ public class Config {
 
 		if ((t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
-			Load.loadTag( t.findByName( "concepts" ));
+			loadTag( t.findByName( "concepts" ));
 			rc = content.length();
 		}
 
@@ -109,8 +121,6 @@ public class Config {
 			Audit.log( Signs.stats() );
 		}
 		
-		Audit.allOff();
-		if (Audit.runtimeDebug) Audit.allOn();
 		return audit.out( rc );
 	}
 	public static void main( String args[]) {

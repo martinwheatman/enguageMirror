@@ -32,8 +32,6 @@ public class Enguage {
 	public  static final String      RO_SPACE  = Assets.LOCATION;
 	public  static final String      RW_SPACE  = "var"+ File.separator;
 	
-	private static final boolean STARTUP_DEBUG = false;
-	
 	private static Audit     audit = new Audit( "Enguage" );
 	public  static Overlay       o = Overlay.Get();
 
@@ -53,6 +51,7 @@ public class Enguage {
 		Fs.root( root );
 		Names.addConcepts( Assets.listConcepts() );
 		Config.load( "config.xml" );
+		Audit.resume();
 	}
 	
 	private Strings mediateSingle( String uid, Strings utterance ) {
@@ -140,7 +139,6 @@ public class Enguage {
 	
 	public static void main( String[] args ) {
 		
-		Audit.startupDebug = STARTUP_DEBUG;
 		Strings    cmds = new Strings( args );
 		String     cmd;
 		String     fsys = RW_SPACE;

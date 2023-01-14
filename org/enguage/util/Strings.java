@@ -813,7 +813,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	 * 
 	 */
 	// backwards compatibility -- include terminators
-	public ArrayList<Strings> divide( Strings separators ) { return divide( separators, true ); }
+	public ArrayList<Strings> divide( Strings separators ) {return divide( separators, false );}
 	public ArrayList<Strings> divide( Strings terminators, boolean inclusive ) {
 		// [ "o", "t", ".", "t", "?", "f", "f" ]( ".?!" ) => [["o", "t", "."], ["t", "?"], ["f", "f"]]
 		ArrayList<Strings> divisions = new ArrayList<Strings>();

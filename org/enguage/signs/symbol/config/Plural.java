@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeMap;
 
-import org.enguage.signs.symbol.config.Plural;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;

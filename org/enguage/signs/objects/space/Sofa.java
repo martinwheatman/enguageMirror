@@ -38,7 +38,7 @@ public class Sofa {
 			switch (Strings.hash( type )) {
 				case Item.id  :      return        Item.interpret( Attribute.expand23( a ));
 				case Link.id  :      return        Link.interpret(                     a );
-				case Sign.id  :      return        Sign.interpret( Attribute.expand(   a ));
+				case Sign.ID  :      return        Sign.interpret( Attribute.expand(   a ));
 				case Ideas.ID:       return       Ideas.interpret(                     a  );
 				case Items.id :      return       Items.interpret(                     a  );
 				case Value.id :      return       Value.interpret( Attribute.expand23( a ));

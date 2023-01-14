@@ -1,19 +1,12 @@
 package org.enguage.signs;
 
-import java.util.Iterator;
-
-import org.enguage.repertoire.Engine;
 import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.concept.Load;
-import org.enguage.repertoire.concept.Names;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.objects.Temporal;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.pattern.Frag;
 import org.enguage.signs.symbol.pattern.Frags;
-import org.enguage.signs.symbol.reply.Reply;
-import org.enguage.signs.symbol.reply.Response;
 import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -23,14 +16,14 @@ import org.enguage.util.sys.Shell;
 
 public class Sign {
 	public  static final String   NAME = "sign";
-	private static       Audit   audit = new Audit( NAME );
-	public  static final int        id = 340224; //Strings.hash( NAME );
-	private static final String indent = "    ";
+	private static final Audit   audit = new Audit( NAME );
+	public  static final int        ID = 340224; //Strings.hash( NAME )
+	private static final String INDENT = "    ";
 
-	public Sign() { super(); }
-	public Sign( Frag  patte  ) { this(); pattern( patte );}
-	public Sign( String prefix ) { this( new Frag( prefix )); }
-	public Sign( String prefix, Frag variable ) { this( variable.prefix( prefix ));}
+	public Sign() {super();}
+	public Sign( Frag  patte  ) {this(); pattern( patte );}
+	public Sign( String prefix ) {this( new Frag( prefix ));}
+	public Sign( String prefix, Frag variable ) {this( variable.prefix( prefix ));}
 	public Sign( String prefix, Frag variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
 	}
@@ -65,11 +58,12 @@ public class Sign {
 	/*
 	 * Member - Intentions - THOUGHTS and REFERENCES
 	 */
-	public Intentions intents = new Intentions();
-	public Sign  insert( int n, Intention intent ) {intents.insert( n, intent ); return this;}
-	public Sign  append( Intention intent ) {intents.add( intent ); return this;}
-	public Sign  appendIntention( int type, String pattern ) {intents.appendIntention( type, pattern ); return this;}
- 	
+	private Intentions intentions = new Intentions();
+	public Sign  insert( int n, Intention intent ) {intentions.insert( n, intent ); return this;}
+	public Sign  append( Intention intent ) {intentions.add( intent ); return this;}
+	public Sign  appendIntention( int type, String pattern ) {intentions.appendIntention( type, pattern ); return this;}
+	public Intentions intentions() {return intentions;}
+	
 	public static Sign voiced = null;
 	
 	// Set during autopoiesis - replaces 'id' attribute 
@@ -99,11 +93,6 @@ public class Sign {
 		}
 		return spatial;
 	}
-
-//	private String help = null; // "" is valid output
-//	public  String help() { return help; }
-//	public  Sign   help( String str ) { help = str; return this; }
-	
 	
 	/* To protect against being interpreted twice on resetting the iterator
 	 * after a DNU is returned on co-modification of the iterator by
@@ -120,28 +109,28 @@ public class Sign {
 	 * In fact, there should only be one T, the other t's are tidied as 
 	 * processing progresses, so there is no need to determine when the...
 	 */
-	public int interpretation = Signs.noInterpretation;
+	public int interpretation = Signs.NO_INTERPRETATION;
 	
 	public int cplex() {return pattern().cplex();}
 	
 	public String toXml( int n, long complexity ) {
-		return  indent +"<"+ NAME
+		return  INDENT +"<"+ NAME
 				+" "+ Attribute.asString( "n" , ""+n )
 				+" "+ Attribute.asString( "complexity", ""+complexity )
 				+" "+ Attribute.asString( "repertoire", concept())
 				+    (isTemporal()?" "+Attribute.asString( "temporal", "true"):"")
-				+ intents.toXml()
-				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
+				+ intentions.toXml()
+				+ ">\n"+ INDENT + INDENT + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toStringIndented() {
 		return Audit.indent()
 				+ "On \""+ pattern().toString()+ "\""
-				+ intents.toStringIndented() 
+				+ intentions.toStringIndented() 
 				+ ".";
 	}
 	public String toString() {
 		return "On \""+ pattern().toString()+ "\""
-				+ intents.toStringIndented() 
+				+ intentions.toStringIndented() 
 				+ ".\n";
 	}
 		
@@ -149,19 +138,6 @@ public class Sign {
 	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toString());}
 	public void    toVariable() {Variable.set( pattern.toFilename(), toString());}
 	
-	public Reply interpret( Reply r ) {
-		Iterator<Intention> ai = intents.iterator();
-		while (ai.hasNext()) {
-			Intention in = ai.next();
-			switch (in.type()) {
-				case Intention.allop  : r = Engine.interp( in, r ); break;
-				case Intention.create : r.answer( in.create() ); break;
-				case Intention.prepend: r.answer( in.prepend()); break;
-				case Intention.append : r.answer( in.append() ); break;
-				default: r = in.mediate( r ); // thenFinally, think, do, say...
-		}	}
-		return r;
-	}
 	/*
 	 * This will handle "sign create X", found in interpret.txt
 	 */
@@ -232,9 +208,9 @@ public class Sign {
 				else if (prepend)
 					voiced.insert( 0, intn );
 				else if (append)
-					voiced.insert( voiced.intents.size(), intn );
+					voiced.insert( voiced.intentions.size(), intn );
 				else
-					voiced.insert( voiced.intents.size()-1, intn );
+					voiced.insert( voiced.intentions.size()-1, intn );
 				
 				
 			} else if (cmd.equals( "reply" )) {
@@ -249,9 +225,9 @@ public class Sign {
 				else if (prepend)
 					voiced.insert( 0, intn );
 				else if (append)
-					voiced.insert( voiced.intents.size(), intn );
+					voiced.insert( voiced.intentions.size(), intn );
 				else
-					voiced.insert( voiced.intents.size()-1, intn );
+					voiced.insert( voiced.intentions.size()-1, intn );
 
 				
 			} else if (cmd.equals( "think" )) {
@@ -267,9 +243,9 @@ public class Sign {
 					else if (prepend)
 						voiced.insert( 0, intn );
 					else if (append)
-						voiced.insert( voiced.intents.size(), intn );
+						voiced.insert( voiced.intentions.size(), intn );
 					else
-						voiced.insert( voiced.intents.size()-1, intn );
+						voiced.insert( voiced.intentions.size()-1, intn );
 				}
 				
 			} else if (cmd.equals( "imply" )) {
