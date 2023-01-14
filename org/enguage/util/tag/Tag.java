@@ -12,7 +12,7 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 
 public class Tag {
-	public static final String emptyPrefix = "";
+	public static final String EMPTY_PREFIX = "";
 	
 	public final String name;
 	
@@ -90,13 +90,13 @@ public class Tag {
 				));
 	}
 
-	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }
+	public boolean isEmpty() {return name.equals("") && prefix().isEmpty();}
 
 	Tags content = new Tags();
 	public  Tags content() {return content;}
-	public  Tag  content( Tags ta ) { if (null!=ta) content = ta; return this; }
-	public  Tag  removeContent( int n ) { return content.remove( n ); }
-	public  Tag  content( int n, Tag t ) { content.add( n, t ); return this; }
+	public  Tag  content( Tags ta ) {if (null!=ta) content = ta; return this;}
+	public  Tag  removeContent( int n ) {return content.remove( n );}
+	public  Tag  content( int n, Tag t ) {content.add( n, t ); return this;}
 	public  Tag  content( Tag child ) {
 		if (null != child && !child.isEmpty())
 			content.add( child );
@@ -104,28 +104,18 @@ public class Tag {
 	}
 	// --
 	public boolean equals( Tag pattern ) {
-		return  attributes().size() < pattern.attributes().size()   ||
-		       (content().size()==0 && pattern.content().size()!=0) ||
-			   (content().size()!=0 && pattern.content().size()==0) ?
-			false
-			:  Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
+		return  Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
 			&& attributes().matches( pattern.attributes()) // not exact!!!
 			&& content().equals( pattern.content());
 
 	}
 	public boolean matches( Tag pattern ) {
-		return ( attributes().size() < pattern.attributes().size()  ||
-                (content().size()==0 && pattern.content().size()!=0)  ) ?
-			false 
-		    :  Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
+		return Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
 			&& attributes().matches( pattern.attributes())
 			&&    content().matches( pattern.content());
 	}
 	public boolean matchesContent( Tag pattern ) {
-		return  (content().size()==0 && pattern.content().size()!=0) || 
-			    (content().size()!=0 && pattern.content().size()==0)   ?
-			false
-			:	Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
+		return Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
 				&& content().matches( pattern.content());
 	}
 
@@ -154,7 +144,7 @@ public class Tag {
 	public String toString() {
 		return prefix().toString() + (name.equals( "" ) ? "" :
 			"<"+ name +" "+ attrs.toString()+  // attrs doesn't have preceding space
-			(0 == content().size() ?
+			(content().isEmpty() ?
 					"/>" : ( ">"+ content.toString() + "</"+ name +">" )));
 	}
 	public String toText() {
@@ -162,11 +152,11 @@ public class Tag {
 			+ (prefix().toString()==null||prefix().toString().equals("") ? "":" ")
 			+ (name.equals( "" ) ? "" :
 				( name.toUpperCase( Locale.getDefault() ) +" "+
-					(0 == content().size() ? "" : content.toText() )));
+					(content().isEmpty() ? "" : content.toText() )));
 	}
 	public String toLine() {
 		return prefix().toString()
-				+ (0 == content().size() ? "" : content.toText() );
+				+ (content().isEmpty() ? "" : content.toText() );
 	}
 	// ************************************************************************
 	public Tag findByName( String nm ) {
@@ -182,17 +172,18 @@ public class Tag {
 	}
 	// ************************************************************************
 	public static void main( String argv[]) {
-		Strings s = new Strings( "a<xml type='xml'>b\n"+
-								 " <config \n"+
-								 "   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
-								 "   DNU=\"I do not understand\" >c\n" +	
-					             "   <concepts>d\n"+
-								 "     <concept id=\"colloquia\"      op=\"load\"/>e\n"+
-								 "     <concept id=\"needs\"          op=\"load\"/>f\n"+
-								 "     <concept id=\"engine\"         op=\"load\"/>g\n"+
-								 "   </concepts>h\n"+
-								 "   </config>i\n"+
-								 "</xml> j"
+		Strings s = new Strings(
+			"a<xml type='xml'>b\n"+
+			" <config \n"+
+			"   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
+			"   DNU=\"I do not understand\" >c\n" +	
+            "   <concepts>d\n"+
+			"     <concept id=\"colloquia\" op=\"load\"/>e\n"+
+			"     <concept id=\"needs\"     op=\"load\"/>f\n"+
+			"     <concept id=\"engine\"    op=\"load\"/>g\n"+
+			"   </concepts>h\n"+
+			"   </config>i\n"+
+			"</xml> j"
 		);
 		Tag t = new Tag( s.listIterator() );
 		Audit.log( "tag:"+ t.toXml());

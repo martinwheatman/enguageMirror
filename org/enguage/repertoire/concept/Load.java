@@ -14,7 +14,6 @@ import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.tag.Tag;
 
 import com.yagadi.Assets;
 
@@ -110,22 +109,5 @@ public class Load {
 			Redo.undoEnabledIs( true );
 			if (!Audit.startupDebug) Audit.resume();
 		}
-	}
-	public static void loadTag( Tag concepts ) {
-		if (null != concepts) {
-			Repertoire.transformation( true );
-			for (int j=0; j<concepts.content().size(); j++) {
-				String name = concepts.content().get( j ).name;
-				if (name.equals( "concept" )) {
-					String op = concepts.content().get( j ).attribute( "op" );
-					String id = concepts.content().get( j ).attribute( "id" );
-
-					if (!op.equals( "ignore" ))
-						load( id ); // using itself!!
-					
-			}	}
-			Repertoire.transformation( false );
-		} else
-			audit.ERROR( "Concepts tag not found!" );
 	}
 }

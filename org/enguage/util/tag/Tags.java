@@ -22,7 +22,7 @@ public class Tags extends ArrayList<Tag> {
 	}
 	public boolean matches( Tags patterns ) {
 		if (patterns.size() == 0) return true; // ALL = "" 
-		if (patterns == null || size() < patterns.size()) return false;
+		if (size() < patterns.size()) return false;
 		Iterator<Tag> it = iterator(),
 				pit = patterns.iterator();
 		while (it.hasNext()) // ordered by patterns

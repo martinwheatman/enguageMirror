@@ -2,8 +2,6 @@ package org.enguage.util;
 
 import java.io.PrintStream;
 
-import org.enguage.util.Indent;
-
 public class Indent {
 	private String indent = "|  ";
 	

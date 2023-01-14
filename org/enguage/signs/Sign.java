@@ -4,8 +4,6 @@ import java.util.Iterator;
 
 import org.enguage.repertoire.Engine;
 import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.concept.Load;
-import org.enguage.repertoire.concept.Names;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.objects.Temporal;
@@ -13,7 +11,6 @@ import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.pattern.Frag;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
-import org.enguage.signs.symbol.reply.Response;
 import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -23,14 +20,14 @@ import org.enguage.util.sys.Shell;
 
 public class Sign {
 	public  static final String   NAME = "sign";
-	private static       Audit   audit = new Audit( NAME );
-	public  static final int        id = 340224; //Strings.hash( NAME );
-	private static final String indent = "    ";
+	private static final Audit   audit = new Audit( NAME );
+	public  static final int        ID = 340224; //Strings.hash( NAME )
+	private static final String INDENT = "    ";
 
-	public Sign() { super(); }
-	public Sign( Frag  patte  ) { this(); pattern( patte );}
-	public Sign( String prefix ) { this( new Frag( prefix )); }
-	public Sign( String prefix, Frag variable ) { this( variable.prefix( prefix ));}
+	public Sign() {super();}
+	public Sign( Frag  patte  ) {this(); pattern( patte );}
+	public Sign( String prefix ) {this( new Frag( prefix ));}
+	public Sign( String prefix, Frag variable ) {this( variable.prefix( prefix ));}
 	public Sign( String prefix, Frag variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
 	}
@@ -125,13 +122,13 @@ public class Sign {
 	public int cplex() {return pattern().cplex();}
 	
 	public String toXml( int n, long complexity ) {
-		return  indent +"<"+ NAME
+		return  INDENT +"<"+ NAME
 				+" "+ Attribute.asString( "n" , ""+n )
 				+" "+ Attribute.asString( "complexity", ""+complexity )
 				+" "+ Attribute.asString( "repertoire", concept())
 				+    (isTemporal()?" "+Attribute.asString( "temporal", "true"):"")
 				+ intents.toXml()
-				+ ">\n"+ indent + indent + pattern().toString() + "</"+ NAME +">";
+				+ ">\n"+ INDENT + INDENT + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toStringIndented() {
 		return Audit.indent()
