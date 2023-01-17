@@ -18,9 +18,9 @@ import org.enguage.util.Strings;
  */
 public class Algorithm {
 
-	static private Audit audit = new Audit( "Algorithm", true );
+	private static Audit audit = new Audit( "Algorithm" );
 	
-	static private final String UNDEFINED = "undefined";
+	private static final String UNDEFINED = "undefined";
 	
 	private Strings fnName = new Strings( UNDEFINED );
 	private Strings params = new Strings( UNDEFINED );

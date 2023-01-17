@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import org.enguage.signs.symbol.config.Plural;
 import org.enguage.util.Audit;
-import org.enguage.util.Indent;
+import org.enguage.util.Indentation;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
@@ -120,9 +120,9 @@ public class Tag {
 	}
 
 	// *** toString ***********************************************************
-	private static Indent indent = new Indent( "  " );
+	private static Indentation indent = new Indentation( "  " );
 	public String toXml() { return toXml( indent );}
-	public String toXml( Indent indent ) {
+	public String toXml( Indentation indent ) {
 		int sz = content.size();
 		String contentSep = sz > 0? ("\n" + indent.toString()) : sz == 1 ? " " : "";
 		indent.incr();
@@ -159,6 +159,18 @@ public class Tag {
 				+ (content().isEmpty() ? "" : content.toText() );
 	}
 	// ************************************************************************
+	public void accumulateByName( String nm, Tags ts ) {
+		if (name.equals( nm ))
+			ts.add( this ); // found
+		
+		for (Tag t : content())
+			t.accumulateByName( nm, ts );
+	}
+	public Tags findAllByName( String nm ) {
+		Tags rc = new Tags();
+		this.accumulateByName( nm, rc );
+		return rc;
+	}
 	public Tag findByName( String nm ) {
 		Tag rc = null;
 		if (name.equals( nm ))
@@ -186,5 +198,11 @@ public class Tag {
 			"</xml> j"
 		);
 		Tag t = new Tag( s.listIterator() );
-		Audit.log( "tag:"+ t.toXml());
+		Audit.LOG( "tag:"+ t.toXml());
+		Tag ts = t.findByName("concepts");
+		for (Tag child : ts.content()) {
+			for (Attribute at : child.attributes()) {
+				Audit.LOG(at.value());
+			}
+		}
 }	}

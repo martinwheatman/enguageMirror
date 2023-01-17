@@ -168,7 +168,6 @@ public class Time {
 		testGet( "i will be with my brother from 5 pm to 10 pm" );
 		testGet( "i am with my brother until 5 o'clock tomorrow in the pub" );
 		// -- */
-		audit.tracing = true;
 		audit.on();
 		testGet( "5pm" );
 		testGet( "7:30am" );

@@ -119,8 +119,6 @@ public class Shell {
 						stream = Strings.combine( sentences );
 						if (!sentence.isEmpty()) {
 							// strip sentence of its terminator, if "."
-							if (sentence.get( sentence.size()-1 ).equals("."))
-								sentence.remove( sentence.size()-1 );
 							// Expand sentence here...
 							for (Strings s : expandSemicolonList( sentence )) {
 								//Audit.LOG( "one" )

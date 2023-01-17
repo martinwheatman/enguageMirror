@@ -7,13 +7,11 @@ import org.enguage.signs.symbol.config.Englishisms;
 import org.enguage.signs.symbol.config.Plural;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.util.Audit;
-import org.enguage.util.Indent;
+import org.enguage.util.Indentation;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 
 public class Frag {
-	private static Audit audit = new Audit( "Frag" );
-	
 	
 	// -- constructors...
 	public Frag() {}
@@ -26,11 +24,11 @@ public class Frag {
 		postfix( new Strings( post ));
 	}
 	//just a helper ctor for hardcoded Patternettes
-	public Frag( String pre ) { this( new Strings( pre ), "" ); }
-	public Frag( String pre, String nm ) { this( new Strings( pre ), nm );}
-	public Frag( String pre, String nm, String pst ) { this( new Strings( pre ), nm, new Strings( pst ) );}
+	public Frag( String pre ) {this( new Strings( pre ), "" );}
+	public Frag( String pre, String nm ) {this( new Strings( pre ), nm );}
+	public Frag( String pre, String nm, String pst ) {this( new Strings( pre ), nm, new Strings( pst ) );}
 
-	public Frag( Frag orig ) { // copy constructor
+	public Frag( Frag orig ) {// copy constructor
 		prefix = new Strings( orig.prefix());
 		postfix = new Strings( orig.postfix());
 		name    = new String( orig.name());
@@ -46,17 +44,16 @@ public class Frag {
 		isApostrophed = orig.isApostrophed;
 	}
 	
-	private int  preSz  = 0;
-	private int  postSz = 0;
-	public  int  nconsts() {return preSz + postSz;}
-	
 	/*
 	 *  Members:
 	 */
-	private Strings     prefix = new Strings();
-	public  Strings     prefix() { return prefix; }
-	public  Frag prefix( Strings s ) { prefix = s.toLowerCase(); preSz = prefix.size(); return this; }
-	public  Frag prefix( String str ) {
+	public  int nconsts() {return preSz + postSz;}
+	
+	private int     preSz  = 0;
+	private Strings prefix = new Strings();
+	public  Strings prefix() {return prefix;}
+	public  Frag    prefix( Strings s ) {prefix = s.toLowerCase(); preSz = prefix.size(); return this;}
+	public  Frag    prefix( String str ) {
 		prefix = new Strings();
 		for (String s : new Strings( str ))
 			prefix.append( s.toLowerCase() );
@@ -65,63 +62,63 @@ public class Frag {
 	}
 	public void prefixAppend( String word ) {prefix.append( word.toLowerCase() ); preSz++;}
 
-	private Strings     postfix = new Strings();
-	public  Strings     postfix() { return postfix; }
-	public  Frag postfix( Strings ss ) { postfix = ss.toLowerCase(); postSz = postfix.size(); return this; }
-	public  Frag postfix( String str ) {return postfix( new Strings( str ));}
+	private int     postSz = 0;
+	private Strings postfix = new Strings();
+	public  Strings postfix() {return postfix;}
+	public  Frag    postfix( Strings ss ) {postfix = ss.toLowerCase(); postSz = postfix.size(); return this;}
+	public  Frag    postfix( String str ) {return postfix( new Strings( str ));}
 
-	private boolean     named = false;
-	private String      name = "";
-	public  String      name() { return name; }
-	public  Frag name( String nm ) { if (null != nm) {name = nm; named = !nm.equals("");} return this; }
-	public  boolean     named() { return named;}
+	private boolean named = false;
+	private String  name = "";
+	public  String  name() {return name;}
+	public  Frag    name( String nm ) {if (null != nm) {name = nm; named = !nm.equals("");} return this;}
+	public  boolean named() {return named;}
 
 	// -- mutually exclusive attributes --:
-	private boolean     isNumeric = false;
-	public  boolean     isNumeric() { return isNumeric; }
-	public  Frag numericIs( boolean nm ) { isNumeric = nm; return this; }
-	public  Frag numericIs() { isNumeric = true; return this; }
+	private boolean isNumeric = false;
+	public  boolean isNumeric() {return isNumeric;}
+	public  Frag    numericIs( boolean nm ) {isNumeric = nm; return this;}
+	public  Frag    numericIs() {isNumeric = true; return this;}
 
-	private boolean     isExpr = false;
-	public  boolean     isExpr() { return isExpr; }
-	public  Frag exprIs( boolean ex ) { isExpr = ex; return this; }
-	public  Frag exprIs() { isExpr = true; return this; }
+	private boolean isExpr = false;
+	public  boolean isExpr() {return isExpr;}
+	public  Frag    exprIs( boolean ex ) {isExpr = ex; return this;}
+	public  Frag    exprIs() {isExpr = true; return this;}
 
-	private boolean     isQuoted = false;
-	public  boolean     isQuoted() { return isQuoted;}
-	public  Frag quotedIs( boolean b ) { isQuoted = b; return this; }
-	public  Frag quotedIs() { isQuoted = true; return this; }
+	private boolean isQuoted = false;
+	public  boolean isQuoted() {return isQuoted;}
+	public  Frag    quotedIs( boolean b ) {isQuoted = b; return this;}
+	public  Frag    quotedIs() {isQuoted = true; return this;}
 	
-	private boolean     isPlural = false;
-	public  boolean     isPlural() { return isPlural; }
-	public  Frag pluralIs( boolean b ) { isPlural = b; return this; }
-	public  Frag pluralIs() { isPlural = true; return this; }
+	private boolean isPlural = false;
+	public  boolean isPlural() {return isPlural;}
+	public  Frag    pluralIs( boolean b ) {isPlural = b; return this;}
+	public  Frag    pluralIs() {isPlural = true; return this;}
 	
-	private boolean     isPhrased = false;
-	public  boolean     isPhrased() { return isPhrased; }
-	public  Frag phrasedIs() { isPhrased = true; return this; }
+	private boolean isPhrased = false;
+	public  boolean isPhrased() {return isPhrased;}
+	public  Frag    phrasedIs() {isPhrased = true; return this;}
 	
-	private boolean     isGrouped = false;
-	public  boolean     isGrouped() { return isGrouped; }
-	public  Frag groupedIs() { isGrouped = true; return this; }
+	private boolean isGrouped = false;
+	public  boolean isGrouped() {return isGrouped;}
+	public  Frag    groupedIs() {isGrouped = true; return this;}
 	
-	private boolean     isSign = false;
-	public  boolean     isSign() { return isSign; }
-	public  Frag signIs() { isSign = true; return this; }
+	private boolean isSign = false;
+	public  boolean isSign() {return isSign;}
+	public  Frag    signIs() {isSign = true; return this;}
 	
-   // TODO: Apretrophed
-	private String      isApostrophed = null;
-	public  boolean     isApostrophed() { return isApostrophed != null; }
-	public  Frag apostrophedIs( String s ) { isApostrophed = s; return this; }
+	private String  isApostrophed = null;
+	public  boolean isApostrophed() {return isApostrophed != null;}
+	public  Frag    apostrophedIs( String s ) {isApostrophed = s; return this;}
 	
-	private boolean     isList = false;
-	public  boolean     isList() { return isList; }
-	public  Frag listIs() { isList = true; return this; }
+	private boolean isList = false;
+	public  boolean isList() {return isList;}
+	public  Frag    listIs() {isList = true; return this;}
 	// --
 	
-	private String      conjunction = "";
-	public  String      conjunction() { return conjunction; }
-	public  Frag conjunction( String c ) { conjunction = c; return this; }
+	private String conjunction = "";
+	public  String conjunction() {return conjunction;}
+	public  Frag   conjunction( String c ) {conjunction = c; return this;}
 	
 	public Attribute matchedAttr( String val ) {
 		return new Attribute(
@@ -131,9 +128,9 @@ public class Frag {
 				));
 	}
 	
-	public boolean isEmpty() { return name.equals("") && prefix().size() == 0; }
+	public boolean isEmpty() {return name.equals("") && prefix().size() == 0;}
 
-	public boolean invalid( ListIterator<String> ui  ) {
+	public boolean invalid( ListIterator<String> ui ) {
 		boolean rc = false;
 		if (ui.hasNext()) {
 			String candidate = ui.next();
@@ -144,7 +141,7 @@ public class Frag {
 		return rc;
 	}
 	
-	public String toXml( Indent indent ) {
+	public String toXml( Indentation indent ) {
 		indent.incr();
 		String s = prefix().toString( Strings.OUTERSP )
 				+ (name.equals( "" ) ? "" :
@@ -181,8 +178,8 @@ public class Frag {
 				( name.toUpperCase( Locale.getDefault() ) +" "))
 			+ postfix().toString();
 	}
-	public String toLine() { return prefix().toString() +" "+ name +" "+ postfix().toString(); }
-	static public Frag peek( ListIterator<Frag> li ) {
+	public String toLine() {return prefix().toString() +" "+ name +" "+ postfix().toString();}
+	public static Frag peek( ListIterator<Frag> li ) {
 		Frag s = new Frag();
 		if (li.hasNext()) {
 			s = li.next();
@@ -192,7 +189,6 @@ public class Frag {
 	}
 	
 	// -- test code
-	public static void main( String argv[]) {
+	public static void main( String[] argv ) {
 		Audit.allOn();
-		audit.tracing = true;
 }	}

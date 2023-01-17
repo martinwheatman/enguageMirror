@@ -12,6 +12,7 @@ import org.enguage.util.attr.Attributes;
 
 public class Similarity {
 	public  static final String NAME = "similarity";
+	private static final Audit audit = new Audit( NAME );
 	public  static final int      ID = 230093813; //Strings.hash( "similarity" )
 
 	private  static Attributes similarities = new Attributes();
@@ -27,14 +28,19 @@ public class Similarity {
 		return loaded;
 	}
 	public  static void autoload( Strings utterance ) {
+		//Audit.log( "in Autoloading: "+ utterance );
+		//Audit.log( "  similarities: "+ similarities );
+		
 		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
 		for (String synonym : similarities.matchNames( utterance )) {
+			//Audit.log("Autoloading "+ synonym );
 			String existing = similarities.value( synonym );
 			if (!load( synonym, existing, existing, synonym )                      &&
 				!load( synonym+"+"+Plural.plural( synonym ),
 				       existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
 				!load( Plural.plural(  synonym )+"+"+synonym,
-				       Plural.plural( existing )+"+"+existing, existing, synonym ));
+				       Plural.plural( existing )+"+"+existing, existing, synonym ))
+				audit.ERROR( "NOT loaded!" );
 	}	}
 	private  static void autoUnload( String name ) {
 		if (Autoload.unloadConditionally( name ) ||
@@ -43,6 +49,7 @@ public class Similarity {
 	}
 	public  static Strings interpret( Strings cmds ) {
 		// e.g. ["create", "want", "need"]
+		audit.in( "interpret", "cmds="+ cmds );
 		Strings rc = Response.failure();
 		int     sz = cmds.size();
 		if (sz > 0) {
@@ -70,6 +77,7 @@ public class Similarity {
 			
 			else rc = Response.failure();				
 		}
+		audit.out( rc );
 		return rc;
 	}
 	public  static void test( String cmd ) {

@@ -80,13 +80,12 @@ public class Config {
 				String id = t.attribute( "id" );
 
 				if (!op.equals( "ignore" ))
-					Load.load( id ); // using itself!!	
+					Load.load( id );
 		}	}
 		Repertoire.transformation( false );
 	}
 	public static int load( String fname ) {
 		int rc = -1;
-		audit.in( "load", fname );
 		String content = Fs.stringFromStream(
 			Assets.getStream( Enguage.RO_SPACE+ File.separator + fname )
 		);
@@ -95,8 +94,6 @@ public class Config {
 			if (content.equals( "" ))
 				audit.ERROR( "config not found" );
 		}
-		Audit.allOff();
-		if (Audit.startupDebug) Audit.allOn();
 		
 		long then = new GregorianCalendar().getTimeInMillis();
 		Redo.undoEnabledIs( false );
@@ -124,8 +121,6 @@ public class Config {
 			Audit.log( Signs.stats() );
 		}
 		
-		Audit.allOff();
-		if (Audit.runtimeDebug) Audit.allOn();
 		return audit.out( rc );
 	}
 	public static void main( String args[]) {

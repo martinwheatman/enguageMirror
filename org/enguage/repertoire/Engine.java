@@ -220,13 +220,8 @@ public final class Engine {
 			Audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
-				Audit.timings = false;
 			} else {
 				Audit.allOn();
-				Audit.runtimeDebug = true;
-				Audit.allTracing = true;
-				Audit.detailedOn = true;
-				Audit.timings = true;
 			}
 			r.format( Response.success() );
 			
@@ -234,13 +229,8 @@ public final class Engine {
 			Audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
-				Audit.timings = false;
-				Audit.allTracing = false;
-				Audit.detailedOn = false;
 			} else {
 				Audit.allOn();
-				Audit.runtimeDebug = true;
-				Audit.allTracing = true;
 			}
 			r.format( Response.success() );
 			
@@ -249,14 +239,8 @@ public final class Engine {
 			Audit.log( cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.allOff();
-				Audit.timings = false;
-				Audit.allTracing = false;
-				Audit.detailedOn = false;
 			} else {
 				Audit.allOn();
-				Audit.runtimeDebug = true;
-				Audit.allTracing = true;
-				Audit.detailedOn = true;
 			}
 			r.format( Response.success() );
 			
@@ -264,17 +248,12 @@ public final class Engine {
 			
 			if (cmds.get( 0 ).equals( "off" )) {
 				Audit.allOff();
-				Audit.allTracing = false;
-				Audit.timings = false;
-				Audit.runtimeDebug = false;
-				Audit.detailedOn = false;
 				
 			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
 				Frags.debug( !Frags.debug() );
 				
 			} else {
 				Audit.allOn();
-				Audit.runtimeDebug = true;
 			}
 			r.format( Response.success() );
 			

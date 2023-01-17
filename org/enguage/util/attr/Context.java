@@ -14,25 +14,25 @@ import org.enguage.util.sys.Shell;
 public class Context {
 	static Audit audit = new Audit( "Context" );
 	
-	static public final int id = 42758506; // "context"???
+	public  static final int id = 42758506; // "context"???
 	
-	static private ArrayList<Attributes> contexts = new ArrayList<Attributes>();
-	static public void  push( Attributes ctx ){ contexts.add( 0, ctx ); }
-	static public void  pop() { contexts.remove( 0 );}
-	static public Attributes context() {
-		if (contexts.size() == 0) push( new Attributes() );
+	private static ArrayList<Attributes> contexts = new ArrayList<>();
+	public  static void         push( Attributes ctx ) {contexts.add( 0, ctx );}
+	public  static void         pop() {contexts.remove( 0 );}
+	public  static Attributes   context() {
+		if (contexts.isEmpty()) push( new Attributes() );
 		return contexts.get( 0 );
 	}
-	static private void append( Attribute a ) { contexts.get( 0 ).add( a );}
+	private static void append( Attribute a ) {contexts.get( 0 ).add( a );}
 	
 	// these need to be words? [ "hello", "there" ] -> ["hi", "martin"]
-	static public Strings deref( Strings words ) { return deref( words, false ); }
-	static public Strings deref( Strings words, boolean expand ) {
+	public  static Strings deref( Strings words ) {return deref( words, false );}
+	public  static Strings deref( Strings words, boolean expand ) {
 		for (Attributes context : contexts)
 			context.deref( words, expand );
 		return words;
 	}
-	static public String get( String word ) {
+	public  static String get( String word ) {
 		for (Attributes context : contexts) {
 			String deref = context.value( word );
 			if (!deref.equals(""))
@@ -40,7 +40,7 @@ public class Context {
 		}
 		return "";
 	}
-	static public Strings interpret( Strings a ) {
+	public  static Strings interpret( Strings a ) {
 		audit.in( "interpret", "a="+ a );
 		Strings rc = new Strings( Shell.FAIL );
 		if (a.size() > 1) {
@@ -50,13 +50,13 @@ public class Context {
 				append( new Attribute( name, a.toString() ));
 				rc = new Strings( Shell.SUCCESS );
 		}	}
-		return (Strings) audit.out( rc );
+		return audit.out( rc );
 	}
-	static public String valueOf() {
-		String s = "";
+	public  static String valueOf() {
+		StringBuilder sb = new StringBuilder();
 		for (Attributes context : contexts)
-			s += context.toString();
-		return s;
+			sb.append( context.toString() );
+		return sb.toString();
 	}
 	public static void main( String args[]) {
 		Audit.log( "hello there, "+ get( "martin" ) );

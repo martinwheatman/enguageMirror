@@ -15,7 +15,7 @@ import org.enguage.signs.symbol.pronoun.Pronoun;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.where.Where;
 import org.enguage.util.Audit;
-import org.enguage.util.Indent;
+import org.enguage.util.Indentation;
 import org.enguage.util.Strings;
 import org.enguage.util.algorithm.Expression;
 import org.enguage.util.attr.Attribute;
@@ -637,8 +637,8 @@ public class Frags extends ArrayList<Frag> {
 	// with postfix boilerplate:
 	// typically { [ ">>>", "name1" ], [ "/", "name2" ], [ "/", "name3" ], [ "<<<", "" ] }.
 	// could be  { [ ">>>", "name1", "" ], [ "/", "name2", "" ], [ "/", "name3", "<<<" ] }.
-	public String toXml() { return toXml( new Indent( "   " )); }
-	public String toXml( Indent indent ) {
+	public String toXml() { return toXml( new Indentation( "   " )); }
+	public String toXml( Indentation indent ) {
 		String oldName = "";
 		String str  = "\n"+indent.toString();
 		Iterator<Frag> ti = iterator();

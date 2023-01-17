@@ -379,7 +379,7 @@ public class When {
 			// a from/until/on the DATE|DAY [at TIME]
 			Audit.log( "test 1 ********************" );
 			testGet( "i was born on the sabbath" );
-			Audit.allOn(); Audit.traceAll( true );
+			Audit.allOn();
 			//Audit.allOff(); Audit.traceAll( false );
 			testGet( "i was born on the 18th of August 1964",            "i was born" );
 			testGet( "i was born on the 18th of August 1964 at 10:30am", "i was born" );
