@@ -399,7 +399,7 @@ public class Moment {
 				+".");
 	}
 	public static void main(String[] args) {
-		Audit.allOn();
+		Audit.on();
 		//String params[] = new String[0];
 		//Duration.main( params );
 		//*

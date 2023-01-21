@@ -496,7 +496,7 @@ public class Number {
 			audit.FATAL( "Strings not equal: '"+ expected +"' != '"+ m.toString() +"'" );
 	}
 	public static void main( String[] args ) {
-		//Audit.allOn();
+		//Audit.on();
 		//audit.on();
 	
 		Number n = new Number( "+=6" );

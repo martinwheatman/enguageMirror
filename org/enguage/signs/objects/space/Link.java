@@ -52,7 +52,7 @@ public class Link {
 	//---
 	static private void usage( Strings a ) { usage( a.toString());}
 	static private void usage( String a ) {
-		audit.ERROR(
+		audit.error(
 				"Usage: link: [set|get|exists|attribute|destroy|delete] <ent> <link> [<value>]\n"+
 				"given: "+ a );
 	}

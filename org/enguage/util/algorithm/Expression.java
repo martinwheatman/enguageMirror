@@ -87,7 +87,7 @@ public class Expression {
 		audit.in( "getExpr", "li="+ Strings.peek( li ));
 		if (           Strings.getWord( li, "the", repr )
 			&& null == Strings.getWords(    li,  "of", repr ))
-			audit.ERROR( "function fail:"+ Strings.peek( li ));
+			audit.error( "function fail:"+ Strings.peek( li ));
 		Expression.getExpr(  li, repr );
 		if (li.hasNext()) {
 			Strings.unload( li, repr );

@@ -13,3 +13,4 @@ On "PHRASE-SIMILAR is not like PHRASE-EXISTING":
 	perform "similarity destroy SIMILAR";
 	reply "ok, SIMILAR is not like EXISTING".			
 			
+therefore is like so.

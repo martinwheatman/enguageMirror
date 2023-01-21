@@ -39,7 +39,7 @@ public class Server {
 				} while (!cookiesString.equals( "" ) &&
 					     !cookiesString.startsWith( "Cookie:" ));
 		} catch( Exception ex ) {
-			audit.ERROR( "Error in child socket: getUid()");
+			audit.error( "Error in child socket: getUid()");
 		}
 		if (!cookiesString.equals( "" )) { // found cookies
 			String[] cookies = cookiesString.split(";");
@@ -93,10 +93,10 @@ public class Server {
 					out.writeBytes( prefix + reply + "\n" );
 					
 				} catch (Exception ex) {
-					audit.ERROR( "Error in child socket");
+					audit.error( "Error in child socket");
 			}	}
 		} catch (IOException ex) {
-			audit.ERROR( "Engauge.main():IO error in TCP socket operation" );
+			audit.error( "Engauge.main():IO error in TCP socket operation" );
 		}
 		serverOn = false;
 	}
@@ -128,12 +128,12 @@ public class Server {
 				rc = in.readLine();
 				
 			} catch (IOException e) {
-				audit.ERROR( "error: "+ e.toString());
+				audit.error( "error: "+ e.toString());
 		}	}
 		return audit.out( rc );
 	}
 	public static void main( String args[]) {
-		Audit.allOn();
+		Audit.on();
 		if (args.length == 1)
 			server( args[ 0 ]);
 		else

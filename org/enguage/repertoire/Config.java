@@ -92,7 +92,7 @@ public class Config {
 		if (content.equals( "" )) {
 			content = Fs.stringFromFile( "/app/etc/"+ fname );
 			if (content.equals( "" ))
-				audit.ERROR( "config not found" );
+				audit.error( "config not found" );
 		}
 		
 		long then = new GregorianCalendar().getTimeInMillis();

@@ -194,7 +194,7 @@ public final class Engine {
 		} else if (cmd.equals( "tcpip" )) {
 			
 			if (cmds.size() != 3)
-				audit.ERROR( "tcpip command without 3 parameters: "+ cmds );
+				audit.error( "tcpip command without 3 parameters: "+ cmds );
 			else {
 				String host    = cmds.remove( 0 ),
 				       portStr = cmds.remove( 0 ),
@@ -219,18 +219,18 @@ public final class Engine {
 		} else if (cmd.equals( "timing" )) {
 			Audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
-				Audit.allOff();
+				Audit.off();
 			} else {
-				Audit.allOn();
+				Audit.on();
 			}
 			r.format( Response.success() );
 			
 		} else if (cmd.equals( "tracing" )) {
 			Audit.log( cmd +" "+ cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
-				Audit.allOff();
+				Audit.off();
 			} else {
-				Audit.allOn();
+				Audit.on();
 			}
 			r.format( Response.success() );
 			
@@ -238,22 +238,22 @@ public final class Engine {
 			
 			Audit.log( cmds.toString());
 			if (cmds.get( 0 ).equals("off")) {
-				Audit.allOff();
+				Audit.off();
 			} else {
-				Audit.allOn();
+				Audit.on();
 			}
 			r.format( Response.success() );
 			
 		} else if (cmd.equals( "debug" )) {
 			
 			if (cmds.get( 0 ).equals( "off" )) {
-				Audit.allOff();
+				Audit.off();
 				
 			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
 				Frags.debug( !Frags.debug() );
 				
 			} else {
-				Audit.allOn();
+				Audit.on();
 			}
 			r.format( Response.success() );
 			

@@ -68,27 +68,27 @@ public class Frags extends ArrayList<Frag> {
 				if (sw.equals( phrase )) {
 					t.phrasedIs();
 					if (wi.hasNext()) sw = wi.next();
-					else audit.ERROR( "ctor: PHRASE variable, missing name." );
+					else audit.error( "ctor: PHRASE variable, missing name." );
 				} else if (sw.equals( plural )) {
 					t.pluralIs();
 					if (wi.hasNext()) sw = wi.next();
-					else audit.ERROR( "ctor: PLURAL variable, missing name." );
+					else audit.error( "ctor: PLURAL variable, missing name." );
 				} else if (sw.equals( quoted )) {
 					t.quotedIs();
 					if (wi.hasNext()) sw = wi.next();
-					else audit.ERROR( "ctor: QUOTED variable, missing name." );
+					else audit.error( "ctor: QUOTED variable, missing name." );
 				} else if (sw.equals( numeric )) {
 					t.numericIs();
 					if (wi.hasNext()) sw = wi.next();
-					else audit.ERROR( "ctor: NUMERIC variable, missing name." );
+					else audit.error( "ctor: NUMERIC variable, missing name." );
 				} else if (sw.equals( expr )) {
 					t.exprIs();
 					if (wi.hasNext()) sw = wi.next();
-					else audit.ERROR( "ctor: EXPR variable, missing name." );
+					else audit.error( "ctor: EXPR variable, missing name." );
 				} else if (sw.equals( sinsign )) {
 					t.signIs();
 					if (wi.hasNext()) sw = wi.next();
-					else audit.ERROR( "ctor: SAID, missing name." );
+					else audit.error( "ctor: SAID, missing name." );
 				} else if (sw.equals( Reply.andConjunction() )) {
 					//audit.LOG( "found: "+ Reply.andConjunction() );
 					if (wi.hasNext()) {
@@ -99,11 +99,11 @@ public class Frags extends ArrayList<Frag> {
 								sw = wi.next();
 								t.listIs();
 							} else
-								audit.ERROR( "ctor: AND-LIST variable, missing name." );
+								audit.error( "ctor: AND-LIST variable, missing name." );
 						} else
-							audit.ERROR( "ctor: AND-LIST? 'LIST' missing" );
+							audit.error( "ctor: AND-LIST? 'LIST' missing" );
 					} else
-						audit.ERROR( "ctor: AND terminates variable" );
+						audit.error( "ctor: AND terminates variable" );
 				}
 				
 				while ((sw.equals( phrase  ) ||
@@ -114,7 +114,7 @@ public class Frags extends ArrayList<Frag> {
 				        sw.equals( numeric )   )
 					 && wi.hasNext())
 				{
-					audit.ERROR( "ctor: mutually exclusive modifiers" );
+					audit.error( "ctor: mutually exclusive modifiers" );
 					sw = wi.next();
 				}
 				
@@ -651,12 +651,13 @@ public class Frags extends ArrayList<Frag> {
 	}
 	@Override
 	public String toString() {
-		String tmp, str="";
+		String tmp;
+		StringBuilder str = new StringBuilder();
 		Iterator<Frag> ti = iterator();
 		while (ti.hasNext())
 			if (!(tmp = ti.next().toString()).equals(""))
-				str += tmp +(ti.hasNext() ? " " : "");
-		return str;
+				str.append( tmp +(ti.hasNext() ? " " : ""));
+		return str.toString();
 	}
 	public String toFilename() {
 		String tmp, str="";
@@ -741,7 +742,7 @@ public class Frags extends ArrayList<Frag> {
 
 	}
 	public  static  void main(String args[]) {
-//		Audit.allOn();
+//		Audit.on();
 //		audit.tracing = true;
 //		debug( true );
 		
@@ -821,14 +822,14 @@ public class Frags extends ArrayList<Frag> {
 //		);
 //		Audit.decr();
 		
-//		Audit.allOn();
+//		Audit.on();
 //		audit.tracing = false;
 //		debug( debug );
-//		Audit.allOff();
+//		Audit.off();
 //		Audit.runtimeDebug = false;
 //		Audit.traceAll( false );		
 		
-//		Audit.allOn();
+//		Audit.on();
 //		//Audit.traceAll( true );		
 //		
 //		p = new Pattern( "help" );
@@ -862,7 +863,7 @@ public class Frags extends ArrayList<Frag> {
 		Frags p = new Frags( "i need PHRASE-THESE" );
 		Audit.log( "pattern is: "+ p.toXml());
 		
-		Audit.allOn();
+		Audit.on();
 		matchTest(
 				"i need",
 				"PHRASE-THESE",
@@ -883,7 +884,7 @@ public class Frags extends ArrayList<Frag> {
 				"PHRASE-THESE",
 				"need+needs",
 				"from the dairy aisle i need milk" );
-		Audit.allOff();
+		Audit.off();
 //		newTest( "i need sliced bread from the bakery" );
 		
 		audit.PASSED();

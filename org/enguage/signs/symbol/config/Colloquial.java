@@ -130,14 +130,14 @@ public class Colloquial {
 			else if (a.get( 0 ).equals("user"))
 				user().add( intl, extl );
 			else
-				audit.ERROR( "Colloquial.interpret(): unknown command: "+ a.toString( Strings.CSV ));
+				audit.error( "Colloquial.interpret(): unknown command: "+ a.toString( Strings.CSV ));
 		} else
-			audit.ERROR( "Colloquial.interpret(): wrong number of params: "+ a.toString( Strings.CSV ));
+			audit.error( "Colloquial.interpret(): wrong number of params: "+ a.toString( Strings.CSV ));
 		//return audit.out( Shell.Success );
 		return Shell.Success;
 	}
 	public static void main( String args[] ) {
-		Audit.allOn();
+		Audit.on();
 		Strings a = new Strings( "This test passes" );
 		Colloquial c = new Colloquial();
 		c.add( new Strings( "This" ), new Strings( "Hello" ));

@@ -379,8 +379,8 @@ public class When {
 			// a from/until/on the DATE|DAY [at TIME]
 			Audit.log( "test 1 ********************" );
 			testGet( "i was born on the sabbath" );
-			Audit.allOn();
-			//Audit.allOff(); Audit.traceAll( false );
+			Audit.on();
+			//Audit.off(); Audit.traceAll( false );
 			testGet( "i was born on the 18th of August 1964",            "i was born" );
 			testGet( "i was born on the 18th of August 1964 at 10:30am", "i was born" );
 			testGet( "i met my brother on holiday" );
@@ -422,7 +422,7 @@ public class When {
 		}
 		if (test == 5 || test == 0) {
 			Audit.log("test 5 ********* until ***********");
-			//Audit.allOn(); Audit.traceAll( true );
+			//Audit.on(); Audit.traceAll( true );
 			testGet( "I am with my brother until 7:30pm tomorrow at the pub", "I am with my brother at the pub" );
 			testGet( "we are going to from Wednesday until today", "we are going to" );
 			testGet( "we are going to from Wednesday until last night", "we are going to" );

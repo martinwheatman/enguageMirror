@@ -177,7 +177,7 @@ public class Attribute {
 		sa = sa.normalise();
 		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		
-		Audit.allOn();
+		Audit.on();
 		Attribute attr;
 		Strings s = new Strings( "martin='heroic' ruth='fab'" );
 		Audit.log( "Test string is; ["+ s.toString()+"]");

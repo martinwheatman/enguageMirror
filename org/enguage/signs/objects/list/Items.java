@@ -45,7 +45,7 @@ public class Items extends ArrayList<Item> {
 			if (tmp.equals( ">" ))
 				while (null != (it = Item.next( si ))) add( it );
 			else if (!tmp.equals( "/" ))
-				audit.ERROR( "unknown token in Xml file: "+ tmp );
+				audit.error( "unknown token in Xml file: "+ tmp );
 	}	}
 	private String toXml() {
 		String list = "";
@@ -178,7 +178,7 @@ public class Items extends ArrayList<Item> {
 			add( n, tmp );
 			value.set( toXml() ); // was set( lines );
 		} else
-			audit.ERROR("not found "+ item.toXml());
+			audit.error("not found "+ item.toXml());
 		return audit.out( rc );
 	}
 	private Strings getAttrVal( Item item, String name ) {
@@ -527,7 +527,7 @@ public class Items extends ArrayList<Item> {
 		
 		//test( 300, "getAttrVal martin why name='cause' i need 3 eggs", "i am baking a cake" );
 		Audit.log( l.toXml());
-		//Audit.allOn();
+		//Audit.on();
 		Transitive.add( "cause", "effect" );
 		test( 301, "isLinked martin causal  cause='i am baking a cake' effect='i need to go to the shop'", "TRUE" );
 		test( 302, "isLinked martin causal effect='i am baking a cake'  cause='i need to go to the shop'", "FALSE" ); //not trans

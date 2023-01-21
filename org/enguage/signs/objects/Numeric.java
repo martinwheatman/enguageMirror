@@ -39,7 +39,7 @@ public class Numeric extends Value {
 		Float v = get( 0f );
 		if (Float.isNaN( v )) {
 			rc = false;
-			audit.ERROR("Numeric.increase(): NaN found in "+ ent +"/"+ attr );
+			audit.error("Numeric.increase(): NaN found in "+ ent +"/"+ attr );
 		} else {
 			v += Float.valueOf( value );
 			set( v );
@@ -51,7 +51,7 @@ public class Numeric extends Value {
 		Float v = get( 0f );
 		if (Float.isNaN( v )) {
 			rc = false;
-			audit.ERROR("Numeric.decrease(): NaN found in "+ ent +"/"+ attr );
+			audit.error("Numeric.decrease(): NaN found in "+ ent +"/"+ attr );
 		} else {
 			v -= Float.valueOf( value );
 			set( v );

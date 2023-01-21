@@ -2,6 +2,9 @@ package org.enguage.util;
 
 import java.util.GregorianCalendar;
 
+import org.enguage.signs.symbol.pattern.Frags;
+import org.enguage.signs.symbol.reply.Response;
+
 public class Audit {
 	private              String     name = "";
 	private static       Strings   stack = new Strings( "zeroStack" );
@@ -27,9 +30,10 @@ public class Audit {
 	}
 	
 	// === debug and detail - "auditing"
-	private static  int  suspended = 1; // to audit wee need to resume
-	public  static  void suspend() {suspended++;}
-	public  static  void resume() {if (suspended > 0) suspended--;}
+	private static  int     suspended = 1; // to audit we need to resume
+	public  static  void    suspend() {suspended++;}
+	public  static  void    resume() {if (suspended > 0) suspended--;}
+	public  static  boolean suspended() {return suspended>0;}
 	
 	// test count
 	private int  numberOfTests = 0;
@@ -38,18 +42,18 @@ public class Audit {
 	public  void passed( String msg ) {log( msg ); passed();}
 	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
 	
-	private boolean auditOn = false;
-	public  void    off() {auditOn = false;}
-	public  void    on() { auditOn = true;}
-	public  void    on(boolean b) { auditOn = b;}
-	public  boolean isOn() {return auditOn;}
+	private static  boolean auditOn = false;
+	public  static  void    off() {auditOn = false;}
+	public  static  void    on() { auditOn = true;}
+	public  static  void    on(boolean b) { auditOn = b;}
+	public  static  boolean isOn() {return auditOn;}
 	
 	// === allOn - tracing AND debug
 	// allOn vs. auditOn - turning auditOn when allOn, suppresses for this level
-	private static  boolean allOn = false;
-	public  static  void    allOff() {allOn = false; indent.reset();}
-	public  static  void    allOn() { allOn = true;}
-	public  static  boolean allAreOn() {return allOn;}
+	//private static  boolean allOn = false;
+//	public  static  void    allOff() {auditOn = false; indent.reset();}
+//	public  static  void    allOn() { auditOn = true;}
+	public  static  boolean allAreOn() {return auditOn;}
 	
     // LOGGING:-
 	public static  String LOG( String info ) {
@@ -71,7 +75,7 @@ public class Audit {
 	
 	// Ancilliary methods...
     public  void in( String fn ) {in( fn, "" );}
-    public  void in( String fn, String info ) {if (allOn) IN( fn, info );}
+    public  void in( String fn, String info ) {if (auditOn) IN( fn, info );}
     public  void IN( String fn, String info ) {
 		// sometimes this is tested at call time - preventing the string processing
 		// in the traceIn() call being performed at runtime.
@@ -89,7 +93,7 @@ public class Audit {
 			);
 		return result;
     }
-	public String  out( String result ) {return (allOn) ? OUT( result ) : result;}
+	public String  out( String result ) {return (auditOn) ? OUT( result ) : result;}
 	public void    out() {out( (String)null );}
 	public Strings out( Strings s ) {out( s!=null?"["+s.toString(Strings.DQCSV)+"]":"<null>"); return s;}
 	public boolean out( boolean b ) {out( Boolean.toString( b )); return b;}
@@ -102,18 +106,53 @@ public class Audit {
 	public Strings OUT( Strings o ) {OUT( o==null ? "null" : o.toString()); return o;}
 	public boolean OUT( boolean b ) {OUT( Boolean.toString( b )); return b;}
 	
-	public  void   debug( String info ) {if (auditOn != allOn) log( info );}
+	public  void   debug( String info ) {if (auditOn) log( info );}
 	public  Object  info(  String fn, String in, Object out ) {// out may be null!
-		if ((auditOn != allOn) && (out!=null && !out.equals("")))
+		if (auditOn && (out!=null && !out.equals("")))
 			log( name +"."+ fn +"( "+ in +" ) => "+ out.toString() );
 		return out;
 	}
 	public  void   FATAL( String msg ) {LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 );}
 	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
-	public  void   ERROR( String info ) {
+	public  void   error( String info ) {
 		System.out.println(
 			"ERROR: "+ name +(stack.size()>1?"."+ stack.get( 0 ) +"()" : "")+": "+ info
 		);
+	}
+	public static Strings interpret(Strings cmds) {
+		Strings rc = Response.success();
+		String cmd = cmds.remove( 0 );
+		Audit.log( cmd +" "+ cmds.toString());
+		if (cmd.equals( "timing" ) || cmd.equals( "tracing" )) {
+			if (cmds.get( 0 ).equals("off")) {
+				Audit.off();
+			} else {
+				Audit.on();
+			}
+						
+		} else if (cmd.equals( "detailed" )) {
+			
+			if (cmds.get( 0 ).equals("off")) {
+				Audit.off();
+			} else {
+				Audit.on();
+			}
+		
+		} else if (cmd.equals( "debug" )) {
+			
+			if (cmds.get( 0 ).equals( "off" )) {
+				Audit.off();
+				
+			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
+				Frags.debug( !Frags.debug() );
+				
+			} else {
+				Audit.on();
+			}
+		} else
+			rc = Response.failure();
+
+		return rc;
 	}
 	
 	// === title/underline
@@ -129,7 +168,7 @@ public class Audit {
 
 	public static void main( String[] args ) {
 		Audit audit = new Audit( "Audit" ); // <= needs setting as $DEBUG to test
-		Audit.allOn();
+		Audit.on();
 		audit.in( "main", "this='is', a='test'" );
 		audit.in( "inn", "this='is', again='aTest'" );
 		audit.in( "inner", "this='is', again='aTest'" );

@@ -141,7 +141,7 @@ public class Value {
 	static private void test( String cmd, String expected ) {
 		Strings answer = interpret( new Strings( cmd ));
 		if (!answer.equals( new Strings( expected )))
-			audit.ERROR( "expecting:"+ expected +", but got: "+ answer );
+			audit.error( "expecting:"+ expected +", but got: "+ answer );
 		else
 			audit.passed();
 	}

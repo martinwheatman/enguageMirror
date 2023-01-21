@@ -18,8 +18,7 @@ public class Sign {
 	public  static final String   NAME = "sign";
 	private static final Audit   audit = new Audit( NAME );
 	public  static final int        ID = 340224; //Strings.hash( NAME )
-	private static final String INDENT = "    ";
-
+	
 	public Sign() {super();}
 	public Sign( Frag  patte  ) {this(); pattern( patte );}
 	public Sign( String prefix ) {this( new Frag( prefix ));}
@@ -114,13 +113,14 @@ public class Sign {
 	public int cplex() {return pattern().cplex();}
 	
 	public String toXml( int n, long complexity ) {
-		return  INDENT +"<"+ NAME
-				+" "+ Attribute.asString( "n" , ""+n )
+		String ind = Audit.indent();
+		return "<"+ NAME
+				+" "+ Attribute.asString( "nth" , ""+n )
 				+" "+ Attribute.asString( "complexity", ""+complexity )
 				+" "+ Attribute.asString( "repertoire", concept())
 				+    (isTemporal()?" "+Attribute.asString( "temporal", "true"):"")
-				+ intentions.toXml()
-				+ ">\n"+ INDENT + INDENT + pattern().toString() + "</"+ NAME +">";
+				+ intentions.toXml() +">\n"
+				+ ind + ind + pattern().toString() + "</"+ NAME +">";
 	}
 	public String toStringIndented() {
 		return Audit.indent()
@@ -193,7 +193,7 @@ public class Sign {
 							Sign.voiced.pattern().split(args.get( 0 ), args.get( 1 ))
 					);
 				} else {
-					audit.ERROR( "missing" );
+					audit.error( "missing" );
 				}
 				
 			} else if (cmd.equals( "perform" )) {
@@ -292,7 +292,7 @@ public class Sign {
 			
 			} else {
 				rc = Shell.FAIL;
-				audit.ERROR( "Unknown Sign.interpret() command: "+ cmd );
+				audit.error( "Unknown Sign.interpret() command: "+ cmd );
 		}	}
 		audit.out( new Strings( rc ));
 		return new Strings( rc ); 

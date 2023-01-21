@@ -97,7 +97,7 @@ public class Item {
 				!si.hasNext() || !si.next().equals( "item" ) &&
 				!si.hasNext() || !si.next().equals(    ">" )   )
 			{
-				audit.ERROR( "Missing end-item tag");
+				audit.error( "Missing end-item tag");
 		}	}
 		return it;
 	}
@@ -337,7 +337,7 @@ public class Item {
 			audit.passed( " PASSED: "+ ans );
 	}
 	public  static void main( String args[] ) {
-		//Audit.allOn();
+		//Audit.on();
 		//Audit.traceAll( true );
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",

@@ -12,7 +12,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Attributes extends ArrayList<Attribute> {
-	static private Audit audit = new Audit( "Attributes" );
+	//static private Audit audit = new Audit( "Attributes" );
 	static final long serialVersionUID = 0;
 	
 	public Attributes() { super(); }
@@ -281,7 +281,7 @@ public class Attributes extends ArrayList<Attribute> {
 		return na;
 	}
 	public static void main( String argv[]) {
-		Audit.allOn();
+		Audit.on();
 		Attributes b, a = new Attributes();
 		a.add( new Attribute( "martin", "heroic" ));
 		a.add( new Attribute( "ruth", "fab" ));
@@ -305,7 +305,7 @@ public class Attributes extends ArrayList<Attribute> {
 		else
 			Audit.log( "not mathing" );
 		
-		Audit.allOn();
+		Audit.on();
 		Strings s = new Strings( "martin='heroic' ruth='fab'" );
 		Audit.log( "Test string is; ["+ s.toString()+"]");
 		Audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");

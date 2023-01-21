@@ -150,7 +150,7 @@ public class Intention {
 	}
 	public String append() {
 		if (null == latest)
-			audit.ERROR( "adding to sign before creation" );
+			audit.error( "adding to sign before creation" );
 		else {
 			Strings  sa = Context.deref( new Strings( values ));
 			String attr = sa.remove( 0 ),
@@ -161,7 +161,7 @@ public class Intention {
 	}
 	public String prepend() {
 		if (null == latest)
-			audit.ERROR( "adding to sign before creation" );
+			audit.error( "adding to sign before creation" );
 		else {
 			Strings  sa = Context.deref( new Strings( values ));
 			String attr = sa.remove( 0 ),

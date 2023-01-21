@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.concept.Autoload;
 import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
@@ -18,7 +17,6 @@ import org.enguage.signs.symbol.pronoun.Pronoun;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 
@@ -26,9 +24,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
 	private static       Audit           audit = new Audit( "Signs" );
 	
-	private final String name;
+	//private final String name;
 	
-	public Signs( String nm ) {super(); name=nm;}
+	public Signs( String nm ) {super(); /*name=nm;*/}
 
 	public Signs add( Sign[] signs ) {
 		for (Sign sign: signs)
@@ -47,7 +45,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			total++;
 			put( c + i, insertMe );
 		} else
-			audit.ERROR( "failed to find place for sign:" );
+			audit.error( "failed to find place for sign:" );
 		return this;
 	}
 	
@@ -209,13 +207,13 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 	// a simple cognitive model ?
 	public Reply mediate( Utterance u ) {
-		if (Audit.allAreOn()) {
-			audit.in( "mediate",
-				" ("+ name +"="+ size() +") "
-				+ " '"+ u.toString() +"' "
-		 		+ (ignore.size()==0?"":("avoiding "+ignore)));
-			audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
-		}
+		//if (Audit.allAreOn() && !name.equals("autop")) {
+		//	audit.in( "mediate",
+		//		" ("+ name +"="+ size() +") "
+		//		+ " '"+ u.toString() +"' "
+		// 		+ (ignore.size()==0?"":("avoiding "+ignore)));
+		//	audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
+		//}
 		int here = interpretation(); // an ID for this interpretation
 		
 		Reply       r = new Reply();
@@ -300,12 +298,13 @@ public class Signs extends TreeMap<Integer,Sign> {
 				} // matched	
 			}	
 		} // while more signs and not done
-		if (Audit.allAreOn()) audit.out( r.answer( answer ));
+		//if (Audit.allAreOn() && !name.equals("autop"))
+		//	audit.out( answer );
 		return r.answer( answer );  
 	}	
 	
 	public static void main( String[] args ) {
-		Audit.allOn();
+		Audit.on();
 		Signs r = new Signs( "test" );
 		r.insert(
 				new Sign().pattern( new Frag(  "debug ", "x" ))

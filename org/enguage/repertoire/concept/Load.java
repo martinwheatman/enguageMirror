@@ -58,7 +58,7 @@ public class Load {
 			File oldFile = new File( spokenName( cname ));
 			File newFile = new File( deleteName( cname ));
 			if (!oldFile.renameTo( newFile ))
-				audit.ERROR( "renaming "+ oldFile +" to "+ newFile );
+				audit.error( "renaming "+ oldFile +" to "+ newFile );
 	}	}
 
 	public static Strings terminators = new Strings( ". ? !" );
@@ -180,7 +180,7 @@ public class Load {
 						Repertoire.mediate( new Utterance( s ));
 			}	}
 		} catch (java.io.IOException e ) {
-			audit.ERROR( "IO error in Shell::interpret(stdin);" );
+			audit.error( "IO error in Shell::interpret(stdin);" );
 	}	}
 	
 	public static String loadConcept( String name, String from, String to ) {

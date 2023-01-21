@@ -35,7 +35,7 @@ public class Question {
 			while (line == null || line.equals( "\n" ))
 				line = Shell.stripTerminator( br.readLine() );
 		} catch (java.io.IOException e ) {
-			audit.ERROR( "IO exception in Question.getLine( default );" );
+			audit.error( "IO exception in Question.getLine( default );" );
 		}
 		return line != null ? line : defaultLine;
 	}

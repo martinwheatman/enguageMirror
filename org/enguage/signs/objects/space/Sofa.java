@@ -26,7 +26,7 @@ public class Sofa {
 	
 	public static Strings interpret( Strings a ) {
 		if (a.isEmpty()) {
-			audit.ERROR("doCall() fails - not enough params: "+ a.toString());
+			audit.error("doCall() fails - not enough params: "+ a.toString());
 		} else {
 			/* Tags.matchValues() now produces:
 			 * 		["a", "b", "c='d'", "e", "f='g'"]
@@ -56,7 +56,7 @@ public class Sofa {
 				case Transitive.id:  return  Transitive.interpret( Attribute.expand23( a ));
 				case Transaction.id: return Transaction.interpret( Attribute.expand23( a ));
 				default :
-					audit.ERROR( "Sofa.hash(): "+ type +".id should be: "+ Strings.hash( type ));
+					audit.error( "Sofa.hash(): "+ type +".id should be: "+ Strings.hash( type ));
 					return Shell.Fail;
 		}	}
 		return Shell.Fail;

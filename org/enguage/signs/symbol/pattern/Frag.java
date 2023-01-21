@@ -190,5 +190,5 @@ public class Frag {
 	
 	// -- test code
 	public static void main( String[] argv ) {
-		Audit.allOn();
+		Audit.on();
 }	}

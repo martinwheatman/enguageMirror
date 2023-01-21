@@ -67,7 +67,7 @@ public class Ideas {
 				} else if (option.equals( "variable" )) {
 					Variable.interpret( new Strings( "show" ));
 				} else {
-					audit.ERROR( "option: "+ option +" doesn't match anything" );
+					audit.error( "option: "+ option +" doesn't match anything" );
 					rc = Response.failure();
 				}
 			} else {

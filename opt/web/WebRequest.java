@@ -124,6 +124,6 @@ public class WebRequest extends Thread {
 			connection.close();
 			
 		} catch (Exception e) {
-			audit.ERROR( "Error in child socket");
+			audit.error( "Error in child socket");
 			e.printStackTrace();
 }	}	}

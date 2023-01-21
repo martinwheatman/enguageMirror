@@ -113,7 +113,7 @@ public class Function {
 				rc = evaluate( function, argv );
 			
 			else
-				audit.ERROR( "Unknown "+ NAME +".interpret() command: "+ cmd );
+				audit.error( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}
 		return (Strings) audit.out( rc );
 	}

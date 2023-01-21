@@ -106,8 +106,7 @@ public class Repertoire {
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
-		Reply r = new Reply();
-		r = autop.mediate( u );
+		Reply r = autop.mediate( u );
 		if (Response.DNU == r.response()) {
 			
 			if (!transformation()) {
@@ -120,12 +119,10 @@ public class Repertoire {
 				u = new Utterance( u.expanded() );
 			}
 			
-			r = autop.mediate( u );
-			if (Response.DNU == r.response()) {
-				r = signs.mediate( u );
-				if (Response.DNU == r.response())
-					r = allop.mediate( u );
-		}	}
+			r = signs.mediate( u );
+			if (Response.DNU == r.response())
+				r = allop.mediate( u );
+		}
 		//audit.out( r );
 		return r;
 }	}

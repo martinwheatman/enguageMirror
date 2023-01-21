@@ -22,10 +22,15 @@ public class Intentions extends ArrayList<Intention> {
 	public  Intentions tailPrepend( Intention in ){add( size(), in );return this;}
 
 	public String toXml() {
-		String intentions = "";
+		StringBuilder intentions = new StringBuilder();
+		Audit.incr();
+
+		String indent = Audit.indent();
 		for (Intention in : this)
-			intentions += "\n      " + Attribute.asString( Intention.typeToString( in.type() ), in.value() );
-		return intentions;
+			intentions.append( "\n"+ indent + Attribute.asString( Intention.typeToString( in.type() ), in.value() )) ;
+		
+		Audit.decr();
+		return intentions.toString();
 	}
 	public Reply mediate( Reply r ) {
 		Iterator<Intention> ai = this.iterator();

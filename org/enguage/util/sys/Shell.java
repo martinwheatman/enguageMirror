@@ -133,7 +133,7 @@ public class Shell {
 				aloud = was;	
 			}
 		} catch (java.io.IOException e ) {
-			audit.ERROR( "IO error in Shell::interpret(stdin);" );
+			audit.error( "IO error in Shell::interpret(stdin);" );
 	}	}
 	public void run() { interpret( System.in, null, null ); } // we're not converting on-the-fly!
 	

@@ -176,12 +176,12 @@ public class Reply { // a reply is basically a formatted answer
 
 		if (Response.DNU == response.value()) {
 			// put this into reply via Reply.strangeThought()
-			audit.ERROR( "Strange thought: I don't understand: '"+ thought +"'" );
+			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
 			strangeThought( thought );
 
 			// remove strange thought from Reply - just say DNU
 			if (Redo.disambFound()) {
-				audit.ERROR( "Previous ERROR: maybe just run out of meanings?" );
+				audit.error( "Previous ERROR: maybe just run out of meanings?" );
 				strangeThought("");
 			}
 
@@ -194,7 +194,7 @@ public class Reply { // a reply is basically a formatted answer
 		return this;
 	}
 	public static void main( String[] args ) {
-		Audit.allOn();
+		Audit.on();
 
 		Reply r = new Reply();
 		Audit.log( "Initially: "+ r.toString());

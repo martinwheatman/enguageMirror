@@ -114,7 +114,7 @@ public class Join {
 	}
 
 	public static void main( String argv []) {
-		Audit.allOn();
+		Audit.on();
 		
 		on = true;
 		

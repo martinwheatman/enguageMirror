@@ -85,7 +85,7 @@ public class Lambda {
 		matchTest(  "x 1", "1 2", false ); // 1 != 2
 		Audit.log(  "match tests PASSED" );
 			
-		//Audit.allOn();
+		//Audit.on();
 		Audit.log( "Creating a blank function, called 'sum'..." );
 		Function f = new Function( "sum" );
 		Audit.log( "Creating a new lambda..." );

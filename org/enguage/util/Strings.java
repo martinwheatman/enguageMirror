@@ -1132,7 +1132,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	// ---------------------------------------------------------
 	
 	public static void main( String args[]) {
-		Audit.allOn(); //main()
+		Audit.on(); //main()
 		
 //		Audit.traceAll( true );
 //		new Strings( "a + b" ).substitute( new Strings("a b"), new Strings( "1 2"));

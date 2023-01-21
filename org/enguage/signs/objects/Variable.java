@@ -236,7 +236,7 @@ public class Variable {
 	}
 	public static void main( String args[] ) {
 		Overlay.attach( NAME );
-		Audit.allOn();
+		Audit.on();
 		
 		printCache();
 		Variable spk = new Variable( "NAME" );

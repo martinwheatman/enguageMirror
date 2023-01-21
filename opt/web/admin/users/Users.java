@@ -48,7 +48,7 @@ public class Users extends ArrayList<User> {
 				fw.write( "admin" +User.delim+ "admin99" +User.delim+ true );
 			fw.close();
 		} catch (Exception ex) {
-			audit.ERROR( "singleton put" );
+			audit.error( "singleton put" );
 			ex.printStackTrace();
 		}
 		users = null;

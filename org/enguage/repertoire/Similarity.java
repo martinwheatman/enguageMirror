@@ -28,19 +28,15 @@ public class Similarity {
 		return loaded;
 	}
 	public  static void autoload( Strings utterance ) {
-		//Audit.log( "in Autoloading: "+ utterance );
-		//Audit.log( "  similarities: "+ similarities );
-		
 		// utterance="i want a coffee" => load( "want+wants.txt", "need+needs.txt", "need", "want" )
 		for (String synonym : similarities.matchNames( utterance )) {
-			//Audit.log("Autoloading "+ synonym );
 			String existing = similarities.value( synonym );
 			if (!load( synonym, existing, existing, synonym )                      &&
 				!load( synonym+"+"+Plural.plural( synonym ),
 				       existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
 				!load( Plural.plural(  synonym )+"+"+synonym,
 				       Plural.plural( existing )+"+"+existing, existing, synonym ))
-				audit.ERROR( "NOT loaded!" );
+				audit.error( "NOT loaded!" );
 	}	}
 	private  static void autoUnload( String name ) {
 		if (Autoload.unloadConditionally( name ) ||
@@ -84,7 +80,7 @@ public class Similarity {
 		interpret( new Strings( cmd ));
 	}
 	public static void main( String[] args ) {
-		Audit.allOn();
+		Audit.on();
 		test( "create want / need" );
 		test( "save" );
 		test( "destroy want" );

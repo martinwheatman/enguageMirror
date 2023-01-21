@@ -163,7 +163,7 @@ public class Plural {
 		System.out.println( "the plural of "+ s +" is "+ plural( s ));
 	}
 	public static void main(String[] args) {
-		Audit.allOn();
+		Audit.on();
 		Plural.addRule(  "y",  "ies" );
 		Plural.addRule( "ss", "sses" );
 		Plural.addException( "colloquial", "colloquia" ); // the plural of X is Y

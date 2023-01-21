@@ -46,7 +46,7 @@ public class Representamen extends Strings {
 			op = nextOp;
 			nextOp = "";
 		} else if (idx >= size() ){
-			audit.ERROR( "getOp(): Reading of end of val buffer");
+			audit.error( "getOp(): Reading of end of val buffer");
 			return "";
 		} else {
 			op = get( idx++ );
@@ -233,7 +233,7 @@ public class Representamen extends Strings {
 			if (!nextOp.equals(""))
 				value = doProduct( value );
 			if (idx < size())
-				audit.ERROR( idx +" not end of array, on processing: "+ get( idx ));
+				audit.error( idx +" not end of array, on processing: "+ get( idx ));
 		}
 		//audit.out( value );
 		return value;

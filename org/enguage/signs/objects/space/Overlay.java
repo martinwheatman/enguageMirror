@@ -201,7 +201,7 @@ public class Overlay {
 				absName = new File( p.pwd() + File.separator + dname ).getCanonicalPath();
 			}
 		} catch( Exception e ) {
-			audit.ERROR( "cannonical file error:"+ e.toString() );
+			audit.error( "cannonical file error:"+ e.toString() );
 		}
 		
 		p.insertDir( absName, "" );
@@ -255,13 +255,13 @@ public class Overlay {
 			{	//// just remove !filename (filename will be dealt with when we get there!)
 	    		//audit.debug( "b-deleting files "+ src.toString() );
 	    		src.delete();
-				if (src.exists()) audit.ERROR( "b) deleting !filename, with filename ("+ src.toString() +") FAILED" );
+				if (src.exists()) audit.error( "b) deleting !filename, with filename ("+ src.toString() +") FAILED" );
 			} else if (!isDeleteName( src.toString()) // we have filename..
 					&& !new File( deleteName( src.toString() )).exists()) // but not !filename
 			{	//// move file across - as before
 	    		//audit.debug( "c-move file across: "+ src.toString() +" to "+ dest.toString());
-	    		if (dest.exists()) if (!dest.delete()) audit.ERROR( "c) DELETE failed: "+ dest.toString() );
-	    		if (!src.renameTo( dest ))  audit.ERROR( "c) RENAME of "+ src.toString() +" to "+ dest.toString() +" failed" );
+	    		if (dest.exists()) if (!dest.delete()) audit.error( "c) DELETE failed: "+ dest.toString() );
+	    		if (!src.renameTo( dest ))  audit.error( "c) RENAME of "+ src.toString() +" to "+ dest.toString() +" failed" );
 			} else if (isDeleteName( src.toString()) // we have !filename 
 					&& !new File( nonDeleteName( src.toString() )).exists()) // but not filename
 			{	//// remove !filename...
@@ -274,7 +274,7 @@ public class Overlay {
 	    		//audit.debug( "d-...and delete underlying file "+ dest.toString());
 				new File( nonDeleteName( dest.toString() )).delete();
 			} else
-				audit.ERROR( "Fs.moveFile(): fallen off end moving "+ src.toString() );
+				audit.error( "Fs.moveFile(): fallen off end moving "+ src.toString() );
 		}
 		//audit.out();
 	}
@@ -296,7 +296,7 @@ public class Overlay {
 			src = new File( nth( number() - 1 ));
 			dst = new File( nth( 1 ));
 			if (dst.exists()) dst.delete();
-			if (!src.renameTo( dst )) audit.ERROR( "RENAME "+ src.toString()+" to "+ dst.toString() +" FAILED" );
+			if (!src.renameTo( dst )) audit.error( "RENAME "+ src.toString()+" to "+ dst.toString() +" FAILED" );
 			
 			number = 2;
 			
@@ -425,7 +425,7 @@ public class Overlay {
 	}
 	
 	public static void main (String args []) {
-		Audit.allOn();
+		Audit.on();
 		attach( "Overlay" );
 		Audit.log( "osroot="+ root );
 		Audit.log( "base="+ series+", n=" + number() );

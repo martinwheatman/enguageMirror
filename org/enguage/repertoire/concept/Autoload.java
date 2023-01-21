@@ -61,7 +61,7 @@ public class Autoload {
 						concepts.add( conceptName );
 						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0
 					} else // ignore, if no repertoire!
-						audit.ERROR( "failed to autoload: "+ candidate );
+						audit.error( "failed to autoload: "+ candidate );
 				} else {
 					concepts.add( candidate );
 					autoloaded.put( candidate, 0 ); // reset to age=0
@@ -111,7 +111,7 @@ public class Autoload {
 
 	}	}
 	public static void main( String args[] ) {
-		Audit.allOn();
+		Audit.on();
 		if (!Fs.location( Enguage.RO_SPACE ))
 			audit.FATAL( Enguage.RO_SPACE +": not found" );
 		else {

@@ -36,6 +36,7 @@
 			<concept id="objects/set+get+unset"          op="load"/>
 			<concept id="objects/list"                   op="load"/>
 			<concept id="verbal/arithmetic"              op="load"/>
+			<concept id="language/is_like+is_unlike"     op="load"/>
 		</concepts>
 	</config>
 </xml>
