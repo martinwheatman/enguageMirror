@@ -6,11 +6,13 @@ import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Response;
 
 public class Audit {
-	private              String     name = "";
-	private static       Strings   stack = new Strings( "zeroStack" );
+	public  static final int            ID = 829030;
+	private static       Strings funcNames = new Strings( "zeroStack" );
 
-	public Audit( String nm ) {name = Character.toUpperCase( nm.charAt(0)) + nm.substring(1);}
+	public Audit( String nm ) {className = Character.toUpperCase( nm.charAt(0)) + nm.substring(1);}
 	
+	private              String   className = "";
+
 	// === global DEBUG switches...
 	public  static final boolean  numericDebug = false;
 	
@@ -79,16 +81,16 @@ public class Audit {
     public  void IN( String fn, String info ) {
 		// sometimes this is tested at call time - preventing the string processing
 		// in the traceIn() call being performed at runtime.
-		stack.prepend( fn );
-		LOG( "IN  "+ name +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
+		funcNames.prepend( fn );
+		LOG( "IN  "+ className +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
 		indent.incr();
 	}
 
     public String OUT() {return OUT( "" );}
     public String OUT( String result ) {
     	indent.decr();
-		LOG( "OUT "+ name
-				+ (stack.size()>1?"."+ stack.remove( 0 ) +"()" : "")
+		LOG( "OUT "+ className
+				+ (funcNames.size()>1?"."+ funcNames.remove( 0 ) +"()" : "")
 				+ (result==null || result.contentEquals("") ? "" : " => "+ result)
 			);
 		return result;
@@ -109,14 +111,14 @@ public class Audit {
 	public  void   debug( String info ) {if (auditOn) log( info );}
 	public  Object  info(  String fn, String in, Object out ) {// out may be null!
 		if (auditOn && (out!=null && !out.equals("")))
-			log( name +"."+ fn +"( "+ in +" ) => "+ out.toString() );
+			log( className +"."+ fn +"( "+ in +" ) => "+ out.toString() );
 		return out;
 	}
-	public  void   FATAL( String msg ) {LOG( "FATAL: "+ name +": "+ msg ); System.exit( 1 );}
+	public  void   FATAL( String msg ) {LOG( "FATAL: "+ className +": "+ msg ); System.exit( 1 );}
 	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
 	public  void   error( String info ) {
 		System.out.println(
-			"ERROR: "+ name +(stack.size()>1?"."+ stack.get( 0 ) +"()" : "")+": "+ info
+			"ERROR: "+ className +(funcNames.size()>1?"."+ funcNames.get( 0 ) +"()" : "")+": "+ info
 		);
 	}
 	public static Strings interpret(Strings cmds) {

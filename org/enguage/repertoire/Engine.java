@@ -14,7 +14,6 @@ import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.config.Englishisms;
 import org.enguage.signs.symbol.pattern.Frag;
-import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
@@ -84,13 +83,6 @@ public final class Engine {
 			new Sign().concept( NAME ).pattern( new Frag( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
 			new Sign().concept( NAME ).pattern( new Frag( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
 			new Sign().concept( NAME ).pattern( new Frag(    "group by", "x" )).appendIntention( Intention.allop, "groupby X" ),
-						
-			new Sign().concept( NAME ).pattern( new Frag(  "timing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
-			new Sign().concept( NAME ).pattern( new Frag(  "timing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
-			new Sign().concept( NAME ).pattern( new Frag( "tracing  on",  "" )).appendIntention( Intention.allop, "tracing on" ),
-			new Sign().concept( NAME ).pattern( new Frag( "tracing off",  "" )).appendIntention( Intention.allop, "tracing off" ),
-			new Sign().concept( NAME ).pattern( new Frag(  "detail  on",  "" )).appendIntention( Intention.allop, "detailed on" ),
-			new Sign().concept( NAME ).pattern( new Frag(  "detail off",  "" )).appendIntention( Intention.allop, "detailed off" ),
 			new Sign().concept( NAME )
 					.pattern( new Frag( "tcpip ",  "address" ))
 					.pattern( new Frag(      " ",  "port" ))
@@ -98,8 +90,6 @@ public final class Engine {
 						.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" ),
 			new Sign().concept( NAME ).pattern( new Frag(          "show ", "x" ).phrasedIs())
 					.appendIntention( Intention.allop, "show X" ),
-			new Sign().concept( NAME ).pattern( new Frag(         "debug ", "x" ).phrasedIs())
-					.appendIntention( Intention.allop, "debug X" ),
 			/* 
 			 * it is possible to arrive at the following construct:   think="reply 'I know'"
 			 * e.g. "if X, Y", if the instance is "if already exists, reply 'I know'"
@@ -198,8 +188,8 @@ public final class Engine {
 			else {
 				String host    = cmds.remove( 0 ),
 				       portStr = cmds.remove( 0 ),
-				       msg     = cmds.remove( 0 );
-				String prefix  = Variable.get( "XMLPRE", "" ),
+				       msg     = cmds.remove( 0 ),
+				       prefix  = Variable.get( "XMLPRE", "" ),
 				       suffix  = Variable.get( "XMLPOST", "" );
 				
 				int port = -1;
@@ -216,47 +206,6 @@ public final class Engine {
 				String ans = Server.client( host, port, msg );
 				r.answer( ans );
 			}
-		} else if (cmd.equals( "timing" )) {
-			Audit.log( cmd +" "+ cmds.toString());
-			if (cmds.get( 0 ).equals("off")) {
-				Audit.off();
-			} else {
-				Audit.on();
-			}
-			r.format( Response.success() );
-			
-		} else if (cmd.equals( "tracing" )) {
-			Audit.log( cmd +" "+ cmds.toString());
-			if (cmds.get( 0 ).equals("off")) {
-				Audit.off();
-			} else {
-				Audit.on();
-			}
-			r.format( Response.success() );
-			
-		} else if (cmd.equals( "detailed" )) {
-			
-			Audit.log( cmds.toString());
-			if (cmds.get( 0 ).equals("off")) {
-				Audit.off();
-			} else {
-				Audit.on();
-			}
-			r.format( Response.success() );
-			
-		} else if (cmd.equals( "debug" )) {
-			
-			if (cmds.get( 0 ).equals( "off" )) {
-				Audit.off();
-				
-			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
-				Frags.debug( !Frags.debug() );
-				
-			} else {
-				Audit.on();
-			}
-			r.format( Response.success() );
-			
 			
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {

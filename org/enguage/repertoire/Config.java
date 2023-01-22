@@ -13,7 +13,6 @@ import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Commands;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.symbol.reply.Answer;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
@@ -27,16 +26,18 @@ import org.enguage.util.tag.Tag;
 import com.yagadi.Assets;
 
 public class Config {
+	private Config() {}
+	
 	private static final Audit audit = new Audit( "Config" );
 	private static final String NAME = "config";
 	
-	private static  String welcome = "welcome";
-	public  static  String welcome() {return welcome;}
-	public  static  String welcome( String w ) {return welcome = w;}
+	private static String welcome = "welcome";
+	public  static String welcome() {return welcome;}
+	public  static String welcome( String w ) {welcome = w; return w;}
 
-	private static  boolean firstRun = true;
-	public  static  boolean firstRun() { return firstRun; }
-	public  static  void    firstRun( boolean b ) { firstRun = b; }
+	private static boolean firstRun = true;
+	public  static boolean firstRun() {return firstRun;}
+	public  static void    firstRun( boolean b ) {firstRun = b;}
 	
 	private static boolean setValues( String name, String value ) {
 		     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
@@ -66,9 +67,9 @@ public class Config {
 	private static void setContext( ArrayList<Attribute> aa ) {
 		ListIterator<Attribute> pi = aa.listIterator();
 		while (pi.hasNext()) {
-			Attribute a = pi.next();
-			String name = a.name().toUpperCase( Locale.getDefault()),
-			       value=a.value();
+			Attribute  a = pi.next();
+			String  name = a.name().toUpperCase( Locale.getDefault() );
+			String value = a.value();
 			if (!setValues( name, value))
 				Variable.set( name,  value );
 	}	}	
@@ -122,9 +123,4 @@ public class Config {
 		}
 		
 		return audit.out( rc );
-	}
-	public static void main( String args[]) {
-		Overlay.Set( Overlay.Get());
-		Overlay.attach( NAME );
-		Config.load( "" );
 }	}
