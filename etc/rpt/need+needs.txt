@@ -3,8 +3,6 @@
 ####################################################
 
 This concept is spatial.
-When host says "_user needs"         host means "you need".
-When host says "_user does not need" host means "you do not need".
 
 ###############################################################################
 # Multiple singular additions
@@ -175,6 +173,11 @@ On "how many PHRASE-THIS does SUBJECT need":
 #########################################
 # First person utterances => third-person
 #########################################
+
+# the inclusion of 'need' here is needed when reusing - 'want'
+When host says "_user does not need" host means "you do not need".
+When host says "_user needs" host means "you need".
+
 On "_user    needs        NUMERIC-QUANTITY", _user needs QUANTITY THIS.
 On "i        need         PHRASE-THESE", _user needs THESE.
 On "i        need         nothing",      _user does not need anything.

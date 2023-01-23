@@ -20,9 +20,9 @@ import org.enguage.util.attr.Context;
 public class Utterance {
 	//static private Audit audit = new Audit( "Utterance" );
 
-	static private Strings previous = null;
-	static public  Strings previous() { return previous; }
-	static public  Strings previous( Strings sa ) { return previous = sa; }
+	private static Strings previous = null;
+	public  static Strings previous() { return previous; }
+	public  static Strings previous( Strings sa ) { return previous = sa; }
 
 	// members
 	private Strings representamen;
@@ -70,11 +70,11 @@ public class Utterance {
 	public String toString() { return toString( Strings.SPACED );}
 	
 	// helpers
-	static public boolean sane( Utterance u ) {return u != null && u.representamen.size() > 0;	}
-	static public Strings  externalise( String  reply, boolean verbatim ) {
+	public  static  boolean sane( Utterance u ) {return u != null && u.representamen.size() > 0;	}
+	public  static  Strings  externalise( String  reply, boolean verbatim ) {
 		return externalise( new Strings( reply ), verbatim );
 	}
-	static public Strings  externalise( Strings reply, boolean verbatim ) {
+	public  static  Strings  externalise( Strings reply, boolean verbatim ) {
 		
 		reply = Variable.derefOrPop( reply.listIterator());
 		
@@ -85,8 +85,7 @@ public class Utterance {
 		// ...deref any context...
 		
 		// English-dependent processing...
-		reply = Englishisms.indefiniteArticleVowelSwap(
-					Englishisms.pronunciation( reply ));
+		reply = Englishisms.indefiniteArticleVowelSwap( reply );
 		
 		// TODO: to Strings, or move up into derefOrPop?
 		Strings tmp = new Strings();

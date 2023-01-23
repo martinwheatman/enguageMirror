@@ -1,22 +1,18 @@
-who are we:                            ok, we means you and i.
-we are ruth and i:                     ok, we means you and ruth.
-who are we:                            ok, we means you and ruth.
-we are you and i:                      ok, we means you and i.
-who are we:                            ok, we means you and i.
-
 martin is not holding hands with ruth: yes, i know.
 martin is     holding hands with ruth: ok, martin is     holding hands with ruth.
 martin is not holding hands with ruth: ok, martin is not holding hands with ruth.
 
-whose hand am i holding:               sorry, you're not holding anyone's hand.
-we are holding hands:                  ok, we are holding hands.
-whose hand am i holding:               ok, you're holding my hand.         
-we are ruth and i:                     ok, we means you and ruth.
-we are holding hands:                  ok, you're holding hands with ruth.
-whose hand am i holding:               ok, you're holding ruth's hand.
+whose hand am i holding:  sorry, you're not holding anyone's hand.
 
-i am not holding anyone's hand:        ok, you're not holding anyone's hand.
-whose hand am i holding:               sorry, you're not holding anyone's hand.
-if we are holding hands then whose hand am i holding:
-					                   ok, you're holding ruth's hand.
-whose hand am i holding:               sorry, you're not holding anyone's hand.
+# the default value...
+who are we:               ok, we means you and i.
+we are holding hands:     ok, we are holding hands.
+whose hand am i holding:  ok, you're holding my hand.         
+
+we are ruth and i:        ok, we means you and ruth.
+we are holding hands:     ok, you're holding hands with ruth.
+whose hand am i holding:  ok, you're holding ruth's hand.
+
+# reset 'we' to the default for other tests!
+we are you and i:         ok, we means you and i.
+

@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 import org.enguage.Enguage;
 import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.Similarity;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.util.Audit;

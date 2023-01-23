@@ -25,7 +25,7 @@ public final class Engine {
 	
 	private Engine() {}
 	
-	public  static final String NAME = Repertoire.ALLOP;
+	public  static final String NAME = Repertoire.ALLOP_STR;
 	private static final Audit audit = new Audit( NAME );
 	
 	protected static final Sign[] commands = {
@@ -93,7 +93,7 @@ public final class Engine {
 					.appendIntention( Intention.allop, "undo"         )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "this is false",  "" ))
+					.pattern( new Frag( "this is false", "" ))
 					.appendIntention( Intention.allop, "undo" )
 			  		.concept( NAME ),
 			new Sign()
@@ -106,8 +106,8 @@ public final class Engine {
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag( "tcpip",  "address" ))
-					.pattern( new Frag(     " ",  "port" ))
-					.pattern( new Frag(     " ",  "data" ).quotedIs())
+					.pattern( new Frag(      "",  "port" ))
+					.pattern( new Frag(      "",  "data" ).quotedIs())
 					.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" )
 			  		.concept( NAME ),
 			/* 

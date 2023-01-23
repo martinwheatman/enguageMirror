@@ -61,7 +61,7 @@ public class Load {
 				audit.error( "renaming "+ oldFile +" to "+ newFile );
 	}	}
 
-	public static Strings terminators = new Strings( ". ? !" );
+	private static Strings terminators = new Strings( ". ? !" );
 	public static void    terminators( Strings a ){ terminators = a; }
 	public static Strings terminators() { return terminators; }
 	

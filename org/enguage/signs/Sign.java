@@ -200,7 +200,7 @@ public class Sign {
 				Intention intn = 
 						new Intention(
 							isElse ? Intention.elseDo : Intention.thenDo,
-							Frags.toPattern( new Strings( args.toString() ))
+							Frags.toPattern( args )
 						);
 				
 				if (header)

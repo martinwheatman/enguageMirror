@@ -64,8 +64,8 @@ public class Intention {
 	public static final int  headAppend   =  0xd;
 	public static final int  head         =  0xe;
 
-	public Intention( int t, Strings vals ) { this( t, vals.toString()); }
-	public Intention( int t, String v ) { type=t; value=v; values=new Strings(v);}
+	public Intention( int t, Strings vals ) {this( t, vals.toString());}
+	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
 	public Intention( Intention in, boolean temp, boolean spatial ) {
 		this( in.type(), in.value() );
 		temporalIs( temp );
@@ -91,8 +91,8 @@ public class Intention {
 			case elseDo      : return ELSE_DO;
 			case thenRun     : return RUN;
 			case elseRun     : return ELSE_RUN;
-			case allop       : return Repertoire.ALLOP;
-			case autop       : return Repertoire.AUTOP;
+			case allop       : return Repertoire.ALLOP_STR;
+			case autop       : return Repertoire.AUTOP_STR;
 			case create      : return NEW;
 			case prepend     : return PREPEND;
 			case append      : return APPEND;
@@ -112,8 +112,8 @@ public class Intention {
 		else if (name.equals( RUN              )) return thenRun; 
 		else if (name.equals( ELSE_RUN         )) return elseRun;
 		else if (name.equals( FINALLY          )) return thenFinally;
-		else if (name.equals( Repertoire.ALLOP )) return allop;
-		else if (name.equals( Repertoire.AUTOP )) return autop;
+		else if (name.equals( Repertoire.ALLOP_STR )) return allop;
+		else if (name.equals( Repertoire.AUTOP_STR )) return autop;
 		else if (name.equals( NEW              )) return create;
 		else if (name.equals( APPEND           )) return append;
 		else if (name.equals( PREPEND          )) return prepend;

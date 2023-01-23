@@ -2,7 +2,6 @@ package org.enguage.util;
 
 import java.util.GregorianCalendar;
 
-import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Response;
 
 public class Audit {
@@ -46,15 +45,12 @@ public class Audit {
 	
 	private static  boolean auditOn = false;
 	public  static  void    off() {auditOn = false;}
-	public  static  void    on() { auditOn = true;}
-	public  static  void    on(boolean b) { auditOn = b;}
+	public  static  void    on() {auditOn = true;}
+	public  static  void    on(boolean b) {auditOn = b;}
 	public  static  boolean isOn() {return auditOn;}
 	
 	// === allOn - tracing AND debug
 	// allOn vs. auditOn - turning auditOn when allOn, suppresses for this level
-	//private static  boolean allOn = false;
-//	public  static  void    allOff() {auditOn = false; indent.reset();}
-//	public  static  void    allOn() { auditOn = true;}
 	public  static  boolean allAreOn() {return auditOn;}
 	
     // LOGGING:-
@@ -125,6 +121,7 @@ public class Audit {
 		Strings rc = Response.success();
 		String cmd = cmds.remove( 0 );
 		Audit.log( cmd +" "+ cmds.toString());
+		
 		if (cmd.equals( "timing" ) || cmd.equals( "tracing" )) {
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.off();
@@ -133,7 +130,6 @@ public class Audit {
 			}
 						
 		} else if (cmd.equals( "detailed" )) {
-			
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.off();
 			} else {
@@ -145,8 +141,6 @@ public class Audit {
 			if (cmds.get( 0 ).equals( "off" )) {
 				Audit.off();
 				
-			} else if (cmds.size() > 1 && cmds.get( 1 ).equals( "tags" )) {
-				Frags.debug( !Frags.debug() );
 				
 			} else {
 				Audit.on();

@@ -1,6 +1,12 @@
 
 On "first             SAID-X", perform "sign append think X".
+On " just       reply SAID-X", perform "sign append reply X".
+On "first perform     SAID-X", perform "sign append perform X".
+
 On "then              SAID-X", perform "sign append think X".
 On "then if not       SAID-X", perform "sign append else think X".
 On "then        reply SAID-X", perform "sign append reply X".
 On "then if not reply SAID-X", perform "sign append else reply X".
+
+On "then perform      SAID-X", perform "sign append perform X".
+

@@ -702,12 +702,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return true;
 	}
 	public static boolean isUCwHyphUs( String a ) {
-		char ch;
 		int len=a.length();
+		if (len >= 2 && a.charAt( len-2 ) == Englishisms.APOSTROPHE_CH)
+			return a.endsWith( Englishisms.Apostrophed() );
 		for (int i=0; i<len; i++) {
+			char ch = a.charAt( i );
 			// TODO: l'eau
-			if ((ch = a.charAt( i )) == Englishisms.APOSTROPHE_CH && i == len-2)
-				return a.endsWith( Englishisms.Apostrophed() );
 			if (!Character.isUpperCase( ch ) && ch != '-' && ch !='_' )
 				return false;
 		}

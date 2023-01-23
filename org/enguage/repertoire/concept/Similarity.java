@@ -1,7 +1,5 @@
-package org.enguage.repertoire;
+package org.enguage.repertoire.concept;
 
-import org.enguage.repertoire.concept.Autoload;
-import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.config.Plural;
 import org.enguage.signs.symbol.reply.Response;

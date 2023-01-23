@@ -1,8 +1,8 @@
 package org.enguage.signs.objects.space;
 
 import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.Similarity;
 import org.enguage.repertoire.concept.Ideas;
+import org.enguage.repertoire.concept.Similarity;
 import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Numeric;
 import org.enguage.signs.objects.Temporal;
