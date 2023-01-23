@@ -170,10 +170,9 @@ public class Load {
 			String line;
 			Strings stream = new Strings();
 			while ((line = br.readLine()) != null) {
-
 				stream.addAll( new Strings( preprocessLine( line, from, to )));
 				ArrayList<Strings> sentences = stream.divide( terminators, false );
-				if ( sentences.size() > 1 ) {
+				if (sentences.size() > 1) {
 					Strings sentence = sentences.remove( 0 );
 					stream = Strings.combine( sentences );
 					for (Strings s : expandSemicolonList( sentence ))

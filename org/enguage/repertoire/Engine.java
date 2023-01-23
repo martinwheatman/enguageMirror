@@ -1,10 +1,8 @@
 package org.enguage.repertoire;
 
 import java.util.Locale;
-import java.util.TreeSet;
 
 import org.enguage.Enguage;
-import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
@@ -27,8 +25,8 @@ public final class Engine {
 	
 	private Engine() {}
 	
-	public    static final String NAME = Repertoire.ALLOP;
-	private   static Audit audit = new Audit( NAME );
+	public  static final String NAME = Repertoire.ALLOP;
+	private static final Audit audit = new Audit( NAME );
 	
 	protected static final Sign[] commands = {
 			/* These could be accompanied in a repertoire, but they have special 
@@ -73,23 +71,45 @@ public final class Engine {
 			new Sign()
 					.pattern( new Frag( "what can i say", "" ))
 					.appendIntention( Intention.allop, "repertoire"  )
-		          	.concept( NAME ),
-																 		
-			new Sign().pattern( new Frag(     "say again",  "" )).appendIntention( Intention.allop, "repeat"       ),
-			new Sign().pattern( new Frag(        "spell ", "x" )).appendIntention( Intention.allop, "spell X"      ),
-			new Sign().pattern( new Frag(   "enable undo",  "" )).appendIntention( Intention.allop, "undo enable"  ),
-			new Sign().pattern( new Frag(  "disable undo",  "" )).appendIntention( Intention.allop, "undo disable" ),
-			new Sign().concept( NAME ).pattern( new Frag(          "undo",  "" )).appendIntention( Intention.allop, "undo"         ),
-			new Sign().concept( NAME ).pattern( new Frag( "this is false",  "" )).appendIntention( Intention.allop, "undo" ),
-			new Sign().concept( NAME ).pattern( new Frag( "this sentence is false",  "" )).appendIntention( Intention.allop, "undo" ),
-			new Sign().concept( NAME ).pattern( new Frag(    "group by", "x" )).appendIntention( Intention.allop, "groupby X" ),
-			new Sign().concept( NAME )
-					.pattern( new Frag( "tcpip ",  "address" ))
-					.pattern( new Frag(      " ",  "port" ))
-					.pattern( new Frag(      " ",  "data" ).quotedIs())
-						.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" ),
-			new Sign().concept( NAME ).pattern( new Frag(          "show ", "x" ).phrasedIs())
-					.appendIntention( Intention.allop, "show X" ),
+		          	.concept( NAME ),														 		
+			new Sign()
+					.pattern( new Frag(     "say again",  "" ))
+					.appendIntention( Intention.allop, "repeat"       )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( new Frag(         "spell", "x" ))
+					.appendIntention( Intention.allop, "spell X"      )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( new Frag(   "enable undo",  "" ))
+					.appendIntention( Intention.allop, "undo enable"  )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( new Frag(  "disable undo",  "" ))
+					.appendIntention( Intention.allop, "undo disable" )
+			  		.concept( NAME ),
+			new Sign()
+					.concept( NAME ).pattern( new Frag(          "undo",  "" ))
+					.appendIntention( Intention.allop, "undo"         )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( new Frag( "this is false",  "" ))
+					.appendIntention( Intention.allop, "undo" )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( new Frag( "this sentence is false",  "" ))
+					.appendIntention( Intention.allop, "undo" )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( new Frag(    "group by", "x" ))
+					.appendIntention( Intention.allop, "groupby X" )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( new Frag( "tcpip",  "address" ))
+					.pattern( new Frag(     " ",  "port" ))
+					.pattern( new Frag(     " ",  "data" ).quotedIs())
+					.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" )
+			  		.concept( NAME ),
 			/* 
 			 * it is possible to arrive at the following construct:   think="reply 'I know'"
 			 * e.g. "if X, Y", if the instance is "if already exists, reply 'I know'"
@@ -97,31 +117,31 @@ public final class Engine {
 			 * representamen: "if X, reply Y", then Y is just the quoted string.
 			 * However, the following should deal with this situation.
 			 */
-			new Sign().concept( NAME ).pattern( new Frag( Intention.REPLY +" ", "x" ).quotedIs())
-					.appendIntention( Intention.thenReply, "X" ),
-			
-			// fix to allow better reading of autopoietic  
-			new Sign().concept( NAME ).pattern( new Frag( "if so, ", "x" ).phrasedIs())
-					.appendIntention( Intention.thenThink, "X" ),
-
-			new Sign().concept( NAME ).pattern( new Frag( "if i know, ", "x" ).phrasedIs())
-					.appendIntention( Intention.allop, "iknow X" ),
-
-			// for vocal description of concepts... autopoiesis!		
-			new Sign().concept( NAME ).pattern( new Frag( "perform ", "args" ).phrasedIs())
-					.appendIntention( Intention.thenDo, "ARGS" ),
+			new Sign()
+					.pattern( new Frag( Intention.REPLY , "x" ).quotedIs())
+					.appendIntention( Intention.thenReply, "X" )
+					.concept( NAME ),
+			new Sign() // fix to allow better reading of autopoietic  
+					.pattern( new Frag( "if so,", "x" ).phrasedIs())
+					.appendIntention( Intention.thenThink, "X" )
+					.concept( NAME ),
+			new Sign() // for vocal description of concepts... autopoiesis!
+					.pattern( new Frag( "perform", "args" ).phrasedIs())
+					.appendIntention( Intention.thenDo, "ARGS" )
+					.concept( NAME ),
 			/* 
 			 * REDO: undo and do again, or disambiguate
 			 */
-			new Sign().concept( NAME ).pattern( new Frag( "No ", "x" ).phrasedIs())
-						.appendIntention( Intention.allop, "undo" )
-						.appendIntention( Intention.elseReply, "undo is not available" )
-						/* On thinking the below, if X is the same as what was said before,
-						 * need to search for the appropriate sign from where we left off
-						 * Dealing with ambiguity: "X", "No, /X/"
-						 */
-						.appendIntention( Intention.allop,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
-						.appendIntention( Intention.thenThink,  "X"    )
+			new Sign().pattern( new Frag( "No", "x" ).phrasedIs())
+					.appendIntention( Intention.allop, "undo" )
+					.appendIntention( Intention.elseReply, "undo is not available" )
+					/* On thinking the below, if X is the same as what was said before,
+					 * need to search for the appropriate sign from where we left off
+					 * Dealing with ambiguity: "X", "No, /X/"
+					 */
+					.appendIntention( Intention.allop,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
+					.appendIntention( Intention.thenThink,  "X"    )
+					.concept( NAME )
 		 };
 	
 	public static Reply interp( Intention in, Reply r ) {
@@ -131,17 +151,14 @@ public final class Engine {
 		String  cmd  = cmds.remove( 0 );
 
 		if ( cmd.equals( "imagined" )) {
-			
 			Enguage.get().imagined( true );
 			r.format( new Strings( "ok, this is all imagined" ));
 			
 		} else if ( cmd.equals( "selfTest" )) {
-			
 			Example.unitTests();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
 			
 		} else if ( cmd.equals( "groupby" )) {
-			
 			r.format( Response.success());
 			if (!cmds.isEmpty() && !cmds.get( 0 ).equals( "X" ))
 				Item.groupOn( cmds.get( 0 ).toUpperCase( Locale.getDefault()));
@@ -149,7 +166,6 @@ public final class Engine {
 				r.format( new Strings( Response.failure() +", i need to know what to group by" ));
 			
 		} else if ( cmd.equals( "undo" )) {
-			
 			r.format( Response.success() );
 			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
 				Redo.undoEnabledIs( true );
@@ -175,14 +191,12 @@ public final class Engine {
 			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));
 			
 		} else if (cmd.equals( "iknow" )) {
-			
 			String tmp = Repertoire.mediate( new Utterance( cmds )).toString();
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
 			
 		} else if (cmd.equals( "tcpip" )) {
-			
 			if (cmds.size() != 3)
 				audit.error( "tcpip command without 3 parameters: "+ cmds );
 			else {
@@ -235,28 +249,18 @@ public final class Engine {
 			if (cmds.size() == 1)
 				Reply.say( Variable.deref(
 						new Strings( Strings.trim( cmds.get( 0 ), Strings.DOUBLE_QUOTE ))
-				 )				 );
+						 )				 );
 			else
 				Reply.say( Variable.deref( new Strings( cmds )));
-
-		} else if ( cmd.equals( "list" )) {
-			//Strings reps = Enguage.e.signs.toIdList()
-			/* This becomes less important as the interesting stuff becomes auto loaded 
-			 * Don't want to list all repertoires once the repertoire base begins to grow?
-			 * May want to ask "is there a repertoire for needs" ?
-			 */
-			r.format( new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Load.loaded()).toString( Reply.andListFormat() )));
 			
 		} else if ( cmd.equals( "ok" ) && cmds.isEmpty()) {
-
-			r.format( // think( "that concludes interprtation" )
+			r.format( // think( "that concludes interpretation" )
 				new Variable( "transformation" ).isSet( "true" ) ?
 						Enguage.get().mediate( new Strings( "that concludes interpretation" )).toString()
 						: "ok"
 			);
 
 		} else {
-			
 			r = Redo.unknownCommand( r, cmd, cmds );
 		}
 		return r;

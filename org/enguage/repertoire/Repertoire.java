@@ -1,6 +1,9 @@
 package org.enguage.repertoire;
 
+import java.util.TreeSet;
+
 import org.enguage.repertoire.concept.Autoload;
+import org.enguage.repertoire.concept.Load;
 import org.enguage.signs.Sign;
 import org.enguage.signs.Signs;
 import org.enguage.signs.interpretant.Intention;
@@ -10,8 +13,16 @@ import org.enguage.signs.symbol.pattern.Phrase;
 import org.enguage.signs.symbol.pattern.Quote;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
+import org.enguage.util.Audit;
+import org.enguage.util.Strings;
 
 public class Repertoire {
+	
+	private Repertoire() {}
+	
+	public  static final String NAME = "repertoire";
+	public  static final int      ID = 216434732;
+	private static final Audit audit = new Audit( NAME );
 	
 	private static final Sign[] autopoiesis = {
 		// 3 x 3 signs (think/do/say * start/subseq/infelicit) + 1 "finally"
@@ -60,7 +71,6 @@ public class Repertoire {
 	};
 	public  static final String PRONUNCIATION = "repper-to-are";  // better than  ~wah	
 	public  static final String PLURALISATION = "repper-to-wahs"; // better than ~ares
-	public  static final String          NAME = "repertoire";
 	public  static final String           LOC = "rpt";
 
 	public  static final String         ALLOP = "engine";
@@ -102,7 +112,7 @@ public class Repertoire {
 
 	// entry point for Enguage, re-entry point for Intention
 	public static Reply mediate( Utterance u ) {
-		//audit.in( "mediate", "utterance="+ u );
+		//audit.in( "mediate", "utterance="+ u )
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
@@ -123,6 +133,40 @@ public class Repertoire {
 			if (Response.DNU == r.response())
 				r = allop.mediate( u );
 		}
-		//audit.out( r );
+		//audit.out( r )
 		return r;
+	}
+	public static Strings interpret( Strings cmds ) {
+		audit.in( "interpret", "cmds="+ cmds );
+		Strings rc = Response.failure();
+		if (!cmds.isEmpty()) {
+			String cmd = cmds.remove( 0 );
+			
+			if (cmd.equals("show")) {
+				rc = Response.success();
+				
+				String name = cmds.remove( 0 );
+				if (name.equals("signs")) {
+					signs.show();
+					
+				} else if (name.equals("allop")) {
+					allop.show();
+					
+				} else if (name.equals("autop")) {
+					autop.show();
+					
+				} else
+					rc = Response.failure();
+				
+			} else if (cmd.equals( "list" )) {
+				//Strings reps = Enguage.e.signs.toIdList()
+				/* This becomes less important as the interesting stuff becomes auto loaded 
+				 * Don't want to list all repertoires once the repertoire base begins to grow?
+				 * May want to ask "is there a repertoire for needs" ?
+				 */
+				rc = new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Load.loaded()).toString( Reply.andListFormat() ));
+			}
+		}
+		audit.out();
+		return rc;
 }	}

@@ -122,11 +122,11 @@ public class Intention {
 			return undef;
 	}	}
 	
-	public  boolean   temporal = false;
+	private boolean   temporal = false;
 	public  boolean   isTemporal() {return temporal;}
 	public  Intention temporalIs( boolean b ) {temporal = b; return this;}
 
-	public  boolean   spatial = false;
+	private boolean   spatial = false;
 	public  boolean   isSpatial() {return spatial;}
 	public  Intention spatialIs( boolean s ) {spatial = s; return this;}
 
@@ -215,7 +215,7 @@ public class Intention {
 	}
 
 	private Reply perform( Reply r, boolean ignore ) {
-		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"));
+		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
 		Strings cmd = formulate( r.a.toString(), true ); // DO expand, UNIT => unit='non-null value'
 		
 		// In the case of vocal perform, value="args='<commands>'" - expand!
@@ -225,7 +225,7 @@ public class Intention {
 		Strings rawAnswer = Sofa.interpret( new Strings( cmd ));
 		if (!ignore) r.answer( formatAnswer( rawAnswer.toString(), cmd.get( 1 )));
 
-		return r; //(Reply) audit.out( r ); //
+		return r; //(Reply) audit.out( r )//
 	}
 	private Reply reply( Reply reply ) {
 		return reply

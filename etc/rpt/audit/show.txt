@@ -1,0 +1,5 @@
+On "show signs", perform "repertoire show signs".
+	
+On "show allop", perform "repertoire show allop".
+
+On "show allop", perform "repertoire show allop".
