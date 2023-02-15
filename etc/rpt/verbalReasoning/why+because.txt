@@ -48,4 +48,3 @@ On "do SAID-EFFECT because SAID-CAUSE":
 	if not, reply "sorry, it is not the case EXT-EFFECT because EXT-CAUSE";
 	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
 On "does SAID-EFFECT because SAID-CAUSE", do EFFECT because CAUSE.
-
