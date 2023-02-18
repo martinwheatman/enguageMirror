@@ -8,41 +8,41 @@
 
 On "does SUBJECT LIST list exist", perform "value exists SUBJECT LIST".
 
-On "does NUMERIC-QUANTITY    PHRASE-THIS                 exist  in SUBJECT LIST list",                   perform " items    matches SUBJECT LIST THIS".
-On "does                     PHRASE-THIS                 exist  in SUBJECT LIST list",                   perform " items    matches SUBJECT LIST THIS".
-On "does                     PHRASE-EFFECT               exist  in SUBJECT causal list",                 perform " items    matches SUBJECT causal EFFECT".
-On "does                     PHRASE-THIS at PHRASE-WHERE exist  in SUBJECT LIST list",                   perform " items    matches SUBJECT LIST THIS WHERE WHEN".
+On "does NUMERIC-QUANTITY PHRASE-THIS            exist  in SUBJECT LIST list",                   perform "items    matches SUBJECT LIST THIS".
+On "does                  PHRASE-THIS                 exist  in SUBJECT LIST list",                   perform "items    matches SUBJECT LIST THIS".
+On "does                  PHRASE-EFFECT               exist  in SUBJECT causal list",                 perform "items    matches SUBJECT causal EFFECT".
+On "does   PHRASE-THIS at PHRASE-WHERE exist in SUBJECT LIST list",                     perform "items    matches SUBJECT LIST THIS WHERE WHEN".
 
-On "                         SOMEONE and SOMETHING       exist  in SUBJECT LIST list",                   perform " items    matches SUBJECT LIST SOMEONE SOMETHING".
-On "                                PHRASE-THIS          exists in SUBJECT LIST list",                   perform " items     exists SUBJECT LIST THIS".
-On "    NUMERIC-QUANTITY            PHRASE-THIS          exists in SUBJECT LIST list",                   perform " items     exists SUBJECT LIST THIS QUANTITY".
-On "    NUMERIC-QUANTITY    UNIT of PHRASE-THIS          exists in SUBJECT LIST list",                   perform " items     exists SUBJECT LIST THIS QUANTITY UNIT".
-On "                                PHRASE-THIS does not exist  in SUBJECT LIST list",                   perform "!items     exists SUBJECT LIST THIS".
-On "    NUMERIC-QUANTITY            PHRASE-THIS does not exist  in SUBJECT LIST list",                   perform "!items     exists SUBJECT LIST THIS QUANTITY".
-On "    NUMERIC-QUANTITY    UNIT of PHRASE-THIS does not exist  in SUBJECT LIST list",                   perform "!items     exists SUBJECT LIST THIS QUANTITY UNIT".
+On "                   SOMEONE and SOMETHING exist  in SUBJECT LIST list",              perform "items    matches SUBJECT LIST SOMEONE SOMETHING".
+On "                             PHRASE-THIS exists in SUBJECT LIST list",              perform "items     exists SUBJECT LIST THIS".
+On "    NUMERIC-QUANTITY         PHRASE-THIS exists in SUBJECT LIST list",              perform "items     exists SUBJECT LIST THIS QUANTITY".
+On "    NUMERIC-QUANTITY UNIT of PHRASE-THIS exists in SUBJECT LIST list",              perform "items     exists SUBJECT LIST THIS QUANTITY UNIT".
+On "                             PHRASE-THIS is not in SUBJECT LIST list",              perform "items  notExists SUBJECT LIST THIS".
+On "    NUMERIC-QUANTITY         PHRASE-THIS is not in SUBJECT LIST list",              perform "items  notExists SUBJECT LIST THIS QUANTITY".
+On "    NUMERIC-QUANTITY UNIT of PHRASE-THIS is not in SUBJECT LIST list",              perform "items  notExists SUBJECT LIST THIS QUANTITY UNIT".
 
-On "append                          PHRASE-THIS               onto SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST THIS";               reply "ok".
-On "add                             PHRASE-THIS                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST THIS"; if not, reply "i'm sorry"; reply "ok".
-On "add    NUMERIC-QUANTITY         PHRASE-THIS                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST THIS QUANTITY";      reply "ok".
-On "add    NUMERIC-QUANTITY UNIT of PHRASE-THIS                 to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST THIS QUANTITY UNIT"; reply "ok".
-On "add                             WHOM at WHERE               to SUBJECT LIST list": set op to    add; perform " items        add SUBJECT LIST THIS";               reply "ok".
-On "add                             SOMEONE can be SOMETHING    to SUBJECT LIST list": set op to    add; perform " items    addItem SUBJECT LIST SOMEONE SOMETHING";    reply "ok".
+On "append                       PHRASE-THIS onto SUBJECT LIST list": set op to    add; perform "items        add SUBJECT LIST THIS";               reply "ok".
+On "add                          PHRASE-THIS   to SUBJECT LIST list": set op to    add; perform "items        add SUBJECT LIST THIS"; if not, reply "i'm sorry"; reply "ok".
+On "add NUMERIC-QUANTITY         PHRASE-THIS   to SUBJECT LIST list": set op to    add; perform "items        add SUBJECT LIST THIS QUANTITY";      reply "ok".
+On "add NUMERIC-QUANTITY UNIT of PHRASE-THIS   to SUBJECT LIST list": set op to    add; perform "items        add SUBJECT LIST THIS QUANTITY UNIT"; reply "ok".
+On "add                          WHOM at WHERE to SUBJECT LIST list": set op to    add; perform "items        add SUBJECT LIST THIS";               reply "ok".
+On "add               SOMEONE can be SOMETHING to SUBJECT LIST list": set op to    add; perform "items    addItem SUBJECT LIST SOMEONE SOMETHING";    reply "ok".
 
-On "remove                          PHRASE-THIS               from SUBJECT LIST list": set op to remove; perform " items     remove SUBJECT LIST THIS";               reply "ok".
-On "remove NUMERIC-QUANTITY         PHRASE-THIS               from SUBJECT LIST list": set op to remove; perform " items     remove SUBJECT LIST THIS QUANTITY";      reply "ok".
-On "remove NUMERIC-QUANTITY UNIT of PHRASE-THIS               from SUBJECT LIST list": set op to remove; perform " items     remove SUBJECT LIST THIS QUANTITY UNIT"; reply "ok".
-On "remove any                      PHRASE-THIS               from SUBJECT LIST list",                   perform " items  removeAny SUBJECT LIST THIS".
-On "remove the       NAME        of PHRASE-THIS               from SUBJECT LIST list",                   perform " items    delAttr SUBJECT LIST THIS NAME".
-On "remove everything                                         from SUBJECT LIST list",                   perform " items  removeAll SUBJECT LIST".
-On "remove                     SOMEONE and SOMETHING          from SUBJECT LIST list",                   perform " items removeItem SUBJECT LIST SOMEONE SOMETHING".
+On "remove                          PHRASE-THIS from SUBJECT LIST list": set op to remove; perform "items     remove SUBJECT LIST THIS";               reply "ok".
+On "remove NUMERIC-QUANTITY         PHRASE-THIS from SUBJECT LIST list": set op to remove; perform "items     remove SUBJECT LIST THIS QUANTITY";      reply "ok".
+On "remove NUMERIC-QUANTITY UNIT of PHRASE-THIS from SUBJECT LIST list": set op to remove; perform "items     remove SUBJECT LIST THIS QUANTITY UNIT"; reply "ok".
+On "remove any                      PHRASE-THIS from SUBJECT LIST list",                   perform "items  removeAny SUBJECT LIST THIS".
+On "remove the       NAME        of PHRASE-THIS from SUBJECT LIST list",                   perform "items    delAttr SUBJECT LIST THIS NAME".
+On "remove everything                           from SUBJECT LIST list",                   perform "items  removeAll SUBJECT LIST".
+On "remove                SOMEONE and SOMETHING from SUBJECT LIST list",                   perform "items removeItem SUBJECT LIST SOMEONE SOMETHING".
 
-On "get    the       cause       of PHRASE-EFFECT             from SUBJECT LIST list",                   perform " items getAttrVal SUBJECT LIST cause EFFECT".
-On "get    the       NAME        of PHRASE-WHOM               from SUBJECT LIST list",                   perform " items getAttrVal SUBJECT LIST NAME WHOM".
-On "get                                                            SUBJECT LIST list",                   perform " items        get SUBJECT LIST".
-On "get                                                            SUBJECT LIST list where NAME equals PHRASE-VALUE",
-                                                                                                         perform " items   getWhere SUBJECT LIST NAME VALUE".
-On "delete                                                         SUBJECT LIST list",                   perform " items     delete SUBJECT LIST".
-On "how many                UNIT of PHRASE-THIS                 in SUBJECT LIST list",                   perform " items   quantity SUBJECT needs THIS UNIT".
-On "how many                        PHRASE-THIS                 in SUBJECT LIST list",                   perform " items   quantity SUBJECT needs THIS".
+On "get    the       cause    of PHRASE-EFFECT from SUBJECT LIST list",                   perform "items getAttrVal SUBJECT LIST cause EFFECT".
+On "get    the       NAME     of PHRASE-WHOM   from SUBJECT LIST list",                   perform "items getAttrVal SUBJECT LIST NAME WHOM".
+On "get                                             SUBJECT LIST list",                   perform "items        get SUBJECT LIST".
+On "get                                             SUBJECT LIST list where NAME equals PHRASE-VALUE",
+                                                                                                      perform "items   getWhere SUBJECT LIST NAME VALUE".
+On "delete                                          SUBJECT LIST list",                   perform "items     delete SUBJECT LIST".
+On "how many             UNIT of PHRASE-THIS     in SUBJECT LIST list",                   perform "items   quantity SUBJECT needs THIS UNIT".
+On "how many                     PHRASE-THIS     in SUBJECT LIST list",                   perform "items   quantity SUBJECT needs THIS".
 
 On "clear the list", perform "items delete SUBJECT LIST".

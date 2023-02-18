@@ -89,7 +89,7 @@ public class Reply { // a reply is basically a formatted answer
 	private Response response = new Response();
 	public  int      response() {return response.value();} 
 	public  Reply    response( int i ) {response.value( i ); return this;}
-	public  Reply    response( Strings strs ) {response.value( strs ); return this;}
+	public  Reply    response( Strings strs ) {response.setValue( strs ); return this;}
 
 	public  boolean  felicitous() {return response.value() >= Response.OK;}
 

@@ -1,0 +1,49 @@
+is martin immoral: sorry, i don't know.
+is martin  amoral: sorry, i don't know.
+is martin   moral: sorry, i don't know.
+
+echo immoral test:-.
+martin is immoral: ok, martin is immoral.
+
+is martin immoral: yes, martin is immoral.
+is martin  amoral: no,  martin is immoral.
+is martin   moral: no,  martin is immoral.
+
+martin is immoral; yes, i know.
+martin is  amoral; no,  martin is immoral.
+martin is   moral; no,  martin is immoral.
+
+martin is not   moral: yes, i know.
+martin is not  amoral: yes, i know.
+martin is not immoral: ok, martin is not immoral.
+
+echo moral test:-.
+martin is moral: ok, martin is moral.
+
+is martin immoral: no,  martin is moral.
+is martin  amoral: no,  martin is moral.
+is martin   moral: yes, martin is moral.
+
+martin is immoral; no,  martin is moral.
+martin is  amoral; no,  martin is moral.
+martin is   moral; yes, i know.
+
+martin is not  amoral: yes, i know.
+martin is not immoral: yes, i know.
+martin is not   moral: ok, martin is not moral.
+
+echo amoral test:-.
+martin is amoral: ok, martin is amoral.
+
+is martin immoral: no,  martin is amoral.
+is martin  amoral: yes, martin is amoral.
+is martin   moral: no,  martin is amoral.
+
+martin is immoral; no,  martin is amoral.
+martin is  amoral; yes, i know.
+martin is   moral; no,  martin is amoral.
+
+martin is not   moral: yes, i know.
+martin is not immoral: yes, i know.
+martin is not  amoral: ok, martin is not amoral.
+

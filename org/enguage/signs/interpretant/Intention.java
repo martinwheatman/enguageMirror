@@ -200,7 +200,7 @@ public class Intention {
 	private Reply perform( Reply r ) { return perform( r, false ); }
 	private Reply andFinally( Reply r ) { return perform( r, true ); }
 	
-	public  String formatAnswer( String rc, String method ) {
+	private String formatAnswer( String rc, String method ) {
 		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
 				new When( rc ).rep( Response.dnkStr() ).toString()
 				: rc.equals( "" ) &&
@@ -230,8 +230,8 @@ public class Intention {
 	private Reply reply( Reply reply ) {
 		return reply
 				.format( value.equals( "" ) ? reply.toString() : value )
-				.doneIs( reply.response() != Response.DNU )
-				.response( values );
+				.response( values )
+				.doneIs( reply.response() != Response.DNU ); // so reply "I don't understand" is like an exception?
 	}
 	private Reply run( Reply r ) {
 		return new Commands( formulate( r.a.toString(), false ).toString())

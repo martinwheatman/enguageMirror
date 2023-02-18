@@ -94,8 +94,8 @@ public class Items extends ArrayList<Item> {
 	private boolean exists(Item item, Strings params) {
 		String lastParam = params.get( params.size() - 1 );
 		return index( item,
-				!(lastParam.equals( "quantity='some'" )
-				||lastParam.equals( "quantity='any'" ))) != -1;
+				!(  lastParam.equals( "quantity='some'" )
+				  ||lastParam.equals( "quantity='any'"  ))) != -1;
 	}
 	private int matches( Item item ) {
 		audit.in( "matches", "item="+ item.toXml());
@@ -365,6 +365,15 @@ public class Items extends ArrayList<Item> {
 				
 				if (cmd.equals( "exists" )) {
 					if (list.exists( item, params )) {
+						if (rca.size() == 0) rca.add( Shell.SUCCESS );
+					} else {
+						rca = new Strings();
+						rca.add( Shell.FAIL );
+						break;
+					}
+					
+				} else if (cmd.equals( "notExists" )) {
+					if (!list.exists( item, params )) {
 						if (rca.size() == 0) rca.add( Shell.SUCCESS );
 					} else {
 						rca = new Strings();

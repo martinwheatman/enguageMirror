@@ -57,7 +57,7 @@ public class Response {
 	public  int  value() {return value;}
 	public  void value( int t ) {value = t;}
 	
-	public  int  value( Strings uttr ) {
+	public  int  setValue( Strings uttr ) {
 		if (value != UDU) {
 			     if (uttr.beginsIgnoreCase(    yes )) value =   OK;
 			else if (uttr.beginsIgnoreCase( success)) value =   OK;
