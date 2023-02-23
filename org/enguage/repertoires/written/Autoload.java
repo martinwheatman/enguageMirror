@@ -1,4 +1,4 @@
-package org.enguage.repertoire.concept;
+package org.enguage.repertoires.written;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.Enguage;
-import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.util.Audit;
@@ -74,7 +74,7 @@ public class Autoload {
 	}	}
 	public static void unload( String name ) {
 		audit.debug( ">>>>> Auto Unloading "+ name );
-		Repertoire.signs.remove( name );
+		Repertoires.signs.remove( name );
 		remove( name );
 	}
 	public static boolean unloadConditionally( String name ) {
@@ -86,7 +86,7 @@ public class Autoload {
 	}
 	public static void unload() {
 		
-		if (!Repertoire.transformation() &&
+		if (!Repertoires.transformation() &&
 			!Autoload.ing())
 		{
 			Strings repsToRemove = new Strings();

@@ -1,6 +1,6 @@
 package org.enguage.signs;
 
-import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.objects.Temporal;
@@ -58,10 +58,10 @@ public class Sign {
 	 * Member - Intentions - THOUGHTS and REFERENCES
 	 */
 	private Intentions intentions = new Intentions();
+	public Intentions intentions() {return intentions;}
 	public Sign  insert( int n, Intention intent ) {intentions.insert( n, intent ); return this;}
 	public Sign  append( Intention intent ) {intentions.add( intent ); return this;}
-	public Sign  appendIntention( int type, String pattern ) {intentions.appendIntention( type, pattern ); return this;}
-	public Intentions intentions() {return intentions;}
+	public Sign  append( int type, String pattern ) {intentions.append( new Intention( type, pattern )); return this;}
 	
 	public static Sign voiced = null;
 	
@@ -177,8 +177,8 @@ public class Sign {
 				
 				voiced = new Sign()
 						.pattern( new Frags( args.toString() ))
-						.concept( Repertoire.AUTOPOIETIC );
-				Repertoire.signs.insert( voiced );
+						.concept( Repertoires.AUTOPOIETIC );
+				Repertoires.signs.insert( voiced );
 				
 			} else if (cmd.equals( "split" )) {
 				

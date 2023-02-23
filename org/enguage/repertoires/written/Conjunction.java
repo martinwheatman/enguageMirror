@@ -1,4 +1,4 @@
-package org.enguage.repertoire.concept;
+package org.enguage.repertoires.written;
 
 import java.util.ArrayList;
 import java.util.List;

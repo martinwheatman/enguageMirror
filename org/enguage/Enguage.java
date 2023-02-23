@@ -2,11 +2,11 @@ package org.enguage;
 
 import java.io.File;
 
-import org.enguage.repertoire.Config;
-import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.concept.Autoload;
-import org.enguage.repertoire.concept.Conjunction;
-import org.enguage.repertoire.concept.Names;
+import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.written.Autoload;
+import org.enguage.repertoires.written.Conjunction;
+import org.enguage.repertoires.written.Names;
+import org.enguage.signs.Config;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.list.Item;
 import org.enguage.signs.objects.space.Overlay;
@@ -65,7 +65,7 @@ public class Enguage {
 		if (Reply.isUnderstood()) // from previous interpretation!
 			Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
 		
-		Reply r = Repertoire.mediate( new Utterance( utterance ));
+		Reply r = Repertoires.mediate( new Utterance( utterance ));
 
 		// once processed, keep a copy
 		Utterance.previous( utterance );
@@ -81,8 +81,8 @@ public class Enguage {
 		} else {
 			// really lost track?
 			audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
-			             +Repertoire.signs.ignore().toString() );
-			Repertoire.signs.ignoreNone();
+			             +Repertoires.signs.ignore().toString() );
+			Repertoires.signs.ignoreNone();
 			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
 		}
 

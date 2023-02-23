@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.util.Audit;
@@ -122,7 +122,7 @@ public class Shell {
 							// Expand sentence here...
 							for (Strings s : expandSemicolonList( sentence )) {
 								//Audit.LOG( "one" )
-								Reply r = Repertoire.mediate( new Utterance( new Strings( s )));
+								Reply r = Repertoires.mediate( new Utterance( new Strings( s )));
 								if (aloud) System.out.println( r.toString());
 								//Audit.LOG( "two" )
 							}

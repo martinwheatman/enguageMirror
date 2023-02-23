@@ -1,0 +1,20 @@
+## Build a simple approach to 'should':
+## ctor: what should we do
+
+#to the phrase what should we do reply we should whatever: ok.
+#this implies that you get the value of should           : ok.
+#then if not reply i don't know what we should do        : ok.
+#save this idea as should                                : ok.
+
+On "what should we do":
+	get the value of should;
+	if not, reply "i don't know what we should do";
+	reply we should ... .
+
+## c'tor: you should ...
+#to the phrase you should phrase variable action reply ok variable action.
+#this implies that you set the value of should to variable action.
+
+On "you should PHRASE-ACTION":
+	set the value of should to ACTION;
+	reply "ok, ACTION".

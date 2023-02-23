@@ -1,4 +1,4 @@
-package org.enguage.repertoire.concept;
+package org.enguage.repertoires.written;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.enguage.Enguage;
-import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
@@ -44,9 +44,9 @@ public class Load {
 	private static boolean isFlatpak = false;
 	public  static  void   isFlatpak( boolean b ) {isFlatpak = b;}
 
-	private static final String rwRpts() {return Fs.root() +Repertoire.LOC+ File.separator;}
+	private static final String rwRpts() {return Fs.root() +Repertoires.LOC+ File.separator;}
 	public  static String roRpts( String prefix ) {
-		return prefix+ Enguage.RO_SPACE +Repertoire.LOC+ File.separator;
+		return prefix+ Enguage.RO_SPACE +Repertoires.LOC+ File.separator;
 	}
 	private static  String writtenName( String name ) {
 		return roRpts( isFlatpak ? "/apps/":"" )+ name +".txt";
@@ -176,7 +176,7 @@ public class Load {
 					Strings sentence = sentences.remove( 0 );
 					stream = Strings.combine( sentences );
 					for (Strings s : expandSemicolonList( sentence ))
-						Repertoire.mediate( new Utterance( s ));
+						Repertoires.mediate( new Utterance( s ));
 			}	}
 		} catch (java.io.IOException e ) {
 			audit.error( "IO error in Shell::interpret(stdin);" );

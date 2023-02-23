@@ -1,4 +1,4 @@
-package org.enguage.repertoire;
+package org.enguage.repertoires;
 
 import java.util.Locale;
 
@@ -25,7 +25,7 @@ public final class Engine {
 	
 	private Engine() {}
 	
-	public  static final String NAME = Repertoire.ALLOP_STR;
+	public  static final String NAME = Repertoires.ENGINE;
 	private static final Audit audit = new Audit( NAME );
 	
 	protected static final Sign[] commands = {
@@ -34,81 +34,81 @@ public final class Engine {
 			 */
    			new Sign()
 					.pattern( new Frag( "entitle", "SAID" ).phrasedIs())
-					.appendIntention( Intention.allop, "entitle SAID" )
+					.append( Intention.allop, "entitle SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( new Frag( "subtitle", "SAID" ).phrasedIs())
-					.appendIntention( Intention.allop, "subtitle SAID" )
+					.append( Intention.allop, "subtitle SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( new Frag( "echo", "SAID" ).phrasedIs())
-					.appendIntention( Intention.allop, "echo SAID" )
+					.append( Intention.allop, "echo SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( new Frag( "run a self test", "" ))
-					.appendIntention( Intention.allop, "selfTest" )
+					.append( Intention.allop, "selfTest" )
 					.concept( NAME ),
 			new Sign()
 					.pattern( new Frag( "this is all imagined", "" ))
-					.appendIntention( Intention.allop, "imagined" )
+					.append( Intention.allop, "imagined" )
 					.concept( NAME ),
 			new Sign()
 					.pattern( new Frag( "ok" ))
-					.appendIntention( Intention.allop, "ok" )
+					.append( Intention.allop, "ok" )
 					.concept( NAME ), 
 			new Sign()
 					.pattern( new Frag( "list repertoires","" ))
-					.appendIntention( Intention.allop, "list" )
+					.append( Intention.allop, "list" )
 					.concept( NAME ),
 			new Sign()
 					.pattern( new Frag(         "help", "" ))
-					.appendIntention( Intention.allop, "help" )
+					.append( Intention.allop, "help" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag(         "say", "SAID" ).phrasedIs() /*.quotedIs()*/ )
-					.appendIntention( Intention.allop, "say SAID")
+					.append( Intention.allop, "say SAID")
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag( "what can i say", "" ))
-					.appendIntention( Intention.allop, "repertoire"  )
+					.append( Intention.allop, "repertoire"  )
 		          	.concept( NAME ),														 		
 			new Sign()
 					.pattern( new Frag(     "say again",  "" ))
-					.appendIntention( Intention.allop, "repeat"       )
+					.append( Intention.allop, "repeat"       )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag(         "spell", "x" ))
-					.appendIntention( Intention.allop, "spell X"      )
+					.append( Intention.allop, "spell X"      )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag(   "enable undo",  "" ))
-					.appendIntention( Intention.allop, "undo enable"  )
+					.append( Intention.allop, "undo enable"  )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag(  "disable undo",  "" ))
-					.appendIntention( Intention.allop, "undo disable" )
+					.append( Intention.allop, "undo disable" )
 			  		.concept( NAME ),
 			new Sign()
 					.concept( NAME ).pattern( new Frag(          "undo",  "" ))
-					.appendIntention( Intention.allop, "undo"         )
+					.append( Intention.allop, "undo"         )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag( "this is false", "" ))
-					.appendIntention( Intention.allop, "undo" )
+					.append( Intention.allop, "undo" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag( "this sentence is false",  "" ))
-					.appendIntention( Intention.allop, "undo" )
+					.append( Intention.allop, "undo" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag(    "group by", "x" ))
-					.appendIntention( Intention.allop, "groupby X" )
+					.append( Intention.allop, "groupby X" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( new Frag( "tcpip",  "address" ))
 					.pattern( new Frag(      "",  "port" ))
 					.pattern( new Frag(      "",  "data" ).quotedIs())
-					.appendIntention( Intention.allop, "tcpip ADDRESS PORT DATA" )
+					.append( Intention.allop, "tcpip ADDRESS PORT DATA" )
 			  		.concept( NAME ),
 			/* 
 			 * it is possible to arrive at the following construct:   think="reply 'I know'"
@@ -118,29 +118,31 @@ public final class Engine {
 			 * However, the following should deal with this situation.
 			 */
 			new Sign()
-					.pattern( new Frag( Intention.REPLY , "x" ).quotedIs())
-					.appendIntention( Intention.thenReply, "X" )
+					.pattern( new Frag( "reply" , "x" ).phrasedIs())
+					.append( Intention.thenReply, "X" )
 					.concept( NAME ),
-			new Sign() // fix to allow better reading of autopoietic  
-					.pattern( new Frag( "if so,", "x" ).phrasedIs())
-					.appendIntention( Intention.thenThink, "X" )
-					.concept( NAME ),
+					
+//			new Sign() // fix to allow better reading of autopoietic  
+//					.pattern( new Frag( "if so,", "x" ).phrasedIs())
+//					.appendIntention( Intention.thenThink, "X" )
+//					.concept( NAME ),
+					
 			new Sign() // for vocal description of concepts... autopoiesis!
 					.pattern( new Frag( "perform", "args" ).phrasedIs())
-					.appendIntention( Intention.thenDo, "ARGS" )
+					.append( Intention.thenDo, "ARGS" )
 					.concept( NAME ),
 			/* 
 			 * REDO: undo and do again, or disambiguate
 			 */
 			new Sign().pattern( new Frag( "No", "x" ).phrasedIs())
-					.appendIntention( Intention.allop, "undo" )
-					.appendIntention( Intention.elseReply, "undo is not available" )
+					.append( Intention.allop, "undo" )
+					.append( Intention.elseReply, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,
 					 * need to search for the appropriate sign from where we left off
 					 * Dealing with ambiguity: "X", "No, /X/"
 					 */
-					.appendIntention( Intention.allop,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
-					.appendIntention( Intention.thenThink,  "X"    )
+					.append( Intention.allop,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
+					.append( Intention.thenThink,  "X"    )
 					.concept( NAME )
 		 };
 	
@@ -191,7 +193,7 @@ public final class Engine {
 			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));
 			
 		} else if (cmd.equals( "iknow" )) {
-			String tmp = Repertoire.mediate( new Utterance( cmds )).toString();
+			String tmp = Repertoires.mediate( new Utterance( cmds )).toString();
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );

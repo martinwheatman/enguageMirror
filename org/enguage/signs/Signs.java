@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.concept.Load;
+import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.written.Load;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.pattern.Frag;
@@ -255,7 +255,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					//audit.debug( "Found@ "+ i +":"+ get( complexity ).content().toLine() +":"+ match.toString() +")")
 
 					//save the context here, for future use... before interp
-					if (!Repertoire.transformation())
+					if (!Repertoires.transformation())
 						match.toVariables();
 					
 					// if we've matched we must have understood/recognised

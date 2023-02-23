@@ -1,6 +1,6 @@
-package org.enguage.repertoire.concept;
+package org.enguage.repertoires.written;
 
-import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -18,8 +18,8 @@ public class Ideas {
 			String name = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Saving concepts as "+ name );
 			Names.add( name );
-			rc = Repertoire.signs.saveAs(
-								Repertoire.AUTOPOIETIC,
+			rc = Repertoires.signs.saveAs(
+								Repertoires.AUTOPOIETIC,
 								name
 				 ) ? Response.success() : Response.failure();
 
@@ -28,7 +28,7 @@ public class Ideas {
 			audit.debug( "Deleting "+ concept +" concept");
 			Names.remove( concept );
 			Load.delete( concept );
-			Repertoire.signs.remove( concept );
+			Repertoires.signs.remove( concept );
 			
 		} else if (cmd.equals( "load" )) {
 			/* load is used by create, delete, ignore and restore to

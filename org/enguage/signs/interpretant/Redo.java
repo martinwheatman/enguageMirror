@@ -1,6 +1,6 @@
 package org.enguage.signs.interpretant;
 
-import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
@@ -43,9 +43,9 @@ public class Redo {
 			    ||	(    Utterance.previous().copyAfter( 0 ).equals( cmd  )  // no X == (redo) X...  -- case 2
 			    	  && Utterance.previous().get(    0    ).equals( "no" )  // ..&& last[ 0 ] = "no"
 			)	)	{
-				if (Repertoire.signs.lastFoundAt() != -1) { // just in case!
-					Repertoire.signs.ignore( Repertoire.signs.lastFoundAt() );
-					audit.debug("Allop:disambOn():REDOING: Signs to avoid now: "+ Repertoire.signs.ignore().toString() );
+				if (Repertoires.signs.lastFoundAt() != -1) { // just in case!
+					Repertoires.signs.ignore( Repertoires.signs.lastFoundAt() );
+					audit.debug("Allop:disambOn():REDOING: Signs to avoid now: "+ Repertoires.signs.ignore().toString() );
 					disambFound( true );
 		}	}	}
 	}
@@ -57,10 +57,10 @@ public class Redo {
 		if (disambFound()) { //still adjusting the list!
 			//audit.debug( "Allop:disambOff():COOKED!" );
 			disambFound( false );
-			Repertoire.signs.reorder();
+			Repertoires.signs.reorder();
 		} else {
 			//audit.debug( "Allop:disambOff():RAW, forget ignores: "+ Enguage.e.signs.ignore().toString());
-			Repertoire.signs.ignoreNone();
+			Repertoires.signs.ignoreNone();
 		}
 		//audit.traceOut();
 	}

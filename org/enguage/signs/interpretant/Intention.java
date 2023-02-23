@@ -3,7 +3,7 @@ package org.enguage.signs.interpretant;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.enguage.repertoire.Repertoire;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.objects.space.Sofa;
@@ -91,8 +91,8 @@ public class Intention {
 			case elseDo      : return ELSE_DO;
 			case thenRun     : return RUN;
 			case elseRun     : return ELSE_RUN;
-			case allop       : return Repertoire.ALLOP_STR;
-			case autop       : return Repertoire.AUTOP_STR;
+			case allop       : return Repertoires.ENGINE;
+			case autop       : return Repertoires.AUTOP_STR;
 			case create      : return NEW;
 			case prepend     : return PREPEND;
 			case append      : return APPEND;
@@ -112,8 +112,8 @@ public class Intention {
 		else if (name.equals( RUN              )) return thenRun; 
 		else if (name.equals( ELSE_RUN         )) return elseRun;
 		else if (name.equals( FINALLY          )) return thenFinally;
-		else if (name.equals( Repertoire.ALLOP_STR )) return allop;
-		else if (name.equals( Repertoire.AUTOP_STR )) return autop;
+		else if (name.equals( Repertoires.ENGINE )) return allop;
+		else if (name.equals( Repertoires.AUTOP_STR )) return autop;
 		else if (name.equals( NEW              )) return create;
 		else if (name.equals( APPEND           )) return append;
 		else if (name.equals( PREPEND          )) return prepend;
@@ -145,7 +145,7 @@ public class Intention {
 				.pattern( new Frags( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
 				.concept( concept() )
 				.append( new Intention( Intention.nameToType( attr ), val ));
-		Repertoire.signs.insert( latest );
+		Repertoires.signs.insert( latest );
 		return "ok";
 	}
 	public String append() {
@@ -156,17 +156,6 @@ public class Intention {
 			String attr = sa.remove( 0 ),
 			       val  = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
 			latest.append( new Intention( nameToType(  attr ), val ));
-		}
-		return "ok";
-	}
-	public String prepend() {
-		if (null == latest)
-			audit.error( "adding to sign before creation" );
-		else {
-			Strings  sa = Context.deref( new Strings( values ));
-			String attr = sa.remove( 0 ),
-			       val  = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-			latest.insert( 0, new Intention( nameToType( attr ), val ));
 		}
 		return "ok";
 	}
@@ -183,7 +172,7 @@ public class Intention {
 		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
 		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		Reply tmpr = Repertoire.mediate( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
+		Reply tmpr = Repertoires.mediate( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
 		
 		if (r.a.isAppending())
 			r.a.add( tmpr.a.toString() );
@@ -302,7 +291,7 @@ public class Intention {
 		a.add( new Intention( append, ELSE_REPLY +" \"two three four\""   ));
 		a.add( new Intention( append, REPLY      +" \"three four\"" ));
 		test( r, a );
-		Audit.log( Repertoire.signs.toString() );
+		Audit.log( Repertoires.signs.toString() );
 		Audit.log( r.toString());
 		
 		audit.title( "sign self-build II... add pairs of attributes" );
@@ -319,10 +308,10 @@ public class Intention {
 		// ...if not reply EXECP REPLY
 		latest.insert( 1, new Intention( elseReply, "two three four" ));
 		
-		Repertoire.signs.insert( latest );
+		Repertoires.signs.insert( latest );
 		r.answer( Response.yes().toString() );
 
 		
-		Audit.log( Repertoire.signs.toString() );
+		Audit.log( Repertoires.signs.toString() );
 		Audit.log( r.toString());
 }	}

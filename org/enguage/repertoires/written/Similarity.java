@@ -1,4 +1,4 @@
-package org.enguage.repertoire.concept;
+package org.enguage.repertoires.written;
 
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.config.Plural;

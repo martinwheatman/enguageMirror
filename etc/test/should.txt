@@ -1,26 +1,29 @@
-# Construct a 'simple' approach to should:
-# afford what should we do
+# Build a simple approach to 'should':
+# ctor: what should we do
 to the phrase what should we do reply we should whatever.
 this implies that you get the value of should.
 then if not reply i don't know what we should do.
 			
-# test this...
-what should we do: i don't know what we should do.
-
-# afford you should ...
+# c'tor: you should ...
 to the phrase you should phrase variable action reply ok variable action.
 this implies that you set the value of should to variable action.
-			
+
+# Null test...
+what should we do: i don't know what we should do.
+
 # Construct an argument:
-# afford wearing a mask prevents the spread of covid...
+# wearing a mask prevents (or not?) the spread of covid...
 you can say wearing a mask prevents the spread of covid.
 you can say wearing a mask does not prevent the spread of covid.
 
-# afford the premise: a mask soaks up moisture from your breath
+# masks soak up (or not?) moisture from your breath
 you can say a mask soaks up moisture from your breath.
 you can say a mask does not soak up moisture from your breath.
-			
-# Test the argument...
+
+## the problem is here:
+## does a mask soak moisture from your breath (to any great extent?)
+
+# Use these to test the argument...
 wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath:
 			     ok , wearing a mask prevents the spread of covid because a mask soaks up moisture from my breath.
 you should wear a mask because wearing a mask prevents the spread of covid:

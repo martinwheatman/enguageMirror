@@ -1,4 +1,4 @@
-package org.enguage.repertoire.concept;
+package org.enguage.repertoires.written;
 
 import java.io.File;
 import java.util.Iterator;

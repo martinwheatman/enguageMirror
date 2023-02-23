@@ -1,4 +1,4 @@
-package org.enguage.repertoire;
+package org.enguage.signs;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,9 +7,9 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.repertoire.concept.Autoload;
-import org.enguage.repertoire.concept.Load;
-import org.enguage.signs.Signs;
+import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.written.Autoload;
+import org.enguage.repertoires.written.Load;
 import org.enguage.signs.interpretant.Commands;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
@@ -30,14 +30,6 @@ public class Config {
 	
 	private static final Audit audit = new Audit( "Config" );
 	private static final String NAME = "config";
-	
-	private static String welcome = "welcome";
-	public  static String welcome() {return welcome;}
-	public  static String welcome( String w ) {welcome = w; return w;}
-
-	private static boolean firstRun = true;
-	public  static boolean firstRun() {return firstRun;}
-	public  static void    firstRun( boolean b ) {firstRun = b;}
 	
 	private static boolean setValues( String name, String value ) {
 		     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
@@ -74,7 +66,7 @@ public class Config {
 				Variable.set( name,  value );
 	}	}	
 	private static void loadTag( Tag concepts ) {
-		Repertoire.transformation( true );
+		Repertoires.transformation( true );
 		for (Tag t : concepts.content()) {
 			if (t.name.equals( "concept" )) {
 				String op = t.attribute( "op" );
@@ -83,7 +75,7 @@ public class Config {
 				if (!op.equals( "ignore" ))
 					Load.load( id );
 		}	}
-		Repertoire.transformation( false );
+		Repertoires.transformation( false );
 	}
 	public static int load( String fname ) {
 		int rc = -1;
@@ -101,10 +93,9 @@ public class Config {
 		
 		if (Enguage.isVerbose())
 			Audit.log(
-				welcome(
-					Enguage.shell().copyright() +
-					"\nEnguage main(): odb root is: " + Fs.root()
-			)	);
+				Enguage.shell().copyright() +
+				"\nEnguage main(): odb root is: " + Fs.root()
+			);
 
 		Tag t = new Tag( new Strings( content ).listIterator());
 

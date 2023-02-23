@@ -1,8 +1,8 @@
 package org.enguage.signs.objects.space;
 
-import org.enguage.repertoire.Repertoire;
-import org.enguage.repertoire.concept.Ideas;
-import org.enguage.repertoire.concept.Similarity;
+import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.written.Ideas;
+import org.enguage.repertoires.written.Similarity;
 import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Numeric;
 import org.enguage.signs.objects.Temporal;
@@ -55,7 +55,7 @@ public class Sofa {
 				case Variable.id :   return    Variable.interpret( Attribute.expand23( a ));
 				case Similarity.ID:  return  Similarity.interpret( Attribute.expand23( a ));
 				case Colloquial.id:  return  Colloquial.interpret(                     a  );
-				case Repertoire.ID:  return  Repertoire.interpret(                     a  );
+				case Repertoires.ID:  return  Repertoires.interpret(                     a  );
 				case Transitive.id:  return  Transitive.interpret( Attribute.expand23( a ));
 				case Transaction.id: return Transaction.interpret( Attribute.expand23( a ));
 				default :

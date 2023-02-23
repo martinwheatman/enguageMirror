@@ -1,12 +1,12 @@
-package org.enguage.repertoire;
+package org.enguage.repertoires.written;
 
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.pattern.Phrase;
 import org.enguage.signs.symbol.pattern.Quote;
 
-public class Autopoiesis {
-	protected static final Sign[] signs = {
+public class Repertoire {
+	public static final Sign[] signs = {
 		// 3 x 3 signs (think/do/say * start/subseq/infelicit) + 1 "finally"
 		new Sign( "On ", new Quote( "x" ), ",", new Phrase( "y" ))
 			.append( new Intention( Intention.create, Intention.THINK +" X Y" )),

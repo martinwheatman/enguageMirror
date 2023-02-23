@@ -1,9 +1,10 @@
-package org.enguage.repertoire;
+package org.enguage.repertoires;
 
 import java.util.TreeSet;
 
-import org.enguage.repertoire.concept.Autoload;
-import org.enguage.repertoire.concept.Load;
+import org.enguage.repertoires.written.Autoload;
+import org.enguage.repertoires.written.Load;
+import org.enguage.repertoires.written.Repertoire;
 import org.enguage.signs.Signs;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.Utterance;
@@ -12,9 +13,9 @@ import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
-public class Repertoire {
+public class Repertoires {
 	
-	private Repertoire() {}
+	private Repertoires() {}
 	
 	public  static final String NAME = "repertoire";
 	public  static final int      ID = 216434732;
@@ -22,10 +23,10 @@ public class Repertoire {
 	
 	public  static final String           LOC = "rpt";
 
-	public  static final String     ALLOP_STR = "engine";
+	public  static final String        ENGINE = "engine";
 	public  static final String     AUTOP_STR = "autopoiesis";
 	public  static final String   AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
-	// TODO: create a method to comb users for signs created on-the-fly, 
+	// TDO: create a method to comb users for signs created on-the-fly, 
 	//       and to save them under (append them to) a concept file
 	// with the name of the value of the pattern?  Autoload() needs to load
 	// these pattern files. Theses need to be sought first(?):
@@ -38,8 +39,8 @@ public class Repertoire {
 	 * in engine?
 	 */
 	public    static final Signs signs = new Signs( "user"  );
-	protected static final Signs autop = new Signs( "autop" ).add( Autopoiesis.signs );
-	protected static final Signs allop = new Signs( "allop" ).add( Engine.commands );
+	protected static final Signs wrttn = new Signs( "written" ).add( Repertoire.signs );
+	protected static final Signs engin = new Signs( ENGINE ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
 	 */
@@ -65,7 +66,7 @@ public class Repertoire {
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
-		Reply r = autop.mediate( u );
+		Reply r = wrttn.mediate( u );
 		if (Response.DNU == r.response()) {
 			
 			if (!transformation()) {
@@ -80,7 +81,7 @@ public class Repertoire {
 			r = signs.mediate( u );
 			
 			if (Response.DNU == r.response())
-				r = allop.mediate( u );
+				r = engin.mediate( u );
 		}
 		//audit.out( r )
 		return r;
@@ -101,15 +102,15 @@ public class Repertoire {
 					
 					signs.show();
 					
-				else if (name.equals( ALLOP_STR ))
-					allop.show();
+				else if (name.equals( ENGINE ))
+					engin.show();
 					
 				else if (name.equals("autop"))
-					autop.show();
+					wrttn.show();
 					
 				else if (name.equals( "all" )) {
-					autop.show();
-					allop.show();
+					wrttn.show();
+					engin.show();
 					signs.show();
 					
 				} else
