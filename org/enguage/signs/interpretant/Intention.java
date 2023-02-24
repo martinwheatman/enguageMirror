@@ -58,11 +58,13 @@ public class Intention {
 	public static final int autop         =  0x9;           // =  9
 	public static final int thenFinally   =  0xf; // 1111      = 16
 
-	public static final int  create       =  0xa;
-	public static final int  prepend      =  0xb;
-	public static final int  append       =  0xc;
-	public static final int  headAppend   =  0xd;
-	public static final int  head         =  0xe;
+	public static final int  atpRptCre    =  0xa;
+	public static final int  atpRptApp    =  0xc;
+	public static final int  create       =  0xfa;
+	public static final int  prepend      =  0xfb;
+	public static final int  append       =  0xfc;
+	public static final int  headAppend   =  0xfd;
+	public static final int  head         =  0xfe;
 
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}

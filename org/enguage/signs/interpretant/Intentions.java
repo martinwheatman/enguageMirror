@@ -38,8 +38,8 @@ public class Intentions extends ArrayList<Intention> {
 			Intention in = ai.next();
 			switch (in.type()) {
 				case Intention.allop  : r = Engine.interp( in, r ); break;
-				case Intention.create : r.answer( in.create() ); break;
-				case Intention.append : r.answer( in.append() ); break;
+				case Intention.atpRptCre : r.answer( in.create() ); break;
+				case Intention.atpRptApp : r.answer( in.append() ); break;
 				default: r = in.mediate( r ); // thenFinally, think, do, say...
 		}	}
 		return r;

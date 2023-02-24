@@ -8,9 +8,9 @@
 
 On "does SUBJECT LIST list exist", perform "value exists SUBJECT LIST".
 
-On "does NUMERIC-QUANTITY PHRASE-THIS            exist  in SUBJECT LIST list",                   perform "items    matches SUBJECT LIST THIS".
-On "does                  PHRASE-THIS                 exist  in SUBJECT LIST list",                   perform "items    matches SUBJECT LIST THIS".
-On "does                  PHRASE-EFFECT               exist  in SUBJECT causal list",                 perform "items    matches SUBJECT causal EFFECT".
+On "does NUMERIC-QUANTITY PHRASE-THIS            exist  in SUBJECT LIST list",          perform "items    matches SUBJECT LIST THIS".
+On "does                  PHRASE-THIS                 exist  in SUBJECT LIST list",     perform "items    matches SUBJECT LIST THIS".
+On "does                  PHRASE-EFFECT               exist  in SUBJECT causal list",   perform "items    matches SUBJECT causal EFFECT".
 On "does   PHRASE-THIS at PHRASE-WHERE exist in SUBJECT LIST list",                     perform "items    matches SUBJECT LIST THIS WHERE WHEN".
 
 On "                   SOMEONE and SOMETHING exist  in SUBJECT LIST list",              perform "items    matches SUBJECT LIST SOMEONE SOMETHING".

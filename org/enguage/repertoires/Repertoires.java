@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 import org.enguage.repertoires.written.Autoload;
 import org.enguage.repertoires.written.Load;
-import org.enguage.repertoires.written.Repertoire;
+import org.enguage.repertoires.written.AtpRpt;
 import org.enguage.signs.Signs;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.Utterance;
@@ -39,7 +39,7 @@ public class Repertoires {
 	 * in engine?
 	 */
 	public    static final Signs signs = new Signs( "user"  );
-	protected static final Signs wrttn = new Signs( "written" ).add( Repertoire.signs );
+	protected static final Signs wrttn = new Signs( "written" ).add( AtpRpt.signs() );
 	protected static final Signs engin = new Signs( ENGINE ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.

@@ -25,10 +25,10 @@ On "what do AND-LIST-SUBJECTS need":
 	if not, reply "SUBJECTS do not need anything";
 	reply "SUBJECTS need ...".
 
-On "AND-LIST-SUBJECTS do not need PHRASE-THESE":
-	THESE exists in GROUPED-SUBJECTS needs list;
+On "AND-LIST-SUBJECTS do not need PHRASE-THIS":
+	THIS exists in GROUPED-SUBJECTS needs list;
 	if not, reply "yes, i know";
-	remove THESE from GROUPED-SUBJECTS needs list;
+	remove THIS from GROUPED-SUBJECTS needs list;
 	reply "ok, SUBJECTS do not need ...".
 
 On "AND-LIST-SUBJECTS do not need anything":
