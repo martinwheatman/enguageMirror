@@ -44,7 +44,11 @@ public class Intention {
 	public static final int _run          = 0x04; // 0100 -- TODO: combine with tcpip and do!!!
 	public static final int _say          = 0x06; // 0110
 	
+	// written types
 	public static final int undef         = -1;
+
+	public static final int  atpRptCre    =  0xa;
+	public static final int  atpRptApp    =  0xc;
 
 	public static final int thenThink     = _then | _think; // =  0
 	public static final int elseThink     = _else | _think; // =  1
@@ -58,8 +62,8 @@ public class Intention {
 	public static final int autop         =  0x9;           // =  9
 	public static final int thenFinally   =  0xf; // 1111      = 16
 
-	public static final int  atpRptCre    =  0xa;
-	public static final int  atpRptApp    =  0xc;
+	
+	// voiced types
 	public static final int  create       =  0xfa;
 	public static final int  prepend      =  0xfb;
 	public static final int  append       =  0xfc;
@@ -68,19 +72,23 @@ public class Intention {
 
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
+	public Intention( int t, int intId, String v ) {id = intId; type=t; value=v; values=new Strings(v);}
 	public Intention( Intention in, boolean temp, boolean spatial ) {
 		this( in.type(), in.value() );
 		temporalIs( temp );
 		spatialIs( spatial );
 	}
 	
-	protected final int    type;
+	private int id = undef;
+	public  int id() {return id;}
+	
+	protected       int    type;
 	public          int    type() {return type;}
 	
-	protected final String value;
+	protected       String value;
 	public          String value() {return value;}
 	
-	protected final Strings values;
+	protected       Strings values;
 	public          Strings values() {return values;}
 	
 	public static String typeToString( int type ) {
@@ -104,26 +112,6 @@ public class Intention {
 				return UNDEF;
 	}	}
 	
-	private static int nameToType( String name ) {
-		     if (name.equals( REPLY            )) return thenReply;
-		else if (name.equals( ELSE_REPLY       )) return elseReply;
-		else if (name.equals( THINK            )) return thenThink;
-		else if (name.equals( ELSE_THINK       )) return elseThink;
-		else if (name.equals( DO               )) return thenDo; 
-		else if (name.equals( ELSE_DO          )) return elseDo; 
-		else if (name.equals( RUN              )) return thenRun; 
-		else if (name.equals( ELSE_RUN         )) return elseRun;
-		else if (name.equals( FINALLY          )) return thenFinally;
-		else if (name.equals( Repertoires.ENGINE )) return allop;
-		else if (name.equals( Repertoires.AUTOP_STR )) return autop;
-		else if (name.equals( NEW              )) return create;
-		else if (name.equals( APPEND           )) return append;
-		else if (name.equals( PREPEND          )) return prepend;
-		else {
-			audit.FATAL( "typing undef" );
-			return undef;
-	}	}
-	
 	private boolean   temporal = false;
 	public  boolean   isTemporal() {return temporal;}
 	public  Intention temporalIs( boolean b ) {temporal = b; return this;}
@@ -132,35 +120,10 @@ public class Intention {
 	public  boolean   isSpatial() {return spatial;}
 	public  Intention spatialIs( boolean s ) {spatial = s; return this;}
 
-	private static Sign latest = null;
-	
 	private static String concept = "";
 	public  static void   concept( String name ) { concept = name; }
 	public  static String concept() { return concept; }
 
-	public String create() {
-		Strings sa      = Context.deref( new Strings( values ));
-		String  attr    = sa.remove( 0 );
-		String  pattern = sa.remove( 0 );
-		String  val     = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-		latest = new Sign()
-				.pattern( new Frags( new Strings( Strings.trim( pattern, Strings.DOUBLE_QUOTE ))) )
-				.concept( concept() )
-				.append( new Intention( Intention.nameToType( attr ), val ));
-		Repertoires.signs.insert( latest );
-		return "ok";
-	}
-	public String append() {
-		if (null == latest)
-			audit.error( "adding to sign before creation" );
-		else {
-			Strings  sa = Context.deref( new Strings( values ));
-			String attr = sa.remove( 0 ),
-			       val  = Strings.trim( sa.remove( 0 ), Strings.DOUBLE_QUOTE );
-			latest.append( new Intention( nameToType(  attr ), val ));
-		}
-		return "ok";
-	}
 	private Strings formulate( String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"
@@ -260,15 +223,15 @@ public class Intention {
 	}
 	public String toString() {
 		switch (type) {
-			case thenReply  : return         "reply \""+   value +"\"";
-			case elseReply  : return "if not, reply \""+   value +"\"";
-			case thenDo     : return         "perform \""+ value +"\"";
-			case elseDo     : return "if not, perform \""+ value +"\"";
-			case thenRun    : return         "run \""+     value +"\"";
-			case elseRun    : return "if not, run \""+     value +"\"";
-			case thenThink  : return                       value;
-			case elseThink  : return "if not, "+           value;
-			case thenFinally: return "finally, "+          value;
+			case thenReply  :
+			case thenThink  : 
+			case thenDo     :
+			case thenRun    : return          value; 
+			case elseDo     : 
+			case elseRun    : 
+			case elseReply  : 
+			case elseThink  : return "if not, "+ value;
+			case thenFinally: return "finally, "+ value;
 			default : return Attribute.asString( typeToString( type ), value() );
 	}	}
 	/*
@@ -300,17 +263,19 @@ public class Intention {
 		// now built like this...
 		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();
-		latest = new Sign()
-				.pattern( new Frags( "c variable pattern z" ))
-				.concept( concept() );
+		Sign.latest(
+				new Sign()
+					.pattern( new Frags( "c variable pattern z" ))
+					.concept( concept() )
+		);
 		String reply = "three four";
-		latest.append( new Intention( thenReply, reply ));
+		Sign.latest().append( Intention.thenReply, reply );
 		// ...This implies COND
-		latest.insert( 0, new Intention( thenThink, "one two three four" ));
+		Sign.latest().insert( 0, new Intention( thenThink, "one two three four" ));
 		// ...if not reply EXECP REPLY
-		latest.insert( 1, new Intention( elseReply, "two three four" ));
+		Sign.latest().insert( 1, new Intention( elseReply, "two three four" ));
 		
-		Repertoires.signs.insert( latest );
+		Repertoires.signs.insert( Sign.latest() );
 		r.answer( Response.yes().toString() );
 
 		

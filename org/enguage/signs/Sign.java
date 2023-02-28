@@ -22,7 +22,6 @@ public class Sign {
 	public Sign() {super();}
 	public Sign( Frag  patte  ) {this(); pattern( patte );}
 	public Sign( String prefix ) {this( new Frag( prefix ));}
-	public Sign( String prefix, Frag variable ) {this( variable.prefix( prefix ));}
 	public Sign( String prefix, Frag variable, String postfix ) {
 		this( variable.prefix( prefix ).postfix( postfix ));
 	}
@@ -33,45 +32,48 @@ public class Sign {
 		pattern( variable2.prefix( prefix2 ));
 	}
 	
-	/* 
-	 * Member - PATTERN
+	/* Member - PATTERN
 	 */
 	private Frags pattern = new Frags();
 	public  Frags pattern() {return pattern;}
-	public  Sign  pattern( Frags ta ) { pattern = ta; return this; }
+	public  Sign  pattern( String s ) {pattern = new Frags(s); return this;}
+	public  Sign  pattern( Frags ta ) {pattern = ta; return this;}
 	public  Sign  pattern( Frag child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
 	}
-	public Sign   pattern( String prefix, String name ) {
+	public  Sign  pattern( String prefix, String name ) {
 		pattern( new Frag( prefix, name ));
 		return this;
 	}
-	public Sign   pattern( String prefix, String name, String postfix ) {
+	public  Sign  pattern( String prefix, String name, String postfix ) {
 		pattern( new Frag( prefix, name, postfix ));
 		return this;
 	}
-	public Sign split( String word ) {pattern( pattern.split( word )); return this;} 
+	public  Sign  split( String word ) {pattern( pattern.split( word )); return this;} 
 
-	/*
-	 * Member - Intentions - THOUGHTS and REFERENCES
+	/* Member - Intentions - THOUGHTS and REFERENCES
 	 */
 	private Intentions intentions = new Intentions();
-	public Intentions intentions() {return intentions;}
-	public Sign  insert( int n, Intention intent ) {intentions.insert( n, intent ); return this;}
-	public Sign  append( Intention intent ) {intentions.add( intent ); return this;}
-	public Sign  append( int type, String pattern ) {intentions.append( new Intention( type, pattern )); return this;}
+	public  Intentions intentions() {return intentions;}
+	public  Sign       intentions( Intentions is ) {intentions = is; return this;}
+	public  Sign       insert( int n, Intention intent ) {intentions.insert( n, intent ); return this;}
+	public  Sign       append( Intention intent ) {intentions.add( intent ); return this;}
+	public  Sign       append( int type, String pattern ) {intentions.append( new Intention( type, pattern )); return this;}
 	
-	public static Sign voiced = null;
+	private static Sign voiced = null;
+	
+	private static Sign latest = null;
+	public  static Sign latest() {return latest;}
+	public  static Sign latest(Sign s) {latest = s; return latest;}
 	
 	// Set during autopoiesis - replaces 'id' attribute 
 	private String  concept = "";
 	public  String  concept() { return concept; }
 	public  Sign    concept( String name ) { concept = name; return this; }
 	
-	/*
-	 * Members - spatio-temporal
+	/* Members - spatio-temporal
 	 */
 	private boolean temporalSet = false;
 	private boolean temporal = false;
@@ -122,21 +124,17 @@ public class Sign {
 				+ intentions.toXml() +">\n"
 				+ ind + ind + pattern().toString() + "</"+ NAME +">";
 	}
-	public String toStringIndented() {
-		return Audit.indent()
-				+ "On \""+ pattern().toString()+ "\""
-				+ intentions.toStringIndented() 
-				+ ".";
-	}
+	public String toLine() {return toString() + "\n";}
+	public String toStringIndented() {return Audit.indent() + toString();}
 	public String toString() {
 		return "On \""+ pattern().toString()+ "\""
 				+ intentions.toStringIndented() 
-				+ ".\n";
+				+ ".";
 	}
 		
-	public boolean toFile( String fname ){return Fs.stringAppendFile( fname, toString());}
-	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toString());}
-	public void    toVariable() {Variable.set( pattern.toFilename(), toString());}
+	public boolean toFile( String fname ){return Fs.stringAppendFile( fname, toLine());}
+	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toLine());}
+	public void    toVariable() {Variable.set( pattern.toFilename(), toLine());}
 	
 	/*
 	 * This will handle "sign create X", found in interpret.txt
@@ -183,15 +181,15 @@ public class Sign {
 			} else if (cmd.equals( "split" )) {
 				
 				if (args.size() == 1) {
-					
-					Sign.voiced.pattern(
-							Sign.voiced.pattern().split(args.get( 0 ))
+					voiced.pattern(
+							voiced.pattern().split(args.get( 0 ))
 					);
+					
 				} else 	if (args.size() > 1) {
-					
-					Sign.voiced.pattern(
-							Sign.voiced.pattern().split(args.get( 0 ), args.get( 1 ))
+					voiced.pattern(
+							voiced.pattern().split(args.get( 0 ), args.get( 1 ))
 					);
+					
 				} else {
 					audit.error( "missing" );
 				}

@@ -166,6 +166,7 @@ public class Frag {
 				+(name.equals( "" ) ? "" :
 					(isNumeric()? Frags.numericPrefix : "")
 					+ (isPhrased()? Frags.phrasePrefix : "")
+					+ (isQuoted()? Frags.quotedPrefix : "")
 					+ (isList()? Reply.andConjunction().toUpperCase( Locale.getDefault())
 							+"-"+ Frags.list.toUpperCase( Locale.getDefault()) +"-" : "")
 					+ name.toUpperCase( Locale.getDefault()) ) 

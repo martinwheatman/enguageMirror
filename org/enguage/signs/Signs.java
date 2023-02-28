@@ -309,16 +309,16 @@ public class Signs extends TreeMap<Integer,Sign> {
 		r.insert(
 				new Sign().pattern( new Frag(  "debug ", "x" ))
 					.concept( "test" )
-					.append( new Intention( Intention.allop, "debug X" ))
+					.append( Intention.allop, "debug X" )
 			);
 		r.insert(
 				new Sign().pattern( new Frag(  "describe ", "x" ))
 					.concept( "test" )
-					.append( new Intention( Intention.allop, "describe X" ))
+					.append( Intention.allop, "describe X" )
 			);
 		r.insert(
 			new Sign().pattern( new Frag(  "list repertoires ", "" ))
 				.concept( "test" )
-				.append( new Intention( Intention.allop, "list repertoires" ))
+				.append( Intention.allop, "list repertoires" )
 		);
 }	}

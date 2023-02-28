@@ -1,13 +1,12 @@
 package org.enguage.repertoires.written;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -93,60 +92,6 @@ public class Load {
 	public static Strings addTerminator( Strings a ) { return addTerminator( a, terminators.get( 0 ));}
 	
 
-	private static void rejig(int rcSz, Strings primary, String connector, ArrayList<Strings>rc) {
-		for (int i=0; i<rcSz; i++) {
-			Strings tmp = new Strings();
-			if (i==0)
-				tmp.addAll( primary );
-			else
-				tmp.add( 0, connector );
-			tmp.add( "," );
-			tmp.addAll( rc.get( i ));
-			rc.set( i, tmp );
-	}	}
-	private static List<Strings> expandSemicolonList( Strings sentence ) {
-		/*  "on one: do two; do three; and, do four." =>
-		 *  [ "on one, do two.", "and on one, do three.", "and on one, do four." ]
-		 *  "and" many be replace by, for example "or", "then", "also"
-		 */
-		ArrayList<Strings> rc = new ArrayList<>();
-		
-		// create a primary and a list of secondaries
-		boolean isPrimary = true;
-		Strings primary = new Strings();    // On "a B c" (:)
-		Strings secondary = new Strings (); // if so, do something[;|.]
-		for (String s : sentence) 
-			if (s.equals(":")) {
-				isPrimary = false;
-			} else if (s.equals(";")) {
-				rc.add( secondary );
-				secondary = new Strings();
-			} else if (isPrimary) {
-				primary.add( s );
-			} else {
-				secondary.add( s );
-			}
-		if (!secondary.isEmpty()) rc.add( secondary );
-		
-		// if we've found no semi-colon separated list...
-		if (rc.isEmpty()) {
-			// ...just pass back the original list
-			rc.add( sentence );
-		} else {
-			// remove connector from last in list
-			int rcSz = rc.size();
-			String connector = "then"; // default: this is the only one used!
-			Strings lastList = rc.get( rcSz-1 );
-			if ( lastList.size() > 2 && lastList.get( 1 ).equals( ",") ) {
-				connector=lastList.remove( 0 ); // remove connector
-				lastList.remove( 0 );           // remove ","
-				rc.set( rcSz-1, lastList );     // replace this last item
-			}
-			// re-jig list, adding-in primary, and the connector on subsequent lists
-			rejig(rcSz, primary, connector, rc);
-		}
-		return rc;
-	}
 	private static String preprocessLine( String line, String from, String to ) {
 		
 		//remove Byte order mark...
@@ -164,23 +109,32 @@ public class Load {
 		
 		return line;
 	}
-
-	public static void loadFile( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
-		try (BufferedReader br = new BufferedReader( new InputStreamReader( fp ))) {
-			String line;
-			Strings stream = new Strings();
-			while ((line = br.readLine()) != null) {
-				stream.addAll( new Strings( preprocessLine( line, from, to )));
-				ArrayList<Strings> sentences = stream.divide( terminators, false );
-				if (sentences.size() > 1) {
-					Strings sentence = sentences.remove( 0 );
-					stream = Strings.combine( sentences );
-					for (Strings s : expandSemicolonList( sentence ))
-						Repertoires.mediate( new Utterance( s ));
-			}	}
-		} catch (java.io.IOException e ) {
-			audit.error( "IO error in Shell::interpret(stdin);" );
-	}	}
+	
+	private static Strings preprocessFile( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
+		Strings content = new Strings();
+		Scanner br = new Scanner( new InputStreamReader( fp ));
+			while (br.hasNextLine()) 
+				content.addAll( new Strings( preprocessLine( br.nextLine(), from, to )));
+		br.close();
+		return content;
+	}
+	
+	private static void load( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
+		Strings content = preprocessFile( fp, from, to );
+		ArrayList<Strings> utterances = content.divide( terminators, false );
+		for (Strings utterance : utterances) {
+			for (Strings strings : AtpRpt.expandSemicolonList( utterance ))
+				Repertoires.mediate( new Utterance( strings ));
+/*			//This is how it should build user signs... ?
+			SignBuilder sb   = new SignBuilder( utterance );
+			Sign        sign = sb.toSign();
+			if (sign != null)  //by-pass 'latest' - already built
+				Repertoires.signs.insert( sign );
+			else // if we find, e.g. "this concept is spatial".
+				Repertoires.mediate( new Utterance( utterance ));
+ */
+		}
+	}
 	
 	public static String loadConcept( String name, String from, String to ) {
 		boolean wasLoaded   = true;
@@ -194,7 +148,7 @@ public class Load {
 		
 		if ((null != (is = getFile( spokenName( name )))) ||
 		    (null != (is = Assets.getStream( writtenName( name )))))
-			loadFile( is, from, to );
+			load( is, from, to );
 		else
 			wasLoaded = false;
 		

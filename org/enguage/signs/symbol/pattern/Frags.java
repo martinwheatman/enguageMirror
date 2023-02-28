@@ -259,6 +259,18 @@ public class Frags extends ArrayList<Frag> {
 				else // phrase.
 					out.append( phrase );
 			
+			else if (word.equals( quoted ))
+				if (wi.hasNext() && null != (word = wi.next()))
+					if (word.equals( variable ))
+						if (wi.hasNext() && null != (word = wi.next()) && !word.equals( variable ))
+							out.append( quotedPrefix + word.toUpperCase( locale ));
+						else // quoted variable. OR phrase variable variable
+							out.append( quoted ).append( word );
+					else // quoted blah
+						out.append( quoted ).append( word );
+				else // quoted.
+					out.append( quoted );
+			
 			else if (word.equals( "and" ))
 				if (wi.hasNext() && null != (word = wi.next()) && word.equals( "list" ))
 					if (wi.hasNext() && null != (word = wi.next()) && word.equals( "variable" ))

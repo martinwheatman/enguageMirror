@@ -11,7 +11,6 @@ import org.enguage.signs.objects.list.Item;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.config.Englishisms;
-import org.enguage.signs.symbol.pattern.Frag;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
@@ -33,81 +32,79 @@ public final class Engine {
 			 * interpretations and so are built here alongside those interpretations.
 			 */
    			new Sign()
-					.pattern( new Frag( "entitle", "SAID" ).phrasedIs())
+					.pattern( "entitle PHRASE-SAID" )
 					.append( Intention.allop, "entitle SAID" )
 					.concept( NAME ),
    			new Sign()
-					.pattern( new Frag( "subtitle", "SAID" ).phrasedIs())
+					.pattern( "subtitle PHRASE-SAID" )
 					.append( Intention.allop, "subtitle SAID" )
 					.concept( NAME ),
    			new Sign()
-					.pattern( new Frag( "echo", "SAID" ).phrasedIs())
+					.pattern( "echo PHRASE-SAID" )
 					.append( Intention.allop, "echo SAID" )
 					.concept( NAME ),
    			new Sign()
-					.pattern( new Frag( "run a self test", "" ))
+					.pattern( "run a self test" )
 					.append( Intention.allop, "selfTest" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "this is all imagined", "" ))
+					.pattern( "this is all imagined" )
 					.append( Intention.allop, "imagined" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "ok" ))
+					.pattern(  "ok" )
 					.append( Intention.allop, "ok" )
 					.concept( NAME ), 
 			new Sign()
-					.pattern( new Frag( "list repertoires","" ))
+					.pattern( "list repertoires","" )
 					.append( Intention.allop, "list" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( new Frag(         "help", "" ))
+					.pattern( "help", "" )
 					.append( Intention.allop, "help" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag(         "say", "SAID" ).phrasedIs() /*.quotedIs()*/ )
+					.pattern( "say PHRASE-SAID" )
 					.append( Intention.allop, "say SAID")
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "what can i say", "" ))
+					.pattern( "what can i say" )
 					.append( Intention.allop, "repertoire"  )
 		          	.concept( NAME ),														 		
 			new Sign()
-					.pattern( new Frag(     "say again",  "" ))
+					.pattern( "say again" )
 					.append( Intention.allop, "repeat"       )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag(         "spell", "x" ))
+					.pattern( "spell X" )
 					.append( Intention.allop, "spell X"      )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag(   "enable undo",  "" ))
+					.pattern( "enable undo" )
 					.append( Intention.allop, "undo enable"  )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag(  "disable undo",  "" ))
+					.pattern( "disable undo" )
 					.append( Intention.allop, "undo disable" )
 			  		.concept( NAME ),
 			new Sign()
-					.concept( NAME ).pattern( new Frag(          "undo",  "" ))
+					.pattern( "undo" )
 					.append( Intention.allop, "undo"         )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "this is false", "" ))
+					.pattern( "this is false" )
 					.append( Intention.allop, "undo" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "this sentence is false",  "" ))
+					.pattern( "this sentence is false" )
 					.append( Intention.allop, "undo" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag(    "group by", "x" ))
+					.pattern( "group by X" )
 					.append( Intention.allop, "groupby X" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( new Frag( "tcpip",  "address" ))
-					.pattern( new Frag(      "",  "port" ))
-					.pattern( new Frag(      "",  "data" ).quotedIs())
+					.pattern( "tcpip ADDRESS PORT QUOTED-DATA" )
 					.append( Intention.allop, "tcpip ADDRESS PORT DATA" )
 			  		.concept( NAME ),
 			/* 
@@ -118,7 +115,7 @@ public final class Engine {
 			 * However, the following should deal with this situation.
 			 */
 			new Sign()
-					.pattern( new Frag( "reply" , "x" ).phrasedIs())
+					.pattern( "reply PHRASE-X" )
 					.append( Intention.thenReply, "X" )
 					.concept( NAME ),
 					
@@ -128,13 +125,13 @@ public final class Engine {
 //					.concept( NAME ),
 					
 			new Sign() // for vocal description of concepts... autopoiesis!
-					.pattern( new Frag( "perform", "args" ).phrasedIs())
+					.pattern( "perform PHRASE-ARGS" )
 					.append( Intention.thenDo, "ARGS" )
 					.concept( NAME ),
 			/* 
 			 * REDO: undo and do again, or disambiguate
 			 */
-			new Sign().pattern( new Frag( "No", "x" ).phrasedIs())
+			new Sign().pattern( "No PHRASE-X" )
 					.append( Intention.allop, "undo" )
 					.append( Intention.elseReply, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,
@@ -152,22 +149,22 @@ public final class Engine {
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
 
-		if ( cmd.equals( "imagined" )) {
+		if (cmd.equals( "imagined" )) {
 			Enguage.get().imagined( true );
 			r.format( new Strings( "ok, this is all imagined" ));
 			
-		} else if ( cmd.equals( "selfTest" )) {
+		} else if (cmd.equals( "selfTest" )) {
 			Example.unitTests();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
 			
-		} else if ( cmd.equals( "groupby" )) {
+		} else if (cmd.equals( "groupby" )) {
 			r.format( Response.success());
 			if (!cmds.isEmpty() && !cmds.get( 0 ).equals( "X" ))
 				Item.groupOn( cmds.get( 0 ).toUpperCase( Locale.getDefault()));
 			else
 				r.format( new Strings( Response.failure() +", i need to know what to group by" ));
 			
-		} else if ( cmd.equals( "undo" )) {
+		} else if (cmd.equals( "undo" )) {
 			r.format( Response.success() );
 			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
 				Redo.undoEnabledIs( true );
@@ -255,7 +252,7 @@ public final class Engine {
 			else
 				Reply.say( Variable.deref( new Strings( cmds )));
 			
-		} else if ( cmd.equals( "ok" ) && cmds.isEmpty()) {
+		} else if (cmd.equals( "ok" ) && cmds.isEmpty()) {
 			r.format( // think( "that concludes interpretation" )
 				new Variable( "transformation" ).isSet( "true" ) ?
 						Enguage.get().mediate( new Strings( "that concludes interpretation" )).toString()

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.repertoires.Engine;
+import org.enguage.repertoires.written.AtpRpt;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attribute;
@@ -38,8 +39,8 @@ public class Intentions extends ArrayList<Intention> {
 			Intention in = ai.next();
 			switch (in.type()) {
 				case Intention.allop  : r = Engine.interp( in, r ); break;
-				case Intention.atpRptCre : r.answer( in.create() ); break;
-				case Intention.atpRptApp : r.answer( in.append() ); break;
+				case Intention.atpRptApp :
+				case Intention.atpRptCre : r = AtpRpt.interp( in, r ); break;
 				default: r = in.mediate( r ); // thenFinally, think, do, say...
 		}	}
 		return r;
