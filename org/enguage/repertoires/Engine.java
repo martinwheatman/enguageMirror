@@ -247,8 +247,8 @@ public final class Engine {
 			// so we need to trim the quoted speech...
 			if (cmds.size() == 1)
 				Reply.say( Variable.deref(
-						new Strings( Strings.trim( cmds.get( 0 ), Strings.DOUBLE_QUOTE ))
-						 )				 );
+					new Strings( Strings.trim( cmds.get( 0 ), Strings.DOUBLE_QUOTE ))
+				)                        );
 			else
 				Reply.say( Variable.deref( new Strings( cmds )));
 			

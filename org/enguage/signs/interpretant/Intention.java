@@ -108,7 +108,8 @@ public class Intention {
 			case append      : return APPEND;
 			case thenFinally : return FINALLY;
 			default:
-				audit.FATAL( "Intention: still returning undefined" );
+				audit.FATAL( "Intention: returning undefined for: "+ type +
+						     "\n10 and 12:: create and append: not 'INTENTIONS'" );
 				return UNDEF;
 	}	}
 	

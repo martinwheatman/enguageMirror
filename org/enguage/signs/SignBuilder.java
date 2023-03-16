@@ -34,16 +34,38 @@ public class SignBuilder {
 		
 		boolean neg = false;
 		if (one.equals( "if" ) && thr.equals( "," )) {
-			neg = two.equals( "not" );
-			one = len>3?sa.get(3):"";
-			two = len>4?sa.get(4):"";
+			sa.remove(0); // if
+			neg = sa.remove(0).equals( "not" ); // not/so
+			sa.remove(0); // ,
+			len = sa.size();
+			one = len>0?sa.get(0):"";
+			two = len>1?sa.get(1):"";
 		}
 		
-		if (isQuoted( two )) {
+		if ((len == 2) &&
+				sa.get(0).equals("say") &&
+				sa.get(1).equals("so"))
+		{
+			rc = !neg ? Intention.thenReply : Intention.elseReply;
+			sa.remove( 0 ); // say
+			sa.remove( 0 ); // so
+			
+		} else if (isQuoted( two )) {
+			
+			boolean found = true;
 			if (one.equals("perform"))
 				rc = !neg ? Intention.thenDo  : Intention.elseDo;
 			else  if (one.equals("run"))
 				rc = !neg ? Intention.thenRun : Intention.elseRun;
+			else  if (one.equals("reply"))
+				rc = !neg ? Intention.thenReply : Intention.elseReply;
+			else
+				found = false;
+			
+			if (found) {
+				sa.remove(0);
+				sa.set( 0, Strings.trim( sa.get(0), '"' ));
+			}
 		}
 		
 		if (rc == Intention.undef)
@@ -63,6 +85,17 @@ public class SignBuilder {
 				sa.append( s );
 		}
 		if (!sa.isEmpty()) {
+			
+			// backwards compatible 
+			// -- re move default connector on last intention.
+			if (sa.get(0).equals( "then" ) &&
+				sa.get(1).equals(    "," )    )
+			{
+				sa.remove(0);
+				sa.remove(0);
+			}
+			
+			// getType affects sa!!! be explicit in ordering
 			int type = getType( sa );
 			sign.append( new Intention( type, sa ));
 		}
@@ -77,10 +110,11 @@ public class SignBuilder {
 				if ((s.equals(",") || s.equals(":"))
 					&& si.hasNext())
 				{
-					Sign sign = new Sign();
-					sign.pattern( frags );
-					doIntentions( si, sign );
-					return sign;
+					return doIntentions( si,
+						new Sign()
+							.pattern( frags )
+							.concept( Intention.concept())
+						);
 				}
 			}
 		}
@@ -100,8 +134,7 @@ public class SignBuilder {
 	// ---
 	public static void test( String utterance ) {
 		Strings sa = new Strings( utterance );
-		SignBuilder builder  = new SignBuilder( sa );
-		Sign    sign     = builder.toSign();
+		Sign  sign = new SignBuilder( sa ).toSign();
 		Audit.LOG( "Utterance is "+ utterance );
 		
 		if (sign != null)
@@ -112,10 +145,10 @@ public class SignBuilder {
 	public static void main( String[] args ) {
 		test( "On \"i need QUOTED-THINGS\":\n"
 				+"\tadd THINGS to my needs list;\n"
-				+"\tperform \"do this\";\n"
+				+"\tif not, perform \"do this\";\n"
 				+"\trun \"ls -l\";\n"
 				+"\treply \"ok, you need ...\""
 		);
-		test( "On \"hello\": reply \"hello to you too\"" );
+		test( "On \"hello\", reply \"hello to you too\"" );
 		test( "what do i need" );
 }	}

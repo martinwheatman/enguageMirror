@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.repertoires.Engine;
-import org.enguage.repertoires.written.AtpRpt;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attribute;
@@ -37,12 +36,10 @@ public class Intentions extends ArrayList<Intention> {
 		Iterator<Intention> ai = this.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();
-			switch (in.type()) {
-				case Intention.allop  : r = Engine.interp( in, r ); break;
-				case Intention.atpRptApp :
-				case Intention.atpRptCre : r = AtpRpt.interp( in, r ); break;
-				default: r = in.mediate( r ); // thenFinally, think, do, say...
-		}	}
+			r = in.type() == Intention.allop
+					? Engine.interp( in, r )
+					: in.mediate( r ); // thenFinally, think, do, say...
+		}
 		return r;
 	}
 	public String toStringIndented() {

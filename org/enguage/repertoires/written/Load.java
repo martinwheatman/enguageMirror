@@ -12,6 +12,8 @@ import java.util.TreeSet;
 
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
+import org.enguage.signs.Sign;
+import org.enguage.signs.SignBuilder;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
@@ -123,16 +125,12 @@ public class Load {
 		Strings content = preprocessFile( fp, from, to );
 		ArrayList<Strings> utterances = content.divide( terminators, false );
 		for (Strings utterance : utterances) {
-			for (Strings strings : AtpRpt.expandSemicolonList( utterance ))
-				Repertoires.mediate( new Utterance( strings ));
-/*			//This is how it should build user signs... ?
 			SignBuilder sb   = new SignBuilder( utterance );
 			Sign        sign = sb.toSign();
-			if (sign != null)  //by-pass 'latest' - already built
+			if (sign != null)  // by-pass 'latest' - already built
 				Repertoires.signs.insert( sign );
 			else // if we find, e.g. "this concept is spatial".
 				Repertoires.mediate( new Utterance( utterance ));
- */
 		}
 	}
 	

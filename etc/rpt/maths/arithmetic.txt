@@ -42,7 +42,7 @@ On "times by      NUMERIC-X":
 	then, reply "times by X makes SUBTOTAL".
 
 On "multiplied by NUMERIC-X":
-	times X.
+	times X;
 	then, reply "multiplied by X makes SUBTOTAL".
 
 On "equals", reply "SUBTOTAL".

@@ -4,7 +4,6 @@ import java.util.TreeSet;
 
 import org.enguage.repertoires.written.Autoload;
 import org.enguage.repertoires.written.Load;
-import org.enguage.repertoires.written.AtpRpt;
 import org.enguage.signs.Signs;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.Utterance;
@@ -39,7 +38,6 @@ public class Repertoires {
 	 * in engine?
 	 */
 	public    static final Signs signs = new Signs( "user"  );
-	protected static final Signs wrttn = new Signs( "written" ).add( AtpRpt.signs() );
 	protected static final Signs engin = new Signs( ENGINE ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
@@ -66,23 +64,22 @@ public class Repertoires {
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
-		Reply r = wrttn.mediate( u );
-		if (Response.DNU == r.response()) {
+		Reply r ;
 			
-			if (!transformation()) {
-				Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
-				
-				/* At this point we need to rebuild utterance with the (auto)loaded concept,
-				 * with any colloquialisms it may have loaded...
-				 * Needs to be expanded in case we've expanded any parameters (e.g. whatever)
-				 */
-				u = new Utterance( u.expanded() );
-			}
-			r = signs.mediate( u );
+		if (!transformation()) {
+			Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
 			
-			if (Response.DNU == r.response())
-				r = engin.mediate( u );
+			/* At this point we need to rebuild utterance with the (auto)loaded concept,
+			 * with any colloquialisms it may have loaded...
+			 * Needs to be expanded in case we've expanded any parameters (e.g. whatever)
+			 */
+			u = new Utterance( u.expanded() );
 		}
+		r = signs.mediate( u );
+		
+		if (Response.DNU == r.response())
+			r = engin.mediate( u );
+		
 		//audit.out( r )
 		return r;
 	}
@@ -105,11 +102,7 @@ public class Repertoires {
 				else if (name.equals( ENGINE ))
 					engin.show();
 					
-				else if (name.equals("autop"))
-					wrttn.show();
-					
 				else if (name.equals( "all" )) {
-					wrttn.show();
 					engin.show();
 					signs.show();
 					
