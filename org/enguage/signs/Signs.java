@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.written.Autoload;
 import org.enguage.repertoires.written.Load;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
@@ -17,6 +18,7 @@ import org.enguage.signs.symbol.pronoun.Pronoun;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
+import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 
@@ -24,9 +26,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;
 	private static       Audit           audit = new Audit( "Signs" );
 	
-	//private final String name;
+	private final String name;
 	
-	public Signs( String nm ) {super(); /*name=nm;*/}
+	public Signs( String nm ) {super(); name=nm;}
 
 	public Signs add( Sign[] signs ) {
 		for (Sign sign: signs)
@@ -207,13 +209,13 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 	// a simple cognitive model ?
 	public Reply mediate( Utterance u ) {
-		//if (Audit.allAreOn() && !name.equals("autop")) {
-		//	audit.in( "mediate",
-		//		" ("+ name +"="+ size() +") "
-		//		+ " '"+ u.toString() +"' "
-		// 		+ (ignore.size()==0?"":("avoiding "+ignore)));
-		//	audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
-		//}
+		if (Audit.allAreOn()) {
+			audit.in( "mediate",
+				"("+ name +"="+ size() +") "
+				+ "'"+ u.toString() +"' "
+		 		+ (ignore.isEmpty()?"":("avoiding "+ignore)));
+			audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
+		}
 		int here = interpretation(); // an ID for this interpretation
 		
 		Reply       r = new Reply();
@@ -298,8 +300,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 				} // matched	
 			}	
 		} // while more signs and not done
-		//if (Audit.allAreOn() && !name.equals("autop"))
-		//	audit.out( answer );
+		if (Audit.allAreOn())
+			audit.out( answer );
 		return r.answer( answer );  
 	}	
 	
@@ -309,16 +311,16 @@ public class Signs extends TreeMap<Integer,Sign> {
 		r.insert(
 				new Sign().pattern( new Frag(  "debug ", "x" ))
 					.concept( "test" )
-					.append( Intention.allop, "debug X" )
+					.append( Intention.N_ALLOP, "debug X" )
 			);
 		r.insert(
 				new Sign().pattern( new Frag(  "describe ", "x" ))
 					.concept( "test" )
-					.append( Intention.allop, "describe X" )
+					.append( Intention.N_ALLOP, "describe X" )
 			);
 		r.insert(
 			new Sign().pattern( new Frag(  "list repertoires ", "" ))
 				.concept( "test" )
-				.append( Intention.allop, "list repertoires" )
+				.append( Intention.N_ALLOP, "list repertoires" )
 		);
 }	}

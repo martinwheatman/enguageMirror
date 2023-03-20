@@ -67,14 +67,10 @@ public class Config {
 	}	}	
 	private static void loadTag( Tag concepts ) {
 		Repertoires.transformation( true );
-		for (Tag t : concepts.content()) {
-			if (t.name.equals( "concept" )) {
-				String op = t.attribute( "op" );
-				String id = t.attribute( "id" );
-
-				if (!op.equals( "ignore" ))
-					Load.load( id );
-		}	}
+		for (Tag t : concepts.content())
+			if ( t.name.equals( "concept" ) &&
+			    !t.attribute( "op" ).equals( "ignore" ))
+				Load.load( t.attribute( "id" ));
 		Repertoires.transformation( false );
 	}
 	public static int load( String fname ) {

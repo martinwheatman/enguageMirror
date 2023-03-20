@@ -54,20 +54,20 @@ On "AND-LIST-SUBJECTS both need PHRASE-THESE":
 # Various singular additions
 On "SUBJECT needs PHRASE-THESE":
 	THESE exists in SUBJECT needs list;
-	reply "yes, i know";
+	if so, reply "yes, i know";
 	if not, add THESE to SUBJECT needs list;
 	if not, append THESE onto SUBJECT needs list;
 	reply "ok, SUBJECT needs ...".
 
 On "SUBJECT needs NUMERIC-QUANTITY PHRASE-THIS":
 	QUANTITY THIS exists in SUBJECT needs list;
-	reply "yes, i know";
+	if so, reply "yes, i know";
 	if not, add QUANTITY THIS to SUBJECT needs list;
 	reply "ok, SUBJECT needs ... ".
 
 On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-THIS":
 	QUANTITY UNIT of THIS exists in SUBJECT needs list;
-	reply "yes, i know";
+	if so, reply "yes, i know";
 	if not, add QUANTITY UNIT of THIS to SUBJECT needs list;
 	reply "ok, SUBJECT needs ...".
 

@@ -17,17 +17,17 @@ On "whose hand am i holding":
 	if not, reply "sorry, you are not holding anyone's hand";
 	perform "link get martin holdinghands";
 	set who to ...;
-	who is set to i;
-	reply "ok, you are holding my hand";
-	if not, reply "ok, you are holding WHO''s hand".
+	is who set to i;
+	if so, reply "ok, you are holding my hand";
+	reply "ok, you are holding WHO''s hand".
 	
 On "we are holding hands":
 	who are we;
 	set who to ...;
 	i am holding hands with WHO;
-	who is set to i;
-	reply "ok, we are holding hands";
-	if not, reply "ok, you are holding hands with WHO".
+	is who set to i;
+	if so, reply "ok, we are holding hands";
+	reply "ok, you are holding hands with WHO".
 
 	
 On "i am not holding anyone's hand":

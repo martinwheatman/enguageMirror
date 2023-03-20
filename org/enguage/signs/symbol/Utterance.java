@@ -93,7 +93,8 @@ public class Utterance {
 			tmp.add( Strings.fromCamelCase( r ));
 		reply = tmp;
 		
-		return Englishisms.asStrings( Numeric.deref( reply )).contract( Englishisms.APOSTROPHE );
+		return Englishisms.asStrings( Numeric.deref( reply ))
+				.contract( Englishisms.APOSTROPHE );
 	}
 
 	// test code...

@@ -63,12 +63,12 @@ public class Load {
 	}	}
 
 	private static Strings terminators = new Strings( ". ? !" );
-	public static void    terminators( Strings a ){ terminators = a; }
-	public static Strings terminators() { return terminators; }
+	public  static void    terminators( Strings a ){ terminators = a; }
+	public  static Strings terminators() { return terminators; }
 	
-	public static boolean  isTerminator( String s ) { return terminators().contains( s ); }
-	public static String   terminatorIs( Strings a ){ return (null != a) && a.size()>0 ? a.get( a.size() -1) : ""; }
-	private static boolean isTerminated( Strings a ) {
+	public  static boolean isTerminator(   String s ) { return terminators().contains( s ); }
+	public  static String    terminatorIs( Strings a ) {return (null != a) && a.size()>0 ? a.get( a.size() -1) : ""; }
+	private static boolean isTerminated(   Strings a ) {
 		boolean rc = false;
 		if (null != a) {
 			int last = a.size() - 1;
@@ -112,7 +112,7 @@ public class Load {
 		return line;
 	}
 	
-	private static Strings preprocessFile( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
+	private static Strings preprocessFile( InputStream fp, String from, String to ) {
 		Strings content = new Strings();
 		Scanner br = new Scanner( new InputStreamReader( fp ));
 			while (br.hasNextLine()) 
@@ -121,7 +121,8 @@ public class Load {
 		return content;
 	}
 	
-	private static void load( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
+	private static void load( InputStream fp, String from, String to ) {
+		// adds signs and interprets utterances
 		Strings content = preprocessFile( fp, from, to );
 		ArrayList<Strings> utterances = content.divide( terminators, false );
 		for (Strings utterance : utterances) {
@@ -161,11 +162,8 @@ public class Load {
 	public static boolean load( String name ) {
 		boolean rc = true;
 		if (!loaded().contains( name )) {
-			//if (!Audit.startupDebug) Audit.suspend();
-			// loading won't use undo - disable
 			Redo.undoEnabledIs( false );
 			
-			//audit.debug( ">>>>>LOADING "+ name );
 			String conceptName = loadConcept( name, null, null );
 			if (!conceptName.equals( "" ))
 				loaded( conceptName );
@@ -175,7 +173,6 @@ public class Load {
 			}
 			
 			Redo.undoEnabledIs( true );
-			//if (!Audit.startupDebug) Audit.resume();
 		}
 		return rc;
 	}

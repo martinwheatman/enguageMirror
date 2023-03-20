@@ -13,8 +13,8 @@ On "i am not meeting anyone",  _user is not meeting anybody.
 
 On "SUBJECT is meeting PHRASE-WHOM":
 	assert SUBJECT is meeting WHOM;
-	reply "yes, i know";
-	if not, perform "items add SUBJECT meeting WHOM";
+	if so, reply "yes, i know";
+	perform "items add SUBJECT meeting WHOM";
 	then, reply "ok, SUBJECT is meeting WHOM ...".
 On "i am meeting PHRASE-WHOM", _user is meeting WHOM.
 #On "help", reply "to say who you are meeting".

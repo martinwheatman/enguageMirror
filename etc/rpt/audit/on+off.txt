@@ -1,8 +1,9 @@
-On "timing      on", perform "audit tracing on".
-On "timing     off", perform "audit tracing off".
-On "tracing     on", perform "audit tracing on".
-On "tracing    off", perform "audit tracing off".
-On "detail      on", perform "audit detailed on".
-On "detail     off", perform "audit detailed off".
-On "debug PHRASE-X", perform "audit debug X".
+On "timing   on", perform "audit tracing   on".
+On "timing  off", perform "audit tracing  off".
+On "tracing  on", perform "audit tracing   on".
+On "tracing off", perform "audit tracing  off".
+On "detail   on", perform "audit detailed  on".
+On "detail  off", perform "audit detailed off".
+On "debug    on", perform "audit debug     on".
+On "debug   off", perform "audit debug    off".
 			

@@ -749,6 +749,11 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		else
 			return a;
 	}
+	public static boolean isQuoted(String s) {
+		if (null==s||s.length()==0) return false;
+		char ch = s.charAt(0);
+		return ch == '"' || ch == '\''; // assume ending with same char
+	}
 	public static String stripQuotes( String s ) {
 		int sz = s.length();
 		if (sz>1) {

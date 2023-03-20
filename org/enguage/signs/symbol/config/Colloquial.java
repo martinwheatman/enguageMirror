@@ -39,7 +39,7 @@ public class Colloquial {
 		Iterator<Map.Entry<Strings,Strings>> i = set.iterator();
 		while(i.hasNext()) {
 			Map.Entry<Strings,Strings> me = (Map.Entry<Strings,Strings>)i.next();
-			//Audit.log("Coll: externalising:"+ me.getValue() +":with"+ me.getKey() +":");
+			//Audit.log("Coll: externalising:"+ me.getValue() +":with:"+ me.getKey() +":");
 			a.replace( me.getValue(), me.getKey());
 		}
 		return a;

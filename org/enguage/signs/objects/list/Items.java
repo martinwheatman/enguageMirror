@@ -272,17 +272,8 @@ public class Items extends ArrayList<Item> {
 	static public Strings interpret( Strings sa ) {
 		
 		// first dereference 2nd and 3rd parameters
-		ListIterator<String> ci = sa.listIterator();
-		if (ci.hasNext()) {
-			ci.next();                            // ignore 0
-			if (ci.hasNext()) {
-				String attr = ci.next();
-				ci.set( Attribute.getValue( attr ));     // 1
-				if (ci.hasNext()) {
-					attr = ci.next();                
-					ci.set( Attribute.getValue( attr )); // 2
-		}	}	}
-		
+		sa = Attribute.expand23( sa );
+
 		{ // Then append tempro/spatial awareness if it has been added. 
 			String when = Context.get( "when" );
 			if (!when.equals(""))

@@ -15,7 +15,6 @@ interpret my name is phrase variable name thus: ok.
 first set name to variable name:                ok.
 then get the value of name:                     ok. # not strictly necessary!
 then reply hello whatever:                      ok.
-ok:                                             ok.
 
 my name is ruth:   hello   ruth.
 my name is martin: hello martin.
@@ -23,12 +22,12 @@ my name is martin: hello martin.
 
 #...or to put it another way
 interpret i am called phrase variable name like this: ok.
-first reply hi whatever:                             ok.
-this implies that you set name to variable name:    ok.
-this implies that name is not set to variable name: ok.
-then if not reply i already know this:              ok.
+first reply hi whatever:                              ok.
+this implies that you set name to variable name:      ok.
+this implies that you reply i already knew this:      ok.
+this implies name is set to variable name:            ok.
 
-i am called martin: i already know this.
+i am called martin: i already knew this.
 
 # ...means.../...the means to...
 # 1. from the-means-to repertoire
@@ -42,5 +41,5 @@ this implies that you perform sign think variable that:   ok.
 this implies that you perform sign create variable this:  ok.
 
 just call me phrase variable name means i am called variable name: ok.
-just call me martin: i already know this.
+just call me martin: i already knew this.
 

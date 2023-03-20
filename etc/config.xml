@@ -5,7 +5,7 @@
 			DNU="i don't understand"
 			DNK="i don't know"
 			SUCCESS="ok"
-			FAILURE="i'm sorry"
+			FAILURE="sorry"
 			ANSWER="whatever"
 			IK="i know"
 			TTL="5"
@@ -28,15 +28,15 @@
 			
 		<concepts>
 			<concept id="english/colloquia"              op="load"/>
-			<concept id="language/engine"                op="load"/>
 			<concept id="english/plural"                 op="load"/>
+			<concept id="language/engine"                op="load"/>
+			<concept id="language/is_like+is_unlike"     op="load"/>
+			<concept id="maths/arithmetic"               op="load"/>
+			<concept id="objects/list"                   op="load"/>
+			<concept id="objects/set+get+unset"          op="load"/>
+			<concept id="qualifiers/spatial+spatially"   op="load"/>
 			<concept id="qualifiers/temporal"            op="load"/>
 			<concept id="verbalReasoning/are_transitive" op="load"/>
-			<concept id="qualifiers/spatial+spatially"   op="load"/>
-			<concept id="objects/set+get+unset"          op="load"/>
-			<concept id="objects/list"                   op="load"/>
-			<concept id="maths/arithmetic"               op="load"/>
-			<concept id="language/is_like+is_unlike"     op="load"/>
 		</concepts>
 	</config>
 </xml>

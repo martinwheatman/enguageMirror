@@ -3,6 +3,7 @@ package org.enguage.signs;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
+import org.enguage.signs.interpretant.Intentions.Insertion;
 import org.enguage.signs.objects.Temporal;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.pattern.Frag;
@@ -58,7 +59,7 @@ public class Sign {
 	private Intentions intentions = new Intentions();
 	public  Intentions intentions() {return intentions;}
 	public  Sign       intentions( Intentions is ) {intentions = is; return this;}
-	public  Sign       insert( int n, Intention intent ) {intentions.insert( n, intent ); return this;}
+	public  Sign       insert( Intentions.Insertion ins, Intention intent ) {intentions.insert( ins, intent ); return this;}
 	public  Sign       append( Intention intent ) {intentions.add( intent ); return this;}
 	public  Sign       append( int type, String pattern ) {intentions.append( new Intention( type, pattern )); return this;}
 	
@@ -147,32 +148,21 @@ public class Sign {
 			
 			rc = "ok";
 			
-			boolean  header = false,
-			        prepend = false,
-			         tailer = false, // should be the default?
-			         append = false; 
-			
 			String cmd = args.remove( 0 );
-			if (cmd.equals( "header" ))
-				header = true;
-			else if (cmd.equals( "prepend" ))
-				prepend = true;
-			else if (cmd.equals( "tailer" ))
-				tailer = true;
-			else if (cmd.equals( "append" ))
-				append = true;
-			
-			if (header || prepend || tailer || append)
+			Insertion ins = Intentions.getInsertionType( cmd );
+			if (ins != Insertion.UNKNOWN)
 				cmd = args.remove( 0 );
 			
-			boolean isElse = false;
+			boolean isElse = false, isThen = false;
 			if (cmd.equals( "else" )) {
 				isElse = true;
+				cmd = args.remove( 0 );
+			} else if (cmd.equals( "then" )) {
+				isThen = true;
 				cmd = args.remove( 0 );
 			}
 				
 			if (cmd.equals( "create" )) {
-				
 				voiced = new Sign()
 						.pattern( new Frags( args.toString() ))
 						.concept( Repertoires.AUTOPOIETIC );
@@ -191,76 +181,51 @@ public class Sign {
 					);
 					
 				} else {
-					audit.error( "missing" );
+					audit.error( "split: missing parameter(s)" );
 				}
 				
 			} else if (cmd.equals( "perform" )) {
-				Intention intn = 
-						new Intention(
-							isElse ? Intention.elseDo : Intention.thenDo,
-							Frags.toPattern( args )
-						);
-				
-				if (header)
-					voiced.insert( 1, intn );
-				else if (prepend)
-					voiced.insert( 0, intn );
-				else if (append)
-					voiced.insert( voiced.intentions.size(), intn );
-				else
-					voiced.insert( voiced.intentions.size()-1, intn );
+				voiced.insert( ins, 
+					new Intention(
+						isElse ? Intention.N_ELSE_DO : isThen ? Intention.N_THEN_DO : Intention.N_DO,
+						Frags.toPattern( args )
+				)	);
 				
 				
 			} else if (cmd.equals( "reply" )) {
-				Intention intn = 
-						new Intention(
-							isElse? Intention.elseReply : Intention.thenReply, 
-							Frags.toPattern( new Strings( args.toString() ))
-						);
-
-				if (header)
-					voiced.insert( 1, intn );
-				else if (prepend)
-					voiced.insert( 0, intn );
-				else if (append)
-					voiced.insert( voiced.intentions.size(), intn );
-				else
-					voiced.insert( voiced.intentions.size()-1, intn );
+				voiced.insert( ins, 
+					new Intention(
+						isElse? Intention.N_ELSE_REPLY : isThen ? Intention.N_THEN_REPLY : Intention.N_REPLY, 
+						Frags.toPattern( new Strings( args.toString() ))
+				)	);
 
 				
 			} else if (cmd.equals( "think" )) {
 				//audit.debug( "adding a thought "+ args.toString() )
-				Intention intn = new Intention(
-							isElse? Intention.elseThink : Intention.thenThink,
-							Frags.toPattern( new Strings( args.toString() ))
-						);
 				
 				if (voiced != null) { //BUG: sign think called w/o voiced
-					if (header)
-						voiced.insert( 1, intn );
-					else if (prepend)
-						voiced.insert( 0, intn );
-					else if (append)
-						voiced.insert( voiced.intentions.size(), intn );
-					else
-						voiced.insert( voiced.intentions.size()-1, intn );
+					voiced.insert( ins, 
+						new Intention(
+							isElse? Intention.N_ELSE_THINK : isThen ? Intention.N_THEN_THINK : Intention.N_THINK,
+							Frags.toPattern( new Strings( args.toString() ))
+					)	);
 				}
 				
 			} else if (cmd.equals( "imply" )) {
 				//audit.debug( "prepending an implication '"+ args.toString() +"'")
 				voiced.insert(
-						0,
+						Insertion.PREPEND,
 						new Intention(
-								isElse? Intention.elseThink : Intention.thenThink,
+								isElse? Intention.N_ELSE_THINK : isThen ? Intention.N_THEN_THINK : Intention.N_THINK,
 								Frags.toPattern( new Strings( args.toString() ))
 				)		);
 				
 			} else if (cmd.equals( "run" )) {
 				//audit.debug( "appending a script to run: '"+ args.toString() +"'")
 				voiced.insert(
-						0, // "implies that you run"
+						Insertion.PREPEND, // "implies that you run"
 						new Intention(
-								isElse? Intention.elseRun : Intention.thenRun,
+								isElse? Intention.N_ELSE_RUN : isThen ? Intention.N_THEN_RUN : Intention.N_RUN,
 								Frags.toPattern( new Strings( args.toString() ))
 				)		);
 			} else if (cmd.equals( "temporal")) {
@@ -271,22 +236,24 @@ public class Sign {
 				//audit.debug( "adding a final clause? "+ args.toString() )
 				if (cmd.length() > 7 && cmd.substring( 0, 7 ).equals( "perform" ))
 					intn = new Intention(
-							isElse ? Intention.elseDo    : Intention.thenDo,
+							isElse ? Intention.N_ELSE_DO    : isThen ? Intention.N_THEN_DO : Intention.N_DO,
 							Frags.toPattern( new Strings( args.toString() ))
 						 );
 				
-				else if (cmd.equals( "reply" ))
+				else if (cmd.equals( "reply" )) {
+					Strings vals = Frags.toPattern( new Strings( args.toString() )); 
 					intn = new Intention(
-							isElse ? Intention.elseReply : Intention.thenReply,
-							Frags.toPattern( new Strings( args.toString() ))
+							isElse ? Intention.N_ELSE_REPLY : isThen ? Intention.N_THEN_REPLY : Intention.N_REPLY,
+							vals
 						 );
 				
-				else
+				} else
 					intn = new Intention(
-							isElse ? Intention.elseThink : Intention.thenThink,
+							isElse ? Intention.N_ELSE_THINK : isThen ? Intention.N_THEN_THINK : Intention.N_THINK,
 							Frags.toPattern( new Strings( args.toString() ))
 						 );
 				voiced.append( intn ); // all finals at the end :)
+				voiced = null;
 			
 			} else {
 				rc = Shell.FAIL;

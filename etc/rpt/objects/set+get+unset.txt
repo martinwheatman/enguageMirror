@@ -17,29 +17,29 @@ On "unset the value of VAR", perform "variable unset VAR".
 
 On "is VAR set":
 	perform "variable exists VAR";
-	reply "yes";
-	if not, reply "no".
+	if so, reply "yes";
+	reply "no".
 	
 On "is VAR not set to PHRASE-VALUE":
 	perform "variable equals VAR VALUE";
-	reply "no, VAR is set to VALUE";
-	then, if not, reply "yes, VAR is not set to VALUE".
+	if not, reply "no, VAR is set to VALUE";
+	reply "yes, VAR is not set to VALUE".
 
 On "is VAR set to PHRASE-VALUE":
 	perform "variable equals VAR VALUE";
-	reply "yes, VAR is set to VALUE";
-	then, if not, reply "no, VAR is not set to VALUE".
+	if so, reply "yes, VAR is set to VALUE";
+	reply "no, VAR is not set to VALUE".
 
 # this implies
 On "VAR is not set to PHRASE-VALUE":
 	perform "variable equals VAR VALUE";
-	reply "no, VAR is set to VALUE";
-	then, if not, reply "yes, VAR is not set to VALUE".
+	if not, reply "no, VAR is set to VALUE";
+	reply "yes, VAR is not set to VALUE".
 
 On "VAR is set to PHRASE-VALUE":
 	perform "variable equals VAR VALUE";
-	reply "yes, VAR is set to VALUE";
-	then, if not, reply "no, VAR is not set to VALUE".
+	if so, reply "yes, VAR is set to VALUE";
+	reply "no, VAR is not set to VALUE".
 
 #colloquialisms...
 On "VAR gets set to PHRASE-VALUE", set VAR to VALUE.

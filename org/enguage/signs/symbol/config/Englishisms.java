@@ -15,7 +15,7 @@ public class Englishisms {  // English-ism!
 	public static final String APOSTROPHE    = "'";
 	public static final char   APOSTROPHE_CH = APOSTROPHE.charAt( 0 );
 	
-	private static String Apostrophed = "s";
+	private static String Apostrophed = APOSTROPHE + "s";
 	public  static String Apostrophed() { return Apostrophed; }
 	public  static void   Apostrophed( String s ) { Apostrophed = s; }
 	

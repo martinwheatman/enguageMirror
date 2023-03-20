@@ -5,6 +5,8 @@ import java.util.GregorianCalendar;
 import org.enguage.signs.symbol.reply.Response;
 
 public class Audit {
+	private static final Audit audit = new Audit( "Audit" );
+	
 	public  static final int            ID = 829030;
 	private static       Strings funcNames = new Strings( "zeroStack" );
 
@@ -44,9 +46,8 @@ public class Audit {
 	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
 	
 	private static  boolean auditOn = false;
-	public  static  void    off() {auditOn = false;}
+	public  static  void    off() {auditOn = false; indent.reset();}
 	public  static  void    on() {auditOn = true;}
-	public  static  void    on(boolean b) {auditOn = b;}
 	public  static  boolean isOn() {return auditOn;}
 	
 	// === allOn - tracing AND debug
@@ -110,7 +111,11 @@ public class Audit {
 			log( className +"."+ fn +"( "+ in +" ) => "+ out.toString() );
 		return out;
 	}
-	public  void   FATAL( String msg ) {LOG( "FATAL: "+ className +": "+ msg ); System.exit( 1 );}
+	public  void   FATAL( String msg ) {
+		LOG( "FATAL: "+ className +": "+ msg );
+		//Repertoires.signs.show()
+		System.exit( 1 );
+	}
 	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
 	public  void   error( String info ) {
 		System.out.println(
@@ -118,9 +123,9 @@ public class Audit {
 		);
 	}
 	public static Strings interpret(Strings cmds) {
+		audit.IN( "Interpret", ""+ cmds );
 		Strings rc = Response.success();
 		String cmd = cmds.remove( 0 );
-		Audit.log( cmd +" "+ cmds.toString());
 		
 		if (cmd.equals( "timing" ) || cmd.equals( "tracing" )) {
 			if (cmds.get( 0 ).equals("off")) {
@@ -132,6 +137,7 @@ public class Audit {
 		} else if (cmd.equals( "detailed" )) {
 			if (cmds.get( 0 ).equals("off")) {
 				Audit.off();
+				
 			} else {
 				Audit.on();
 			}
@@ -141,14 +147,14 @@ public class Audit {
 			if (cmds.get( 0 ).equals( "off" )) {
 				Audit.off();
 				
-				
 			} else {
 				Audit.on();
 			}
+			
 		} else
 			rc = Response.failure();
 
-		return rc;
+		return audit.OUT(rc);
 	}
 	
 	// === title/underline

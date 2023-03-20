@@ -1,12 +1,24 @@
+On "first               SAID-X", perform "sign append think X".
+On "first if so         SAID-X", perform "sign append then think X".
+On "first if not        SAID-X", perform "sign append else think X".
 
-On "first             SAID-X", perform "sign append think X".
-On " just       reply SAID-X", perform "sign append reply X".
-On "first perform     SAID-X", perform "sign append perform X".
+On "first         reply SAID-X", perform "sign append reply X".
+On "first if so   reply SAID-X", perform "sign append then reply X".
+On "first if not  reply SAID-X", perform "sign append else reply X".
 
-On "then              SAID-X", perform "sign append think X".
-On "then if not       SAID-X", perform "sign append else think X".
-On "then        reply SAID-X", perform "sign append reply X".
-On "then if not reply SAID-X", perform "sign append else reply X".
+On " just         reply SAID-X", perform "sign append reply QUOTED-X".
+On "first       perform SAID-X", perform "sign append perform QUOTED-X".
 
-On "then perform      SAID-X", perform "sign append perform X".
+On "then                SAID-X", perform "sign append think X".
+On "then if so          SAID-X", perform "sign append then think X".
+On "then if not         SAID-X", perform "sign append else think X".
 
+On "then          reply SAID-X", perform "sign append reply X".
+On "then if so    reply SAID-X", perform "sign append then reply X".
+On "then if not   reply SAID-X", perform "sign append else reply X".
+
+On "then        perform SAID-X", perform "sign append perform QUOTED-X".
+On "then if so  perform SAID-X", perform "sign append perform QUOTED-X".
+On "then if not perform SAID-X", perform "sign append perform QUOTED-X".
+
+# probably need to Unix-ify running anything!

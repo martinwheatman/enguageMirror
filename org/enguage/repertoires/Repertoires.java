@@ -16,7 +16,7 @@ public class Repertoires {
 	
 	private Repertoires() {}
 	
-	public  static final String NAME = "repertoire";
+	public  static final String NAME = "repertoires";
 	public  static final int      ID = 216434732;
 	private static final Audit audit = new Audit( NAME );
 	
@@ -37,8 +37,8 @@ public class Repertoires {
 	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 
 	 * in engine?
 	 */
-	public    static final Signs signs = new Signs( "user"  );
-	protected static final Signs engin = new Signs( ENGINE ).add( Engine.commands );
+	public    static final Signs signs  = new Signs( "user"  );
+	protected static final Signs engine = new Signs( ENGINE ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
 	 */
@@ -60,7 +60,7 @@ public class Repertoires {
 
 	// entry point for Enguage, re-entry point for Intention
 	public static Reply mediate( Utterance u ) {
-		//audit.in( "mediate", "utterance="+ u )
+		audit.in( "mediate", "\""+ u.toString() +"\" trans="+ transformation());
 		// Ordering of repertoire:
 		// 1. check through autop first, at startup
 		// 2. during runtime, do user signs first
@@ -75,12 +75,12 @@ public class Repertoires {
 			 */
 			u = new Utterance( u.expanded() );
 		}
+		
 		r = signs.mediate( u );
-		
 		if (Response.DNU == r.response())
-			r = engin.mediate( u );
-		
-		//audit.out( r )
+			r = engine.mediate( u );
+	
+		audit.out( r );
 		return r;
 	}
 	
@@ -100,10 +100,10 @@ public class Repertoires {
 					signs.show();
 					
 				else if (name.equals( ENGINE ))
-					engin.show();
+					engine.show();
 					
 				else if (name.equals( "all" )) {
-					engin.show();
+					engine.show();
 					signs.show();
 					
 				} else

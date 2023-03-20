@@ -33,79 +33,79 @@ public final class Engine {
 			 */
    			new Sign()
 					.pattern( "entitle PHRASE-SAID" )
-					.append( Intention.allop, "entitle SAID" )
+					.append( Intention.N_ALLOP, "entitle SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( "subtitle PHRASE-SAID" )
-					.append( Intention.allop, "subtitle SAID" )
+					.append( Intention.N_ALLOP, "subtitle SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( "echo PHRASE-SAID" )
-					.append( Intention.allop, "echo SAID" )
+					.append( Intention.N_ALLOP, "echo SAID" )
 					.concept( NAME ),
    			new Sign()
 					.pattern( "run a self test" )
-					.append( Intention.allop, "selfTest" )
+					.append( Intention.N_ALLOP, "selfTest" )
 					.concept( NAME ),
 			new Sign()
 					.pattern( "this is all imagined" )
-					.append( Intention.allop, "imagined" )
+					.append( Intention.N_ALLOP, "imagined" )
 					.concept( NAME ),
 			new Sign()
 					.pattern(  "ok" )
-					.append( Intention.allop, "ok" )
+					.append( Intention.N_ALLOP, "ok" )
 					.concept( NAME ), 
 			new Sign()
 					.pattern( "list repertoires","" )
-					.append( Intention.allop, "list" )
+					.append( Intention.N_ALLOP, "list" )
 					.concept( NAME ),
 			new Sign()
 					.pattern( "help", "" )
-					.append( Intention.allop, "help" )
+					.append( Intention.N_ALLOP, "help" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "say PHRASE-SAID" )
-					.append( Intention.allop, "say SAID")
+					.append( Intention.N_ALLOP, "say SAID")
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "what can i say" )
-					.append( Intention.allop, "repertoire"  )
+					.append( Intention.N_ALLOP, "repertoire"  )
 		          	.concept( NAME ),														 		
 			new Sign()
 					.pattern( "say again" )
-					.append( Intention.allop, "repeat"       )
+					.append( Intention.N_ALLOP, "repeat"       )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "spell X" )
-					.append( Intention.allop, "spell X"      )
+					.append( Intention.N_ALLOP, "spell X"      )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "enable undo" )
-					.append( Intention.allop, "undo enable"  )
+					.append( Intention.N_ALLOP, "undo enable"  )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "disable undo" )
-					.append( Intention.allop, "undo disable" )
+					.append( Intention.N_ALLOP, "undo disable" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "undo" )
-					.append( Intention.allop, "undo"         )
+					.append( Intention.N_ALLOP, "undo"         )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "this is false" )
-					.append( Intention.allop, "undo" )
+					.append( Intention.N_ALLOP, "undo" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "this sentence is false" )
-					.append( Intention.allop, "undo" )
+					.append( Intention.N_ALLOP, "undo" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "group by X" )
-					.append( Intention.allop, "groupby X" )
+					.append( Intention.N_ALLOP, "groupby X" )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "tcpip ADDRESS PORT QUOTED-DATA" )
-					.append( Intention.allop, "tcpip ADDRESS PORT DATA" )
+					.append( Intention.N_ALLOP, "tcpip ADDRESS PORT DATA" )
 			  		.concept( NAME ),
 			/* 
 			 * it is possible to arrive at the following construct:   think="reply 'I know'"
@@ -116,7 +116,7 @@ public final class Engine {
 			 */
 			new Sign()
 					.pattern( "reply PHRASE-X" )
-					.append( Intention.thenReply, "X" )
+					.append( Intention.N_THEN_REPLY, "X" )
 					.concept( NAME ),
 					
 //			new Sign() // fix to allow better reading of autopoietic  
@@ -126,20 +126,21 @@ public final class Engine {
 					
 			new Sign() // for vocal description of concepts... autopoiesis!
 					.pattern( "perform PHRASE-ARGS" )
-					.append( Intention.thenDo, "ARGS" )
+					.append( Intention.N_THEN_DO, "ARGS" )
 					.concept( NAME ),
 			/* 
 			 * REDO: undo and do again, or disambiguate
 			 */
-			new Sign().pattern( "No PHRASE-X" )
-					.append( Intention.allop, "undo" )
-					.append( Intention.elseReply, "undo is not available" )
+			new Sign()
+					.pattern( "No PHRASE-X" )
+					.append( Intention.N_ALLOP, "undo" )
+					.append( Intention.N_ELSE_REPLY, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,
 					 * need to search for the appropriate sign from where we left off
 					 * Dealing with ambiguity: "X", "No, /X/"
 					 */
-					.append( Intention.allop,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
-					.append( Intention.thenThink,  "X"    )
+					.append( Intention.N_ALLOP,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
+					.append( Intention.N_THEN_THINK,  "X"    )
 					.concept( NAME )
 		 };
 	

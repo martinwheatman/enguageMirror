@@ -1,8 +1,8 @@
 On "i am ACTIONING PHRASE-WHAT": # i am baking a cake
 	does WHAT exist in _user ACTIONING list;
-	reply "yes, i know";
-	if not, add WHAT to _user ACTIONING list;
-	then, reply "ok, you are ACTIONING WHAT".
+	if so, reply "yes, i know";
+	add WHAT to _user ACTIONING list;
+	reply "ok, you are ACTIONING WHAT".
 	
 On "i am not ACTIONING PHRASE-WHAT":
 	does WHAT exist in _user ACTIONING list;
@@ -12,7 +12,7 @@ On "i am not ACTIONING PHRASE-WHAT":
 
 On "am i ACTIONING PHRASE-WHAT":
 	does _user ACTIONING list exist;
-	if not, reply "i'm sorry, i don't know if you are ACTIONING WHAT";
+	if not, reply "sorry, i don't know if you are ACTIONING WHAT";
 	does WHAT exist in _user ACTIONING list;
 	if not, reply "no, you are not ACTIONING WHAT";
 	then, reply "yes, you are ACTIONING WHAT".

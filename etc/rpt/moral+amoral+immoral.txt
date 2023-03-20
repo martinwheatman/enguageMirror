@@ -3,25 +3,31 @@
 On "X is immoral":
 	X is not in my   moral list;
 	if not, reply "no, X is   moral";
+	
 	X is not in my  amoral list;
 	if not, reply "no, X is amoral";
+	
 	X exists in my immoral list;
-	reply "yes, I know";
+	if so, reply "yes, I know";
+	
 	if not, add X to my immoral list;
 	reply "ok, X is immoral".
 	
 On "is X immoral":
 	X is not in my   moral list;
 	if not, reply "no, X is   moral";
+	
 	X is not in my  amoral list;
 	if not, reply "no, X is  amoral";
+	
 	X exists in my immoral list;
-	reply "yes, X is immoral";
-	if not, reply "sorry, i do not know".
+	if so, reply "yes, X is immoral";
+	reply "sorry, i do not know".
 	
 On "X is not immoral":
 	X exists in my immoral list;
 	if not, reply "yes, I know";
+	
 	remove X from my immoral list;
 	reply "ok, X is not immoral".
 
@@ -33,22 +39,26 @@ On "X is   moral":
 	X is not in my  amoral list;
 	if not, reply "no, X is amoral";
 	X exists in my   moral list;
-	reply "yes, I know";
-	if not, add X to my   moral list;
+	if so, reply "yes, I know";
+	add X to my   moral list;
 	reply "ok, X is   moral".
 
 On "is X   moral":
 	X is not in my immoral list;
 	if not, reply "no, X is immoral";
+	
 	X is not in my  amoral list;
 	if not, reply "no, X is amoral";
+	
 	X exists in my   moral list;
-	reply "yes, X is   moral";
-	if not, reply "sorry, i do not know".
+	if so, reply "yes, X is   moral";
+	
+	reply "sorry, i do not know".
 
 On "X is not   moral":
 	X exists in my   moral list;
 	if not, reply "yes, I know";
+	
 	remove X from my   moral list;
 	reply "ok, X is not   moral".
 
@@ -57,24 +67,30 @@ On "X is not   moral":
 On "X is  amoral":
 	X is not in my immoral list;
 	if not, reply "no, X is immoral";
+	
 	X is not in my   moral list;
 	if not, reply "no, X is  moral";
+	
 	X exists in my  amoral list;
-	reply "yes, I know";
+	if so, reply "yes, I know";
+	
 	if not, add X to my  amoral list;
 	reply "ok, X is  amoral".
 
 On "is X  amoral":
 	X is not in my immoral list;
 	if not, reply "no, X is immoral";
+	
 	X is not in my   moral list;
 	if not, reply "no, X is   moral";
+	
 	X exists in my  amoral list;
-	reply "yes, X is  amoral";
-	if not, reply "sorry, i do not know".
+	if so, reply "yes, X is  amoral";
+	reply "sorry, i do not know".
 
 On "X is not  amoral":
 	X exists in my  amoral list;
 	if not, reply "yes, I know";
+	
 	remove X from my  amoral list;
 	reply "ok, X is not  amoral".

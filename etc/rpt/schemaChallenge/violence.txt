@@ -4,42 +4,42 @@
 On "PHRASE-WHOM advocate violence":
 	# check for a contradiction...
 	WHOM exists in violence fear list;
-	reply "no, WHOM fear violence";
-	if not, add WHOM to violence advocate list;
+	if so, reply "no, WHOM fear violence";
+	add WHOM to violence advocate list;
 	reply "ok, WHOM advocate violence".
 
 On "PHRASE-WHOM do not advocate violence":
 	WHOM exists in violence fear list;
-	reply "i know";
-	if not, remove WHOM from violence advocate list;
+	if so, reply "i know";
+	remove WHOM from violence advocate list;
 	reply "ok, WHOM do not advocate violence".
 	
 # common sense ADVOCATE
 On "common sense would suggest PHRASE-WHOM advocate violence":
 	# check for a contradiction...
 	WHOM exists in csviolence fear list;
-	reply "no, common sense would suggest WHOM fear violence";
-	if not, add WHOM to csviolence advocate list;
+	if so, reply "no, common sense would suggest WHOM fear violence";
+	add WHOM to csviolence advocate list;
 	reply "ok, common sense would suggest WHOM advocate violence".
 
 On "common sense would suggest PHRASE-WHOM do not advocate violence":
 	WHOM exists in csviolence fear list;
-	reply "i know";
-	if not, remove WHOM from csviolence advocate list;
+	if so, reply "i know";
+	remove WHOM from csviolence advocate list;
 	reply "ok, common sense would suggest WHOM do not advocate violence".
 	
 ### FEAR
 On "PHRASE-WHOM fear violence":
 	# check for a contradiction...
 	WHOM exists in violence advocate list;
-	reply "no, WHOM advocate violence";
-	if not, add WHOM to violence fear list;
+	if so, reply "no, WHOM advocate violence";
+	add WHOM to violence fear list;
 	reply "ok, WHOM fear violence".
 
 On "PHRASE-WHOM do not fear violence":
 	WHOM exists in violence advocate list;
-	reply "i know";
-	if not, remove WHOM from violence fear list;
+	if so, reply "i know";
+	remove WHOM from violence fear list;
 	if not, reply "no, they do not";
 	reply "ok, WHOM do not fear violence".	
 
@@ -47,14 +47,14 @@ On "PHRASE-WHOM do not fear violence":
 On "common sense would suggest PHRASE-WHOM fear violence":
 	# check for a contradiction...
 	WHOM exists in csviolence advocate list;
-	reply "no, common sense would suggest WHOM advocate violence";
-	if not, add WHOM to csviolence fear list;
+	if so, reply "no, common sense would suggest WHOM advocate violence";
+	add WHOM to csviolence fear list;
 	reply "ok, common sense would suggest WHOM fear violence".
 
 On "common sense would suggest PHRASE-WHOM do not fear violence":
 	WHOM exists in csviolence advocate list;
-	reply "i know";
-	if not, remove WHOM from csviolence fear list;
+	if so, reply "i know";
+	remove WHOM from csviolence fear list;
 	if not, reply "no, common sense would suggest they do not";
 	reply "ok, common sense would suggest WHOM do not fear violence".	
 	
@@ -65,10 +65,10 @@ On "the councillors refused the demonstrators a permit",
 On "they STATE violence":
 	get violence STATE list;
 	if not, get csviolence STATE list;
-	set the value of they to ... ;
-	reply "ok, they are ...";
+	if so, set the value of they to ... ;
+	if so, reply "ok, they are ...";
 	if not, unset the value of they;
-	reply "i'm sorry, i don't think they STATE violence".
+	reply "sorry, i don't think either STATE violence".
 	
 On "who are they":
 	get the value of they;

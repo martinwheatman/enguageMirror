@@ -2,8 +2,8 @@
 #
 On "SOMEONE can be SOMETHING":
 	SOMEONE and SOMETHING exist in my incapable list;
-	reply "no, SOMEONE cannot be SOMETHING";
-	if not, add SOMEONE can be SOMETHING to my capabilities list;
+	if so, reply "no, SOMEONE cannot be SOMETHING";
+	add SOMEONE can be SOMETHING to my capabilities list;
 	reply "ok, SOMEONE can be SOMETHING".
 	
 On "no SOMEONE can be SOMETHING":
@@ -14,16 +14,16 @@ On "no SOMEONE can be SOMETHING":
 	
 On "SOMEONE cannot be SOMETHING":
 	SOMEONE and SOMETHING exist in my capabilities list;
-	reply "no, SOMEONE can be SOMETHING";
-	if not, add SOMEONE can be SOMETHING to my incapable list;
+	if so, reply "no, SOMEONE can be SOMETHING";
+	add SOMEONE can be SOMETHING to my incapable list;
 	reply "ok, SOMEONE cannot be SOMETHING".
 	
 On "can SOMEONE be SOMETHING":
 	SOMEONE and SOMETHING exist in my incapable list;
-	reply "no, SOMEONE cannot be SOMETHING";
-	if not, SOMEONE and SOMETHING exist in my capabilities list;
-	reply "yes, SOMEONE can be SOMETHING";
-	if not, reply "sorry, i do not know".
+	if so, reply "no, SOMEONE cannot be SOMETHING";
+	SOMEONE and SOMETHING exist in my capabilities list;
+	if so, reply "yes, SOMEONE can be SOMETHING";
+	reply "sorry, i do not know".
 	
 # Test Driven Development:
 #

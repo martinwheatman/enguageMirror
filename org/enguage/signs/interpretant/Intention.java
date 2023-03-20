@@ -2,6 +2,7 @@ package org.enguage.signs.interpretant;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.Sign;
@@ -21,54 +22,63 @@ import org.enguage.util.sys.Shell;
 
 public class Intention {
 	
+	private static boolean old = false;
 	private static Audit audit = new Audit( "Intention" );
 	
-	public static final String UNDEF      = "u";
-	public static final String NEW        = "w";
-	public static final String APPEND     = "a";
-	public static final String PREPEND    = "p";
+	public  static final String      UNDEF = "u";
+	public  static final String        NEW = "w";
+	public  static final String     APPEND = "a";
+	public  static final String    PREPEND = "p";
 	
-	public static final String      REPLY = "r";
-	public static final String ELSE_REPLY = "R";
-	public static final String      THINK = "t";
-	public static final String ELSE_THINK = "T";
-	public static final String      DO    = "d";
-	public static final String ELSE_DO    = "D";
-	public static final String      RUN   = "n";
-	public static final String ELSE_RUN   = "N";
-	public static final String FINALLY    = "f";
-	public static final int _then         = 0x00; // 0000
-	public static final int _else         = 0x01; // 0001
-	public static final int _think        = 0x00; // 0000
-	public static final int _do           = 0x02; // 0010
-	public static final int _run          = 0x04; // 0100 -- TODO: combine with tcpip and do!!!
-	public static final int _say          = 0x06; // 0110
+	private static final String        POS = "+";
+	private static final String        NEG = "-";
+	
+	public  static final String      THINK = "t";
+	public  static final String THEN_THINK = THINK + POS;
+	public  static final String ELSE_THINK = THINK + NEG;
+	
+	public  static final String         DO = "d";
+	public  static final String    THEN_DO = DO    + POS;
+	public  static final String    ELSE_DO = DO    + NEG;
+
+	public  static final String        RUN = "n";
+	public  static final String   THEN_RUN = RUN   + POS;
+	public  static final String   ELSE_RUN = RUN   + NEG;
+	
+	public  static final String      REPLY = "r";
+	public  static final String THEN_REPLY = REPLY + POS;
+	public  static final String ELSE_REPLY = REPLY + NEG;
+	
+	private static final int N_THEN      = 0x01; // 0 0001
+	private static final int N_ELSE      = 0x03; // 0 0011
+	
+	public  static final int N_THINK     = 0x00; // 0 00xx
+	public  static final int N_DO        = 0x04; // 0 01xx
+	public  static final int N_RUN       = 0x08; // 0 10xx
+	public  static final int N_REPLY     = 0x0c; // 0 11xx
 	
 	// written types
-	public static final int undef         = -1;
+	public static final int UNDEFINED    = -1;
 
-	public static final int  atpRptCre    =  0xa;
-	public static final int  atpRptApp    =  0xc;
-
-	public static final int thenThink     = _then | _think; // =  0
-	public static final int elseThink     = _else | _think; // =  1
-	public static final int thenDo        = _then | _do;    // =  2
-	public static final int elseDo        = _else | _do;    // =  3
-	public static final int thenRun       = _then | _run;   // =  4
-	public static final int elseRun       = _else | _run;   // =  5
-	public static final int thenReply     = _then | _say;   // =  6
-	public static final int elseReply     = _else | _say;   // =  7
-	public static final int allop         =  0x8;           // =  8
-	public static final int autop         =  0x9;           // =  9
-	public static final int thenFinally   =  0xf; // 1111      = 16
-
+	public static final int N_THEN_THINK = N_THEN | N_THINK; // =  1
+	public static final int N_ELSE_THINK = N_ELSE | N_THINK; // =  3
+	public static final int N_THEN_DO    = N_THEN | N_DO;    // =  4
+	public static final int N_ELSE_DO    = N_ELSE | N_DO;    // =  7
+	public static final int N_THEN_RUN   = N_THEN | N_RUN;   // =  9
+	public static final int N_ELSE_RUN   = N_ELSE | N_RUN;   // = 11
+	public static final int N_THEN_REPLY = N_THEN | N_REPLY; // = 13
+	public static final int N_ELSE_REPLY = N_ELSE | N_REPLY; // = 15
+	
+	public static final int N_ALLOP       =  0x10;          // =  8
+	public static final int N_AUTOP       =  0x11;          // =  9
+	
 	
 	// voiced types
-	public static final int  create       =  0xfa;
-	public static final int  prepend      =  0xfb;
-	public static final int  append       =  0xfc;
-	public static final int  headAppend   =  0xfd;
-	public static final int  head         =  0xfe;
+	public static final int  N_CREATE      =  0xfa;
+	public static final int  N_PREPEND     =  0xfb;
+	public static final int  N_APPEND      =  0xfc;
+	public static final int  N_HEAD_APPEND =  0xfd;
+	public static final int  N_HEAD        =  0xfe;
 
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
@@ -79,39 +89,118 @@ public class Intention {
 		spatialIs( spatial );
 	}
 	
-	private int id = undef;
+	private int id = UNDEFINED;
 	public  int id() {return id;}
 	
-	protected       int    type;
-	public          int    type() {return type;}
+	private int    type;
+	public  int    type() {return type;}
 	
-	protected       String value;
-	public          String value() {return value;}
+	private String value;
+	public  String value() {return value;}
 	
-	protected       Strings values;
-	public          Strings values() {return values;}
+	private Strings values;
+	public  Strings values() {return values;}
 	
 	public static String typeToString( int type ) {
 		switch (type) {
-			case thenReply   : return REPLY;
-			case elseReply   : return ELSE_REPLY;
-			case thenThink   : return THINK;
-			case elseThink   : return ELSE_THINK;
-			case thenDo      : return DO;
-			case elseDo      : return ELSE_DO;
-			case thenRun     : return RUN;
-			case elseRun     : return ELSE_RUN;
-			case allop       : return Repertoires.ENGINE;
-			case autop       : return Repertoires.AUTOP_STR;
-			case create      : return NEW;
-			case prepend     : return PREPEND;
-			case append      : return APPEND;
-			case thenFinally : return FINALLY;
+			case N_REPLY      : return REPLY;
+			case N_THEN_REPLY : return THEN_REPLY;
+			case N_ELSE_REPLY : return ELSE_REPLY;
+			case N_THINK      : return THINK;
+			case N_THEN_THINK : return THEN_THINK;
+			case N_ELSE_THINK : return ELSE_THINK;
+			case N_DO         : return DO;
+			case N_THEN_DO    : return THEN_DO;
+			case N_ELSE_DO    : return ELSE_DO;
+			case N_RUN        : return RUN;
+			case N_THEN_RUN   : return THEN_RUN;
+			case N_ELSE_RUN   : return ELSE_RUN;
+			case N_ALLOP      : return Repertoires.ENGINE;
+			case N_AUTOP      : return Repertoires.AUTOP_STR;
+			case N_CREATE     : return NEW;
+			case N_PREPEND    : return PREPEND;
+			case N_APPEND     : return APPEND;
 			default:
-				audit.FATAL( "Intention: returning undefined for: "+ type +
-						     "\n10 and 12:: create and append: not 'INTENTIONS'" );
+				audit.FATAL( "Intention: returning undefined for: "+ type );
 				return UNDEF;
 	}	}
+
+	public static int getType(Strings sa) {
+		// [ "if", "so", ",", "think", "something" ] => 
+		//   N_THEN_THINK + [ "think", "something" ]
+		// [ "if", "not", ",", "say", "so" ] =>
+		//   N_ELSE_REPLY + []
+		int rc = Intention.UNDEFINED;
+		
+		int len = sa.size();
+		String one = len>0?sa.get(0):"";
+		String two = len>1?sa.get(1):"";
+		String thr = len>2?sa.get(2):"";
+		
+		boolean neg = false;
+		boolean pos = false;
+		if (one.equals( "if" ) && thr.equals( "," )) {
+			neg = two.equals( "not" ); // not/so
+			pos = two.equals(  "so" ); // not/so
+			if (pos || neg) {
+				sa.remove(0); // if
+				sa.remove(0); // not/so
+				sa.remove(0); // ,
+				len = sa.size();
+				one = len>0?sa.get(0):"";
+				two = len>1?sa.get(1):"";
+		}	}
+		
+		if (len == 2          &&
+			one.equals("say") &&
+			two.equals("so"))
+		{
+			if (old)
+				rc = !neg ? N_THEN_REPLY : N_ELSE_REPLY;
+			else
+				rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
+			sa.remove( 0 ); // say
+			sa.remove( 0 ); // so
+			
+		} else if (Strings.isQuoted( two )) {
+			
+			boolean found = true;
+			if (one.equals("perform")) {
+				if (old)
+					rc = !neg ? N_THEN_DO  : N_ELSE_DO;
+				else
+					rc = pos ? N_THEN_DO    : (neg ? N_ELSE_DO : N_DO);
+			
+			} else  if (one.equals("run")) {
+				if (old)
+					rc = !neg ? N_THEN_RUN : N_ELSE_RUN;
+				else
+					rc = pos ? N_THEN_RUN   : (neg ? N_ELSE_RUN : N_RUN);
+			
+			} else  if (one.equals("reply")) {
+				if (old)
+					rc = !neg ? N_THEN_REPLY : N_ELSE_REPLY;
+				else
+					rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
+			} else
+				found = false;
+			
+			if (found) {
+				sa.remove(0); // ["perform" | "run" | "reply"]
+				sa.set( 0, Strings.trim( sa.get(0), '"' ));
+			}
+		}
+		
+		if (rc == UNDEFINED) {
+			if (old)
+				rc = !neg ? N_THEN_THINK : N_ELSE_THINK;
+			else
+				rc = pos ? N_THEN_THINK : neg ? N_ELSE_THINK : N_THINK;
+		}
+		
+		return rc;
+	}
+
 	
 	private boolean   temporal = false;
 	public  boolean   isTemporal() {return temporal;}
@@ -134,7 +223,7 @@ public class Intention {
 				)	);
 	}
 	private Reply think( Reply r ) {
-		//audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" );
+		//audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" )
 		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
 		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
@@ -152,9 +241,6 @@ public class Intention {
 		                 && r.response() == Response.FAIL );
 	}
 	
-	private Reply perform( Reply r ) { return perform( r, false ); }
-	private Reply andFinally( Reply r ) { return perform( r, true ); }
-	
 	private String formatAnswer( String rc, String method ) {
 		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
 				new When( rc ).rep( Response.dnkStr() ).toString()
@@ -169,6 +255,7 @@ public class Intention {
 							: rc;
 	}
 
+	private Reply perform( Reply r ) { return perform( r, false ); }
 	private Reply perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
 		Strings cmd = formulate( r.a.toString(), true ); // DO expand, UNIT => unit='non-null value'
@@ -194,29 +281,36 @@ public class Intention {
 	}
 	public Reply mediate( Reply r ) {
 		if (Audit.allAreOn())
-			audit.in( "mediate", typeToString( type ) +"='"+ value +"'" );
+			audit.in( "mediate", typeToString( type ) +"='"+ value +"' fel="+ r.felicitous() );
 		
-		if (type == thenFinally)
-			andFinally( r );
-
-		else if (r.isDone()) {
+		if (r.isDone()) {
 			if (Audit.allAreOn())
 				audit.debug( "skipping >"+ value +"< reply already found" );
 		
-		} else if (r.felicitous())
+		} else if (r.felicitous()) {
  			switch (type) {
-				case thenThink:	r = think(   r ); break;
-				case thenDo: 	    perform( r ); break;
-				case thenRun:	r = run(     r ); break;
-				case thenReply:	r = reply(   r ); break;
+				case N_THEN_THINK: r = think(   r ); break;
+				case N_THEN_DO:        perform( r ); break;
+				case N_THEN_RUN:   r = run(     r ); break;
+				case N_THEN_REPLY: r = reply(   r ); break;
+				case N_THINK:      r = think(   r ); break;
+				case N_DO: 	           perform( r ); break;
+				case N_RUN:        r = run(     r ); break;
+				case N_REPLY:      r = reply(   r ); break;
+				default: break;
 			}
- 		else
+		} else {
 			switch (type) {
-				case elseThink: r = think(   r ); break;
-				case elseDo:	    perform( r ); break;
-				case elseRun:	r = run(     r ); break;
-				case elseReply:	r = reply(   r ); break;
-			}
+				case N_ELSE_THINK: r = think(   r ); break;
+				case N_ELSE_DO:	       perform( r ); break;
+				case N_ELSE_RUN:   r = run(     r ); break;
+				case N_ELSE_REPLY: r = reply(   r ); break;
+				case N_THINK:      r = think(   r ); break;
+				case N_DO:             perform( r ); break;
+				case N_RUN:        r = run(     r ); break;
+				case N_REPLY:      r = reply(   r ); break;
+				default: break;
+		}	}
 
 		if (Audit.allAreOn())
 			audit.out( r );
@@ -224,21 +318,24 @@ public class Intention {
 	}
 	public String toString() {
 		switch (type) {
-			case thenReply  :
-			case thenThink  : 
-			case thenDo     :
-			case thenRun    : return          value; 
-			case elseDo     : 
-			case elseRun    : 
-			case elseReply  : 
-			case elseThink  : return "if not, "+ value;
-			case thenFinally: return "finally, "+ value;
+			case N_THINK       : return value;
+			case N_DO          : return "perform \""+ value +"\"";
+			case N_RUN         : return "run \""+ value +"\"";
+			case N_REPLY       : return "reply \""+ value +"\"";
+			case N_THEN_THINK  : return "if so, "+  value;
+			case N_THEN_DO     : return "if so, perform \""+ value +"\"";
+			case N_THEN_RUN    : return "if so, run \""+ value +"\"";
+			case N_THEN_REPLY  : return "if so, reply \""+ value +"\"";
+			case N_ELSE_THINK  : return "if not, "+ value;
+			case N_ELSE_DO     : return "if not, perform \""+ value +"\"";
+			case N_ELSE_RUN    : return "if not, run \""+ value +"\"";
+			case N_ELSE_REPLY  : return "if not, reply \""+ value +"\"";
 			default : return Attribute.asString( typeToString( type ), value() );
 	}	}
 	/*
 	 * Test code...
 	 */
-	public static Reply test(Reply r, ArrayList<Intention> intents) {
+	public static Reply test(Reply r, List<Intention> intents) {
 		Iterator<Intention> ins = intents.iterator();
 		while (!r.isDone() && ins.hasNext()) {
 			Intention in = ins.next();
@@ -246,16 +343,16 @@ public class Intention {
 		}
 		return r;
 	}
-	public static void main( String argv[]) {
+	public static void main( String[] argv ) {
 		Reply r = new Reply().answer( "world" );
-		Audit.log( new Intention( thenReply, "hello ..." ).mediate( r ).toString() );
+		Audit.log( new Intention( N_THEN_REPLY, "hello ..." ).mediate( r ).toString() );
 		
 		audit.title( "trad autopoiesis... add to a list and then add that list" );
 		r = new Reply();
 		ArrayList<Intention> a = new ArrayList<>();
-		a.add( new Intention( create, THINK      +" \"a PATTERN z\" \"one two three four\""   ));
-		a.add( new Intention( append, ELSE_REPLY +" \"two three four\""   ));
-		a.add( new Intention( append, REPLY      +" \"three four\"" ));
+		a.add( new Intention( N_CREATE, THINK      +" \"a PATTERN z\" \"one two three four\""   ));
+		a.add( new Intention( N_APPEND, ELSE_REPLY +" \"two three four\""   ));
+		a.add( new Intention( N_APPEND, REPLY      +" \"three four\"" ));
 		test( r, a );
 		Audit.log( Repertoires.signs.toString() );
 		Audit.log( r.toString());
@@ -270,11 +367,11 @@ public class Intention {
 					.concept( concept() )
 		);
 		String reply = "three four";
-		Sign.latest().append( Intention.thenReply, reply );
+		Sign.latest().append( Intention.N_THEN_REPLY, reply );
 		// ...This implies COND
-		Sign.latest().insert( 0, new Intention( thenThink, "one two three four" ));
+		Sign.latest().insert( Intentions.Insertion.PREPEND, new Intention( N_THEN_THINK, "one two three four" ));
 		// ...if not reply EXECP REPLY
-		Sign.latest().insert( 1, new Intention( elseReply, "two three four" ));
+		Sign.latest().insert( Intentions.Insertion.HEADER, new Intention( N_ELSE_REPLY, "two three four" ));
 		
 		Repertoires.signs.insert( Sign.latest() );
 		r.answer( Response.yes().toString() );
