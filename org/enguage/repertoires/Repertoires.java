@@ -25,25 +25,14 @@ public class Repertoires {
 	public  static final String        ENGINE = "engine";
 	public  static final String     AUTOP_STR = "autopoiesis";
 	public  static final String   AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
-	// TDO: create a method to comb users for signs created on-the-fly, 
-	//       and to save them under (append them to) a concept file
-	// with the name of the value of the pattern?  Autoload() needs to load
-	// these pattern files. Theses need to be sought first(?):
-	// i_need_X.txt is searched before need+needs.txt, because is it the users /will/
-	// n.B. X_means_X.txt - X is just a placeholder.
 	
-	/* This class maintains three repertoire groups - signs, autop and allopoetic
-	 * Each, well signs, contains signs from all runtime loaded repertoires and
-	 * all autoloaded repertoires. Perhaps runtime loaded repertoires could go 
-	 * in engine?
-	 */
 	public    static final Signs signs  = new Signs( "user"  );
 	protected static final Signs engine = new Signs( ENGINE ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
 	 */
 	private static final String FALSE = Boolean.toString( false );
-	private static final String  TRUE = Boolean.toString( true  );
+	private static final String  TRUE = Boolean.toString(  true );
 	
 	private static Variable transformation = new Variable( "transformation", FALSE );
 	public  static  boolean  transformation() {
@@ -54,17 +43,12 @@ public class Repertoires {
 		return b;
 	}
 
-	//
-	// Repertoire Management -- above
-	// *********************************************************** 
-
-	// entry point for Enguage, re-entry point for Intention
+	// entry point for Enguage, re-entry point for Intentions
 	public static Reply mediate( Utterance u ) {
+		
+		if ( "".equals( u.toString() )) return new Reply();
+		
 		audit.in( "mediate", "\""+ u.toString() +"\" trans="+ transformation());
-		// Ordering of repertoire:
-		// 1. check through autop first, at startup
-		// 2. during runtime, do user signs first
-		Reply r ;
 			
 		if (!transformation()) {
 			Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
@@ -76,8 +60,8 @@ public class Repertoires {
 			u = new Utterance( u.expanded() );
 		}
 		
-		r = signs.mediate( u );
-		if (Response.DNU == r.response())
+		Reply r = signs.mediate( u );
+		if (Response.N_DNU == r.response())
 			r = engine.mediate( u );
 	
 		audit.out( r );

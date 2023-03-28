@@ -54,13 +54,24 @@ public class Enguage {
 		Audit.resume();
 	}
 	
+	// Redoing a command...
+	private static boolean skip = false;
+	public  static void    skipNo( boolean b ) {skip = b;}
+	public  static boolean skipNo() {return skip;}
+	
+	private static boolean firstMatch = true;
+	public  static void    firstMatch( boolean b ) {firstMatch = b;}
+	public  static boolean firstMatch() {return firstMatch;}
+
 	private Strings mediateSingle( String uid, Strings utterance ) {
+		audit.in("mediateSingle", "uid="+ uid +", utt="+ utterance );
 		Strings reply;
 	
 		imagined( false );
 		Overlay.attach( uid );
 		Where.clearLocation();
 		Item.resetFormat();
+		firstMatch( true );
 		
 		if (Reply.isUnderstood()) // from previous interpretation!
 			Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
@@ -72,15 +83,15 @@ public class Enguage {
 
 		if (imagined()) {
 			Overlay.abortTxn( Redo.undoIsEnabled() );
-			Redo.disambOff();
+			Redo.disambOff( r.toStrings() );
 			
 		} else if (Reply.isUnderstood()) {
 			Overlay.finishTxn( Redo.undoIsEnabled() );
-			Redo.disambOff();
+			Redo.disambOff( r.toStrings() );
 			
 		} else {
 			// really lost track?
-			audit.debug( "Enguage:interpret(): not understood, forgetting to ignore: "
+			audit.debug( "utterance is not understood, forgetting to ignore: "
 			             +Repertoires.signs.ignore().toString() );
 			Repertoires.signs.ignoreNone();
 			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
@@ -94,6 +105,7 @@ public class Enguage {
 		Reply.say( null );
 		Overlay.detach();
 			
+		audit.out();
 		return reply;
 	}
 	public Strings mediate( Strings said ) { return mediate( "uid", said );}

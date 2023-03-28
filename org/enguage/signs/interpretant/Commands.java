@@ -43,13 +43,13 @@ public class Commands {
 		//audit.IN( "runresult", "rc="+ rc +", result="+ result +", error="+ errtxt );
 		Reply r = new Reply();
 		
-		rc = (rc == 0) ? Response.OK 
-				: Response.FAIL;
+		rc = (rc == 0) ? Response.N_OK 
+				: Response.N_FAIL;
 		
 		String whn = result.replace( " ", "" );
 		result = When.valid( whn ) ?				 // 88888888198888 -> 7pm
 				new When( whn ).toString()
-				: rc == Response.DNK ?
+				: rc == Response.N_DNK ?
 						Response.dnkStr()
 						: result;					  // chs
 	 	//Audit.LOG( "result="+ result +", rc="+ rc );

@@ -238,7 +238,7 @@ public class Intention {
 		return r.response( new Strings( r.toString()) )
 		        .conclude( thought.toString() )
 		        .doneIs( Strings.isUCwHyphUs( value ) // critical!
-		                 && r.response() == Response.FAIL );
+		                 && r.response() == Response.N_FAIL );
 	}
 	
 	private String formatAnswer( String rc, String method ) {
@@ -273,7 +273,7 @@ public class Intention {
 		return reply
 				.format( value.equals( "" ) ? reply.toString() : value )
 				.response( values )
-				.doneIs( reply.response() != Response.DNU ); // so reply "I don't understand" is like an exception?
+				.doneIs( reply.response() != Response.N_DNU ); // so reply "I don't understand" is like an exception?
 	}
 	private Reply run( Reply r ) {
 		return new Commands( formulate( r.a.toString(), false ).toString())

@@ -6,13 +6,13 @@ import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
 
 public class Response {
-	public  static final int  DNU = -5; // DO NOT UNDERSTAND
-	public  static final int  UDU = -4; // user does not understand
-	public  static final int  DNK = -3; // NOT KNOWN -- init
-	public  static final int FAIL = -2; // SORRY -- -ve
-	public  static final int   NO = -1; // FALSE -- -ve
-	public  static final int   OK =  0; // TRUE  -- +ve
-	public  static final int  CHS =  1; // narrative verdict
+	public  static final int  N_DNU = -5; // DO NOT UNDERSTAND
+	public  static final int  N_UDU = -4; // user does not understand
+	public  static final int  N_DNK = -3; // NOT KNOWN -- init
+	public  static final int N_FAIL = -2; // SORRY -- -ve
+	public  static final int   N_NO = -1; // FALSE -- -ve
+	public  static final int   N_OK =  0; // TRUE  -- +ve
+	public  static final int  N_CHS =  1; // narrative verdict
 	
 	private static String  dnuStr = "DNU";
 	private static Strings dnu = new Strings( dnuStr );
@@ -53,19 +53,19 @@ public class Response {
 	/*
 	 * Response
 	 */
-	private int  value = DNU;
+	private int  value = N_DNU;
 	public  int  value() {return value;}
 	public  void value( int t ) {value = t;}
 	
 	public  int  setValue( Strings uttr ) {
-		if (value != UDU) {
-			     if (uttr.beginsIgnoreCase(    yes )) value =   OK;
-			else if (uttr.beginsIgnoreCase( success)) value =   OK;
-			else if (uttr.beginsIgnoreCase( failure)) value = FAIL;
-			else if (uttr.beginsIgnoreCase(    dnu )) value =  DNU;
-			else if (uttr.beginsIgnoreCase(     no )) value =   NO;
-			else if (uttr.beginsIgnoreCase(    dnk )) value =  DNK;
-			else value = CHS;
+		if (value != N_UDU) {
+			     if (uttr.beginsIgnoreCase(    yes )) value =   N_OK;
+			else if (uttr.beginsIgnoreCase( success)) value =   N_OK;
+			else if (uttr.beginsIgnoreCase( failure)) value = N_FAIL;
+			else if (uttr.beginsIgnoreCase(    dnu )) value =  N_DNU;
+			else if (uttr.beginsIgnoreCase(     no )) value =   N_NO;
+			else if (uttr.beginsIgnoreCase(    dnk )) value =  N_DNK;
+			else value = N_CHS;
 		}
 		return value;
 }	}

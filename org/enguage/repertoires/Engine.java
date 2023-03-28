@@ -80,18 +80,6 @@ public final class Engine {
 					.append( Intention.N_ALLOP, "spell X"      )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( "enable undo" )
-					.append( Intention.N_ALLOP, "undo enable"  )
-			  		.concept( NAME ),
-			new Sign()
-					.pattern( "disable undo" )
-					.append( Intention.N_ALLOP, "undo disable" )
-			  		.concept( NAME ),
-			new Sign()
-					.pattern( "undo" )
-					.append( Intention.N_ALLOP, "undo"         )
-			  		.concept( NAME ),
-			new Sign()
 					.pattern( "this is false" )
 					.append( Intention.N_ALLOP, "undo" )
 			  		.concept( NAME ),
@@ -132,16 +120,30 @@ public final class Engine {
 			 * REDO: undo and do again, or disambiguate
 			 */
 			new Sign()
+					.pattern( Redo.UNDO )
+					.append( Intention.N_ALLOP, Redo.UNDO )
+			  		.concept( NAME ),
+			new Sign()
 					.pattern( "No PHRASE-X" )
-					.append( Intention.N_ALLOP, "undo" )
+					.append( Intention.N_ALLOP, Redo.UNDO )
 					.append( Intention.N_ELSE_REPLY, "undo is not available" )
 					/* On thinking the below, if X is the same as what was said before,
 					 * need to search for the appropriate sign from where we left off
 					 * Dealing with ambiguity: "X", "No, /X/"
 					 */
-					.append( Intention.N_ALLOP,  Redo.DISAMBIGUATE +" X" ) // this will set up how the inner thought, below, works
-					.append( Intention.N_THEN_THINK,  "X"    )
-					.concept( NAME )
+					// this will set up how the inner thought, below, works
+					.append( Intention.N_ALLOP, Redo.DISAMBIGUATE +" X" )
+					.append( Intention.N_THEN_THINK, "X" )
+					.concept( NAME ),
+					
+			new Sign()
+					.pattern( "enable undo" )
+					.append( Intention.N_ALLOP, "undo enable"  )
+			  		.concept( NAME ),
+			new Sign()
+					.pattern( "disable undo" )
+					.append( Intention.N_ALLOP, "undo disable" )
+			  		.concept( NAME )
 		 };
 	
 	public static Reply interp( Intention in, Reply r ) {
@@ -150,7 +152,34 @@ public final class Engine {
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
 
-		if (cmd.equals( "imagined" )) {
+		if (cmd.equals( Redo.UNDO )) {
+			r.format( Response.success() );
+			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
+				Redo.undoEnabledIs( true );
+			
+			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
+				Redo.undoEnabledIs( false );
+			
+			else if (cmds.isEmpty() && Redo.undoIsEnabled()) {
+				if (Overlay.number() < 2) { // if there isn't an overlay to be removed
+					audit.debug( "overlay count( "+ Overlay.number() +" ) < 2" ); // audit
+					r.answer( Response.noStr() );
+					
+				} else {
+					audit.debug("ok - restarting transaction");
+					Overlay.reStartTxn();
+				}
+				
+			} else if (!Redo.undoIsEnabled())
+				r.format( Response.dnu() );
+			
+			else
+				r = Redo.unknownCommand( r, cmd, cmds );
+			
+		} else if (cmd.equals( Redo.DISAMBIGUATE )) {
+			Redo.disambOn( cmds );
+		
+		} else if (cmd.equals( "imagined" )) {
 			Enguage.get().imagined( true );
 			r.format( new Strings( "ok, this is all imagined" ));
 			
@@ -165,28 +194,6 @@ public final class Engine {
 			else
 				r.format( new Strings( Response.failure() +", i need to know what to group by" ));
 			
-		} else if (cmd.equals( "undo" )) {
-			r.format( Response.success() );
-			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
-				Redo.undoEnabledIs( true );
-			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
-				Redo.undoEnabledIs( false );
-			else if (cmds.isEmpty() && Redo.undoIsEnabled()) {
-				if (Overlay.number() < 2) { // if there isn't an overlay to be removed
-					audit.debug( "overlay count( "+ Overlay.number() +" ) < 2" ); // audit
-					r.answer( Response.noStr() );
-				} else {
-					audit.debug("ok - restarting transaction");
-					Overlay.reStartTxn();
-				}
-			} else if (!Redo.undoIsEnabled())
-				r.format( Response.dnu() );
-			else
-				r = Redo.unknownCommand( r, cmd, cmds );
-			
-		} else if (cmd.equals( Redo.DISAMBIGUATE )) {
-			Redo.disambOn( cmds );
-		
 		} else if (cmd.equals( "spell" )) {
 			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));
 			

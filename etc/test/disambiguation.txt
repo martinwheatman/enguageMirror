@@ -3,12 +3,9 @@ no this is a test: ok, this reaches meaning two.
 no this is a test: ok, this reaches meaning three.
 no this is a test: ok, this is a test. # BUG: creates an instance
 no this is a test: i don't understand, this is a test.
-
-# BUG: this shouldn't be an instance of a class:
-this is a test:    ok, this reaches meaning one/ no, this is a class.
+no this is a test:    ok, this reaches meaning one.
 			
 the eagle has landed:    So, you're talking about Apollo 11.
 no the eagle has landed: So , you're talking about the novel.
 no the eagle has landed: so, Are you an ornithologist.
 no the eagle has landed: I don't understand, the eagle has landed.
-

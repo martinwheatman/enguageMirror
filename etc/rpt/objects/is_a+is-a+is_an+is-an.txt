@@ -1,56 +1,51 @@
 # is: class model
 On "X is an entity":
 	assert X is a class;
-	reply "no, X is a class";
-	if not, create entity X;
-	then, reply "ok, X is an entity".
+	if so, reply "no, X is a class";
+	create entity X;
+	reply "ok, X is an entity".
 
 On "is X an entity":
 	assert X is a class;
-	reply "no, X is a class";
-	if not, entity X exists;
+	if so, reply "no, X is a class";
+	entity X exists;
 	if not, reply "no, X does not exist";
-	then, reply "yes, X is an entity".
+	reply "yes, X is an entity".
 
 On "X is a class":
 	assert that a instanceof link from X exists;
 	reply "no, X is an entity";
 	if not, create an isa link from X to class;
-	then, reply "ok, X is a class".
+	reply "ok, X is a class".
 	
 On "a DERIVED is a BASE":
 	DERIVED is a class;
 	BASE is a class;
 	create an isa link from DERIVED to BASE;
-	then, reply "ok, a DERIVED is a BASE".
+	reply "ok, a DERIVED is a BASE".
 
 On "X is a Y":
 	X is an entity;
+	if not, reply "sorry, X is a class"
 	Y is a class;
 	create an instanceof link from X to Y;
-	then, reply "ok, X is a Y".
+	reply "ok, X is a Y".
 
 On "is THIS a CLASS":
 	perform "an isa link from CLASS exists";
-	if not, reply "i'm sorry, CLASS is not a class";
+	if not, reply "sorry, CLASS is not a class";
 	perform "entity THIS exists";
-	if not, reply "i'm sorry, THIS does not exist"
+	if not, reply "sorry, THIS does not exist"
 	perform "link exists THIS instanceof CLASS";
-	reply "yes, THIS is an instance of a CLASS";
+	if so, reply "yes, THIS is an instance of a CLASS";
 	perform "link get THIS instanceof";
 	perform "link transExists ... isa CLASS";
-	reply "no, THIS is not a CLASS";
-	then, reply "yes, THIS is a CLASS".
+	if not, reply "no, THIS is not a CLASS";
+	reply "yes, THIS is a CLASS".
 	
 On "is CLASS a class":
 	entity CLASS exists;
-	if not, reply "i'm sorry, CLASS does not exist";
+	if not, reply "sorry, CLASS does not exist";
 	perform "link exists CLASS isa";
-	reply "yes, CLASS is a class";
-	then, reply "no, CLASS is not a class".
-	
-#	perform "link get CLASS isa";
-#	perform "link transExists ... isa class";
-#	reply "no, CLASS is not a class";
-#	then, reply "yes, CLASS is a class".
-	
+	if not, reply "no, CLASS is not a class";
+	reply "yes, CLASS is a class".

@@ -91,7 +91,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply    response( int i ) {response.value( i ); return this;}
 	public  Reply    response( Strings strs ) {response.setValue( strs ); return this;}
 
-	public  boolean  felicitous() {return response.value() >= Response.OK;}
+	public  boolean  felicitous() {return response.value() >= Response.N_OK;}
 
 	/* Answer:
 	 * Multiple answers should now be implemented in a Replies class!
@@ -107,7 +107,7 @@ public class Reply { // a reply is basically a formatted answer
 			a.add( ans );
 			// type is dependent on answer
 			cache = null;
-			response.value( response.value() == Response.UDU ? Response.UDU : a.type());
+			response.value( response.value() == Response.N_UDU ? Response.N_UDU : a.type());
 		}
 		return this;
 	}
@@ -161,7 +161,7 @@ public class Reply { // a reply is basically a formatted answer
 	}
 	public Strings toStrings() {
 		Strings reply = encache();
-		if (understoodIs( Response.DNU != response.value() )) {
+		if (understoodIs( Response.N_DNU != response.value() )) {
 			if (!repeated())
 				previous( reply ); // never used
 			;
@@ -172,9 +172,10 @@ public class Reply { // a reply is basically a formatted answer
 	public String toString() {return encache().toString();}
 	
 	public Reply conclude( String thought ) {
+		audit.in("conclude", "");
 		strangeThought("");
 
-		if (Response.DNU == response.value()) {
+		if (Response.N_DNU == response.value()) {
 			// put this into reply via Reply.strangeThought()
 			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
 			strangeThought( thought );
@@ -189,8 +190,9 @@ public class Reply { // a reply is basically a formatted answer
 			format( new Strings( Response.dnu() + ", ..." ));
 			answer( thought );
 			
-			response.value( Response.FAIL );
+			response.value( Response.N_FAIL );
 		}
+		audit.out();
 		return this;
 	}
 	public static void main( String[] args ) {

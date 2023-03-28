@@ -2,6 +2,7 @@ package org.enguage.util;
 
 import java.util.GregorianCalendar;
 
+import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.symbol.reply.Response;
 
 public class Audit {
@@ -113,7 +114,7 @@ public class Audit {
 	}
 	public  void   FATAL( String msg ) {
 		LOG( "FATAL: "+ className +": "+ msg );
-		//Repertoires.signs.show()
+		Repertoires.signs.show();
 		System.exit( 1 );
 	}
 	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
@@ -123,7 +124,7 @@ public class Audit {
 		);
 	}
 	public static Strings interpret(Strings cmds) {
-		audit.IN( "Interpret", ""+ cmds );
+		audit.in( "Interpret", ""+ cmds );
 		Strings rc = Response.success();
 		String cmd = cmds.remove( 0 );
 		
@@ -154,7 +155,7 @@ public class Audit {
 		} else
 			rc = Response.failure();
 
-		return audit.OUT(rc);
+		return audit.out(rc);
 	}
 	
 	// === title/underline
