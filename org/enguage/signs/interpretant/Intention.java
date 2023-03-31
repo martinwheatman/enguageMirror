@@ -115,7 +115,7 @@ public class Intention {
 			case N_RUN        : return RUN;
 			case N_THEN_RUN   : return THEN_RUN;
 			case N_ELSE_RUN   : return ELSE_RUN;
-			case N_ALLOP      : return Repertoires.ENGINE;
+			case N_ALLOP      : return Repertoires.ENGINE_STR;
 			case N_AUTOP      : return Repertoires.AUTOP_STR;
 			case N_CREATE     : return NEW;
 			case N_PREPEND    : return PREPEND;

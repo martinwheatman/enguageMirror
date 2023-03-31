@@ -2,7 +2,6 @@ package org.enguage.signs.symbol.reply;
 
 import java.util.Locale;
 
-import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -179,12 +178,6 @@ public class Reply { // a reply is basically a formatted answer
 			// put this into reply via Reply.strangeThought()
 			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
 			strangeThought( thought );
-
-			// remove strange thought from Reply - just say DNU
-			if (Redo.disambFound()) {
-				audit.error( "Previous ERROR: maybe just run out of meanings?" );
-				strangeThought("");
-			}
 
 			// Construct the DNU format
 			format( new Strings( Response.dnu() + ", ..." ));

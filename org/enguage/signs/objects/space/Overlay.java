@@ -16,24 +16,24 @@ class OverlayShell extends Shell {
 }
 
 public class Overlay {
-	static public  final String NAME = "overlay";
+	public static  final String NAME = "overlay";
 	static               Audit audit = new Audit( "Overlay" );
-	static public  final int      id = 188374473; //Strings.hash( "overlay" );
+	public static  final int      id = 188374473; //Strings.hash( "overlay" );
 	
 	static private final String DELETE_CH = "!";  // RENAME_CH = "^";
 	static private final String  DETACHED = null;
 	
-	static public  final String   DEFAULT = "Enguage"; //"sofa";
-	static public  final int  MODE_READ   = 0; // "r";
-	static public  final int  MODE_WRITE  = 1; // "w";
-	static public  final int  MODE_APPEND = 2; // "a";
-	static public  final int  MODE_DELETE = 3; // "d";
-	//static public final int MODE_RENAME = 4; // "m"; 
+	public static  final String   DEFAULT = "Enguage"; //"sofa";
+	public static  final int  MODE_READ   = 0; // "r";
+	public static  final int  MODE_WRITE  = 1; // "w";
+	public static  final int  MODE_APPEND = 2; // "a";
+	public static  final int  MODE_DELETE = 3; // "d";
+	//public static final int MODE_RENAME = 4; // "m"; 
 	
 	// manage singleton
 	static private Overlay o = null;
-	static public  Overlay Get() { return null != o ? o : (o = new Overlay()); }
-	static public  void    Set( Overlay overlay ) { o = overlay; }
+	public static  Overlay Get() { return null != o ? o : (o = new Overlay()); }
+	public static  void    Set( Overlay overlay ) { o = overlay; }
 	
 	private Path p;
 	String  path() { return p.toString(); }
@@ -55,7 +55,7 @@ public class Overlay {
 	
 	// --- object space - just write directly into Fs.root()
 	static private String root = "";
-	static public  void   root( String uid ) { new File( root = Fs.root()+ uid +File.separator ).mkdirs(); }
+	public static  void   root( String uid ) { new File( root = Fs.root()+ uid +File.separator ).mkdirs(); }
 	
 	// --- Series management
 	static private String series = DETACHED;
@@ -75,15 +75,15 @@ public class Overlay {
 	}
 	
 	static private int     number = -1; // 0, 1, ..., n => 1+n; -1 == detached
-	static public  int     number() { return number; }
+	public static  int     number() { return number; }
 	
 	
-	static public  int     attached = 0;
-	static public  boolean attached() {return attached > 0;}
+	public static  int     attached = 0;
+	public static  boolean attached() {return attached > 0;}
 	
 	static private String  nth( int vn ) { return root + vn;}
 	
-	static public void attach( String userId ) {
+	public static void attach( String userId ) {
 		attached++;
 		if (attached==1) {
 			root( userId );
@@ -93,7 +93,7 @@ public class Overlay {
 			Link.fromString( root + series, cwd );
 			number = count();
 	}	}
-	static public  void    detach() {
+	public static  void    detach() {
 		attached--;
 		if (attached <= 0) {
 			attached = 0;
@@ -101,9 +101,9 @@ public class Overlay {
 			number = -1;
 	}	}
 
-	static public  boolean exists() { return Fs.exists( root+ series + Link.EXT );}
-	static public  void    append() { if (attached()) new File( nth( number++ )).mkdirs(); }
-	static public  boolean remove() { return number >= 0 && attached() && Fs.destroy( nth( --number ));}
+	public static  boolean exists() { return Fs.exists( root+ series + Link.EXT );}
+	public static  void    append() { if (attached()) new File( nth( number++ )).mkdirs(); }
+	public static  boolean remove() { return number >= 0 && attached() && Fs.destroy( nth( --number ));}
 
 	private String nthCandidate( String nm, int vn ) {
 		int topVn;
@@ -141,7 +141,7 @@ public class Overlay {
 	// if read  - overlay space is searched for an existing file.
 	//          - if not found, or if the file has been deleted, the (non-existing) write filename is returned
 	//          - if rename found (e.g. old^new), change return the old NAME.
-	static public String fname( String vfname, int modeChs ) {
+	public static String fname( String vfname, int modeChs ) {
 		String fsname = vfname; // pass through!
 		if (attached() && o.isOverlaid( vfname ))
 			switch (modeChs) {
@@ -152,17 +152,17 @@ public class Overlay {
 		return fsname;
 	}
 	
-	static public boolean isDeleteName( String name ) {
+	public static boolean isDeleteName( String name ) {
 		return new File( name ).getName().charAt( 0 ) == '!';
 	}
-	static public String nonDeleteName( String name ) {
+	public static String nonDeleteName( String name ) {
 		if (isDeleteName( name )) {
 			File f = new File( name );
 			name = f.getParent() +"/"+ f.getName().substring( 1 );
 		}
 		return name;
 	}
-	static public String deleteName( String name ) {
+	public static String deleteName( String name ) {
 		if (!isDeleteName( name )) {
 			File f = new File( name );
 			name = f.getParent() +"/!"+ f.getName();
@@ -278,7 +278,7 @@ public class Overlay {
 		}
 		//audit.out();
 	}
-	static public boolean compact() {
+	public static boolean compact() {
 		boolean rc = false;
 		if (attached() && number > 2) {
 			File src, dst;
@@ -307,31 +307,27 @@ public class Overlay {
 
 	// --- Transactions
 	static boolean inTxn = false;
-	static public void reStartTxn() {
-		if (inTxn) {
-			remove(); // remove this overlay
-			remove(); // remove previous -- this is the undo bit
-			append(); // restart a new txn
-	}	}
-	static public void finishTxn( boolean undoIsEnabled ) {
-		if (undoIsEnabled) {
-			inTxn = false;
-			compact();
-	}	}
-	static public void abortTxn( boolean undoIsEnabled ) {
-		if (undoIsEnabled) {
-			inTxn = false;
-			remove();
-	}	}
-	static public void startTxn( boolean undoIsEnabled ) {
-		if (undoIsEnabled) {
-			inTxn = true;
-			append();
-	}	}
+	public static void reStartTxn() {
+		remove(); // remove this overlay
+		remove(); // remove previous -- this is the undo bit
+		append(); // restart a new txn
+	}
+	public static void finishTxn() {
+		inTxn = false;
+		compact();
+	}
+	public static void abortTxn() {
+		inTxn = false;
+		remove();
+	}
+	public static void startTxn() {
+		inTxn = true;
+		append();
+	}
 
 	// --- Test code...
 	
-	static public Strings interpret( Strings argv ) {
+	public static Strings interpret( Strings argv ) {
 		String rc = Shell.FAIL;
 		int argc = argv.size();
 		

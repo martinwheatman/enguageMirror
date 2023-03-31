@@ -11,7 +11,6 @@ import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.written.Autoload;
 import org.enguage.repertoires.written.Load;
 import org.enguage.signs.interpretant.Commands;
-import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.reply.Answer;
 import org.enguage.signs.symbol.reply.Reply;
@@ -85,7 +84,6 @@ public class Config {
 		}
 		
 		long then = new GregorianCalendar().getTimeInMillis();
-		Redo.undoEnabledIs( false );
 		
 		if (Enguage.isVerbose())
 			Audit.log(
@@ -101,12 +99,11 @@ public class Config {
 			rc = content.length();
 		}
 
-		Redo.undoEnabledIs( true );
 		long now = new GregorianCalendar().getTimeInMillis();
 		
 		if (Enguage.isVerbose()) {
 			Audit.log( "Initialisation in: " + (now - then) + "ms" );
-			Audit.log( Signs.stats() );
+			Audit.log( Repertoires.signs.stats() );
 		}
 		
 		return audit.out( rc );

@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
-import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -49,7 +48,6 @@ public class Autoload {
 	public static void load( Strings utterance ) {
 		if (!ing()) {
 			Autoload.ing( true );
-			Redo.undoEnabledIs( false ); // disable undo while loading repertoires
 			
 			Strings concepts = new Strings();
 			for (String candidate : Names.match( utterance ))
@@ -69,7 +67,6 @@ public class Autoload {
 			
 			Similarity.autoload( utterance );			
 				
-			Redo.undoEnabledIs( true );
 			Autoload.ing( false );
 	}	}
 	public static void unload( String name ) {

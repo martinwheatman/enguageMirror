@@ -1,34 +1,35 @@
 package org.enguage.signs.objects.space;
 
-import org.enguage.signs.interpretant.Redo;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Shell;
 
 public class Transaction {
 	
-	static public final String    NAME = "transaction";
-	static public final int         id = 245880623; //Strings.hash( NAME );
-	static private      Audit    audit = new Audit( NAME );
-	static private      boolean inprog = false;
+	private Transaction() {}
 	
-	static private void    create() {
+	public  static final String    NAME = "transaction";
+	public  static final int         ID = 245880623; //Strings.hash( NAME )
+	private static      Audit    audit = new Audit( NAME );
+	private static      boolean inprog = false;
+	
+	private static void    create() {
 		if (!inprog) {
 			inprog = true;
-			Overlay.startTxn( Redo.undoIsEnabled());
+			Overlay.startTxn();
 	}	}
-	static private void    abort() {
+	private static void    abort() {
 		if (inprog) {
 			inprog = false;
-			Overlay.remove(); //Enguage.o.destroy();
+			Overlay.remove();
 	}	}
-	static private void    commit() {
+	private static void    commit() {
 		if (inprog) {
 			inprog = false;
 			Overlay.compact();
 	}	}
 	
-	static public Strings interpret( Strings args ) {
+	public static Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String rc = Shell.SUCCESS;
 		String cmd = args.remove(0);

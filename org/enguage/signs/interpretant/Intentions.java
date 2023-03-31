@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.enguage.repertoires.Engine;
 import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.attr.Attribute;
 
@@ -64,6 +65,10 @@ public class Intentions extends ArrayList<Intention> {
 	}
 	public Reply mediate( Reply r ) {
 		audit.in( "mediate", "r="+ r );
+		
+		// if we've matched we must have understood/recognised
+		r.answer( "ok" ).response( Response.N_OK );
+
 		Iterator<Intention> ai = this.iterator();
 		while (ai.hasNext()) {
 			Intention in = ai.next();

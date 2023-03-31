@@ -96,23 +96,6 @@ public class Sign {
 		return spatial;
 	}
 	
-	/* To protect against being interpreted twice on resetting the iterator
-	 * after a DNU is returned on co-modification of the iterator by
-	 * autoloading repertoires.
-	 * 
-	 * We may see this pattern in a list of signs following comodification:
-	 * 	t t t t f t t t f f t t f f f t t T f f f f f f f f f f f f f f
-	 *                                    ^ 
-	 * 'cos some new signs will be peppered through out the list. We need
-	 * to start again at the sign following "^".
-	 * N.B. Don't really want to unload those autoloaded signs as they may well
-	 * be needed by the eventually understood utterance.  Autounloading (aging) 
-	 * will manage the list if not.
-	 * In fact, there should only be one T, the other t's are tidied as 
-	 * processing progresses, so there is no need to determine when the...
-	 */
-	public int interpretation = Signs.NO_INTERPRETATION;
-	
 	public int cplex() {return pattern().cplex();}
 	
 	public String toXml( int n, long complexity ) {
@@ -132,7 +115,7 @@ public class Sign {
 				+ intentions.toStringIndented() 
 				+ ".";
 	}
-		
+	
 	public boolean toFile( String fname ){return Fs.stringAppendFile( fname, toLine());}
 	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toLine());}
 	public void    toVariable() {Variable.set( pattern.toFilename(), toLine());}

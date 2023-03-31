@@ -20,14 +20,14 @@ public class Repertoires {
 	public  static final int      ID = 216434732;
 	private static final Audit audit = new Audit( NAME );
 	
-	public  static final String           LOC = "rpt";
+	public  static final String         LOC = "rpt";
 
-	public  static final String        ENGINE = "engine";
-	public  static final String     AUTOP_STR = "autopoiesis";
-	public  static final String   AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
+	public  static final String  ENGINE_STR = "engine";
+	public  static final String   AUTOP_STR = "autopoiesis";
+	public  static final String AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
 	
 	public    static final Signs signs  = new Signs( "user"  );
-	protected static final Signs engine = new Signs( ENGINE ).add( Engine.commands );
+	protected static final Signs engine = new Signs( ENGINE_STR ).add( Engine.commands );
 	
 	/* A persistent Induction is used in the repertoire.
 	 */
@@ -83,7 +83,7 @@ public class Repertoires {
 					
 					signs.show();
 					
-				else if (name.equals( ENGINE ))
+				else if (name.equals( ENGINE_STR ))
 					engine.show();
 					
 				else if (name.equals( "all" )) {

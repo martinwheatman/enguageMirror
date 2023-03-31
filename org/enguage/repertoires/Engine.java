@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.enguage.Enguage;
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
-import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.objects.list.Item;
 import org.enguage.signs.objects.space.Overlay;
@@ -24,9 +23,12 @@ public final class Engine {
 	
 	private Engine() {}
 	
-	public  static final String NAME = Repertoires.ENGINE;
+	public  static final String NAME = Repertoires.ENGINE_STR;
 	private static final Audit audit = new Audit( NAME );
-	
+
+	public  static final String IGNORE_STR = "ignore";
+	public  static final String UNDO_STR   = "undo";
+
 	protected static final Sign[] commands = {
 			/* These could be accompanied in a repertoire, but they have special 
 			 * interpretations and so are built here alongside those interpretations.
@@ -120,64 +122,33 @@ public final class Engine {
 			 * REDO: undo and do again, or disambiguate
 			 */
 			new Sign()
-					.pattern( Redo.UNDO )
-					.append( Intention.N_ALLOP, Redo.UNDO )
+					.pattern( UNDO_STR )
+					.append( Intention.N_ALLOP, UNDO_STR )
 			  		.concept( NAME ),
 			new Sign()
 					.pattern( "No PHRASE-X" )
-					.append( Intention.N_ALLOP, Redo.UNDO )
+					// first remove/restart transaction...
+					.append( Intention.N_ALLOP, UNDO_STR )
 					.append( Intention.N_ELSE_REPLY, "undo is not available" )
-					/* On thinking the below, if X is the same as what was said before,
-					 * need to search for the appropriate sign from where we left off
-					 * Dealing with ambiguity: "X", "No, /X/"
-					 */
-					// this will set up how the inner thought, below, works
-					.append( Intention.N_ALLOP, Redo.DISAMBIGUATE +" X" )
+					// then ignore last matched complexity
+					.append( Intention.N_ALLOP, IGNORE_STR +" X" )
+					// then re-think X
 					.append( Intention.N_THEN_THINK, "X" )
-					.concept( NAME ),
-					
-			new Sign()
-					.pattern( "enable undo" )
-					.append( Intention.N_ALLOP, "undo enable"  )
-			  		.concept( NAME ),
-			new Sign()
-					.pattern( "disable undo" )
-					.append( Intention.N_ALLOP, "undo disable" )
-			  		.concept( NAME )
+					.concept( NAME )
 		 };
 	
+	
 	public static Reply interp( Intention in, Reply r ) {
-		r.answer( Response.yesStr()); // bland default reply to stop debug output look worrying
+		r.answer( Response.successStr()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
 
-		if (cmd.equals( Redo.UNDO )) {
-			r.format( Response.success() );
-			if (cmds.size() == 1 && cmds.get( 0 ).equals( "enable" )) 
-				Redo.undoEnabledIs( true );
-			
-			else if (cmds.size() == 1 && cmds.get( 0 ).equals( "disable" )) 
-				Redo.undoEnabledIs( false );
-			
-			else if (cmds.isEmpty() && Redo.undoIsEnabled()) {
-				if (Overlay.number() < 2) { // if there isn't an overlay to be removed
-					audit.debug( "overlay count( "+ Overlay.number() +" ) < 2" ); // audit
-					r.answer( Response.noStr() );
-					
-				} else {
-					audit.debug("ok - restarting transaction");
-					Overlay.reStartTxn();
-				}
+		if (cmd.equals( UNDO_STR )) {
+			Overlay.reStartTxn();
 				
-			} else if (!Redo.undoIsEnabled())
-				r.format( Response.dnu() );
-			
-			else
-				r = Redo.unknownCommand( r, cmd, cmds );
-			
-		} else if (cmd.equals( Redo.DISAMBIGUATE )) {
-			Redo.disambOn( cmds );
+		} else if (cmd.equals( IGNORE_STR )) {
+			Repertoires.signs.ignore( cmds );
 		
 		} else if (cmd.equals( "imagined" )) {
 			Enguage.get().imagined( true );
@@ -268,7 +239,7 @@ public final class Engine {
 			);
 
 		} else {
-			r = Redo.unknownCommand( r, cmd, cmds );
+			r.format( Response.dnu() +":"+ cmd +" "+ cmds );
 		}
 		return r;
 }	}

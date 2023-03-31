@@ -55,9 +55,9 @@ public class Sofa {
 				case Variable.id :   return    Variable.interpret( Attribute.expand23( a ));
 				case Similarity.ID:  return  Similarity.interpret( Attribute.expand23( a ));
 				case Colloquial.id:  return  Colloquial.interpret(                     a  );
-				case Repertoires.ID:  return  Repertoires.interpret(                     a  );
 				case Transitive.id:  return  Transitive.interpret( Attribute.expand23( a ));
-				case Transaction.id: return Transaction.interpret( Attribute.expand23( a ));
+				case Repertoires.ID: return Repertoires.interpret(                     a  );
+				case Transaction.ID: return Transaction.interpret( Attribute.expand23( a ));
 				default :
 					audit.error( "Sofa.hash(): "+ type +".id should be: "+ Strings.hash( type ));
 					return Shell.Fail;

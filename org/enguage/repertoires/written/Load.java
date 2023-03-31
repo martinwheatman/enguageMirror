@@ -15,7 +15,6 @@ import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.Sign;
 import org.enguage.signs.SignBuilder;
 import org.enguage.signs.interpretant.Intention;
-import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.util.Audit;
@@ -162,7 +161,6 @@ public class Load {
 	public static boolean load( String name ) {
 		boolean rc = true;
 		if (!loaded().contains( name )) {
-			Redo.undoEnabledIs( false );
 			
 			String conceptName = loadConcept( name, null, null );
 			if (!conceptName.equals( "" ))
@@ -172,7 +170,6 @@ public class Load {
 				Audit.LOG( "error loading "+ name );
 			}
 			
-			Redo.undoEnabledIs( true );
 		}
 		return rc;
 	}

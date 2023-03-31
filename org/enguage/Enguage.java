@@ -7,7 +7,6 @@ import org.enguage.repertoires.written.Autoload;
 import org.enguage.repertoires.written.Conjunction;
 import org.enguage.repertoires.written.Names;
 import org.enguage.signs.Config;
-import org.enguage.signs.interpretant.Redo;
 import org.enguage.signs.objects.list.Item;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.symbol.Utterance;
@@ -54,15 +53,6 @@ public class Enguage {
 		Audit.resume();
 	}
 	
-	// Redoing a command...
-	private static boolean skip = false;
-	public  static void    skipNo( boolean b ) {skip = b;}
-	public  static boolean skipNo() {return skip;}
-	
-	private static boolean firstMatch = true;
-	public  static void    firstMatch( boolean b ) {firstMatch = b;}
-	public  static boolean firstMatch() {return firstMatch;}
-
 	private Strings mediateSingle( String uid, Strings utterance ) {
 		audit.in("mediateSingle", "uid="+ uid +", utt="+ utterance );
 		Strings reply;
@@ -71,10 +61,10 @@ public class Enguage {
 		Overlay.attach( uid );
 		Where.clearLocation();
 		Item.resetFormat();
-		firstMatch( true );
+		Repertoires.signs.firstMatch( true );
 		
 		if (Reply.isUnderstood()) // from previous interpretation!
-			Overlay.startTxn( Redo.undoIsEnabled() ); // all work in this new overlay
+			Overlay.startTxn(); // all work in this new overlay
 		
 		Reply r = Repertoires.mediate( new Utterance( utterance ));
 
@@ -82,12 +72,12 @@ public class Enguage {
 		Utterance.previous( utterance );
 
 		if (imagined()) {
-			Overlay.abortTxn( Redo.undoIsEnabled() );
-			Redo.disambOff( r.toStrings() );
+			Overlay.abortTxn();
+			Repertoires.signs.reset( r.toStrings() );
 			
 		} else if (Reply.isUnderstood()) {
-			Overlay.finishTxn( Redo.undoIsEnabled() );
-			Redo.disambOff( r.toStrings() );
+			Overlay.finishTxn();
+			Repertoires.signs.reset( r.toStrings() );
 			
 		} else {
 			// really lost track?

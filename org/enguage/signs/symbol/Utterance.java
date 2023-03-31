@@ -20,7 +20,7 @@ import org.enguage.util.attr.Context;
 public class Utterance {
 	//static private Audit audit = new Audit( "Utterance" );
 
-	private static Strings previous = null;
+	private static Strings previous = new Strings();
 	public  static Strings previous() { return previous; }
 	public  static Strings previous( Strings sa ) { return previous = sa; }
 

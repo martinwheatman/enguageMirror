@@ -2,7 +2,6 @@ package org.enguage.util;
 
 import java.util.GregorianCalendar;
 
-import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.symbol.reply.Response;
 
 public class Audit {
@@ -114,7 +113,7 @@ public class Audit {
 	}
 	public  void   FATAL( String msg ) {
 		LOG( "FATAL: "+ className +": "+ msg );
-		Repertoires.signs.show();
+		//Repertoires.signs.show()
 		System.exit( 1 );
 	}
 	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
