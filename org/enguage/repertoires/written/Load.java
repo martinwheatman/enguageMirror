@@ -92,7 +92,6 @@ public class Load {
 	}
 	public static Strings addTerminator( Strings a ) { return addTerminator( a, terminators.get( 0 ));}
 	
-
 	private static String preprocessLine( String line, String from, String to ) {
 		
 		//remove Byte order mark...
@@ -110,7 +109,6 @@ public class Load {
 		
 		return line;
 	}
-	
 	private static Strings preprocessFile( InputStream fp, String from, String to ) {
 		Strings content = new Strings();
 		Scanner br = new Scanner( new InputStreamReader( fp ));
@@ -119,7 +117,6 @@ public class Load {
 		br.close();
 		return content;
 	}
-	
 	private static void load( InputStream fp, String from, String to ) {
 		// adds signs and interprets utterances
 		Strings content = preprocessFile( fp, from, to );
@@ -133,7 +130,6 @@ public class Load {
 				Repertoires.mediate( new Utterance( utterance ));
 		}
 	}
-	
 	public static String loadConcept( String name, String from, String to ) {
 		boolean wasLoaded   = true;
 		String  conceptName = to==null ? name : name.replace( from, to );
@@ -157,20 +153,15 @@ public class Load {
 		
 		return wasLoaded ? conceptName : "";
 	}
-
 	public static boolean load( String name ) {
 		boolean rc = true;
 		if (!loaded().contains( name )) {
-			
 			String conceptName = loadConcept( name, null, null );
 			if (!conceptName.equals( "" ))
 				loaded( conceptName );
 			else {
 				rc = false;
 				Audit.LOG( "error loading "+ name );
-			}
-			
-		}
+		}	}
 		return rc;
-	}
-}
+}	}

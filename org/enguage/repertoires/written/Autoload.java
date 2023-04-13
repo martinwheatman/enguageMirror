@@ -23,14 +23,14 @@ public class Autoload {
 	 */
 	private static int  ttl = 5;
 	public  static void ttl( String age ) {try {ttl = Integer.valueOf( age );} catch (Exception e){}}
-	public  static int ttl() {return ttl;}
+	public  static int  ttl() {return ttl;}
 	
 	/**
 	 * autoloading - Simple flag to prevent autoloading when autoloading.
 	 */
-	public static boolean autoloading = false;
-	public static void    ing( boolean al ) {autoloading = al;}
-	public static boolean ing() {return autoloading;}
+	private static boolean autoloading = false;
+	public  static void    ing( boolean al ) {autoloading = al;}
+	public  static boolean ing() {return autoloading;}
 
 	private static TreeMap<String,Integer> autoloaded = new TreeMap<>();
 	public  static Integer get( String name ) {return autoloaded.get( name );}
@@ -106,7 +106,7 @@ public class Autoload {
 			while (ri.hasNext()) unload( ri.next() );
 
 	}	}
-	public static void main( String args[] ) {
+	public static void main( String[] args ) {
 		Audit.on();
 		if (!Fs.location( Enguage.RO_SPACE ))
 			audit.FATAL( Enguage.RO_SPACE +": not found" );
