@@ -57,7 +57,7 @@ public class Load {
 		if (cname != null) {
 			File oldFile = new File( spokenName( cname ));
 			File newFile = new File( deleteName( cname ));
-			if (!oldFile.renameTo( newFile ))
+			if (oldFile.exists() && !oldFile.renameTo( newFile ))
 				audit.error( "renaming "+ oldFile +" to "+ newFile );
 	}	}
 

@@ -1,0 +1,4 @@
+On "load PHRASE-NAME", perform "ideas load NAME".
+
+On "unload PHRASE-NAME", perform "ideas unload NAME".
+

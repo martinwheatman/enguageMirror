@@ -41,7 +41,7 @@ public class Sofa {
 				case Link.id  :      return        Link.interpret(                     a );
 				case Sign.ID  :      return        Sign.interpret( Attribute.expand(   a ));
 				case Audit.ID:       return       Audit.interpret( Attribute.expand(   a ));
-				case Ideas.ID:       return       Ideas.interpret(                     a  );
+				case Ideas.ID:       return       Ideas.interpret( Attribute.expand23( a ));
 				case Items.id :      return       Items.interpret(                     a  );
 				case Value.id :      return       Value.interpret( Attribute.expand23( a ));
 				case Where.id :      return       Where.interpret( Attribute.expand23( a ));

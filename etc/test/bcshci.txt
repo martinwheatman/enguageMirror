@@ -1,11 +1,3 @@
-hello:                 i don't understand, hello.
-to the phrase hello reply hello to you too: ok.
-hello:                 hello to you too.
-to the phrase hi think hello: ok.
-hi: hello to you too.
-to the phrase my name is variable name reply hello variable name.
-my name is martin: hello martin.
-			
 i need nothing.
 what do i need:        you don't need anything.
 i need a tea:          ok, you need a tea.
@@ -34,7 +26,8 @@ and then reply ok variable things are variable quality.
 ferraris are cool:     ok ferraris are cool.
 
 want is like need.
-i want a ferrari because ferraris are cool: ok, you want a ferrari because ferraris are cool.
+i want a ferrari because ferraris are cool: 
+                       ok, you want a ferrari because ferraris are cool.
 why do I want a ferrari: because ferraris are cool.
 
 echo Tidy up...

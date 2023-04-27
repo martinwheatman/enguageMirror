@@ -53,9 +53,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 		// to prevent co-mod errors, load a list with the keys of those to be removed...
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
-		while(i.hasNext()) {
+		while (i.hasNext()) {
 			Map.Entry<Integer,Sign> me = i.next();
-			if ( id.equals( me.getValue().concept() ))
+			if (id.equals( me.getValue().concept()))
 				i.remove();
 	}	}
 	public boolean saveAs( String simpleFilter, String cname ) {
