@@ -2,6 +2,8 @@ this concept is temporal.
 
 On "i drove to work":
 	run "value martin/journey/when WHEN";
+	if not, reply "i cannot think";  # or some user-level understanding...
 	run "value martin/journey/when";
+	if not, reply "i cannot think";  # ...of value not being found ???
 	reply "ok ... you drove to work".
 	

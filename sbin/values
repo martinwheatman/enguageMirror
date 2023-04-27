@@ -1,0 +1,59 @@
+#!/bin/bash
+# Copyright (c) Martin Wheatman 2022
+# simple persistant values management
+
+usage(){ echo "Usage: $(basename $0) setup <DbDir>|commit|abort|value" >&2; exit 1;}
+
+
+VALUES="values"
+DB="${HOME}/${VALUES}"
+if [ "$1" = "-D" ]; then
+	DB="$2/${VALUES}"
+	shift 2
+fi
+
+if [ $# -eq 0 ]; then
+	usage $0
+	
+elif [ "$1" == "setup" ]; then	
+	shift
+	if [ -L ${DB} ]; then rm -f $DB; fi
+	ln -s "${*}/${VALUES}" ${DB}
+	values create $@
+	
+
+elif [ "$1" == "create" ]; then
+	shift
+	if [ ! -d "${*}/${VALUES}" ]; then
+		if ! mkdir -p "${*}/${VALUES}" 2>/dev/null; then
+			echo "Error: <DbDir>=${*}: is not a directory" >&2
+			usage
+		fi
+		(cd "${*}/${VALUES}"; git init)
+	fi
+	if [ ! -d "${*}/${VALUES}/.git" ]; then
+		(cd "${*}/${VALUES}"; git checkout $(fy)) 2>/dev/null
+	fi
+
+
+else
+	if [ ! -d ${DB} ]; then
+		echo "Error: ${DB} is not a directory" >&2
+		usage
+	fi
+
+	# silently, check we're in the right year...
+	(cd $DB; git checkout -b $(fy) 2>/dev/null)
+
+	if [ "$1" == "commit" ]; then
+		(cd ${DB}; git add .; git commit -m"$(date +%F\ %T) - $*")
+
+	elif [ "$1" == "abort" ]; then
+		(cd ${DB}; git restore .)
+		
+	elif [ $1 == "-v" -o $1 == "value" ]; then
+		echo "${DB}"
+	else
+		usage $0
+	fi
+fi

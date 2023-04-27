@@ -19,23 +19,33 @@ public class Intentions extends ArrayList<Intention> {
 	public  Intentions insert( int i, Intention in ){add( i==-1 ? 0 : i, in ); return this;}
 
 	public enum Insertion {
-		UNKNOWN, PREPEND, HEADER, TAILER, APPEND
+		UNKNOWN, PREPEND, HEADER, TAILER, APPEND, NEXT, PREV
 	}
+	
+	private int  lastInsertion = 0;
+	public  int  lastInsertion() {return lastInsertion;}
+	private void lastInsertion( int i ) {lastInsertion = i;}
+	
 	public Intentions insert( Insertion ins, Intention intn ) {
 		switch (ins) {
 			case TAILER:  // default!
-			case UNKNOWN: insert( size()-1, intn ); break;
-			case PREPEND: insert(      0,   intn ); break;
-			case HEADER:  insert(      1,   intn ); break;
-			case APPEND:  insert( size(),   intn ); break;
+			case UNKNOWN: lastInsertion( size()-1 ); break;
+			case PREPEND: lastInsertion(        0 ); break;
+			case HEADER:  lastInsertion(        1 ); break;
+			case APPEND:  lastInsertion( size()   ); break;
+			case NEXT:    lastInsertion( lastInsertion() + 1 ); break;
+			case PREV:    lastInsertion( lastInsertion()     ); break;
 		}
+		insert( lastInsertion(), intn ); 
 		return this;
 	}
 	public static Insertion getInsertionType( String cmd ) {
-		if (cmd.equals( "header"  )) return Insertion.HEADER;
+		if (cmd.equals(  "header" )) return Insertion.HEADER;
 		if (cmd.equals( "prepend" )) return Insertion.PREPEND;
-		if (cmd.equals( "tailer"  )) return Insertion.TAILER;
-		if (cmd.equals( "append"  )) return Insertion.APPEND;
+		if (cmd.equals(  "tailer" )) return Insertion.TAILER;
+		if (cmd.equals(  "append" )) return Insertion.APPEND;
+		if (cmd.equals(    "next" )) return Insertion.NEXT;
+		if (cmd.equals(    "prev" )) return Insertion.PREV;
 		if (cmd.equals( "finally" )) return Insertion.APPEND;
 		return Insertion.UNKNOWN;
 	}

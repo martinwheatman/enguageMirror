@@ -1,0 +1,29 @@
+#!/bin/bash
+# fy - *simple* Financial Year generator
+
+if [ "$1" = "-h" ]; then
+	echo "Usage: $(basename $0) [YYYY MM [DD]]" >&2
+	exit 0
+fi
+
+nextFy() { echo        "${1}-$(((${1}%100)+1))";}
+prevFy() { echo "$((${1}-1))-$((${1}%100))"    ;}
+
+y=${1:-$(date +%Y)}
+m=${2:-$(date +%m)} # use the 'middle' of the year
+d=${3:-15} # use the 'middle' of the month
+
+# simple YY -> YYYY mapping -timelimited
+if   [ $y -lt  50 ]; then y=$(($y + $(date +%C)00))
+elif [ $y -lt 100 ]; then y=$(($y + $(( $(date +%C) - 1))00))
+fi
+
+if [[ "$LANGUAGE" == *"GB"* ]]; then
+	if   [ "$m" -le "3" ];            then prevFy $y
+	elif [ "$m" -ge "5" -o -z "$d" ]; then nextFy $y
+	elif [ "$d" -le "5" ];            then prevFy $y
+									  else nextFy $y
+	fi
+else
+	echo $y
+fi

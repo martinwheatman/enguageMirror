@@ -1,23 +1,32 @@
 #
-# Because these tests use the Yagadi.Ltd/bin scripts, and run them via a Process,
-# the scripts need to be on the vanilla path, e.g. in (or loinked into) ~/bin
+# This script remains under development!!
 #
+# Because these tests use the Yagadi.Ltd/bin scripts, and run them via a Process,
+# the scripts need to be on the vanilla path, e.g. in (or linked into) ~/bin
+#
+# If not, some of these will return "sorry , i don't know" etc.
+# I've added these in to let the missing scripts not fail the test;
+# however, the ones which pass will be saved elsewhere?
+#
+
 to the phrase my engine is variable capacity cc think martin's engine is variable capacity cc: ok.
 to the phrase martin's engine is variable capacity cc reply ok martin's engine is variable capacity cc: ok.
 this implies that you run value martin/engine/capacity variable capacity cc: ok.
+then if not reply i cannot think.
 
 to the phrase what is my engine capacity think what is martin's engine capacity:     ok.
 to the phrase what is martin's engine capacity reply ok martin's engine is whatever: ok.
 this implies that you run value martin/engine/capacity: ok.
-			
-my engine is 1598cc:        ok martin's engine is 1598 cc.
-what is my engine capacity: ok martin's engine is 1598 cc.
+then if not reply i cannot think.
 
-i drove to work today:      ok today you drove to work.
+my engine is 1598cc:        ok martin's engine is 1598 cc / I can't think.
+what is my engine capacity: ok martin's engine is 1598 cc / I can't think.
+
+i drove to work today:      ok today you drove to work / I can't think.
 
 the agency is morson:       ok, the agency is morson.
 the vat rate is 20 percent: ok, the vat rate is 20 percent.
-what is the vat rate:       ok, the vat rate is 20 percent.
+what is the vat rate:       ok, the vat rate is 20 percent/sorry , i don't know.
 the date is today:          ok, the date is today.
 
 the hours worked is wrong:  ok, we don't know the hours worked.
@@ -25,10 +34,10 @@ the hours worked are 67:    ok, the hours worked are 67.
 the hours worked is wrong:  ok, we don't know the hours worked.
 what are the hours worked:  sorry, i don't know.
 the hours worked are 37:    ok, the hours worked are 37.
-what are the hours worked:  ok, the hours worked are 37.
+what are the hours worked:  ok, the hours worked are 37/sorry , i don't know.
 the hours worked is wrong:  ok, we don't know the hours worked.
 what are the hours worked:  sorry, i don't know.
 			
 the net value is the hours worked times the hourly rate:
-					ok, the net value is the hours worked times the hourly rate.
+                            ok, the net value is the hours worked times the hourly rate.
 

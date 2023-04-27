@@ -11,7 +11,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Commands {
-	//static private Audit audit = new Audit( "commands" )
+	static private Audit audit = new Audit( "commands" );
 	
 	public Commands (String command) { cmd = command; }
 
@@ -52,11 +52,11 @@ public class Commands {
 				: rc == Response.N_DNK ?
 						Response.dnkStr()
 						: result;					  // chs
-	 	//Audit.LOG( "result="+ result +", rc="+ rc );
+	 	audit.debug( "rc="+ rc +", result="+ result +", err="+ errtxt );
 		r.answer( result );
 		r.format( result );
 		r.response( rc );
-		//audit.OUT( r );
+		audit.debug( "run result: "+ r );
 	 	return r;
 	}
 	
@@ -66,6 +66,7 @@ public class Commands {
 		Process p;
 		String result = "";
 		String errTxt = "";
+		audit.debug( "running: "+ cmdline );
 		ProcessBuilder pb = new ProcessBuilder( "bash", "-c", cmdline );
 		try {
 			p = pb.start();
