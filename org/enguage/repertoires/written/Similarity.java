@@ -18,9 +18,9 @@ public class Similarity {
 	private static boolean load( String name, String load, String from, String to ) {
 		boolean loaded = (null != Autoload.get( name ));
 		if (!loaded) {
-			String conceptName = Load.loadConcept( load, from, to );
-			if (!conceptName.equals( "" )) {
-				Autoload.put( conceptName );
+			String loadedConcept = Load.conceptFile( load, from, to );
+			if (!loadedConcept.equals( "" )) {
+				Autoload.put( loadedConcept );
 				loaded = true;
 		}	}
 		return loaded;

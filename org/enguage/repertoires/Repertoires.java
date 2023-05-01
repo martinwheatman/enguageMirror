@@ -21,27 +21,18 @@ public class Repertoires {
 	private static final Audit audit = new Audit( NAME );
 	
 	public  static final String         LOC = "rpt";
-
-	public  static final String  ENGINE_STR = "engine";
 	public  static final String   AUTOP_STR = "autopoiesis";
 	public  static final String AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
 	
-	public    static final Signs signs  = new Signs( "user"  );
-	protected static final Signs engine = new Signs( ENGINE_STR ).add( Engine.commands );
+	private static Signs signs = new Signs( "user" );
+	public  static Signs signs() {return signs;}
 	
-	/* A persistent Induction is used in the repertoire.
-	 */
-	private static final String FALSE = Boolean.toString( false );
-	private static final String  TRUE = Boolean.toString(  true );
+	private static Signs engine = new Signs( Engine.NAME ).add( Engine.commands );
+	private static Signs engine() {return engine;};
 	
-	private static Variable transformation = new Variable( "transformation", FALSE );
-	public  static  boolean  transformation() {
-		return transformation.get().equalsIgnoreCase( TRUE );
-	}
-	public static  boolean transformation( boolean b ) {
-		transformation.set( b ? TRUE : FALSE );
-		return b;
-	}
+	private static boolean transformation = false;
+	public  static boolean transformation() {return transformation;}
+	public  static void    transformation( boolean b ) {transformation = b;}
 
 	// entry point for Enguage, re-entry point for Intentions
 	public static Reply mediate( Utterance u ) {
@@ -62,7 +53,7 @@ public class Repertoires {
 		
 		Reply r = signs.mediate( u );
 		if (Response.N_DNU == r.response())
-			r = engine.mediate( u );
+			r = engine().mediate( u );
 	
 		audit.out( r );
 		return r;
@@ -83,8 +74,8 @@ public class Repertoires {
 					
 					signs.show();
 					
-				else if (name.equals( ENGINE_STR ))
-					engine.show();
+				else if (name.equals( Engine.NAME ))
+					engine().show();
 					
 				else if (name.equals( "all" )) {
 					engine.show();

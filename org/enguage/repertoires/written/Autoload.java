@@ -23,14 +23,13 @@ public class Autoload {
 	 */
 	private static int  ttl = 5;
 	public  static void ttl( String age ) {try {ttl = Integer.valueOf( age );} catch (Exception e){}}
-	public  static int  ttl() {return ttl;}
 	
 	/**
 	 * autoloading - Simple flag to prevent autoloading when autoloading.
 	 */
 	private static boolean autoloading = false;
-	public  static void    ing( boolean al ) {autoloading = al;}
-	public  static boolean ing() {return autoloading;}
+	private static void    ing( boolean al ) {autoloading = al;}
+	private static boolean ing() {return autoloading;}
 
 	private static TreeMap<String,Integer> autoloaded = new TreeMap<>();
 	public  static Integer get( String name ) {return autoloaded.get( name );}
@@ -50,10 +49,10 @@ public class Autoload {
 			Autoload.ing( true );
 			
 			Strings concepts = new Strings();
-			for (String candidate : Names.match( utterance ))
+			for (String candidate : Concept.match( utterance ))
 				if (null == autoloaded.get( candidate ))  // Candidate already loaded, OR
 				{
-					String conceptName = Load.loadConcept( candidate, null, null );     // just loaded so...
+					String conceptName = Load.conceptFile( candidate, null, null );     // just loaded so...
 					if (!conceptName.equals( "" )) {
 						concepts.add( conceptName );
 						autoloaded.put( conceptName, 0 ); // ...set new entry to age=0
@@ -69,26 +68,23 @@ public class Autoload {
 				
 			Autoload.ing( false );
 	}	}
-	public static void unload( String name ) {
+	public static void unloadNamed( String name ) {
 		audit.debug( ">>>>> Auto Unloading "+ name );
-		Repertoires.signs.remove( name );
+		Repertoires.signs().remove( name );
 		remove( name );
 	}
 	public static boolean unloadConditionally( String name ) {
 		if (containsKey( name )) {
-			unload( name );
+			unloadNamed( name );
 			return true;
 		}
 		return false;
 	}
-	public static void unload() {
-		
-		if (!Repertoires.transformation() &&
-			!Autoload.ing())
-		{
+	public static void unloadAged() {
+		if (!Autoload.ing()) {
 			Strings repsToRemove = new Strings();
 			
-			// create a list of repertoire to remove...
+			// first, create a list of repertoire to remove...
 			Set<Map.Entry<String,Integer>> set = autoloaded.entrySet();
 			Iterator<Map.Entry<String,Integer>> i = set.iterator();
 			while(i.hasNext()) {
@@ -101,10 +97,9 @@ public class Autoload {
 					autoloaded.put( repertoire, nextVal );
 			}
 			
-			// ...now do the removals...
+			// then, do the removals...
 			Iterator<String> ri = repsToRemove.iterator();
-			while (ri.hasNext()) unload( ri.next() );
-
+			while (ri.hasNext()) unloadNamed( ri.next() );
 	}	}
 	public static void main( String[] args ) {
 		Audit.on();

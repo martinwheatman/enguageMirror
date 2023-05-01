@@ -149,7 +149,7 @@ public class Sign {
 				voiced = new Sign()
 						.pattern( new Frags( args.toString() ))
 						.concept( Repertoires.AUTOPOIETIC );
-				Repertoires.signs.insert( voiced );
+				Repertoires.signs().insert( voiced );
 				
 			} else if (cmd.equals( "split" )) {
 				

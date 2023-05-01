@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.written.Autoload;
-import org.enguage.repertoires.written.Load;
+import org.enguage.repertoires.written.Concept;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.pattern.Frag;
@@ -67,7 +67,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			Sign s = me.getValue();
 			if (s.concept().equals(simpleFilter)) {
 				String fname = cname==null ? s.pattern().toFilename() : cname;
-				if (s.toFile( Load.spokenName( fname ))) {
+				if (s.toFile( Concept.spokenName( fname ))) {
 					s.concept( fname );
 					rc = true;
 		}	}	}
@@ -98,7 +98,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public  void reset( Strings reply ) { // called from Enguage.mediateSingle()
 		audit.in( "reset", "r="+ reply );
 		if (reply.beginsIgnoreCase( Response.dnu() )) {
-			Repertoires.signs.ignoreNone();
+			Repertoires.signs().ignoreNone();
 		}
 		audit.out();
 	}
@@ -110,12 +110,12 @@ public class Signs extends TreeMap<Integer,Sign> {
 			|| (   Utterance.previous().get(       0 ).equals( "no" ) // subsequent times
 			   	&& Utterance.previous().copyAfter( 0 ).equals( cmd  ) // no, ...
 			)
-			&& Repertoires.signs.lastFoundAt() != Integer.MAX_VALUE)
+			&& Repertoires.signs().lastFoundAt() != Integer.MAX_VALUE)
 		{
 			firstMatch( true );
-			Repertoires.signs.ignore( Repertoires.signs.lastFoundAt() );
+			Repertoires.signs().ignore( Repertoires.signs().lastFoundAt() );
 		}
-		audit.out( "Now avoiding: "+ Repertoires.signs.ignore() );
+		audit.out( "Now avoiding: "+ Repertoires.signs().ignore() );
 	}
 	
 	private void saveForIgnore( int complexity ) {

@@ -18,8 +18,7 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 
 public class Utterance {
-	//static private Audit audit = new Audit( "Utterance" );
-
+	
 	private static Strings previous = new Strings();
 	public  static Strings previous() { return previous; }
 	public  static Strings previous( Strings sa ) { return previous = sa; }
@@ -39,10 +38,9 @@ public class Utterance {
 	 * - extensible - at runtime. See sgai 2016 paper...
 	 * Further, taught word phrases to determine tense: will ~, ~s, ~ed; plurality?
 	 */
-	public Utterance( Strings orig ) { this( orig, null ); }
-	public Utterance( Strings orig, Strings prevAnswer ) {
+	public Utterance( Strings orig ) {
 		representamen = orig;
-		expanded =	Colloquial.applyIncoming(       // I'm => I am => _user is
+		expanded  =	Colloquial.applyIncoming(       // I'm => I am => _user is
 						new Strings( orig ).normalise() // "i am/." becomes "i/am/."
 					).decap()                          // deref anything in the environment?
 					.contract( "=" );                  // [ name, =, "value" ] => [ name="value" ]
@@ -100,14 +98,14 @@ public class Utterance {
 	// test code...
 	public static void test( Sign s, String utterance ) { test( s, utterance, null ); }
 	public static void test( Sign s, String utterance, Strings prevAns ) {
-		Utterance u = new Utterance( new Strings( utterance ), prevAns );
+		Utterance u = new Utterance( new Strings( utterance ));
 		Attributes a = u.match(s);
 		Audit.log( "utterance is: "
 				+ u.toString() +"\n"
 				+ (null == a ? "NOT matched." : "matched attrs is: "+ a ));
 	}
 	
-	public static void main( String arg[]) {
+	public static void main( String[] arg) {
 		
 		Overlay.Set( Overlay.Get());
 		Overlay.attach( "Utternace" );

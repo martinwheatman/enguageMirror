@@ -4,20 +4,36 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import org.enguage.Enguage;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.util.Strings;
+import org.enguage.util.sys.Fs;
 
 /** Concepts is: the list of concept names; and,
  *               a name-to-concept 'match' function.
  */
-public class Names {
-	private Names() {}
+public class Concept {
+	private Concept() {}
 	
-	public  static  final String    NAME = "concepts";
+	public  static final String    NAME = "concepts";
 	
 	private static TreeSet<String> names = new TreeSet<>();
 	public  static  void  remove( String name ) {names.remove( name );}
 	public  static  void     add( String name ) {names.add(    name );}
 	public  static  void  addAll( Strings nms ) {names.addAll(  nms );}
+	
+	private static boolean isFlatpak = false;
+	public  static void    isFlatpak( boolean b ) {isFlatpak = b;}
+
+	private static final String rwRpts() {return Fs.root() +Repertoires.LOC+ File.separator;}
+	public  static final String roRpts( String prefix ) {
+		return prefix+ Enguage.RO_SPACE +Repertoires.LOC+ File.separator;
+	}
+	public  static  String writtenName( String name ) {
+		return roRpts( isFlatpak ? "/apps/":"" )+ name +".txt";
+	}
+	public  static  String spokenName( String s ) {return rwRpts()+ s +".txt";}
+	public  static  String deleteName( String s ) {return rwRpts()+ s +".del";}
 	
 	public  static Strings tree( String base, String location ) {
 		Strings  names = new Strings();
@@ -29,8 +45,7 @@ public class Names {
 				names.addAll( tree( base, file ));
 		return names;
 	}
-
-	public static void addConcepts( String[] names ) {
+	public static void addNames( String[] names ) {
 		if (names != null) for ( String name : names ) { // e.g. name="rpt/hello.txt"
 			String[] components = name.split( "\\." );
 			if (components.length > 1 && components[ 1 ].equals("txt"))

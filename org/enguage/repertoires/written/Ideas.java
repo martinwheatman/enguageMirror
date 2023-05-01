@@ -17,8 +17,8 @@ public class Ideas {
 		if (cmd.equals( "saveAs" )) {
 			String name = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Saving concepts as "+ name );
-			Names.add( name );
-			rc = Repertoires.signs.saveAs(
+			Concept.add( name );
+			rc = Repertoires.signs().saveAs(
 								Repertoires.AUTOPOIETIC,
 								name
 				 ) ? Response.success() : Response.failure();
@@ -26,9 +26,9 @@ public class Ideas {
 		} else if (cmd.equals( "delete" )) {
 			String concept = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Deleting "+ concept +" concept");
-			Names.remove( concept );
+			Concept.remove( concept );
 			Load.delete( concept );
-			Repertoires.signs.remove( concept );
+			Repertoires.signs().remove( concept );
 			
 		} else if (cmd.equals( "load" )) {
 			/* load is used by create, delete, ignore and restore to
@@ -39,7 +39,7 @@ public class Ideas {
 			 
 		} else if (cmd.equals( "unload" )) {
 			for (String file : cmds)
-				Autoload.unload( file );
+				Autoload.unloadNamed( file );
 		/*
 		 *else if (cmd.equals( "reload" )) 
 		 *	Strings files = cmds.copyAfter( 0 )

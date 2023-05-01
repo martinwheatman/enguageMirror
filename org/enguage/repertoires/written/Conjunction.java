@@ -25,9 +25,9 @@ public class Conjunction {
 			if (!found) {
 				if (!ss.isEmpty()) ss.add( conj );
 				ss.addAll( tmp );
-				found = !Names.match(tmp).isEmpty();
+				found = !Concept.match(tmp).isEmpty();
 			
-			} else if (Names.match(tmp).isEmpty()) {
+			} else if (Concept.match(tmp).isEmpty()) {
 				ss.add( conj );
 				ss.addAll( tmp );
 				

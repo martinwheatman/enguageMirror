@@ -23,7 +23,7 @@ public final class Engine {
 	
 	private Engine() {}
 	
-	public  static final String NAME = Repertoires.ENGINE_STR;
+	public  static final String NAME = "engine";
 	private static final Audit audit = new Audit( NAME );
 
 	public  static final String IGNORE_STR = "ignore";
@@ -148,7 +148,7 @@ public final class Engine {
 			Overlay.reStartTxn();
 				
 		} else if (cmd.equals( IGNORE_STR )) {
-			Repertoires.signs.ignore( cmds );
+			Repertoires.signs().ignore( cmds );
 		
 		} else if (cmd.equals( "imagined" )) {
 			Enguage.get().imagined( true );

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.enguage.repertoires.Engine;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Variable;
@@ -115,7 +116,7 @@ public class Intention {
 			case N_RUN        : return RUN;
 			case N_THEN_RUN   : return THEN_RUN;
 			case N_ELSE_RUN   : return ELSE_RUN;
-			case N_ALLOP      : return Repertoires.ENGINE_STR;
+			case N_ALLOP      : return Engine.NAME;
 			case N_AUTOP      : return Repertoires.AUTOP_STR;
 			case N_CREATE     : return NEW;
 			case N_PREPEND    : return PREPEND;
@@ -227,7 +228,7 @@ public class Intention {
 		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
 		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		Reply tmpr = Repertoires.mediate( new Utterance( thought, new Strings(r.a.toString()) )); // just recycle existing reply
+		Reply tmpr = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
 		
 		if (r.a.isAppending())
 			r.a.add( tmpr.a.toString() );
@@ -354,7 +355,7 @@ public class Intention {
 		a.add( new Intention( N_APPEND, ELSE_REPLY +" \"two three four\""   ));
 		a.add( new Intention( N_APPEND, REPLY      +" \"three four\"" ));
 		test( r, a );
-		Audit.log( Repertoires.signs.toString() );
+		Audit.log( Repertoires.signs().toString() );
 		Audit.log( r.toString());
 		
 		audit.title( "sign self-build II... add pairs of attributes" );
@@ -373,10 +374,10 @@ public class Intention {
 		// ...if not reply EXECP REPLY
 		Sign.latest().insert( Intentions.Insertion.HEADER, new Intention( N_ELSE_REPLY, "two three four" ));
 		
-		Repertoires.signs.insert( Sign.latest() );
+		Repertoires.signs().insert( Sign.latest() );
 		r.answer( Response.yes().toString() );
 
 		
-		Audit.log( Repertoires.signs.toString() );
+		Audit.log( Repertoires.signs().toString() );
 		Audit.log( r.toString());
 }	}

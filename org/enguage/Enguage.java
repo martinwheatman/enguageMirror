@@ -5,7 +5,7 @@ import java.io.File;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.written.Autoload;
 import org.enguage.repertoires.written.Conjunction;
-import org.enguage.repertoires.written.Names;
+import org.enguage.repertoires.written.Concept;
 import org.enguage.signs.Config;
 import org.enguage.signs.objects.list.Item;
 import org.enguage.signs.objects.space.Overlay;
@@ -48,7 +48,7 @@ public class Enguage {
 	public  Enguage() {this( RW_SPACE );}
 	public  Enguage( String root ) {
 		Fs.root( root );
-		Names.addConcepts( Assets.listConcepts() );
+		Concept.addNames( Assets.listConcepts() );
 		Config.load( "config.xml" );
 		Audit.resume();
 	}
@@ -61,7 +61,7 @@ public class Enguage {
 		Overlay.attach( uid );
 		Where.clearLocation();
 		Item.resetFormat();
-		Repertoires.signs.firstMatch( true );
+		Repertoires.signs().firstMatch( true );
 		
 		if (Reply.isUnderstood()) // from previous interpretation!
 			Overlay.startTxn(); // all work in this new overlay
@@ -73,23 +73,23 @@ public class Enguage {
 
 		if (imagined()) {
 			Overlay.abortTxn();
-			Repertoires.signs.reset( r.toStrings() );
+			Repertoires.signs().reset( r.toStrings() );
 			
 		} else if (Reply.isUnderstood()) {
 			Overlay.finishTxn();
-			Repertoires.signs.reset( r.toStrings() );
+			Repertoires.signs().reset( r.toStrings() );
 			
 		} else {
 			// really lost track?
 			audit.debug( "utterance is not understood, forgetting to ignore: "
-			             +Repertoires.signs.ignore().toString() );
-			Repertoires.signs.ignoreNone();
+			             +Repertoires.signs().ignore().toString() );
+			Repertoires.signs().ignoreNone();
 			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
 		}
 
 		// auto-unload here - autoloading() in Repertoire.interpret() 
 		// asymmetry: load as we go; tidy-up once finished
-		Autoload.unload();
+		Autoload.unloadAged();
 
 		reply = Reply.say().appendAll( r.toStrings());
 		Reply.say( null );

@@ -103,7 +103,7 @@ public class Config {
 		
 		if (Enguage.isVerbose()) {
 			Audit.log( "Initialisation in: " + (now - then) + "ms" );
-			Audit.log( Repertoires.signs.stats() );
+			Audit.log( Repertoires.signs().stats() );
 		}
 		
 		return audit.out( rc );
