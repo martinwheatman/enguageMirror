@@ -22,24 +22,22 @@ import com.yagadi.Assets;
 
 public class Enguage {
 	
-	private static String copyright = "Martin Wheatman, 2001-4, 2011-22";
+	private static final String COPYRIGHT = "Martin Wheatman, 2001-4, 2011-23";
+	public  static final String RO_SPACE  = Assets.LOCATION;
+	public  static final String RW_SPACE  = "var"+ File.separator;
 
 	private static Enguage enguage;
 	public  static Enguage get() {return enguage;}
 	public  static void    set( Enguage e ) {enguage = e;}
 	
-	public  static final String      RO_SPACE  = Assets.LOCATION;
-	public  static final String      RW_SPACE  = "var"+ File.separator;
-	
 	private static Audit     audit = new Audit( "Enguage" );
-	public  static Overlay       o = Overlay.Get();
 
-	private static Shell   shell   = new Shell( "Enguage", copyright );
+	private static Shell   shell   = new Shell( "Enguage", COPYRIGHT );
 	public  static Shell   shell() {return shell;}
 	
-	private static  boolean verbose = false;
-	public  static  boolean isVerbose() {return verbose;}
-	public  static  void    verboseIs(boolean b) {verbose = b;}
+	private static boolean verbose = false;
+	public  static boolean isVerbose() {return verbose;}
+	public  static void    verboseIs(boolean b) {verbose = b;}
 	
 	private boolean imagined = false;
 	public  boolean imagined() {return imagined;}

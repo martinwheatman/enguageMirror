@@ -20,8 +20,8 @@ public class Overlay {
 	static               Audit audit = new Audit( "Overlay" );
 	public static  final int      id = 188374473; //Strings.hash( "overlay" );
 	
-	static private final String DELETE_CH = "!";  // RENAME_CH = "^";
-	static private final String  DETACHED = null;
+	private static final String DELETE_CH = "!";  // RENAME_CH = "^";
+	private static final String  DETACHED = null;
 	
 	public static  final String   DEFAULT = "Enguage"; //"sofa";
 	public static  final int  MODE_READ   = 0; // "r";
@@ -31,9 +31,9 @@ public class Overlay {
 	//public static final int MODE_RENAME = 4; // "m"; 
 	
 	// manage singleton
-	static private Overlay o = null;
-	public static  Overlay Get() { return null != o ? o : (o = new Overlay()); }
-	public static  void    Set( Overlay overlay ) { o = overlay; }
+	private static Overlay overlay = new Overlay();
+	public  static Overlay get() { return overlay; }
+	public  static void    set( Overlay o ) {overlay = o;}
 	
 	private Path p;
 	String  path() { return p.toString(); }
@@ -54,15 +54,15 @@ public class Overlay {
 	}
 	
 	// --- object space - just write directly into Fs.root()
-	static private String root = "";
+	private static String root = "";
 	public static  void   root( String uid ) { new File( root = Fs.root()+ uid +File.separator ).mkdirs(); }
 	
 	// --- Series management
-	static private String series = DETACHED;
-	static private void   series( String nm ) { if (nm != null) series = nm; }
-	static private int    count() {
+	private static String series = DETACHED;
+	private static void   series( String nm ) { if (nm != null) series = nm; }
+	private static int    count() {
 		int n = 0;
-		String candidates[] = new File( root ).list();
+		String[] candidates = new File( root ).list();
 		if (candidates == null)
 			n = -1;
 		else
@@ -74,20 +74,20 @@ public class Overlay {
 		return n;
 	}
 	
-	static private int     number = -1; // 0, 1, ..., n => 1+n; -1 == detached
+	private static int     number = -1; // 0, 1, ..., n => 1+n; -1 == detached
 	public static  int     number() { return number; }
 	
 	
 	public static  int     attached = 0;
 	public static  boolean attached() {return attached > 0;}
 	
-	static private String  nth( int vn ) { return root + vn;}
+	private static String  nth( int vn ) { return root + vn;}
 	
 	public static void attach( String userId ) {
 		attached++;
 		if (attached==1) {
 			root( userId );
-			Set( Get()); // set singleton
+			set( get()); // set singleton
 			String cwd = System.getProperty( "user.dir" );
 			series( new File( cwd ).getName() );
 			Link.fromString( root + series, cwd );
@@ -143,11 +143,11 @@ public class Overlay {
 	//          - if rename found (e.g. old^new), change return the old NAME.
 	public static String fname( String vfname, int modeChs ) {
 		String fsname = vfname; // pass through!
-		if (attached() && o.isOverlaid( vfname ))
+		if (attached() && overlay.isOverlaid( vfname ))
 			switch (modeChs) {
-				case MODE_READ   : fsname = o.find( vfname ); break;
-				case MODE_DELETE : fsname = o.delCandidate( vfname, number() - 1 ); break;
-				default          : fsname = o.topCandidate( vfname ); // MODE_WRITE | _APPEND
+				case MODE_READ   : fsname = overlay.find( vfname ); break;
+				case MODE_DELETE : fsname = overlay.delCandidate( vfname, number() - 1 ); break;
+				default          : fsname = overlay.topCandidate( vfname ); // MODE_WRITE | _APPEND
 			}
 		return fsname;
 	}

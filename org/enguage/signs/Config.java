@@ -2,12 +2,10 @@ package org.enguage.signs;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.written.Autoload;
 import org.enguage.repertoires.written.Load;
 import org.enguage.signs.interpretant.Commands;
@@ -29,6 +27,9 @@ public class Config {
 	
 	private static final Audit audit = new Audit( "Config" );
 	private static final String NAME = "config";
+	
+	private static boolean complete = false;
+	public  static boolean complete() {return complete;}
 	
 	private static boolean setValues( String name, String value ) {
 		     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
@@ -65,12 +66,10 @@ public class Config {
 				Variable.set( name,  value );
 	}	}	
 	private static void loadTag( Tag concepts ) {
-		Repertoires.transformation( true );
 		for (Tag t : concepts.content())
 			if ( t.name.equals( "concept" ) &&
 			    !t.attribute( "op" ).equals( "ignore" ))
 				Load.load( t.attribute( "id" ));
-		Repertoires.transformation( false );
 	}
 	public static int load( String fname ) {
 		int rc = -1;
@@ -83,28 +82,13 @@ public class Config {
 				audit.error( "config not found" );
 		}
 		
-		long then = new GregorianCalendar().getTimeInMillis();
-		
-		if (Enguage.isVerbose())
-			Audit.log(
-				Enguage.shell().copyright() +
-				"\nEnguage main(): odb root is: " + Fs.root()
-			);
-
 		Tag t = new Tag( new Strings( content ).listIterator());
-
 		if ((t = t.findByName( NAME )) != null) {
 			setContext( t.attributes() );
 			loadTag( t.findByName( "concepts" ));
 			rc = content.length();
 		}
 
-		long now = new GregorianCalendar().getTimeInMillis();
-		
-		if (Enguage.isVerbose()) {
-			Audit.log( "Initialisation in: " + (now - then) + "ms" );
-			Audit.log( Repertoires.signs().stats() );
-		}
-		
+		complete = true;
 		return audit.out( rc );
 }	}

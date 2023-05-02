@@ -154,7 +154,7 @@ public class Where {
 		locatorIs( "at" );
 	}
 	public static void main( String[] args) {
-		Overlay.Set( Overlay.Get());
+		Overlay.set( Overlay.get());
 		Overlay.attach( NAME );
 		testDoLocators();
 }	}

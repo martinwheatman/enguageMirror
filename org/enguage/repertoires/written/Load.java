@@ -23,7 +23,6 @@ import org.enguage.util.Terminator;
 import com.yagadi.Assets;
 
 public class Load {
-	
 	private Load() {}
 	
 	private static Audit audit = new Audit( "Load" );

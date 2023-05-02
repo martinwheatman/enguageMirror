@@ -132,7 +132,7 @@ public class Function {
 			eval.toString() : "The "+ fn +" of "+ actuals +" is "+ eval.toString() +"\n" );
 	}
 	static public void main( String args[]) {
-		Overlay.Set( Overlay.Get());
+		Overlay.set( Overlay.get());
 		Overlay.attach( NAME );
 		
 		Response.dnk( "I do not know\n" );

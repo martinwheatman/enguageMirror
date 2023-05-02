@@ -30,26 +30,20 @@ public class Repertoires {
 	private static Signs engine = new Signs( Engine.NAME ).add( Engine.commands );
 	private static Signs engine() {return engine;};
 	
-	private static boolean transformation = false;
-	public  static boolean transformation() {return transformation;}
-	public  static void    transformation( boolean b ) {transformation = b;}
-
 	// entry point for Enguage, re-entry point for Intentions
 	public static Reply mediate( Utterance u ) {
 		
 		if ( "".equals( u.toString() )) return new Reply();
 		
-		audit.in( "mediate", "\""+ u.toString() +"\" trans="+ transformation());
+		audit.in( "mediate", "\""+ u.toString() +"\"" );
 			
-		if (!transformation()) {
-			Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
-			
-			/* At this point we need to rebuild utterance with the (auto)loaded concept,
-			 * with any colloquialisms it may have loaded...
-			 * Needs to be expanded in case we've expanded any parameters (e.g. whatever)
-			 */
-			u = new Utterance( u.expanded() );
-		}
+		Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
+		
+		/* At this point we need to rebuild utterance with the (auto)loaded concept,
+		 * with any colloquialisms it may have loaded...
+		 * Needs to be expanded in case we've expanded any parameters (e.g. whatever)
+		 */
+		u = new Utterance( u.expanded() );
 		
 		Reply r = signs.mediate( u );
 		if (Response.N_DNU == r.response())

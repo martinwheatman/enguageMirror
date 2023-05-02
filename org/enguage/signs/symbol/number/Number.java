@@ -552,7 +552,7 @@ public class Number {
 		combineTest( "-~3", "-~3", "about 6 less", "-~6" );
 		Audit.decr();
 		
-		Overlay.Set( Overlay.Get());
+		Overlay.set( Overlay.get());
 		Overlay.attach( "Number" );
 		
 		/* factorial( n ): n times the factorial of n minus 1.

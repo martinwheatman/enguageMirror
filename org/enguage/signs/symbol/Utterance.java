@@ -107,7 +107,7 @@ public class Utterance {
 	
 	public static void main( String[] arg) {
 		
-		Overlay.Set( Overlay.Get());
+		Overlay.set( Overlay.get());
 		Overlay.attach( "Utternace" );
 
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");

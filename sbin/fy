@@ -1,7 +1,7 @@
 #!/bin/bash
 # fy - *simple* Financial Year generator
 
-if [ "$1" = "-h" ]; then
+if [ "$1" = "-h" -o "$1" = "--help" ]; then
 	echo "Usage: $(basename $0) [YYYY MM [DD]]" >&2
 	exit 0
 fi
@@ -9,8 +9,8 @@ fi
 nextFy() { echo        "${1}-$(((${1}%100)+1))";}
 prevFy() { echo "$((${1}-1))-$((${1}%100))"    ;}
 
-y=${1:-$(date +%Y)}
-m=${2:-$(date +%m)} # use the 'middle' of the year
+y=${1:-$(date +%Y)} # default to the current year
+m=${2:-$(date +%m)} # default to the current month
 d=${3:-15} # use the 'middle' of the month
 
 # simple YY -> YYYY mapping -timelimited

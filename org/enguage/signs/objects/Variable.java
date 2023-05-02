@@ -26,7 +26,7 @@ public class Variable {
 	static private       Audit audit = new Audit( "Variable" );
 	
 	private static TreeMap<String,String> cache = encache();
-	private static TreeMap<String,String> encache() { return encache( Overlay.Get() );}
+	private static TreeMap<String,String> encache() { return encache( Overlay.get() );}
 	private static TreeMap<String,String> encache( Overlay o ) {
 		//audit.in( "encache", Ospace.location());
 		cache = new TreeMap<String,String>();

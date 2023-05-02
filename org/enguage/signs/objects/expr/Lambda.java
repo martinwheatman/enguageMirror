@@ -10,18 +10,18 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Lambda {
-	static private Audit audit = new Audit( "Lambda" );
+	private static Audit audit = new Audit( "Lambda" );
 
 	private static boolean match( Strings names, Strings values ) {
 		boolean rc = false;
 		audit.in( "match", "names="+ names +", values="+ values.toString( Strings.DQCSV ) );
 		if (names.size() == values.size()) {
 			rc = true;
-			ListIterator<String> ni = names.listIterator(),
-			                     vi = values.listIterator();
+			ListIterator<String> ni = names.listIterator();
+			ListIterator<String> vi = values.listIterator();
 			while (rc && ni.hasNext()) {
-				String n = ni.next(),
-				       v = vi.next();
+				String n = ni.next();
+				String v = vi.next();
 				// if name is numeric we must match this value
 				audit.debug( "Matching "+ n +", "+ v );
 				rc = Strings.isNumeric( n ) ? // name=1 => value=1 !
@@ -44,7 +44,7 @@ public class Lambda {
 	}
 	public Lambda( Function fn, Strings values ) { // existing/find
 		audit.in( "ctor", "finding: "+ fn +"( "+ values +" )" );
-		Strings onames = Enguage.o.list( "." );
+		Strings onames = Overlay.get().list( "." );
 		if (null != onames) for (String formals : onames) 
 			if (match( (signature = new Strings( formals, ',' )), values )
 				&& !(body = new Value( formals, fn.name() ).getAsString()).equals(""))
@@ -55,12 +55,12 @@ public class Lambda {
 	}
 	
 	private Strings signature = null;
-	public  Strings signature() { return signature; }
+	public  Strings signature() {return signature;}
 	
-	private String body = "";
-	public  String body() { return body; }
+	private String  body = "";
+	public  String  body() {return body;}
 	
-	public String toString() { return "( "+ signature.toString( Strings.CSV ) +" ): {"+ body +"}";}
+	public  String  toString() {return "( "+ signature.toString( Strings.CSV ) +" ): {"+ body +"}";}
 	
 	//
 	// === test code ===
@@ -72,8 +72,8 @@ public class Lambda {
 			audit.debug( "matching "+ names +" with "+ values +" passed" );
 		audit.out();
 	}
-	static public void main( String args[] ) {
-		Overlay.Set( Overlay.Get());
+	public static void main( String[] args ) {
+		Overlay.set( Overlay.get());
 		Overlay.attach( "Lambda" );
 		
 		Variable.set( "x",   "1" );
@@ -85,7 +85,7 @@ public class Lambda {
 		matchTest(  "x 1", "1 2", false ); // 1 != 2
 		Audit.log(  "match tests PASSED" );
 			
-		//Audit.on();
+		//Audit.on()
 		Audit.log( "Creating a blank function, called 'sum'..." );
 		Function f = new Function( "sum" );
 		Audit.log( "Creating a new lambda..." );
