@@ -40,7 +40,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public  Signs insert( Sign insertMe ) {
 		int i = 0;
 		int c = insertMe.cplex();
-		while (i < 99 && containsKey( c + i )) {clashes++; i++;}
+		// crikey - decending order to put newset first! From old C coding!!
+		while (i > -99 && containsKey( c + i )) {clashes++; i--;}
 		if (i < 99) { // Arbitrary limit...
 			total++;
 			put( c + i, insertMe );

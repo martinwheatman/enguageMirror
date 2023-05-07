@@ -83,12 +83,12 @@ public class Audit {
 		indent.incr();
 	}
 
-    public String OUT() {return OUT( "" );}
+    public String OUT() {return OUT( (String) null );}
     public String OUT( String result ) {
     	indent.decr();
 		LOG( "OUT "+ className
 				+ (funcNames.size()>1?"."+ funcNames.remove( 0 ) +"()" : "")
-				+ (result==null || result.contentEquals("") ? "" : " => "+ result)
+				+ (result==null ? "" : " => '"+ result +"'" )
 			);
 		return result;
     }

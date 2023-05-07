@@ -7,4 +7,9 @@ On "attribute get ENT ATTR":
 	then, reply "ok, the ATTR of ENT is ...".
 
 # attribute unset martin name X
-# attribute isset martin name X
+
+On "attribute isSet ENT ATTR":
+	perform "value isSet ENT ATTR";
+	if so, reply "yes, the ATTR of ENT is set.";
+	reply "no, the ATTR of ENT is not set".
+

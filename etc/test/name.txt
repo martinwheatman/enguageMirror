@@ -1,0 +1,3 @@
+what is my name:    i don't know.
+my name is martin:  ok, you're martin.
+what is my name:    your name is martin.
