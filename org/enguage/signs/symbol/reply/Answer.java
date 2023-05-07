@@ -4,10 +4,10 @@ import org.enguage.util.Strings;
 
 public class Answer {
 	
-	private static final String defaultPlaceholder = "whatever";
-
 	public Answer() {}
 	
+	private static final String defaultPlaceholder = "whatever";
+
 	/** Answer - 
 	 * e.g. [ "a cup of coffee", "a packet of biscuits" ]
 	 */

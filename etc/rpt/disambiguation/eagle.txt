@@ -1,3 +1,3 @@
-On "the eagle has landed", reply "so, you're talking about apollo 11".
-On "the eagle has landed", reply "so, you're talking about the novel".
 On "the eagle has landed", reply "so, are you an ornithologist".
+On "the eagle has landed", reply "so, you're talking about the novel".
+On "the eagle has landed", reply "so, you're talking about apollo 11".

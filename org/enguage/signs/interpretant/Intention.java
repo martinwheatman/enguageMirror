@@ -241,21 +241,17 @@ public class Intention {
 		                 && r.response() == Response.N_FAIL );
 	}
 	
-	private String formatAnswer( String rc, String method ) {
+	private String formatAnswer( String rc ) {
 		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
 				new When( rc ).rep( Response.dnkStr() ).toString()
-				: rc.equals( "" ) &&
-				  (method.equals( "get" ) ||
-			       method.equals( "getAttrVal" )) ?
-					Response.dnkStr()
-					: rc.equals( Shell.FAIL ) ?
-						Response.failureStr()
-						: rc.equals( Shell.SUCCESS ) ?
-							Response.successStr()
-							: rc;
+				: rc.equals( Shell.FAIL ) ?
+					Response.failureStr()
+					: rc.equals( Shell.SUCCESS ) ?
+						Response.successStr()
+						: rc;
 	}
 
-	private Reply perform( Reply r ) { return perform( r, false ); }
+	private Reply perform( Reply r ) {return perform( r, false );}
 	private Reply perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
 		Strings cmd = formulate( r.a.toString(), true ); // DO expand, UNIT => unit='non-null value'
@@ -265,7 +261,17 @@ public class Intention {
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
 		Strings rawAnswer = Sofa.interpret( new Strings( cmd ));
-		if (!ignore) r.answer( formatAnswer( rawAnswer.toString(), cmd.get( 1 )));
+		if (!ignore) {
+			String method = cmd.get( 1 );
+			if (rawAnswer.isEmpty() &&
+				(method.equals( "get" ) ||
+				 method.equals( "getAttrVal" )) )
+			{
+				r.format( Response.dnkStr());
+				r.response( Response.N_DNK );
+			} else
+				r.answer( formatAnswer( rawAnswer.toString()));
+		}
 
 		return r; //(Reply) audit.out( r )//
 	}

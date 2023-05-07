@@ -1,0 +1,9 @@
+On "what is _user_s name":
+	is the name of me set;
+	if not, reply "I don't know";
+	get the name of me;
+	reply "your name is ...".
+	
+On "_user_s name is NAME":
+	set the name of me to NAME;
+	reply "ok, you are NAME".

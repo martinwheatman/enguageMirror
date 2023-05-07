@@ -32,10 +32,11 @@ public class Value {
 	// members
 	// TODO: cache items[]? Lock file - this code is not suitable for IPC? Exists in constructor?
 	// set() methods return change in number of items
-	public boolean exists() {        return Fs.exists(         name( ent, attr, Overlay.MODE_READ )); }
+	public boolean exists() {        return Fs.exists(         name( ent, attr, Overlay.MODE_READ ));}
 	public boolean set( String val ){return Fs.stringToFile(   name( ent, attr, Overlay.MODE_WRITE ), val );}
-	public void    unset() {                Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE )); }
-	public String  getAsString(){    return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ )); }
+	public void    unset() {                Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE ));}
+	public String  getAsString(){    return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ ));}
+	public boolean isSet() {return !getAsString().equals("");}
 	
 	public  boolean equals( String val ) { return getAsString().equals( val ); }
 	private boolean contains( String val ) { return getAsString().contains( val ); }
@@ -119,6 +120,9 @@ public class Value {
 				
 				else if (cmd.equals( "unset" ))
 					v.unset();
+				
+				else if (cmd.equals( "isSet" ))
+					rc = v.isSet() ? Shell.SUCCESS : Shell.FAIL;
 				
 				else if (cmd.equals( "delete" ))
 					v.ignore();

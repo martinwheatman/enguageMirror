@@ -46,5 +46,7 @@ On "VAR gets set to PHRASE-VALUE", set VAR to VALUE.
 
 #################################
 # ENTITY's ATTRIBUTE
-On "set the ATTRIBUTE of ENTITY to PHRASE-VALUE", attribute set ENTITY ATTRIBUTE VALUE.
-On "get the ATTRIBUTE of ENTITY", attribute get ENTITY ATTRIBUTE.
+On "set the ATTRIBUTE of ENTITY to PHRASE-VALUE",
+                                      attribute   set ENTITY ATTRIBUTE VALUE.
+On "get the ATTRIBUTE of ENTITY",     attribute   get ENTITY ATTRIBUTE.
+On "is  the ATTRIBUTE of ENTITY set", attribute isSet ENTITY ATTRIBUTE.
