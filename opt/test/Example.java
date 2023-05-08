@@ -19,11 +19,14 @@ public class Example {
 	private static final Audit          audit = new Audit( "Example" );
 
 	private static final String COMMENT_START = "#";
+	private static final String    TEST_START = "]";
 	private static final String     LINE_TERM = ".";
 	private static final String     IN_UR_SEP = ":";
 	private static final String  IN_REPLY_SEP = "/"; // doesn't like '|'
 	private static final String      TEST_DIR = "etc/test/";
+	private static final String       REP_DIR = "etc/rpt/";
 	private static final String      TEST_EXT = ".txt";
+	private static final String       REP_EXT = ".rpt";
 	private static final String   TEST_PROMPT = "\nuser> ";
 	private static final String  REPLY_PROMPT = "enguage> ";
 	
@@ -81,7 +84,7 @@ public class Example {
 				audit.FATAL( "Too many replies ("+ replies.length +") provided" );
 	}	}
 
-	private static boolean runTestFile(String fname) {
+	private static boolean runTestFile( String fname, boolean comments ) {
 		boolean rc = true;
 		
 		File f = new File( fname );
@@ -90,9 +93,11 @@ public class Example {
 				StringBuilder sb = new StringBuilder();
 				while (file.hasNextLine()) {
 					String line = file.nextLine();
-					String[] bits = line.split( COMMENT_START );
-					if (bits.length > 0) {
-						line = " " + bits[0].trim();
+					String[] bits = line.split( comments ? TEST_START : COMMENT_START );
+					if ((!comments && bits.length > 0) ||
+							(comments && bits.length > 1))
+					{
+						line = " " + bits[comments?1:0].trim();
 						boolean endsInStop = line.endsWith( LINE_TERM );
 						
 						// split on '.'
@@ -103,7 +108,6 @@ public class Example {
 						}
 					}
 				}
-	
 			} catch (FileNotFoundException fnf) {
 				rc = false;
 			}
@@ -113,8 +117,8 @@ public class Example {
 
 	/*
 	 * Full self-test...
-	 */
-	private static void unitTest( Strings tests ) {
+	 */	
+	private static void doUnitTests( Strings tests ) {
 		Pronoun.interpret( new Strings( "add masculine martin" ));
 		Pronoun.interpret( new Strings( "add masculine james" ));
 		Pronoun.interpret( new Strings( "add feminine  ruth" ));
@@ -126,30 +130,45 @@ public class Example {
 		//run test groups
 		Audit.interval(); // reset timer
 		int testGrp = 0;
+		boolean incrGrps;
+
 		for (String test : tests) {
-			
 			if (!Fs.destroy( fsys ))
 				audit.FATAL( "failed to remove old database - "+ fsys );
 			
 			audit.title( "TEST: "+ test );
-			if (runTestFile( TEST_DIR+ test +TEST_EXT ))
+			incrGrps = false;
+			
+			if (runTestFile( TEST_DIR+ test +TEST_EXT, false ))
+				incrGrps = true;
+			
+			if (runTestFile(  REP_DIR+ test +TEST_EXT,  true ))
+				incrGrps = true;
+			
+			if (incrGrps) 
 				testGrp++;
 		}
 		Audit.log( testGrp +" test group(s) found" );
 		audit.PASSED();
 	}
 
-	public static void unitTests() {
+	public static Strings listUnitTests() {
 		Strings unitTests = new Strings( new File( TEST_DIR ).list());
 		ListIterator<String> li = unitTests.listIterator();
 		while (li.hasNext()) {
 			String test = li.next();
-			if (test.endsWith( ".txt" ))
+			if (test.endsWith( TEST_EXT ))
 				li.set( test.substring( 0, test.length()-4)); // remove ".txt"
+			else if (test.endsWith( REP_EXT ))
+				li.set( test.substring( 0, test.length()-4));;// remove ".rpt"
 		}
-		unitTest( unitTests );		
+		return unitTests;
 	}
 
+	public static void unitTests() {
+		doUnitTests( listUnitTests() );
+	}
+		
 	private static String doArgs(Strings cmds) {
 		// traverse args and strip switches: -v -d -H -p -s
 		String fsys = Enguage.RW_SPACE;
@@ -191,7 +210,7 @@ public class Example {
 			unitTests();
 			
 		} else if (cmd.equals(  "-T"    )) {
-			unitTest( cmds );
+			doUnitTests( cmds );
 
 		} else if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );

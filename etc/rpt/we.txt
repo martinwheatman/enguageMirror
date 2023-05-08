@@ -1,0 +1,27 @@
+## Repertoire 'we' :-
+
+# i) A default value:
+#]who are we:        ok, we means you and i.
+
+# ii) imply a new value:
+#]we are ruth and i: ok, we means you and ruth.
+#]who are we:        ok, we means you and ruth.
+
+# iii) reset to default:
+#]we are you and i:  ok, we means you and i.
+#]who are we:        ok, we means you and i.
+
+
+
+On "we are you and i":
+	set the value of we to i;
+	reply "ok, we means you and i".
+
+On "we are THEM and i":
+	set the value of we to THEM;
+	reply "ok, we means you and THEM".
+
+On "who are we":
+	get the value of we;
+	if not, set the value of we to i;
+	reply "ok, we means you and ...".
