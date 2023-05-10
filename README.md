@@ -1,6 +1,6 @@
 # Enguage - Unifying Speech and Computation
 
-Enguage is an engine for creating language: a virtual machine for voice.
+Enguage is a Turing Complete Speech Interpreter.
 
 <center>
 

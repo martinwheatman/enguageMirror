@@ -1,0 +1,4 @@
+On "read file FILE":
+	run "sbin/runExample.sh FILE";
+	if not, reply "sorry, i can't read FILE";
+	reply "ok, ...".
