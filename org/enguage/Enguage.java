@@ -30,7 +30,7 @@ public class Enguage {
 	public  static Enguage get() {return enguage;}
 	public  static void    set( Enguage e ) {enguage = e;}
 	
-	private static Audit     audit = new Audit( "Enguage" );
+	private static Audit   audit   = new Audit( "Enguage" );
 
 	private static Shell   shell   = new Shell( "Enguage", COPYRIGHT );
 	public  static Shell   shell() {return shell;}
@@ -196,14 +196,14 @@ public class Enguage {
 		
 		} else {
 			// Command line parameters exists...
-			// reconstruct original commands and interpret...
-			// - remove full stop, if one given -
+			// reconstruct original commands
 			cmds.prepend( cmd );
-			cmds = new Strings( cmds.toString() );
-			Audit.LOG( "cmds: "+ cmds.toString() );
+			audit.in( "CLI:", ""+cmds );
+
+			// - remove full stop, if one given -
 			if (cmds.get( cmds.size()-1 ).equals( "." ))
 				cmds.remove( cmds.size()-1 );
 
-			// ...reconstruct original commands and interpret
-			Enguage.get().mediate( cmds );
+			// ...and interpret
+			audit.out( Enguage.get().mediate( cmds ));
 }	}	}

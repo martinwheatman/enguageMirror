@@ -15,7 +15,16 @@ import org.enguage.util.sys.Fs;
 public class Concept {
 	private Concept() {}
 	
-	public  static final String    NAME = "concepts";
+	public  static final String     NAME = "concepts";
+	
+	private static final String      DOT = ".";
+	private static final String      TXT = "txt";
+	private static final String      RPT = "rpt";
+	private static final String      DEL = "del";
+	
+	public  static final String TEXT_EXT = DOT + TXT;
+	public  static final String REPT_EXT = DOT + RPT;
+	public  static final String DELT_EXT = DOT + DEL;
 	
 	private static TreeSet<String> names = new TreeSet<>();
 	public  static  void  remove( String name ) {names.remove( name );}
@@ -30,16 +39,20 @@ public class Concept {
 		return prefix+ Enguage.RO_SPACE +Repertoires.LOC+ File.separator;
 	}
 	public  static  String writtenName( String name ) {
-		return roRpts( isFlatpak ? "/apps/":"" )+ name +".txt";
+		return roRpts( isFlatpak ? "/apps/":"" )+ name +TEXT_EXT;
 	}
-	public  static  String spokenName( String s ) {return rwRpts()+ s +".txt";}
-	public  static  String deleteName( String s ) {return rwRpts()+ s +".del";}
+	public  static  String writtenRepName( String name ) {
+		return roRpts( isFlatpak ? "/apps/":"" )+ name +REPT_EXT;
+	}
+	public  static  String spokenName(    String s ) {return rwRpts()+ s +TEXT_EXT;}
+	public  static  String spokenRepName( String s ) {return rwRpts()+ s +REPT_EXT;}
+	public  static  String deleteName(    String s ) {return rwRpts()+ s +DELT_EXT;}
 	
 	public  static Strings tree( String base, String location ) {
 		Strings  names = new Strings();
 		String[] files = new File( base + location ).list();
 		for (String file : files)
-			if (file.endsWith( ".txt" ))
+			if (file.endsWith( TEXT_EXT ) || file.endsWith( REPT_EXT ))
 				names.add( (!location.equals(".") ? location+"/" : "")+ file );
 			else if (new File( base + location +File.separator+ file ).isDirectory())
 				names.addAll( tree( base, file ));
@@ -48,7 +61,9 @@ public class Concept {
 	public static void addNames( String[] names ) {
 		if (names != null) for ( String name : names ) { // e.g. name="rpt/hello.txt"
 			String[] components = name.split( "\\." );
-			if (components.length > 1 && components[ 1 ].equals("txt"))
+			if (components.length > 1 &&
+					(components[ 1 ].equals( TXT )||
+					 components[ 1 ].equals( RPT )  ))
 				add( components[ 0 ]);
 	}	}
 	private static boolean matchAnyBoilerplate( Strings utt, Strings bplt, char sep ) {

@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import java.util.Scanner;
 
 import org.enguage.Enguage;
+import org.enguage.repertoires.written.Concept;
 import org.enguage.signs.objects.space.Overlay;
 import org.enguage.signs.symbol.pronoun.Pronoun;
 import org.enguage.util.Audit;
@@ -25,8 +26,8 @@ public class Example {
 	private static final String  IN_REPLY_SEP = "/"; // doesn't like '|'
 	private static final String      TEST_DIR = "etc/test/";
 	private static final String       REP_DIR = "etc/rpt/";
-	private static final String      TEST_EXT = ".txt";
-	private static final String       REP_EXT = ".rpt";
+	private static final String      TEST_EXT = Concept.TEXT_EXT;
+	private static final String       REP_EXT = Concept.REPT_EXT;
 	private static final String   TEST_PROMPT = "\nuser> ";
 	private static final String  REPLY_PROMPT = "enguage> ";
 	
@@ -142,7 +143,7 @@ public class Example {
 			if (runTestFile( TEST_DIR+ test +TEST_EXT, false ))
 				incrGrps = true;
 			
-			if (runTestFile(  REP_DIR+ test +TEST_EXT,  true ))
+			if (runTestFile(  REP_DIR+ test +REP_EXT,  true ))
 				incrGrps = true;
 			
 			if (incrGrps) 
@@ -152,21 +153,23 @@ public class Example {
 		audit.PASSED();
 	}
 
-	public static Strings listUnitTests() {
-		Strings unitTests = new Strings( new File( TEST_DIR ).list());
-		ListIterator<String> li = unitTests.listIterator();
+	public static Strings listUnitTests( String dirname, String ext ) {
+		Strings dirlist = new Strings( new File( dirname ).list() );
+		Strings unitTests = new Strings();
+		ListIterator<String> li = dirlist.listIterator();
 		while (li.hasNext()) {
 			String test = li.next();
-			if (test.endsWith( TEST_EXT ))
-				li.set( test.substring( 0, test.length()-4)); // remove ".txt"
-			else if (test.endsWith( REP_EXT ))
-				li.set( test.substring( 0, test.length()-4));;// remove ".rpt"
+			if (test.endsWith( ext ))
+				unitTests.add( test.substring( 0, test.length()-4 ));
 		}
 		return unitTests;
 	}
 
 	public static void unitTests() {
-		doUnitTests( listUnitTests() );
+		Strings unitTests = new Strings();
+		unitTests.addAll( listUnitTests( TEST_DIR, TEST_EXT ));
+		unitTests.addAll( listUnitTests(  REP_DIR,  REP_EXT ) );
+		doUnitTests( unitTests );
 	}
 		
 	private static String doArgs(Strings cmds) {
@@ -202,7 +205,7 @@ public class Example {
 
 		Enguage.set( new Enguage( fsys ));
 				
-		String     cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
+		String cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
 		
 		if (cmd.equals(  "-t"    ) ||
 			cmd.equals( "--test" )   )
@@ -218,15 +221,14 @@ public class Example {
 		
 		} else {
 			// Command line parameters exists...
-			// reconstruct original commands and interpret...
 			// - remove full stop, if one given -
-			cmds.prepend( cmd );
 			cmds = new Strings( cmds.toString() );
-			Audit.LOG( "cmds: "+ cmds.toString() );
+			
 			if (cmds.get( cmds.size()-1 ).equals( "." ))
 				cmds.remove( cmds.size()-1 );
 
 			// ...reconstruct original commands and interpret
-			test( cmds.toString(), "" );
+			cmds.prepend( cmd );
+			test( cmds.toString(), null );
 	}	}
 }

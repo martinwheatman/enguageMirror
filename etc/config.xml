@@ -1,7 +1,6 @@
 <xml>
 	<config
 			SOFA="java com.yagadi.enguage.object.Sofa"
-			MY_NAME="martin"
 			DNU="i don't understand"
 			DNK="i don't know"
 			SUCCESS="ok"
@@ -27,13 +26,13 @@
 			XMLPRE="">
 			
 		<concepts>
-			<concept id="english/colloquia"              op="load"/>
-			<concept id="english/plural"                 op="load"/>
-			<concept id="language/is_like+is_unlike"     op="load"/>
-			<concept id="maths/arithmetic"               op="load"/>
-			<concept id="qualifiers/spatial+spatially"   op="load"/>
-			<concept id="qualifiers/temporal"            op="load"/>
-			<concept id="verbalReasoning/are_transitive" op="load"/>
+			<concept id="config/colloquia"           op="load"/>
+			<concept id="config/plural"              op="load"/>
+			<concept id="config/is_like+is_unlike"   op="load"/>
+			<concept id="config/arithmetic"          op="load"/>
+			<concept id="config/spatial+spatially"   op="load"/>
+			<concept id="config/temporal"            op="load"/>
+			<concept id="config/are_transitive"      op="load"/>
 		</concepts>
 	</config>
 </xml>

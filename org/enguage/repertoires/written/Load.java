@@ -96,8 +96,11 @@ public class Load {
 		
 		InputStream  is = null;
 		
-		if ((null != (is = getFile( Concept.spokenName( name )))) ||
-		    (null != (is = Assets.getStream( Concept.writtenName( name )))))
+		// should be found on one of these places... in this order(!)
+		if ((null != (is = getFile( Concept.spokenName( name )             ))) ||
+		    (null != (is = getFile( Concept.spokenRepName( name )          ))) ||
+		    (null != (is = Assets.getStream( Concept.writtenName( name )   ))) ||
+		    (null != (is = Assets.getStream( Concept.writtenRepName( name ))))   )
 			loadFileContent( is, from, to );
 		else
 			wasLoaded = false;
