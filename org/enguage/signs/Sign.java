@@ -96,7 +96,7 @@ public class Sign {
 		return spatial;
 	}
 	
-	public int cplex() {return pattern().cplex();}
+	public int cplex() {return pattern().cplex( concept().equals( Repertoires.USER_DEFINED ));}
 	
 	public String toXml( int n, long complexity ) {
 		String ind = Audit.indent();
@@ -148,7 +148,7 @@ public class Sign {
 			if (cmd.equals( "create" )) {
 				voiced = new Sign()
 						.pattern( new Frags( args.toString() ))
-						.concept( Repertoires.AUTOPOIETIC );
+						.concept( Repertoires.USER_DEFINED );
 				Repertoires.signs().insert( voiced );
 				
 			} else if (cmd.equals( "split" )) {

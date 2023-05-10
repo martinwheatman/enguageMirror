@@ -19,7 +19,7 @@ public class Ideas {
 			audit.debug( "Saving concepts as "+ name );
 			Concept.add( name );
 			rc = Repertoires.signs().saveAs(
-								Repertoires.AUTOPOIETIC,
+								Repertoires.USER_DEFINED,
 								name
 				 ) ? Response.success() : Response.failure();
 

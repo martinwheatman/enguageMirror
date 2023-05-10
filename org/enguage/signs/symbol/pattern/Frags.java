@@ -338,11 +338,11 @@ public class Frags extends ArrayList<Frag> {
 	private static final int LARGE = RANGE*RANGE;
 	private static final int SMALL = RANGE;
 	
-	public int cplex() {
+	public int cplex( boolean ud ) {
 		boolean infinite = false;
-		int cons = 0,
-		    vars = 0;
-		
+		int cons = ud?1:0, // we want to keep user defined signs ahead of written ones
+		    vars = 0;      // this might mean when a thought is saved it must get loaded/unloaded
+		                   // like other written repertoires.
 		for (Frag t : this) {
 			cons += t.nconsts();
 			if (t.isPhrased())
@@ -750,7 +750,7 @@ public class Frags extends ArrayList<Frag> {
 		Frags patt = new Frags( toPattern( new Strings( str )));
 		Audit.LOG( "pattern: "+ patt );
 		//audit.LOG( "    Xml: "+ patt.toXml() );
-		Audit.LOG( " cmplxy: "+ patt.cplex() );
+		Audit.LOG( " cmplxy: "+ patt.cplex( true ) );
 
 	}
 	public  static  void main(String args[]) {

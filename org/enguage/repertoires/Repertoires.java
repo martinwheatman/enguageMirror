@@ -20,9 +20,9 @@ public class Repertoires {
 	public  static final int      ID = 216434732;
 	private static final Audit audit = new Audit( NAME );
 	
-	public  static final String         LOC = "rpt";
-	public  static final String   AUTOP_STR = "autopoiesis";
-	public  static final String AUTOPOIETIC = "OTF"; // repertoire name for signs created on-the-fly
+	public  static final String          LOC = "rpt";
+	public  static final String    AUTOP_STR = "autopoiesis";
+	public  static final String USER_DEFINED = "OTF"; // concept name for signs created on-the-fly
 	
 	private static Signs signs = new Signs( "user" );
 	public  static Signs signs() {return signs;}
