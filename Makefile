@@ -63,23 +63,21 @@ lib/enguage.jar: ${TMP} ${MANIFEST} lib
 	cp -a opt/test ${TMP}/opt
 	( cd ${TMP} ;\
 		find com org -name \*.class -exec rm -f {} \; ;\
-		find com org -name .DS_Store -exec rm -f {} \; ;\
 		find com org -name .gitignore -exec rm -f {} \; ;\
 		javac opt/test/Example.java ;\
-		#find com org -name \*.java -exec rm -f {} \;  ;\
 		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com opt \
 	)
 	#rm -rf ${TMP}
 
 ${ANDLIBS}/anduage.jar: ${TMP} ${MANIFEST} lib
 	mkdir -p ${ANDLIBS}
-	cp -a org ${TMP}
+	cp -a org com ${TMP}
+	cp -a opt/test ${TMP}/opt
 	( cd ${TMP} ;\
-		#find org -name \*.java -exec rm -f {} \;  ;\
-		find org -name .DS_Store -exec rm -f {} \; ;\
+		find org -name \*.class -exec rm -f {} \;  ;\
 		find org -name .gitignore -exec rm -f {} \; ;\
-		#javac org/enguage/Enguage.java ;\
-		#find com org -name \*.java -exec rm -f {} \;  ;\
+		javac opt/test/Example.java ;\
+		rm -rf com opt ;\
 		jar -cmf META-INF/MANIFEST.MF ../${ANDLIBS}/anduage.jar META-INF org \
 	)
 
