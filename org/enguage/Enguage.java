@@ -166,7 +166,7 @@ public class Enguage {
 				
 			} else if (cmd.equals( "-p" ) || cmd.equals( "--port" )) {
 				cmds.remove( i );
-				port = cmds.isEmpty() ? 8080 : Integer.valueOf( cmds.remove( i ));
+				port = cmds.isEmpty() ? 8080 : Integer.parseInt( cmds.remove( i ));
 				Audit.LOG( "Using port: "+ port );
 		
 			} else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" )) {
