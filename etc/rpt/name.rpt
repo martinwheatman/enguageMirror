@@ -7,3 +7,8 @@ On "what is _user_s name":
 On "_user_s name is NAME":
 	set the name of me to NAME;
 	reply "ok, you are NAME".
+
+#]what is my name:    i don't know.
+#]my name is martin:  ok, you're martin/hello martin.
+#]what is my name:    your name is martin.
+

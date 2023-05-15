@@ -188,7 +188,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				// do we need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
 				if (null == match) {
-					//	audit.debug( "NO match: "+ s.pattern().toString() )
+					//audit.debug( "NO match: "+ s.pattern() +"("+ s.pattern().notMatched()+")" );
 				} else { // we have found a meaning! So I do understand...!
 					
 					Pronoun.update( match );

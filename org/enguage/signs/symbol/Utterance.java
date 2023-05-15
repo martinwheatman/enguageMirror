@@ -68,7 +68,7 @@ public class Utterance {
 	public String toString() { return toString( Strings.SPACED );}
 	
 	// helpers
-	public  static  boolean sane( Utterance u ) {return u != null && u.representamen.size() > 0;	}
+	public  static  boolean sane( Utterance u ) {return u != null && !u.representamen.isEmpty();}
 	public  static  Strings  externalise( String  reply, boolean verbatim ) {
 		return externalise( new Strings( reply ), verbatim );
 	}

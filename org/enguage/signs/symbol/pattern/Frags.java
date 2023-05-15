@@ -386,26 +386,30 @@ public class Frags extends ArrayList<Frag> {
 			matched( new Attribute( Where.LOCTN, w.locationAsString( 0 )));
 	}	}
 	
-	private static  int notMatched = 0;
-	static String term = "", word = "";
-	public  static  String notMatched() {
-		return  notMatched ==  0 ? "matched" :
-				notMatched ==  1 ? "precheck 1" :
-				notMatched ==  2 ? "precheck 2" :
-				notMatched == 11 ? term +" != "+ word:
-				notMatched == 12 ? "... "+term +" != "+ word +" ...":
-				notMatched == 13 ? "invalid expr" :
-				notMatched == 14 ? "and-list runs into hotspot" :
-				notMatched == 15 ? "not numeric" :
-				notMatched == 16 ? "invalid flags" :
-				notMatched == 17 ? "unterminated and-list" :
-				notMatched == 18 ? "... "+term +" != "+ word +"..":
-				notMatched == 19 ? "... "+term +" != "+ word +"." :
-				notMatched == 20 ? "trailing hotspot value missing" :
-				notMatched == 21 ? "more pattern" :
-				notMatched == 22 ? "more utterance" :
-				notMatched == 23 ? "missing apostrophe" : ("unknown:"+ notMatched);
-	}
+	private int notMatched = 0;
+	private String term = "";
+	private String word = "";
+	
+	public  String notMatched() {
+		switch (notMatched) {
+			case  0: return "matched";
+			case  1: return "precheck 1";
+			case  2: return "precheck 2";
+			case 11: return term +" != "+ word;
+			case 12: return "... "+term +" != "+ word +" ...";
+			case 13: return "invalid expr";
+			case 14: return "and-list runs into hotspot";
+			case 15: return "not numeric";
+			case 16: return "invalid flags";
+			case 17: return "unterminated and-list";
+			case 18: return "... "+term +" != "+ word +"..";
+			case 19: return "... "+term +" != "+ word +".";
+			case 20: return "trailing hotspot value missing";
+			case 21: return "more pattern";
+			case 22: return "more utterance";
+			case 23: return "missing apostrophe";
+			default: return "unknown:"+ notMatched;
+	}	}
 	
 	private String doNumeric( ListIterator<String> ui ) {
 		String toString = new Number( ui ).toString();
@@ -427,7 +431,7 @@ public class Frags extends ArrayList<Frag> {
 			// peek at terminator
 			String terminator = patti.next().prefix().get( 0 );
 			patti.previous();
-			//Audit.log( "Terminator is "+ terminator );
+			//Audit.log( "Terminator is "+ terminator )
 			
 			words.add( word );  // add at least one val!
 			if (utti.hasNext()) word = utti.next();
@@ -446,7 +450,7 @@ public class Frags extends ArrayList<Frag> {
 					return null;
 			}
 			utti.previous(); // replace terminator!
-		} else { // read to end {
+		} else { // read to end
 			words.add( word ); // at least one!
 			while (utti.hasNext()) {
 				word = utti.next();
@@ -652,14 +656,15 @@ public class Frags extends ArrayList<Frag> {
 	public String toXml() { return toXml( new Indentation( "   " )); }
 	public String toXml( Indentation indent ) {
 		String oldName = "";
-		String str  = "\n"+indent.toString();
+		StringBuilder str  = new StringBuilder();
+		str.append( "\n"+indent );
 		Iterator<Frag> ti = iterator();
 		while (ti.hasNext()) {
 			Frag t = ti.next();
-			str += (t.name().equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent );
+			str.append( (t.name().equals( oldName ) ? "\n"+indent : "") + t.toXml( indent ));
 			oldName = t.name();
 		}
-		return str;
+		return str.toString();
 	}
 	@Override
 	public String toString() {
@@ -672,32 +677,33 @@ public class Frags extends ArrayList<Frag> {
 		return str.toString();
 	}
 	public String toFilename() {
-		String tmp, str="";
+		String tmp;
+		StringBuilder str = new StringBuilder();
 		Iterator<Frag> ti = iterator();
 		while (ti.hasNext())
 			if (!(tmp = ti.next().toPattern()).equals(""))
-				str += tmp +(ti.hasNext() ? "_" : "");
-		return str;
+				str.append( tmp +(ti.hasNext() ? "_" : ""));
+		return str.toString();
 	}
 	public String toText() {
-		String str="";
+		StringBuilder str = new StringBuilder();
 		Iterator<Frag> ti = iterator();
 		while (ti.hasNext()) {
-			str += ti.next().toText();
-			if (ti.hasNext()) str += " ";
+			str.append( ti.next().toText());
+			if (ti.hasNext()) str.append( " " );
 		}
-		return str;
+		return str.toString();
 	}
 	public String toLine() {
-		String str="";
+		StringBuilder str = new StringBuilder();
 		Iterator<Frag> ti = iterator();
 		while (ti.hasNext()) {
 			Frag t = ti.next();
-			str += ( " "+t.prefix().toString()+" <"+t.name() +" "
+			str.append ( " "+t.prefix()+" <"+t.name() +" "
 			//+ t.attributes().toString()
-					+"/> "+t.postfix().toString());
+					+"/> "+t.postfix());
 		}
-		return str;
+		return str.toString();
 	}
 	
 	// --- test code...
@@ -713,7 +719,7 @@ public class Frags extends ArrayList<Frag> {
 			String vals = values.toString();
 			if (null == expected)
 				Audit.log( "values => ["+ vals +"]" );
-			else if (values != null && values.matches( expected ))
+			else if (values.matches( expected ))
 				Audit.log( "PASSED => ["+ vals +"]" );
 			else {
 				Audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
@@ -743,13 +749,13 @@ public class Frags extends ArrayList<Frag> {
 		if (null != (as = u.match( s )))
 			audit.passed( "  matches: "+ as.toString());
 		else
-			Audit.log( "notMatched ("+ notMatched() +")" );
+			Audit.log( "notMatched ("+ s.pattern().notMatched() +")" );
 		audit.out();
 	}
 	private static  void complexityTest( String str ) {
 		Frags patt = new Frags( toPattern( new Strings( str )));
 		Audit.LOG( "pattern: "+ patt );
-		//audit.LOG( "    Xml: "+ patt.toXml() );
+		//audit.LOG( "    Xml: "+ patt.toXml() )
 		Audit.LOG( " cmplxy: "+ patt.cplex( true ) );
 
 	}
@@ -897,7 +903,7 @@ public class Frags extends ArrayList<Frag> {
 				"need+needs",
 				"from the dairy aisle i need milk" );
 		Audit.off();
-//		newTest( "i need sliced bread from the bakery" );
+//		newTest( "i need sliced bread from the bakery" )
 		
 		audit.PASSED();
 }	}
