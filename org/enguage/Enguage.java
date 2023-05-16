@@ -98,7 +98,7 @@ public class Enguage {
 	}
 	public Strings mediate( Strings said ) { return mediate( "uid", said );}
 	public Strings mediate( String uid, Strings said ) {
-		audit.in( "mediate", said.toString() );
+		audit.in( "mediate", "uid="+uid+", said="+said );
 		Strings reply = new Strings();
 		for (Strings conj : Conjunction.conjuntionAlley( said )) {
 			if (!reply.isEmpty()) reply.add( "and" );
