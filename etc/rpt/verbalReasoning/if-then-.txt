@@ -1,7 +1,7 @@
-On "if PHRASE-X then PHRASE-Y":
+On "if SAID-CONTEXT then SAID-DEPENDENCY":
 	perform "overlay create";
-	X;
+	CONTEXT;
 	if not, say so;
-	Y;
+	DEPENDENCY;
 	if not, say so;
 	perform "overlay destroy".
