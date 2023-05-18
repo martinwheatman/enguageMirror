@@ -1,0 +1,25 @@
+On "ok":
+	is ok set;
+	if so, 	perform "overlay save";
+	set ok to saved;
+	perform "overlay create";
+	reply "ok".
+
+On "forget that":
+	is ok set;
+	if so, perform "overlay destroy";
+	perform "overlay create";
+	reply "ok".
+	
+	
+#] Ok.
+#] I need a beer.
+#] I need a kebab.
+#] i need a plate of fish and chips.
+#] what do i need.
+#] ok forget that.
+#] I need a coffee.
+## and a tea. i need a slice of cake.
+#] what do i need.
+#] ok.
+#] what do i need.
