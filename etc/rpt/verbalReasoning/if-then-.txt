@@ -1,7 +1,0 @@
-On "if SAID-CONTEXT then SAID-DEPENDENCY":
-	perform "overlay create";
-	CONTEXT;
-	if not, say so;
-	DEPENDENCY;
-	if not, say so;
-	perform "overlay destroy".
