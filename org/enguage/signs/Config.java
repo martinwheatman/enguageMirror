@@ -6,8 +6,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 import org.enguage.Enguage;
-import org.enguage.repertoires.written.Autoload;
-import org.enguage.repertoires.written.Load;
+import org.enguage.repertoires.concepts.Autoload;
+import org.enguage.repertoires.concepts.Concept;
 import org.enguage.signs.interpretant.Commands;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.reply.Answer;
@@ -69,7 +69,7 @@ public class Config {
 		for (Tag t : concepts.content())
 			if ( t.name.equals( "concept" ) &&
 			    !t.attribute( "op" ).equals( "ignore" ))
-				Load.load( t.attribute( "id" ));
+				Concept.load( t.attribute( "id" ));
 	}
 	public static int load( String fname ) {
 		int rc = -1;

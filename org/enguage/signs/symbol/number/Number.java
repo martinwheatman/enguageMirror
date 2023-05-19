@@ -3,7 +3,7 @@ package org.enguage.signs.symbol.number;
 import java.util.ListIterator;
 
 import org.enguage.signs.objects.expr.Function;
-import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.sofa.Overlay;
 import org.enguage.signs.symbol.config.Englishisms;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;

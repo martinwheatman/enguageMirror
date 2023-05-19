@@ -1,4 +1,4 @@
-package org.enguage.signs.objects.space;
+package org.enguage.signs.objects.sofa;
 
 import java.io.File;
 import java.util.Iterator;

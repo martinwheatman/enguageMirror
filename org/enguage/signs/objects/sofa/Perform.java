@@ -1,8 +1,8 @@
-package org.enguage.signs.objects.space;
+package org.enguage.signs.objects.sofa;
 
 import org.enguage.repertoires.Repertoires;
-import org.enguage.repertoires.written.Ideas;
-import org.enguage.repertoires.written.Similarity;
+import org.enguage.repertoires.concepts.Concept;
+import org.enguage.repertoires.concepts.Similarity;
 import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Numeric;
 import org.enguage.signs.objects.Temporal;
@@ -20,10 +20,10 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.sys.Shell;
 
-public class Sofa {
+public class Perform {
 	private static final Audit audit = new Audit( "Sofa" );
 
-	private Sofa() {}
+	private Perform() {}
 	
 	public static Strings interpret( Strings a ) {
 		if (a.isEmpty()) {
@@ -41,12 +41,12 @@ public class Sofa {
 				case Link.id  :      return        Link.interpret(                     a );
 				case Sign.ID  :      return        Sign.interpret( Attribute.expand(   a ));
 				case Audit.ID:       return       Audit.interpret( Attribute.expand(   a ));
-				case Ideas.ID:       return       Ideas.interpret( Attribute.expand23( a ));
 				case Items.id :      return       Items.interpret(                     a  );
 				case Value.id :      return       Value.interpret( Attribute.expand23( a ));
 				case Where.id :      return       Where.interpret( Attribute.expand23( a ));
 				case Plural.id :     return      Plural.interpret( Attribute.expand23( a ));
 				case Entity.ID :     return      Entity.interpret( Attribute.expand23( a ));
+				case Concept.ID:     return     Concept.interpret( Attribute.expand23( a ));
 				case Context.id :    return     Context.interpret( Attribute.expand23( a ));
 				case Numeric.id  :   return     Numeric.interpret( Attribute.expand23( a ));
 				case Overlay.id  :   return     Overlay.interpret( Attribute.expand23( a ));

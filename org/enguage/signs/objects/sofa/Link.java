@@ -1,4 +1,4 @@
-package org.enguage.signs.objects.space;
+package org.enguage.signs.objects.sofa;
 
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;

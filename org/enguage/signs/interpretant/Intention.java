@@ -8,7 +8,7 @@ import org.enguage.repertoires.Engine;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.objects.space.Sofa;
+import org.enguage.signs.objects.sofa.Perform;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.reply.Reply;
@@ -23,9 +23,12 @@ import org.enguage.util.sys.Shell;
 
 public class Intention {
 	
-	private static boolean old = false;
-	private static Audit audit = new Audit( "Intention" );
-	
+	private static boolean       old = false;
+	private static final String NAME = "Intention";
+	private static Audit       audit = new Audit( NAME );
+
+	public  static final String  AUTOP_STR = "autopoiesis";
+
 	public  static final String      UNDEF = "u";
 	public  static final String        NEW = "w";
 	public  static final String     APPEND = "a";
@@ -74,6 +77,7 @@ public class Intention {
 	public static final int N_AUTOP       =  0x11;          // =  9
 	
 	
+	
 	// voiced types
 	public static final int  N_CREATE      =  0xfa;
 	public static final int  N_PREPEND     =  0xfb;
@@ -117,7 +121,7 @@ public class Intention {
 			case N_THEN_RUN   : return THEN_RUN;
 			case N_ELSE_RUN   : return ELSE_RUN;
 			case N_ALLOP      : return Engine.NAME;
-			case N_AUTOP      : return Repertoires.AUTOP_STR;
+			case N_AUTOP      : return AUTOP_STR;
 			case N_CREATE     : return NEW;
 			case N_PREPEND    : return PREPEND;
 			case N_APPEND     : return APPEND;
@@ -261,7 +265,7 @@ public class Intention {
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
-		Strings rawAnswer = Sofa.interpret( new Strings( cmd ));
+		Strings rawAnswer = Perform.interpret( new Strings( cmd ));
 		if (!ignore) {
 			String method = cmd.get( 1 );
 			if (rawAnswer.isEmpty() &&

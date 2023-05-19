@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.repertoires.Repertoires;
-import org.enguage.repertoires.written.Autoload;
-import org.enguage.repertoires.written.Concept;
+import org.enguage.repertoires.concepts.Autoload;
+import org.enguage.repertoires.concepts.Concept;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.pattern.Frag;

@@ -1,13 +1,10 @@
 package org.enguage.repertoires;
 
-import java.util.Locale;
-
 import org.enguage.Enguage;
 import org.enguage.signs.Sign;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.objects.list.Item;
-import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.sofa.Overlay;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.config.Englishisms;
 import org.enguage.signs.symbol.reply.Reply;
@@ -90,10 +87,6 @@ public final class Engine {
 					.append( Intention.N_ALLOP, "undo" )
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( "group by X" )
-					.append( Intention.N_ALLOP, "groupby X" )
-			  		.concept( NAME ),
-			new Sign()
 					.pattern( "tcpip ADDRESS PORT QUOTED-DATA" )
 					.append( Intention.N_ALLOP, "tcpip ADDRESS PORT DATA" )
 			  		.concept( NAME ),
@@ -108,11 +101,6 @@ public final class Engine {
 					.pattern( "reply PHRASE-X" )
 					.append( Intention.N_THEN_REPLY, "X" )
 					.concept( NAME ),
-					
-//			new Sign() // fix to allow better reading of autopoietic  
-//					.pattern( new Frag( "if so,", "x" ).phrasedIs())
-//					.appendIntention( Intention.thenThink, "X" )
-//					.concept( NAME ),
 					
 			new Sign() // for vocal description of concepts... autopoiesis!
 					.pattern( "perform PHRASE-ARGS" )
@@ -157,13 +145,6 @@ public final class Engine {
 		} else if (cmd.equals( "selfTest" )) {
 			Example.unitTests();
 			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
-			
-		} else if (cmd.equals( "groupby" )) {
-			r.format( Response.success());
-			if (!cmds.isEmpty() && !cmds.get( 0 ).equals( "X" ))
-				Item.groupOn( cmds.get( 0 ).toUpperCase( Locale.getDefault()));
-			else
-				r.format( new Strings( Response.failure() +", i need to know what to group by" ));
 			
 		} else if (cmd.equals( "spell" )) {
 			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));

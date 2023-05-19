@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import org.enguage.signs.objects.space.Link;
+import org.enguage.signs.objects.sofa.Link;
 import org.enguage.util.Strings;
 
 public class Path {

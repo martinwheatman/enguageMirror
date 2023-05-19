@@ -20,6 +20,8 @@ public class Sign {
 	private static final Audit   audit = new Audit( NAME );
 	public  static final int        ID = 340224; //Strings.hash( NAME )
 	
+	public  static final String USER_DEFINED = "OTF"; // concept name for signs created on-the-fly
+
 	public Sign() {super();}
 	public Sign( Frag  patte  ) {this(); pattern( patte );}
 	public Sign( String prefix ) {this( new Frag( prefix ));}
@@ -96,7 +98,7 @@ public class Sign {
 		return spatial;
 	}
 	
-	public int cplex() {return pattern().cplex( concept().equals( Repertoires.USER_DEFINED ));}
+	public int cplex() {return pattern().cplex( concept().equals( USER_DEFINED ));}
 	
 	public String toXml( int n, long complexity ) {
 		String ind = Audit.indent();
@@ -148,7 +150,7 @@ public class Sign {
 			if (cmd.equals( "create" )) {
 				voiced = new Sign()
 						.pattern( new Frags( args.toString() ))
-						.concept( Repertoires.USER_DEFINED );
+						.concept( USER_DEFINED );
 				Repertoires.signs().insert( voiced );
 				
 			} else if (cmd.equals( "split" )) {

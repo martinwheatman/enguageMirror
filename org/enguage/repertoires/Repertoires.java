@@ -2,8 +2,8 @@ package org.enguage.repertoires;
 
 import java.util.TreeSet;
 
-import org.enguage.repertoires.written.Autoload;
-import org.enguage.repertoires.written.Load;
+import org.enguage.repertoires.concepts.Autoload;
+import org.enguage.repertoires.concepts.Concept;
 import org.enguage.signs.Signs;
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.Utterance;
@@ -19,11 +19,7 @@ public class Repertoires {
 	public  static final String NAME = "repertoires";
 	public  static final int      ID = 216434732;
 	private static final Audit audit = new Audit( NAME );
-	
-	public  static final String          LOC = "rpt";
-	public  static final String    AUTOP_STR = "autopoiesis";
-	public  static final String USER_DEFINED = "OTF"; // concept name for signs created on-the-fly
-	
+		
 	private static Signs signs = new Signs( "user" );
 	public  static Signs signs() {return signs;}
 	
@@ -33,11 +29,12 @@ public class Repertoires {
 	// entry point for Enguage, re-entry point for Intentions
 	public static Reply mediate( Utterance u ) {
 		
+		// not sure why blank mediations are being requested?
 		if ( "".equals( u.toString() )) return new Reply();
 		
 		audit.in( "mediate", "\""+ u.toString() +"\"" );
 			
-		Autoload.load( u.representamen() ); // unloaded up in Enguage.interpret()
+		Autoload.autoload( u.representamen() ); // unloaded up in Enguage.interpret()
 		
 		/* At this point we need to rebuild utterance with the (auto)loaded concept,
 		 * with any colloquialisms it may have loaded...
@@ -87,7 +84,7 @@ public class Repertoires {
 				 * Don't want to list all repertoires once the repertoire base begins to grow?
 				 * May want to ask "is there a repertoire for needs" ?
 				 */
-				rc = new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Load.loaded()).toString( Reply.andListFormat() ));
+				rc = new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Concept.loaded()).toString( Reply.andListFormat() ));
 			}
 		}
 		audit.out();

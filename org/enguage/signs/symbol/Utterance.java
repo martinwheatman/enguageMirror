@@ -4,8 +4,8 @@ import org.enguage.signs.Sign;
 import org.enguage.signs.objects.Numeric;
 import org.enguage.signs.objects.Temporal;
 import org.enguage.signs.objects.Variable;
-import org.enguage.signs.objects.space.Overlay;
-import org.enguage.signs.objects.space.Sofa;
+import org.enguage.signs.objects.sofa.Overlay;
+import org.enguage.signs.objects.sofa.Perform;
 import org.enguage.signs.symbol.config.Colloquial;
 import org.enguage.signs.symbol.config.Englishisms;
 import org.enguage.signs.symbol.pattern.Frag;
@@ -114,7 +114,7 @@ public class Utterance {
 		Where.doLocators( "behind/in/on/under/underneath/over/at" );
 		
 		Audit.log("Creating a pub:" +
-						Sofa.interpret(new Strings("entity create pub"))
+						Perform.interpret(new Strings("entity create pub"))
 		);
 
 		// create a meeting repertoire

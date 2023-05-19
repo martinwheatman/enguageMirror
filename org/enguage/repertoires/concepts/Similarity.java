@@ -1,4 +1,4 @@
-package org.enguage.repertoires.written;
+package org.enguage.repertoires.concepts;
 
 import org.enguage.signs.objects.Variable;
 import org.enguage.signs.symbol.config.Plural;
@@ -18,7 +18,7 @@ public class Similarity {
 	private static boolean load( String name, String load, String from, String to ) {
 		boolean loaded = (null != Autoload.get( name ));
 		if (!loaded) {
-			String loadedConcept = Load.conceptFile( load, from, to );
+			String loadedConcept = Concept.loadConceptFile( load, from, to );
 			if (!loadedConcept.equals( "" )) {
 				Autoload.put( loadedConcept );
 				loaded = true;

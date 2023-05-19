@@ -5,7 +5,7 @@
 # * ok.
 # */
 I'm not meeting anybody:                ok, you're not meeting anybody.
-At 7 I'm meeting my brother at the pub: ok , you're meeting your brother at 7 at the pub.
+At 7 I'm meeting my brother at the pub: ok , you're meeting your brother at the pub at 7.
 When  am I meeting my brother:          you're meeting your brother at 7.
 Where am I meeting my brother:          you're meeting your brother at the pub.
 Am I meeting my brother:                yes , you're meeting your brother.

@@ -25,21 +25,21 @@ public class Item {
 	 * 'natural' order to qualifiers (adjectives?):-
 	 *    Why we say, "a big yellow taxi", and not, "a yellow big taxi" :-)
 	 */
-	private static String defFormat = "QUANTITY,UNIT of,THIS,LOCATOR LOCATION,WHEN";
-	public  static  void resetFormat() { format( defFormat ); }
+	private static String  defFormat = "QUANTITY,UNIT of,THIS,LOCATOR LOCATION,WHEN";
+	public  static void    resetFormat() { format( defFormat ); }
 	
-	private static Strings   format = new Strings();
-	public  static  void      format( String csv ) { format = new Strings( csv, ',' );}
-	public  static  Strings   format() { return format; }
+	private static Strings format = new Strings();
+	public  static void    format( String csv ) { format = new Strings( csv, ',' );}
+	public  static Strings format() { return format; }
 
 	private static Strings groupOn = new Strings();
-	public  static  void    groupOn( String groups ) { groupOn = new Strings( groups );}
-	public  static  Strings groupOn() { return groupOn; }
+	public  static void    groupOn( String groups ) {groupOn = new Strings( groups );}
+	public  static Strings groupOn() {return groupOn;}
 	
 	// members: name, desc, attr
-	private String  name = new String( NAME );
-	public  String  name() { return name; }
-	public  Item    name( String s ) { name=s; return this; }
+	private String name = new String( NAME );
+	public  String name() { return name; }
+	public  Item   name( String s ) { name=s; return this; }
 	
 	private Strings descr = new Strings();
 	public  Strings description() { return descr;}
@@ -269,7 +269,7 @@ public class Item {
 	}
 	public String group() { // like toString() but returning group value
 		Strings rc = new Strings();
-		if (format.size() == 0)
+		if (format.isEmpty())
 			rc.append( "" );
 		else
 			/* Read through the format string: ",from LOCATION"
@@ -287,32 +287,48 @@ public class Item {
 	}
 	// ------------------------------------------------------------------------
 	public static Strings interpret( Strings cmds ) {
+		audit.in( "interpret", "cmds="+ cmds );
 		String rc = Shell.FAIL;
-		if (cmds.size() > 2)
-		{
+		if (!cmds.isEmpty()) {
+			
 			rc = Shell.SUCCESS;
-			String one = cmds.remove( 0 ),
-			       two = cmds.remove( 0 ),
-			       thr = cmds.remove( 0 );
+			String one = cmds.remove( 0 );
 			
-			if (one.equals( "set" )
-			 && two.equals( "format" ))
+			if (one.equals( "ungroup" ))
+				if (cmds.isEmpty())
+					groupOn( "" );
+				else
+					rc = Shell.FAIL;
+
+			else if (one.equals( "groupby" ))
+				if (cmds.isEmpty())
+					rc = Shell.FAIL;
+				else
+					groupOn( ""+cmds );
+					
+			else if (cmds.size() == 2) {
+
+				String two = cmds.remove( 0 );
+				String thr = cmds.remove( 0 );
 			
-				format( Strings.stripQuotes( Attribute.getValue( thr )));
-				
-			else if (one.equals( "things" )
-			      && two.equals( "include" ))
-				
-				thingsAre( new Strings( Strings.stripQuotes( thr )));
-				
-			else if (one.equals( "stuff" )
-			      && two.equals( "includes" ))
-			
-				stuffIs( new Strings( Strings.stripQuotes( thr )));
-				
-			else
+				if (one.equals( "set" )
+				 && two.equals( "format" ))
+					format( Strings.stripQuotes( Attribute.getValue( thr )));
+					
+				else if (one.equals( "things" )
+				      && two.equals( "include" ))
+					thingsAre( new Strings( Strings.stripQuotes( thr )));
+					
+				else if (one.equals( "stuff" )
+				      && two.equals( "includes" ))
+					stuffIs( new Strings( Strings.stripQuotes( thr )));
+					
+				else
+					rc = Shell.FAIL;
+			} else
 				rc = Shell.FAIL;
 		}
+		audit.out( rc );
 		return new Strings( rc );
 	}
 	//

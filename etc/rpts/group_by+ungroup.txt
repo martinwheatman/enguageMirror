@@ -1,0 +1,13 @@
+# This is just an experiment in presenting items 
+# in a different format.
+# used in conjunction with need+needs.txt, but should disappear...
+##   I need cheese and eggs from the dairy aisle.
+##   I need coffee.
+##   What do I need.
+##   You need eggs from the dairy aisle cheese from the dairy aisle and coffee.
+##   What do I need from the dairy aisle?           <<< group by location
+##   You need eggs and cheese from the dairy aisle. <<< grouped by location.
+
+On "ungroup",                perform "item ungroup".
+On "group by PHRASE-GROUPS", perform "item groupby GROUPS".	
+On "group by",               reply "sorry, i need to know what to group by".	

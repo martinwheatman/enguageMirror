@@ -1,4 +1,4 @@
-package org.enguage.repertoires.written;
+package org.enguage.repertoires.concepts;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -38,21 +38,20 @@ public class Autoload {
 	/*
 	 * load methods...
 	 */
-	private static void load( String candidate, Strings concepts ) {
+	private static void add( String candidate, Strings concepts ) {
 		// set age to 0, or -1 if we're still configuring  
 		autoloaded.put( candidate, Config.complete() ? 0 : -1 );
 		concepts.add( candidate );
 	}
-	public static void load( Strings utterance ) {
+	public static void autoload( Strings utterance ) {
 		if (!autoloading) {
 			autoloading = true;
 			
 			Strings concepts = new Strings();
 			for (String candidate : Concept.match( utterance ))
-				if (null != autoloaded.get( candidate ))
-					load( candidate, concepts ); // reload should reset age
-				else if (!Load.conceptFile( candidate, null, null ).equals( "" ))
-					load( candidate, concepts );
+				if (null != autoloaded.get( candidate ) ||
+				    !Concept.loadConceptFile( candidate ).equals( "" ))
+					add( candidate, concepts ); // reload should reset age
 				else
 					audit.error( "failed to autoload: "+ candidate ); 
 				

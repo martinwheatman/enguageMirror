@@ -3,12 +3,11 @@ package org.enguage;
 import java.io.File;
 
 import org.enguage.repertoires.Repertoires;
-import org.enguage.repertoires.written.Autoload;
-import org.enguage.repertoires.written.Conjunction;
-import org.enguage.repertoires.written.Concept;
+import org.enguage.repertoires.concepts.Autoload;
+import org.enguage.repertoires.concepts.Concept;
 import org.enguage.signs.Config;
 import org.enguage.signs.objects.list.Item;
-import org.enguage.signs.objects.space.Overlay;
+import org.enguage.signs.objects.sofa.Overlay;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.where.Where;
@@ -100,7 +99,7 @@ public class Enguage {
 	public Strings mediate( String uid, Strings said ) {
 		audit.in( "mediate", "uid="+uid+", said="+said );
 		Strings reply = new Strings();
-		for (Strings conj : Conjunction.conjuntionAlley( said )) {
+		for (Strings conj : Concept.conjuntionAlley( said )) {
 			if (!reply.isEmpty()) reply.add( "and" );
 			Strings tmp = mediateSingle( uid, conj );
 			reply.addAll( tmp );

@@ -85,8 +85,8 @@ group by location:          ok.
 #what do i need from sainsbury's:
 #					   you need biscuits, and coffee from sainsbury's.
 			
-what do i need from the dairy aisle:
-					   you need a pint of milk, cheese, and eggs from the dairy aisle.
+#what do i need from the dairy aisle:
+#					   you need a pint of milk, cheese, and eggs from the dairy aisle.
 			
 i don't need anything from the dairy aisle:
 					   ok, you don't need anything from the dairy aisle.
@@ -97,7 +97,7 @@ i need biscuits:       ok, you need biscuits.
 i need milk from the dairy aisle: ok, you need milk from the dairy aisle.
 i from the dairy aisle need milk: yes, i know.
 from the dairy aisle i need milk: yes, i know.
-what do i need:        you need biscuits; and, milk from the dairy aisle.
+what do i need:        you need biscuits, and milk from the dairy aisle.
 from the dairy aisle what do i need:  you need milk from the dairy aisle.
 what from the dairy aisle do i need:  you need milk from the dairy aisle.
 what do i need from the dairy aisle:  you need milk from the dairy aisle.
