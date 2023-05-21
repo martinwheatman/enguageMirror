@@ -73,7 +73,7 @@ public class Enguage {
 			Repertoires.signs().reset( r.toStrings() );
 			
 		} else if (Reply.isUnderstood()) {
-			Overlay.finishTxn();
+			Overlay.commitTxn();
 			Repertoires.signs().reset( r.toStrings() );
 			
 		} else {

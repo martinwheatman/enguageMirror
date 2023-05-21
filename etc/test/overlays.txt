@@ -1,0 +1,3 @@
+how many overlays are there: ok, 1.
+start a new transaction: ok.
+how many overlays are there: ok, 2.

@@ -193,14 +193,14 @@ public final class Engine {
 			
 		} else if (cmd.equals( "entitle" )) {
 			cmds.toUpperCase();
-			audit.title( cmds.toString() );
+			Audit.title( cmds.toString() );
 
 		} else if (cmd.equals( "subtitle" )) {
 			cmds.toUpperCase();
-			audit.subtl( cmds.toString() );
+			Audit.subtl( cmds.toString() );
 
 		} else if (cmd.equals( "echo" )) {
-			audit.subtl( cmds.toString() );
+			Audit.subtl( cmds.toString() );
 
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'

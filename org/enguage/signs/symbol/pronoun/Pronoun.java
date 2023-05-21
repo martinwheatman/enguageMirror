@@ -301,16 +301,16 @@ public class Pronoun {
 		testInterpret( "add feminine  ruth" );
 		testInterpret( "name subjective SUBJECT" );
 		
-		audit.title( "Possession Test" );
+		Audit.title( "Possession Test" );
 		testInterpret( "add masculine martin" );
 		set( subject, "martin" );
 		
-		audit.subtl( "Outbound Test" );
+		Audit.subtl( "Outbound Test" );
 		possessiveOutbound( "martin" );
 		possessiveOutbound( "ruth's" );
 		possessiveOutbound( "martin's" );
 		
-		audit.subtl( "Inbound Test" );
+		Audit.subtl( "Inbound Test" );
 		possessiveInbound( "him" );
 		possessiveInbound( "her" );
 		possessiveInbound( "his" );

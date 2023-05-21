@@ -37,7 +37,7 @@ public class Variable {
 		return cache;
 	}
 	static private void printCache() {
-		audit.title( "Printing cache" );
+		Audit.title( "Printing cache" );
 		Set<Map.Entry<String,String>> entries = cache.entrySet();
 		Iterator<Map.Entry<String,String>> ei = entries.iterator();
 		Audit.incr();

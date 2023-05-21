@@ -4,16 +4,13 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.enguage.signs.interpretant.Intention;
-import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class SignBuilder {
 
-	Strings strs;
-	Frags frags;
-	Intentions intentions = new Intentions();
+	private static final Audit audit= new Audit( "SignBuilkder" );
 
 	/* Builds signs from the following text:
 	 * 
@@ -25,16 +22,18 @@ public class SignBuilder {
 	 *		if so, run "ls -l";
 	 *		reply "ok, you need ...".'
 	 *	
-	 *	'what do i need.' => passes back a null sign, this is an utterance.
+	 *	'what do i need.' => returns null: this is an utterance.
 	 */
-	public SignBuilder( Strings sa ) {
-		strs = new Strings( sa );
-	}
+	
+	public SignBuilder( Strings sa ) {utterance = new Strings( sa );}
+	public SignBuilder( String   s ) {this( new Strings( s ));}
+	
+	private final Strings utterance;
 
-	private Sign doIntentions(Iterator<String> si, Sign sign) {
+	private Sign doIntentions(Iterator<String> utti, Sign sign) {
 		Strings sa = new Strings();
-		while (si.hasNext()) {
-			String s = si.next();
+		while (utti.hasNext()) {
+			String s = utti.next();
 			if (s.equals( ";" )) {
 				int type = Intention.getType( sa );
 				sign.append( new Intention( type, sa ));
@@ -42,12 +41,14 @@ public class SignBuilder {
 			} else
 				sa.append( s );
 		}
+		
+		// backwards compatibility:
 		if (!sa.isEmpty()) {
-			
-			// backwards compatible 
-			// -- re move default connector on last intention.
+			// There used to be a 'connector' on the last intention, such as:
+			//    on "XYZ": ... ; then, ... . 
+			// By inspection this has only been "then,"
 			if (sa.get(0).equals( "then" ) &&
-				sa.get(1).equals(    "," )    )
+				sa.get(1).equals(    "," )   )
 			{
 				sa.remove(0);
 				sa.remove(0);
@@ -62,24 +63,23 @@ public class SignBuilder {
 	private Sign doPattern(Iterator<String> si) {
 		if (si.hasNext()) {
 			String s = si.next();
-			frags = new Frags( Strings.trim( s, '"' ));
+			Frags frags = new Frags( Strings.trim( s, '"' ));
 			if (si.hasNext()) {
 				s = si.next();
 				if ((s.equals(",") || s.equals(":"))
 					&& si.hasNext())
 				{
 					return doIntentions( si,
-						new Sign()
-							.pattern( frags )
-							.concept( Intention.concept())
-						);
+								new Sign()
+									.pattern( frags )
+									.concept( Intention.concept()
+							)	);
 				}
-			}
-		}
+		}	}
 		return null;
 	}
-	public Sign toSign() {
-		ListIterator<String> si = strs.listIterator();
+	public  Sign toSign() {
+		ListIterator<String> si = utterance.listIterator();
 		if (si.hasNext()) {
 			String s = si.next();
 			if (s.equals("On"))
@@ -90,15 +90,13 @@ public class SignBuilder {
 		return null;
 	}
 	// ---
-	public static void test( String utterance ) {
-		Strings sa = new Strings( utterance );
-		Sign  sign = new SignBuilder( sa ).toSign();
-		Audit.LOG( "Utterance is "+ utterance );
-		
-		if (sign != null)
-			Audit.LOG( "sign("+ sign.intentions().size() +"): "+ sign.toString() );
-		else
-			Audit.LOG( "mediate: "+ utterance );
+	// ---
+	private static void test( String utterance ) {
+		audit.IN( "test", "Utterance='"+ utterance +"'" );
+		Sign  sign = new SignBuilder( utterance ).toSign();
+		audit.OUT( sign != null ?
+			  "sign(numInts="+ sign.intentions().size() +"): "+ sign.toString()
+			: "mediate: '"+ utterance +"'" );
 	}
 	public static void main( String[] args ) {
 		test( "On \"i need QUOTED-THINGS\":\n"

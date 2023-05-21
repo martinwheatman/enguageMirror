@@ -1,6 +1,6 @@
 On "ok":
 	is ok set;
-	if so, 	perform "overlay save";
+	if so, 	perform "overlay commit";
 	set ok to saved;
 	perform "overlay create";
 	reply "ok".
@@ -12,14 +12,25 @@ On "forget that":
 	reply "ok".
 	
 	
-#] Ok.
+#] how many overlays are there.
+#] ok.
+#] how many overlays are there.
+
 #] I need a beer.
 #] I need a kebab.
 #] i need a plate of fish and chips.
 #] what do i need.
+
+#] how many overlays are there.
 #] ok forget that.
-#] I need a coffee.
-## and a tea. i need a slice of cake.
 #] what do i need.
+#] how many overlays are there.
+
+#] I need a coffee.
+#] what do i need.
+
+#] how many overlays are there.
 #] ok.
+#] how many overlays are there.
+
 #] what do i need.

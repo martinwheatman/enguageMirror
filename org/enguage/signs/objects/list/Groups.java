@@ -7,7 +7,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Groups {
-	static private Audit audit = new Audit( "Group" );
+	//static private Audit audit = new Audit( "Group" );
 	
 	static private String group="";
 	static public  void   group( String by ) { group=by; }
@@ -74,6 +74,6 @@ public class Groups {
 		g.add( "from the dairy aisle", "cheese" );
 		g.add( "from the dairy aisle", "eggs" );
 		g.add( "",                     "toothpaste" );
-		audit.title( "Groups" );
+		Audit.title( "Groups" );
 		Audit.log( g.toString() +"." );
 }	}

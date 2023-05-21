@@ -138,7 +138,7 @@ public class Example {
 			if (!Fs.destroy( fsys ))
 				audit.FATAL( "failed to remove old database - "+ fsys );
 			
-			audit.title( "TEST: "+ test );
+			Audit.title( "TEST: "+ test );
 			
 			if (runTestFile( TEST_DIR, test +TEST_EXT, false ) ||
 			    runTestFile( DICT_DIR, test +DICT_EXT, true  ) ||

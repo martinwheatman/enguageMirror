@@ -159,10 +159,16 @@ public class Audit {
 	}
 	
 	// === title/underline
-	public void title( String title ) {log( "\n" ); underline( title, '=' );}
-	public void subtl( String title ) {log( "" ); underline( title, '+' );}
-	public void underline( String title ) {underline( title, '-' );}
-	public void underline( String title, char ch ) {
+	private static boolean firstTitle = true;
+	private static void title( String title, char ch ) {
+		if (!firstTitle) log( "\n" );
+		underline( title, ch );
+		firstTitle = false;
+	}
+	public  static void title( String title ) {title( title, '=' );}
+	public  static void subtl( String title ) {title( title, '+' );}
+	public  static void underline( String title ) {underline( title, '-' );}
+	public  static void underline( String title, char ch ) {
 		LOG( title );
 		StringBuilder underline = new StringBuilder();
 		for (int i = 0; i < title.length(); i++) underline.append( ch );

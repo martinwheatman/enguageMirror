@@ -467,14 +467,14 @@ public class Items extends ArrayList<Item> {
 		Item.groupOn( Where.LOCTN );
 		Audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
 		
-		audit.title( "SHOPPING LIST TESTS..." );
+		Audit.title( "SHOPPING LIST TESTS..." );
 		Item.format( "QUANTITY,UNIT of,THIS,from FROM" );
 		test( 51, "delete martin needs", "TRUE" );
 		test( 52, "add martin needs object='coffee' quantity='1'", "a coffee" );
 		test( 53, "add martin needs object='coffee' quantity='another'", "another coffee" );
 		test( 55, "get martin needs", "2 coffees" );
 
-		audit.title( "SHOPPING LIST TESTS..." );
+		Audit.title( "SHOPPING LIST TESTS..." );
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );
 		test( 102, "add martin needs coffee quantity='1'", "a coffee" );
@@ -494,7 +494,7 @@ public class Items extends ArrayList<Item> {
 		test( 112, "removeAny martin needs coffee", "coffee" );
 		test( 113, "get martin needs", "");
 		
-		audit.title( "Calendar list tests..." );
+		Audit.title( "Calendar list tests..." );
 		Item.groupOn( "" ); // reset
 		Item.format( ","+Where.LOCTR +" "+ Where.LOCTN+",WHEN" );
 		test( 201, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
@@ -502,7 +502,7 @@ public class Items extends ArrayList<Item> {
 		test( 202, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
 		
-		audit.title( "why" );
+		Audit.title( "why" );
 		l = new Items( "martin", "causal" );
 		
 		// two linked cause-effects

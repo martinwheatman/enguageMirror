@@ -505,7 +505,7 @@ public class Number {
 		Audit.log( "3.0  -> "+ floatToString( 3.0f  ));
 		Audit.log( "3.25 -> "+ floatToString( 3.25f ));
 		
-		audit.title( "evaluation test:");
+		Audit.title( "evaluation test:");
 		evaluationTest(  "this is not a number",  NOT_A_NUMBER );
 		evaluationTest(  "3 plus 2",              "5" );
 		evaluationTest(  "3 x    2",              "6" );
@@ -514,7 +514,7 @@ public class Number {
 		evaluationTest(  "3 plus 1 all squared", "16" );
 		evaluationTest(  "3 times y",             "3" );
 		// -- */	
-		audit.title( "get number test:" );
+		Audit.title( "get number test:" );
 		Audit.incr();
 		getNumberTest( "another",                  "+=1" );
 		getNumberTest( "another   cup  of coffee", "+=1" );
@@ -523,7 +523,7 @@ public class Number {
 		Audit.decr();
 		// -- */	
 		
-		audit.title( "more/less test:");
+		Audit.title( "more/less test:");
 		Audit.incr();
 		getNumberTest( "about 6 more cups of coffee", "+~6" );
 		getNumberTest( "6 more cups of coffee",       "+=6" );
@@ -543,7 +543,7 @@ public class Number {
 		getNumberTest( "2 to the power of 5",          "32" );
 		Audit.decr();
 		
-		audit.title( "Number combine test:");
+		Audit.title( "Number combine test:");
 		Audit.incr();
 		combineTest(   "3",   "6",            "6",   "6" );
 		combineTest( "+~3", "-~6", "about 3 less", "-~3" );
@@ -560,7 +560,7 @@ public class Number {
 		 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
 		 */
 			
-		audit.title( "Function test:");
+		Audit.title( "Function test:");
 		Audit.incr();
 		// Function within function:
 		Function.interpret( "create sum x y / "+ new Attribute( "body", "x + y" ));

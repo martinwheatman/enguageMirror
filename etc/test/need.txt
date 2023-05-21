@@ -28,12 +28,14 @@ how many coffees do i need: 2, you need 2 coffees.
 i need a cup of tea: ok, you need a cup of tea.
 and another coffee:  ok, you need another coffee.
 what do i need:      You need 3 coffees , and a cup of tea.
-			
-echo Correct values:-.
-i need another coffee: ok, you need another coffee.
-no i need another 3:   ok, you need another 3 coffees.
-what do i need:        you need 6 coffees, and a cup of tea.
 i don't need anything: ok, you don't need anything.
+
+echo Correct values:-.
+i need a coffee:        ok, you need a coffee.
+i need another coffee:  ok, you need another coffee.
+no i need another 3:    ok, you need another 3 coffees.
+what do i need:         you need 4 coffees.
+i don't need anything:  ok, you don't need anything.
 			
 echo Group-as-entity:-.	
 MartinAndRuth does not need anything.
