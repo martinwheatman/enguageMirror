@@ -23,34 +23,34 @@ import org.enguage.util.attr.Attributes;
 
 public class Frags extends ArrayList<Frag> {
 	static final         long serialVersionUID = 0;
-	private static        Audit           audit = new Audit( "Pattern" );
-	
-	private static  final Locale  locale        = Locale.getDefault();
-	private static  final String  variable      = "variable";
-	public  static   final String  quoted        = "quoted";
-	public  static   final String  list          = "list";
-	public  static   final String  quotedPrefix  = quoted.toUpperCase( locale ) + "-";
-	public  static   final String  grouped       = "grouped";
-	public  static   final String  groupedPrefix = grouped.toUpperCase( locale ) + "-";
-	public  static   final String  ungrouped     = "ungrouped";
-	public  static   final String  ungrpedPrefix = ungrouped.toUpperCase( locale ) + "-";
-	public  static   final String  phrase        = "phrase";
-	public  static   final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
-	public  static   final String  first         = "first-of";
-	public  static   final String  firstPrefix   = first.toUpperCase( locale ) + "-";
-	public  static   final String  rest          = "rest-of";
-	public  static   final String  restPrefix    = rest.toUpperCase( locale ) + "-";
-	public  static   final String  numeric       = "numeric";
-	public  static   final String  numericPrefix = numeric.toUpperCase( locale ) + "-";
-	public  static   final String  expression    = "expression";
-	public  static   final String  expr          = "expr";
-	public  static   final String  exprPrefix    = expr.toUpperCase( locale ) + "-";
-	public  static   final String  plural        = Plural.NAME; // "plural";
-	public  static   final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
-	public  static   final String  sinsign       = "said";
-	public  static   final String  sinsignPrefix = sinsign.toUpperCase( locale ) + "-";
-	public  static   final String  external      = "ext";
-	public  static   final String  externPrefix  = external.toUpperCase( locale ) + "-";
+	private static        Audit          audit = new Audit( "Pattern" );
+
+	private static final Locale  locale        = Locale.getDefault();
+	private static final String  variable      = "variable";
+	public  static final String  quoted        = "quoted";
+	public  static final String  list          = "list";
+	public  static final String  quotedPrefix  = quoted.toUpperCase( locale ) + "-";
+	public  static final String  grouped       = "grouped";
+	public  static final String  groupedPrefix = grouped.toUpperCase( locale ) + "-";
+	public  static final String  ungrouped     = "ungrouped";
+	public  static final String  ungrpedPrefix = ungrouped.toUpperCase( locale ) + "-";
+	public  static final String  phrase        = "phrase";
+	public  static final String  phrasePrefix  = phrase.toUpperCase( locale ) + "-";
+	public  static final String  first         = "first-of";
+	public  static final String  firstPrefix   = first.toUpperCase( locale ) + "-";
+	public  static final String  rest          = "rest-of";
+	public  static final String  restPrefix    = rest.toUpperCase( locale ) + "-";
+	public  static final String  numeric       = "numeric";
+	public  static final String  numericPrefix = numeric.toUpperCase( locale ) + "-";
+	public  static final String  expression    = "expression";
+	public  static final String  expr          = "expr";
+	public  static final String  exprPrefix    = expr.toUpperCase( locale ) + "-";
+	public  static final String  plural        = Plural.NAME; // "plural";
+	public  static final String  pluralPrefix  = plural.toUpperCase( locale ) + "-";
+	public  static final String  sinsign       = "said";
+	public  static final String  sinsignPrefix = sinsign.toUpperCase( locale ) + "-";
+	public  static final String  external      = "ext";
+	public  static final String  externPrefix  = external.toUpperCase( locale ) + "-";
 	
 	public Frags() { super(); }
 	public Frags( Strings words ) {

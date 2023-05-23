@@ -1,11 +1,11 @@
 On "there are NUMERIC-NUMBER light bins":
 	set the value of lbcount to NUMBER;
-	then, reply "ok, there are NUMBER light bins".
+	reply "ok, there are NUMBER light bins".
 	
 On "how many light bins are there":
 	get the value of lbcount;
-	then, reply "..., there are ... light bins".
+	reply "..., there are ... light bins".
 	
 On "show me light bin NUMERIC-NUMBER":
 	tcpip localhost 8080 "flash lightbin NUMBER";
-	then, reply "ok, light bin NUMBER is flashing".
+	reply "ok, light bin NUMBER is flashing".

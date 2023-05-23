@@ -8,11 +8,11 @@ On "i am not ACTIONING PHRASE-WHAT":
 	does WHAT exist in _user ACTIONING list;
 	if not, reply "yes, i know";
 	remove WHAT from _user ACTIONING list;
-	then, reply "ok, you are not ACTIONING WHAT".
+	reply "ok, you are not ACTIONING WHAT".
 
 On "am i ACTIONING PHRASE-WHAT":
 	does _user ACTIONING list exist;
 	if not, reply "sorry, i don't know if you are ACTIONING WHAT";
 	does WHAT exist in _user ACTIONING list;
 	if not, reply "no, you are not ACTIONING WHAT";
-	then, reply "yes, you are ACTIONING WHAT".
+	reply "yes, you are ACTIONING WHAT".

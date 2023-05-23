@@ -27,29 +27,31 @@ public class Sign {
 
 	public  static class Builder {
 
-		/* Builds a sign from a string text:
-		 * 
-		 *	'On "hello", reply "hello to you too".'
-		 *
-		 * 	'On "i need QUOTED-THINGS":
-		 *		add THINGS to my needs list;
-		 *		if not, perform "do this";
-		 *		if so, run "ls -l";
-		 *		reply "ok, you need ...".'
-		 *	
-		 *	'what do i need.' => returns null: this is an utterance!
-		 */
+		// Builds a sign from a string text: 
+		public static final String    SIGN_START_TOKEN = "On";
+		public static final String  PATTERN_COMMA_TERM = ",";
+		//		'On "hello", reply "hello to you too".'
 		
+		public static final String  PATTERN_COLON_TERM = ":";
+		public static final String INTENTION_SEPARATOR = ";";
+		/*	 	'On "i need QUOTED-THINGS":
+		 *			add THINGS to my needs list;
+		 *			if not, perform "do this"  ;
+		 *			if so, run "ls -l"         ;
+		 *			reply "ok, you need ...".'
+		 */
+		 //		'what do i need.' => returns null: this is an utterance!
+				
 		public Builder( Strings sa ) {utterance = new Strings( sa );}
 		public Builder( String   s ) {this( new Strings( s ));}
 		
-		private final Strings utterance;
+		private final Strings utterance; // already stripped of '.'
 
 		private Sign doIntentions(Iterator<String> utti, Sign sign) {
 			Strings sa = new Strings();
 			while (utti.hasNext()) {
 				String s = utti.next();
-				if (s.equals( ";" )) {
+				if (s.equals( INTENTION_SEPARATOR )) {
 					int type = Intention.getType( sa );
 					sign.append( new Intention( type, sa ));
 					sa = new Strings();
@@ -59,16 +61,6 @@ public class Sign {
 			
 			// backwards compatibility:
 			if (!sa.isEmpty()) {
-				// There used to be a 'connector' on the last intention, such as:
-				//    on "XYZ": ... ; then, ... . 
-				// By inspection this has only ever been "then,": now removed(!)
-				if (sa.get(0).equals( "then" ) &&
-					sa.get(1).equals(    "," )   )
-				{
-					sa.remove(0);
-					sa.remove(0);
-				}
-				
 				// getType affects sa!!! be explicit in ordering
 				int type = Intention.getType( sa );
 				sign.append( new Intention( type, sa ));
@@ -81,7 +73,8 @@ public class Sign {
 				Frags frags = new Frags( Strings.trim( s, '"' ));
 				if (si.hasNext()) {
 					s = si.next();
-					if ((s.equals(",") || s.equals(":"))
+					if ((s.equals(PATTERN_COMMA_TERM) ||
+						 s.equals(PATTERN_COLON_TERM))
 						&& si.hasNext())
 					{
 						return doIntentions( si,
@@ -97,7 +90,7 @@ public class Sign {
 			ListIterator<String> si = utterance.listIterator();
 			if (si.hasNext()) {
 				String s = si.next();
-				if (s.equals("On"))
+				if (s.equals(SIGN_START_TOKEN))
 					return doPattern( si );
 				else
 					si.previous();
@@ -206,7 +199,11 @@ public class Sign {
 	public void    toVariable() {Variable.set( pattern.toFilename(), toLine());}
 	
 	/*
-	 * This will handle "sign create X", found in interpret.txt
+	 * This will handle:
+	 *  	"sign [next|prev|...]
+	 *  			[else|then]
+	 *  			[create|imply|run|perform|finally] <PHRASE-X>"
+	 * as found in interpret.txt
 	 */
 	public static Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString());
@@ -300,28 +297,29 @@ public class Sign {
 				voiced.temporalIs( true );
 				
 			} else if (cmd.equals( "finally" )) {
+				cmd = args.get( 0 ); // don't remove
 				Intention intn;
 				//audit.debug( "adding a final clause? "+ args.toString() )
-				if (cmd.length() > 7 && cmd.substring( 0, 7 ).equals( "perform" ))
+				if (cmd.equals( Intention.DO_HOOK ))
 					intn = new Intention(
 							isElse ? Intention.N_ELSE_DO    : isThen ? Intention.N_THEN_DO : Intention.N_DO,
 							Frags.toPattern( new Strings( args.toString() ))
 						 );
 				
-				else if (cmd.equals( "reply" )) {
+				else if (cmd.equals( Intention.REPLY_HOOK )) {
 					Strings vals = Frags.toPattern( new Strings( args.toString() )); 
 					intn = new Intention(
 							isElse ? Intention.N_ELSE_REPLY : isThen ? Intention.N_THEN_REPLY : Intention.N_REPLY,
 							vals
 						 );
 				
-				} else
+				} else // THINK_HOOK
 					intn = new Intention(
 							isElse ? Intention.N_ELSE_THINK : isThen ? Intention.N_THEN_THINK : Intention.N_THINK,
 							Frags.toPattern( new Strings( args.toString() ))
 						 );
 				voiced.append( intn ); // all finals at the end :)
-				voiced = null;
+				//voiced = null; -- maybe more finallys
 			
 			} else {
 				rc = Shell.FAIL;

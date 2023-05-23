@@ -7,7 +7,7 @@ meeting is spatial.
 
 On "SUBJECT is not meeting anybody":
 	delete SUBJECT meeting list;
-	then, reply "ok, SUBJECT is not meeting anybody".
+	reply "ok, SUBJECT is not meeting anybody".
 On "i am not meeting anybody", _user is not meeting anybody.
 On "i am not meeting anyone",  _user is not meeting anybody.
 
@@ -15,7 +15,7 @@ On "SUBJECT is meeting PHRASE-WHOM":
 	assert SUBJECT is meeting WHOM;
 	if so, reply "yes, i know";
 	perform "items add SUBJECT meeting WHOM";
-	then, reply "ok, SUBJECT is meeting WHOM ...".
+	reply "ok, SUBJECT is meeting WHOM ...".
 On "i am meeting PHRASE-WHOM", _user is meeting WHOM.
 #On "help", reply "to say who you are meeting".
 
@@ -27,7 +27,7 @@ On "when is SUBJECT meeting PHRASE-WHOM":
 	# check if and when...
 	get the when of WHOM from SUBJECT meeting list;
 	if not, reply "i don't know when SUBJECT is meeting WHOM";
-	then, reply "SUBJECT is meeting WHOM ...".
+	reply "SUBJECT is meeting WHOM ...".
 On "when am i meeting PHRASE-WHOM", when is _user meeting WHOM.
 On "what time PHRASE-X", when X.
 
@@ -42,25 +42,25 @@ On "where is SUBJECT meeting PHRASE-WHOM":
 	if not, reply "i do not know where SUBJECT is meeting WHOM";
 	# ok, get the whole caboose...
 	get SUBJECT meeting list;
-	then, reply "SUBJECT is meeting ...".
+	reply "SUBJECT is meeting ...".
 On "where am i meeting PHRASE-WHOM", where is _user meeting WHOM.
 #On "help", reply "to find out where you are meeting the person".
 
 On "SUBJECT is not meeting PHRASE-WHOM":
 	perform "items remove SUBJECT meeting WHOM";
 	if not, "yes, i know";
-	then, reply "ok, SUBJECT is not meeting WHOM".
+	reply "ok, SUBJECT is not meeting WHOM".
 On "i am not meeting PHRASE-WHOM", _user is not meeting WHOM.
 
 On "is SUBJECT meeting PHRASE-WHOM":
 	perform "items exists SUBJECT meeting WHOM";
 	if not, reply "no, SUBJECT is not meeting WHOM";
-	then, reply "yes, SUBJECT is meeting WHOM".
+	reply "yes, SUBJECT is meeting WHOM".
 On "am i meeting PHRASE-WHOM", is _user meeting WHOM.
 
 On "who is SUBJECT meeting":
 	perform "items get SUBJECT meeting -";
 	if not, reply "SUBJECT is not meeting anybody";
-	then, reply "SUBJECT is meeting ...".
+	reply "SUBJECT is meeting ...".
 On "who am i meeting", who is _user meeting.
 #On "help", reply "to list who you are meeting".

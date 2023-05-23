@@ -9,11 +9,11 @@
 On "what day is X":
 	perform "temporal dayOfWeek X";
 	if not, reply "i do not know";
-	then, reply "..., christmas day is on a ...".
+	reply "..., christmas day is on a ...".
 
 On "what day is it today":
 	perform "temporal dayOfWeek";
 	if not, reply "i do not know";
-	then, reply "..., today is a ...".
+	reply "..., today is a ...".
 
 On "what day is christmas day", what day is 1225.

@@ -12,8 +12,7 @@ import org.enguage.util.attr.Attribute;
 public class Intentions extends ArrayList<Intention> {
 	
 	private static final Audit audit = new Audit("Intentions");
-	
-	static final long serialVersionUID = 0L;
+	private static final long  serialVersionUID = 0L;
 
 	public  Intentions append(        Intention in ){add( in ); return this;}
 	public  Intentions insert( int i, Intention in ){add( i==-1 ? 0 : i, in ); return this;}
