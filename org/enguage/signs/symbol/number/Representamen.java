@@ -1,6 +1,6 @@
 package org.enguage.signs.symbol.number;
 
-import org.enguage.signs.objects.expr.Function;
+import org.enguage.signs.object.expr.Function;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

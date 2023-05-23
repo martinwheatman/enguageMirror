@@ -1,11 +1,11 @@
 package org.enguage.signs.symbol;
 
 import org.enguage.signs.Sign;
-import org.enguage.signs.objects.Numeric;
-import org.enguage.signs.objects.Temporal;
-import org.enguage.signs.objects.Variable;
-import org.enguage.signs.objects.sofa.Overlay;
-import org.enguage.signs.objects.sofa.Perform;
+import org.enguage.signs.object.Numeric;
+import org.enguage.signs.object.Temporal;
+import org.enguage.signs.object.Variable;
+import org.enguage.signs.object.sofa.Overlay;
+import org.enguage.signs.object.sofa.Perform;
 import org.enguage.signs.symbol.config.Colloquial;
 import org.enguage.signs.symbol.config.Englishisms;
 import org.enguage.signs.symbol.pattern.Frag;

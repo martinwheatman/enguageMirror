@@ -1,4 +1,4 @@
-package org.enguage.signs.objects;
+package org.enguage.signs.object;
 
 import java.io.IOException;
 

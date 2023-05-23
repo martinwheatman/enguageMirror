@@ -17,7 +17,7 @@ import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.Sign;
 import org.enguage.signs.SignBuilder;
 import org.enguage.signs.interpretant.Intention;
-import org.enguage.signs.objects.Variable;
+import org.enguage.signs.object.Variable;
 import org.enguage.signs.symbol.Utterance;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;

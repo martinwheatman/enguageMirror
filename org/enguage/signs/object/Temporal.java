@@ -1,4 +1,4 @@
-package org.enguage.signs.objects;
+package org.enguage.signs.object;
 
 import org.enguage.signs.symbol.when.Day;
 import org.enguage.signs.symbol.when.When;

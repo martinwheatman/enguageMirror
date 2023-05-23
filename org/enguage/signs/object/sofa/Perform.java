@@ -1,16 +1,16 @@
-package org.enguage.signs.objects.sofa;
+package org.enguage.signs.object.sofa;
 
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.repertoires.concepts.Similarity;
 import org.enguage.signs.Sign;
-import org.enguage.signs.objects.Numeric;
-import org.enguage.signs.objects.Temporal;
-import org.enguage.signs.objects.Variable;
-import org.enguage.signs.objects.expr.Function;
-import org.enguage.signs.objects.list.Item;
-import org.enguage.signs.objects.list.Items;
-import org.enguage.signs.objects.list.Transitive;
+import org.enguage.signs.object.Numeric;
+import org.enguage.signs.object.Temporal;
+import org.enguage.signs.object.Variable;
+import org.enguage.signs.object.expr.Function;
+import org.enguage.signs.object.list.Item;
+import org.enguage.signs.object.list.Items;
+import org.enguage.signs.object.list.Transitive;
 import org.enguage.signs.symbol.config.Colloquial;
 import org.enguage.signs.symbol.config.Plural;
 import org.enguage.signs.symbol.where.Where;

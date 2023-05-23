@@ -1,4 +1,4 @@
-package org.enguage.signs.objects;
+package org.enguage.signs.object;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.signs.objects.sofa.Overlay;
-import org.enguage.signs.objects.sofa.Value;
+import org.enguage.signs.object.sofa.Overlay;
+import org.enguage.signs.object.sofa.Value;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;

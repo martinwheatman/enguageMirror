@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.enguage.signs.objects.Variable;
-import org.enguage.signs.objects.sofa.Overlay;
+import org.enguage.signs.object.Variable;
+import org.enguage.signs.object.sofa.Overlay;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;

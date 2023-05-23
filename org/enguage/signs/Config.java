@@ -9,7 +9,7 @@ import org.enguage.Enguage;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.signs.interpretant.Commands;
-import org.enguage.signs.objects.Variable;
+import org.enguage.signs.object.Variable;
 import org.enguage.signs.symbol.reply.Answer;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;

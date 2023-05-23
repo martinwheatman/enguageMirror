@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.signs.objects.Variable;
+import org.enguage.signs.object.Variable;
 import org.enguage.signs.symbol.config.Plural;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.util.Audit;

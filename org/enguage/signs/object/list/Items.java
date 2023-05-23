@@ -1,9 +1,9 @@
-package org.enguage.signs.objects.list;
+package org.enguage.signs.object.list;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.signs.objects.sofa.Value;
+import org.enguage.signs.object.sofa.Value;
 import org.enguage.signs.symbol.number.Number;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.where.Where;

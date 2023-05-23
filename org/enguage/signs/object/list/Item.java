@@ -1,4 +1,4 @@
-package org.enguage.signs.objects.list;
+package org.enguage.signs.object.list;
 
 import java.util.ArrayList;
 import java.util.ListIterator;

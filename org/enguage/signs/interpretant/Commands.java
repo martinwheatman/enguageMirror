@@ -3,7 +3,7 @@ package org.enguage.signs.interpretant;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import org.enguage.signs.objects.Variable;
+import org.enguage.signs.object.Variable;
 import org.enguage.signs.symbol.reply.Reply;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.signs.symbol.when.When;
