@@ -88,34 +88,33 @@ public class Example {
 				audit.FATAL( "Too many replies ("+ replies.length +") provided" );
 	}	}
 
-	private static String ffname( String dir, String fname ) {
-		return dir.equals(DICT_DIR)
+	private static String fullFname( String dir, String fname ) {
+		return dir.equals(DICT_DIR) // dictionaries are alphabetic: dict/w/word
 				? dir + fname.charAt( 0 ) +File.separator+ fname
 				: dir + fname;
 	}
-	private static boolean runTestFile( String dir, String fname, boolean comments ) {
-		boolean rc = false;
-		String ffname = ffname( dir, fname );
-		try (Scanner file = new Scanner( new File( ffname ))) {
-			rc = true;
-			StringBuilder sb = new StringBuilder();
+	private static boolean runTestFile( String dir, String fname ) {
+		boolean embTest = dir != TEST_DIR;
+		String marker = embTest ? TEST_START : COMMENT_START;
+		try (Scanner file = new Scanner( new File( fullFname( dir, fname ) ))) {
+			StringBuilder utterance = new StringBuilder();
 			while (file.hasNextLine()) {
 				String line = file.nextLine();
-				String[] bits = line.split( comments ? TEST_START : COMMENT_START );
-				if ((!comments && bits.length > 0) ||
-					( comments && bits.length > 1)   ) {
-					line = " " + bits[comments?1:0].trim();
-					boolean endsInStop = line.endsWith( LINE_TERM );
+				String[] pieces = line.split( marker );
+				if ((!embTest && pieces.length > 0) ||
+					( embTest && pieces.length > 1)   ) {
+					line = " " + pieces[embTest?1:0].trim();
+					utterance.append( line );
 					
-					// split on '.'
-					sb.append( line );
-					if (endsInStop) {
-						runTestLine( sb.toString() );
-						sb = new StringBuilder();
-			}	}	}	
+					// found a full line?
+					if (line.endsWith( LINE_TERM )) {
+						runTestLine( utterance.toString() );
+						utterance = new StringBuilder();
+						
+			}	}	}
+			return true;
 		} catch (FileNotFoundException ignore) {/*ignore*/}
-		
-		return rc;
+		return false;
 	}
 
 	/*
@@ -140,9 +139,10 @@ public class Example {
 			
 			Audit.title( "TEST: "+ test );
 			
-			if (runTestFile( TEST_DIR, test +TEST_EXT, false ) ||
-			    runTestFile( DICT_DIR, test +DICT_EXT, true  ) ||
-			    runTestFile(  REP_DIR, test +REP_EXT,  true  )   )
+			// true=code before comment, false=
+			if (runTestFile( TEST_DIR, test +TEST_EXT ) ||
+			    runTestFile( DICT_DIR, test +DICT_EXT ) ||
+			    runTestFile(  REP_DIR, test +REP_EXT  )   )
 				testGrp++;
 		}
 		Audit.log( testGrp +" test group(s) found" );
