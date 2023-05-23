@@ -341,7 +341,7 @@ public class Item {
 	}
 	private static void test( String s ) { test( s, null );}
 	private static void test( String descr, String expected ) {
-		Audit.log( ">>>>>>>"+ descr +"<<<<" );
+		audit.log( ">>>>>>>"+ descr +"<<<<" );
 		Item   item  = new Item( new Strings( descr ).contract( "=" ));
 		String group = item.group(),
 		       ans   = item.toString() + (group.equals("") ? "" : " "+ group);
@@ -358,7 +358,7 @@ public class Item {
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffees from Tesco in London" );
-		Audit.log( "adding b/c: "+ interpret( new Strings( "stuff includes 'black coffee'" )));
+		audit.log( "adding b/c: "+ interpret( new Strings( "stuff includes 'black coffee'" )));
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffee from Tesco in London" );
 		
@@ -370,12 +370,12 @@ public class Item {
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
 				"2 packets of crisp from Tesco in London" );
-		Audit.log( "adding crisps: "+ interpret( new Strings( "things include crisps" )));
+		audit.log( "adding crisps: "+ interpret( new Strings( "things include crisps" )));
 		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
 				"2 packets of crisps from Tesco in London" );
 		
 
-		Audit.title( "grouping" );
+		audit.title( "grouping" );
 		Item.groupOn( Where.LOCTN );
 		audit.debug("Using format:"+ Item.format.toString( Strings.CSV )
 		          + (Item.groupOn().size() == 0
@@ -396,8 +396,8 @@ public class Item {
 		testAdd( "locator='from' location='the dairy aisle' eggs  quantity='6'" );
 		testAdd( "toothpaste" );
 		
-		Audit.title( "Groups" );
-		Audit.log( groups.toString() +"." );
+		audit.title( "Groups" );
+		audit.log( groups.toString() +"." );
 		
 		audit.PASSED();
 }	}

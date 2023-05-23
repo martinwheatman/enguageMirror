@@ -80,16 +80,16 @@ public class Question {
 		
 		Question q = new Question( "why do birds suddenly appear" );
 		primedAnswer( "they long to be close to you!" );
-		Audit.log( q.ask());
+		audit.log( q.ask());
 		
 		q = new Question( "is it safe" );
 		primedAnswer( "yes, it is" );
-		Audit.log( q.ask( ));
+		audit.log( q.ask( ));
 		
 		primedAnswer("no, it isn't");
-		Audit.log( q.ask( ));
+		audit.log( q.ask( ));
 		
 		primedAnswer( null );
-		Audit.log( q.ask() );
-		Audit.log( q.ask() );
+		audit.log( q.ask() );
+		audit.log( q.ask() );
 }	}

@@ -182,10 +182,10 @@ public final class Engine {
 			
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
-				Audit.log("Allop:repeating dnu");
+				audit.log("Allop:repeating dnu");
 				r.format( Response.dnu());
 			} else {
-				Audit.log("Allop:repeating: "+ Reply.previous());
+				audit.log("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
 				r.format( new Strings( Reply.repeatFormat()));
 				r.answer( Reply.previous().toString());
@@ -193,14 +193,14 @@ public final class Engine {
 			
 		} else if (cmd.equals( "entitle" )) {
 			cmds.toUpperCase();
-			Audit.title( cmds.toString() );
+			audit.title( cmds.toString() );
 
 		} else if (cmd.equals( "subtitle" )) {
 			cmds.toUpperCase();
-			Audit.subtl( cmds.toString() );
+			audit.subtl( cmds.toString() );
 
 		} else if (cmd.equals( "echo" )) {
-			Audit.subtl( cmds.toString() );
+			audit.subtl( cmds.toString() );
 
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'

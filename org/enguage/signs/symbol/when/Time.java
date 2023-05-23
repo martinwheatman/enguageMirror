@@ -155,9 +155,9 @@ public class Time {
 		ListIterator<String> si = sa.listIterator();
 		When w = new When();
 		if (doTime( w, si ))
-			Audit.log( "'"+ s +"' means '"+ sa.toString( Strings.SPACED ) +"' ("+ w.toString() +")" );
+			audit.log( "'"+ s +"' means '"+ sa.toString( Strings.SPACED ) +"' ("+ w.toString() +")" );
 		else
-			Audit.log( "'"+ s +"' means just that!" );
+			audit.log( "'"+ s +"' means just that!" );
 		audit.out();
 	}
 	public static void main( String args[]) {

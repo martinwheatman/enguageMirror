@@ -431,7 +431,7 @@ public class Frags extends ArrayList<Frag> {
 			// peek at terminator
 			String terminator = patti.next().prefix().get( 0 );
 			patti.previous();
-			//Audit.log( "Terminator is "+ terminator )
+			//audit.log( "Terminator is "+ terminator )
 			
 			words.add( word );  // add at least one val!
 			if (utti.hasNext()) word = utti.next();
@@ -713,17 +713,17 @@ public class Frags extends ArrayList<Frag> {
 		Attributes values = interpretant.matchValues( new Strings( phrase ), true );
 		
 		if (values == null)
-			Audit.log( "no match" );
+			audit.log( "no match" );
 		else {
 			// de-reference values...
 			String vals = values.toString();
 			if (null == expected)
-				Audit.log( "values => ["+ vals +"]" );
+				audit.log( "values => ["+ vals +"]" );
 			else if (values.matches( expected ))
-				Audit.log( "PASSED => ["+ vals +"]" );
+				audit.log( "PASSED => ["+ vals +"]" );
 			else {
-				Audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
-				Audit.log( "      :       got: "+ vals );
+				audit.log( "FAILED: expecting: "+ expected +", got: "+ vals );
+				audit.log( "      :       got: "+ vals );
 		}	}
 		audit.out();
 	}
@@ -734,22 +734,22 @@ public class Frags extends ArrayList<Frag> {
 //		String patt = toPattern( utt ).toString();
 //		if (answer != null && !answer.equals( patt ))
 //			audit.FATAL( "answer '"+ patt +"' doesn't equal expected: '" + answer +"'" );
-//		Audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
+//		audit.log( ">"+ utt +"< to pattern is >"+ patt +"<" );
 //	}
 	private static  void matchTest( String pref, String var, String concept, String utterance ) {
 		audit.in( "matchTest", utterance );
 		Attributes as;
 		Utterance u = new Utterance( new Strings( utterance ));
-		Audit.log( "Utterance: "+ utterance );
+		audit.log( "Utterance: "+ utterance );
 		
 		Sign s = new Sign( new Frag( pref, var ));
 		s.concept( concept );
-		Audit.log( "     Sign: "+ s.toXml(0, -1) );
+		audit.log( "     Sign: "+ s.toXml(0, -1) );
 		
 		if (null != (as = u.match( s )))
 			audit.passed( "  matches: "+ as.toString());
 		else
-			Audit.log( "notMatched ("+ s.pattern().notMatched() +")" );
+			audit.log( "notMatched ("+ s.pattern().notMatched() +")" );
 		audit.out();
 	}
 	private static  void complexityTest( String str ) {
@@ -802,7 +802,7 @@ public class Frags extends ArrayList<Frag> {
 //
 //		toPatternTest( "the sum of and list variable params is blah", "the sum of PARAMS-AND-LIST is blah" );
 
-//		Audit.log( "First: martin is alive" );
+//		audit.log( "First: martin is alive" );
 //		Audit.incr();
 //		printTagsAndValues( new Pattern(
 //				"first phrase variable x" ),
@@ -820,7 +820,7 @@ public class Frags extends ArrayList<Frag> {
 //		);
 //		Audit.decr();
 		
-//		Audit.log( "Second: i am alive" );
+//		audit.log( "Second: i am alive" );
 //		Audit.incr();
 //		printTagsAndValues( new Pattern(
 //				"phrase variable object exists in variable subject variable list list" ),
@@ -851,20 +851,20 @@ public class Frags extends ArrayList<Frag> {
 //		//Audit.traceAll( true );		
 //		
 //		p = new Pattern( "help" );
-//		Audit.log( "sign is now: "+ p.toXml());
+//		audit.log( "sign is now: "+ p.toXml());
 //		p.newTest( "at the pub i am meeting my brother" );
 //		
 //		p.newTest( "doesnt match at all" );
 //
 //		// -- expr
 //		p = new Pattern( "the FUNCITON of LIST-FNAME is EXPR-VAL" );
-//		Audit.log( "sign is: "+ p.toXml());
+//		audit.log( "sign is: "+ p.toXml());
 //		
 //		p.newTest( "the sum of x is x plus y" );
 
 		// pronouns test...
 //		p = new Pattern( "they are" );
-//		Audit.log( "sign is: "+ p.toXml());
+//		audit.log( "sign is: "+ p.toXml());
 //		p.newTest( "they are from sainsburys" );
 
 		complexityTest(	"i am legend" );
@@ -879,7 +879,7 @@ public class Frags extends ArrayList<Frag> {
 		Where.doLocators("at/from/in");
 		Where.addConcept( "need+needs" );
 		Frags p = new Frags( "i need PHRASE-THESE" );
-		Audit.log( "pattern is: "+ p.toXml());
+		audit.log( "pattern is: "+ p.toXml());
 		
 		Audit.on();
 		matchTest(

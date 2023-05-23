@@ -12,7 +12,7 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Attributes extends ArrayList<Attribute> {
-	//static private Audit audit = new Audit( "Attributes" );
+	static private Audit audit = new Audit( "Attributes" );
 	static final long serialVersionUID = 0;
 	
 	public Attributes() { super(); }
@@ -285,30 +285,30 @@ public class Attributes extends ArrayList<Attribute> {
 		Attributes b, a = new Attributes();
 		a.add( new Attribute( "martin", "heroic" ));
 		a.add( new Attribute( "ruth", "fab" ));
-		Audit.log( "Initial test: "+ a.toString());
+		audit.log( "Initial test: "+ a.toString());
 		
-		Audit.log( "\tmartin is "+  a.value( "martin" ));
-		Audit.log( "\truth is "+   a.value( "ruth" ));
-		Audit.log( "\tjames is "+  a.value( "james" ));
-		Audit.log( "\tderef martin is "+  a.deref( "what is MARTIN" ));
+		audit.log( "\tmartin is "+  a.value( "martin" ));
+		audit.log( "\truth is "+   a.value( "ruth" ));
+		audit.log( "\tjames is "+  a.value( "james" ));
+		audit.log( "\tderef martin is "+  a.deref( "what is MARTIN" ));
 		
-		Audit.log( "\tremoving "+ a.remove( new Attribute( "martin" )));
-		Audit.log( "\ta is now:"+ a.toString());
-		Audit.log( "\tshould be just ruth='fab'" );
+		audit.log( "\tremoving "+ a.remove( new Attribute( "martin" )));
+		audit.log( "\ta is now:"+ a.toString());
+		audit.log( "\tshould be just ruth='fab'" );
 		
 		a = new Attributes();
 		a.add( new Attribute( "X", "3" ));
 		b = new Attributes();
 		a.add( new Attribute( "X", "3" ));
 		if (a.matches( b ))
-			Audit.log( "matched" );
+			audit.log( "matched" );
 		else
-			Audit.log( "not mathing" );
+			audit.log( "not mathing" );
 		
 		Audit.on();
 		Strings s = new Strings( "martin='heroic' ruth='fab'" );
-		Audit.log( "Test string is; ["+ s.toString()+"]");
-		Audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
+		audit.log( "Test string is; ["+ s.toString()+"]");
+		audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
 		Attributes attrs = new Attributes( s.listIterator());
-		Audit.log( "Copy is: >"+ attrs.toString() +"<");
+		audit.log( "Copy is: >"+ attrs.toString() +"<");
 }	}

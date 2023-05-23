@@ -195,9 +195,9 @@ public class Shell {
 	private static void test( String string ) {
 		Strings list = new Strings( string );
 		List<Strings> listOfLists = expandSemicolonList( list );
-		Audit.log("expanded list is:");
+		audit.log("expanded list is:");
 		for (Strings s : listOfLists ) {
-			Audit.log( ">>>"+ s.toString( Strings.SPACED ) );
+			audit.log( ">>>"+ s.toString( Strings.SPACED ) );
 	}	}
 	public static void main( String[] args) {
 //		test( "I need coffee" )

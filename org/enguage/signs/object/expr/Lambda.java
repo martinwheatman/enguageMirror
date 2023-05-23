@@ -49,7 +49,7 @@ public class Lambda {
 				&& !(body = new Value( formals, fn.name() ).getAsString()).equals(""))
 				break; // bingo! (can we revisit if this ain't right?)
 		if (body.equals(""))
-			Audit.log( "Lambda: "+ fn +"/"+ values.toString( Strings.CSV ) +" not found" );
+			audit.log( "Lambda: "+ fn +"/"+ values.toString( Strings.CSV ) +" not found" );
 		audit.out();
 	}
 	
@@ -82,16 +82,16 @@ public class Lambda {
 		matchTest(  "x y", "1 2",  true );
 		matchTest(    "x", "1 2", false ); // n vals != n names
 		matchTest(  "x 1", "1 2", false ); // 1 != 2
-		Audit.log(  "match tests PASSED" );
+		audit.log(  "match tests PASSED" );
 			
 		//Audit.on()
-		Audit.log( "Creating a blank function, called 'sum'..." );
+		audit.log( "Creating a blank function, called 'sum'..." );
 		Function f = new Function( "sum" );
-		Audit.log( "Creating a new lambda..." );
+		audit.log( "Creating a new lambda..." );
 		new Lambda( f, new Strings( "a b" ), "a plus b" );
-		Audit.log( "Finding it:" );
+		audit.log( "Finding it:" );
 		Audit.incr();
 		Lambda l = new Lambda( f, new Strings( "2 3" ));
 		Audit.decr();
-		Audit.log( "PASSED: "+ l.toString() );
+		audit.log( "PASSED: "+ l.toString() );
 }	}

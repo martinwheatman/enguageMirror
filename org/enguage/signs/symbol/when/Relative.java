@@ -79,7 +79,7 @@ public class Relative {
 					int tmp = si.nextIndex();
 					s = si.next();
 					if ( s.equals( "ago" )) {
-						Audit.log( "found ago at "+ tmp );
+						audit.log( "found ago at "+ tmp );
 						shift *= -1; // negate shift
 					} else
 						si.previous();

@@ -18,7 +18,8 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 
 public class Utterance {
-	
+	static private      Audit  audit         = new Audit( "Utterance" );
+		
 	private static Strings previous = new Strings();
 	public  static Strings previous() { return previous; }
 	public  static Strings previous( Strings sa ) { return previous = sa; }
@@ -100,7 +101,7 @@ public class Utterance {
 	public static void test( Sign s, String utterance, Strings prevAns ) {
 		Utterance u = new Utterance( new Strings( utterance ));
 		Attributes a = u.match(s);
-		Audit.log( "utterance is: "
+		audit.log( "utterance is: "
 				+ u.toString() +"\n"
 				+ (null == a ? "NOT matched." : "matched attrs is: "+ a ));
 	}
@@ -113,7 +114,7 @@ public class Utterance {
 		Where.doLocators( "to the left of/to the right of/in front of/on top of");
 		Where.doLocators( "behind/in/on/under/underneath/over/at" );
 		
-		Audit.log("Creating a pub:" +
+		audit.log("Creating a pub:" +
 						Perform.interpret(new Strings("entity create pub"))
 		);
 

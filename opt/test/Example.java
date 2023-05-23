@@ -40,7 +40,7 @@ public class Example {
 	private static void test( String  cmd, String expected, String unexpected ) {
 		// expected == null => don't check reply, expected == '-' => silent!
 		if (expected == null || !expected.equals( "-" ))
-			Audit.log( TEST_PROMPT+ cmd +".");
+			audit.log( TEST_PROMPT+ cmd +".");
 		
 		Strings reply = Enguage.get().mediate( new Strings( cmd ));
 
@@ -130,14 +130,14 @@ public class Example {
 		Fs.root( fsys );
 
 		//run test groups
-		Audit.interval(); // reset timer
+		audit.interval(); // reset timer
 		int testGrp = 0;
 
 		for (String test : tests) {
 			if (!Fs.destroy( fsys ))
 				audit.FATAL( "failed to remove old database - "+ fsys );
 			
-			Audit.title( "TEST: "+ test );
+			audit.title( "TEST: "+ test );
 			
 			// true=code before comment, false=
 			if (runTestFile( TEST_DIR, test +TEST_EXT ) ||
@@ -145,7 +145,7 @@ public class Example {
 			    runTestFile(  REP_DIR, test +REP_EXT  )   )
 				testGrp++;
 		}
-		Audit.log( testGrp +" test group(s) found" );
+		audit.log( testGrp +" test group(s) found" );
 		audit.PASSED();
 	}
 

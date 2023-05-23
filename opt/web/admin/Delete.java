@@ -4,6 +4,7 @@ import org.enguage.util.Audit;
 import opt.web.admin.users.Users;
 
 public class Delete {
+	static private      Audit  audit         = new Audit( "Delete" );
 	public static final String widget = 
 			"<fieldset>\n"
 			+"<legend>\n"
@@ -31,7 +32,7 @@ public class Delete {
 
 	public static String operation ( String[] params ) {
 		
-		Audit.log( "action... delUser" );
+		audit.log( "action... delUser" );
 		
 		String reply = "<strong>Delete User</strong><p>";
 		if (Users.isUser( params[ 0 ])) {

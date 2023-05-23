@@ -342,25 +342,25 @@ public class Intention {
 		Iterator<Intention> ins = intents.iterator();
 		while (!r.isDone() && ins.hasNext()) {
 			Intention in = ins.next();
-			Audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
+			audit.log( typeToString( in.type )  +"='"+ in.value +"'" );
 		}
 		return r;
 	}
 	public static void main( String[] argv ) {
 		Reply r = new Reply().answer( "world" );
-		Audit.log( new Intention( N_THEN_REPLY, "hello ..." ).mediate( r ).toString() );
+		audit.log( new Intention( N_THEN_REPLY, "hello ..." ).mediate( r ).toString() );
 		
-		Audit.title( "trad autopoiesis... add to a list and then add that list" );
+		audit.title( "trad autopoiesis... add to a list and then add that list" );
 		r = new Reply();
 		ArrayList<Intention> a = new ArrayList<>();
 //		a.add( new Intention( N_CREATE, THINK      +" \"a PATTERN z\" \"one two three four\""   ));
 //		a.add( new Intention( N_APPEND, ELSE_REPLY +" \"two three four\""   ));
 //		a.add( new Intention( N_APPEND, REPLY      +" \"three four\"" ));
 		test( r, a );
-		Audit.log( Repertoires.signs().toString() );
-		Audit.log( r.toString());
+		audit.log( Repertoires.signs().toString() );
+		audit.log( r.toString());
 		
-		Audit.title( "sign self-build II... add pairs of attributes" );
+		audit.title( "sign self-build II... add pairs of attributes" );
 		// now built like this...
 		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();
@@ -380,6 +380,6 @@ public class Intention {
 		r.answer( Response.yes().toString() );
 
 		
-		Audit.log( Repertoires.signs().toString() );
-		Audit.log( r.toString());
+		audit.log( Repertoires.signs().toString() );
+		audit.log( r.toString());
 }	}

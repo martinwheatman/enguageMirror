@@ -1,0 +1,5 @@
+On "how many overlays are there", perform "overlay count".
+On "show overlay versions", perform "overlay versions".
+On "show overlay versions of PHRASE-PATH", perform "overlay versions PATH".
+
+On "commit overlays", perform "overlay commit".

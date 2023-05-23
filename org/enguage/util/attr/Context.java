@@ -59,9 +59,9 @@ public class Context {
 		return sb.toString();
 	}
 	public static void main( String args[]) {
-		Audit.log( "hello there, "+ get( "martin" ) );
+		audit.log( "hello there, "+ get( "martin" ) );
 		push( new Attributes().add( "martin", "world" ));
-		Audit.log( "hello there, "+ get( "martin" ) );
+		audit.log( "hello there, "+ get( "martin" ) );
 		push( new Attributes().add( "hello", "there" ));
-		Audit.log( "ctx>>>"+ valueOf() );
+		audit.log( "ctx>>>"+ valueOf() );
 }	}

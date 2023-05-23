@@ -4,6 +4,8 @@ import org.enguage.util.Audit;
 import opt.web.admin.users.Users;
 
 public class Passwd {
+	static private      Audit  audit         = new Audit( "Passwd" );
+	
 	public static final String widget =
 			"<fieldset>\n"
 			+ 	"<legend>Set Password</legend>\n"
@@ -31,7 +33,7 @@ public class Passwd {
 			+ "</script><br>\n";
 	
 	public static String operation( String[] params) {
-		Audit.log( "action... setPwd" );
+		audit.log( "action... setPwd" );
 		String reply = "<strong>Change Password</strong><p>";
 		if (Users.isUser( params[ 0 ])) {
 			Users.setPwd( params[ 0 ], params[ 1 ]);

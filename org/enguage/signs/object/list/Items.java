@@ -461,20 +461,20 @@ public class Items extends ArrayList<Item> {
 		l.append( new Item( new Strings( "coffee   unit='cup' quantity='1' locator='from' location='Sainsburys'"   )));
 		l.append( new Item( new Strings( "biscuits            quantity='1' locator='from' location='Sainsburys'"   )));
 		l.append( new Item( new Strings( "locator='from' unit='pint' quantity='1' location='the dairy aisle' milk" )));
-		Audit.log( "martin needs: "+ l.toString());
+		audit.log( "martin needs: "+ l.toString());
 		
 		Item.format( "QUANTITY,UNIT of,,"+ Where.LOCTR +" "+ Where.LOCTN );
 		Item.groupOn( Where.LOCTN );
-		Audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
+		audit.log( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
 		
-		Audit.title( "SHOPPING LIST TESTS..." );
+		audit.title( "SHOPPING LIST TESTS..." );
 		Item.format( "QUANTITY,UNIT of,THIS,from FROM" );
 		test( 51, "delete martin needs", "TRUE" );
 		test( 52, "add martin needs object='coffee' quantity='1'", "a coffee" );
 		test( 53, "add martin needs object='coffee' quantity='another'", "another coffee" );
 		test( 55, "get martin needs", "2 coffees" );
 
-		Audit.title( "SHOPPING LIST TESTS..." );
+		audit.title( "SHOPPING LIST TESTS..." );
 		Item.format( "QUANTITY,UNIT of,,from FROM" );
 		test( 101, "delete martin needs", "TRUE" );
 		test( 102, "add martin needs coffee quantity='1'", "a coffee" );
@@ -494,7 +494,7 @@ public class Items extends ArrayList<Item> {
 		test( 112, "removeAny martin needs coffee", "coffee" );
 		test( 113, "get martin needs", "");
 		
-		Audit.title( "Calendar list tests..." );
+		audit.title( "Calendar list tests..." );
 		Item.groupOn( "" ); // reset
 		Item.format( ","+Where.LOCTR +" "+ Where.LOCTN+",WHEN" );
 		test( 201, "add _user meeting fred locator='at' location='the pub' when='20151225190000'",
@@ -502,7 +502,7 @@ public class Items extends ArrayList<Item> {
 		test( 202, "add _user meeting fred locator='at' location='the pub' when='20151225193000'",
 				  "fred at the pub at 7 30 pm on the 25th of December , 2015" );
 		
-		Audit.title( "why" );
+		audit.title( "why" );
 		l = new Items( "martin", "causal" );
 		
 		// two linked cause-effects
@@ -526,7 +526,7 @@ public class Items extends ArrayList<Item> {
 		
 		
 		//test( 300, "getAttrVal martin why name='cause' i need 3 eggs", "i am baking a cake" );
-		Audit.log( l.toXml());
+		audit.log( l.toXml());
 		//Audit.on();
 		Transitive.add( "cause", "effect" );
 		test( 301, "isLinked martin causal  cause='i am baking a cake' effect='i need to go to the shop'", "TRUE" );
