@@ -15,7 +15,6 @@ import java.util.TreeSet;
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.Sign;
-import org.enguage.signs.SignBuilder;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.object.Variable;
 import org.enguage.signs.symbol.Utterance;
@@ -242,7 +241,7 @@ public class Concept {
 		Strings content = preprocessFile( fp, from, to );
 		ArrayList<Strings> utterances = content.divide( Terminator.terminators(), false );
 		for (Strings utterance : utterances) {
-			SignBuilder sb   = new SignBuilder( utterance );
+			Sign.Builder sb   = new Sign.Builder( utterance );
 			Sign        sign = sb.toSign();
 			if (sign != null)  // by-pass 'latest' - already built
 				Repertoires.signs().insert( sign );
