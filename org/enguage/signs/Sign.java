@@ -1,11 +1,14 @@
 package org.enguage.signs;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import org.enguage.repertoires.Repertoires;
 import org.enguage.signs.interpretant.Intention;
 import org.enguage.signs.interpretant.Intentions;
 import org.enguage.signs.interpretant.Intentions.Insertion;
-import org.enguage.signs.objects.Temporal;
-import org.enguage.signs.objects.Variable;
+import org.enguage.signs.object.Temporal;
+import org.enguage.signs.object.Variable;
 import org.enguage.signs.symbol.pattern.Frag;
 import org.enguage.signs.symbol.pattern.Frags;
 import org.enguage.signs.symbol.where.Where;
@@ -22,6 +25,86 @@ public class Sign {
 	
 	public  static final String USER_DEFINED = "OTF"; // concept name for signs created on-the-fly
 
+	public  static class Builder {
+
+		/* Builds a sign from a string text:
+		 * 
+		 *	'On "hello", reply "hello to you too".'
+		 *
+		 * 	'On "i need QUOTED-THINGS":
+		 *		add THINGS to my needs list;
+		 *		if not, perform "do this";
+		 *		if so, run "ls -l";
+		 *		reply "ok, you need ...".'
+		 *	
+		 *	'what do i need.' => returns null: this is an utterance!
+		 */
+		
+		public Builder( Strings sa ) {utterance = new Strings( sa );}
+		public Builder( String   s ) {this( new Strings( s ));}
+		
+		private final Strings utterance;
+
+		private Sign doIntentions(Iterator<String> utti, Sign sign) {
+			Strings sa = new Strings();
+			while (utti.hasNext()) {
+				String s = utti.next();
+				if (s.equals( ";" )) {
+					int type = Intention.getType( sa );
+					sign.append( new Intention( type, sa ));
+					sa = new Strings();
+				} else
+					sa.append( s );
+			}
+			
+			// backwards compatibility:
+			if (!sa.isEmpty()) {
+				// There used to be a 'connector' on the last intention, such as:
+				//    on "XYZ": ... ; then, ... . 
+				// By inspection this has only ever been "then,": now removed(!)
+				if (sa.get(0).equals( "then" ) &&
+					sa.get(1).equals(    "," )   )
+				{
+					sa.remove(0);
+					sa.remove(0);
+				}
+				
+				// getType affects sa!!! be explicit in ordering
+				int type = Intention.getType( sa );
+				sign.append( new Intention( type, sa ));
+			}
+			return sign;
+		}
+		private Sign doPattern(Iterator<String> si) {
+			if (si.hasNext()) {
+				String s = si.next();
+				Frags frags = new Frags( Strings.trim( s, '"' ));
+				if (si.hasNext()) {
+					s = si.next();
+					if ((s.equals(",") || s.equals(":"))
+						&& si.hasNext())
+					{
+						return doIntentions( si,
+									new Sign()
+										.pattern( frags )
+										.concept( Intention.concept()
+								)	);
+					}
+			}	}
+			return null;
+		}
+		public  Sign toSign() {
+			ListIterator<String> si = utterance.listIterator();
+			if (si.hasNext()) {
+				String s = si.next();
+				if (s.equals("On"))
+					return doPattern( si );
+				else
+					si.previous();
+			}
+			return null;
+	}	}
+	
 	public Sign() {super();}
 	public Sign( Frag  patte  ) {this(); pattern( patte );}
 	public Sign( String prefix ) {this( new Frag( prefix ));}

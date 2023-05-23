@@ -1,6 +1,6 @@
 package org.enguage.signs.symbol.reply;
 
-import org.enguage.signs.objects.Variable;
+import org.enguage.signs.object.Variable;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Context;

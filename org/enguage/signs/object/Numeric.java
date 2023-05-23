@@ -1,9 +1,9 @@
-package org.enguage.signs.objects;
+package org.enguage.signs.object;
 
 import java.util.ListIterator;
 
-import org.enguage.signs.objects.sofa.Overlay;
-import org.enguage.signs.objects.sofa.Value;
+import org.enguage.signs.object.sofa.Overlay;
+import org.enguage.signs.object.sofa.Value;
 import org.enguage.signs.symbol.number.Number;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;

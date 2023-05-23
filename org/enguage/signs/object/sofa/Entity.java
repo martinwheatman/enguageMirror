@@ -1,4 +1,4 @@
-package org.enguage.signs.objects.sofa;
+package org.enguage.signs.object.sofa;
 
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;

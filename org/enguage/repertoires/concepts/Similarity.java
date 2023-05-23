@@ -1,6 +1,6 @@
 package org.enguage.repertoires.concepts;
 
-import org.enguage.signs.objects.Variable;
+import org.enguage.signs.object.Variable;
 import org.enguage.signs.symbol.config.Plural;
 import org.enguage.signs.symbol.reply.Response;
 import org.enguage.util.Audit;
