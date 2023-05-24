@@ -1,5 +1,3 @@
-On "how many overlays are there", perform "overlay count".
-
 On "start a new transaction", perform "overlay start".
 On "abort  this transaction", perform "overlay abort".
 On "commit this transaction", perform "overlay commit".

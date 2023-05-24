@@ -6,4 +6,6 @@ On "detail   on", perform "audit detailed  on".
 On "detail  off", perform "audit detailed off".
 On "debug    on", perform "audit debug     on".
 On "debug   off", perform "audit debug    off".
+
+On "overlay debug ON", perform "overlay debug ON".
 			

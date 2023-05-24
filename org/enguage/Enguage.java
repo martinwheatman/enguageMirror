@@ -95,7 +95,7 @@ public class Enguage {
 		audit.out();
 		return reply;
 	}
-	public Strings mediate( Strings said ) { return mediate( "uid", said );}
+	public Strings mediate( Strings said ) { return mediate( Overlay.DEFAULT_USERID, said );}
 	public Strings mediate( String uid, Strings said ) {
 		audit.in( "mediate", "uid="+uid+", said="+said );
 		Strings reply = new Strings();

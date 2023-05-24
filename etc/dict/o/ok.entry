@@ -1,36 +1,17 @@
 On "ok":
-	is ok set;
-	if so, 	perform "overlay commit";
-	set ok to saved;
-	perform "overlay create";
+	perform "overlay commit full";
 	reply "ok".
 
-On "forget that":
-	is ok set;
-	if so, perform "overlay destroy";
-	perform "overlay create";
+On "ok forget that":
+	perform "overlay destroy";
 	reply "ok".
 	
-	
-#] how many overlays are there.
-#] ok.
-#] how many overlays are there.
-
-#] I need a beer.
-#] I need a kebab.
-#] i need a plate of fish and chips.
-#] what do i need.
-
-#] how many overlays are there.
-#] ok forget that.
-#] what do i need.
-#] how many overlays are there.
-
+## overlay debug on.
 #] I need a coffee.
-#] what do i need.
-
-#] how many overlays are there.
 #] ok.
-#] how many overlays are there.
-
+#] I need a tea.
+#] I need a biscuit.
+#] ok.
+#] I need a slice of cake.
+#] show overlay versions of _user/needs.
 #] what do i need.

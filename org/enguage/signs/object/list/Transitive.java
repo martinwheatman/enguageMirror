@@ -51,8 +51,8 @@ public class Transitive {
 		return audit.out( new Strings( rc ));
 	}
 	public static void main( String args[] ) {
-		Audit.log( interpret( new Strings( "add cause" )));
-		Audit.log( interpret( new Strings( "add cause effect" )));
-		Audit.log( "cause->effect: "+ are( "cause", "effect" ));
-		Audit.log( "effect->cause: "+ are( "effect", "cause" ));
+		audit.log( interpret( new Strings( "add cause" )));
+		audit.log( interpret( new Strings( "add cause effect" )));
+		audit.log( "cause->effect: "+ are( "cause", "effect" ));
+		audit.log( "effect->cause: "+ are( "effect", "cause" ));
 }	}

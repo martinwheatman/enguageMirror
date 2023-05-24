@@ -51,13 +51,13 @@ public class Algorithm {
 		ListIterator<String> si = new Strings( s ).listIterator();
 		if (a.getAlgorithm( si )) {
 			Algorithm.save( a );
-			Audit.log( a.toString() );
+			audit.log( a.toString() );
 			if (!pass) {
 				audit.out();
 				audit.FATAL( "Should've failed!" );
 			}
 		} else {
-			//Audit.log("li="+ peek(si) +", rep="+ a.representamen().toString());
+			//audit.log("li="+ peek(si) +", rep="+ a.representamen().toString());
 			Strings.unload( si, a.representamen );
 			String err = "(";
 			for (int i=0; i<3; i++) {
@@ -65,7 +65,7 @@ public class Algorithm {
 				if (si.hasNext()) err += " ";
 			}
 			err += (si.hasNext() ? "..." : ".") + ")";
-			Audit.log( "FAILED: "+ err );
+			audit.log( "FAILED: "+ err );
 			if (pass) {
 				audit.out();
 				audit.FATAL( "Should've passed!" + algFail );

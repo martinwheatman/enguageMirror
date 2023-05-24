@@ -13,7 +13,7 @@ On "SAID-EFFECT because SAID-CAUSE":
 On "is SAID-EFFECT because SAID-CAUSE":
 	perform "items isLinked _user causal CAUSE EFFECT";
 	if not, reply "no, EXT-EFFECT is not because EXT-CAUSE";
-	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
+	reply "yes, EXT-EFFECT because EXT-CAUSE".
 
 On "why do SAID-EFFECT":
 	do EFFECT;
@@ -29,13 +29,13 @@ On "why am i PHRASE-EFFECT":
 	if not, reply "sorry, i didn't know you are EXT-EFFECT";
 	get the cause of i am EFFECT from _user causal list;
 	set cause to ...;
-	then, reply "because EXT-CAUSE".
+	reply "because EXT-CAUSE".
 
 On "why might SAID-EFFECT":
 	get the cause of EFFECT from _user causal list;
 	if not, reply "i don't know";
 	set cause to ...;
-	then, reply "because EXT-CAUSE".
+	reply "because EXT-CAUSE".
 On "why does SAID-EFFECT", why do EFFECT.
 
 
@@ -44,5 +44,5 @@ On "do SAID-EFFECT because SAID-CAUSE":
 	if not, reply "sorry, it is not the case that EXT-EFFECT";
 	is EFFECT because CAUSE;
 	if not, reply "sorry, it is not the case EXT-EFFECT because EXT-CAUSE";
-	then, reply "yes, EXT-EFFECT because EXT-CAUSE".
+	reply "yes, EXT-EFFECT because EXT-CAUSE".
 On "does SAID-EFFECT because SAID-CAUSE", do EFFECT because CAUSE.

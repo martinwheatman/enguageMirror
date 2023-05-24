@@ -464,7 +464,7 @@ public class Number {
 	static private void evaluationTest( String term, String ans ) {
 		ListIterator<String> si = new Strings( term ).listIterator();
 		Number n = new Number( si );
-		Audit.log( "n is '"+ n.toString() +"' ( '"+ ans +"' == '"+ n.valueOf() +"' ) sz="+ n.representamen().size() );
+		audit.log( "n is '"+ n.toString() +"' ( '"+ ans +"' == '"+ n.valueOf() +"' ) sz="+ n.representamen().size() );
 		if (!ans .equals( n.valueOf().toString() ))
 			audit.FATAL( "Doh!" );
 	}
@@ -475,7 +475,7 @@ public class Number {
 		ListIterator<String> si = orig.listIterator();
 		Number n = new Number( si );
 		Strings val = n.valueOf(), strg = n.valueOf();
-		Audit.log(
+		audit.log(
 				s +": toString=>"+ strg +"<"
 				+" rep=>"+ n.representamen() +"<"
 				+" valueOf=>"+ val +"<"
@@ -489,7 +489,7 @@ public class Number {
 	static private void combineTest( String number, String with, String expected, String expValue ) {
 		Number m = new Number( number );
 		m.combine( new Number( with ));
-		Audit.log( "m="+ m.toString() +"("+ m.valueOf() +")");
+		audit.log( "m="+ m.toString() +"("+ m.valueOf() +")");
 		if (!expValue.equals( "" ) && !expValue.equals( m.valueOf().toString()))
 			audit.FATAL( "Values not equal: "+ expValue +" != "+ m.valueOf() );
 		if (!expected.equals( "" ) && !expected.equals( m.toString()))
@@ -500,12 +500,12 @@ public class Number {
 		//audit.on();
 	
 		Number n = new Number( "+=6" );
-		Audit.log( "n="+ n.toString() +"("+ n.valueOf() +")" );
+		audit.log( "n="+ n.toString() +"("+ n.valueOf() +")" );
 		
-		Audit.log( "3.0  -> "+ floatToString( 3.0f  ));
-		Audit.log( "3.25 -> "+ floatToString( 3.25f ));
+		audit.log( "3.0  -> "+ floatToString( 3.0f  ));
+		audit.log( "3.25 -> "+ floatToString( 3.25f ));
 		
-		Audit.title( "evaluation test:");
+		audit.title( "evaluation test:");
 		evaluationTest(  "this is not a number",  NOT_A_NUMBER );
 		evaluationTest(  "3 plus 2",              "5" );
 		evaluationTest(  "3 x    2",              "6" );
@@ -514,7 +514,7 @@ public class Number {
 		evaluationTest(  "3 plus 1 all squared", "16" );
 		evaluationTest(  "3 times y",             "3" );
 		// -- */	
-		Audit.title( "get number test:" );
+		audit.title( "get number test:" );
 		Audit.incr();
 		getNumberTest( "another",                  "+=1" );
 		getNumberTest( "another   cup  of coffee", "+=1" );
@@ -523,7 +523,7 @@ public class Number {
 		Audit.decr();
 		// -- */	
 		
-		Audit.title( "more/less test:");
+		audit.title( "more/less test:");
 		Audit.incr();
 		getNumberTest( "about 6 more cups of coffee", "+~6" );
 		getNumberTest( "6 more cups of coffee",       "+=6" );
@@ -543,7 +543,7 @@ public class Number {
 		getNumberTest( "2 to the power of 5",          "32" );
 		Audit.decr();
 		
-		Audit.title( "Number combine test:");
+		audit.title( "Number combine test:");
 		Audit.incr();
 		combineTest(   "3",   "6",            "6",   "6" );
 		combineTest( "+~3", "-~6", "about 3 less", "-~3" );
@@ -560,7 +560,7 @@ public class Number {
 		 * Mersenne prime(  n ): iff 2^n ALL minus 1 is prime --nad!
 		 */
 			
-		Audit.title( "Function test:");
+		audit.title( "Function test:");
 		Audit.incr();
 		// Function within function:
 		Function.interpret( "create sum x y / "+ new Attribute( "body", "x + y" ));
@@ -581,5 +581,5 @@ public class Number {
 		getNumberTest( "2 times the factorial of 4",   "48" );
 		Audit.decr();
 		
-		Audit.log( "PASSED." );
+		audit.log( "PASSED." );
 }	}

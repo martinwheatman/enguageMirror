@@ -21,11 +21,11 @@ import org.enguage.util.attr.Context;
 import org.enguage.util.sys.Shell;
 
 public class Perform {
-	private static final Audit audit = new Audit( "Sofa" );
-
 	private Perform() {}
 	
-	public static Strings interpret( Strings a ) {
+	private static final Audit audit = new Audit( "Sofa" );
+	
+	public  static Strings interpret( Strings a ) {
 		if (a.isEmpty()) {
 			audit.error("doCall() fails - not enough params: "+ a.toString());
 		} else {

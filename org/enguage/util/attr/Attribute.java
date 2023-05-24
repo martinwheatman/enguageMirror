@@ -10,7 +10,7 @@ import org.enguage.util.Strings;
 
 public class Attribute {
 	
-	//static private      Audit  audit         = new Audit( "Attribute" );
+	static private      Audit  audit         = new Audit( "Attribute" );
 	
 	// TODO: these don't seem to swap yet :( -- see colloquia.txt
 	static public final char   DEF_QUOTE_CH  = '\''; // '"';  //
@@ -160,29 +160,29 @@ public class Attribute {
 	}
 	static public void main( String argv[]) {
 		//Audit.turnOn();
-		Audit.log( attrTest( "fred=bill" ));
-		Audit.log( attrTest( "fred='bill'" ));
+		audit.log( attrTest( "fred=bill" ));
+		audit.log( attrTest( "fred='bill'" ));
 		Attribute a = new Attribute( "fred=\"bill\"" );
-		Audit.log( "a is "+ a.toString());
+		audit.log( "a is "+ a.toString());
 		a = new Attribute( "fred='bill'" );
-		Audit.log( "a is "+ a.toString());
+		audit.log( "a is "+ a.toString());
 		a = new Attribute( "fred=bi'll" );
-		Audit.log( "a is "+ a.toString());
+		audit.log( "a is "+ a.toString());
 		Strings sa = new Strings("list get user='martin' attr='needs to x=\"go to town\" y=\"for martin's coffee\"\'");
 		sa.contract( "=" );
-		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		for (int i=0; i<4 && i<sa.size(); i++)
 			sa.set( i, Attribute.getValues( sa.get( i )).toString( Strings.SPACED ));
-		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		sa = sa.normalise();
-		Audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		audit.log("Sofa.doCall() => sa is "+ sa.toString());
 		
 		Audit.on();
 		Attribute attr;
 		Strings s = new Strings( "martin='heroic' ruth='fab'" );
-		Audit.log( "Test string is; ["+ s.toString()+"]");
-		Audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
+		audit.log( "Test string is; ["+ s.toString()+"]");
+		audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
 		ListIterator<String> si = s.listIterator();
 		while (null != (attr = Attribute.next( si )))
-			Audit.log( "Copy is: >"+ attr.toString() +"<");
+			audit.log( "Copy is: >"+ attr.toString() +"<");
 }	}

@@ -11,6 +11,11 @@ public class Audit {
 	public  static final int            ID = 829030;
 	private static       Strings funcNames = new Strings( "zeroStack" );
 
+	private boolean tracing = false; // per object
+	public  Audit   tracing( boolean on ) {tracing=on; return this;}
+	private boolean logging = false; // per object
+	public  Audit   logging( boolean on ) {logging=on; return this;}
+	
 	public Audit( String nm ) {className = Character.toUpperCase( nm.charAt(0)) + nm.substring(1);}
 	
 	private              String   className = "";
@@ -65,17 +70,17 @@ public class Audit {
 		LOG( info + " -- "+interval()+"ms\n" );
 		return info;
 	}
-	public  static  String log( String info ) {
+	public  String log( String info ) {
 		if (suspended==0)
 			LOG( info );
 		return info;
 	}
-	public  static  int    log( int     info ) {log( ""+ info ); return info;}
-	public  static  String log( Strings info ) {return log( info.toString() );}
+	public  int    log( int     info ) {log( ""+ info ); return info;}
+	public  String log( Strings info ) {return log( info.toString() );}
 	
 	// Ancilliary methods...
     public  void in( String fn ) {in( fn, "" );}
-    public  void in( String fn, String info ) {if (auditOn) IN( fn, info );}
+    public  void in( String fn, String info ) {if (auditOn || tracing) IN( fn, info );}
     public  void IN( String fn, String info ) {
 		// sometimes this is tested at call time - preventing the string processing
 		// in the traceIn() call being performed at runtime.
@@ -93,7 +98,7 @@ public class Audit {
 			);
 		return result;
     }
-	public String  out( String result ) {return (auditOn) ? OUT( result ) : result;}
+	public String  out( String result ) {return (auditOn || tracing) ? OUT( result ) : result;}
 	public void    out() {out( (String)null );}
 	public Strings out( Strings s ) {out( s!=null?"["+s.toString(Strings.DQCSV)+"]":"<null>"); return s;}
 	public boolean out( boolean b ) {out( Boolean.toString( b )); return b;}
@@ -106,7 +111,7 @@ public class Audit {
 	public Strings OUT( Strings o ) {OUT( o==null ? "null" : o.toString()); return o;}
 	public boolean OUT( boolean b ) {OUT( Boolean.toString( b )); return b;}
 	
-	public  void   debug( String info ) {if (auditOn) log( info );}
+	public  void   debug( String info ) {if (auditOn || logging) log( info );}
 	public  Object  info(  String fn, String in, Object out ) {// out may be null!
 		if (auditOn && (out!=null && !out.equals("")))
 			log( className +"."+ fn +"( "+ in +" ) => "+ out.toString() );
@@ -160,13 +165,13 @@ public class Audit {
 	
 	// === title/underline
 	private static boolean firstTitle = true;
-	private static void title( String title, char ch ) {
+	private void title( String title, char ch ) {
 		if (!firstTitle) log( "\n" );
 		underline( title, ch );
 		firstTitle = false;
 	}
-	public  static void title( String title ) {title( title, '=' );}
-	public  static void subtl( String title ) {title( title, '+' );}
+	public  void title( String title ) {title( title, '=' );}
+	public  void subtl( String title ) {title( title, '+' );}
 	public  static void underline( String title ) {underline( title, '-' );}
 	public  static void underline( String title, char ch ) {
 		LOG( title );

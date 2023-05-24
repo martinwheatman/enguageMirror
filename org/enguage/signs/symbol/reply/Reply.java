@@ -192,27 +192,27 @@ public class Reply { // a reply is basically a formatted answer
 		Audit.on();
 
 		Reply r = new Reply();
-		Audit.log( "Initially: "+ r.toString());
+		audit.log( "Initially: "+ r.toString());
 
 		Response.dnu( "Pardon?" );
 		Response.dnk( "Dunno" );
 		Response.no(  "No" );
 		Response.yes( "Yes" );
 		
-		Audit.log( "Initially: "+ r.toString());
+		audit.log( "Initially: "+ r.toString());
 		r.format( new Strings( "ok" ));
-		Audit.log( "Initially2: "+ r.toString());
+		audit.log( "Initially2: "+ r.toString());
 		r.answer( "42" );
-		Audit.log( "THEN: "+ r.toString());
+		audit.log( "THEN: "+ r.toString());
 		r.answer( "53" );
-		Audit.log( "W/no format:"+ r.toString());
+		audit.log( "W/no format:"+ r.toString());
 		
 		r.format( new Strings( "The answer to X is ..." ));
 		
 		Attributes attrs = new Attributes();
 		attrs.add( new Attribute( "x", "life the universe and everything" ));
 		Context.push( attrs );
-		Audit.log( "Context is: "+ Context.valueOf());
+		audit.log( "Context is: "+ Context.valueOf());
 		
-		Audit.log( "Finally:"+ r.toString());
+		audit.log( "Finally:"+ r.toString());
 }	}

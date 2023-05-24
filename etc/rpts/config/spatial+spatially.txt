@@ -4,7 +4,7 @@ On "this concept is spatial", perform "where addCurrent".
 
 On "spatially something can be PHRASE-LOCATOR":
 	perform "where locator LOCATOR";
-	then, reply "ok".
+	reply "ok".
 	
 spatially something can be to the right of.
 spatially something can be to the left of.

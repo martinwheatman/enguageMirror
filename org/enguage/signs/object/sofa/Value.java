@@ -76,7 +76,7 @@ public class Value {
 		return usage( cmd +" "+ entity +" "+ attr +" "+ a.toString() );
 	}
 	static private String usage( String a ) {
-		Audit.log( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
+		audit.log( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
 				   "given: "+ a );
 		return Shell.FAIL;
 	}

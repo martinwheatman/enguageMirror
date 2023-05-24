@@ -8,4 +8,4 @@ On "show me all COLUMN":
 	run "squelch DATABASE martin secret select TABLE COLUMN";
 	
 	if not, reply "i'm sorry, ...";
-	then, reply "ok, the COLUMN include ...".
+	reply "ok, the COLUMN include ...".

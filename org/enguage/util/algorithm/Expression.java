@@ -101,7 +101,7 @@ public class Expression {
 		ListIterator<String> si = new Strings( s ).listIterator();
 		Strings repr = new Strings(),
 		        body = getFunction( si, repr );
-		Audit.log( "expr: "+ body);
+		audit.log( "expr: "+ body);
 		audit.out();
 	}
 	static public void main( String[] args) {
@@ -112,5 +112,5 @@ public class Expression {
 		expressionTest( "a plus b" );
 		expressionTest( "a + b" );
 		expressionTest( "n times the factorial of n minus 1" );
-		Audit.log( "PASSED" );
+		audit.log( "PASSED" );
 }	}

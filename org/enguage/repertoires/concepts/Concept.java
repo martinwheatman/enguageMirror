@@ -241,9 +241,8 @@ public class Concept {
 		Strings content = preprocessFile( fp, from, to );
 		ArrayList<Strings> utterances = content.divide( Terminator.terminators(), false );
 		for (Strings utterance : utterances) {
-			Sign.Builder sb   = new Sign.Builder( utterance );
-			Sign        sign = sb.toSign();
-			if (sign != null)  // by-pass 'latest' - already built
+			Sign sign = new Sign.Builder( utterance ).toSign();
+			if (sign != null)
 				Repertoires.signs().insert( sign );
 			else // if we find, e.g. "this concept is spatial".
 				Repertoires.mediate( new Utterance( utterance ));
@@ -254,30 +253,30 @@ public class Concept {
 	}
 	public static String loadConceptFile( String name, String from, String to ) {
 		boolean wasLoaded   = true;
-		String  conceptName = to==null ? name : name.replace( from, to );
+		String  loadedName = to==null ? name : name.replace( from, to );
 		
 		Variable.set( Assets.NAME, name );
-		Intention.concept( conceptName );
+		Intention.concept( loadedName );
 		Audit.suspend();
 		
 		InputStream  is = null;
-		
 		// should be found on one of these places... in this order(!)
 		if ((null != (is = getFile( spokenName( name )             ))) ||
 		    (null != (is = getFile( spokenRepName( name )          ))) ||
 		    (null != (is = Assets.getStream( dictionary( name )    ))) ||
 		    (null != (is = Assets.getStream( writtenName( name )   ))) ||
 		    (null != (is = Assets.getStream( writtenRepName( name ))))   )
+		{	
 			loadFileContent( is, from, to );
-		else
+			try{is.close();} catch(IOException e2) {}
+			
+		} else
 			wasLoaded = false;
-		
-		if (is != null) try{is.close();} catch(IOException e2) {}
 		
 		Audit.resume();
 		Variable.unset( Assets.NAME );
 		
-		return wasLoaded ? conceptName : "";
+		return wasLoaded ? loadedName : "";
 	}
 	public static boolean load( String name ) {
 		boolean rc = true;

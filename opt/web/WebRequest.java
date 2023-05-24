@@ -91,8 +91,8 @@ public class WebRequest extends Thread {
 			"".equals(reply = Admin.getReply( this, cmd, params )) &&
 			"".equals(reply = Eng  .getReply( this, cmd, params )) )
 		{
-			Audit.log( "Unknown request: cmd='"+ cmd +"':" );
-			for (String s : params) Audit.log( " '"+ s +"'" );
+			audit.log( "Unknown request: cmd='"+ cmd +"':" );
+			for (String s : params) audit.log( " '"+ s +"'" );
 			reply = "Sorry, error 404: page not found.";
 			response( "404" );
 		}
@@ -105,7 +105,7 @@ public class WebRequest extends Thread {
 		{	// parse request
 			if (in.hasNextLine()) {
 				String request = in.nextLine();   // "GET /login HTTP/2.0"
-				Audit.log( "Request is: "+ request );
+				audit.log( "Request is: "+ request );
 					
 				sID("");
 				parseSID( in );

@@ -110,5 +110,5 @@ public class Commands {
 		Reply r = new Reply();
 		r = new Commands( "value -D selftest martin/engine/capacity 1598cc" ).run( r.a.toString());
 		r = new Commands( "value -D selftest martin/engine/capacity"        ).run( r.a.toString());
-		Audit.log( r.toString());
+		audit.log( r.toString());
 }	}

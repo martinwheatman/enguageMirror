@@ -2,4 +2,4 @@ On "SUBJECT is baking NUMERIC-QUANTITY WHAT": # James is baking a cake
 	does QUANTITY WHAT exist in SUBJECT baking list;
 	reply "i know";
 	if not, add QUANTITY WHAT to SUBJECT baking list;
-	then, reply "ok, SUBJECT is baking QUANTITY WHAT".
+	reply "ok, SUBJECT is baking QUANTITY WHAT".

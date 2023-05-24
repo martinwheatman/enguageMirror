@@ -10,7 +10,7 @@ public class Format {
 	 * e.g. ["Ok", ",", "you", "need", Strings.ELLIPSIS"]
 	 */
 	
-	//static private Audit audit = new Audit( "Fmt" );
+	static private Audit audit = new Audit( "Fmt" );
 	
 	private boolean shrt = false;
 	public  boolean shrt() { return shrt; }
@@ -30,5 +30,5 @@ public class Format {
 		Format f = new Format();
 		Variable.set( "FMTEST", "martin" );
 		f.ormat( new Strings( "FMTEST needs "+ Strings.ELLIPSIS ));
-		Audit.log( "fmt: "+ f.ormat());
+		audit.log( "fmt: "+ f.ormat());
 }	}

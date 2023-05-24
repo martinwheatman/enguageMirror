@@ -57,8 +57,8 @@ public class Parameters {
 		Strings rep = new Strings();
 		ListIterator<String> li = new Strings( s ).listIterator();
 		Strings params = formal ? getFormal( li, "is", rep ) : getActual( li, "is", rep );
-		Audit.log( (formal ? "Form":"Actu")+ "als: ["+ params.toString( Strings.DQCSV ) +"]" );
-		Audit.log( "from: ["+ rep.toString( Strings.CSV ) +"], peek:"+ Strings.peek( li ));
+		audit.log( (formal ? "Form":"Actu")+ "als: ["+ params.toString( Strings.DQCSV ) +"]" );
+		audit.log( "from: ["+ rep.toString( Strings.CSV ) +"], peek:"+ Strings.peek( li ));
 	}
 	public static void main( String[] args) {
 		test( "1 is 1", true );

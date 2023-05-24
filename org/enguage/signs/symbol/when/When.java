@@ -358,26 +358,26 @@ public class When {
 		else {
 			String ws = w.toString();
 			boolean shouldBeAssigned = !request.equals( result );
-			Audit.log( "'"+ request  +"' means"+ (!w.isUnassigned() || shouldBeAssigned? ":" : " just that!") );
-			if (!w.isUnassigned() || shouldBeAssigned) Audit.log( "'"+ (result.equals("") ? sa.toString( Strings.SPACED ):result) +"' (when="+ ws +")" );
+			audit.log( "'"+ request  +"' means"+ (!w.isUnassigned() || shouldBeAssigned? ":" : " just that!") );
+			if (!w.isUnassigned() || shouldBeAssigned) audit.log( "'"+ (result.equals("") ? sa.toString( Strings.SPACED ):result) +"' (when="+ ws +")" );
 			if (shouldBeAssigned && w.isUnassigned()) audit.FATAL( "w is unassigned!! >"+ w.toString() +"<" );
 			if (!shouldBeAssigned && !w.isUnassigned()) audit.FATAL( "w is assigned!" );
 			if (!result.equals("") && !result.equals( sa.toString( Strings.SPACED ))) audit.FATAL( "wrong answer: "+ sa.toString( Strings.SPACED ) +"!" );
-			Audit.log( "" );
+			audit.log( "" );
 	}	}
 	public static void main( String args[]) {
 		When w = new When( Moment.getNow());
-		Audit.log( "Now is "+ w.toString());
-		Audit.log( "Today is "+ w.today().toString());
-		Audit.log( "Wednesday is "+ w.thisWeek( Day.WED ).toString());
-		Audit.log( "how long is it to xmas? "+ new Duration( new When().now(), w.christmas().from().moment() ).toString());
-		Audit.log( "Christmas day is on a "+w. christmas().from.dayName()); // was at
+		audit.log( "Now is "+ w.toString());
+		audit.log( "Today is "+ w.today().toString());
+		audit.log( "Wednesday is "+ w.thisWeek( Day.WED ).toString());
+		audit.log( "how long is it to xmas? "+ new Duration( new When().now(), w.christmas().from().moment() ).toString());
+		audit.log( "Christmas day is on a "+w. christmas().from.dayName()); // was at
 		testGet( "now i am meeting my brother" );
 		
 		int test = 0;
 		if (test==1 || test==0) {
 			// a from/until/on the DATE|DAY [at TIME]
-			Audit.log( "test 1 ********************" );
+			audit.log( "test 1 ********************" );
 			testGet( "i was born on the sabbath" );
 			Audit.on();
 			//Audit.off(); Audit.traceAll( false );
@@ -388,28 +388,28 @@ public class When {
 			testGet( "I am meeting james tomorrow at 7:30", "I am meeting james");
 			testGet( "i met my brother on Thursday", "i met my brother" );
 			testGet( "i met my brother on Thursday at 6pm", "i met my brother" );
-			Audit.log( "test 1 passes!" );
+			audit.log( "test 1 passes!" );
 		}
 		if (test == 2 || test == 0) {
-			Audit.log("test 2 ********** this,next,last **********");
+			audit.log("test 2 ********** this,next,last **********");
 			testGet( "i am meeting my brother for the last time", "i am meeting my brother for the last time" );
 			testGet( "i am meeting my brother last Thursday", "i am meeting my brother" );
 			testGet( "i am meeting my brother this way" );
 			testGet( "i am meeting my brother this Thursday", "i am meeting my brother" );
 			testGet( "i am meeting my brother next time" );
 			testGet( "i am meeting my brother next Thursday", "i am meeting my brother" );
-			Audit.log( "test 2 passes!" );
+			audit.log( "test 2 passes!" );
 		}
 		if (test == 3 || test == 0) {
-			Audit.log("test 3 ********** yesterday, today, tomorrow **********");
+			audit.log("test 3 ********** yesterday, today, tomorrow **********");
 			testGet( "i met my brother yesterday", "i met my brother" );
 			testGet( "i am meeting my brother today", "i am meeting my brother" );
 			testGet( "i am reading today's menu" );
 			testGet( "i am meeting my brother tomorrow", "i am meeting my brother" );
-			Audit.log( "test 3 passes!" );
+			audit.log( "test 3 passes!" );
 		}
 		if (test == 4 || test == 0) {
-			Audit.log( "test 4 ********** a week ago **********" );
+			audit.log( "test 4 ********** a week ago **********" );
 			testGet( "i met my brother a week ago last way" );
 			testGet( "i met my brother a week ago last Thursday", "i met my brother" );
 			testGet( "i am meeting my brother a week ago", "i am meeting my brother" );
@@ -418,10 +418,10 @@ public class When {
 			testGet( "I met my brother 2 months ago at the pub", "I met my brother at the pub" );
 			testGet( "I met my brother 2 months ago yesterday at the pub", "I met my brother at the pub" );
 			testGet( "I met my brother a year ago tomorrow at the pub", "I met my brother at the pub" );
-			Audit.log( "test 4 passes!" );
+			audit.log( "test 4 passes!" );
 		}
 		if (test == 5 || test == 0) {
-			Audit.log("test 5 ********* until ***********");
+			audit.log("test 5 ********* until ***********");
 			//Audit.on(); Audit.traceAll( true );
 			testGet( "I am with my brother until 7:30pm tomorrow at the pub", "I am with my brother at the pub" );
 			testGet( "we are going to from Wednesday until today", "we are going to" );
@@ -431,22 +431,22 @@ public class When {
 			testGet( "we are going to from Wednesday until Thursday the 11th of February 2016", "we are going to" );
 			testGet( "Queen Elizabeth I reigned from 1558 to 1603", "Queen Elizabeth I reigned");
 			testGet( "we are going to from 1558 to 1603", "we are going to");
-			Audit.log( "test 5 passes!" );
+			audit.log( "test 5 passes!" );
 		}
 		if (test == 6 || test == 0) {
-			Audit.log("test 6 ********* simple tense context ***********");
-			Audit.log( "setting past" );
+			audit.log("test 6 ********* simple tense context ***********");
+			audit.log( "setting past" );
 			When.pastIs();
 			testGet( "i met my brother on Thursday", "i met my brother" );
-			Audit.log( "setting present" );
+			audit.log( "setting present" );
 			When.presentIs();
 			testGet( "i am meeting my brother on Thursday", "i am meeting my brother" );
-			Audit.log( "setting future" );
+			audit.log( "setting future" );
 			When.futureIs();
 			testGet( "i am meeting my brother on Thursday", "i am meeting my brother" );
-			Audit.log( "test 6 passes!" );
+			audit.log( "test 6 passes!" );
 		}
-		Audit.log( ">>>:"+ new When().rep( "idk" ).toString() +":" );
+		audit.log( ">>>:"+ new When().rep( "idk" ).toString() +":" );
 /*
 		testGet( "i am meeting my brother now", null, "a moment in time" ); // don't check time - it changes!
 		testGet( "i am meeting my brother today", "today", "a day" );

@@ -137,5 +137,5 @@ public class Server {
 		if (args.length == 1)
 			server( args[ 0 ]);
 		else
-			Audit.log( "output: "+ client( "localhost", 8080, "'put your hands on your head'" ));
+			audit.log( "output: "+ client( "localhost", 8080, "'put your hands on your head'" ));
 }	}

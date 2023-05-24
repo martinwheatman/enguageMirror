@@ -275,7 +275,7 @@ public class Pronoun {
 			audit.passed( "passes: "+ value +" => "+
 					pronouns[POSSESSIVE][plurality( subj )][Gendered.valueMfn( subj )]);
 		else
-			Audit.log( "failed: "+ value +" != possessive"  );
+			audit.log( "failed: "+ value +" != possessive"  );
 	}
 	static private void possessiveInbound( String pn ) {
 		audit.in(  "possInternalising", pn );
@@ -294,34 +294,34 @@ public class Pronoun {
 	static public void main( String args[]) {
 		
 		testInterpret( "set singular subjective neutral they" );
-		Audit.log( "pronoun: "+ pronouns[SUBJECTIVE][SINGULAR][Gendered.NEUTRAL]);
+		audit.log( "pronoun: "+ pronouns[SUBJECTIVE][SINGULAR][Gendered.NEUTRAL]);
 		
 		testInterpret( "add masculine martin" );
 		testInterpret( "add masculine jamie" );
 		testInterpret( "add feminine  ruth" );
 		testInterpret( "name subjective SUBJECT" );
 		
-		Audit.title( "Possession Test" );
+		audit.title( "Possession Test" );
 		testInterpret( "add masculine martin" );
 		set( subject, "martin" );
 		
-		Audit.subtl( "Outbound Test" );
+		audit.subtl( "Outbound Test" );
 		possessiveOutbound( "martin" );
 		possessiveOutbound( "ruth's" );
 		possessiveOutbound( "martin's" );
 		
-		Audit.subtl( "Inbound Test" );
+		audit.subtl( "Inbound Test" );
 		possessiveInbound( "him" );
 		possessiveInbound( "her" );
 		possessiveInbound( "his" );
 		
-		Audit.log( subject+"/he => "+ update( subject, "he" ));
-		Audit.log( "FRED/he => "+ update( "FRED", "he" ));
+		audit.log( subject+"/he => "+ update( subject, "he" ));
+		audit.log( "FRED/he => "+ update( "FRED", "he" ));
 		
 		Attributes a = new Attributes();
 		a.add( new Attribute( subject, "martin" ));
 		a.add( new Attribute( subject, "he" ));
-		Audit.log( "a="+ a );
-		Audit.log( "a="+ update( a ));
+		audit.log( "a="+ a );
+		audit.log( "a="+ update( a ));
 		audit.PASSED();
 }	}
