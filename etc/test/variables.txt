@@ -3,16 +3,16 @@ get the value of name:           fred.
 set the value of name to fred bloggs: ok, name is set to fred bloggs.
 what is the value of name:       fred bloggs, the value of name is fred bloggs.
 			
-			audit.subtl( Simple Numerics.
+echo Simple Numerics:-.
 set the weight of martin to 104: ok.
 get the weight of martin:        Ok, the weight of martin is 104.
 			
 # non-numerical values
-			audit.title( Simply ent/attr model.
+echo Simply ent/attr model:-.
 the height of martin is 194:  Ok,  the height of martin is 194.
 what is the height of martin: 194, the height of martin is 194.
 
-			audit.title( Apostrophe's ;-).
+echo Apostrophe's ;-):-.
 what is martin's height: 194, martin's height is 194.
 martin's height is 195:  Ok,  martin's height is 195.
 what is the height of martin: 195, the height of martin is 195.

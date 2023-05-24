@@ -1,5 +1,6 @@
 package org.enguage.signs.symbol.number;
 
+import org.enguage.signs.object.Variable;
 import org.enguage.signs.object.expr.Function;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -192,7 +193,15 @@ public class Representamen extends Strings {
 					value *= doPower( getNumber());
 				} else if (op.equals( "divided by" ) || op.equals( "/" )) {
 					op = ""; // consumed!
-					value /= doPower( getNumber());
+					float remainder = value;
+					float number = doPower( getNumber());
+					value /= number;
+					remainder  %= number;
+					String r = ""+remainder;
+					String tail = r.substring(r.length()-2, r.length());
+					if (tail.equals(".0"))
+						r = r.substring(0, r.length()-2);
+					Variable.set( "remainder", r );
 				//} else if (op.equals( "all" )) {
 				//	op = ""; // consumed!
 				//	value = doPower( value );
