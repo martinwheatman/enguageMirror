@@ -2,7 +2,7 @@ package org.enguage.util.algorithm;
 
 import java.util.ListIterator;
 
-import org.enguage.signs.symbol.number.Number;
+import org.enguage.sign.symbol.number.Number;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -101,7 +101,7 @@ public class Expression {
 		ListIterator<String> si = new Strings( s ).listIterator();
 		Strings repr = new Strings(),
 		        body = getFunction( si, repr );
-		audit.log( "expr: "+ body);
+		audit.debug( "expr: "+ body);
 		audit.out();
 	}
 	static public void main( String[] args) {
@@ -112,5 +112,5 @@ public class Expression {
 		expressionTest( "a plus b" );
 		expressionTest( "a + b" );
 		expressionTest( "n times the factorial of n minus 1" );
-		audit.log( "PASSED" );
+		audit.debug( "PASSED" );
 }	}

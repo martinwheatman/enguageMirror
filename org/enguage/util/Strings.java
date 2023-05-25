@@ -8,24 +8,24 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TreeSet;
 
-import org.enguage.signs.Sign;
-import org.enguage.signs.object.Numeric;
-import org.enguage.signs.object.Temporal;
-import org.enguage.signs.object.Variable;
-import org.enguage.signs.object.expr.Function;
-import org.enguage.signs.object.list.Item;
-import org.enguage.signs.object.list.Items;
-import org.enguage.signs.object.list.Transitive;
-import org.enguage.signs.object.sofa.Overlay;
-import org.enguage.signs.object.sofa.Value;
-import org.enguage.signs.object.sofa.Entity;
-import org.enguage.signs.object.sofa.Link;
-import org.enguage.signs.symbol.Utterance;
-import org.enguage.signs.symbol.config.Colloquial;
-import org.enguage.signs.symbol.config.Englishisms;
-import org.enguage.signs.symbol.config.Plural;
-import org.enguage.signs.symbol.reply.Answer;
-import org.enguage.signs.symbol.where.Where;
+import org.enguage.sign.Sign;
+import org.enguage.sign.object.Numeric;
+import org.enguage.sign.object.Temporal;
+import org.enguage.sign.object.Variable;
+import org.enguage.sign.object.expr.Function;
+import org.enguage.sign.object.list.Item;
+import org.enguage.sign.object.list.Items;
+import org.enguage.sign.object.list.Transitive;
+import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.object.sofa.Value;
+import org.enguage.sign.object.sofa.Entity;
+import org.enguage.sign.object.sofa.Link;
+import org.enguage.sign.symbol.Utterance;
+import org.enguage.sign.symbol.config.Colloquial;
+import org.enguage.sign.symbol.config.Englishisms;
+import org.enguage.sign.symbol.config.Plural;
+import org.enguage.sign.symbol.reply.Answer;
+import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
@@ -1150,52 +1150,52 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				b = new Strings( "hello world" ),
 		        c = new Strings( "hello there martin" );
 		
-		audit.log( "comparing "+ a +" to "+ b +" = "+ (a.compareTo( b ) > 0 ? "pass" : "fail" ));
-		audit.log( "comparing "+ a +" to "+ c +" = "+ (a.compareTo( c ) > 0 ? "pass" : "fail" ));
+		audit.debug( "comparing "+ a +" to "+ b +" = "+ (a.compareTo( b ) > 0 ? "pass" : "fail" ));
+		audit.debug( "comparing "+ a +" to "+ c +" = "+ (a.compareTo( c ) > 0 ? "pass" : "fail" ));
 		
 		b = new Strings( c );
 		b.remove( 2 );
-		audit.log( "remove from a copy: b is "+ b.toString( Strings.SPACED ) +", c is "+ c.toString( Strings.SPACED ) );
+		audit.debug( "remove from a copy: b is "+ b.toString( Strings.SPACED ) +", c is "+ c.toString( Strings.SPACED ) );
 		
 		
 		
-		audit.log( "a: ["+ new Strings( "martin''s" ).toString( DQCSV ) +"]" );
-		audit.log( "b: ["+ new Strings( "failure won't 'do' 'do n't'" ).toString( DQCSV ) +"]" );
-		audit.log( "c: "+ new Strings( "..........." ));
-		audit.log( "d: "+ new Strings( "+2.0" ));
-		audit.log( "e: "+ new Strings( "quantity+=2.0" ));
+		audit.debug( "a: ["+ new Strings( "martin''s" ).toString( DQCSV ) +"]" );
+		audit.debug( "b: ["+ new Strings( "failure won't 'do' 'do n't'" ).toString( DQCSV ) +"]" );
+		audit.debug( "c: "+ new Strings( "..........." ));
+		audit.debug( "d: "+ new Strings( "+2.0" ));
+		audit.debug( "e: "+ new Strings( "quantity+=2.0" ));
 		
 		a = new Strings("hello failure");
 		b = new Strings( "failure" );
 		c = new Strings( "world" );
-		audit.log( "e: ["+ a.replace( b, c ).toString( "'", "', '", "'" ) +"]" );
+		audit.debug( "e: ["+ a.replace( b, c ).toString( "'", "', '", "'" ) +"]" );
 		String tmp = "+=6";
-		audit.log( "tmp: "+ tmp.substring( 0, 1 ) + tmp.substring( 2 ));
+		audit.debug( "tmp: "+ tmp.substring( 0, 1 ) + tmp.substring( 2 ));
 	
-		audit.log("tma:"+(tokenMatch( ELLIPSIS, ELLIPSIS, 0, ELLIPSIS.length() )?"true":"false")+"=>true");
-		audit.log("tma:"+(tokenMatch( ELLIPSIS, ELLIPSIS, 1, ELLIPSIS.length() )?"true":"false")+"=>false");
-		audit.log("tma:"+(tokenMatch( ELLIPSIS,     "..", 0,     "..".length() )?"true":"false")+"=>false");
+		audit.debug("tma:"+(tokenMatch( ELLIPSIS, ELLIPSIS, 0, ELLIPSIS.length() )?"true":"false")+"=>true");
+		audit.debug("tma:"+(tokenMatch( ELLIPSIS, ELLIPSIS, 1, ELLIPSIS.length() )?"true":"false")+"=>false");
+		audit.debug("tma:"+(tokenMatch( ELLIPSIS,     "..", 0,     "..".length() )?"true":"false")+"=>false");
 		
 		a = new Strings( "this is a test sentence. And half a" );
 		ArrayList<Strings> as = a.divide( Shell.terminators() );
 		// as should be of length 2...
 		b = as.remove( 0 );
-		audit.log( "b is '"+ b.toString() +"'. as is len "+ as.size() );
+		audit.debug( "b is '"+ b.toString() +"'. as is len "+ as.size() );
 		a = Strings.combine( as ); // needs blank last item to add terminating "."
-		audit.log( "a is '"+ a.toString() +"'. a is len "+ a.size() );
+		audit.debug( "a is '"+ a.toString() +"'. a is len "+ a.size() );
 		a.addAll( b );
-		audit.log( "a is now '"+ a.toString() +"'." );
+		audit.debug( "a is now '"+ a.toString() +"'." );
 		
-		audit.log( "begins:"+ ( new Strings("to be or not").beginsIgnoreCase(new Strings("to be"))? "pass":"fail" ));
-		audit.log( "begins:"+ ( new Strings("to be or not").beginsIgnoreCase(new Strings("to be"))? "pass":"fail" ));
-		audit.log( "begins:"+ ( new Strings("to be").beginsIgnoreCase(new Strings("to be or"))? "fail":"pass" ));
+		audit.debug( "begins:"+ ( new Strings("to be or not").beginsIgnoreCase(new Strings("to be"))? "pass":"fail" ));
+		audit.debug( "begins:"+ ( new Strings("to be or not").beginsIgnoreCase(new Strings("to be"))? "pass":"fail" ));
+		audit.debug( "begins:"+ ( new Strings("to be").beginsIgnoreCase(new Strings("to be or"))? "fail":"pass" ));
 		
 		a = new Strings( "17:45:30:90" );
-		audit.log( "the time is "+ a.toString( SPACED ));
+		audit.debug( "the time is "+ a.toString( SPACED ));
 
 		a = new Strings( "this is a test" );
 		Strings seps = new Strings( ", / and ", '/' );
-		audit.log( a.toString( seps ) );
+		audit.debug( a.toString( seps ) );
 // */
 		/* /
 		String s = "this test should pass";
@@ -1288,21 +1288,21 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		//audit.audit( Strings.toString( Strings.fromString( "failure won't 'do' 'don't'" ), Strings.DQCSV ));
 		//audit.audit( Strings.toString( Strings.insertAt( Strings.fromString( "is the greatest" ), -1, "martin" ), Strings.SPACED ));
 		//audit.audit( "" );
-		audit.log( "Item:       "+ Strings.hash(      Item.NAME));
-		audit.log( "Link:       "+ Strings.hash(      Link.NAME));
-		audit.log( "Sign:       "+ Strings.hash(      Sign.NAME));
-		audit.log( "Items:      "+ Strings.hash(     Items.NAME));
-		audit.log( "Value:      "+ Strings.hash(     Value.NAME));
-		audit.log( "Where:      "+ Strings.hash(     Where.NAME));
-		audit.log( "Entity:     "+ Strings.hash(    Entity.NAME));
-		audit.log( "Plural:     "+ Strings.hash(    Plural.NAME));
-		audit.log( "Numeric:    "+ Strings.hash(   Numeric.NAME));
-		audit.log( "Overlay:    "+ Strings.hash(   Overlay.NAME));
-		audit.log( "Function:   "+ Strings.hash(  Function.NAME));
-		audit.log( "Temporal:   "+ Strings.hash(  Temporal.NAME));
-		audit.log( "Variable:   "+ Strings.hash(  Variable.NAME));
-		audit.log( "Colloquial: "+ Strings.hash(Colloquial.NAME));
-		audit.log( "Transitive: "+ Strings.hash(Transitive.NAME));
+		audit.debug( "Item:       "+ Strings.hash(      Item.NAME));
+		audit.debug( "Link:       "+ Strings.hash(      Link.NAME));
+		audit.debug( "Sign:       "+ Strings.hash(      Sign.NAME));
+		audit.debug( "Items:      "+ Strings.hash(     Items.NAME));
+		audit.debug( "Value:      "+ Strings.hash(     Value.NAME));
+		audit.debug( "Where:      "+ Strings.hash(     Where.NAME));
+		audit.debug( "Entity:     "+ Strings.hash(    Entity.NAME));
+		audit.debug( "Plural:     "+ Strings.hash(    Plural.NAME));
+		audit.debug( "Numeric:    "+ Strings.hash(   Numeric.NAME));
+		audit.debug( "Overlay:    "+ Strings.hash(   Overlay.NAME));
+		audit.debug( "Function:   "+ Strings.hash(  Function.NAME));
+		audit.debug( "Temporal:   "+ Strings.hash(  Temporal.NAME));
+		audit.debug( "Variable:   "+ Strings.hash(  Variable.NAME));
+		audit.debug( "Colloquial: "+ Strings.hash(Colloquial.NAME));
+		audit.debug( "Transitive: "+ Strings.hash(Transitive.NAME));
 		
 		Variable.set( "ENT",  "martin" );
 		Variable.set( "ATTR", "height" );
@@ -1310,7 +1310,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		answer.add( "194" );
 		
 		Strings tmp2 = new Strings( "..., ENT''s ATTR is ..." );
-		audit.log( "tmp2: "+ tmp2.toString( DQCSV ));
+		audit.debug( "tmp2: "+ tmp2.toString( DQCSV ));
 		tmp2 = Utterance.externalise( tmp2, false );
-		audit.log( "tmp2: "+ tmp2.toString( DQCSV ));
+		audit.debug( "tmp2: "+ tmp2.toString( DQCSV ));
 }	}

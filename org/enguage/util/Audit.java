@@ -2,8 +2,9 @@ package org.enguage.util;
 
 import java.util.GregorianCalendar;
 
+import org.enguage.repertoires.Repertoires;
 //import org.enguage.repertoires.Repertoires;
-import org.enguage.signs.symbol.reply.Response;
+import org.enguage.sign.symbol.reply.Response;
 
 public class Audit {
 	private static final Audit audit = new Audit( "Audit" );
@@ -11,11 +12,15 @@ public class Audit {
 	public  static final int            ID = 829030;
 	private static       Strings funcNames = new Strings( "zeroStack" );
 
+	private static boolean showSignsOnFatal = false; // on fatal
+	private static void    showSignsOnFatal() {showSignsOnFatal=true;}
+	private static void    hideSignsOnFatal() {showSignsOnFatal=false;}
+	
 	private boolean tracing = false; // per object
 	public  Audit   tracing( boolean on ) {tracing=on; return this;}
-	private boolean logging = false; // per object
-	public  Audit   logging( boolean on ) {logging=on; return this;}
-	
+	private boolean debugging = false; // per object
+	public  Audit   debugging( boolean on ) {debugging=on; return this;}
+
 	public Audit( String nm ) {className = Character.toUpperCase( nm.charAt(0)) + nm.substring(1);}
 	
 	private              String   className = "";
@@ -45,11 +50,11 @@ public class Audit {
 	public  static  boolean suspended() {return suspended>0;}
 	
 	// test count
-	private int  numberOfTests = 0;
-	public  int  numberOfTests() {return numberOfTests;}
-	public  void passed() {numberOfTests++;}
-	public  void passed( String msg ) {log( msg ); passed();}
-	public  void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
+	private static int  numberOfTests = 0;
+	public  static int  numberOfTests() {return numberOfTests;}
+	public  static void passed() {numberOfTests++;}
+	public  static void passed( String msg ) {LOG( msg ); passed();}
+	public  static void PASSED() {LOG( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
 	
 	private static  boolean auditOn = false;
 	public  static  void    off() {auditOn = false; indent.reset();}
@@ -60,25 +65,40 @@ public class Audit {
 	// allOn vs. auditOn - turning auditOn when allOn, suppresses for this level
 	public  static  boolean allAreOn() {return auditOn;}
 	
-    // LOGGING:-
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// --- LOGGING - LOG, debug, info, error, FATAL
+	// ---
 	public static  String LOG( String info ) {
 		indent.print( System.out );
 		System.out.println( info );
 		return info;
 	}
-	public static  String timestamp( String info ) {
-		LOG( info + " -- "+interval()+"ms\n" );
-		return info;
-	}
-	public  String log( String info ) {
-		if (suspended==0)
-			LOG( info );
-		return info;
-	}
-	public  int    log( int     info ) {log( ""+ info ); return info;}
-	public  String log( Strings info ) {return log( info.toString() );}
+	public static String timestamp( String info ) {LOG( info+ " -- "+interval()+"ms\n");return info;}
 	
-	// Ancilliary methods...
+	public  void   debug( String info ) {
+		if (suspended==0 && (auditOn || debugging)) LOG( info );
+	}
+	public  void   debug( Strings info ) {debug( info.toString() );}
+	public  Object  info(  String fn, String in, Object out ) {// out may be null!
+		if (auditOn && (out!=null && !out.equals("")))
+			debug( className +"."+ fn +"( "+ in +" ) => "+ out.toString() );
+		return out;
+	}
+	public  void   FATAL( String msg ) {
+		LOG( "FATAL: "+ className +": "+ msg );
+		if (showSignsOnFatal) Repertoires.signs().show();
+		System.exit( 1 );
+	}
+	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
+	public  void   error( String info ) {
+		LOG("ERROR: "+ className +(funcNames.size()>1?"."+ funcNames.get( 0 ) +"()" : "")+": "+ info);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// --- Tracing - IN/OUT
+	// ---
     public  void in( String fn ) {in( fn, "" );}
     public  void in( String fn, String info ) {if (auditOn || tracing) IN( fn, info );}
     public  void IN( String fn, String info ) {
@@ -111,51 +131,37 @@ public class Audit {
 	public Strings OUT( Strings o ) {OUT( o==null ? "null" : o.toString()); return o;}
 	public boolean OUT( boolean b ) {OUT( Boolean.toString( b )); return b;}
 	
-	public  void   debug( String info ) {if (auditOn || logging) log( info );}
-	public  Object  info(  String fn, String in, Object out ) {// out may be null!
-		if (auditOn && (out!=null && !out.equals("")))
-			log( className +"."+ fn +"( "+ in +" ) => "+ out.toString() );
-		return out;
-	}
-	public  void   FATAL( String msg ) {
-		LOG( "FATAL: "+ className +": "+ msg );
-		//Repertoires.signs().show()
-		System.exit( 1 );
-	}
-	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
-	public  void   error( String info ) {
-		System.out.println(
-			"ERROR: "+ className +(funcNames.size()>1?"."+ funcNames.get( 0 ) +"()" : "")+": "+ info
-		);
-	}
 	public static Strings interpret(Strings cmds) {
 		audit.in( "Interpret", ""+ cmds );
 		Strings rc = Response.success();
 		String cmd = cmds.remove( 0 );
+		String param = cmds.isEmpty() ? "" : cmds.remove( 0 );
 		
 		if (cmd.equals( "timing" ) || cmd.equals( "tracing" )) {
-			if (cmds.get( 0 ).equals("off")) {
-				Audit.off();
-			} else {
-				Audit.on();
-			}
+			if (param.equals("off"))
+				off();
+			else
+				on();
 						
 		} else if (cmd.equals( "detailed" )) {
-			if (cmds.get( 0 ).equals("off")) {
-				Audit.off();
-				
-			} else {
-				Audit.on();
-			}
+			if (param.equals("off"))
+				off();
+			else
+				on();
 		
 		} else if (cmd.equals( "debug" )) {
+			if (param.equals( "off" ))
+				off();
+			else
+				on();
 			
-			if (cmds.get( 0 ).equals( "off" )) {
-				Audit.off();
-				
-			} else {
-				Audit.on();
-			}
+		} else if (cmd.equals( "show" )) {
+			if (param.equals( "signs" ))
+				showSignsOnFatal();
+			
+		} else if (cmd.equals( "hide" )) {
+			if (param.equals( "signs" ))
+				hideSignsOnFatal();				
 			
 		} else
 			rc = Response.failure();
@@ -166,7 +172,7 @@ public class Audit {
 	// === title/underline
 	private static boolean firstTitle = true;
 	private void title( String title, char ch ) {
-		if (!firstTitle) log( "\n" );
+		if (!firstTitle) LOG( "\n" );
 		underline( title, ch );
 		firstTitle = false;
 	}

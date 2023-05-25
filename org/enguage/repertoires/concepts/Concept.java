@@ -14,12 +14,12 @@ import java.util.TreeSet;
 
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
-import org.enguage.signs.Sign;
-import org.enguage.signs.interpretant.Intention;
-import org.enguage.signs.object.Variable;
-import org.enguage.signs.symbol.Utterance;
-import org.enguage.signs.symbol.reply.Reply;
-import org.enguage.signs.symbol.reply.Response;
+import org.enguage.sign.Sign;
+import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.object.Variable;
+import org.enguage.sign.symbol.Utterance;
+import org.enguage.sign.symbol.reply.Reply;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.Terminator;

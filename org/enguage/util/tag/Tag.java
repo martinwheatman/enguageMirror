@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.signs.symbol.config.Plural;
+import org.enguage.sign.symbol.config.Plural;
 import org.enguage.util.Audit;
 import org.enguage.util.Indentation;
 import org.enguage.util.Strings;

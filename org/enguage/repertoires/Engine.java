@@ -1,14 +1,14 @@
 package org.enguage.repertoires;
 
 import org.enguage.Enguage;
-import org.enguage.signs.Sign;
-import org.enguage.signs.interpretant.Intention;
-import org.enguage.signs.object.Variable;
-import org.enguage.signs.object.sofa.Overlay;
-import org.enguage.signs.symbol.Utterance;
-import org.enguage.signs.symbol.config.Englishisms;
-import org.enguage.signs.symbol.reply.Reply;
-import org.enguage.signs.symbol.reply.Response;
+import org.enguage.sign.Sign;
+import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.object.Variable;
+import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.symbol.Utterance;
+import org.enguage.sign.symbol.config.Englishisms;
+import org.enguage.sign.symbol.reply.Reply;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Context;
@@ -182,10 +182,10 @@ public final class Engine {
 			
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
-				audit.log("Allop:repeating dnu");
+				audit.debug("Allop:repeating dnu");
 				r.format( Response.dnu());
 			} else {
-				audit.log("Allop:repeating: "+ Reply.previous());
+				audit.debug("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
 				r.format( new Strings( Reply.repeatFormat()));
 				r.answer( Reply.previous().toString());

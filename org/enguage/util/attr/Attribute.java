@@ -2,9 +2,9 @@ package org.enguage.util.attr;
 
 import java.util.ListIterator;
 
-import org.enguage.signs.symbol.config.Plural;
-import org.enguage.signs.symbol.when.Moment;
-import org.enguage.signs.symbol.when.When;
+import org.enguage.sign.symbol.config.Plural;
+import org.enguage.sign.symbol.when.Moment;
+import org.enguage.sign.symbol.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -160,29 +160,29 @@ public class Attribute {
 	}
 	static public void main( String argv[]) {
 		//Audit.turnOn();
-		audit.log( attrTest( "fred=bill" ));
-		audit.log( attrTest( "fred='bill'" ));
+		audit.debug( attrTest( "fred=bill" ));
+		audit.debug( attrTest( "fred='bill'" ));
 		Attribute a = new Attribute( "fred=\"bill\"" );
-		audit.log( "a is "+ a.toString());
+		audit.debug( "a is "+ a.toString());
 		a = new Attribute( "fred='bill'" );
-		audit.log( "a is "+ a.toString());
+		audit.debug( "a is "+ a.toString());
 		a = new Attribute( "fred=bi'll" );
-		audit.log( "a is "+ a.toString());
+		audit.debug( "a is "+ a.toString());
 		Strings sa = new Strings("list get user='martin' attr='needs to x=\"go to town\" y=\"for martin's coffee\"\'");
 		sa.contract( "=" );
-		audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		audit.debug("Sofa.doCall() => sa is "+ sa.toString());
 		for (int i=0; i<4 && i<sa.size(); i++)
 			sa.set( i, Attribute.getValues( sa.get( i )).toString( Strings.SPACED ));
-		audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		audit.debug("Sofa.doCall() => sa is "+ sa.toString());
 		sa = sa.normalise();
-		audit.log("Sofa.doCall() => sa is "+ sa.toString());
+		audit.debug("Sofa.doCall() => sa is "+ sa.toString());
 		
 		Audit.on();
 		Attribute attr;
 		Strings s = new Strings( "martin='heroic' ruth='fab'" );
-		audit.log( "Test string is; ["+ s.toString()+"]");
-		audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
+		audit.debug( "Test string is; ["+ s.toString()+"]");
+		audit.debug( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
 		ListIterator<String> si = s.listIterator();
 		while (null != (attr = Attribute.next( si )))
-			audit.log( "Copy is: >"+ attr.toString() +"<");
+			audit.debug( "Copy is: >"+ attr.toString() +"<");
 }	}

@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.repertoires.Repertoires;
-import org.enguage.signs.Config;
+import org.enguage.sign.Config;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 

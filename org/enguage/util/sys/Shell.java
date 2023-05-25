@@ -8,8 +8,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.enguage.repertoires.Repertoires;
-import org.enguage.signs.symbol.Utterance;
-import org.enguage.signs.symbol.reply.Reply;
+import org.enguage.sign.symbol.Utterance;
+import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -195,9 +195,9 @@ public class Shell {
 	private static void test( String string ) {
 		Strings list = new Strings( string );
 		List<Strings> listOfLists = expandSemicolonList( list );
-		audit.log("expanded list is:");
+		audit.debug("expanded list is:");
 		for (Strings s : listOfLists ) {
-			audit.log( ">>>"+ s.toString( Strings.SPACED ) );
+			audit.debug( ">>>"+ s.toString( Strings.SPACED ) );
 	}	}
 	public static void main( String[] args) {
 //		test( "I need coffee" )

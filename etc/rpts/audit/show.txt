@@ -1,3 +1,6 @@
-On "show signs", perform "repertoire show signs".
+On "show signs", perform "repertoires show signs".
 	
-On "show allop", perform "repertoire show allop".
+On "show engine", perform "repertoires show engine".
+
+On "audit show signs", perform "audit show signs".
+On "audit hide signs", perform "audit hide signs".

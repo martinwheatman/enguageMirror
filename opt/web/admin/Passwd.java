@@ -33,7 +33,7 @@ public class Passwd {
 			+ "</script><br>\n";
 	
 	public static String operation( String[] params) {
-		audit.log( "action... setPwd" );
+		audit.debug( "action... setPwd" );
 		String reply = "<strong>Change Password</strong><p>";
 		if (Users.isUser( params[ 0 ])) {
 			Users.setPwd( params[ 0 ], params[ 1 ]);

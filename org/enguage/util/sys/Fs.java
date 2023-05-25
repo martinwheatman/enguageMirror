@@ -100,7 +100,7 @@ public class Fs {
 			value = sb.toString().trim(); // remove trailing blanks?
 		} catch (IOException e) {
 			// just ignore non-existent files...
-			//audit.log( "Fs::stringFromInputStream(): IO exception: "+ e )
+			//audit.debug( "Fs::stringFromInputStream(): IO exception: "+ e )
 			value = "";
 		}
 		//audit.out( value )

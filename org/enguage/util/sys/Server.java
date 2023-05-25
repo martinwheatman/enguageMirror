@@ -10,8 +10,8 @@ import java.net.URLDecoder;
 import java.util.Random;
 
 import org.enguage.Enguage;
-import org.enguage.signs.symbol.Utterance;
-import org.enguage.signs.symbol.reply.Response;
+import org.enguage.sign.symbol.Utterance;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Context;
@@ -137,5 +137,5 @@ public class Server {
 		if (args.length == 1)
 			server( args[ 0 ]);
 		else
-			audit.log( "output: "+ client( "localhost", 8080, "'put your hands on your head'" ));
+			audit.debug( "output: "+ client( "localhost", 8080, "'put your hands on your head'" ));
 }	}

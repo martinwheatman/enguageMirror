@@ -1,22 +1,17 @@
-On "is N divisible by M":
-	what is N divided by M;
-	is remainder set to 0;
-	if so, reply "yes";
-	if not, reply "no".
-	
 On "what is the fizzbuzz of N":
-	is N divisible by 5;
-	if so, is N divisible by 3;
+
+	is N divisible by 5 and 3;
 	if so, reply "fizzbuzz";
+	
 	is N divisible by 5;
 	if so, reply "buzz";
+	
 	is N divisible by 3;
 	if so, reply "fizz";
+	
 	reply "N".
 
 #] what is the fizzbuzz of  1: 1.
 #] what is the fizzbuzz of 12: fizz.
 #] what is the fizzbuzz of 25: buzz.
-#] what is the fizzbuzz of 15: fizzbuzz.
-
-	
+#] what is the fizzbuzz of 75: fizzbuzz.

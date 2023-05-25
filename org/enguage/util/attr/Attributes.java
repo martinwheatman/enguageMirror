@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import org.enguage.signs.object.Variable;
-import org.enguage.signs.symbol.config.Plural;
-import org.enguage.signs.symbol.pattern.Frags;
+import org.enguage.sign.object.Variable;
+import org.enguage.sign.symbol.config.Plural;
+import org.enguage.sign.symbol.pattern.Frags;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
@@ -285,30 +285,30 @@ public class Attributes extends ArrayList<Attribute> {
 		Attributes b, a = new Attributes();
 		a.add( new Attribute( "martin", "heroic" ));
 		a.add( new Attribute( "ruth", "fab" ));
-		audit.log( "Initial test: "+ a.toString());
+		audit.debug( "Initial test: "+ a.toString());
 		
-		audit.log( "\tmartin is "+  a.value( "martin" ));
-		audit.log( "\truth is "+   a.value( "ruth" ));
-		audit.log( "\tjames is "+  a.value( "james" ));
-		audit.log( "\tderef martin is "+  a.deref( "what is MARTIN" ));
+		audit.debug( "\tmartin is "+  a.value( "martin" ));
+		audit.debug( "\truth is "+   a.value( "ruth" ));
+		audit.debug( "\tjames is "+  a.value( "james" ));
+		audit.debug( "\tderef martin is "+  a.deref( "what is MARTIN" ));
 		
-		audit.log( "\tremoving "+ a.remove( new Attribute( "martin" )));
-		audit.log( "\ta is now:"+ a.toString());
-		audit.log( "\tshould be just ruth='fab'" );
+		audit.debug( "\tremoving "+ a.remove( new Attribute( "martin" )));
+		audit.debug( "\ta is now:"+ a.toString());
+		audit.debug( "\tshould be just ruth='fab'" );
 		
 		a = new Attributes();
 		a.add( new Attribute( "X", "3" ));
 		b = new Attributes();
 		a.add( new Attribute( "X", "3" ));
 		if (a.matches( b ))
-			audit.log( "matched" );
+			audit.debug( "matched" );
 		else
-			audit.log( "not mathing" );
+			audit.debug( "not mathing" );
 		
 		Audit.on();
 		Strings s = new Strings( "martin='heroic' ruth='fab'" );
-		audit.log( "Test string is; ["+ s.toString()+"]");
-		audit.log( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
+		audit.debug( "Test string is; ["+ s.toString()+"]");
+		audit.debug( "Test strings are; ["+ s.toString( Strings.CSV )+"]");
 		Attributes attrs = new Attributes( s.listIterator());
-		audit.log( "Copy is: >"+ attrs.toString() +"<");
+		audit.debug( "Copy is: >"+ attrs.toString() +"<");
 }	}

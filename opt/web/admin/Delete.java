@@ -32,7 +32,7 @@ public class Delete {
 
 	public static String operation ( String[] params ) {
 		
-		audit.log( "action... delUser" );
+		audit.debug( "action... delUser" );
 		
 		String reply = "<strong>Delete User</strong><p>";
 		if (Users.isUser( params[ 0 ])) {

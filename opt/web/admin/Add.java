@@ -35,7 +35,7 @@ public class Add {
 			+ "</script><br>\n";
 	
 	public static String operation( String[] params ) {
-		//audit.log( "adduser" );
+		//audit.debug( "adduser" );
 		return "<strong>Add User</strong><p>"
 			+ (Users.addUser(
 				params[ 0 ],

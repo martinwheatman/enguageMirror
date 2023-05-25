@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 import org.enguage.Enguage;
 import org.enguage.repertoires.concepts.Concept;
-import org.enguage.signs.object.sofa.Overlay;
-import org.enguage.signs.symbol.pronoun.Pronoun;
+import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.symbol.pronoun.Pronoun;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -40,14 +40,14 @@ public class Example {
 	private static void test( String  cmd, String expected, String unexpected ) {
 		// expected == null => don't check reply, expected == '-' => silent!
 		if (expected == null || !expected.equals( "-" ))
-			audit.log( TEST_PROMPT+ cmd +".");
+			Audit.LOG( TEST_PROMPT+ cmd +".");
 		
 		Strings reply = Enguage.get().mediate( new Strings( cmd ));
 
 		if (expected == null || !expected.equals( "-" ))
 		
 			if (expected == null || reply.equalsIgnoreCase( new Strings( expected )))
-				audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
+				Audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
 				
 			else if (unexpected == null)                // no second chance
 				//Repertoire.signs.show()
@@ -57,7 +57,7 @@ public class Example {
 				);
 		
 			else if (reply.equalsIgnoreCase( new Strings( unexpected )))
-				audit.passed( REPLY_PROMPT+ reply +".\n" );
+				Audit.passed( REPLY_PROMPT+ reply +".\n" );
 			
 			else                                        // second chance failed too!
 				//Repertoire.signs.show()
@@ -130,7 +130,7 @@ public class Example {
 		Fs.root( fsys );
 
 		//run test groups
-		audit.interval(); // reset timer
+		Audit.interval(); // reset timer
 		int testGrp = 0;
 
 		for (String test : tests) {
@@ -145,8 +145,8 @@ public class Example {
 			    runTestFile(  REP_DIR, test +REP_EXT  )   )
 				testGrp++;
 		}
-		audit.log( testGrp +" test group(s) found" );
-		audit.PASSED();
+		Audit.LOG( testGrp +" test group(s) found" );
+		Audit.PASSED();
 	}
 
 	public static Strings listUnitTests( String dirname, String ext ) {
@@ -206,6 +206,7 @@ public class Example {
 	}
 	
 	public static void main( String[] args ) {
+		
 		Strings    cmds = new Strings( args );
 		String     fsys = doArgs( cmds );
 
@@ -217,8 +218,9 @@ public class Example {
 			cmd.equals( "--test" )   )
 		{
 			unitTests();
-			
-		} else if (cmd.equals(  "-T"    )) {
+		}
+		else if (cmd.equals(  "-T"    ))
+		{
 			doUnitTests( cmds );
 
 		} else if (cmd.equals( "" )) {

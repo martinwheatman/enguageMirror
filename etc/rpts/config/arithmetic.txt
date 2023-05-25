@@ -48,6 +48,28 @@ On "multiplied by NUMERIC-X":
 On "equals", reply "SUBTOTAL".
 
 ##
-     On "divided by NUMERIC-X", perform "numeric evaluate SUBTOTAL divided by X".
-Then on "divided by NUMERIC-X", perform "variable set subtotal ...".
-Then on "divided by NUMERIC-X", reply "divided by X makes SUBTOTAL".
+On "divided by NUMERIC-X":
+	perform "numeric evaluate SUBTOTAL divided by X";
+	perform "variable set subtotal ...";
+	reply "divided by X makes SUBTOTAL".
+
+
+# added for fizzbuzz.txt
+#
+On "is NUMERIC-N divisible by NUMERIC-M":
+	what is N divided by M;
+	is remainder set to 0;
+	if so, reply "yes";
+	if not, reply "no".
+	
+On "is NUMERIC-N divisible by AND-LIST-M":
+	is N divisible by FIRST-OF-M;
+	if not, reply "no";
+	is N divisible by REST-OF-M;
+	if not, reply "no";
+	reply "yes".
+
+On "what is the remainder":
+	get the value of remainder;
+	if not, reply "sorry, i don't know";
+	reply "the remainder is ...".
