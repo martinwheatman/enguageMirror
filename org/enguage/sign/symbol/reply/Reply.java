@@ -72,8 +72,8 @@ public class Reply { // a reply is basically a formatted answer
 	public  boolean isDone() { return done; }
 	
 	private static  Strings say = new Strings();
-	public  static  Strings say() {return say;}
-	public  static  void    say( Strings sa ) {
+	public static   Strings say() { return say; }
+	public static  void    say( Strings sa ) {
 		if (sa == null)  // null to reset it!
 			say = new Strings();
 		else

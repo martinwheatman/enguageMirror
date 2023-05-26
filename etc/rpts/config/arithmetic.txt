@@ -1,23 +1,22 @@
 ## Simple calculation
 On "evaluate NUMERIC-X":
 	perform "numeric evaluate X";
-	reply "...".
-
+	if not, reply "i did not get that".
 On "calculate NUMERIC-X", evaluate X.
 
 ## Typical description
 On "what is NUMERIC-X":
-	evaluate X;
+	perform "numeric evaluate X";
 	perform "variable set subtotal ...";
-	reply "X is ...".
-
+	reply "X is ...";
+	if not, reply "i did not get that".
 #On "help", reply "to calculate a numeric phrase".
 
 ## Running total...
 On "NUMERIC-X", perform "variable set subtotal X".
     
 On "+ NUMERIC-X":
-	evaluate SUBTOTAL plus X;
+	perform "numeric evaluate SUBTOTAL plus X";
 	perform "variable set subtotal ...";
 	reply "plus X makes SUBTOTAL".
 
@@ -26,7 +25,7 @@ On "add NUMERIC-X", + X.
      
 ##
 On "minus NUMERIC-X":
-	evaluate SUBTOTAL minus X;
+	perform "numeric evaluate SUBTOTAL minus X";
 	perform "variable set subtotal ...";
 	reply "minus X makes SUBTOTAL".
     
@@ -34,7 +33,7 @@ On "take away NUMERIC-X", minus X.
     
 ##
 On "times NUMERIC-X":
-	evaluate SUBTOTAL times X;
+	perform "numeric evaluate SUBTOTAL times X";
 	perform "variable set subtotal ...";
 	reply "times X makes SUBTOTAL".
     
@@ -50,7 +49,7 @@ On "equals", reply "SUBTOTAL".
 
 ##
 On "divided by NUMERIC-X":
-	evaluate SUBTOTAL divided by X;
+	perform "numeric evaluate SUBTOTAL divided by X";
 	perform "variable set subtotal ...";
 	reply "divided by X makes SUBTOTAL".
 
