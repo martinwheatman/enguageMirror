@@ -1,0 +1,20 @@
+# added for fizzbuzz.txt
+#
+On "is NUMERIC-N divisible by NUMERIC-M":
+	what is N divided by M;
+	is remainder set to 0;
+	if so, reply "yes";
+	if not, reply "no".
+	
+On "is NUMERIC-N divisible by AND-LIST-M":
+	is N divisible by FIRST-OF-M;
+	if not, reply "no";
+	is N divisible by REST-OF-M;
+	if not, reply "no, N is not divisible by M";
+	reply "yes, N is divisible by M".
+
+#] is 1 divisible by 3        : no.
+#] is 5 divisible by 3        : no.
+#] is 6 divisible by 3        : yes.
+#] is 12 divisible by 3 and 5 : no,  12 is not divisible by 3 and 5.
+#] is 15 divisible by 3 and 5 : yes, 15 is     divisible by 3 and 5.

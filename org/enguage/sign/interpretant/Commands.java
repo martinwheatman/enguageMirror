@@ -11,23 +11,23 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Commands {
-	static private Audit audit = new Audit( "commands" );
+	private static Audit audit = new Audit( "commands" );
 	
 	public Commands (String command) { cmd = command; }
 
 	private String cmd = "";
 	
-	static private String classpath = "";
-	static public  String classpath() { return classpath; }
-	static public  void   classpath(String cp) { classpath = cp; }
+	private static String classpath = "";
+	public  static String classpath() { return classpath; }
+	public  static void   classpath(String cp) { classpath = cp; }
 	
-	static private String java = "";
-	static public  String java() { return java; }
-	static public  void   java(String cp) { java = cp; }
+	private static String java = "";
+	public  static String java() { return java; }
+	public  static void   java(String cp) { java = cp; }
 	
-	static private String shell = "/bin/bash";
-	static public  void   shell( String sh ) { shell = sh; }
-	static public  String shell() { return shell; }
+	private static String shell = "/bin/bash";
+	public  static void   shell( String sh ) { shell = sh; }
+	public  static String shell() { return shell; }
 	
 	private String stringToCommand( String runningAns ) {
 		return Variable.deref( Strings.getStrings( cmd ))
@@ -40,7 +40,7 @@ public class Commands {
 	}
 	
 	private Reply runResult( int rc, String result, String errtxt ) {
-		//audit.IN( "runresult", "rc="+ rc +", result="+ result +", error="+ errtxt );
+		//audit.IN( "runresult", "rc="+ rc +", result="+ result +", error="+ errtxt )
 		Reply r = new Reply();
 		
 		rc = (rc == 0) ? Response.N_OK 
@@ -64,8 +64,9 @@ public class Commands {
 		String cmdline = stringToCommand( s );
 		Reply r = new Reply();
 		Process p;
-		String result = "";
-		String errTxt = "";
+		String result;
+		StringBuilder resultSb = new StringBuilder();
+		StringBuilder errTxtSb = new StringBuilder();
 		audit.debug( "running: "+ cmdline );
 		ProcessBuilder pb = new ProcessBuilder( "bash", "-c", cmdline );
 		try {
@@ -85,13 +86,14 @@ public class Commands {
 		
 				String line;
 				while ((line = reader.readLine()) != null)
-					result += line;
+					resultSb.append( line );
+				result = resultSb.toString();
 				
 				if (result.equals( "" ))
 					while ((line = error.readLine()) != null)
-						errTxt += line;
+						errTxtSb.append( line );
 				
-				r = runResult( p.waitFor(), result, errTxt );
+				r = runResult( p.waitFor(), result, errTxtSb.toString() );
 				
 			} catch (Exception e) {
 				r = runResult( 255, "", "Command failed: "+ cmdline );
@@ -103,12 +105,12 @@ public class Commands {
 	}
 
 	// ---
-	public static void main( String args []) {
+	public static void main( String[] args) {
 		Response.failure( "sorry" );
 		Response.success( "ok" );
 
 		Reply r = new Reply();
-		r = new Commands( "value -D selftest martin/engine/capacity 1598cc" ).run( r.a.toString());
-		r = new Commands( "value -D selftest martin/engine/capacity"        ).run( r.a.toString());
+		r = new Commands( "value -D selftest martin/engine/capacity 1598cc" ).run( r.answer().toString());
+		r = new Commands( "value -D selftest martin/engine/capacity"        ).run( r.answer().toString());
 		audit.debug( r.toString());
 }	}

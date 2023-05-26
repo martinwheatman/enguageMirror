@@ -18,7 +18,7 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 
 public class Utterance {
-	static private      Audit  audit         = new Audit( "Utterance" );
+	private static Audit   audit         = new Audit( "Utterance" );
 		
 	private static Strings previous = new Strings();
 	public  static Strings previous() { return previous; }
@@ -41,10 +41,10 @@ public class Utterance {
 	 */
 	public Utterance( Strings orig ) {
 		representamen = orig;
-		expanded  =	Colloquial.applyIncoming(       // I'm => I am => _user is
-						new Strings( orig ).normalise() // "i am/." becomes "i/am/."
-					).decap()                          // deref anything in the environment?
-					.contract( "=" );                  // [ name, =, "value" ] => [ name="value" ]
+		expanded  =	Colloquial.applyIncoming( // I'm => I am => _user is
+						Variable.deref( orig.normalise()) // "i am/." becomes "i/am/."
+					).decap()                       // deref anything in the environment?
+				.contract( "=" );             // [ name, =, "value" ] => [ name="value" ]
 		temporal  = new Strings( expanded );
 		when      = When.getWhen( temporal ); // removes temporal content
 		whenAttrs = when.toAttributes();

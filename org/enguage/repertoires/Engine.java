@@ -51,10 +51,6 @@ public final class Engine {
 					.append( Intention.N_ALLOP, "imagined" )
 					.concept( NAME ),
 			new Sign()
-					.pattern(  "ok" )
-					.append( Intention.N_ALLOP, "ok" )
-					.concept( NAME ), 
-			new Sign()
 					.pattern( "list repertoires","" )
 					.append( Intention.N_ALLOP, "list" )
 					.concept( NAME ),
@@ -201,11 +197,10 @@ public final class Engine {
 			audit.title( cmds.toString() );
 
 		} else if (cmd.equals( "subtitle" )) {
-			cmds.toUpperCase();
 			audit.subtl( cmds.toString() );
 
 		} else if (cmd.equals( "echo" )) {
-			audit.subtl( cmds.toString() );
+			Audit.LOG( cmds.toString() );
 
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'
@@ -217,15 +212,8 @@ public final class Engine {
 			else
 				Reply.say( Variable.deref( new Strings( cmds )));
 			
-		} else if (cmd.equals( "ok" ) && cmds.isEmpty()) {
-			r.format( // think( "that concludes interpretation" )
-				new Variable( "transformation" ).isSet( "true" ) ?
-						Enguage.get().mediate( new Strings( "that concludes interpretation" )).toString()
-						: "ok"
-			);
-
-		} else {
+		} else
 			r.format( Response.dnu() +":"+ cmd +" "+ cmds );
-		}
+		
 		return r;
 }	}

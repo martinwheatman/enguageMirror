@@ -1,0 +1,27 @@
+On "what is the fizzbuzz of N":
+	is N divisible by 5 and 3;
+	if so, reply "fizzbuzz";
+	
+	is N divisible by 5;
+	if so, reply "buzz";
+	
+	is N divisible by 3;
+	if so, reply "fizz";
+	
+	reply "N".
+	
+On "do fizzbuzz between N and LIMIT":
+	what is the fizzbuzz of N;
+	remember this;
+	set next to the	evaluation of N + 1;
+	NEXT is equal to LIMIT;
+	if so, what is the fizzbuzz of LIMIT;
+	if not, do fizzbuzz between NEXT and LIMIT.
+	
+#] what is the fizzbuzz of  1: 1.
+#] what is the fizzbuzz of 12: fizz.
+#] what is the fizzbuzz of 25: buzz.
+#] what is the fizzbuzz of 75: fizzbuzz.
+
+#] set limit to 5.
+#] do fizzbuzz between 1 and LIMIT.

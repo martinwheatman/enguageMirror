@@ -32,10 +32,12 @@ public class Config {
 	public  static boolean complete() {return complete;}
 	
 	private static boolean setValues( String name, String value ) {
-		     if (name.equals("LISTFORMATSEP")) Reply.listSep(       value);
+		     if (name.equals("ACCUMULATECOMMAND")) Reply.accumulateCmdStr( value );
 		else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunction( value );
 		else if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value ));
+		else if (name.equals("PROPAGATEREPLY")) Reply.propagateReplyStr( value );
 		else if (name.equals("ANDLISTFORMAT" )) Reply.andListFormat( value);
+		else if (name.equals("LISTFORMATSEP" )) Reply.listSep(       value);
 		else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
 		else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
 		else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));

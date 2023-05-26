@@ -1,41 +1,30 @@
-## Simple calculation
-On "evaluate NUMERIC-X":
-	perform "numeric evaluate X";
-	reply "...".
-
 On "calculate NUMERIC-X", evaluate X.
 
-## Typical description
+## All the following examples maintain a running total...
 On "what is NUMERIC-X":
 	evaluate X;
-	perform "variable set subtotal ...";
+	set subtotal to ...;
 	reply "X is ...".
 
-#On "help", reply "to calculate a numeric phrase".
-
-## Running total...
-On "NUMERIC-X", perform "variable set subtotal X".
+On "NUMERIC-X", set subtotal to X.
     
 On "+ NUMERIC-X":
 	evaluate SUBTOTAL plus X;
-	perform "variable set subtotal ...";
+	set subtotal to ...;
 	reply "plus X makes SUBTOTAL".
 
 On "add NUMERIC-X", + X.
-#On "help", reply "and so on, to keep a running total".
      
-##
 On "minus NUMERIC-X":
 	evaluate SUBTOTAL minus X;
-	perform "variable set subtotal ...";
+	set subtotal to ...";
 	reply "minus X makes SUBTOTAL".
     
 On "take away NUMERIC-X", minus X.
     
-##
 On "times NUMERIC-X":
 	evaluate SUBTOTAL times X;
-	perform "variable set subtotal ...";
+	set subtotal to ...;
 	reply "times X makes SUBTOTAL".
     
 On "times by      NUMERIC-X":
@@ -48,10 +37,9 @@ On "multiplied by NUMERIC-X":
 
 On "equals", reply "SUBTOTAL".
 
-##
 On "divided by NUMERIC-X":
 	evaluate SUBTOTAL divided by X;
-	perform "variable set subtotal ...";
+	set subtotal to ...";
 	reply "divided by X makes SUBTOTAL".
 
 
@@ -67,10 +55,17 @@ On "is NUMERIC-N divisible by AND-LIST-M":
 	is N divisible by FIRST-OF-M;
 	if not, reply "no";
 	is N divisible by REST-OF-M;
-	if not, reply "no";
-	reply "yes".
+	if not, reply "no, N is not divisible by M";
+	reply "yes, N is divisible by M".
 
 On "what is the remainder":
 	get the value of remainder;
 	if not, reply "sorry, i don't know";
 	reply "the remainder is ...".
+	
+On "NUMERIC-X is equal to NUMERIC-Y":
+	evaluate X - Y;
+	set temp to ... ;
+	is temp set to 0;
+	if so, reply "yes, it is";
+	reply "no, it isn't".

@@ -11,7 +11,7 @@ import org.enguage.util.attr.Attribute;
 
 public class Intentions extends ArrayList<Intention> {
 	
-	private static final Audit audit = new Audit("Intentions");
+	//private static final Audit audit = new Audit("Intentions"
 	private static final long  serialVersionUID = 0L;
 
 	public  Intentions append(        Intention in ){add( in ); return this;}
@@ -49,7 +49,6 @@ public class Intentions extends ArrayList<Intention> {
 		return Insertion.UNKNOWN;
 	}
 
-	
 	// used in autopoiesis:
 	public  Intentions appendIntention( int typ, String val ) {
 		add( new Intention( typ, val ));
@@ -73,8 +72,8 @@ public class Intentions extends ArrayList<Intention> {
 		return intentions.toString();
 	}
 	public Reply mediate( Reply r ) {
-		audit.in( "mediate", "r="+ r );
-		
+		//audit.in( "mediate", "r="+ r )
+
 		// if we've matched we must have understood/recognised
 		r.answer( "ok" ).response( Response.N_OK );
 
@@ -85,18 +84,21 @@ public class Intentions extends ArrayList<Intention> {
 					? Engine.interp( in, r )
 					: in.mediate( r ); // thenFinally, think, do, say...
 		}
-		audit.out();
+		//audit.out()
 		return r;
 	}
 	public String toStringIndented() {
-		StringBuilder intents = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		int sz = size();
 		if (sz == 1)
-			intents.append( ", "+ get( 0 ));
+			sb.append( ", "+ get( 0 ));
 		else if (sz > 1) {
 			int line = 0;
 			for (Intention in : this)
-				intents.append((line++ == 0 ? ":" : ";") + "\n" + Audit.indent() +"    "+ in);
+				sb.append(
+						(line++ == 0 ? ":" : ";") + "\n"
+						+ Audit.indent() +"    "+ in
+				);
 		}
-		return intents.toString();
+		return sb.toString();
 }	}

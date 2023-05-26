@@ -52,17 +52,17 @@ public class Function {
 	public String toString() {return name + (lambda==null ? "<noLambda/>" : lambda.toString());}
 	
 	private static Function getFunction( String name, Strings actuals ) {
-		audit.in( "getFunction", name +", "+ actuals.toString("[", ", ", "]"));
+		//audit.in( "getFunction", name +", "+ actuals.toString("[", ", ", "]"));
 		Function fn = new Function( name );
 		fn.lambda = new Lambda( fn, actuals ); // this is a 'find', body="" == !found
 		if (fn.lambda.body().equals( "" )) {
 			audit.debug( "FUNCTION: no body found for "+ actuals +"/"+ name );
 			fn = null;
 		}
-		return (Function) audit.out( fn );
+		return fn; //(Function) audit.out( fn );
 	}
 	private static Strings substitute( String function, Strings actuals ) {
-		audit.in( "substitute", "Function="+ function +", argv="+ actuals.toString( Strings.DQCSV ));
+		//audit.in( "substitute", "Function="+ function +", argv="+ actuals.toString( Strings.DQCSV ));
 		Strings ss = null;
 		
 		// resolve actual expressions into value
@@ -82,10 +82,10 @@ public class Function {
 					.substitute(
 						new Strings( f.lambda.signature() ), // formals
 						actuals.derefVariables() );
-		return audit.out( ss );
+		return ss; //audit.out( ss );
 	}
 	private static Strings evaluate( String name, Strings argv ) {
-		audit.in( "evaluate", "name="+ name +", args='"+ argv +"'" );
+		//audit.in( "evaluate", "name="+ name +", args='"+ argv +"'" );
 		Strings  rc = Response.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {
@@ -93,11 +93,11 @@ public class Function {
 			if (rc.equals( Number.NotANumber ))
 				rc = Response.dnk();
 		}
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 	public static Strings interpret( String arg ) { return interpret( new Strings( arg ));}
 	public static Strings interpret( Strings argv ) {
-		audit.in( "interpret", argv.toString( Strings.DQCSV ));
+		//audit.in( "interpret", argv.toString( Strings.DQCSV ));
 		Strings rc = Shell.Fail;
 		if (argv.size() >= 2) {
 			String      cmd = argv.remove( 0 ),
@@ -115,7 +115,7 @@ public class Function {
 			else
 				audit.error( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}
-		return (Strings) audit.out( rc );
+		return rc; //(Strings) audit.out( rc );
 	}
 	// === test code below! ===
 	private static void testCreate( String fn, String formals, String body ) {

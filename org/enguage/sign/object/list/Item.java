@@ -348,9 +348,9 @@ public class Item {
 		if (expected != null && !expected.equals( ans ))
 			audit.FATAL( "the item: '" + ans +"'\n  is not the expected: '"+ expected +"'");
 		else if (expected == null)
-			audit.passed( " is ===> "+ ans );
+			Audit.passed( " is ===> "+ ans );
 		else
-			audit.passed( " PASSED: "+ ans );
+			Audit.passed( " PASSED: "+ ans );
 	}
 	public  static void main( String args[] ) {
 		//Audit.on();
@@ -399,5 +399,5 @@ public class Item {
 		audit.title( "Groups" );
 		audit.debug( groups.toString() +"." );
 		
-		audit.PASSED();
+		Audit.PASSED();
 }	}

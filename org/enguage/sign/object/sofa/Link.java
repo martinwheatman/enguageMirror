@@ -106,7 +106,7 @@ public class Link {
 		if (expected != null && !reply.equals( new Strings( expected )))
 			audit.FATAL( cmd + "\nExpecting: "+ expected + "\n  but got: "+ reply );
 		else
-			audit.passed();
+			Audit.passed();
 		return reply;
 	}
 	public static void main( String args[] ) {
@@ -132,5 +132,5 @@ public class Link {
 		test( "attribute martin isa age 42",     Shell.SUCCESS );
 		test( "attribute martin isa age 55",     Shell.FAIL );
 			
-		audit.PASSED();
+		Audit.PASSED();
 }	}

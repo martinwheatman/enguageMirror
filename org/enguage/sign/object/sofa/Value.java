@@ -147,12 +147,12 @@ public class Value {
 		if (!answer.equals( new Strings( expected )))
 			audit.error( "expecting:"+ expected +", but got: "+ answer );
 		else
-			audit.passed();
+			Audit.passed();
 	}
  	public static void main( String args[] ) {
 		Overlay.set( Overlay.get());
 		Overlay.attach( NAME );
 		test( "set martin name martin j wheatman", "TRUE" );
 		test( "get martin name",      "martin j wheatman" );
-		audit.PASSED();
+		Audit.PASSED();
 }	}

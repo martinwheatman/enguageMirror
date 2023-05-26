@@ -17,20 +17,20 @@ public class Shell {
 
 	static  Audit audit = new Audit( "Shell" );
 	
-	public static final String SUCCESS = "TRUE";	
-	public static final String FAIL    = "FALSE";
-	public static final String IGNORE  = "";
+	public  static final String SUCCESS = "TRUE";	
+	public  static final String FAIL    = "FALSE";
+	public  static final String IGNORE  = "";
 		
-	public static final Strings Success = new Strings( SUCCESS );	
-	public static final Strings Fail    = new Strings( FAIL );
-	public static final Strings Ignore  = new Strings( IGNORE );
+	public  static final Strings Success = new Strings( SUCCESS );	
+	public  static final Strings Fail    = new Strings( FAIL );
+	public  static final Strings Ignore  = new Strings( IGNORE );
 		
-	public static Strings terminators = new Strings( ". ? !" );
-	public static void    terminators( Strings a ){ terminators = a; }
-	public static Strings terminators() { return terminators; }
+	private static Strings terminators = new Strings( ". ? !" );
+	public  static void    terminators( Strings a ){ terminators = a; }
+	public  static Strings terminators() { return terminators; }
 	
-	public static boolean  isTerminator( String s ) { return terminators().contains( s ); }
-	public static String   terminatorIs( Strings a ){ return (null != a) && a.size()>0 ? a.get( a.size() -1) : ""; }
+	public  static boolean  isTerminator( String s ) { return terminators().contains( s ); }
+	public  static String   terminatorIs( Strings a ){ return (null != a) && a.size()>0 ? a.get( a.size() -1) : ""; }
 	private static boolean isTerminated( Strings a ) {
 		boolean rc = false;
 		if (null != a) {

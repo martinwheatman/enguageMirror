@@ -704,7 +704,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	public static boolean isUCwHyphUs( String a ) {
 		int len=a.length();
 		if (len >= 2 && a.charAt( len-2 ) == Englishisms.APOSTROPHE_CH)
-			return a.endsWith( Englishisms.Apostrophed() );
+			return a.endsWith( Englishisms.apostrophed() );
 		for (int i=0; i<len; i++) {
 			char ch = a.charAt( i );
 			// TODO: l'eau
