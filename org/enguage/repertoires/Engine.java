@@ -125,6 +125,26 @@ public final class Engine {
 					.concept( NAME )
 		 };
 	
+	private static Reply tcpip( String host, String portStr, String msg) {
+		Reply r = new Reply();
+		String prefix  = Variable.get( "XMLPRE", "" ),
+		       suffix  = Variable.get( "XMLPOST", "" );
+			
+		int port = -1;
+		try {
+			port = Integer.valueOf( portStr );
+		} catch (Exception e1) {
+			try {
+				port = Integer.valueOf( Variable.get( "PORT" ));
+			} catch (Exception e2) {
+				port = 0;
+		}	}
+		
+		msg = prefix + Variable.derefUc( Strings.trim( msg , Strings.DOUBLE_QUOTE )) + suffix;
+		String ans = Server.client( host, port, msg );
+		r.answer( ans );
+		return r;
+	}
 	
 	public static Reply interp( Intention in, Reply r ) {
 		r.answer( Response.successStr()); // bland default reply to stop debug output look worrying
@@ -144,7 +164,7 @@ public final class Engine {
 			
 		} else if (cmd.equals( "selfTest" )) {
 			Example.unitTests();
-			r.format( new Strings( "number of tests passed was "+ audit.numberOfTests() ));
+			r.format( new Strings( "number of tests passed was "+ Audit.numberOfTests() ));
 			
 		} else if (cmd.equals( "spell" )) {
 			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));
@@ -159,25 +179,10 @@ public final class Engine {
 			if (cmds.size() != 3)
 				audit.error( "tcpip command without 3 parameters: "+ cmds );
 			else {
-				String host    = cmds.remove( 0 ),
-				       portStr = cmds.remove( 0 ),
-				       msg     = cmds.remove( 0 ),
-				       prefix  = Variable.get( "XMLPRE", "" ),
-				       suffix  = Variable.get( "XMLPOST", "" );
-				
-				int port = -1;
-				try {
-					port = Integer.valueOf( portStr );
-				} catch (Exception e1) {
-					try {
-						port = Integer.valueOf( Variable.get( "PORT" ));
-					} catch (Exception e2) {
-						port = 0;
-				}	}
-			
-				msg = prefix + Variable.derefUc( Strings.trim( msg , Strings.DOUBLE_QUOTE )) + suffix;
-				String ans = Server.client( host, port, msg );
-				r.answer( ans );
+				String host = cmds.remove( 0 );
+				String port = cmds.remove( 0 );
+				String  msg = cmds.remove( 0 );
+				r = tcpip( host, port, msg );
 			}
 			
 		} else if ( in.value().equals( "repeat" )) {

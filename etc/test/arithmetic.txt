@@ -1,3 +1,4 @@
+evaluate 1 + 2:                   3.
 what's 1 + 2:                     1 plus 2 is 3.
 times 2 all squared:              times 2 all squared makes 36.
 what is 36 + 4     divided by 2:  36 plus 4     divided by 2 is 38.
