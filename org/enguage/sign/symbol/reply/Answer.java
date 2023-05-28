@@ -3,19 +3,18 @@ package org.enguage.sign.symbol.reply;
 import org.enguage.util.Strings;
 
 public class Answer {
+	public Answer() {/*static class*/}
 	
-	public Answer() {}
-	
-	private static final String defaultPlaceholder = "whatever";
+	public  static final String DEFAULT_PLACEHOLDER = "whatever";
 
 	/** Answer - 
 	 * e.g. [ "a cup of coffee", "a packet of biscuits" ]
 	 */
-	private static Strings  placeholderAsStrings = new Strings( defaultPlaceholder );
-	public  static  Strings placeholderAsStrings() { return placeholderAsStrings; }
-	private static String   placeholder = defaultPlaceholder;
-	public  static  String  placeholder() { return placeholder; }
-	public  static  void    placeholder( String ph ) {placeholderAsStrings = new Strings( placeholder = ph );}
+	private static Strings placeholderAsStrings = new Strings( DEFAULT_PLACEHOLDER );
+	public  static Strings placeholderAsStrings() {return placeholderAsStrings;}
+	private static String  placeholder = DEFAULT_PLACEHOLDER;
+	public  static String  placeholder() {return placeholder;}
+	public  static void    placeholder( String ph ) {placeholderAsStrings = new Strings( placeholder = ph );}
 
 	private boolean appending = false;
 	public  boolean isAppending() { return appending; }
@@ -24,9 +23,7 @@ public class Answer {
 	// [ "black coffee", "eggs", "Taj Mahal" ]; w/embedded spaces!
 	private Strings answers = new Strings();
 	
-	public  Strings valueOf() {return answers;}
-	public  void    add( String s ) { answers.add( setType( s ));}
-	public  boolean none() { return answers.isEmpty(); }
+	public  void    add( String s ) { answers.add( s );}
 	
 	public Strings injectAnswer( Strings sa ) {
 		if (sa.isEmpty()) {
@@ -42,7 +39,7 @@ public class Answer {
 	
 	private int    type = Response.N_DNK;
 	public  int    type() { return type; }
-	private String setType( String s ) {
+	public  String setType( String s ) {
 		// This sets type to first non-NK type
 		if (type == Response.N_DNK) {
 			     if (s.equalsIgnoreCase( Response.yesStr()    )) type = Response.N_OK;
@@ -52,10 +49,10 @@ public class Answer {
 			else if (s.equalsIgnoreCase( Response.failureStr())) type = Response.N_FAIL;
 			else if (s.equalsIgnoreCase( Response.dnkStr()    )) type = Response.N_DNK;
 			else type = Response.N_CHS;
-		}	
+		}
 		return s;
 	}
 
 	@Override
-	public  String toString() { return answers.toString( Reply.andListFormat() ); }
+	public  String toString() {return answers.toString( Reply.andListFormat() );}
 }

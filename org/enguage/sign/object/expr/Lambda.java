@@ -13,7 +13,7 @@ public class Lambda {
 
 	private static boolean match( Strings names, Strings values ) {
 		boolean rc = false;
-		audit.in( "match", "names="+ names +", values="+ values.toString( Strings.DQCSV ) );
+		//audit.in( "match", "names="+ names +", values="+ values.toString( Strings.DQCSV ) );
 		if (names.size() == values.size()) {
 			rc = true;
 			ListIterator<String> ni = names.listIterator();
@@ -30,19 +30,19 @@ public class Lambda {
 			}
 		} else
 			audit.debug( "Lambda: name/val mis-match in params: "+ names +"/"+ values.toString( Strings.DQCSV ));
-		return audit.out( rc );
+		return rc; //audit.out( rc );
 	}
 
 	public Lambda( Function f, Strings params, String body ) { // new/create
 		signature = params;
-		audit.debug( "creating: "+ signature.toString( Strings.CSV ) +"/"+ f.name());
+		//audit.debug( "creating: "+ signature.toString( Strings.CSV ) +"/"+ f.name());
 		new Value(
 				signature.toString( Strings.CSV ),
 				f.name()
 			).set( body );
 	}
 	public Lambda( Function fn, Strings values ) { // existing/find
-		audit.in( "ctor", "finding: "+ fn +"( "+ values +" )" );
+		//audit.in( "ctor", "finding: "+ fn +"( "+ values +" )" );
 		Strings onames = Overlay.get().list( "." );
 		if (null != onames) for (String formals : onames) 
 			if (match( (signature = new Strings( formals, ',' )), values )
@@ -50,7 +50,7 @@ public class Lambda {
 				break; // bingo! (can we revisit if this ain't right?)
 		if (body.equals(""))
 			audit.debug( "Lambda: "+ fn +"/'"+ values.toString( Strings.CSV ) +"': not found" );
-		audit.out();
+		//audit.out();
 	}
 	
 	private Strings signature = null;

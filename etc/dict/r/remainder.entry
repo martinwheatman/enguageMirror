@@ -1,0 +1,9 @@
+## On doing a division the software automagically sets the remainder variable.
+##
+On "what is the remainder":
+	get the value of remainder;
+	if not, reply "sorry, i don't know";
+	reply "the remainder is ...".
+	
+#] is 5 divisible by 3  :  no.
+#] what is the remainder:  the remainder is 2.

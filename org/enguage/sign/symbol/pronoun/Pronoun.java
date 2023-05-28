@@ -272,7 +272,7 @@ public class Pronoun {
 	static private void possessiveOutbound( String value ) {
 		String subj = get( subject, value );
 		if (possessive( value ))
-			audit.passed( "passes: "+ value +" => "+
+			Audit.passed( "passes: "+ value +" => "+
 					pronouns[POSSESSIVE][plurality( subj )][Gendered.valueMfn( subj )]);
 		else
 			audit.debug( "failed: "+ value +" != possessive"  );
@@ -282,10 +282,10 @@ public class Pronoun {
 		String ans = "internalising failed";
 		// e.g. "his"->SUBJECT/"her"->SUBJECT/"its"->OBJECT/"their"
 		if (possessivePn( pn ))
-			audit.passed( "Passed: "+ pn +" => "+
+			Audit.passed( "Passed: "+ pn +" => "+
 					(ans = values[SUBJECTIVE][snglPlIs( pn )][gend( pn )]));
 		else
-			audit.passed( "Test fails: Pronoun type not possessive ("+
+			Audit.passed( "Test fails: Pronoun type not possessive ("+
 					type( pn ) +"!="+ POSSESSIVE +")" );
 		audit.out( ans );
 	}
@@ -323,5 +323,5 @@ public class Pronoun {
 		a.add( new Attribute( subject, "he" ));
 		audit.debug( "a="+ a );
 		audit.debug( "a="+ update( a ));
-		audit.PASSED();
+		Audit.PASSED();
 }	}

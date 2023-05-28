@@ -449,7 +449,7 @@ public class Items extends ArrayList<Item> {
 					+ "\t'"+ result +"'"
 			);
 		else
-			audit.passed( result );
+			Audit.passed( result );
 	}
 	static public void test( int id, String cmd ) { test( id, cmd, "" );}
 	static public void test( String cmd ) { test( -1, cmd, "" );}
@@ -533,5 +533,5 @@ public class Items extends ArrayList<Item> {
 		test( 302, "isLinked martin causal effect='i am baking a cake'  cause='i need to go to the shop'", "FALSE" ); //not trans
 		test( 303, "isLinked martin causal  cause='i am baking a cake' effect='sophie is so fashionable'", "FALSE" );
 		
-		audit.PASSED();
+		Audit.PASSED();
 }	}

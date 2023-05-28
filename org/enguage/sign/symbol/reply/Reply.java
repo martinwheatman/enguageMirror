@@ -10,7 +10,10 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 import org.enguage.util.sys.Shell;
 
-public class Reply { // a reply is basically a formatted answer
+public class Reply {
+	// a reply is basically a formatted answer...
+	// [ answer='42' +
+	//   format="the answer to life, the universe and everything is ..."; ] 
 	
 	private static  Audit audit = new Audit( "Reply" );
 
@@ -30,7 +33,7 @@ public class Reply { // a reply is basically a formatted answer
 	public  static  void    repeatFormat( String s ) { repeatFormat = s.toLowerCase( Locale.getDefault() ); }
 	public  static  String  repeatFormat() { return repeatFormat; }
 
-	private static  String  andConjunction = new String( "and" );
+	private static  String  andConjunction = "and";
 	public  static  void    andConjunction( String s ) { andConjunction = s.toLowerCase( Locale.getDefault() ); }
 	public  static  String  andConjunction() { return andConjunction; }
 
@@ -71,18 +74,44 @@ public class Reply { // a reply is basically a formatted answer
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
 	
+	// --- say list
 	private static  Strings say = new Strings();
-	public static   Strings say() { return say; }
-	public static  void    say( Strings sa ) {
+	public  static  Strings say() {return say;}
+	public  static  void    say( Strings sa ) {
 		if (sa == null)  // null to reset it!
 			say = new Strings();
 		else
 			say.addAll( Shell.addTerminator( sa ));
 	}
 	
-	private Strings cache = null;
+	// to interact with the 'say' list - as String or Strings
+	private static String  accumulateCmdStr = "remember this";
+	private static Strings accumulateCmds = new Strings( accumulateCmdStr );
+	public  static String  accumulateCmdStr() {return accumulateCmdStr;}
+	public  static Strings accumulateCmds() {return accumulateCmds;}
+	public  static void    accumulateCmdStr(String ac) {
+		accumulateCmdStr = ac;
+		accumulateCmds = new Strings( ac );
+	}
+	public  static void    accumulateCmdStr(Strings ac) {
+		accumulateCmds = ac;
+		accumulateCmdStr = ac.toString();
+	}
+
+	private static String propagateReplyStr = "say so";
+	public  static String propagateReplyStr() {return  propagateReplyStr;}
+	public  static void   propagateReplyStr(String pr) {
+		propagateReplyStr = pr;
+		propagateReplys = new Strings( pr );
+	}
+	private static Strings propagateReplys = new Strings( propagateReplyStr );
+	public  static Strings propagateReplys() {return  propagateReplys;}
+	public  static void    propagateReplys(Strings pr) {
+		propagateReplys = pr;
+		propagateReplyStr = pr.toString();
+	}
 	
-	/*
+	/* ------------------------------------------------------------------------
 	 * Response
 	 */
 	private Response response = new Response();
@@ -97,44 +126,41 @@ public class Reply { // a reply is basically a formatted answer
 	 *                                     or in List class, below.
 	 * e.g. You need tea and biscuits and you are meeting your brother at 7pm.
 	 */
-	public Answer a = new Answer();
-	
-	public  Reply   answer( String ans ) {
+	private Answer answer = new Answer();
+	public  Answer answer() {return answer;}
+	public  Reply  answer( String ans ) {
 		if (ans != null && !ans.equals( Shell.IGNORE )) {
-			if (!a.isAppending())
-				a = new Answer(); // a.nswer = new Strings()
-			a.add( ans );
+			if (!answer.isAppending())
+				answer = new Answer(); // a.nswer = new Strings()
+			answer.setType( ans );
+			answer.add( ans );
 			// type is dependent on answer
-			cache = null;
-			response.value( response.value() == Response.N_UDU ? Response.N_UDU : a.type());
+			response.value( response.value() == Response.N_UDU ? Response.N_UDU : answer.type());
 		}
 		return this;
 	}
+	public  Reply answerReset() {answer = new Answer(); return this;}
+	
 	
 	/* 
-	 * Format
+	 * Format - the value of the reply "x y Z" intention, e.g. x y 24
 	 */
-	private Format f = new Format();
-	
-	public  boolean verbose() { return !f.shrt(); }
-	public  void    verbose( boolean v ) { f.shrt( v );}
-
-	public static boolean isLiteral( Strings sa ) { return sa.areLowerCase() && !sa.contains( Strings.ELLIPSIS );}
-	public  Reply   format( String  format ) { return format( new Strings( format ));}
-	public  Reply   format( Strings format ) {
-		cache = null; //de-cache any previous reply
-		f.ormat( format );
-		if (isLiteral( format ) && a.none()) // remove a.none?
-			answer( format.toString() ); // overwrite answer!
+	private Strings format = new Strings();
+	public  String  format() {return format.toString();}
+	public  Reply   format( String  f ) { return format( new Strings( f ));}
+	public  Reply   format( Strings f ) {
+		format = Context.deref( f );
 		return this;
 	}
-	private Strings encache() {
-		if (null == cache)
-			cache = Utterance.externalise(
-						a.injectAnswer( f.ormat() ),
-						isVerbatim()
-					);
-		return cache;
+	
+	/*
+	 * toStting() ... 
+	 */
+	private Strings replyToString() {
+		return  Utterance.externalise(
+					answer.injectAnswer( format ),
+					isVerbatim()
+				);
 	}
 	private Strings handleDNU( Strings utterance ) {
 		audit.in( "handleDNU", utterance.toString( Strings.CSV ));
@@ -152,23 +178,19 @@ public class Reply { // a reply is basically a formatted answer
 		 */
 		
 		verbatimIs( false );
-		cache = Utterance.externalise(
-				a.injectAnswer( f.ormat() ),
-				isVerbatim()
-		);
-		return audit.out( cache );
+		return audit.out( replyToString() );
 	}
 	public Strings toStrings() {
-		Strings reply = encache();
+		Strings reply = replyToString();
 		if (understoodIs( Response.N_DNU != response.value() )) {
 			if (!repeated())
 				previous( reply ); // never used
-			;
+			
 		} else
 			reply = handleDNU( Utterance.previous() );
 		return reply;
 	}
-	public String toString() {return encache().toString();}
+	public String toString() {return replyToString().toString();}
 	
 	public Reply conclude( String thought ) {
 		audit.in("conclude", "");

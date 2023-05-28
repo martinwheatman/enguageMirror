@@ -24,7 +24,7 @@ import org.enguage.util.sys.Shell;
 public class Intention {
 	
 	private static final String NAME = "Intention";
-	private static Audit       audit = new Audit( NAME );
+	private static       Audit audit = new Audit( NAME );
 
 	public  static final String  AUTOP_STR = "autopoiesis";
 	
@@ -155,13 +155,11 @@ public class Intention {
 				two = len>1?sa.get(1):"";
 		}	}
 		
-		if (len == 2          &&
-			one.equals("say") &&
-			two.equals("so"))
+		if (sa.equals( Reply.propagateReplys()) ||
+			sa.equals( Reply.accumulateCmds()) )
 		{
+			// don't remove these 'specials', pass on & define in config.xml
 			rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
-			sa.remove( 0 ); // say
-			sa.remove( 0 ); // so
 			
 		} else if (Strings.isQuoted( two )) {
 			
@@ -216,13 +214,13 @@ public class Intention {
 	}
 	private Reply think( Reply r ) {
 		//audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" )
-		Strings thought  = formulate( r.a.toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
+		Strings thought  = formulate( r.answer().toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
 		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		Reply tmpr = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
 		
-		if (r.a.isAppending())
-			r.a.add( tmpr.a.toString() );
+		if (r.answer().isAppending())
+			r.answer().add( tmpr.answer().toString() );
 		else
 			r = tmpr;
 		
@@ -247,7 +245,7 @@ public class Intention {
 	private Reply perform( Reply r ) {return perform( r, false );}
 	private Reply perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
-		Strings cmd = formulate( r.a.toString(), true ); // DO expand, UNIT => unit='non-null value'
+		Strings cmd = formulate( r.answer().toString(), true ); // DO expand, UNIT => unit='non-null value'
 		
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
@@ -262,6 +260,9 @@ public class Intention {
 			{
 				r.format( Response.dnkStr());
 				r.response( Response.N_DNK );
+				if (!r.answer().isAppending())
+					r.answerReset();
+				
 			} else
 				r.answer( formatAnswer( rawAnswer.toString()));
 		}
@@ -269,50 +270,60 @@ public class Intention {
 		return r; //(Reply) audit.out( r )//
 	}
 	private Reply reply( Reply reply ) {
-		return reply
-				.format( value.equals( "" ) ? reply.toString() : value )
+		audit.in( "reply", "value="+ value +", r="+ (value.equals("")?"SAY SO":reply.toString() ));
+		//IF (!values.contains( Strings.ELLIPSIS ) && !values.contains( Answer.DEFAULT_PLACEHOL...
+		//	reply.answerReset(
+		
+		// Accumulate reply - currently "remember this"
+		if (value.equals( Reply.accumulateCmdStr() )) // say so -- possibly need new intention type?
+			Reply.say( reply.toStrings());
+		
+		// propagate reply and return - currently "say so"
+		else if (value.equals( Reply.propagateReplyStr() ))
+			reply.doneIs( true ); // just pass out this reply
+		else
+			reply.format( value )
 				.response( values )
 				.doneIs( reply.response() != Response.N_DNU ); // so reply "I don't understand" is like an exception?
+		audit.out( reply.toString() );
+		return reply;
 	}
 	private Reply run( Reply r ) {
-		return new Commands( formulate( r.a.toString(), false ).toString())
-				.run( r.a.toString() );
+		return new Commands( formulate( r.answer().toString(), false ).toString())
+				.run( r.answer().toString() );
 	}
+	private boolean skip( Reply r ) {return type != N_FINALLY && r.isDone();}
+	
 	public Reply mediate( Reply r ) {
 		if (Audit.allAreOn())
-			audit.in( "mediate", typeToString( type ) +"='"+ value +"' fel="+ r.felicitous() );
+			audit.in( "mediate", typeToString( type ) +"='"+ value +"'"+(skip( r )?" >skipping<":"" ));
 		
 		if (type == N_FINALLY)
 			andFinally( r );
 
-		else if (r.isDone()) {
-			if (Audit.allAreOn())
-				audit.debug( "skipping >"+ value +"< reply already found" );
-		
-		} else if (r.felicitous()) {
- 			switch (type) {
-				case N_THEN_THINK: r = think(   r ); break;
-				case N_THEN_DO:        perform( r ); break;
-				case N_THEN_RUN:   r = run(     r ); break;
-				case N_THEN_REPLY: r = reply(   r ); break;
-				case N_THINK:      r = think(   r ); break;
-				case N_DO: 	           perform( r ); break;
-				case N_RUN:        r = run(     r ); break;
-				case N_REPLY:      r = reply(   r ); break;
-				default: break;
-			}
-		} else {
+		else if (!r.isDone()) {
 			switch (type) {
-				case N_ELSE_THINK: r = think(   r ); break;
-				case N_ELSE_DO:	       perform( r ); break;
-				case N_ELSE_RUN:   r = run(     r ); break;
-				case N_ELSE_REPLY: r = reply(   r ); break;
-				case N_THINK:      r = think(   r ); break;
-				case N_DO:             perform( r ); break;
-				case N_RUN:        r = run(     r ); break;
-				case N_REPLY:      r = reply(   r ); break;
-				default: break;
-		}	}
+	 			case N_THINK:      r = think(   r ); break;
+	 			case N_DO: 	           perform( r ); break;
+	 			case N_RUN:        r = run(     r ); break;
+	 			case N_REPLY:          reply(   r ); break;
+	 			default:
+	 				if (r.felicitous()) {
+			 			switch (type) {
+							case N_THEN_THINK: r = think(   r ); break;
+							case N_THEN_DO:        perform( r ); break;
+							case N_THEN_RUN:   r = run(     r ); break;
+							case N_THEN_REPLY:     reply(   r ); break;
+							default: break;
+			 			}
+		 			} else {
+						switch (type) {
+							case N_ELSE_THINK: r = think(   r ); break;
+							case N_ELSE_DO:	       perform( r ); break;
+							case N_ELSE_RUN:   r = run(     r ); break;
+							case N_ELSE_REPLY:     reply(   r ); break;
+							default: break;
+		}	} 		}	}
 
 		if (Audit.allAreOn())
 			audit.out( r );

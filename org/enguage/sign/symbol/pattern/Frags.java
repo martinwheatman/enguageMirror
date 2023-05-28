@@ -538,7 +538,7 @@ public class Frags extends ArrayList<Frag> {
 		String val = vals.toString();
 		// TODO: ...again "l'eau"
 		if (t.isApostrophed())
-			val = val.endsWith( Englishisms.Apostrophed() ) ? val.substring( 0, val.length()-2 ) : null;
+			val = val.endsWith( Englishisms.apostrophed() ) ? val.substring( 0, val.length()-2 ) : null;
 		
 		return val;
 	}
@@ -747,7 +747,7 @@ public class Frags extends ArrayList<Frag> {
 		audit.debug( "     Sign: "+ s.toXml(0, -1) );
 		
 		if (null != (as = u.match( s )))
-			audit.passed( "  matches: "+ as.toString());
+			Audit.passed( "  matches: "+ as.toString());
 		else
 			audit.debug( "notMatched ("+ s.pattern().notMatched() +")" );
 		audit.out();
@@ -905,5 +905,5 @@ public class Frags extends ArrayList<Frag> {
 		Audit.off();
 //		newTest( "i need sliced bread from the bakery" )
 		
-		audit.PASSED();
+		Audit.PASSED();
 }	}

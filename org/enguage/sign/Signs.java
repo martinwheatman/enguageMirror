@@ -192,31 +192,26 @@ public class Signs extends TreeMap<Integer,Sign> {
 				} else { // we have found a meaning! So I do understand...!
 					
 					Pronoun.update( match );
-					
 					auditMatch( complexity, s, match );
-					
 					saveForIgnore( complexity );
 						
 					match.toVariables();
-					
 					r = contextualMediate( match, s, r );
+					r.answer().appendingIs( true );
 					
-					r.a.appendingIs( true );
 					// if reply is DNU, this meaning is not appropriate!
-					if (r.response() == Response.N_DNU) {
-						audit.debug( "Signs.interpretation() returned DNU" );
-					} else {
-						audit.debug( "Signs.interpretation() returned "+ r.response() );
-						answer = r.a.toString();
+					audit.debug( "Signs.interpretation() returned "+ r.response() );
+					if (r.response() != Response.N_DNU) {
+						answer = r.answer().toString();
 						done = true;
 					}
-					r.a.appendingIs( false );
+					r.answer().appendingIs( false );
 					
 				} // matched	
 			}
 		} // while more signs and not done
-		auditOut( answer );
-		return r.answer( answer );  
+		auditOut( answer +" (reply="+ r.toString() +")");
+		return r.answer( answer ); 
 	}
 	
 	// -----------------------------

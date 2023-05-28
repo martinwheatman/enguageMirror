@@ -7,17 +7,19 @@ import org.enguage.util.sys.Shell;
 
 
 public class Englishisms {  // English-ism!
+	private Englishisms(){/*static class*/}
 	
-	//private static Audit audit = new Audit( "Language" );
+	//private static Audit audit = new Audit( "Englishisms" )
 
-	public static final Strings      headers = new Strings( "( { [" );
-	public static final Strings      tailers = new Strings( ") } ]" );
+	public static final Strings      HEADERS = new Strings( "( { [" );
+	public static final Strings      TAILERS = new Strings( ") } ]" );
+	
 	public static final String APOSTROPHE    = "'";
 	public static final char   APOSTROPHE_CH = APOSTROPHE.charAt( 0 );
 	
-	private static String Apostrophed = APOSTROPHE + "s";
-	public  static String Apostrophed() { return Apostrophed; }
-	public  static void   Apostrophed( String s ) { Apostrophed = s; }
+	private static String apostrophed = APOSTROPHE + "s";
+	public  static String apostrophed() {return apostrophed;}
+	public  static void   apostrophed( String s ) {apostrophed = s;}
 	
 	public  static boolean isQuoted(String a) { // universal?
 		int len;
@@ -37,9 +39,9 @@ public class Englishisms {  // English-ism!
 		if (ans != null)
 			for (int i=0; i<ans.size(); i++) {
 				if (i > 0 &&
-					          !headers.contains( ans.get( i-1)) &&
-					!Shell.terminators.contains( ans.get(  i )) &&
-					          !tailers.contains( ans.get(  i )))
+					            !HEADERS.contains( ans.get( i-1)) &&
+					!Shell.terminators().contains( ans.get(  i )) &&
+					            !TAILERS.contains( ans.get(  i )))
 					str.append( " " );
 				str.append( ans.get( i ));
 			}
@@ -80,10 +82,10 @@ public class Englishisms {  // English-ism!
 	}
 	public static String spell( String a ) { return Englishisms.spell( a, false ); }
 	public static String spell( String a, boolean slowly ) {
-		String b = "";
+		StringBuilder b = new StringBuilder();
 		for (int i=0; i<a.length(); i++)
-			b += ( " "+ ( slowly && i>0 ? ", ":"" )+ a.charAt( i ));
-		return b;
+			b.append( " "+ ( slowly && i>0 ? ", ":"" )+ a.charAt( i ));
+		return b.toString();
 	}
 	public  static String nthEnding( int n ) {
 		int th = n%100;

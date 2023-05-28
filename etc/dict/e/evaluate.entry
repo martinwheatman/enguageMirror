@@ -1,0 +1,7 @@
+## Simple calculation
+On "evaluate NUMERIC-X":
+	perform "numeric evaluate X";
+	reply "...".
+
+#] evaluate 1 + 2: 3.
+	

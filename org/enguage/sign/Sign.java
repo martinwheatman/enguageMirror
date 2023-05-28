@@ -96,7 +96,7 @@ public class Sign {
 					si.previous();
 			}
 			return null;
-	}	}
+	}	} // SignBuilder - builds sign from 'On "xyz": ...' text.
 	
 	public Sign() {super();}
 	public Sign( Frag  patte  ) {this(); pattern( patte );}
