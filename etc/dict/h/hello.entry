@@ -1,0 +1,8 @@
+On "say hello world", reply "hello world".
+
+## This can be tested:
+#] say hello world: hello world.
+
+## This can also be created by voice:
+#] to the phrase hello reply hello to you too: ok.
+#] hello: hello to you too.
