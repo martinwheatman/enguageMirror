@@ -135,49 +135,62 @@ public class Audit {
 		audit.in( "Interpret", ""+ cmds );
 		Strings rc = Response.success();
 		String cmd = cmds.remove( 0 );
-		String param = cmds.isEmpty() ? "" : cmds.remove( 0 );
 		
-		if (cmd.equals( "timing" ) || cmd.equals( "tracing" )) {
-			if (param.equals("off"))
-				off();
-			else
-				on();
-						
-		} else if (cmd.equals( "detailed" )) {
-			if (param.equals("off"))
-				off();
-			else
-				on();
-		
-		} else if (cmd.equals( "debug" )) {
-			if (param.equals( "off" ))
-				off();
-			else
-				on();
+		if (cmd.equals( "entitle" )) {
+			cmds.toUpperCase();
+			Audit.title( cmds.toString() );
 			
-		} else if (cmd.equals( "show" )) {
-			if (param.equals( "signs" ))
-				showSignsOnFatal();
+		} else if (cmd.equals( "subtitle" )) {
+			Audit.subtl( cmds.toString() );
 			
-		} else if (cmd.equals( "hide" )) {
-			if (param.equals( "signs" ))
-				hideSignsOnFatal();				
+		} else if (cmd.equals( "echo" )) {
+			Audit.LOG( cmds.toString() );
 			
-		} else
-			rc = Response.failure();
+		} else {
+			String param = cmds.isEmpty() ? "" : cmds.remove( 0 );
+			
+			if (cmd.equals( "timing" ) || cmd.equals( "tracing" )) {
+				if (param.equals("off"))
+					off();
+				else
+					on();
+				
+			} else if (cmd.equals( "detailed" )) {
+				if (param.equals("off"))
+					off();
+				else
+					on();
+			
+			} else if (cmd.equals( "debug" )) {
+				if (param.equals( "off" ))
+					off();
+				else
+					on();
+				
+			} else if (cmd.equals( "show" )) {
+				if (param.equals( "signs" ))
+					showSignsOnFatal();
+				
+			} else if (cmd.equals( "hide" )) {
+				if (param.equals( "signs" ))
+					hideSignsOnFatal();				
+				
+			} else
+				rc = Response.failure();
+		}			
 
 		return audit.out(rc);
 	}
 	
 	// === title/underline
 	private static boolean firstTitle = true;
-	private void title( String title, char ch ) {
+	private static void title( String title, char ch ) {
 		if (!firstTitle) LOG( "\n" );
 		underline( title, ch );
 		firstTitle = false;
 	}
-	public  void title( String title ) {title( title, '=' );}
-	public  void subtl( String title ) {title( title, '+' );}
+	public  static void title( String title ) {title( title, '=' );}
+	public  static void subtl( String title ) {title( title, '+' );}
 	public  static void underline( String title ) {underline( title, '-' );}
 	public  static void underline( String title, char ch ) {
 		LOG( title );

@@ -12,7 +12,6 @@ import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Context;
-import org.enguage.util.sys.Server;
 
 import opt.test.Example;
 
@@ -30,18 +29,6 @@ public final class Engine {
 			/* These could be accompanied in a repertoire, but they have special 
 			 * interpretations and so are built here alongside those interpretations.
 			 */
-   			new Sign()
-					.pattern( "entitle PHRASE-SAID" )
-					.append( Intention.N_ALLOP, "entitle SAID" )
-					.concept( NAME ),
-   			new Sign()
-					.pattern( "subtitle PHRASE-SAID" )
-					.append( Intention.N_ALLOP, "subtitle SAID" )
-					.concept( NAME ),
-   			new Sign()
-					.pattern( "echo PHRASE-SAID" )
-					.append( Intention.N_ALLOP, "echo SAID" )
-					.concept( NAME ),
    			new Sign()
 					.pattern( "run a self test" )
 					.append( Intention.N_ALLOP, "selfTest" )
@@ -82,10 +69,6 @@ public final class Engine {
 					.pattern( "this sentence is false" )
 					.append( Intention.N_ALLOP, "undo" )
 			  		.concept( NAME ),
-			new Sign()
-					.pattern( "tcpip ADDRESS PORT QUOTED-DATA" )
-					.append( Intention.N_ALLOP, "tcpip ADDRESS PORT DATA" )
-			  		.concept( NAME ),
 			/* 
 			 * it is possible to arrive at the following construct:   think="reply 'I know'"
 			 * e.g. "if X, Y", if the instance is "if already exists, reply 'I know'"
@@ -121,27 +104,6 @@ public final class Engine {
 					.concept( NAME )
 		 };
 	
-	private static Reply tcpip( String host, String portStr, String msg) {
-		Reply r = new Reply();
-		String prefix  = Variable.get( "XMLPRE", "" ),
-		       suffix  = Variable.get( "XMLPOST", "" );
-			
-		int port = -1;
-		try {
-			port = Integer.valueOf( portStr );
-		} catch (Exception e1) {
-			try {
-				port = Integer.valueOf( Variable.get( "PORT" ));
-			} catch (Exception e2) {
-				port = 0;
-		}	}
-		
-		msg = prefix + Variable.derefUc( Strings.trim( msg , Strings.DOUBLE_QUOTE )) + suffix;
-		String ans = Server.client( host, port, msg );
-		r.answer( ans );
-		return r;
-	}
-	
 	public static Reply interp( Intention in, Reply r ) {
 		r.answer( Response.successStr()); // bland default reply to stop debug output look worrying
 		
@@ -171,16 +133,6 @@ public final class Engine {
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
 			
-		} else if (cmd.equals( "tcpip" )) {
-			if (cmds.size() != 3)
-				audit.error( "tcpip command without 3 parameters: "+ cmds );
-			else {
-				String host = cmds.remove( 0 );
-				String port = cmds.remove( 0 );
-				String  msg = cmds.remove( 0 );
-				r = tcpip( host, port, msg );
-			}
-			
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
 				audit.debug("Allop:repeating dnu");
@@ -192,16 +144,6 @@ public final class Engine {
 				r.answer( Reply.previous().toString());
 			}
 			
-		} else if (cmd.equals( "entitle" )) {
-			cmds.toUpperCase();
-			audit.title( cmds.toString() );
-
-		} else if (cmd.equals( "subtitle" )) {
-			audit.subtl( cmds.toString() );
-
-		} else if (cmd.equals( "echo" )) {
-			Audit.LOG( cmds.toString() );
-
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'
 			// so we need to trim the quoted speech...
