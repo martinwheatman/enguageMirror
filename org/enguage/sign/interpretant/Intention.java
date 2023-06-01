@@ -361,7 +361,7 @@ public class Intention {
 		Reply r = new Reply().answer( "world" );
 		audit.debug( new Intention( N_THEN_REPLY, "hello ..." ).mediate( r ).toString() );
 		
-		audit.title( "trad autopoiesis... add to a list and then add that list" );
+		Audit.title( "trad autopoiesis... add to a list and then add that list" );
 		r = new Reply();
 		ArrayList<Intention> a = new ArrayList<>();
 //		a.add( new Intention( N_CREATE, THINK      +" \"a PATTERN z\" \"one two three four\""   ));
@@ -371,7 +371,7 @@ public class Intention {
 		audit.debug( Repertoires.signs().toString() );
 		audit.debug( r.toString());
 		
-		audit.title( "sign self-build II... add pairs of attributes" );
+		Audit.title( "sign self-build II... add pairs of attributes" );
 		// now built like this...
 		// To PATTERN reply TYPICAL REPLY
 		r = new Reply();

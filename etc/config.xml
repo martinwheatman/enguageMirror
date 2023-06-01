@@ -1,6 +1,5 @@
 <xml>
 	<config
-			SOFA="java com.yagadi.enguage.object.Sofa"
 			DNU="i don't understand"
 			DNK="i don't know"
 			SUCCESS="ok"
@@ -31,6 +30,7 @@
 			<concept id="config/is_like+is_unlike"   op="load"/>
 			<concept id="config/arithmetic"          op="load"/>
 			<concept id="config/spatial+spatially"   op="load"/>
+			<concept id="config/masculine+feminine"  op="load"/>
 			<concept id="config/temporal"            op="load"/>
 			<concept id="config/are_transitive"      op="load"/>
 		</concepts>

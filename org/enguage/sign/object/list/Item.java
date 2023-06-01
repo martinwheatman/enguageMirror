@@ -375,7 +375,7 @@ public class Item {
 				"2 packets of crisps from Tesco in London" );
 		
 
-		audit.title( "grouping" );
+		Audit.title( "grouping" );
 		Item.groupOn( Where.LOCTN );
 		audit.debug("Using format:"+ Item.format.toString( Strings.CSV )
 		          + (Item.groupOn().size() == 0
@@ -396,7 +396,7 @@ public class Item {
 		testAdd( "locator='from' location='the dairy aisle' eggs  quantity='6'" );
 		testAdd( "toothpaste" );
 		
-		audit.title( "Groups" );
+		Audit.title( "Groups" );
 		audit.debug( groups.toString() +"." );
 		
 		Audit.PASSED();

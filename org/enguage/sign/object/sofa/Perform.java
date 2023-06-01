@@ -13,6 +13,7 @@ import org.enguage.sign.object.list.Items;
 import org.enguage.sign.object.list.Transitive;
 import org.enguage.sign.symbol.config.Colloquial;
 import org.enguage.sign.symbol.config.Plural;
+import org.enguage.sign.symbol.pronoun.Pronoun;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
@@ -47,6 +48,7 @@ public class Perform {
 				case Plural.id :     return      Plural.interpret( Attribute.expand23( a ));
 				case Entity.ID :     return      Entity.interpret( Attribute.expand23( a ));
 				case Concept.ID:     return     Concept.interpret( Attribute.expand23( a ));
+				case Pronoun.ID:     return     Pronoun.interpret( Attribute.expand23( a ));
 				case Context.id :    return     Context.interpret( Attribute.expand23( a ));
 				case Numeric.id  :   return     Numeric.interpret( Attribute.expand23( a ));
 				case Overlay.id  :   return     Overlay.interpret( Attribute.expand23( a ));

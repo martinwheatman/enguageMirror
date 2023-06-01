@@ -69,7 +69,7 @@ public class Enguage {
 		Utterance.previous( utterance );
 
 		if (imagined()) {
-			Overlay.abortTxn();
+			Overlay.undoTxn();
 			Repertoires.signs().reset( r.toStrings() );
 			
 		} else if (Reply.isUnderstood()) {

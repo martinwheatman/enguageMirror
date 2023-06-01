@@ -11,10 +11,9 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 public class Fs {
-	
 	private Fs() {}
 	
-	//private static Audit audit = new Audit( "Fs" );
+	//private static Audit audit = new Audit( "Fs" )
 	
 	private static String  location = "";
 	public static  String  location() { return location; }
@@ -44,16 +43,17 @@ public class Fs {
 	public static boolean rename( String from, String to ) { return new File( from ).renameTo( new File( to )); }
 	public static boolean exists( String fname ) { return fname != null && new File( fname ).exists(); } // ultimately less File() creation!
 	public static boolean destroy( String name ) {
-		boolean rc = true;
-		File dir = new File( name );
-		if (dir.exists()) {
-			String[] list = dir.list();
-			if (list != null)
-				for (int i=0; i<list.length; i++)
-					destroy( name+ File.separator +list[ i ]);
-			rc = dir.delete();
+		File f = new File( name );
+		if (!f.exists()) // our work is finished!
+			return true;
+		
+		else if (f.isDirectory()) {
+			String[] flist = f.list();
+			if (flist.length > 0)
+				for (String file : flist)
+					destroy( name+ File.separator +file );
 		}
-		return rc;
+		return f.delete();
 	}
 	public static boolean stringToFile( String fname, String value ) {
 		boolean rc = true;

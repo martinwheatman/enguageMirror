@@ -1,0 +1,5 @@
+On "NAME is a GENDERED name", perform "pronoun add GENDERED NAME".
+
+james   is a masculine name.
+martin  is a masculine name.
+ruth    is a feminine  name.

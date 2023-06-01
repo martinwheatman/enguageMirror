@@ -98,7 +98,7 @@ public class Overlay {
 		p.insertDir( absName, "" );
 		if (p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
 			int     n = -1;
-			int count = highest()+1;
+			int count = highest+1;
 			String suffix = absName.substring( p.pwd().length());
 			while (++n < count)
 				p.insertDir( root + n + suffix, "" );
@@ -139,14 +139,13 @@ public class Overlay {
 	
 	private static final int  DEFAULT_HIGHEST = -1; // 0, 1, ..., n => 1+n; -1 == detached
 	private static       int  highest = DEFAULT_HIGHEST; // 0, 1, ..., n => 1+n; -1 == detached
-	private static final int  highest() {return highest;}
 	private static final void highest( int n ) {highest = n;}
 	private static final void countOverlays() {
 		highest( DEFAULT_HIGHEST );
 		String[] files = new File( root ).list();
 		if (files != null) for (String file : files)
 			try {	int tmp = Integer.parseInt( file );
-					if (tmp > highest()) highest( tmp );
+					if (tmp > highest) highest( tmp );
 			} catch (Exception ex) {/*ignore*/}
 		//audit.debug( "Counted overlays:"+ highest );
 	}
@@ -178,8 +177,6 @@ public class Overlay {
 	private static String  nth( int vn ) {return root + vn;}
 	
 	public  static void    attach( String userId ) {
-		//audit.debug( "attach()" );
-		//Audit.incr();
 		if (!attached()) {
 			attached( true );
 			//
@@ -190,14 +187,11 @@ public class Overlay {
 			Link.fromString( root + series, cwd );
 			//
 			countOverlays();
-			//audit.debug( "Highest: "+ highest() +", lowest="+ LOWEST);
 			while (highest < LOWEST)
 				append();
 		}
 	}
 	public static  void    detach() {
-		//Audit.decr();
-		//audit.debug( "detach()" );
 		if (attached()) {
 			series( DETACHED );
 			attached( false );
@@ -208,24 +202,21 @@ public class Overlay {
 	// --- combining versions
 	// ---
 	private static void combineWithLower( int overlay ) {
-		//audit.in("combineWithLower", "overly="+overlay );
 		if (overlay > 0) {
 			moveFiles(
 				new File( nth( overlay   )),
 				new File( nth( overlay-1 ))
 			);
-		}
-		//audit.out();
-	}
+	}	}
 	private static void commit() {
 		//audit.in("commit", "");
 		// We always want a top overly we can remove next time
 		// so consolidate the lower overlays to one and rename the 
 		// top one to "1"
-		while (highest() > 0) {
+		while (highest > 0) {
 			// combine two highest overlays
-			//audit.debug( "commit(): "+ highest() +" => "+ (highest()-1));
-			combineWithLower( highest() );
+			//audit.debug( "commit(): "+ highest +" => "+ (highest-1));
+			combineWithLower( highest );
 			//showVersions();
 			highest--;
 		}
@@ -233,21 +224,21 @@ public class Overlay {
 		//audit.out();
 	}
 	private static void consolidate() {
-		//audit.in("consolidate", "");
 		if (attached()) {
-			int penultimate = highest()-1;
+			int penultimate = highest-1;
 			while (penultimate > LOWEST)
 				combineWithLower( penultimate-- );
 			
-			// then _rename_ top overlay - will now be "1"
-			File src = new File( nth( highest() ));
-			File dst = new File( nth( LOWEST +1 ));
-			src.renameTo( dst );
+			if (highest > LOWEST+1) {
+				// then _rename_ top overlay - down to "1"
+				File src = new File( nth( highest ));
+				File dst = new File( nth( LOWEST +1 ));
+				src.renameTo( dst );
+			}
 			
 			// reset overlay count
 			countOverlays();
 		}
-		//audit.out();
 	}
 	
 	// ------------------------------------------------------------------------
@@ -255,12 +246,12 @@ public class Overlay {
 	// --- Legacy methods
 	// ---
 	private String nthCandidate( String nm, int vn ) {
-		return nth( vn < 0           ? 0 :
-		            vn > (highest()) ? highest() : vn
+		return nth( vn < 0       ? 0 :
+		            vn > highest ? highest : vn
 		          ) + File.separator + nm;
 	}
 	private String topCandidate( String name ) {
-		return nthCandidate( name, highest());
+		return nthCandidate( name, highest);
 	}
 	private String delCandidate( String name, int n ) {
 		File f = new File( nthCandidate( name, n ));
@@ -268,7 +259,7 @@ public class Overlay {
 	}
 	private String find( String vfname ) {
 		String fsname = null;
-		int vn = highest()+1; // number=3 ==> 0,1,2, so initially decr vn
+		int vn = highest+1; // number=3 ==> 0,1,2, so initially decr vn
 		while (--vn >= 0)
 			if (Fs.exists( fsname = nthCandidate( vfname, vn ) ))
 				return fsname;
@@ -294,7 +285,7 @@ public class Overlay {
 		if (attached() && overlay.isOverlaid( vfname ))
 			switch (modeChs) {
 				case MODE_READ   : fsname = overlay.find( vfname ); break;
-				case MODE_DELETE : fsname = overlay.delCandidate( vfname, highest() ); break;
+				case MODE_DELETE : fsname = overlay.delCandidate( vfname, highest ); break;
 				default          : fsname = overlay.topCandidate( vfname ); // MODE_WRITE | _APPEND
 			}
 		return fsname;
@@ -331,9 +322,9 @@ public class Overlay {
 		append();
 		//audit.out();
 	}
-	public  static void abortTxn()  {
-		//audit.in( "abortTxn", "" );
-		if (highest() > LOWEST) {
+	public  static void undoTxn()  {
+		//audit.in( "undoTxn", "" );
+		if (highest > LOWEST) {
 			remove(); // this (empty!)
 			remove(); // last/aborted
 			append(); // replace current
@@ -346,11 +337,9 @@ public class Overlay {
 		//showVersions();
 		//audit.out();
 	}
-	public  static void reStartTxn() {
-		//audit.in( "restartTxn()", "" );
-		abortTxn();
-		startTxn();
-		//audit.out();
+	public  static void destroyTxns() {
+		while (highest>=LOWEST)
+			remove(); // this adjusts 'highest'
 	}
 	
 	// ------------------------------------------------------------------------
@@ -362,10 +351,10 @@ public class Overlay {
 	}
 	private static void showVersions() {showVersions( "_user/needs" );}
 	private static void showVersions( String fname ) {
-		for (int n = 0; n <= highest(); n++) {
+		for (int n = 0; n <= highest; n++) {
 			String file = Fs.stringFromFile( "selftest/uid/"+ n +"/"+ fname );
 			file = file.equals( "" ) ? "-" : file.replace("\n     ","");
-			audit.debug( toStringIndented( n +": " +file ));
+			Audit.LOG( toStringIndented( n +": " +file ));
 	}	}
 
 	// ------------------------------------------------------------------------
@@ -392,13 +381,16 @@ public class Overlay {
 			
 		} else if (cmd.equals( "count" ) && (1 == argc)) {
 			// Remember, 0 => 1, 0,1 => 2: should be consecutive!
-			rc = "ok, "+ (1 + highest());
+			rc = "ok, "+ (1 + highest);
 			
 		} else if (cmd.equals( "start"  ) && (1 == argc) ) {
 			startTxn();
 			
-		} else if (cmd.equals( "abort"  ) && (1 == argc) ) {
-			abortTxn();
+		} else if (cmd.equals( "undo"  ) && (1 == argc) ) {
+			undoTxn();
+			
+		} else if (cmd.equals( "destroy"  ) && (1 == argc) ) {
+			destroyTxns();
 			
 		} else if (cmd.equals( "debug" )) {
 			audit.debugging( value.equals( "on" ) || value.equals( "debugging" ));
@@ -414,7 +406,7 @@ public class Overlay {
 				rc = Shell.FAIL;
 			
 		}  else if (cmd.equals( "versions" )) {
-			audit.debug( "versions: >"+ value +"<" );
+			Audit.LOG( "versions: >"+ value +"<" );
 			if (1 == argc)
 				showVersions();
 			else
@@ -439,7 +431,7 @@ public class Overlay {
 		Audit.on();
 		attach( "Overlay" );
 		audit.debug( "osroot="+ root );
-		audit.debug( "base="+ series+", n=" + (highest()+1) );
+		audit.debug( "base="+ series+", n=" + (highest+1) );
 		OverlayShell os = new OverlayShell( new Strings( args ));
 		os.run();
 }	}

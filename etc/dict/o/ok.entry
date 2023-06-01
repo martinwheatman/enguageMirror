@@ -2,16 +2,16 @@ On "ok":
 	perform "overlay commit full";
 	reply "ok".
 
-On "ok forget that":
-	perform "overlay destroy";
-	reply "ok".
-	
-## overlay debug on.
+# See also: forget_that.entry
+
 #] I need a coffee.
 #] ok.
 #] I need a tea.
 #] I need a biscuit.
 #] ok.
 #] I need a slice of cake.
-#] show overlay versions of _user/needs.
+#] I need a cold beer.
 #] what do i need.
+#] ok forget that.
+#] what do i need.
+

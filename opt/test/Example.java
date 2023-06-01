@@ -8,7 +8,6 @@ import java.util.Scanner;
 import org.enguage.Enguage;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.symbol.pronoun.Pronoun;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
@@ -121,9 +120,6 @@ public class Example {
 	 * Full self-test...
 	 */	
 	private static void doUnitTests( Strings tests ) {
-		Pronoun.interpret( new Strings( "add masculine martin" ));
-		Pronoun.interpret( new Strings( "add masculine james" ));
-		Pronoun.interpret( new Strings( "add feminine  ruth" ));
 
 		// remove old test data
 		String fsys = "./selftest";
@@ -137,7 +133,7 @@ public class Example {
 			if (!Fs.destroy( fsys ))
 				audit.FATAL( "failed to remove old database - "+ fsys );
 			
-			audit.title( "TEST: "+ test );
+			Audit.title( "TEST: "+ test );
 			
 			// true=code before comment, false=
 			if (runTestFile( TEST_DIR, test +TEST_EXT ) ||

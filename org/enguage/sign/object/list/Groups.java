@@ -74,6 +74,6 @@ public class Groups {
 		g.add( "from the dairy aisle", "cheese" );
 		g.add( "from the dairy aisle", "eggs" );
 		g.add( "",                     "toothpaste" );
-		audit.title( "Groups" );
+		Audit.title( "Groups" );
 		audit.debug( g.toString() +"." );
 }	}

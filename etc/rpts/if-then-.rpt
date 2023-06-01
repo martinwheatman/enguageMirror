@@ -4,7 +4,7 @@ On "if SAID-CONTEXT then SAID-DEPENDENCY":
 	if not, say so;
 	DEPENDENCY;
 	if not, say so;
-	finally "overlay abort".
+	finally "overlay undo".
 	
 #] i am not holding anyone's hand: ok, you're not holding anyone's hand.
 #] whose hand am i holding:        sorry, you're not holding anyone's hand.

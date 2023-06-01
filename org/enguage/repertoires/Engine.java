@@ -111,7 +111,7 @@ public final class Engine {
 		String  cmd  = cmds.remove( 0 );
 
 		if (cmd.equals( UNDO_STR )) {
-			Overlay.reStartTxn();
+			Overlay.undoTxn();
 				
 		} else if (cmd.equals( IGNORE_STR )) {
 			Repertoires.signs().ignore( cmds );

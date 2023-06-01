@@ -9,18 +9,20 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.util.sys.Shell;
 
 public class Pronoun {
-	static private Audit audit = new Audit( "Pronoun" );
+	static public  final String NAME = "pronoun";
+	static public  final int      ID = 198601099; // Strings.hash( NAME )
+	static private final Audit audit = new Audit( NAME );
 	
 	// hard-coded three dimensions...
 	static public final    int SUBJECTIVE  = 0;
 	static public final    int  OBJECTIVE  = 1;
 	static public final    int POSSESSIVE  = 2;
 	
-	static public final    int   SINGULAR = 0;
-	static public final    int     PLURAL = 1;
+	static public final    int    SINGULAR = 0;
+	static public final    int      PLURAL = 1;
 	
-	static public final String   singular = "singular";
-	static public final String     plural = "plural";
+	static public final String    singular = "singular";
+	static public final String      plural = "plural";
 	
 	static public final String  subjective = "subjective";
 	static public final String   objective = "objective";
@@ -301,16 +303,16 @@ public class Pronoun {
 		testInterpret( "add feminine  ruth" );
 		testInterpret( "name subjective SUBJECT" );
 		
-		audit.title( "Possession Test" );
+		Audit.title( "Possession Test" );
 		testInterpret( "add masculine martin" );
 		set( subject, "martin" );
 		
-		audit.subtl( "Outbound Test" );
+		Audit.subtl( "Outbound Test" );
 		possessiveOutbound( "martin" );
 		possessiveOutbound( "ruth's" );
 		possessiveOutbound( "martin's" );
 		
-		audit.subtl( "Inbound Test" );
+		Audit.subtl( "Inbound Test" );
 		possessiveInbound( "him" );
 		possessiveInbound( "her" );
 		possessiveInbound( "his" );

@@ -1,0 +1,6 @@
+## See also ok.entry
+
+On "forget that":
+	perform "overlay destroy";
+	if not, reply "sorry, destroy failed";
+	reply "ok".
