@@ -4,14 +4,19 @@ On "ok":
 
 # See also: forget_that.entry
 
-#] I need a coffee.
-#] ok.
-#] I need a tea.
-#] I need a biscuit.
-#] ok.
-#] I need a slice of cake.
-#] I need a cold beer.
-#] what do i need.
-#] ok forget that.
-#] what do i need.
-
+#] I need a coffee:        ok , you need a coffee.
+#] ok:                     ok.
+#] I need a tea:           ok , you need a tea.
+#] I need a biscuit:       ok , you need a biscuit.
+#] ok:                     ok.
+#] I need a slice of cake: ok , you need a slice of cake.
+#] I need a cold beer:     ok , you need a cold beer.
+#] what do i need:         you need a coffee , 
+#]                         a tea ,
+#]                         a biscuit , 
+#]                         a slice of cake , and
+#]                         a cold beer.
+#] ok forget that:         ok.
+#] what do i need:         you need a coffee , a tea , and a biscuit.
+#] i don't need anything:  ok , you don't need anything.
+#] what do i need:         you don't need anything.

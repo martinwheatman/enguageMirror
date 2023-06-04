@@ -4,3 +4,15 @@ On "forget that":
 	perform "overlay destroy";
 	if not, reply "sorry, destroy failed";
 	reply "ok".
+
+
+#] I need a coffee:        ok , you need a coffee.
+#] ok:                     ok.
+#] I need a tea:           ok , you need a tea.
+#] ok:                     ok.
+#] I need a slice of cake: ok , you need a slice of cake.
+#] I need a cold beer:     ok , you need a cold beer.
+#] show overlay versions.
+#] ok forget that:         ok.
+#] show overlay versions.
+
