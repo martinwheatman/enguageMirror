@@ -12,6 +12,7 @@ On "X is not holding hands with Y":
 	if not, reply "yes, i know";
 	reply "ok, X is not holding hands with Y".
 
+On "who's hand am i holding", whose hand am I holding.
 On "whose hand am i holding":
 	perform "link exists martin holdinghands";
 	if not, reply "sorry, you are not holding anyone's hand";

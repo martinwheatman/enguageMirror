@@ -7,11 +7,11 @@ whose hand am i holding:  sorry, you're not holding anyone's hand.
 # the default value...
 who are we:               ok, we means you and i.
 we are holding hands:     ok, we are holding hands.
-whose hand am i holding:  ok, you're holding my hand.         
+who's hand am i holding:  ok, you're holding my hand.         
 
 we are ruth and i:        ok, we means you and ruth.
 we are holding hands:     ok, you're holding hands with ruth.
-whose hand am i holding:  ok, you're holding ruth's hand.
+who's hand am i holding:  ok, you're holding ruth's hand.
 
 # reset 'we' to the default for other tests!
 we are you and i:         ok, we means you and i.
