@@ -17,12 +17,10 @@ import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Server;
 import org.enguage.util.sys.Shell;
 
-import com.yagadi.Assets;
-
 public class Enguage {
 	
 	private static final String COPYRIGHT = "Martin Wheatman, 2001-4, 2011-23";
-	public  static final String RO_SPACE  = Assets.LOCATION;
+	public  static final String RO_SPACE  = "etc"+ File.separator;
 	public  static final String RW_SPACE  = "var"+ File.separator;
 
 	private static Enguage enguage;
@@ -45,7 +43,7 @@ public class Enguage {
 	public  Enguage() {this( RW_SPACE );}
 	public  Enguage( String root ) {
 		Fs.root( root );
-		Concept.addNames( Assets.listConcepts() );
+		Concept.addNames( Concept.list());
 		Config.load( "config.xml" );
 		Audit.resume();
 	}

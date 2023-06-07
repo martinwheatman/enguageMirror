@@ -13,8 +13,6 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.attr.Context;
 
-import opt.test.Example;
-
 public final class Engine {
 	
 	private Engine() {}
@@ -29,10 +27,6 @@ public final class Engine {
 			/* These could be accompanied in a repertoire, but they have special 
 			 * interpretations and so are built here alongside those interpretations.
 			 */
-   			new Sign()
-					.pattern( "run a self test" )
-					.append( Intention.N_ALLOP, "selfTest" )
-					.concept( NAME ),
 			new Sign()
 					.pattern( "this is all imagined" )
 					.append( Intention.N_ALLOP, "imagined" )
@@ -119,10 +113,6 @@ public final class Engine {
 		} else if (cmd.equals( "imagined" )) {
 			Enguage.get().imagined( true );
 			r.format( new Strings( "ok, this is all imagined" ));
-			
-		} else if (cmd.equals( "selfTest" )) {
-			Example.unitTests();
-			r.format( new Strings( "number of tests passed was "+ Audit.numberOfTests() ));
 			
 		} else if (cmd.equals( "spell" )) {
 			r.format( new Strings( Englishisms.spell( cmds.get( 0 ), true )));

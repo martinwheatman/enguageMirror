@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
+import org.enguage.sign.Assets;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.object.Variable;
@@ -25,21 +26,18 @@ import org.enguage.util.Strings;
 import org.enguage.util.Terminator;
 import org.enguage.util.sys.Fs;
 
-import com.yagadi.Assets;
-
 /** Concepts is: the list of concept names; and,
  *               a name-to-concept 'match' function.
  */
 public class Concept {
 	private Concept() {}
 	
-	public  static final String     NAME = "concepts";
+	public  static final String     NAME = "concept";
 	public  static final int          ID = 4186513; // Strings.hash( "Ideas" )
-	private static final Audit     audit = new Audit( NAME );
+	private static final Audit     audit = new Audit( NAME ).tracing( true );
 	
 	public  static final String     RPTS = "rpts";
 	public  static final String     DICT = "dict";
-	private static final String  FLATPAK = File.separator+ "apps" +File.separator;
 	
 	private static final String      DOT = ".";
 	private static final String      TXT = "txt";
@@ -53,25 +51,18 @@ public class Concept {
 	public  static final String  DELT_EXT = DOT + DEL;
 	
 	private static TreeSet<String> names = new TreeSet<>();
-	public  static  void  remove( String name ) {names.remove( name );}
-	public  static  void     add( String name ) {names.add(    name );}
-	public  static  void  addAll( Strings nms ) {names.addAll(  nms );}
+	public  static void  remove( String name ) {names.remove( name );}
+	public  static void     add( String name ) {names.add(    name );}
+	public  static void  addAll( Strings nms ) {names.addAll(  nms );}
 	
-	private static String  prefix = "";
-	private static String  prefix() {return prefix;}
-	private static void    prefix( String p ) {prefix = p;}
-
 	private static final String rwRpts() {
 		return Fs.root() +RPTS+ File.separator;
 	}
 	private static final String ro( String loc ) {
-		return prefix()+ Enguage.RO_SPACE+ loc +File.separator;
+		return Enguage.RO_SPACE+ loc +File.separator;
 	}
 	
-	private static String dictionary(     String name ) {return ro(DICT)
-														         //  +name.charAt(0)
-														         //  +File.separator
-														                 +name +ENTRY_EXT;}
+	private static String dictionary(     String name ) {return ro(DICT)+ name +ENTRY_EXT;}
 	private static String writtenName(    String name ) {return ro(RPTS)+ name +TEXT_EXT;}
 	private static String writtenRepName( String name ) {return ro(RPTS)+ name +REPT_EXT;}
 	
@@ -82,42 +73,32 @@ public class Concept {
 		
 	private static Strings treeAdd( String base, String location ) {
 		Strings  names = new Strings();
-		String[] files = new File( base + location ).list();
+		String[] files = Assets.list( base + location );
 		if (files != null)
-			if (base.equals(DICT))
-				for (String file : files)
+			for (String file : files)
+				if (file.endsWith( TEXT_EXT ) ||
+				    file.endsWith( REPT_EXT ) ||
+				    file.endsWith( ENTRY_EXT )   )
+					names.add( (!location.equals(".") ? location+"/" : "")+ file );
+				else if (!file.contains( "." ))
 					names.addAll( treeAdd( base, file ));
-			else
-				for (String file : files)
-					if (file.endsWith( TEXT_EXT ) ||
-					    file.endsWith( REPT_EXT ) ||
-					    file.endsWith( ENTRY_EXT )   )
-						names.add( (!location.equals(".") ? location+"/" : "")+ file );
-					else if (new File( base + location +File.separator+ file ).isDirectory())
-						names.addAll( treeAdd( base, file ));
 		return names;
 	}
+
 	public static String[] list() {
-		Strings names = treeAdd( ro(RPTS), "." );
+		Strings names = new Strings();
+		names.addAll( treeAdd( ro(RPTS), "." ));
 		names.addAll( treeAdd( ro(DICT), "." ));
-		if (names.isEmpty()) { // try flatpak location
-			prefix( FLATPAK );
-			names = treeAdd( ro(RPTS), "." );
-			names.addAll( treeAdd( ro(DICT), "." ));
-		}
+
 		String[] array = new String[ names.size() ];
 		return names.toArray( array );
 	}
+	
 	public static void addNames( String[] names ) {
-		if (names != null)
-			for ( String name : names ) { // e.g. name="rpt/hello.txt"
-				String[] components = name.split( "\\." );
-				if (components.length == 1)
-					addNames( new File( name ).list());
-				else if	(components[ 1 ].equals(   TXT ) ||
-					 components[ 1 ].equals(   RPT ) ||
-					 components[ 1 ].equals( ENTRY )   )
-					add( components[ 0 ]);
+		for (String name : names) { // e.g. name="rpt/hello.txt"
+			// e.g.: w/we.entry, config/arithmetic.txt, object/set+get+unset.txt
+			String[] components = name.split( "\\." );
+			if (components.length==2 && !name.startsWith( "config/" )) {				add( components[ 0 ]);
 	}	}
 	
 	private static boolean matchAnyBoilerplate( Strings utt, Strings bplt, char sep ) {

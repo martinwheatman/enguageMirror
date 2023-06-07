@@ -71,14 +71,15 @@ lib/enguage.jar: ${TMP} ${MANIFEST} lib
 
 ${ANDLIBS}/anduage.jar: ${TMP} ${MANIFEST} lib
 	mkdir -p ${ANDLIBS}
-	cp -a org com ${TMP}
+	mkdir ${TMP}/opt
+	cp -a org etc com ${TMP}
 	cp -a opt/test ${TMP}/opt
 	( cd ${TMP} ;\
 		find org -name \*.class -exec rm -f {} \;  ;\
 		find org -name .gitignore -exec rm -f {} \; ;\
 		javac opt/test/Example.java ;\
-		rm -rf com opt ;\
-		jar -cmf META-INF/MANIFEST.MF ../${ANDLIBS}/anduage.jar META-INF org \
+		rm -rf com opt org/enguage/sign/Assets.* ;\
+		jar -cmf META-INF/MANIFEST.MF ../${ANDLIBS}/anduage.jar META-INF org etc \
 	)
 
 clean:
