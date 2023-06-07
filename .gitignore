@@ -5,3 +5,4 @@ selftest
 variable
 **.class
 .settings/
+.metadata/

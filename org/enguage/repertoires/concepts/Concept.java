@@ -98,7 +98,9 @@ public class Concept {
 		for (String name : names) { // e.g. name="rpt/hello.txt"
 			// e.g.: w/we.entry, config/arithmetic.txt, object/set+get+unset.txt
 			String[] components = name.split( "\\." );
-			if (components.length==2 && !name.startsWith( "config/" )) {				add( components[ 0 ]);
+			if (components.length==2 && !name.startsWith( "config/" )) {
+				add( components[ 0 ]);
+			}
 	}	}
 	
 	private static boolean matchAnyBoilerplate( Strings utt, Strings bplt, char sep ) {
