@@ -60,10 +60,9 @@ public class Example {
 			
 			else                                        // second chance failed too!
 				//Repertoire.signs.show()
-				audit.FATAL(
-					"reply: '"      + reply      +"'\n             "+
-					"expected: '"   + expected   +"'\n          "+
-					"alternately: '"+ unexpected +"'\n          "
+				audit.FATAL(            "reply: '"+ reply      +"'\n"+
+					"             expected: '"+ expected   +"'\n"+
+					"          alternately: '"+ unexpected
 				);
 	}
 	

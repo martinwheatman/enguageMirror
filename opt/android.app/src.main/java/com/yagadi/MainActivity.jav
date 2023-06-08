@@ -1,4 +1,5 @@
 package com.yagadi;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 import org.enguage.Enguage;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+
+// locally defined
+import org.enguage.sign.Assets;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -124,19 +128,11 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                     ArrayList<String> saidArray =
                             data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
                     String said = saidArray.get( 0 );
-                    Log.e( ">>>>>>>>>>UTTERANCE>>> ", said);
-                    if (Audit.runtimeDebug)
-                        Toast.makeText( getApplicationContext(), said, Toast.LENGTH_SHORT ).show();
 
+                    Log.e( ">>>>>>>>>>UTTERANCE>>> ", said);
                     // interpret what is said...
                     // ...in case of config failure, repeat what was said
-                    Audit.allOn();
-                    Strings truText = e.mediate( new Strings( said ));
-                    String  toSpeak = truText.equals( Enguage.DNU ) ? said : truText.toString();
-
-                    if (toSpeak.equals( "I don't understand." ))
-                        toSpeak += (" " + said);
-
+                    String  toSpeak = e.mediate( new Strings( said )).toString();
                     Toast.makeText( getApplicationContext(), toSpeak, Toast.LENGTH_SHORT ).show();
                     Log.e ( ">>>>>>>>>>>REPLY>>> ", toSpeak );
 

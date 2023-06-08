@@ -58,27 +58,27 @@ ${MANIFEST}:
 	echo "Main-Class: opt.test.Example" >> ${MANIFEST}
 
 lib/enguage.jar: ${TMP} ${MANIFEST} lib
-	cp -a org com ${TMP}
+	cp -a org ${TMP}
 	mkdir ${TMP}/opt
 	cp -a opt/test ${TMP}/opt
 	( cd ${TMP} ;\
-		find com org -name \*.class -exec rm -f {} \; ;\
-		find com org -name .gitignore -exec rm -f {} \; ;\
+		find org -name \*.class -exec rm -f {} \; ;\
+		find org -name .gitignore -exec rm -f {} \; ;\
 		javac opt/test/Example.java ;\
-		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org com opt \
+		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org opt \
 	)
 	#rm -rf ${TMP}
 
 ${ANDLIBS}/anduage.jar: ${TMP} ${MANIFEST} lib
 	mkdir -p ${ANDLIBS}
 	mkdir ${TMP}/opt
-	cp -a org etc com ${TMP}
+	cp -a org etc ${TMP}
 	cp -a opt/test ${TMP}/opt
 	( cd ${TMP} ;\
 		find org -name \*.class -exec rm -f {} \;  ;\
 		find org -name .gitignore -exec rm -f {} \; ;\
 		javac opt/test/Example.java ;\
-		rm -rf com opt org/enguage/sign/Assets.* ;\
+		rm -rf opt org/enguage/sign/Assets.* ;\
 		jar -cmf META-INF/MANIFEST.MF ../${ANDLIBS}/anduage.jar META-INF org etc \
 	)
 
