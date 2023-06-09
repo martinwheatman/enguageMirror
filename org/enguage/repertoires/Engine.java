@@ -44,10 +44,6 @@ public final class Engine {
 					.append( Intention.N_ALLOP, "say SAID")
 			  		.concept( NAME ),
 			new Sign()
-					.pattern( "what can i say" )
-					.append( Intention.N_ALLOP, "repertoire"  )
-		          	.concept( NAME ),														 		
-			new Sign()
 					.pattern( "say again" )
 					.append( Intention.N_ALLOP, "repeat"       )
 			  		.concept( NAME ),

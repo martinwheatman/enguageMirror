@@ -23,6 +23,9 @@ swing: jar
 	@chmod +x bin/swing
 	@echo "Now run: bin/swing"
 
+ajar: android
+	mv ${ANDLIBS}/anduage.jar ${HOME}/StudioProjects/Enguage/app/libs/
+
 jar: lib/enguage.jar
 
 ${TMP}:
@@ -67,7 +70,7 @@ lib/enguage.jar: ${TMP} ${MANIFEST} lib
 		javac opt/test/Example.java ;\
 		jar -cmf META-INF/MANIFEST.MF ../lib/enguage.jar META-INF org opt \
 	)
-	#rm -rf ${TMP}
+	rm -rf ${TMP}
 
 ${ANDLIBS}/anduage.jar: ${TMP} ${MANIFEST} lib
 	mkdir -p ${ANDLIBS}
@@ -81,6 +84,7 @@ ${ANDLIBS}/anduage.jar: ${TMP} ${MANIFEST} lib
 		rm -rf opt org/enguage/sign/Assets.* ;\
 		jar -cmf META-INF/MANIFEST.MF ../${ANDLIBS}/anduage.jar META-INF org etc \
 	)
+	rm -rf ${TMP}
 
 clean:
 	rm -f bin/swing
