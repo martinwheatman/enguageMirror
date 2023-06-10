@@ -15,13 +15,6 @@ public class Fs {
 	
 	//private static Audit audit = new Audit( "Fs" )
 	
-	private static String  location = "";
-	public static  String  location() { return location; }
-	public static  boolean location( String s ) {
-		location = s;
-		return s != null && new File( s ).exists();
-	}
-
 	private static String root = ".";
 	public static  String root() { return root; }
 	public static  void   root( String name ) {

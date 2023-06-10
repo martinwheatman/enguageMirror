@@ -39,7 +39,6 @@ public class Config {
 		else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
 		else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
-		else if (name.equals( "LOCATION" )) Fs.location( value );
 		else if (name.equals( "SUCCESS" )) Response.success( value );
 		else if (name.equals( "FAILURE" )) Response.failure( value );
 		else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
