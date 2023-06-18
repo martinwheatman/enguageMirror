@@ -2,7 +2,7 @@ martin is not holding hands with ruth: yes, i know.
 martin is     holding hands with ruth: ok, martin is     holding hands with ruth.
 martin is not holding hands with ruth: ok, martin is not holding hands with ruth.
 
-whose hand am i holding:  sorry, you're not holding anyone's hand.
+whose hand am i holding:  sorry, i don't know.
 
 # the default value...
 who are we:               ok, we means you and i.

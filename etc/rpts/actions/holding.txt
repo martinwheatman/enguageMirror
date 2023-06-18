@@ -1,3 +1,8 @@
+## Natural information:
+## The default value is unknown.
+## The name 'nobody' is used to indicate known nobody
+## Otherwise a name indicates whose hand someone is holding.
+
 On "X is holding hands with Y":
 	create a holdinghands link from X to Y;
 	reply "ok, X is holding hands with Y".
@@ -15,9 +20,11 @@ On "X is not holding hands with Y":
 On "who's hand am i holding", whose hand am I holding.
 On "whose hand am i holding":
 	perform "link exists martin holdinghands";
-	if not, reply "sorry, you are not holding anyone's hand";
+	if not, reply "sorry, i do not know";
 	perform "link get martin holdinghands";
 	set someone to ...;
+	is someone set to nobody;
+	if so, reply "sorry, you are not holding anyone's hand";
 	is someone set to i;
 	if so, reply "ok, you are holding my hand";
 	reply "ok, you are holding SOMEONE''s hand".
@@ -32,6 +39,6 @@ On "we are holding hands":
 
 	
 On "i am not holding anyone's hand":
-	perform "link delete martin holdinghands";
+	i am holding hands with nobody;
 	reply "ok, you are not holding anyone's hand".
 

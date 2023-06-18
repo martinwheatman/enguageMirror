@@ -1,3 +1,9 @@
+## These first two won't translations be used until 
+## enguage stops converting my into _users_s in 
+## colloquia.txt
+On "what is my name": what is _user_s name.
+On "my name is NAME", _users_s name is NAME.
+
 On "what is _user_s name":
 	is the name of me set;
 	if not, reply "I don't know";

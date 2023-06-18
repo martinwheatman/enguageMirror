@@ -7,7 +7,8 @@ ANDLIBS=lib
 default:
 	@echo "Usage: make [ snap | jar | shar | swing | android | flatpak | clean ]" >&2
 
-install: jar
+install: android
+	cp -a etc ${HOME}/StudioProjects/Enguage/app/src/main/assets
 
 flatpak: jar
 	(cd opt/flatpak; make install)
