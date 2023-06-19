@@ -14,7 +14,6 @@ import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Server;
 import org.enguage.util.sys.Shell;
 
 public class Enguage {
@@ -139,7 +138,6 @@ public class Enguage {
 		Strings    cmds = new Strings( args );
 		String     cmd;
 		String     fsys = RW_SPACE;
-		boolean useHttp = false;
 		int port = 0;
 		String server = "";
 		
@@ -166,10 +164,6 @@ public class Enguage {
 				port = cmds.isEmpty() ? 8080 : Integer.parseInt( cmds.remove( i ));
 				Audit.LOG( "Using port: "+ port );
 		
-			} else if (cmd.equals( "-H" ) || cmd.equals( "--httpd" )) {
-				cmds.remove( i );
-				useHttp = true;
-
 			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
 				cmds.remove( i );
 				server = cmds.isEmpty() ? "localhost" : cmds.remove( i );
@@ -183,11 +177,7 @@ public class Enguage {
 				
 		cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
 		
-		if (port != 0 && server.equals( "" )) { // run as local server
-			if (useHttp) Server.httpd( ""+ port );
-			Server.server( cmds.isEmpty() ? "8080" : cmds.remove( 0 ));
-		
-		} else if (cmd.equals( "" )) {
+		if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
 			shell.aloudIs( true ).run();
 		

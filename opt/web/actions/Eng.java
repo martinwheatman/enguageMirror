@@ -2,6 +2,7 @@ package opt.web.actions;
 
 import org.enguage.Enguage;
 import org.enguage.util.Strings;
+import org.enguage.util.Terminator;
 
 import opt.web.WebRequest;
 
@@ -38,7 +39,10 @@ public class Eng {
 		return "<center><strong>"
 				+ Enguage.get().mediate(
 						params[ 0 ].split( "=" )[ 1 ],
-						new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
+						Terminator.stripTerminator(
+								new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
+										.normalise() // this will separate.the terminator
+						)
 				  )
 				+ "</strong></center></P>";
 	}
@@ -47,9 +51,6 @@ public class Eng {
 							uid,
 							new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 						).toString();
-		// fix incase enguage (repertoire) is not so polite!
-		if (reply.equalsIgnoreCase( "i don't understand" ))
-			reply = "sorry, "+ reply;
 		return reply;
 	}
 	public static String getReply( WebRequest r, String cmd, String[] params ) {

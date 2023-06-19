@@ -9,32 +9,41 @@ import org.enguage.util.Audit;
 
 public class Users extends ArrayList<User> {
 		
-	static final long serialVersionUID = 0l;
-	static       private Audit  audit = new Audit( "Users" ); 
+	private static final long serialVersionUID = 0l;
+	private static final Audit           audit = new Audit( "Users" ); 
 	
-	private Users append( User u ) { add( u ); return this;}
+	private static final String  defaultUser   = "admin";
+	private static final String  defaultPasswd = "admin99";
+	
+	private Users append( User u ) {add( u ); return this;}
 		
-	static private Users users = null;
-	static private Users get() {
+	private static Users users = null;
+	private static Users get() {
 		if (null == users) {
 			users = new Users();
-			try {
+			try (Scanner fp = new Scanner( new File( "passwd" ))) {
 				String[] data;
-				Scanner fp = new Scanner( new File( "passwd" ));
 				while (fp.hasNextLine()) {
 					data = fp.nextLine().split( User.delim );
 					if (data.length == 3)
-						users.add( new User( data[ 0 ])
+						users.add(
+								new User( data[ 0 ])
 										.passwd( data[ 1 ])
-										.admin( data[ 2 ].equals( "admin" )));
+										.admin( data[ 2 ]
+												.equals( defaultUser )
+						)				);
 				}
-				fp.close();
+				
 			} catch (Exception e) {
-				users.add( new User( "admin" ).passwd( "admin99" ).admin( true ));
+				users.add(
+						new User( defaultUser )
+								.passwd( defaultPasswd )
+								.admin( true )
+				);
 		}	}
 		return users;
 	}
-	static private void put( Users us ) {
+	private static void put( Users us ) {
 		try {
 			FileWriter fw = new FileWriter( "passwd" );
 			if (us != null) {
@@ -42,10 +51,10 @@ public class Users extends ArrayList<User> {
 					if (!u.name().equals(""))
 						fw.write( u.name()   +User.delim+
 								  u.passwd() +User.delim+
-								  (u.admin()?"admin":"user") +"\n"
+								  (u.admin()?defaultUser:"user") +"\n"
 								);
 			} else
-				fw.write( "admin" +User.delim+ "admin99" +User.delim+ true );
+				fw.write( defaultUser +User.delim+ defaultPasswd +User.delim+ true );
 			fw.close();
 		} catch (Exception ex) {
 			audit.error( "singleton put" );
@@ -53,49 +62,49 @@ public class Users extends ArrayList<User> {
 		}
 		users = null;
 	}
-	static private boolean contains( User u ) {
+	private static boolean contains( User u ) {
 		get();
 		if (users != null) for (User user : users)
 			if (u.equals( user ))
 				return true;
 		return false;
 	}
-	static private boolean containsName( String s ) {
+	private static boolean containsName( String s ) {
 		for (User u : get())
 			if (u.name().equals( s ))
 				return true;
 		return false;
 	}
-	static private boolean containsAdmin( User u ) {
+	private static boolean containsAdmin( User u ) {
 		for (User user : get())
 			if (u.equals( user ) && user.admin())
 				return true;
 		return false;
 	}
-	static public boolean validUser( String uname, String pwd ) {
+	public static boolean validUser( String uname, String pwd ) {
 		return contains( new User( uname ).passwd( pwd ));
 	}
-	static public boolean isUser( String uname ) {
+	public static boolean isUser( String uname ) {
 		return containsName( uname );
 	}
-	static public boolean isAdmin( String name, String pwd ) {
+	public static boolean isAdmin( String name, String pwd ) {
 		get();
 		return containsAdmin( new User( name ).passwd( pwd ));
 	}
-	static public boolean addUser( String n, String p, boolean adm ) {
+	public static boolean addUser( String n, String p, boolean adm ) {
 		User user = new User( n ).passwd( p ).admin( adm );
 		get();
 		if (!contains( user )) put( users.append( user ));
 		return true;
 	}
-	static public void delUser( String n ) {
+	public static void delUser( String n ) {
 		Users newUsers = new Users();
 		for (User u : get())
 			if (!u.name().equals( n ))
 				newUsers.add( u );
 		put( newUsers );
 	}
-	static public void setPwd( String n, String p ) {
+	public static void setPwd( String n, String p ) {
 		Users newUsers = new Users();
 		get();
 		for (User u : users) {

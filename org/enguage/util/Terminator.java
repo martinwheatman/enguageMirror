@@ -20,14 +20,17 @@ public class Terminator {
 		return rc;
 	}
 	public static Strings stripTerminator( Strings a ) {
+		
+		// ["what", "do", "i", "need."] => [ ... , "need", "."]
+		a = a.normalise();
+		
 		if (isTerminated( a ))
 			a.remove( a.size() - 1 );
 		return a;
 	}
 	public static String stripTerminator( String s ) {
 		Strings a = new Strings( s );
-		if (isTerminated( a ))
-			a.remove( a.size() - 1 );
+		a = stripTerminator( a );
 		return a.toString();
 	}
 	public static Strings addTerminator( Strings a, String terminator ) {
