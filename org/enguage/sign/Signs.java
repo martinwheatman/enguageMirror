@@ -241,7 +241,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			Map.Entry<Integer,Sign> me = i.next();
 			Sign s = me.getValue();
 			if (simpleFilter == null || s.concept().contains(simpleFilter))
-				Audit.LOG( s.toXml( n++, me.getKey() ));
+				Audit.log( s.toXml( n++, me.getKey() ));
 	}	}
 	
 	// UNUSED ---

@@ -7,7 +7,7 @@ import java.util.Iterator;
 import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
-import org.enguage.util.sys.Shell;
+import org.enguage.util.Terminator;
 
 public class Question {
 	
@@ -24,7 +24,7 @@ public class Question {
 	static private String primedAnswer = null;
 	static public  String primedAnswer() { return primedAnswer;}
 	static public  void   primedAnswer( String a ) { primedAnswer = null==a || a.equals("") ? null : a;}
-	static public  void   logPrimedAns() { if (primedAnswer != null) Audit.LOG( "> "+ primedAnswer );}
+	static public  void   logPrimedAns() { if (primedAnswer != null) Audit.log( "> "+ primedAnswer );}
 
 	public Question( String q ) { question( q ); }
 
@@ -33,7 +33,7 @@ public class Question {
 		BufferedReader br = new BufferedReader( new InputStreamReader( System.in ));
 		try {
 			while (line == null || line.equals( "\n" ))
-				line = Shell.stripTerminator( br.readLine() );
+				line = Terminator.stripTerminator( br.readLine() );
 		} catch (java.io.IOException e ) {
 			audit.error( "IO exception in Question.getLine( default );" );
 		}
@@ -41,7 +41,7 @@ public class Question {
 	}
 	
 	public String ask() {
-		Audit.LOG( question() + prompt());
+		Audit.log( question() + prompt());
 		Question.logPrimedAns();
 		return primedAnswer != null ? primedAnswer() : getLine( Response.dnuStr());
 	}

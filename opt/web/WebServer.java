@@ -31,7 +31,7 @@ public class WebServer {
 		Enguage.set( new Enguage() );
 
 		try (ServerSocket server = new ServerSocket( port, 5 )) {	
-			Audit.LOG(
+			Audit.log(
 				"Server listening on port: "
 				+ port
 				+(root.equals("") ?	"" : " (root="+root()+")")

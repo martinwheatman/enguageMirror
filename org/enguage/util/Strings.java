@@ -16,10 +16,10 @@ import org.enguage.sign.object.expr.Function;
 import org.enguage.sign.object.list.Item;
 import org.enguage.sign.object.list.Items;
 import org.enguage.sign.object.list.Transitive;
-import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.object.sofa.Entity;
 import org.enguage.sign.object.sofa.Link;
+import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.config.Colloquial;
 import org.enguage.sign.symbol.config.Englishisms;
@@ -28,7 +28,6 @@ import org.enguage.sign.symbol.reply.Answer;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
-import org.enguage.util.sys.Shell;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	
@@ -1177,7 +1176,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		audit.debug("tma:"+(tokenMatch( ELLIPSIS,     "..", 0,     "..".length() )?"true":"false")+"=>false");
 		
 		a = new Strings( "this is a test sentence. And half a" );
-		ArrayList<Strings> as = a.divide( Shell.terminators() );
+		ArrayList<Strings> as = a.divide( Terminator.terminators() );
 		// as should be of length 2...
 		b = as.remove( 0 );
 		audit.debug( "b is '"+ b.toString() +"'. as is len "+ as.size() );

@@ -3,7 +3,7 @@ package org.enguage.sign.symbol.config;
 import java.util.Locale;
 
 import org.enguage.util.Strings;
-import org.enguage.util.sys.Shell;
+import org.enguage.util.Terminator;
 
 
 public class Englishisms {  // English-ism!
@@ -39,9 +39,9 @@ public class Englishisms {  // English-ism!
 		if (ans != null)
 			for (int i=0; i<ans.size(); i++) {
 				if (i > 0 &&
-					            !HEADERS.contains( ans.get( i-1)) &&
-					!Shell.terminators().contains( ans.get(  i )) &&
-					            !TAILERS.contains( ans.get(  i )))
+					                 !HEADERS.contains( ans.get( i-1)) &&
+					!Terminator.terminators().contains( ans.get(  i )) &&
+					                 !TAILERS.contains( ans.get(  i )))
 					str.append( " " );
 				str.append( ans.get( i ));
 			}

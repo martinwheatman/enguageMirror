@@ -12,6 +12,7 @@ import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.Terminator;
 
 public class Shell {
 
@@ -25,37 +26,6 @@ public class Shell {
 	public  static final Strings Fail    = new Strings( FAIL );
 	public  static final Strings Ignore  = new Strings( IGNORE );
 		
-	private static Strings terminators = new Strings( ". ? !" );
-	public  static void    terminators( Strings a ){ terminators = a; }
-	public  static Strings terminators() { return terminators; }
-	
-	public  static boolean  isTerminator( String s ) { return terminators().contains( s ); }
-	public  static String   terminatorIs( Strings a ){ return (null != a) && a.size()>0 ? a.get( a.size() -1) : ""; }
-	private static boolean isTerminated( Strings a ) {
-		boolean rc = false;
-		if (null != a) {
-			int last = a.size() - 1;
-			if (last > -1) rc = isTerminator( a.get( last ));
-		}
-		return rc; 
-	}
-	public static Strings stripTerminator( Strings a ) {
-		if (isTerminated( a ))
-			a.remove( a.size() - 1 );
-		return a;
-	}
-	public static String stripTerminator( String s ) {
-		Strings a = new Strings( s );
-		if (isTerminated( a ))
-			a.remove( a.size() - 1 );
-		return a.toString();
-	}
-	public static Strings addTerminator( Strings a, String terminator ) {
-		a.add( terminators.contains( terminator ) ? terminator : terminators.get( 0 ));
-		return a;
-	}
-	public static Strings addTerminator( Strings a ) { return addTerminator( a, terminators.get( 0 ));}
-	
 	private String  prompt;
 	public  String  prompt() { return prompt; }
 	public  Shell   prompt( String p ) { prompt = p; return this; }
@@ -113,7 +83,7 @@ public class Shell {
 					// will return "cd .." as ["cd", ".", "."], not ["cd" ".."] -- "cd.." is meaningless!
 					// need new stage of non-sentence sign processing
 					stream.addAll( new Strings( line ));
-					ArrayList<Strings> sentences = stream.divide( terminators );
+					ArrayList<Strings> sentences = stream.divide( Terminator.terminators() );
 					if ( sentences.size() > 1 ) {
 						Strings sentence = sentences.remove( 0 );
 						stream = Strings.combine( sentences );

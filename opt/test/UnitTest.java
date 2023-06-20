@@ -42,7 +42,7 @@ public class UnitTest {
 	private static void test( String  cmd, String expected, String unexpected ) {
 		// expected == null => don't check reply, expected == '-' => silent!
 		if (expected == null || !expected.equals( "-" ))
-			Audit.LOG( TEST_PROMPT+ cmd +".");
+			Audit.log( TEST_PROMPT+ cmd +".");
 		
 		Strings reply = Enguage.get().mediate( new Strings( cmd ));
 
@@ -143,7 +143,7 @@ public class UnitTest {
 			    runTestFile(  REP_DIR, test +REP_EXT  )   )
 				testGrp++;
 		}
-		Audit.LOG( testGrp +" test group(s) found" );
+		Audit.log( testGrp +" test group(s) found" );
 		Audit.PASSED();
 	}
 

@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.Terminator;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
@@ -81,7 +82,7 @@ public class Reply {
 		if (sa == null)  // null to reset it!
 			say = new Strings();
 		else
-			say.addAll( Shell.addTerminator( sa ));
+			say.addAll( Terminator.addTerminator( sa ));
 	}
 	
 	// to interact with the 'say' list - as String or Strings
@@ -165,8 +166,7 @@ public class Reply {
 	private Strings handleDNU( Strings utterance ) {
 		audit.in( "handleDNU", utterance.toString( Strings.CSV ));
 		verbatimIs( true );
-		if (Shell.terminators().get( 0 ).equals( Shell.terminatorIs( utterance )))
-			utterance = Shell.stripTerminator( utterance );
+		utterance = Terminator.stripTerminator( utterance );
 		
 		// Construct the DNU format
 		format( new Strings( Response.dnu() + ", ..." ));

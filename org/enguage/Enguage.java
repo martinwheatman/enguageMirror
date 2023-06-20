@@ -109,28 +109,28 @@ public class Enguage {
 	 *  test code....
 	 */
 	public static void usage() {
-		Audit.LOG( "Usage: java [-jar enguage.jar|org.enguage.Enguage]" );
-		Audit.LOG( "            --help |" );
-		Audit.LOG( "            --verbose --data <path>" ); 
-		Audit.LOG( "            --port <port> [--httpd [--server <name>]] |" );
-		Audit.LOG( "            --test | [<utterance>]" );
-		Audit.LOG( "Options are:" );
-		Audit.LOG( "       -h, --help" );
-		Audit.LOG( "          displays this message\n" );
-		Audit.LOG( "       -v, --verbose\n" );
-		Audit.LOG( "       -d, --data <path> specifies the data volume to use\n" );
-		Audit.LOG( "       -p, --port <port>" );
-		Audit.LOG( "          defines a TCP/IP port number\n" );
-		Audit.LOG( "       -H, --httpd" );
-		Audit.LOG( "          use webserver protocols\n" );
-		Audit.LOG( "       -s, --server <host> <port>" );
-		Audit.LOG( "          switch to send speech to a server." );
-		Audit.LOG( "          (Needs to be initialised with -p nnnn);\n" );
-		Audit.LOG( "       [<utterance>]" );
-		Audit.LOG( "          with an utterance it runs one-shot;" );
-		Audit.LOG( "          with no utterance it runs as a shell," );
-		Audit.LOG( "             requiring full stops (periods) to" );
-		Audit.LOG( "             terminate utterances." );
+		Audit.log( "Usage: java [-jar enguage.jar|org.enguage.Enguage]" );
+		Audit.log( "            --help |" );
+		Audit.log( "            --verbose --data <path>" ); 
+		Audit.log( "            --port <port> [--httpd [--server <name>]] |" );
+		Audit.log( "            --test | [<utterance>]" );
+		Audit.log( "Options are:" );
+		Audit.log( "       -h, --help" );
+		Audit.log( "          displays this message\n" );
+		Audit.log( "       -v, --verbose\n" );
+		Audit.log( "       -d, --data <path> specifies the data volume to use\n" );
+		Audit.log( "       -p, --port <port>" );
+		Audit.log( "          defines a TCP/IP port number\n" );
+		Audit.log( "       -H, --httpd" );
+		Audit.log( "          use webserver protocols\n" );
+		Audit.log( "       -s, --server <host> <port>" );
+		Audit.log( "          switch to send speech to a server." );
+		Audit.log( "          (Needs to be initialised with -p nnnn);\n" );
+		Audit.log( "       [<utterance>]" );
+		Audit.log( "          with an utterance it runs one-shot;" );
+		Audit.log( "          with no utterance it runs as a shell," );
+		Audit.log( "             requiring full stops (periods) to" );
+		Audit.log( "             terminate utterances." );
 	}
 	
 	public static void main( String[] args ) {
@@ -162,12 +162,12 @@ public class Enguage {
 			} else if (cmd.equals( "-p" ) || cmd.equals( "--port" )) {
 				cmds.remove( i );
 				port = cmds.isEmpty() ? 8080 : Integer.parseInt( cmds.remove( i ));
-				Audit.LOG( "Using port: "+ port );
+				Audit.log( "Using port: "+ port );
 		
 			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
 				cmds.remove( i );
 				server = cmds.isEmpty() ? "localhost" : cmds.remove( i );
-				Audit.LOG( "Sending to server: "+ server );
+				Audit.log( "Sending to server: "+ server );
 				
 			} else
 				i++;

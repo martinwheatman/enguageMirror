@@ -87,5 +87,5 @@ public class Algorithm {
 		algorithmTest( "the product   of x and y is x times y", true );
 		// See Expression test code...
 		// algorithmTest( "the factorial of n is n times the factorial of n minus 1", true );
-		Audit.LOG( "+++ PASSES +++" );
+		Audit.log( "+++ PASSES +++" );
 }	}

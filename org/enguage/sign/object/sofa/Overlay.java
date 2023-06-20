@@ -354,7 +354,7 @@ public class Overlay {
 		for (int n = 0; n <= highest; n++) {
 			String file = Fs.stringFromFile( "selftest/uid/"+ n +"/"+ fname );
 			file = file.equals( "" ) ? "-" : file.replace("\n     ","");
-			Audit.LOG( toStringIndented( n +": " +file ));
+			Audit.log( toStringIndented( n +": " +file ));
 	}	}
 
 	// ------------------------------------------------------------------------
@@ -406,7 +406,7 @@ public class Overlay {
 				rc = Shell.FAIL;
 			
 		}  else if (cmd.equals( "versions" )) {
-			Audit.LOG( "versions: >"+ value +"<" );
+			Audit.log( "versions: >"+ value +"<" );
 			if (1 == argc)
 				showVersions();
 			else

@@ -5,15 +5,17 @@ import org.enguage.util.Audit;
 import org.enguage.util.Strings;
 
 public class Example {
+
+	private static final String[] defaultUtterance = {"i", "need", "a", "coffee"};
+
 	public static void main( String[] args ) {
-		String fsys = Enguage.RW_SPACE;
-		Enguage.set( new Enguage( fsys ));
 		
-		Strings cmd = new Strings( args );
-		if (args.length == 0)
-			cmd = new Strings( "I need a coffee" );
+		// "Strings" is simply an array of 'String'
+		Strings utterance = new Strings( args.length==0 ? defaultUtterance : args );
+		Enguage enguage = new Enguage( Enguage.RW_SPACE );
 		
-		Strings reply = Enguage.get().mediate( new Strings( cmd ));
-		Audit.LOG( reply.toString() );
+		Strings reply = enguage.mediate( utterance );
+		
+		Audit.log( reply );
 	}
 }

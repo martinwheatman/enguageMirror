@@ -53,8 +53,8 @@ public class Audit {
 	private static int  numberOfTests = 0;
 	public  static int  numberOfTests() {return numberOfTests;}
 	public  static void passed() {numberOfTests++;}
-	public  static void passed( String msg ) {LOG( msg ); passed();}
-	public  static void PASSED() {LOG( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
+	public  static void passed( String msg ) {log( msg ); passed();}
+	public  static void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
 	
 	private static  boolean auditOn = false;
 	public  static  void    off() {auditOn = false; indent.reset();}
@@ -69,30 +69,31 @@ public class Audit {
 	// ------------------------------------------------------------------------
 	// --- LOGGING - LOG, debug, info, error, FATAL
 	// ---
-	public static  String LOG( String info ) {
-		indent.print( System.out );
-		System.out.println( info );
+	public static String log( String info ) {
+		System.out.println( indent.toString() + info );
 		return info;
 	}
-	public static String timestamp( String info ) {LOG( info+ " -- "+interval()+"ms\n");return info;}
+	public static  String log( Strings info ) {return log( info.toString() );}
 	
-	public  void   debug( String info ) {
-		if (suspended==0 && (auditOn || debugging)) LOG( info );
+	public static String timestamp( String info ) {log( info+ " -- "+interval()+"ms\n");return info;}
+	
+	public void   debug( String info ) {
+		if (suspended==0 && (auditOn || debugging)) log( info );
 	}
-	public  void   debug( Strings info ) {debug( info.toString() );}
-	public  Object  info(  String fn, String in, Object out ) {// out may be null!
+	public void   debug( Strings info ) {debug( info.toString() );}
+	public Object  info(  String fn, String in, Object out ) {// out may be null!
 		if (auditOn && (out!=null && !out.equals("")))
 			debug( className +"."+ fn +"( "+ in +" ) => "+ out.toString() );
 		return out;
 	}
-	public  void   FATAL( String msg ) {
-		LOG( "FATAL: "+ className +": "+ msg );
+	public void   FATAL( String msg ) {
+		log( "FATAL: "+ className +": "+ msg );
 		if (showSignsOnFatal) Repertoires.signs().show();
 		System.exit( 1 );
 	}
-	public  void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
-	public  void   error( String info ) {
-		LOG("ERROR: "+ className +(funcNames.size()>1?"."+ funcNames.get( 0 ) +"()" : "")+": "+ info);
+	public void   FATAL( String phrase, String msg ) {FATAL( phrase +": "+ msg );}
+	public void   error( String info ) {
+		log("ERROR: "+ className +(funcNames.size()>1?"."+ funcNames.get( 0 ) +"()" : "")+": "+ info);
 	}
 
 	// ------------------------------------------------------------------------
@@ -105,14 +106,14 @@ public class Audit {
 		// sometimes this is tested at call time - preventing the string processing
 		// in the traceIn() call being performed at runtime.
 		funcNames.prepend( fn );
-		LOG( "IN  "+ className +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
+		log( "IN  "+ className +"."+ fn +"("+ (info==null?"":" "+ info +" ") +")");
 		indent.incr();
 	}
 
     public String OUT() {return OUT( (String) null );}
     public String OUT( String result ) {
     	indent.decr();
-		LOG( "OUT "+ className
+		log( "OUT "+ className
 				+ (funcNames.size()>1?"."+ funcNames.remove( 0 ) +"()" : "")
 				+ (result==null ? "" : " => '"+ result +"'" )
 			);
@@ -144,7 +145,7 @@ public class Audit {
 			Audit.subtl( cmds.toString() );
 			
 		} else if (cmd.equals( "echo" )) {
-			Audit.LOG( cmds.toString() );
+			Audit.log( cmds.toString() );
 			
 		} else {
 			String param = cmds.isEmpty() ? "" : cmds.remove( 0 );
@@ -185,7 +186,7 @@ public class Audit {
 	// === title/underline
 	private static boolean firstTitle = true;
 	private static void title( String title, char ch ) {
-		if (!firstTitle) LOG( "\n" );
+		if (!firstTitle) log( "\n" );
 		underline( title, ch );
 		firstTitle = false;
 	}
@@ -193,10 +194,10 @@ public class Audit {
 	public  static void subtl( String title ) {title( title, '+' );}
 	public  static void underline( String title ) {underline( title, '-' );}
 	public  static void underline( String title, char ch ) {
-		LOG( title );
+		log( title );
 		StringBuilder underline = new StringBuilder();
 		for (int i = 0; i < title.length(); i++) underline.append( ch );
-		LOG( underline.toString() );
+		log( underline.toString() );
 	}
 
 	public static void main( String[] args ) {

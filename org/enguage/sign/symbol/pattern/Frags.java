@@ -754,9 +754,9 @@ public class Frags extends ArrayList<Frag> {
 	}
 	private static  void complexityTest( String str ) {
 		Frags patt = new Frags( toPattern( new Strings( str )));
-		Audit.LOG( "pattern: "+ patt );
+		Audit.log( "pattern: "+ patt );
 		//audit.LOG( "    Xml: "+ patt.toXml() )
-		Audit.LOG( " cmplxy: "+ patt.cplex( true ) );
+		Audit.log( " cmplxy: "+ patt.cplex( true ) );
 
 	}
 	public  static  void main(String args[]) {

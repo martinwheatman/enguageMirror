@@ -95,7 +95,7 @@ public class Entity {
 			else if (cmd.equals( "restore" ))
 				rc = restore( ent ) ? Shell.Success : Shell.Fail;
 			else
-				Audit.LOG(
+				Audit.log(
 					"Usage: entity [create|exists|ignore|delete] <entityName>\n"+
 					"Given: entity "+ argv.toString( Strings.SPACED )
 				);

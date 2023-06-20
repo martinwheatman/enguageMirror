@@ -269,7 +269,7 @@ public class Concept {
 				loaded( conceptName );
 			else {
 				rc = false;
-				Audit.LOG( "error loading "+ name );
+				Audit.log( "error loading "+ name );
 		}	}
 		return rc;
 	}

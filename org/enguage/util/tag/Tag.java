@@ -198,11 +198,11 @@ public class Tag {
 			"</xml> j"
 		);
 		Tag t = new Tag( s.listIterator() );
-		Audit.LOG( "tag:"+ t.toXml());
+		Audit.log( "tag:"+ t.toXml());
 		Tag ts = t.findByName("concepts");
 		for (Tag child : ts.content()) {
 			for (Attribute at : child.attributes()) {
-				Audit.LOG(at.value());
+				Audit.log(at.value());
 			}
 		}
 }	}

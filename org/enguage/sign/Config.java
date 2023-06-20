@@ -14,9 +14,9 @@ import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.Terminator;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Shell;
 import org.enguage.util.tag.Tag;
 
 public class Config {
@@ -43,7 +43,7 @@ public class Config {
 		else if (name.equals( "FAILURE" )) Response.failure( value );
 		else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
-		else if (name.equals(   "TERMS" )) Shell.terminators( new Strings( value ));
+		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
 		else if (name.equals(    "SOFA" )) Commands.java( value );
 		else if (name.equals(     "TTL" )) Autoload.ttl( value );
 		else if (name.equals(     "DNU" )) Response.dnu( value );

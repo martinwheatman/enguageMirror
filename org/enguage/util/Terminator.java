@@ -20,12 +20,12 @@ public class Terminator {
 		return rc;
 	}
 	public static Strings stripTerminator( Strings a ) {
-		
 		// ["what", "do", "i", "need."] => [ ... , "need", "."]
 		a = a.normalise();
 		
 		if (isTerminated( a ))
 			a.remove( a.size() - 1 );
+		
 		return a;
 	}
 	public static String stripTerminator( String s ) {

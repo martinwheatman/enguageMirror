@@ -71,7 +71,7 @@ public class WebRequest extends Thread {
 	private String getReply( String request ) {
 		String reply = "";
 
-		Audit.LOG( "processRequest: request="+ request );
+		Audit.log( "processRequest: request="+ request );
 		// request="GET /addUser?uname=martin&pwd=s3cret HTTP/2.0"
 		String[] reqs = request.split(" "); // ["GET", "/..."
 		reqs = reqs[ 1 ].split("\\?"); // leading '/' ["", "addUser", "1001", "1234"]
