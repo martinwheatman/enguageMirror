@@ -13,6 +13,7 @@ import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.Terminator;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 
@@ -138,16 +139,14 @@ public class Enguage {
 		Strings    cmds = new Strings( args );
 		String     cmd;
 		String     fsys = RW_SPACE;
-		int port = 0;
-		String server = "";
 		
-		// traverse args and strip switches: -v -d -H -p -s
+		// traverse args and strip switches: -v -d -h
 		int i = 0;
 		while (i < cmds.size()) {
 			
 			cmd = cmds.get( i );
 			
-			if (cmd.equals( "-h" ) || cmd.equals( "--help" )) {
+			if        (cmd.equals( "-h" ) || cmd.equals( "--help" )) {
 				Enguage.usage();
 				System.exit( 0 );
 			
@@ -158,16 +157,6 @@ public class Enguage {
 			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
 				cmds.remove( i );
 				fsys = cmds.isEmpty() ? fsys : cmds.remove( i );
-				
-			} else if (cmd.equals( "-p" ) || cmd.equals( "--port" )) {
-				cmds.remove( i );
-				port = cmds.isEmpty() ? 8080 : Integer.parseInt( cmds.remove( i ));
-				Audit.log( "Using port: "+ port );
-		
-			} else if (cmd.equals( "-s" ) || cmd.equals( "--server" )) {
-				cmds.remove( i );
-				server = cmds.isEmpty() ? "localhost" : cmds.remove( i );
-				Audit.log( "Sending to server: "+ server );
 				
 			} else
 				i++;
@@ -187,10 +176,8 @@ public class Enguage {
 			cmds.prepend( cmd );
 			audit.in( "CLI:", ""+cmds );
 
-			// - remove full stop, if one given -
-			if (cmds.get( cmds.size()-1 ).equals( "." ))
-				cmds.remove( cmds.size()-1 );
-
+			Terminator.stripTerminator( cmds );
+			
 			// ...and interpret
 			audit.out( Enguage.get().mediate( cmds ));
 }	}	}
