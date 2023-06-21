@@ -20,6 +20,7 @@ import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.sys.Shell;
+import org.enguage.util.tag.Tag;
 
 public class Perform {
 	private Perform() {}
@@ -28,18 +29,19 @@ public class Perform {
 	
 	public  static Strings interpret( Strings a ) {
 		if (a.isEmpty()) {
-			audit.error("doCall() fails - not enough params: "+ a.toString());
+			audit.error("perform interpret: not enough params: "+ a.toString());
 		} else {
 			/* Tags.matchValues() now produces:
 			 * 		["a", "b", "c='d'", "e", "f='g'"]
-			 * Sofa.interpret() typically deals with:
-			 * 		["string", "get", "martin", "name"]
+			 * Perform.interpret() typically deals with:
+			 * 		["entity", "get", "martin", "name"]
 			 * 		["colloquial", "both", "'I have'", "'I've'"]
 			 */			
 			String  type = a.remove( 0 );
 			switch (Strings.hash( type )) {
+				case Tag.ID  :       return         Tag.interpret( Attribute.expand(   a ));
 				case Item.id  :      return        Item.interpret( Attribute.expand23( a ));
-				case Link.id  :      return        Link.interpret(                     a );
+				case Link.id  :      return        Link.interpret(                     a  );
 				case Sign.ID  :      return        Sign.interpret( Attribute.expand(   a ));
 				case Audit.ID:       return       Audit.interpret( Attribute.expand(   a ));
 				case Items.id :      return       Items.interpret(                     a  );
@@ -60,7 +62,7 @@ public class Perform {
 				case Transitive.id:  return  Transitive.interpret( Attribute.expand23( a ));
 				case Repertoires.ID: return Repertoires.interpret(                     a  );
 				default :
-					audit.error( "Sofa.hash(): "+ type +".id should be: "+ Strings.hash( type ));
+					audit.error( "Perform:Strings.hash(): "+ type +".id should be: "+ Strings.hash( type ));
 					return Shell.Fail;
 		}	}
 		return Shell.Fail;

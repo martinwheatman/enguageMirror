@@ -65,9 +65,9 @@ public class Config {
 	}	}	
 	private static void loadTag( Tag concepts ) {
 		for (Tag t : concepts.content())
-			if ( t.name.equals( "concept" ) &&
-			    !t.attribute( "op" ).equals( "ignore" ))
-				Concept.load( t.attribute( "id" ));
+			if ( t.name().equals( "concept" ) &&
+			    !t.attributes().value( "op" ).equals( "ignore" ))
+				Concept.load( t.attributes().value( "id" ));
 	}
 	public static int load( String fname ) {
 		int rc = -1;

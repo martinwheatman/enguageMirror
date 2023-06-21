@@ -7,6 +7,8 @@ import org.enguage.sign.symbol.when.Moment;
 import org.enguage.sign.symbol.when.When;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.tag.Token;
+import org.enguage.util.tag.TokenStream;
 
 public class Attribute {
 	
@@ -93,6 +95,25 @@ public class Attribute {
 				)		);
 		}
 		return a; //(Attribute) audit.out( a );
+	}
+	static public Attribute next( TokenStream ts ) {
+		Attribute a = null;
+		
+		if (ts.hasNext()) {
+			Token token = ts.getNext(); // name
+			if (!token.string().matches( "[a-zA-Z_]+"))
+				ts.putNext( token );   // put back '/' or '>'
+			
+			else {
+				ts.getNext(); // read over '='
+				a = new Attribute(
+						token.string(),
+						Strings.trim(
+								Strings.trim( ts.getNext().string(), Attribute.DEF_QUOTE_CH ),
+								Attribute.ALT_QUOTE_CH
+				)		);
+		}	}
+		return a;
 	}
 	
 	// -- toString

@@ -9,6 +9,15 @@ public class Tags extends ArrayList<Tag> {
 	
 	static final         long serialVersionUID = 0;
 	
+	public Tags() {}
+	public Tags(TokenStream ts) {
+		Tag tag;
+		while (ts.hasNext()) {
+			add( tag = new Tag( ts ));
+			if (tag.name().equals(""))
+				break;
+	}	}
+	
 	public boolean equals( Tags ta ) {
 		if (ta == null || size() != ta.size())
 			return false;
@@ -36,14 +45,15 @@ public class Tags extends ArrayList<Tag> {
 	// could be  { [ ">>>", "name1", "" ], [ "/", "name2", "" ], [ "/", "name3", "<<<" ] }.
 	public String toXml( Indentation indent ) {
 		String oldName = "";
-		String str  = "\n"+indent.toString();
+		StringBuilder str  = new StringBuilder();
+		str.append( "\n" + indent.toString());
 		Iterator<Tag> ti = iterator();
 		while (ti.hasNext()) {
 			Tag t = ti.next();
-			str += (t.name.equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent );
-			oldName = t.name;
+			str.append( (t.name().equals( oldName ) ? "\n"+indent.toString() : "") + t.toXml( indent ));
+			oldName = t.name();
 		}
-		return str;
+		return str.toString();
 	}
 	public String toString() {
 		String str="";

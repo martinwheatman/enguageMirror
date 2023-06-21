@@ -1,0 +1,6 @@
+On "when was PHRASE-PERSON born":
+	#debug on;
+	wikipedia PERSON;
+	tag filter span class bday ... : ok , 1926 -4 -21 1948 -11 -14 1950 -8 -15 1960 -2 -19 1964 -3 -10
+	#debug off.
+	

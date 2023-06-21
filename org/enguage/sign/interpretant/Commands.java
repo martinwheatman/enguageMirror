@@ -54,7 +54,7 @@ public class Commands {
 						: result;					  // chs
 	 	audit.debug( "rc="+ rc +", result="+ result +", err="+ errtxt );
 		r.answer( result );
-		r.format( result );
+		r.format( "answer with no format" );
 		r.response( rc );
 		audit.debug( "run result: "+ r );
 	 	return r;

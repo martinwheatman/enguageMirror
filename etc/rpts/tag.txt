@@ -1,0 +1,16 @@
+On "tag OP":
+	perform "tag OP";
+	if not, reply "sorry, usage message here";
+	reply "ok, ...".
+	
+On "tag filter file FILE TAGNAME ATTRNAME ATTRVAL":
+	perform "tag filter file FILE TAGNAME ATTRNAME ATTRVAL";
+	if not, reply "sorry, usage message everywhere";
+	reply "ok, ...".
+	
+On "tag filter TAGNAME ATTRNAME ATTRVAL PHRASE-QUERY":
+	wikipedia QUERY;
+	perform "tag filter TAGNAME ATTRNAME ATTRVAL ...";
+	if not, reply "sorry, usage message there";
+	reply "ok, ...".
+	

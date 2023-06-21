@@ -10,6 +10,7 @@ import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.pattern.Frags;
 import org.enguage.util.Audit;
 import org.enguage.util.Strings;
+import org.enguage.util.tag.TokenStream;
 
 public class Attributes extends ArrayList<Attribute> {
 	static private Audit audit = new Audit( "Attributes" );
@@ -53,6 +54,11 @@ public class Attributes extends ArrayList<Attribute> {
 	public Attributes( ListIterator<String> si ) {
 		Attribute attr;
 		while (null != (attr = Attribute.next( si )))
+			add( attr );
+	}
+	public Attributes( TokenStream ts ) {
+		Attribute attr;
+		while (null != (attr = Attribute.next( ts )))
 			add( attr );
 	}
 	public String toString( String sep ) {

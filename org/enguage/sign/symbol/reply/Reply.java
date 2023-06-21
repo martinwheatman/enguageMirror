@@ -116,11 +116,14 @@ public class Reply {
 	 * Response
 	 */
 	private Response response = new Response();
-	public  int      response() {return response.value();} 
-	public  Reply    response( int i ) {response.value( i ); return this;}
-	public  Reply    response( Strings strs ) {response.setValue( strs ); return this;}
+	public  int      response() {return response.type();} 
+	public  Reply    response( int i ) {response.type( i ); return this;}
+	public  Reply    response( Strings strs ) {
+		response.setType( strs );
+		return this;
+	}
 
-	public  boolean  felicitous() {return response.value() >= Response.N_OK;}
+	public  boolean  felicitous() {return response.type() >= Response.N_OK;}
 
 	/* Answer:
 	 * Multiple answers should now be implemented in a Replies class!
@@ -130,13 +133,14 @@ public class Reply {
 	private Answer answer = new Answer();
 	public  Answer answer() {return answer;}
 	public  Reply  answer( String ans ) {
+		// ans = "FALSE" OR "[ok, ]this is an answer"
 		if (ans != null && !ans.equals( Shell.IGNORE )) {
 			if (!answer.isAppending())
 				answer = new Answer(); // a.nswer = new Strings()
 			answer.setType( ans );
 			answer.add( ans );
 			// type is dependent on answer
-			response.value( response.value() == Response.N_UDU ? Response.N_UDU : answer.type());
+			response.type( response.type() == Response.N_UDU ? Response.N_UDU : answer.type());
 		}
 		return this;
 	}
@@ -155,7 +159,7 @@ public class Reply {
 	}
 	
 	/*
-	 * toStting() ... 
+	 * toString() ... 
 	 */
 	private Strings replyToString() {
 		return  Utterance.externalise(
@@ -182,7 +186,7 @@ public class Reply {
 	}
 	public Strings toStrings() {
 		Strings reply = replyToString();
-		if (understoodIs( Response.N_DNU != response.value() )) {
+		if (understoodIs( Response.N_DNU != response.type() )) {
 			if (!repeated())
 				previous( reply ); // never used
 			
@@ -196,7 +200,7 @@ public class Reply {
 		audit.in("conclude", "");
 		strangeThought("");
 
-		if (Response.N_DNU == response.value()) {
+		if (Response.N_DNU == response.type()) {
 			// put this into reply via Reply.strangeThought()
 			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
 			strangeThought( thought );
@@ -205,7 +209,7 @@ public class Reply {
 			format( new Strings( Response.dnu() + ", ..." ));
 			answer( thought );
 			
-			response.value( Response.N_FAIL );
+			response.type( Response.N_FAIL );
 		}
 		audit.out();
 		return this;

@@ -53,19 +53,19 @@ public class Response {
 	/*
 	 * Response
 	 */
-	private int  value = N_DNU;
-	public  int  value() {return value;}
-	public  void value( int t ) {value = t;}
+	private int  type = N_DNU;
+	public  int  type() {return type;}
+	public  void type( int t ) {type = t;}
 	
-	public  int  setValue( Strings uttr ) {
-		if (value != N_UDU) {
-			     if (uttr.beginsIgnoreCase(    yes )) value =   N_OK;
-			else if (uttr.beginsIgnoreCase( success)) value =   N_OK;
-			else if (uttr.beginsIgnoreCase( failure)) value = N_FAIL;
-			else if (uttr.beginsIgnoreCase(    dnu )) value =  N_DNU;
-			else if (uttr.beginsIgnoreCase(     no )) value =   N_NO;
-			else if (uttr.beginsIgnoreCase(    dnk )) value =  N_DNK;
-			else value = N_CHS;
+	public  int  setType( Strings uttr ) {
+		if (type != N_UDU) {
+			     if (uttr.beginsIgnoreCase(    yes )) type =   N_OK;
+			else if (uttr.beginsIgnoreCase( success)) type =   N_OK;
+			else if (uttr.beginsIgnoreCase( failure)) type = N_FAIL;
+			else if (uttr.beginsIgnoreCase(    dnu )) type =  N_DNU;
+			else if (uttr.beginsIgnoreCase(     no )) type =   N_NO;
+			else if (uttr.beginsIgnoreCase(    dnk )) type =  N_DNK;
+			else type = N_CHS;
 		}
-		return value;
+		return type;
 }	}
