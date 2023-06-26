@@ -4,7 +4,7 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-import org.enguage.util.Audit;
+import org.enguage.util.audit.Audit;
 
 import opt.web.actions.Eng;
 import opt.web.actions.Login;

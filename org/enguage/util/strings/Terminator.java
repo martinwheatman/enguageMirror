@@ -1,4 +1,4 @@
-package org.enguage.util;
+package org.enguage.util.strings;
 
 public class Terminator {
 	

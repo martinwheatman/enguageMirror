@@ -12,10 +12,10 @@ import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.reply.Answer;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.reply.Response;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
-import org.enguage.util.Terminator;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.strings.Terminator;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.tag.Tag;
 
@@ -64,7 +64,7 @@ public class Config {
 				Variable.set( name,  value );
 	}	}	
 	private static void loadTag( Tag concepts ) {
-		for (Tag t : concepts.content())
+		for (Tag t : concepts.children())
 			if ( t.name().equals( "concept" ) &&
 			    !t.attributes().value( "op" ).equals( "ignore" ))
 				Concept.load( t.attributes().value( "id" ));

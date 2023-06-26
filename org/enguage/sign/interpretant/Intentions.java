@@ -6,8 +6,8 @@ import java.util.Iterator;
 import org.enguage.repertoires.Engine;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.reply.Response;
-import org.enguage.util.Audit;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.audit.Audit;
 
 public class Intentions extends ArrayList<Intention> {
 	

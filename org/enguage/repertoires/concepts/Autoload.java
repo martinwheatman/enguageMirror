@@ -7,8 +7,8 @@ import java.util.TreeMap;
 
 import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.Config;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 /** Implements Dynamic Repertoires:
  * attempts to load all words in an utterance as a repertoire.

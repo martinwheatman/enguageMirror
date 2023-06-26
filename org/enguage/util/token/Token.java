@@ -1,4 +1,4 @@
-package org.enguage.util.tag;
+package org.enguage.util.token;
 
 public class Token {
 

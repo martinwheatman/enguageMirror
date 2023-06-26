@@ -1,8 +1,8 @@
 package opt.test;
 
 import org.enguage.Enguage;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Example {
 

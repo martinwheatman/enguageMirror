@@ -16,10 +16,10 @@ import org.enguage.sign.symbol.pattern.Frag;
 import org.enguage.sign.symbol.pronoun.Pronoun;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.reply.Response;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Signs extends TreeMap<Integer,Sign> {
 	        static final long serialVersionUID = 0l;

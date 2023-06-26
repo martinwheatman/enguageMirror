@@ -11,9 +11,9 @@ import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.where.Where;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
-import org.enguage.util.Terminator;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.strings.Terminator;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 

@@ -1,4 +1,4 @@
-package org.enguage.util;
+package org.enguage.util.strings;
 
 // todo: remove use of ArrayList??? or use in throughout??? or LinkedList?
 import java.util.ArrayList;
@@ -28,6 +28,7 @@ import org.enguage.sign.symbol.reply.Answer;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
+import org.enguage.util.audit.Audit;
 
 public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	

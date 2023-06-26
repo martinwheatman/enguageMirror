@@ -3,8 +3,8 @@ package org.enguage.util.algorithm;
 import java.util.ListIterator;
 
 import org.enguage.sign.symbol.number.Number;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Expression {
 	

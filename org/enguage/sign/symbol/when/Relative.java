@@ -4,8 +4,8 @@ import java.util.ListIterator;
 
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.number.Number;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Relative {
 	// "... a week ago last Monday ..."

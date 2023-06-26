@@ -5,10 +5,10 @@ import java.util.ListIterator;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.when.Moment;
 import org.enguage.sign.symbol.when.When;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
-import org.enguage.util.tag.Token;
-import org.enguage.util.tag.TokenStream;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.token.Token;
+import org.enguage.util.token.TokenStream;
 
 public class Attribute {
 	
@@ -37,7 +37,7 @@ public class Attribute {
 	public    String    value( boolean expand ) { return expand ? getValue( value ) : value; }
 	public    Attribute value( String s ) {
 		value = s; // TODO: TBC - what if "martin" -> '"martin"' => :'"martin"': ???
-		quote( quote( value )); // set the quote value against the content
+		if (value != null) quote( quote( value )); // set the quote value against the content
 		return this;
 	}
 	// this retrieves a parameter value from a name parameter
@@ -81,18 +81,20 @@ public class Attribute {
 		Attribute a = null;
 		if (si.hasNext()) {
 			String name = si.next();
-			if (!si.hasNext() || !name.matches( "[a-zA-Z_]+"))
+			if (!name.matches( "[a-zA-Z_]+"))
 				si.previous();
-			else if (!si.hasNext() || !si.next().equals( "=" ))
-				si.previous();   // readahead=2, but...
-				//si.previous(); // don't put ">" back
-			else
-				a = new Attribute(
-						name,
-						Strings.trim(
-								Strings.trim( si.next(), Attribute.DEF_QUOTE_CH ),
-								Attribute.ALT_QUOTE_CH
-				)		);
+			
+			else if (si.hasNext())	
+				if (!si.next().equals( "=" ))
+					si.previous();
+			
+				else
+					a = new Attribute(
+							name,
+							Strings.trim(
+									Strings.trim( si.next(), Attribute.DEF_QUOTE_CH ),
+									Attribute.ALT_QUOTE_CH
+					)		);
 		}
 		return a; //(Attribute) audit.out( a );
 	}
@@ -105,20 +107,27 @@ public class Attribute {
 				ts.putNext( token );   // put back '/' or '>'
 			
 			else {
-				ts.getNext(); // read over '='
-				a = new Attribute(
-						token.string(),
-						Strings.trim(
-								Strings.trim( ts.getNext().string(), Attribute.DEF_QUOTE_CH ),
-								Attribute.ALT_QUOTE_CH
-				)		);
+				String name = token.string();
+				String value = null;
+				
+				if (ts.hasNext()) {
+					Token tmp = ts.getNext(); // read over '='
+					if (!tmp.string().equals( "=" ))
+						ts.putNext( tmp );   // put back '/' or '>'
+					
+					else
+						value = Strings.trim(
+										Strings.trim( ts.getNext().string(), Attribute.DEF_QUOTE_CH ),
+										Attribute.ALT_QUOTE_CH );
+				}
+				a = new Attribute( name, value );
 		}	}
 		return a;
 	}
 	
 	// -- toString
 	static private String asString( String name, char quote, String value ) {
-		return name +"="+ quote + value + quote;
+		return name + (value==null?"":"="+ quote + value + quote);
 	}
 	static public String asString( String name, String value ) {
 		return asString(      // quotes are this way round for a reason!

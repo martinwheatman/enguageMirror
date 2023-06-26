@@ -3,8 +3,8 @@ package org.enguage.sign.object.list;
 import java.util.ArrayList;
 
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Groups {
 	static private Audit audit = new Audit( "Group" );

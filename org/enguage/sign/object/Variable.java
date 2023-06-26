@@ -10,9 +10,9 @@ import java.util.TreeMap;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.pattern.Frags;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Shell;
 
 public class Variable {

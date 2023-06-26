@@ -14,12 +14,12 @@ import org.enguage.sign.symbol.pronoun.Gendered;
 import org.enguage.sign.symbol.pronoun.Pronoun;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.where.Where;
-import org.enguage.util.Audit;
-import org.enguage.util.Indentation;
-import org.enguage.util.Strings;
 import org.enguage.util.algorithm.Expression;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.audit.Indentation;
+import org.enguage.util.strings.Strings;
 
 public class Frags extends ArrayList<Frag> {
 	static final         long serialVersionUID = 0;

@@ -3,7 +3,7 @@ package org.enguage.sign.symbol.pronoun;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.util.Strings;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Shell;
 
 // ////////////////////////////////////////////////////////////////////////

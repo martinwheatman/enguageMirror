@@ -1,16 +1,21 @@
 package org.enguage.util.tag;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.util.Audit;
-import org.enguage.util.Indentation;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.audit.Indentation;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
+import org.enguage.util.token.Token;
+import org.enguage.util.token.TokenStream;
 
 public class Tag {
 	public  static final int              ID = 13553; // #tag ;-)
@@ -28,18 +33,18 @@ public class Tag {
 	public         final Attributes attributes() {return attributes;}
 	
 	private        final Tags       children;
-	public         final Tags       content() {return children;}
+	public         final Tags       children() {return children;}
 	
 	// -- constructors...
 	public Tag( Tag orig ) {
 		name = orig.name();
 		prefix = orig.prefix();
-		children = orig.content(); // no Tags copy constructor
+		children = orig.children(); // no Tags copy constructor
 		attributes = new Attributes( orig.attributes());
 	}
 	public Tag( ListIterator<String> si ) {
 		Strings pref = Strings.copyUntil( si, "<" );
-		String  nm = "";
+		String    nm = "";
 		Attributes a = new Attributes();
 		Tags    cont = new Tags();
 		if (si.hasNext() ) {
@@ -86,26 +91,50 @@ public class Tag {
 	}
 	
 	public Tag( TokenStream ts ) {
-		String     p = doPrefix( ts );
 		String     n = "";
+		String     p = doPrefix( ts );
 		Attributes a = new Attributes();
 		Tags       c = new Tags();
 		
 		if (ts.hasNext()) {
-			Token token = ts.getNext();
+			Token nameToken = ts.getNext();
 			
-			if (token.string().equals( "/" )) {
+			if (nameToken.string().equals( "/" )) {
 				ts.getNext(); // consume name -- found END </tag>
 				ts.getNext(); // consume  ">" -- found END </tag>
 				// return an empty tag... (prefix already done!)
 
 			} else {
-				n = token.string();
+				
+				// consume comments - anomaly in syntax - read over comment?
+				if (nameToken.string().equals( "!" )) {
+					nameToken = ts.getNext(); // DOCTYPE or first '-'
+					if (nameToken.string().equals( "DOCTYPE" )) {
+						ts.type( ts.getNext().string()); // consume type -- e.g. 'html'
+						ts.getNext();                    // consume ">"
+						
+					} else { // read over <!-- comment -->
+						ts.getNext(); // second '-'
+						while (true) {
+							if (ts.getNext().string().equals( "-" ) &&
+								ts.getNext().string().equals( "-" ) &&
+								ts.getNext().string().equals( ">" ))
+								break;
+					}	}
+					p = doPrefix( ts );
+					nameToken = ts.getNext();
+				}
+				// consume comments
+					
+				n = nameToken.string();
 				a = new Attributes( ts );
 				
-				token = ts.getNext();
-				if (token.string().equals( "/" )) // consumed ">" ?
+				nameToken = ts.getNext();
+				if (nameToken.string().equals( "/" )) // consumed ">" ?
 					ts.getNext(); // no, consume ">" -- found STANDALONE <tag/>
+				
+				else if (ts.type().equals( "html" ) && n.equals( "meta" ))
+					; // anomaly in syntax - HTML meta tags have no children AND no "/>" ending!
 				
 				else  // do children....
 					c = new Tags( ts );
@@ -131,16 +160,16 @@ public class Tag {
 	public boolean equals( Tag pattern ) {
 		return  Plural.singular(  prefix.toString()).equals( Plural.singular( pattern.prefix().toString()))
 			&& attributes().matches( pattern.attributes()) // not exact!!!
-			&& content().equals( pattern.content());
+			&& children().equals( pattern.children());
 	}
 	public boolean matches( Tag pattern ) {
 		return Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
 			&& attributes().matches( pattern.attributes())
-			&&    content().matches( pattern.content());
+			&&    children().matches( pattern.children());
 	}
 	public boolean matchesContent( Tag pattern ) {
 		return Plural.singular( prefix().toString()).contains( Plural.singular( pattern.prefix().toString()))
-				&& content().matches( pattern.content());
+				&& children().matches( pattern.children());
 	}
 
 	// *** toString ***********************************************************
@@ -155,7 +184,7 @@ public class Tag {
 				+ (name.equals( "" ) ? "" :
 					("<"+ name
 							+ attributes.toString( attrSep )
-							+ (0 == content().size() ? 
+							+ (0 == children().size() ? 
 									"/>" :
 									( ">"
 									+ children.toXml( indent )
@@ -168,7 +197,7 @@ public class Tag {
 	public String toString() {
 		return prefix().toString() + (name.equals( "" ) ? "" :
 			"<"+ name +" "+ attributes.toString()+  // attrs doesn't have preceding space
-			(content().isEmpty() ?
+			(children().isEmpty() ?
 					"/>" : ( ">"+ children.toString() + "</"+ name +">" )));
 	}
 	public String toText() {
@@ -176,11 +205,11 @@ public class Tag {
 			+ (prefix().toString()==null||prefix().toString().equals("") ? "":" ")
 			+ (name.equals( "" ) ? "" :
 				( name.toUpperCase( Locale.getDefault() ) +" "+
-					(content().isEmpty() ? "" : children.toText() )));
+					(children().isEmpty() ? "" : children.toText() )));
 	}
 	public String toLine() {
 		return prefix().toString()
-				+ (content().isEmpty() ? "" : children.toText() );
+				+ (children().isEmpty() ? "" : children.toText() );
 	}
 	
 	// ************************************************************************
@@ -189,7 +218,7 @@ public class Tag {
 		if (name.equals( nm ))
 			ts.add( this ); // found
 		
-		for (Tag t : content())
+		for (Tag t : children())
 			t.accumulateByName( nm, ts );
 	}
 	public Tags findAllByName( String nm ) {
@@ -202,88 +231,97 @@ public class Tag {
 		if (name.equals( nm ))
 			rc = this; // found
 		else {
-			ArrayList<Tag> ta = content();
+			ArrayList<Tag> ta = children();
 			for (int i=0; i<ta.size() && null == rc; ++i) // find first child
 				rc = ta.get( i ).findByName( nm );
 		}
 		return rc;
 	}
+	
 	// ************************************************************************
 	// ************************************************************************
+	private static final Strings months = new Strings( "January February March April May June July August September October November December" );
+	private static Pattern pattern = Pattern.compile("\\d+");
+
+	private static boolean isDate( String str ) {
+		Strings sa = new Strings( str );
+		return (sa.size() > 1 &&
+				(months.contains( sa.get( 1 )) || // 26 April 1923
+				 pattern.matcher( sa.get( sa.size()-1 )).matches())); // c. 878-879
+	}
+	private static String getDate( Tag tag ) {
+		if (isDate( tag.prefix().trim())) return tag.prefix().trim(); 
+		if (!tag.children().isEmpty())
+			for (Tag child : tag.children())
+				if (isDate( child.prefix().trim())) return child.prefix().trim();
+		return "Unknown";
+	}
+	
 	public static Strings interpret( Strings args ) {
 		audit.in( "interpret", "args="+ args );
 		Strings rc = new Strings( "sorry" ); // Shell.Fail;
 		String cmd = args.remove( 0 );
+		String name = args.remove( 0 );
 		
-		if (cmd.equals( "test" ))
-			rc = new Strings( "tag test success" );
-		
-		else if (cmd.equals( "filter" )) {
-			
-			if (!args.isEmpty()) {
+		if (cmd.equals( "filter" ) && !args.isEmpty()) {
 				
-				Strings testStrings = new Strings();
-				String tagName = args.remove( 0 ); // remove "file" or "span"
-				if (tagName.equals( "file" ) && !args.isEmpty()) {
+			String fName = args.toString( Strings.CONCAT );
+			try (TokenStream ts = new TokenStream( new File( fName ))) {
+				Tag  doc = new Tag( ts );
+				Tags tags = doc.findAllByName( "tr" );
+				for (Tag t : tags) { // process each row
 					
-					String testFileName = Strings.trim( args.remove( 0 ), '"' );
-					testStrings = new Strings( Fs.stringFromFile( testFileName ) );
-					if (!args.isEmpty())
-						tagName = args.remove( 0 ); // remove "file"
-				}
-
-				if (!args.isEmpty()) {
-					String attrName = args.remove( 0 );
+					if (!t.children().isEmpty()) {
+						ListIterator<Tag> ri = t.children().listIterator();
+						if (ri.hasNext()) {
+							Tag cell = ri.next();
+							
+							if (cell.name().equals( "th" )
+								&& !cell.children().isEmpty()
+								&& cell.children().get(0)
+										.prefix().trim().equalsIgnoreCase( name ))
+							{
+								cell = ri.next();
+								if (cell.name().equals( "td" ))
+									rc = new Strings( getDate( cell ));
+							}
+				}	}	}
 				
-					if (!args.isEmpty()) {
-						String attrValue = args.remove( 0 );
-					
-						rc      = new Strings();
-						Tag t   = new Tag( args.isEmpty() ? testStrings.listIterator() : args.listIterator() );
-						Tags ts = t.findAllByName( tagName );
-						if (!ts.isEmpty())
-							for (Tag tag : ts) 
-								for (Tag child : tag.content()) 
-									for (Attribute at : child.attributes())
-										if (attrName.equals(  at.name()  ) &&
-											attrValue.equals( at.value() )    )
-											rc.add( child.content().toString() );
-						if (rc.isEmpty())
-							rc = new Strings( "sorry" );
-					}
-				}
+			} catch (FileNotFoundException fnf) {
+				Audit.log("interpret().filter: File not found: " + fName);
 			}
-		}
+		} else 
+			audit.error( "usage: filter ..." );
+
 		audit.out( rc );
 		return rc;
 	}
+	
 	// ************************************************************************
-	public static void main( String argv[]) {
-		String s = //new Strings(
-			"a<xml type='xml'>b\n"+
-			" <config \n"+
-			"   CLASSPATH=\"/home/martin/ws/Enguage/bin\"\n"+
-			"   DNU=\"I do not understand\" >c\n" +	
-            "   <concepts>d\n"+
-			"     <concept id=\"colloquia\" op=\"load\"/>e\n"+
-			"     <concept id=\"needs\"     op=\"load\"/>f\n"+
-			"     <concept id=\"engine\"    op=\"load\"/>g\n"+
-			"   </concepts>h\n"+
-			"   </config>i\n"+
-			"</xml> j"
-			;
-		//);
-		
-		TokenStream ts = new TokenStream(s.getBytes());
-		Tag tag = new Tag( ts );
-		Audit.log( "tag:"+ tag.toXml());
-		Tags tags = tag.findAllByName("concept");
-		for (Tag child : tags) {
-			Audit.log( "Tag:" + child.name());
+	// Test code...
+	//
+	private static void treePrint( Tag t ) {
+		ListIterator<Tag> ch = t.children().listIterator();
+		if ( !t.name().equals( "" )) {
+			Audit.log( t.name() +" : "+ (t.children().isEmpty() ? "":t.children().get(0).prefix().trim() ));
+			
 			Audit.incr();
-			for (Attribute at : child.attributes())
-				Audit.log(at.name() +"<==>"+ at.value());
-
+			while (ch.hasNext()) 
+				treePrint( ch.next());
+			
 			Audit.decr();
+	}	}
+	public static void main( String argv[]) {
+		if (argv.length > 0) {
+			treePrint(
+				new Tag(
+					new TokenStream(
+						Fs.stringFromFile( argv[ 0 ]).getBytes()
+			)	)	);
+		} else {
+			audit.debugging( true );
+			audit.tracing( true );
+			String[] command = {"filter", "born", "selftest/wiki/Queen_Elizabeth_The_Second"};
+			Audit.log( interpret( new Strings( command )));
 		}
 }	}

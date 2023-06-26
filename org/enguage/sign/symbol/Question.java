@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import org.enguage.sign.symbol.reply.Response;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
-import org.enguage.util.Terminator;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.strings.Terminator;
 
 public class Question {
 	

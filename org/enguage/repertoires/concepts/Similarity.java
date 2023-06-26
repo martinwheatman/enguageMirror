@@ -3,10 +3,10 @@ package org.enguage.repertoires.concepts;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.reply.Response;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Similarity {
 	public  static final String NAME = "similarity";

@@ -2,7 +2,7 @@ package org.enguage.sign.symbol.when;
 
 import java.util.ListIterator;
 
-import org.enguage.util.Audit;
+import org.enguage.util.audit.Audit;
 
 public class Month {
 	public static Audit audit = new Audit( "Month" );

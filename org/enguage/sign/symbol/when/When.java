@@ -2,9 +2,9 @@ package org.enguage.sign.symbol.when;
 
 import java.util.ListIterator;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attributes;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 /*
 import java.util.ArrayList;
 class Strings extends ArrayList<String> {

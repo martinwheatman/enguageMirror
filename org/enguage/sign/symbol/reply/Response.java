@@ -2,7 +2,7 @@ package org.enguage.sign.symbol.reply;
 
 import java.util.Locale;
 
-import org.enguage.util.Strings;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Shell;
 
 public class Response {

@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 
 import org.enguage.Enguage;
 import org.enguage.sign.object.Variable;
-import org.enguage.util.Strings;
+import org.enguage.util.strings.Strings;
 
 public class EnguagePanel extends JPanel {
 	static final long serialVersionUID = 0L;

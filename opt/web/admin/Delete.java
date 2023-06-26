@@ -1,6 +1,7 @@
 package opt.web.admin;
 
-import org.enguage.util.Audit;
+import org.enguage.util.audit.Audit;
+
 import opt.web.admin.users.Users;
 
 public class Delete {

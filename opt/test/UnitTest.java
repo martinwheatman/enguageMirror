@@ -8,8 +8,8 @@ import java.util.Scanner;
 import org.enguage.Enguage;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
 
 /**

@@ -3,8 +3,8 @@ package org.enguage.sign.object;
 import org.enguage.sign.Assets;
 import org.enguage.sign.symbol.when.Day;
 import org.enguage.sign.symbol.when.When;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Shell;
 
 public class Temporal {

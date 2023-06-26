@@ -2,8 +2,8 @@ package org.enguage.sign.symbol.number;
 
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.expr.Function;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Representamen extends Strings {
 	/* {}=repeating 0..n, []=optional

@@ -10,9 +10,9 @@ import java.util.List;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
-import org.enguage.util.Terminator;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.strings.Terminator;
 
 public class Shell {
 

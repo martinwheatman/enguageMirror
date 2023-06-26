@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.enguage.sign.object.sofa.Link;
-import org.enguage.util.Strings;
+import org.enguage.util.strings.Strings;
 
 public class Path {
 	//static private Audit audit = new Audit( "Path" );

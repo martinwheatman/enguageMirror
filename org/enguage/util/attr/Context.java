@@ -2,8 +2,8 @@ package org.enguage.util.attr;
 
 import java.util.ArrayList;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Shell;
 /** Context: a list of attributes, so a list of list of attribute
  *  [ [ one=>123, two=>456,  thr=>789  ],

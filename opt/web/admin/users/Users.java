@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.enguage.util.Audit;
+import org.enguage.util.audit.Audit;
 
 public class Users extends ArrayList<User> {
 		

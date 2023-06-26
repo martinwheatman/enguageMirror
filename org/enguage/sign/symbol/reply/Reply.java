@@ -3,12 +3,12 @@ package org.enguage.sign.symbol.reply;
 import java.util.Locale;
 
 import org.enguage.sign.symbol.Utterance;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
-import org.enguage.util.Terminator;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.strings.Terminator;
 import org.enguage.util.sys.Shell;
 
 public class Reply {

@@ -1,8 +1,8 @@
 package opt.web.actions;
 
 import org.enguage.Enguage;
-import org.enguage.util.Strings;
-import org.enguage.util.Terminator;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.strings.Terminator;
 
 import opt.web.WebRequest;
 

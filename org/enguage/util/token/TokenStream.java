@@ -1,4 +1,4 @@
-package org.enguage.util.tag;
+package org.enguage.util.token;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.enguage.util.Audit;
+import org.enguage.util.audit.Audit;
 
 public class TokenStream implements AutoCloseable {
 
@@ -15,8 +15,8 @@ public class TokenStream implements AutoCloseable {
 
 	private final InputStream is;
 	
-	public TokenStream( String fname ) throws FileNotFoundException {
-		is = new FileInputStream( new File( fname ));
+	public TokenStream( File f ) throws FileNotFoundException {
+		is = new FileInputStream( f );
 	}
 	public TokenStream( byte[] bs ) {
 		is = new ByteArrayInputStream( bs );
@@ -26,6 +26,11 @@ public class TokenStream implements AutoCloseable {
 		try {is.close();} catch (IOException ignore) {};
 	}
 	// ************************************************************************
+	
+	private String type = "unknown";
+	public  String type() {return type;}
+	public  void   type( String t ) {type = t;}
+	
 	private int  readAhead = 0;
 	public  int  readAhead() {return readAhead;}
 	public  void readAhead(int n) {readAhead = n;}
@@ -55,7 +60,8 @@ public class TokenStream implements AutoCloseable {
 			
 			if (Character.isLetter( ch ))
 				while (-1 != (ch = getChar())) 
-					if (Character.isLetter( ch ))
+					if (Character.isLetter( ch ) ||
+						ch == '\'')
 						strbuf.append( (char)ch );
 					else {
 						//Audit.log( "setting readahead to '"+ (char)ch +"'" );
@@ -124,7 +130,7 @@ public class TokenStream implements AutoCloseable {
 	//
 	public static void main( String[] args ) {
 		int i = 0;
-		try (TokenStream ms = new TokenStream( "queen" )) {
+		try (TokenStream ms = new TokenStream( new File( "queen" ))) {
 			
 			while (ms.hasNext() && i++ < 12)
 				Audit.log("===>"+ ms.getNext());

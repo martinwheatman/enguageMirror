@@ -8,9 +8,9 @@ import java.util.Locale;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.pattern.Frags;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
-import org.enguage.util.tag.TokenStream;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.token.TokenStream;
 
 public class Attributes extends ArrayList<Attribute> {
 	static private Audit audit = new Audit( "Attributes" );

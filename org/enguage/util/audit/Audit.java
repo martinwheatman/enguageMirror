@@ -1,10 +1,11 @@
-package org.enguage.util;
+package org.enguage.util.audit;
 
 import java.util.GregorianCalendar;
 
 import org.enguage.repertoires.Repertoires;
 //import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.symbol.reply.Response;
+import org.enguage.util.strings.Strings;
 
 public class Audit {
 	private static final Audit audit = new Audit( "Audit" );

@@ -3,7 +3,8 @@ package org.enguage.util.tag;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.enguage.util.Indentation;
+import org.enguage.util.audit.Indentation;
+import org.enguage.util.token.TokenStream;
 
 public class Tags extends ArrayList<Tag> {
 	

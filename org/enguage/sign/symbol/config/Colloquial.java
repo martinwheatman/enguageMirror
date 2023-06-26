@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Shell;
 
 public class Colloquial {

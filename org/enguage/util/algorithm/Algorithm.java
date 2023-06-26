@@ -3,8 +3,8 @@ package org.enguage.util.algorithm;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 /**
  * 1. What is the sum of x and y.
  *    The sum of x and y is x + y. <<< reply definition 'cos we don't know X or Y

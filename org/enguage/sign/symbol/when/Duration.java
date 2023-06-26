@@ -1,6 +1,6 @@
 package org.enguage.sign.symbol.when;
 
-import org.enguage.util.Audit;
+import org.enguage.util.audit.Audit;
 
 public class Duration {
 	private static String NAME = "Duration";

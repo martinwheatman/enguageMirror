@@ -1,1 +1,1 @@
-On "wikipedia FILE", run "cat FILE".
+On "wikipedia PHRASE-FILE", run "sbin/catFile.sh FILE".

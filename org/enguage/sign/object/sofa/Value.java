@@ -2,9 +2,9 @@ package org.enguage.sign.object.sofa;
 
 import java.io.File;
 
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.sys.Shell;
 

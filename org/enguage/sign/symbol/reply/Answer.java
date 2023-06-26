@@ -1,6 +1,6 @@
 package org.enguage.sign.symbol.reply;
 
-import org.enguage.util.Strings;
+import org.enguage.util.strings.Strings;
 
 public class Answer {
 	public Answer() {/*static class*/}

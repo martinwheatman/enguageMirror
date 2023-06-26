@@ -2,8 +2,8 @@ package org.enguage.sign.symbol.config;
 
 import java.util.Locale;
 
-import org.enguage.util.Strings;
-import org.enguage.util.Terminator;
+import org.enguage.util.strings.Strings;
+import org.enguage.util.strings.Terminator;
 
 
 public class Englishisms {  // English-ism!
