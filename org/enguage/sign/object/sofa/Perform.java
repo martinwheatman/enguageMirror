@@ -18,6 +18,7 @@ import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
+import org.enguage.util.http.Wikipedia;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Shell;
 import org.enguage.util.tag.Tag;
@@ -57,6 +58,7 @@ public class Perform {
 				case Temporal.id :   return    Temporal.interpret( Attribute.expand23( a ));
 				case Function.id :   return    Function.interpret( Attribute.expand23( a ));
 				case Variable.id :   return    Variable.interpret( Attribute.expand23( a ));
+				case Wikipedia.ID:   return   Wikipedia.interpret( Attribute.expand23( a ));
 				case Similarity.ID:  return  Similarity.interpret( Attribute.expand23( a ));
 				case Colloquial.id:  return  Colloquial.interpret(                     a  );
 				case Transitive.id:  return  Transitive.interpret( Attribute.expand23( a ));

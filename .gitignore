@@ -3,6 +3,7 @@ lib/
 tmp/
 selftest
 variable
+var/
 **.class
 .settings/
 .metadata/

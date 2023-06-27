@@ -141,10 +141,11 @@ public class UnitTest {
 			// true=code before comment, false=
 			if (runTestFile( TEST_DIR, test +TEST_EXT ) ||
 			    runTestFile( DICT_DIR, test +DICT_EXT ) ||
-			    runTestFile(  REP_DIR, test +REP_EXT  )   )
+			    runTestFile(  REP_DIR, test +REP_EXT  ) ||
+			    runTestFile( TEST_DIR, test +WIKI_EXT )   )
 				testGrp++;
 		}
-		Audit.log( testGrp +" test group(s) found" );
+		Audit.log( "\n"+ testGrp +" test group(s) found" );
 		Audit.PASSED();
 	}
 
