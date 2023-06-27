@@ -240,7 +240,12 @@ public class Tag {
 	
 	// ************************************************************************
 	// ************************************************************************
-	private static final Strings months = new Strings( "January February March April May June July August September October November December" );
+	private static final Strings months = new Strings(
+			"January  February March "
+			+"April   May      June "
+			+"July    August   September "
+			+"October November December"
+	);
 	private static Pattern pattern = Pattern.compile("\\d+");
 
 	private static boolean isDate( String str ) {

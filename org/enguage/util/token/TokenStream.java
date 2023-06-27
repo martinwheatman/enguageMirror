@@ -20,7 +20,6 @@ public class TokenStream implements AutoCloseable {
 	}
 	public TokenStream( byte[] bs ) {
 		is = new ByteArrayInputStream( bs );
-
 	}
 	public void close() {
 		try {is.close();} catch (IOException ignore) {};

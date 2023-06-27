@@ -43,9 +43,7 @@ subtitle  Why might.../abduction:-.
 i am not baking a cake:  ok, you're not baking a cake.
 am i baking a cake:      no, you're not baking a cake.
 i do not need any eggs:  ok, you don't need any eggs.
-debug on.
 why do i need 3 eggs:    no, you don't need 3 eggs.
-debug off.
 why might i need 3 eggs: because you're baking a cake.
 			
 

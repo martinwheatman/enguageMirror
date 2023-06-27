@@ -1,1 +1,4 @@
-On "wikipedia PHRASE-FILE", run "sbin/catFile.sh FILE".
+## So this is things like "wikipedia query queen elizabeth the second"
+##
+
+On "wikipedia PHRASE-QUERY", perform "wikipedia query QUERY".

@@ -33,6 +33,7 @@ public class UnitTest {
 	private static final String      TEST_EXT = Concept.TEXT_EXT;
 	private static final String      DICT_EXT = Concept.ENTRY_EXT;
 	private static final String       REP_EXT = Concept.REPT_EXT;
+	private static final String      WIKI_EXT = ".wiki";
 	
 	private static final String   TEST_PROMPT = "\nuser> ";
 	private static final String  REPLY_PROMPT = "enguage> ";
@@ -176,6 +177,12 @@ public class UnitTest {
 		doUnitTests( unitTests );
 	}
 		
+	public static void wikiTests() {
+		Strings unitTests = new Strings();
+		unitTests.addAll( listUnitTests( TEST_DIR, WIKI_EXT ));
+		doUnitTests( unitTests );
+	}
+		
 	private static String doArgs(Strings cmds) {
 		// traverse args and strip switches: -v -d -H -p -s
 		String fsys = Enguage.RW_SPACE;
@@ -212,16 +219,18 @@ public class UnitTest {
 				
 		String cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
 		
-		if (cmd.equals(  "-t"    ) ||
-			cmd.equals( "--test" )   )
-		{
+		     if (cmd.equals(  "-t"    ) ||
+		         cmd.equals( "--test" )   )
 			unitTests();
-		}
+		
+		else if (cmd.equals(  "-w"    ) ||
+		         cmd.equals( "--wiki" )   )
+			wikiTests();
+		
 		else if (cmd.equals(  "-T"    ))
-		{
 			doUnitTests( cmds );
 
-		} else if (cmd.equals( "" )) {
+		else if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
 			Enguage.shell().aloudIs( true ).run();
 		

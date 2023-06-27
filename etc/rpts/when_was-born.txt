@@ -11,5 +11,4 @@ On "when did PHRASE-PERSON die":
 	perform "tag filter died ...";
 	if not, reply "sorry, I don't know";
 	reply "PERSON died on ...".
-	
-	
+

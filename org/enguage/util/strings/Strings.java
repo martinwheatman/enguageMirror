@@ -678,6 +678,13 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return this;
 	}
+
+	public Strings capitalise() {
+		int n=0;
+		for(String s : this)
+			set( n++, Character.toUpperCase(s.charAt(0)) + s.substring(1));
+		return this;
+	}
 	private static boolean isCapitalised( String str ) {
 		if (null != str) {
 			int len = str.length();
