@@ -1,3 +1,7 @@
+
+
+On "when was she born": when was PERSON born.
+On "when was  he born": when was PERSON born.
 On "when was PHRASE-PERSON born":
 	wikipedia PERSON;
 	if not, reply "sorry, I don't know PERSON";
@@ -5,6 +9,8 @@ On "when was PHRASE-PERSON born":
 	if not, reply "sorry, I don't know";
 	reply "PERSON was born on ...".
 	
+On "when did she die", when did PERSON die.
+On "when did  he die", when did PERSON die.
 On "when did PHRASE-PERSON die":
 	wikipedia PERSON;
 	if not, reply "sorry, I don't know PERSON";
