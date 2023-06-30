@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.enguage.Enguage;
-import org.enguage.util.Audit;
-import org.enguage.util.Strings;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 // locally defined
 import org.enguage.sign.Assets;
@@ -28,9 +28,10 @@ import java.util.Locale;
 public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
 
     private static final int REQUEST_SPEECH = 1;
-    static private Audit     audit = new Audit( "Enguage" );
+    private static Audit     audit = new Audit( "Enguage" );
 
-    private Enguage e; // created in onInit()
+    //private static Enguage e = null; // created in onCreate()
+    //public  static Enguage enguage() {return e;}
 
     public TextToSpeech tts = null;
     private boolean ttsInitialised = false;
@@ -58,15 +59,11 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             @Override
             public void onClick(View v) {
                 promptSpeechInput();
-
             }
         });
 
         Assets.context( this );
-        e = new Enguage( this.getExternalFilesDir( null ).getPath() );
-
-        // read the config in the background...
-        //new MainActivity.ReadConfig( this ).execute();
+        com.yagadi.Enguage.enguage( new Enguage( this.getExternalFilesDir( null ).getPath() ));
     }
 
     public void onInit(int code) {
@@ -128,17 +125,27 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                     ArrayList<String> saidArray =
                             data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
                     String said = saidArray.get( 0 );
+                    //display messages in IM format in linear layout
+                    ll_messages.addView( createTv( said,    getResources().getColor(R.color.colorPrimary), true ), 0);
 
                     Log.e( ">>>>>>>>>>UTTERANCE>>> ", said);
                     // interpret what is said...
                     // ...in case of config failure, repeat what was said
-                    String  toSpeak = e.mediate( new Strings( said )).toString();
+                    //String  toSpeak = e.mediate( new Strings( said )).toString();
+                    com.yagadi.Enguage enguage = new com.yagadi.Enguage(said);
+                    Thread thread = new Thread( enguage );
+                    thread.start();
+                    try {
+                        thread.join();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    String toSpeak = enguage.toString();
                     Toast.makeText( getApplicationContext(), toSpeak, Toast.LENGTH_SHORT ).show();
                     Log.e ( ">>>>>>>>>>>REPLY>>> ", toSpeak );
 
                     //display messages in IM format in linear layout
-                    ll_messages.addView( createTv( said,    getResources().getColor(R.color.colorPrimary), true ));
-                    ll_messages.addView( createTv( toSpeak, getResources().getColor(R.color.colorPrimaryDark), false));
+                    ll_messages.addView( createTv( toSpeak, getResources().getColor(R.color.colorPrimaryDark), false), 0);
 
                     if (null != tts) {
                         tts.stop();

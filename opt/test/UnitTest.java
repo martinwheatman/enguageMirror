@@ -45,11 +45,11 @@ public class UnitTest {
 		if (expected == null || !expected.equals( "-" ))
 			Audit.log( TEST_PROMPT+ cmd +".");
 		
-		Strings reply = Enguage.get().mediate( new Strings( cmd ));
+		String reply = Enguage.get().mediate( cmd );
 
 		if (expected == null || !expected.equals( "-" ))
 		
-			if (expected == null || reply.equalsIgnoreCase( new Strings( expected )))
+			if (expected == null || reply.equalsIgnoreCase( expected ))
 				Audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
 				
 			else if (unexpected == null)                // no second chance
@@ -59,7 +59,7 @@ public class UnitTest {
 					"expected: '"+ expected +"' "
 				);
 		
-			else if (reply.equalsIgnoreCase( new Strings( unexpected )))
+			else if (reply.equalsIgnoreCase( unexpected ))
 				Audit.passed( REPLY_PROMPT+ reply +".\n" );
 			
 			else                                        // second chance failed too!

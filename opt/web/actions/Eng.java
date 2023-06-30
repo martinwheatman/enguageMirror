@@ -42,15 +42,17 @@ public class Eng {
 						Terminator.stripTerminator(
 								new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
 										.normalise() // this will separate.the terminator
-						)
+						).toString()
 				  )
 				+ "</strong></center></P>";
 	}
 	private static String viaUrl( String uid, String[] params ) {
 		String reply =  Enguage.get().mediate(
 							uid,
-							new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
-						).toString();
+							new Strings(
+									params[ 1 ].split( "=" )[ 1 ].split( "%20" )
+							).toString()
+						);
 		return reply;
 	}
 	public static String getReply( WebRequest r, String cmd, String[] params ) {

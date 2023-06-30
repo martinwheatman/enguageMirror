@@ -17,9 +17,6 @@ public class Wikipedia {
 	private static String cache = Enguage.RW_SPACE+"wiki"+File.separator;
 	private static String qbase = "https://en.wikipedia.org/w/index.php?title=";
 
-	// ************************************************************************
-	// This file should replace catFile.sh ;-)
-	// 
 	public static Strings interpret( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );
 		Strings rc = Shell.Fail;

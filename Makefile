@@ -9,6 +9,7 @@ default:
 
 install: android
 	cp -a etc ${HOME}/StudioProjects/Enguage/app/src/main/assets
+	cp -a lib/anduage.jar ${HOME}/StudioProjects/Enguage/app/libs
 
 flatpak: jar
 	(cd opt/flatpak; make install)

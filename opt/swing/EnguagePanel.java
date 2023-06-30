@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 
 import org.enguage.Enguage;
 import org.enguage.sign.object.Variable;
-import org.enguage.util.strings.Strings;
 
 public class EnguagePanel extends JPanel {
 	static final long serialVersionUID = 0L;
@@ -84,9 +83,9 @@ public class EnguagePanel extends JPanel {
 		}
 		public void actionPerformed(ActionEvent e) {
 			String uid= "swing"; // see ./var/swing
-			Strings utterance = new Strings( t1.getText() );
-			Strings reply =  Enguage.get().mediate( uid, utterance );
-			t2.setText( reply.toString() );
+			String utterance = t1.getText();
+			String reply = Enguage.get().mediate( uid, utterance );
+			t2.setText( reply );
 			t2.setBackground( 
 				whatColourShouldIbe( t2.getBackground() )
 			);

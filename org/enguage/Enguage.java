@@ -93,17 +93,17 @@ public class Enguage {
 		audit.out();
 		return reply;
 	}
-	public Strings mediate( Strings said ) { return mediate( Overlay.DEFAULT_USERID, said );}
-	public Strings mediate( String uid, Strings said ) {
+	public String mediate( String said ) {return mediate( Overlay.DEFAULT_USERID, said );}
+	public String mediate( String uid, String said ) {
 		audit.in( "mediate", "uid="+uid+", said="+said );
 		Strings reply = new Strings();
-		for (Strings conj : Concept.conjuntionAlley( said )) {
+		for (Strings conj : Concept.conjuntionAlley( new Strings( said ))) {
 			if (!reply.isEmpty()) reply.add( "and" );
 			Strings tmp = mediateSingle( uid, conj );
 			reply.addAll( tmp );
 		}
 		audit.out( reply );
-		return reply;
+		return reply.toString();
 	}
 	
 	/*
@@ -179,5 +179,5 @@ public class Enguage {
 			Terminator.stripTerminator( cmds );
 			
 			// ...and interpret
-			audit.out( Enguage.get().mediate( cmds ));
+			audit.out( Enguage.get().mediate( cmds.toString() ));
 }	}	}

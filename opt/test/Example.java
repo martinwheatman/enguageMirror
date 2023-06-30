@@ -6,15 +6,16 @@ import org.enguage.util.strings.Strings;
 
 public class Example {
 
-	private static final String[] defaultUtterance = {"i", "need", "a", "coffee"};
+	private static final String defaultUtterance = "i need a coffee";
 
 	public static void main( String[] args ) {
 		// "Strings" is simply an array of 'String'
-		Strings utterance = new Strings( args.length==0 ? defaultUtterance : args );
+		String utterance = args.length==0 ? 
+								defaultUtterance
+								: new Strings(args).toString();
 		Enguage enguage = new Enguage(); // default space is Enguage.RW_SPACE 
 		
-		Strings reply = enguage.mediate( utterance );
-		
+		String reply = enguage.mediate( utterance );
 		Audit.log( reply );
 	}
 }
