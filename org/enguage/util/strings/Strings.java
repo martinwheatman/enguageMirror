@@ -1050,6 +1050,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 	}
 	// TODO: tidyup as non-static!
 	public static String fromCamelCase( String in ) {
+		if (in.charAt( 0 ) == '"') return in;
 		String out = "";
 		int sz = in.length();
 		char ch;

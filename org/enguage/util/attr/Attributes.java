@@ -106,6 +106,13 @@ public class Attributes extends ArrayList<Attribute> {
 		return value( from.name() ).equalsIgnoreCase( from.value() )
 			&& value(   to.name() ).equalsIgnoreCase(   to.value() );
 	}
+	public boolean contains( String name, String value ) {
+		for (Attribute a : this)
+			if (a.equals( name, value ))
+				return true;
+		return false;
+	}
+
 	public Attribute first() {
 		ListIterator<Attribute> li = listIterator();
 		return li.hasNext() ? li.next() : null; 

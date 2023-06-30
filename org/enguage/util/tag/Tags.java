@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.util.audit.Indentation;
+import org.enguage.util.strings.Strings;
 import org.enguage.util.token.TokenStream;
 
 public class Tags extends ArrayList<Tag> {
@@ -65,12 +66,12 @@ public class Tags extends ArrayList<Tag> {
 		}
 		return str;
 	}
-	public String toText() {
-		String str="";
+	public Strings toStrings( String filter ) {
+		Strings rc = new Strings();
+		
 		Iterator<Tag> ti = iterator();
-		while (ti.hasNext()) {
-			str += ti.next().toText();
-			if (ti.hasNext()) str += " ";
-		}
-		return str;
+		while (ti.hasNext())
+			rc.add( ti.next().toString());
+		
+		return rc; 
 }	}

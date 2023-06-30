@@ -8,6 +8,7 @@
 			IK="i know"
 			TTL="5"
 			TERMS=". ? !"
+			URL="https://en.wikipedia.org/w/index.php?title="
 			REPEATFORMAT="i said, ... ."
 			ANDCONJUNCTIONS="and"
 			 ORCONJUNCTIONS="or"

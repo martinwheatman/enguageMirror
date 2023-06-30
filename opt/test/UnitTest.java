@@ -20,6 +20,8 @@ public class UnitTest {
 	
 	private static final Audit          audit = new Audit( "UnitTest" );
 
+	private static final String   UT_LOCATION = "./selftest";
+	
 	private static final String COMMENT_START = "#";
 	private static final String    TEST_START = "]";
 	private static final String     LINE_TERM = ".";
@@ -49,7 +51,7 @@ public class UnitTest {
 
 		if (expected == null || !expected.equals( "-" ))
 		
-			if (expected == null || reply.equalsIgnoreCase( expected ))
+			if (expected == null || new Strings(reply).equalsIgnoreCase( new Strings(expected) ))
 				Audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
 				
 			else if (unexpected == null)                // no second chance
@@ -59,7 +61,7 @@ public class UnitTest {
 					"expected: '"+ expected +"' "
 				);
 		
-			else if (reply.equalsIgnoreCase( unexpected ))
+			else if (new Strings(reply).equalsIgnoreCase( new Strings(unexpected) ))
 				Audit.passed( REPLY_PROMPT+ reply +".\n" );
 			
 			else                                        // second chance failed too!
@@ -125,7 +127,7 @@ public class UnitTest {
 	private static void doUnitTests( Strings tests ) {
 
 		// remove old test data
-		String fsys = "./selftest";
+		String fsys = UT_LOCATION;
 		Fs.root( fsys );
 
 		//run test groups
@@ -133,7 +135,7 @@ public class UnitTest {
 		int testGrp = 0;
 
 		for (String test : tests) {
-			if (!Fs.destroy( fsys ))
+			if (!Fs.destroy( fsys + "/uid" )) // preserve wiki
 				audit.FATAL( "failed to remove old database - "+ fsys );
 			
 			Audit.title( "TEST: "+ test );
@@ -186,7 +188,7 @@ public class UnitTest {
 		
 	private static String doArgs(Strings cmds) {
 		// traverse args and strip switches: -v -d -H -p -s
-		String fsys = Enguage.RW_SPACE;
+		String fsys = UT_LOCATION;
 		String cmd;
 		int i = 0;
 		while (i < cmds.size()) {

@@ -60,6 +60,16 @@ public class Overlay {
 	public  static Overlay get() {return overlay;}
 	public  static void    set( Overlay o ) {overlay = o;}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// --- object space - just write directly into Fs.root()
+	// ---
+	private static String root = "";
+	private static void   root( String uid ) {
+		root = Fs.root()+ uid +File.separator;
+		new File( root ).mkdirs();
+	}
+	
 	
 	private Path p;
 	public Strings list( String dname ) {
@@ -112,16 +122,6 @@ public class Overlay {
  
 	public Overlay() {
 		p = new Path( System.getProperty( "user.dir" ));
-	}
-	
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	// --- object space - just write directly into Fs.root()
-	// ---
-	private static String root = "";
-	public  static void   root( String uid ) {
-		root = Fs.root()+ uid +File.separator;
-		new File( root ).mkdirs();
 	}
 	
 	// ------------------------------------------------------------------------

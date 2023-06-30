@@ -42,7 +42,7 @@ public class Http implements AutoCloseable {
 		{
 			String line;
 			while (null != (line = reader.readLine()))
-				response.append(line);
+				response.append( line+"\n" );
 			
 		} catch (IOException e) {
 			e.printStackTrace();

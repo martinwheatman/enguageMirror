@@ -2,9 +2,9 @@ package org.enguage.util.tag;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.enguage.sign.symbol.config.Plural;
@@ -133,7 +133,11 @@ public class Tag {
 				if (nameToken.string().equals( "/" )) // consumed ">" ?
 					ts.getNext(); // no, consume ">" -- found STANDALONE <tag/>
 				
-				else if (ts.type().equals( "html" ) && n.equals( "meta" ))
+				else if (ts.type().equals( "html"  ) &&
+						(n.equals( "meta"  ) ||
+						 n.equals( "input" ) ||
+						 n.equals( "link"  ) ||
+						 n.equals( "br"    )   ))
 					; // anomaly in syntax - HTML meta tags have no children AND no "/>" ending!
 				
 				else  // do children....
@@ -200,16 +204,32 @@ public class Tag {
 			(children().isEmpty() ?
 					"/>" : ( ">"+ children.toString() + "</"+ name +">" )));
 	}
-	public String toText() {
-		return prefix().toString()
-			+ (prefix().toString()==null||prefix().toString().equals("") ? "":" ")
-			+ (name.equals( "" ) ? "" :
-				( name.toUpperCase( Locale.getDefault() ) +" "+
-					(children().isEmpty() ? "" : children.toText() )));
-	}
 	public String toLine() {
 		return prefix().toString()
-				+ (children().isEmpty() ? "" : children.toText() );
+				+ (children().isEmpty() ? "" : children.toStrings("").toString() );
+	}
+	
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	public Strings contentToStrings( String separator ) {
+		audit.in("contentToStrings", "sep="+ separator );
+		String tmp = "";
+		Strings sb = new Strings();
+		for (Tag child : children()) {
+			if (!tmp.equals( "" )) tmp += " ";
+			tmp += child.prefix();
+			
+			if (!child.attributes().contains("style", "display:none"))
+				tmp += child.contentToStrings( separator ).toString();
+			
+			if (child.name().equals( separator )) {
+				sb.add( tmp );
+				tmp = "";
+		}	}
+		
+		if (!tmp.equals( "" )) sb.add( tmp );
+		audit.out( "Returning: "+ sb.toString( Strings.DQCSV ));
+		return sb;
 	}
 	
 	// ************************************************************************
@@ -246,19 +266,36 @@ public class Tag {
 			+"July    August   September "
 			+"October November December"
 	);
-	private static Pattern pattern = Pattern.compile("\\d+");
+	private static Pattern digits = Pattern.compile("\\d+");
 
 	private static boolean isDate( String str ) {
-		Strings sa = new Strings( str );
-		return (sa.size() > 1 &&
-				(months.contains( sa.get( 1 )) || // 26 April 1923
-				 pattern.matcher( sa.get( sa.size()-1 )).matches())); // c. 878-879
+		return isDate( new Strings( str ));
 	}
-	private static String getDate( Tag tag ) {
-		if (isDate( tag.prefix().trim())) return tag.prefix().trim(); 
-		if (!tag.children().isEmpty())
-			for (Tag child : tag.children())
-				if (isDate( child.prefix().trim())) return child.prefix().trim();
+	private static boolean isDate( Strings strs ) {
+		
+		// This removes the age qualifiers on death dates.
+		Strings sa = Strings.copyUntil( strs.listIterator(), "(" );
+		
+		switch (sa.size()) {
+		case 3: // 23 April 1642
+			return 	 digits.matcher( sa.get( 0 )).matches() &&
+					months.contains( sa.get( 1 )) &&
+					 digits.matcher( sa.get( 2 )).matches();
+		case 4: // April 23, 1642
+			return months.contains( sa.get( 0 )) &&
+					digits.matcher( sa.get( 1 )).matches() &&
+					                sa.get( 2 ).equals( "," ) &&
+					digits.matcher( sa.get( 3 )).matches();
+		default: // c. 1642-1643
+			return (sa.size() > 1 &&
+					sa.get( 0 ).equals( "c" )) &&
+					digits.matcher( sa.get( sa.size()-1 )).matches(); // c. 878-879
+		}
+	}
+	private static String getDate( Strings strs ) {
+		if (!strs.isEmpty())
+			for (String s : strs)
+				if (isDate( s )) return s;
 		return "Unknown";
 	}
 	
@@ -269,8 +306,11 @@ public class Tag {
 		String name = args.remove( 0 );
 		
 		if (cmd.equals( "filter" ) && !args.isEmpty()) {
-				
-			String fName = args.toString( Strings.CONCAT );
+			
+			// Wikipedia returns double quoted "answer" (fname)
+			String fName = Strings.trim( args.remove(0), '"' );
+			audit.debug( "Filtering: "+ fName );
+
 			try (TokenStream ts = new TokenStream( new File( fName ))) {
 				Tag  doc = new Tag( ts );
 				Tags tags = doc.findAllByName( "tr" );
@@ -280,15 +320,23 @@ public class Tag {
 						ListIterator<Tag> ri = t.children().listIterator();
 						if (ri.hasNext()) {
 							Tag cell = ri.next();
-							
+
 							if (cell.name().equals( "th" )
 								&& !cell.children().isEmpty()
-								&& cell.children().get(0)
+								&&  cell.children().get(0)
 										.prefix().trim().equalsIgnoreCase( name ))
 							{
 								cell = ri.next();
-								if (cell.name().equals( "td" ))
-									rc = new Strings( getDate( cell ));
+								if (cell.name().equals( "td" )) {
+									//Audit.log( "Cell value: "+ cell.contentToStrings( "br" ));
+									String date = getDate( cell.contentToStrings( "br" ) );
+									rc = new Strings(
+											date.equals( "Unknown" ) ?
+												"sorry, i don't know"
+												: date
+									);
+									break;
+								}
 							}
 				}	}	}
 				
@@ -306,11 +354,18 @@ public class Tag {
 	// Test code...
 	//
 	private static void treePrint( Tag t ) {
-		ListIterator<Tag> ch = t.children().listIterator();
-		if ( !t.name().equals( "" )) {
-			Audit.log( t.name() +" : "+ (t.children().isEmpty() ? "":t.children().get(0).prefix().trim() ));
-			
+		if ( !t.name().equals( "" ) &&
+				!t.name().equals( "meta" )&&
+				!t.name().equals( "link" )&&
+				!t.name().equals( "script" ))
+		{
+			Audit.log( t.name() +" : "+
+					(t.children().isEmpty() ?
+							t.name().equals( "br") ? t.prefix() : ""
+							:t.children().get(0).prefix().trim() ));
 			Audit.incr();
+			
+			ListIterator<Tag> ch = t.children().listIterator();
 			while (ch.hasNext()) 
 				treePrint( ch.next());
 			
@@ -318,15 +373,20 @@ public class Tag {
 	}	}
 	public static void main( String argv[]) {
 		if (argv.length > 0) {
-			treePrint(
-				new Tag(
-					new TokenStream(
-						Fs.stringFromFile( argv[ 0 ]).getBytes()
-			)	)	);
+			try {
+				treePrint(
+					new Tag(
+						new TokenStream(
+							Fs.stringFromFile( argv[ 0 ]).getBytes("UTF-8")
+				)	)	);
+			} catch (UnsupportedEncodingException x) {
+				audit.error( "unhandled charset exception" );
+			}
 		} else {
 			audit.debugging( true );
 			audit.tracing( true );
-			String[] command = {"filter", "born", "selftest/wiki/Queen_Elizabeth_The_Second"};
+			String[] command = {"filter", "born", "\"selftest/wiki/Queen_Elizabeth_The_Second\""};
 			Audit.log( interpret( new Strings( command )));
 		}
-}	}
+	}	
+}

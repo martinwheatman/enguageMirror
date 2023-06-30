@@ -16,17 +16,17 @@ public class Fs {
 	//private static Audit audit = new Audit( "Fs" )
 	
 	private static String root = ".";
-	public static  String root() { return root; }
-	public static  void   root( String name ) {
+	public  static String root() { return root; }
+	public  static void   root( String name ) {
 		root = name + File.separator;
 		new File( root ).mkdirs();
 	}
 
 	// Composite specific
-	public static boolean createEntity( String name ) { return new File( name ).mkdirs(); }
-	public static boolean renameEntity( String from, String to ) { return new File( from ).renameTo( new File( to )); }
-	public static boolean existsEntity( String name ) { return new File( name ).isDirectory(); }
-	public static boolean destroyEntity( String name ) { return new File( name ).delete(); }
+	public static boolean createEntity( String name ) {return new File( name ).mkdirs(); }
+	public static boolean renameEntity( String from, String to ) {return new File( from ).renameTo( new File( to )); }
+	public static boolean existsEntity( String name ) {return new File( name ).isDirectory(); }
+	public static boolean destroyEntity( String name ) {return new File( name ).delete(); }
 	// General
 	public static boolean create( String name ) {
 		if (name == null)

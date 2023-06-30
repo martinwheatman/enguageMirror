@@ -48,8 +48,12 @@ public class Attribute {
 			from = new Strings( new Attribute( from.get( 0 )).value() );
 		return from;
 	}
+	//
+	public boolean equals(String nm, String val) {
+		return name.equals( nm ) && value.equals( val );
+	}
 	
-	// --- c'tors ---
+	// ---
 	public static boolean isAttribute( String s ) {
 		// this defines attribute as:xxxxx='y y y y y'
 		// this, ultimately,  may be:xxxxxx="y y y y xxxx='y y y's y'"
@@ -63,7 +67,7 @@ public class Attribute {
 		int n = s.indexOf( "=" );
 		return -1 != n ? Strings.stripAttrQuotes( s.substring( 1+n )) : s;
 	}
-	// --- 
+	// --- c'tors --- 
 	public Attribute( String s ) { this( getName( s ), isAttribute( s ) ? valueFromAttribute( s ) : "" );}
 	public Attribute( String nm, String val ) {
 		name( nm );
@@ -75,52 +79,96 @@ public class Attribute {
 		} else
 			value( val );
 	}
-	// --- String list factory
-	static public Attribute next( ListIterator<String> si ) {
-		//audit.in( "next", "si="+Strings.peek( si ));
-		Attribute a = null;
-		if (si.hasNext()) {
+	/* --- GET NAME:  name = "value"
+	 * name ::= <alphas>['-'<alphas>|] -> '=' (or '/' or '>' ?)
+	 * 
+	 * Using real data from wikipedia (from TokenStream) attribute names
+	 * often have hypenated names, particularly aria names. 
+	 * Separating this out here, into getName for both ListIterator and
+	 * TokenStreams.
+	 */
+	private static String getName( TokenStream ts ) {
+		Token token;
+		StringBuilder sb = new StringBuilder();
+		while (ts.hasNext()) {
+			token = ts.getNext();
+			if (token.string().matches( "[a-zA-Z_]+")) {
+				sb.append( token.string() );
+				
+				if (ts.hasNext()) { // do '-' and loop around
+					token = ts.getNext();
+					if (token.string().equals( "-" )) {
+						sb.append( token.string() );
+					} else { // '=' ???
+						ts.putNext( token );
+						break;
+				}	}
+				
+			} else { // '/' OR '>' ???
+				ts.putNext( token );
+				break;
+		}	}
+		return sb.toString();
+	}
+	private static String getName( ListIterator<String> si ) {
+		// name ::= <alphas>['-'<alphas>|] -> '=' (or '/' or '>' ?)
+		StringBuilder sb = new StringBuilder();
+		while (si.hasNext()) {
 			String name = si.next();
-			if (!name.matches( "[a-zA-Z_]+"))
-				si.previous();
+			if (name.matches( "[a-zA-Z_]+")) {
+				sb.append( name );
+				
+				if (si.hasNext()) {
+					name = si.next();
+					if (name.equals( "-" )) {
+						sb.append( name );
+					} else { // '=' ???
+						si.previous();
+						break;
+				}	}
+				
+			} else {
+				si.previous(); // '/' OR '>'
+				break;
+		}	}
+		return sb.toString();
+	}
+	public static Attribute next( ListIterator<String> si ) {
+		Attribute a = null;
+		String name = getName( si );
+		if (!name.equals( "" )) {
 			
-			else if (si.hasNext())	
+			if (si.hasNext()) {
 				if (!si.next().equals( "=" ))
 					si.previous();
 			
-				else
+				else if (si.hasNext())
 					a = new Attribute(
 							name,
 							Strings.trim(
 									Strings.trim( si.next(), Attribute.DEF_QUOTE_CH ),
 									Attribute.ALT_QUOTE_CH
 					)		);
-		}
-		return a; //(Attribute) audit.out( a );
+		}	}
+		return a;
 	}
 	static public Attribute next( TokenStream ts ) {
 		Attribute a = null;
-		
-		if (ts.hasNext()) {
-			Token token = ts.getNext(); // name
-			if (!token.string().matches( "[a-zA-Z_]+"))
-				ts.putNext( token );   // put back '/' or '>'
-			
-			else {
-				String name = token.string();
-				String value = null;
+		String name = getName( ts );
+		if (!name.equals( "" )) {
 				
-				if (ts.hasNext()) {
-					Token tmp = ts.getNext(); // read over '='
-					if (!tmp.string().equals( "=" ))
-						ts.putNext( tmp );   // put back '/' or '>'
-					
-					else
-						value = Strings.trim(
-										Strings.trim( ts.getNext().string(), Attribute.DEF_QUOTE_CH ),
-										Attribute.ALT_QUOTE_CH );
-				}
-				a = new Attribute( name, value );
+			if (ts.hasNext()) {
+				Token token = ts.getNext();
+				if (!token.string().equals( "=" ))
+					ts.putNext( token );   // put back '/' or '>'
+				
+				else if (ts.hasNext())
+					a = new Attribute(
+							name, 
+							Strings.trim(
+									Strings.trim( ts.getNext().string(), Attribute.DEF_QUOTE_CH ),
+									Attribute.ALT_QUOTE_CH
+					)		);
 		}	}
 		return a;
 	}

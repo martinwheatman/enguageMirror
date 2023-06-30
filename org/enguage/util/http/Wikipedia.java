@@ -3,7 +3,6 @@ package org.enguage.util.http;
 import java.io.File;
 import java.io.IOException;
 
-import org.enguage.Enguage;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -14,8 +13,9 @@ public class Wikipedia {
 	public  static final int      ID = 277584273;
 	private static final Audit audit = new Audit("Wikipedia");
 	
-	private static String cache = Enguage.RW_SPACE+"wiki"+File.separator;
-	private static String qbase = "https://en.wikipedia.org/w/index.php?title=";
+	private static String cache = Fs.root()+"wiki"+File.separator;
+	private static String url = "https://en.wikipedia.org/w/index.php?title=";
+	public  static void   url( String u ) {url=u;}
 
 	public static Strings interpret( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );
@@ -23,23 +23,25 @@ public class Wikipedia {
 		String cmd = cmds.remove(0);
 		
 		if (cmd.equals( "query" )) {
-			String query = cmds.normalise().capitalise().toString( Strings.UNDERSC );
+			// "nelson mandela" => "Nelson_Mandela"
+			String title = cmds.normalise()      // => ["nelson", "mandela"]
+					.capitalise()                // => ["Nelson", "Mandela"]
+					.toString( Strings.UNDERSC );// => "Nelson_Mandela"
 			
-			if (new File( cache+query ).exists()) {
-				audit.debug( "file found: "+ cache+query );
-				rc = new Strings().append( cache+query );
+			if (new File( cache+title ).exists()) {
+				rc = new Strings().append( "\""+ cache + title +"\"" );
+				audit.debug( "Found: "+ rc );
 
 			} else {
-				String url=qbase+query;
-				try (Http http = new Http( url )) {
+				try (Http http = new Http( url+title )) {
 					
-					audit.debug( "creating: "+ cache+query );
+					audit.debug( "Downloading: "+ cache+title );
 					if (http.responseCode() == 200) {
 						Fs.stringToFile(
-								cache+query,
+								cache+title,
 								http.response()
 						);
-						rc = new Strings().append( cache+query );
+						rc = new Strings().append( "\""+ cache + title +"\"" );
 					}
 					
 				} catch (IOException e) {

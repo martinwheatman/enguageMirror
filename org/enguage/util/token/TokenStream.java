@@ -32,23 +32,37 @@ public class TokenStream implements AutoCloseable {
 	
 	private int  readAhead = 0;
 	public  int  readAhead() {return readAhead;}
-	public  void readAhead(int n) {readAhead = n;}
+	public  void readAhead(int n) {readAhead = n==160?32:n;}
 	
 	public  int  getChar() throws IOException {
-		if (readAhead == 0)
-			return is.read();
+		
+		if (readAhead == 0) return is.read();
+		
 		int ch = readAhead;
-		readAhead = 0;
-		return ch;
+		if (ch != (int)'&') {
+			readAhead = 0;
+			return ch;
+		} else {
+			ch = is.read();
+			if (ch != '#') {
+				readAhead( ch );
+				return (int)' '; // don't return '&'
+			} else {
+				while (ch != ';')
+					ch = is.read();
+				return ' ';
+			}
+		}
 	}
 	
 	private Token getToken() {
-		audit.in( "Token", "<fis> + "+ (readAhead()==0?"0":(char)readAhead()) );
 		StringBuilder wspbuf = new StringBuilder();
 		StringBuilder strbuf = new StringBuilder();
 		
 		try {
 			int ch;
+			
+			//process whitespace
 			while (-1 != (ch = getChar())) 
 				if (Character.isWhitespace( ch ))
 					wspbuf.append( (char)ch );
@@ -57,13 +71,14 @@ public class TokenStream implements AutoCloseable {
 					break;
 				}
 			
+			// now process that non-whitespace char
 			if (Character.isLetter( ch ))
 				while (-1 != (ch = getChar())) 
 					if (Character.isLetter( ch ) ||
-						ch == '\'')
+						Character.isDigit(  ch ) || // alphanums
+						ch == '\'')                 // embedded apostrophe's
 						strbuf.append( (char)ch );
 					else {
-						//Audit.log( "setting readahead to '"+ (char)ch +"'" );
 						readAhead( ch );
 						break;
 					}
@@ -79,18 +94,27 @@ public class TokenStream implements AutoCloseable {
 			
 			else if ('"' == ch)
 				while (-1 != (ch = getChar())) 
-					if ('"' != ch )
+					if ('"' != ch ) {
+						if ('\\' == ch ) ch = getChar();
 						strbuf.append( (char)ch );
-					else {
+					} else {
 						strbuf.append( (char)ch );
+						{	/* a bug in wikipedia places a double quote at the end
+							 * the mobile 'search' input widget.
+							 */
+							ch = getChar();
+							if ('"' != ch )
+								readAhead( ch );
+						}
 						break;
 					}
 			
 			else if ('\'' == ch)
 				while (-1 != (ch = getChar())) 
-					if ('\'' != ch )
+					if ('\'' != ch ) {
+						if ('\\' == ch ) ch = getChar();
 						strbuf.append( (char)ch );
-					else {
+					} else {
 						strbuf.append( (char)ch );
 						break;
 					}
@@ -98,7 +122,6 @@ public class TokenStream implements AutoCloseable {
 		} catch(IOException ignore) {
 			audit.error( "doPrefix(): error reading chars" );
 		}
-		audit.out( strbuf.toString() );
 		return new Token( wspbuf.toString(), strbuf.toString() );
 	}
 	
