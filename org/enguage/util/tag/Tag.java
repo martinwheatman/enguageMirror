@@ -1,19 +1,15 @@
 package org.enguage.util.tag;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.regex.Pattern;
 
 import org.enguage.sign.symbol.config.Plural;
+import org.enguage.sign.symbol.when.Date;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.audit.Indentation;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Fs;
 import org.enguage.util.token.Token;
 import org.enguage.util.token.TokenStream;
 
@@ -105,7 +101,6 @@ public class Tag {
 				// return an empty tag... (prefix already done!)
 
 			} else {
-				
 				// consume comments - anomaly in syntax - read over comment?
 				if (nameToken.string().equals( "!" )) {
 					nameToken = ts.getNext(); // DOCTYPE or first '-'
@@ -133,11 +128,11 @@ public class Tag {
 				if (nameToken.string().equals( "/" )) // consumed ">" ?
 					ts.getNext(); // no, consume ">" -- found STANDALONE <tag/>
 				
-				else if (ts.type().equals( "html"  ) &&
-						(n.equals( "meta"  ) ||
-						 n.equals( "input" ) ||
-						 n.equals( "link"  ) ||
-						 n.equals( "br"    )   ))
+				else if (ts.type().equals( "html" ) &&
+						 (n.equals( "meta"  ) ||
+						  n.equals( "input" ) ||
+						  n.equals( "link"  ) ||
+						  n.equals( "br"    )   ))
 					; // anomaly in syntax - HTML meta tags have no children AND no "/>" ending!
 				
 				else  // do children....
@@ -204,33 +199,6 @@ public class Tag {
 			(children().isEmpty() ?
 					"/>" : ( ">"+ children.toString() + "</"+ name +">" )));
 	}
-	public String toLine() {
-		return prefix().toString()
-				+ (children().isEmpty() ? "" : children.toStrings("").toString() );
-	}
-	
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	public Strings contentToStrings( String separator ) {
-		audit.in("contentToStrings", "sep="+ separator );
-		String tmp = "";
-		Strings sb = new Strings();
-		for (Tag child : children()) {
-			if (!tmp.equals( "" )) tmp += " ";
-			tmp += child.prefix();
-			
-			if (!child.attributes().contains("style", "display:none"))
-				tmp += child.contentToStrings( separator ).toString();
-			
-			if (child.name().equals( separator )) {
-				sb.add( tmp );
-				tmp = "";
-		}	}
-		
-		if (!tmp.equals( "" )) sb.add( tmp );
-		audit.out( "Returning: "+ sb.toString( Strings.DQCSV ));
-		return sb;
-	}
 	
 	// ************************************************************************
 	// ************************************************************************
@@ -243,7 +211,7 @@ public class Tag {
 	}
 	public Tags findAllByName( String nm ) {
 		Tags rc = new Tags();
-		this.accumulateByName( nm, rc );
+		accumulateByName( nm, rc );
 		return rc;
 	}
 	public Tag findByName( String nm ) {
@@ -260,45 +228,7 @@ public class Tag {
 	
 	// ************************************************************************
 	// ************************************************************************
-	private static final Strings months = new Strings(
-			"January  February March "
-			+"April   May      June "
-			+"July    August   September "
-			+"October November December"
-	);
-	private static Pattern digits = Pattern.compile("\\d+");
 
-	private static boolean isDate( String str ) {
-		return isDate( new Strings( str ));
-	}
-	private static boolean isDate( Strings strs ) {
-		
-		// This removes the age qualifiers on death dates.
-		Strings sa = Strings.copyUntil( strs.listIterator(), "(" );
-		
-		switch (sa.size()) {
-		case 3: // 23 April 1642
-			return 	 digits.matcher( sa.get( 0 )).matches() &&
-					months.contains( sa.get( 1 )) &&
-					 digits.matcher( sa.get( 2 )).matches();
-		case 4: // April 23, 1642
-			return months.contains( sa.get( 0 )) &&
-					digits.matcher( sa.get( 1 )).matches() &&
-					                sa.get( 2 ).equals( "," ) &&
-					digits.matcher( sa.get( 3 )).matches();
-		default: // c. 1642-1643
-			return (sa.size() > 1 &&
-					sa.get( 0 ).equals( "c" )) &&
-					digits.matcher( sa.get( sa.size()-1 )).matches(); // c. 878-879
-		}
-	}
-	private static String getDate( Strings strs ) {
-		if (!strs.isEmpty())
-			for (String s : strs)
-				if (isDate( s )) return s;
-		return "Unknown";
-	}
-	
 	public static Strings interpret( Strings args ) {
 		audit.in( "interpret", "args="+ args );
 		Strings rc = new Strings( "sorry" ); // Shell.Fail;
@@ -311,38 +241,33 @@ public class Tag {
 			String fName = Strings.trim( args.remove(0), '"' );
 			audit.debug( "Filtering: "+ fName );
 
-			try (TokenStream ts = new TokenStream( new File( fName ))) {
-				Tag  doc = new Tag( ts );
-				Tags tags = doc.findAllByName( "tr" );
-				for (Tag t : tags) { // process each row
-					
-					if (!t.children().isEmpty()) {
-						ListIterator<Tag> ri = t.children().listIterator();
-						if (ri.hasNext()) {
-							Tag cell = ri.next();
-
-							if (cell.name().equals( "th" )
-								&& !cell.children().isEmpty()
-								&&  cell.children().get(0)
-										.prefix().trim().equalsIgnoreCase( name ))
-							{
-								cell = ri.next();
-								if (cell.name().equals( "td" )) {
-									//Audit.log( "Cell value: "+ cell.contentToStrings( "br" ));
-									String date = getDate( cell.contentToStrings( "br" ) );
-									rc = new Strings(
-											date.equals( "Unknown" ) ?
-												"sorry, i don't know"
-												: date
-									);
-									break;
-								}
-							}
-				}	}	}
+			TokenStream ts = new TokenStream( fName );
+			Tag  doc = new Tag( ts );
+			Tags tags = doc.findAllByName( "tr" );
+			for (Tag t : tags) { // process each row
 				
-			} catch (FileNotFoundException fnf) {
-				Audit.log("interpret().filter: File not found: " + fName);
-			}
+				if (!t.children().isEmpty()) {
+					ListIterator<Tag> ri = t.children().listIterator();
+					if (ri.hasNext()) {
+						Tag cell = ri.next();
+
+						if (cell.name().equals( "th" )
+							&& !cell.children().isEmpty()
+							&&  cell.children().get(0)
+									.prefix().trim().equalsIgnoreCase( name ))
+						{
+							cell = ri.next();
+							if (cell.name().equals( "td" )) {
+								String date = Date.getDate( cell.children().toStrings( "br" ) );
+								rc = new Strings(
+										date.equals( "Unknown" ) ?
+											"sorry, i don't know"
+											: date
+								);
+								break;
+							}
+						}
+			}	}	}
 		} else 
 			audit.error( "usage: filter ..." );
 
@@ -373,15 +298,11 @@ public class Tag {
 	}	}
 	public static void main( String argv[]) {
 		if (argv.length > 0) {
-			try {
-				treePrint(
-					new Tag(
-						new TokenStream(
-							Fs.stringFromFile( argv[ 0 ]).getBytes("UTF-8")
-				)	)	);
-			} catch (UnsupportedEncodingException x) {
-				audit.error( "unhandled charset exception" );
-			}
+			treePrint(
+				new Tag(
+					new TokenStream( argv[ 0 ])
+			)	);
+
 		} else {
 			audit.debugging( true );
 			audit.tracing( true );

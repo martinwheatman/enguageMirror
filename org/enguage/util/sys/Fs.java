@@ -69,14 +69,10 @@ public class Fs {
 		return rc;
 	}
 	public static String stringFromFile( String fname ) {
-		//audit.IN("stringFromFile", "name="+fname )
 		String value = ""; 
 		try (FileInputStream fis = new FileInputStream( fname )) {
 			value = stringFromStream( fis );
-		} catch (Exception e) {
-			;//audit.debug( "file not found: "+ fname )
-		}
-		//audit.OUT( value )
+		} catch (Exception ignoreMe) {}
 		return value;
 	}
 	public static String stringFromStream( InputStream is ) {

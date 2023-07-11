@@ -57,21 +57,21 @@ public class Tags extends ArrayList<Tag> {
 		}
 		return str.toString();
 	}
-	public String toString() {
-		String str="";
-		Iterator<Tag> ti = iterator();
-		while (ti.hasNext()) {
-			str += ti.next().toString();
-			if (ti.hasNext()) str += " ";
-		}
-		return str;
-	}
-	public Strings toStrings( String filter ) {
-		Strings rc = new Strings();
+	public Strings toStrings( String separator ) {
+		String str = "";
+		Strings strs = new Strings();
+		for (Tag child : this) {
+			if (!str.equals( "" )) str += " ";
+			str += child.prefix();
+			
+			if (!child.attributes().contains("style", "display:none"))
+				str += child.children().toStrings( separator ).toString();
+			
+			if (child.name().equals( separator )) {
+				strs.add( str );
+				str = "";
+		}	}
 		
-		Iterator<Tag> ti = iterator();
-		while (ti.hasNext())
-			rc.add( ti.next().toString());
-		
-		return rc; 
+		if (!str.equals( "" )) strs.add( str );
+		return strs;
 }	}

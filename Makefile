@@ -1,6 +1,6 @@
 TMP=tmp
 MANIFEST=${TMP}/META-INF/MANIFEST.MF
-INSTALL=${HOME}
+INSTALL=${HOME}/src/StudioProjects/Enguage/app
 SHAR=enguage.shar
 ANDLIBS=lib
 
@@ -8,8 +8,8 @@ default:
 	@echo "Usage: make [ snap | jar | shar | swing | android | flatpak | clean ]" >&2
 
 install: android
-	cp -a etc ${HOME}/StudioProjects/Enguage/app/src/main/assets
-	cp -a lib/anduage.jar ${HOME}/StudioProjects/Enguage/app/libs
+	cp -a etc ${INSTALL}/src/main/assets
+	cp -a lib/anduage.jar ${INSTALL}/libs
 
 flatpak: jar
 	(cd opt/flatpak; make install)
@@ -26,15 +26,15 @@ swing: jar
 	@echo "Now run: bin/swing"
 
 ajar: android
-	mv ${ANDLIBS}/anduage.jar ${HOME}/StudioProjects/Enguage/app/libs/
+	mv ${ANDLIBS}/anduage.jar ${INSTALL}/libs/
 
 jar: lib/enguage.jar
 
 ${TMP}:
 	mkdir -p ${TMP}
 
-${INSTALL}/etc:
-	mkdir ${INSTALL}/etc
+#${INSTALL}/etc:
+#	mkdir ${INSTALL}/etc
 	
 lib:
 	mkdir lib
@@ -53,8 +53,8 @@ snap: jar
 	tar  -czf opt/snapcraft/enguage.tgz lib/enguage.jar etc bin/eng
 	(cd opt/snapcraft; snapcraft)
 
-uninstall:
-	rm -rf ~/bin/eng ~/etc/config.xml ~/etc/rpt ~/lib/enguage.jar
+#uninstall:
+#	rm -rf ~/bin/eng ~/etc/config.xml ~/etc/rpt ~/lib/enguage.jar
 
 ${MANIFEST}:
 	mkdir -p `dirname ${MANIFEST}`

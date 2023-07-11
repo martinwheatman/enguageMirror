@@ -15,5 +15,5 @@ public class Token {
 	}
 
 	@Override
-	public String toString() {return ""+ space + string;}
+	public String toString() {return space + string;}
 }

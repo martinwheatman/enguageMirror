@@ -2,11 +2,16 @@ package org.enguage.sign.symbol.when;
 
 import java.util.ListIterator;
 
-import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Month {
-	public static Audit audit = new Audit( "Month" );
-	
+	//private static Audit audit = new Audit( "Month" );
+	public static final Strings names = new Strings(
+			"January  February March "
+			+"April   May      June "
+			+"July    August   September "
+			+"October November December"
+	);
 	static public String name( int n ) {
 		switch (n) {
 		case  1:return "January"; case 2: return "February";case 3: return "March";
@@ -31,7 +36,6 @@ public class Month {
 		return 0;
 	}
 	public static boolean doMonth( When w, ListIterator<String> si ) {
-		//audit.in( "doMonth", "w="+ w.toString() +", si="+ si.nextIndex());
 		boolean rc = false;
 		if ( si.hasNext()) {
 			int n = number( si.next());
@@ -41,7 +45,7 @@ public class Month {
 			} else
 				si.previous();
 		}
-		return rc; //audit.out( rc );
+		return rc;
 	}
 	public static String toString( long time ) {
 		int month = Moment.monthValue( time );
