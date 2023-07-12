@@ -41,10 +41,9 @@ public class Utterance {
 	 */
 	public Utterance( Strings orig ) {
 		representamen = orig;
-		expanded  =	Colloquial.applyIncoming( // I'm => I am => _user is
-						Variable.deref( orig.normalise()) // "i am/." becomes "i/am/."
-					).decap()                       // deref anything in the environment?
-				.contract( "=" );             // [ name, =, "value" ] => [ name="value" ]
+		expanded  =	Colloquial.applyIncoming(        // I'm => I am => _user is
+						Variable.deref( orig.normalise()) // "i am/." => "i/am/."
+					).contract( "=" );      // [ nm, =, "val" ] => [ nm="val" ]
 		temporal  = new Strings( expanded );
 		when      = When.getWhen( temporal ); // removes temporal content
 		whenAttrs = when.toAttributes();
@@ -89,7 +88,7 @@ public class Utterance {
 		// TODO: to Strings, or move up into derefOrPop?
 		Strings tmp = new Strings();
 		for (String r : reply)
-			tmp.add( Strings.fromCamelCase( r ));
+			tmp.add( Strings.fromUnderscored( r ));
 		reply = tmp;
 		
 		return Englishisms.asStrings( Numeric.deref( reply ))

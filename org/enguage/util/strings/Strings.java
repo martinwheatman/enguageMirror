@@ -904,7 +904,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return rc;
 	}
 
-	public boolean equalsIgnoreCase( Strings sa ) {
+	public boolean equals( Strings sa ) {
 		Iterator<String> i = iterator(),
 		               sai = sa.iterator();
 		while (i.hasNext() && sai.hasNext())
@@ -912,15 +912,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				return false;
 		return !i.hasNext() && !sai.hasNext();
 	}
-	public boolean equals( Strings sa ) {
-		Iterator<String> i = iterator(),
-		               sai = sa.iterator();
-		while (i.hasNext() && sai.hasNext())
-			if (!sai.next().equals( i.next() ))
-				return false;
-		return !i.hasNext() && !sai.hasNext();
-	}
-	public boolean beginsIgnoreCase( Strings sa ) {
+	public boolean begins( Strings sa ) {
 		Iterator<String> i = iterator(),
 		               sai = sa.iterator();
 		while (i.hasNext() && sai.hasNext())
@@ -931,7 +923,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 
 	public static boolean doString( String val, ListIterator<String> si ) {
 		if (si.hasNext()) {
-			if (si.next().equals( val ))
+			if (si.next().equalsIgnoreCase( val ))
 				return true;
 			si.previous();
 		}
@@ -1040,33 +1032,16 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			lc.add( s.toLowerCase( Locale.getDefault()));
 		return lc;
 	}
-	public static String toCamelCase( String in ) {
-		String out = "";
-		Strings tmp = new Strings( in );
-		for( String s : tmp ) // "camel" + "C" + "ase";
-			out += Character.toUpperCase( s.charAt( 0 ))
-			       + s.substring( 1 ).toLowerCase( Locale.getDefault());
-		return out;
+	public static String toUnderscored( String in ) {
+		return new Strings( in ).toString( Strings.UNDERSC );
 	}
-	// TODO: tidyup as non-static!
-	public static String fromCamelCase( String in ) {
+	public static String fromUnderscored( String in ) {
 		if (in.charAt( 0 ) == '"') return in;
-		String out = "";
-		int sz = in.length();
-		char ch;
-		for (int i=0; i<sz; i++)
-			out += Character.isUpperCase( ch = in.charAt( i ) ) ?
-					 (" " + Character.toLowerCase( ch )) : ch;
-		return out;
+		Strings ss = new Strings( in, '_' );
+		return ss.toString();
 	}
-	public static boolean isCamelCase( String in ) {
-		int sz = in.length();
-		for (int i=0; i<sz; i++) {
-			char ch = in.charAt( i );
-			if (!Character.isLowerCase( ch ) && !Character.isUpperCase( ch ))
-				return false;
-		}
-		return true;
+	public static boolean isUnderscored( String in ) {
+		return in.contains( "_" );
 	}
 	public Strings extract( ListIterator<String> ui ) {
 		ListIterator<String> loci = listIterator();
@@ -1194,9 +1169,9 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		a.addAll( b );
 		audit.debug( "a is now '"+ a.toString() +"'." );
 		
-		audit.debug( "begins:"+ ( new Strings("to be or not").beginsIgnoreCase(new Strings("to be"))? "pass":"fail" ));
-		audit.debug( "begins:"+ ( new Strings("to be or not").beginsIgnoreCase(new Strings("to be"))? "pass":"fail" ));
-		audit.debug( "begins:"+ ( new Strings("to be").beginsIgnoreCase(new Strings("to be or"))? "fail":"pass" ));
+		audit.debug( "begins:"+ ( new Strings("to be or not").begins(new Strings("to be"))? "pass":"fail" ));
+		audit.debug( "begins:"+ ( new Strings("to be or not").begins(new Strings("to be"))? "pass":"fail" ));
+		audit.debug( "begins:"+ ( new Strings("to be").begins(new Strings("to be or"))? "fail":"pass" ));
 		
 		a = new Strings( "17:45:30:90" );
 		audit.debug( "the time is "+ a.toString( SPACED ));

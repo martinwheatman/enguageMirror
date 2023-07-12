@@ -98,7 +98,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 	public  void reset( Strings reply ) { // called from Enguage.mediateSingle()
 		audit.in( "reset", "r="+ reply );
-		if (reply.beginsIgnoreCase( Response.dnu() )) {
+		if (reply.begins( Response.dnu() )) {
 			Repertoires.signs().ignoreNone();
 		}
 		audit.out();

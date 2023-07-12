@@ -1,47 +1,51 @@
 # Enguage - Basic Principles
 
-Enguage attempts to reflect the conventional mapping of words uttered
-to those replied.
-This convention is based on the idea that we think in utterances,
+Enguage attempts to reflect the conventional mapping of words uttered to those replied.
+This convention, described in "The Meaning of Meaning", bu is based on the idea that we think in utterances,
 and it is directed by our reaction to those thoughts.
 
 <center>
+
+![Semiotic Triangle - c/f. Meaning of Meaning, Ogden and Richards, 1923](triOfRef.png "Semiotic Triangle - c/f. Meaning of Meaning, Ogden and Richards, 1923")
+
+[c/f. "This Meaning of Meaning", Ogden and Richards, 1932, pp11]
+
 
 utterance --> {thoughts|references} --> {replies} </br>
 ------ felicity ------->
 
 </center>
 
-## Utterance
-Thoughts and replies are just utterances. An utterance is just any string 
-of words, there is no need for it to conform to any syntax - this is an
-arbtrary mapping initiated by utteranes.
+##Terminology:
+**Utterance** -- 
+Symbols, thoughts and referent objects (replies) are all merely utterances.
+An utterance is just any string of words, there is no need for it to conform to any syntax.
+Enguage performs this arbtrary mapping initiated by utteranes.
 
-## Thought
+**Thought** --
 Thoughts are unspoken utterances, used to interpret utterances, and are 
 interpreted themsleves.
 
-## Reference
+**Reference** --
 References refer to further unspoken utterances, 
 
-## Reply
+**Reply** --
 A reply is a formatted answer. A different reply (format) will be provided
 at each level of interpretation.
 
-### Answer
-An answer is a ( list of ) data items will be passed up, verbatim, through the interpretation (layers 
-of thought.) 
+**Answer** --
+An answer is a (list of) data items will be passed back, verbatim, through the layers  of thought.
 
-## Felicity
-Underlying the interpretation of thoughts is the felicity, or happiness, 
-of their reply. If a reply is infelicitous, interpretation proceeds on the 
-thoughts that are preceded with "if not, "; felicitous replies can be,
-but are not necessarily, prefixed by "if so, ".
+**Felicity** --
+Underlying the interpretation of thoughts is the felicity, or happiness, of their reply. 
+This is by which we create conditional processing during speech.
+If a reply is infelicitous, interpretation proceeds on the thoughts that are preceded with "if not, ";
+felicitous replies can be, but are not necessarily, prefixed by "if so, ...".
 
 ## Acknowledgements:
 + U-T-R: is essentially the Triadic Sign model, of Sign, Object and Interpretant
 by Charles Sanders Peirce (1839-1914), as illustrated by C. K. Ogden and 
-I. A. Richards in their 1923 publication, The Meaning of Meaning.
+I. A. Richards in their 1923 publication, "The Meaning of Meaning".
 
 + Felicity - was introduced by John Langshaw Austin, in his 1955 
 William James Lectures at Harvard University, Boston, MA. 

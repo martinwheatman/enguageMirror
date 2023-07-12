@@ -9,5 +9,5 @@ On "read line LINE from FILE":
 	reply "ok, ...".
 	
 #]read line 3 from README.md:  ok , enguage is a turing complete speech interpreter. .
-#]read file nonExistent.txt:   sorry , i can't read non existent.txt .
+#]read file nonExistent.txt:   sorry , i can't read nonExistent.txt .
 	

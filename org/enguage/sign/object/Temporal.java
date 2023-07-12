@@ -15,8 +15,7 @@ public class Temporal {
 	
 	private static Strings concepts = new Strings();
 	public  static boolean isConcept( String s) { return concepts.contains( s ); }
-	public  static void    addConcept( String s ) {if (!concepts.contains( s )) concepts.add( s );}
-	//private static void    conceptIs( String s ) {addConcept( s );}
+	public  static void   addConcept( String s ) {if (!concepts.contains( s )) concepts.add( s );}
 	public  static void   addConcepts( Strings ss) {for (String s : ss) addConcept( s );}
 
 	public static String list() { return concepts.toString( Strings.CSV );}

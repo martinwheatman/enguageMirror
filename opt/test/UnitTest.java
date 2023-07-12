@@ -51,7 +51,7 @@ public class UnitTest {
 
 		if (expected == null || !expected.equals( "-" ))
 		
-			if (expected == null || new Strings(reply).equalsIgnoreCase( new Strings(expected) ))
+			if (expected == null || new Strings(reply).equals( new Strings( expected )))
 				Audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
 				
 			else if (unexpected == null)                // no second chance
@@ -61,7 +61,7 @@ public class UnitTest {
 					"expected: '"+ expected +"' "
 				);
 		
-			else if (new Strings(reply).equalsIgnoreCase( new Strings(unexpected) ))
+			else if (new Strings(reply).equals( new Strings( unexpected )))
 				Audit.passed( REPLY_PROMPT+ reply +".\n" );
 			
 			else                                        // second chance failed too!

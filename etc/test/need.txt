@@ -37,9 +37,7 @@ no i need another 3:    ok, you need another 3 coffees.
 what do i need:         you need 4 coffees.
 i don't need anything:  ok, you don't need anything.
 			
-echo Group-as-entity:-.	
-MartinAndRuth does not need anything.
-			
+echo Group-as-entity:-.
 martin and ruth need a coffee and a tea:
 			         ok, martin and ruth need a coffee and a tea.
 			
