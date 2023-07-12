@@ -227,8 +227,8 @@ public class Attributes extends ArrayList<Attribute> {
 								Attribute.isAttribute( value ) ? new Attribute( value ).value() : value
 							)).toString();
 				
-				if (grouped && !Strings.isCamelCase( value )) 
-					value = Strings.toCamelCase( value );
+				if (grouped && !Strings.isUnderscored( value )) 
+					value = Strings.toUnderscored( value );
 				if (plural)   value = Plural.plural( value );
 				if (quoted)   value = Attribute.DEF_QUOTE_CH+ value +Attribute.DEF_QUOTE_CH;
 				//audit.debug( "Attributes.deref( "+ name +"='"+ value +"' )" );
