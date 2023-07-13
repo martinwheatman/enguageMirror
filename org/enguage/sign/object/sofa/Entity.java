@@ -1,5 +1,6 @@
 package org.enguage.sign.object.sofa;
 
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -78,22 +79,22 @@ public class Entity {
 	
 	public static Strings interpret( Strings argv ) {
 		// N.B. argv[ 0 ]="create", argv[ 1 ]="martin wheatman"
-		Strings rc = Shell.Fail;
+		Strings rc = Response.Fail;
 		if (argv.size() > 1) {
 			String cmd = argv.remove( 0 );
 			String ent = argv.remove( 0 );
 			if (cmd.equals( "create" ))
-				rc = create( ent ) ? Shell.Success : Shell.Fail;
+				rc = create( ent ) ? Response.Success : Response.Fail;
 			else if (cmd.equals( "component" ))
-				rc = createComponent( argv )? Shell.Success : Shell.Fail;
+				rc = createComponent( argv )? Response.Success : Response.Fail;
 			else if (cmd.equals( "delete" ))
-				rc = delete( ent ) ? Shell.Success : Shell.Fail;
+				rc = delete( ent ) ? Response.Success : Response.Fail;
 			else if (cmd.equals( "exists" ))
-				rc = exists( ent ) ? Shell.Success : Shell.Fail;
+				rc = exists( ent ) ? Response.Success : Response.Fail;
 			else if (cmd.equals( "ignore" ))
-				rc = ignore( ent ) ? Shell.Success : Shell.Fail;
+				rc = ignore( ent ) ? Response.Success : Response.Fail;
 			else if (cmd.equals( "restore" ))
-				rc = restore( ent ) ? Shell.Success : Shell.Fail;
+				rc = restore( ent ) ? Response.Success : Response.Fail;
 			else
 				Audit.log(
 					"Usage: entity [create|exists|ignore|delete] <entityName>\n"+

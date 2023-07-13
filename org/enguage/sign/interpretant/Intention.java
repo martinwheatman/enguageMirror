@@ -19,7 +19,6 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Intention {
 	
@@ -234,9 +233,9 @@ public class Intention {
 	private String formatAnswer( String rc ) {
 		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
 				new When( rc ).rep( Response.dnkStr() ).toString()
-				: rc.equals( Shell.FAIL ) ?
+				: rc.equals( Response.FAIL ) ?
 					Response.failureStr()
-					: rc.equals( Shell.SUCCESS ) ?
+					: rc.equals( Response.SUCCESS ) ?
 						Response.successStr()
 						: rc;
 	}

@@ -5,6 +5,7 @@ import java.util.ListIterator;
 
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.number.Number;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.when.Moment;
 import org.enguage.sign.symbol.when.When;
 import org.enguage.sign.symbol.where.Where;
@@ -12,7 +13,6 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Item {
 
@@ -288,21 +288,21 @@ public class Item {
 	// ------------------------------------------------------------------------
 	public static Strings interpret( Strings cmds ) {
 		audit.in( "interpret", "cmds="+ cmds );
-		String rc = Shell.FAIL;
+		String rc = Response.FAIL;
 		if (!cmds.isEmpty()) {
 			
-			rc = Shell.SUCCESS;
+			rc = Response.SUCCESS;
 			String one = cmds.remove( 0 );
 			
 			if (one.equals( "ungroup" ))
 				if (cmds.isEmpty())
 					groupOn( "" );
 				else
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 
 			else if (one.equals( "groupby" ))
 				if (cmds.isEmpty())
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 				else
 					groupOn( ""+cmds );
 					
@@ -324,9 +324,9 @@ public class Item {
 					stuffIs( new Strings( Strings.stripQuotes( thr )));
 					
 				else
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 			} else
-				rc = Shell.FAIL;
+				rc = Response.FAIL;
 		}
 		audit.out( rc );
 		return new Strings( rc );

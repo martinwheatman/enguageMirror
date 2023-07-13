@@ -5,8 +5,8 @@ On "when was  he born": when was PERSON born.
 On "when was PHRASE-PERSON born":
 	wikipedia PERSON;
 	if not, reply "sorry, I don't know PERSON";
-	perform "tag filter born ...";
-	if not, reply "sorry, I don't know";
+	perform "tag filter born date ...";
+	if not, say so;
 	reply "PERSON was born on ...".
 	
 On "when did she die", when did PERSON die.
@@ -14,7 +14,7 @@ On "when did  he die", when did PERSON die.
 On "when did PHRASE-PERSON die":
 	wikipedia PERSON;
 	if not, reply "sorry, I don't know PERSON";
-	perform "tag filter died ...";
-	if not, reply "sorry, I don't know";
+	perform "tag filter died date ...";
+	if not, say so;
 	reply "PERSON died on ...".
 

@@ -1,11 +1,11 @@
 package org.enguage.sign.object;
 
 import org.enguage.sign.Assets;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.when.Day;
 import org.enguage.sign.symbol.when.When;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Temporal {
 	
@@ -22,19 +22,19 @@ public class Temporal {
 	
 	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
-		String rc = Shell.IGNORE;
+		String rc = Response.IGNORE;
 		if (args.size() > 0) {
 			String cmd = args.remove( 0 );
-			rc = Shell.SUCCESS;
+			rc = Response.SUCCESS;
 			if (args.size() == 0) {
 				if (cmd.equals( "addCurrent" ))
 					addConcept( Variable.get( Assets.NAME ));
 				else
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 			} else {
 				if (cmd.equals( "dayOfWeek" )) {
 					When w = Day.getWhen( args );
-					rc = (w == null ? Shell.FAIL : Day.name( w.from().moment()));
+					rc = (w == null ? Response.FAIL : Day.name( w.from().moment()));
 				} else if (cmd.equals( "set" )) {
 					String arg = args.remove( 0 );
 					if ( arg.equals( "future" ))
@@ -44,11 +44,11 @@ public class Temporal {
 					else if ( arg.equals( "present" ))
 						When.presentIs();
 					else
-						rc = Shell.FAIL;
+						rc = Response.FAIL;
 				} else if (cmd.equals( "add" ))
 					addConcepts( args );
 				else
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 			}
 		}
 		return audit.out( new Strings( rc ));

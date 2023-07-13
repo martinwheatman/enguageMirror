@@ -5,11 +5,11 @@ import java.util.ListIterator;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.number.Number;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Shell;
 
 public class Numeric extends Value {
 	public static  final String NAME = "numeric";
@@ -79,18 +79,18 @@ public class Numeric extends Value {
 		System.out.println(
 				"Usage: numeric [set|get|remove|increase|decrease|exists|equals|delete] <ent> <attr>[ / <attr> ...] [<values>...]\n"+
 				"given: "+ a.toString( Strings.CSV ));
-		return Shell.FAIL;
+		return Response.FAIL;
 	}
 	static public Strings interpret( Strings a ) {
 		// interpret( ["increase", "device", "textSize", "4"] )
 		audit.in( "interpret", a.toString( Strings.DQCSV ));
-		String rc = Shell.SUCCESS;
+		String rc = Response.SUCCESS;
 		if (a.size() > 1) {
 			String cmd = a.get( 0 );
 			
 			if (cmd.equals("isAbs")) { // => Numeric.java?
 				char firstChar = a.get( 1 ).charAt( 0 ); 
-				rc = firstChar == '-' || firstChar == '+' ? Shell.FAIL : Shell.SUCCESS;
+				rc = firstChar == '-' || firstChar == '+' ? Response.FAIL : Response.SUCCESS;
 				
 			} else if (cmd.equals( "evaluate" )) {
 				// parameters no longer expanded in sofa...!
@@ -106,7 +106,7 @@ public class Numeric extends Value {
 					Number number = new Number( ai );
 					rc = number.valueOf() + a.copyAfter( 1 + number.representamen().size()).toString();
 				} else
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 				
 			} else if (a.size() > 2) {
 				int i = 2;
@@ -126,9 +126,9 @@ public class Numeric extends Value {
 				 */
 				
 				if (cmd.equals( "increase" )) 
-					rc = n.increase( value ) ? Shell.SUCCESS : Shell.FAIL;
+					rc = n.increase( value ) ? Response.SUCCESS : Response.FAIL;
 				else if (cmd.equals( "decrease" ))
-					rc = n.decrease( value ) ? Shell.SUCCESS : Shell.FAIL;
+					rc = n.decrease( value ) ? Response.SUCCESS : Response.FAIL;
 				else
 					rc = usage( a );
 			}

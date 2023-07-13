@@ -7,10 +7,10 @@ import java.util.ListIterator;
 import org.enguage.sign.Assets;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 
 public class Where {
@@ -113,10 +113,10 @@ public class Where {
 
 	public  static Strings interpret( Strings args ) {
 		//audit.in( "interpret", args.toString() )
-		String rc = Shell.IGNORE;
+		String rc = Response.IGNORE;
 		if (!args.isEmpty()) {
 			String cmd = args.remove( 0 );
-			rc = Shell.SUCCESS;
+			rc = Response.SUCCESS;
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
@@ -124,7 +124,7 @@ public class Where {
 			else if (cmd.equals( "locator" ))
 				locatorIs( Attribute.value( args ));
 			else
-				rc = Shell.FAIL;
+				rc = Response.FAIL;
 		}
 		//audit.out( rc )
 		return new Strings( rc );

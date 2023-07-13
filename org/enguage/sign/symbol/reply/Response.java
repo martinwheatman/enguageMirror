@@ -3,9 +3,16 @@ package org.enguage.sign.symbol.reply;
 import java.util.Locale;
 
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Response {
+	
+	public  static final String  IGNORE  = "";
+	public  static final String  FAIL    = "FALSE";
+	public  static final String  SUCCESS = "TRUE";
+	public  static final Strings Ignore  = new Strings( IGNORE );
+	public  static final Strings Fail    = new Strings( FAIL );
+	public  static final Strings Success = new Strings( SUCCESS );
+
 	public  static final int  N_DNU = -5; // DO NOT UNDERSTAND
 	public  static final int  N_UDU = -4; // user does not understand
 	public  static final int  N_DNK = -3; // NOT KNOWN -- init
@@ -38,14 +45,14 @@ public class Response {
 	public  static Strings yes() { return yes; }
 	public  static String  yesStr() { return yesStr; }
 
-	private static Strings failure   = new Strings( Shell.FAIL );
-	private static String  failureStr = Shell.FAIL;
+	private static Strings failure   = new Strings( Response.FAIL );
+	private static String  failureStr = Response.FAIL;
 	public  static void    failure(  String s ) { failure = new Strings( failureStr = s.toLowerCase( Locale.getDefault() )); }
 	public  static Strings failure() { return failure; }
 	public  static String  failureStr() { return failureStr; }
 	
-	private static Strings success    = new Strings( Shell.SUCCESS );
-	private static String  successStr = Shell.SUCCESS;
+	private static Strings success    = new Strings( Response.SUCCESS );
+	private static String  successStr = Response.SUCCESS;
 	public  static void    success( String s ) { success = new Strings( successStr = s.toLowerCase( Locale.getDefault() )); }
 	public  static Strings success() { return success; }
 	public  static String  successStr() { return successStr; }

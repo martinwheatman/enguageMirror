@@ -1,8 +1,8 @@
 package org.enguage.sign.object;
 
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 //import android.content.SharedPreferences;
 
@@ -52,14 +52,14 @@ public class Preferences {
 		editor.commit();
 }*/
 	static public Strings interpret( Strings a ) {
-		Strings rc = Shell.Fail;
+		Strings rc = Response.Fail;
 		audit.in( "interpret", a.toString( Strings.CSV ));
 		if (preferences != null && null != a && a.size() >= 2) {
 			if (a.get( 0 ).equals( "set" )) {
 				preferences.set( a.get( 1 ), a.copyAfter( 1 ).toString( Strings.SPACED ) ); // default value?
-				rc = Shell.Success;
+				rc = Response.Success;
 			} else if (a.get( 0 ).equals( "get" )) {
-				rc = preferences.get( a.get( 1 ), true ) ? Shell.Success : Shell.Fail; // default value true?
+				rc = preferences.get( a.get( 1 ), true ) ? Response.Success : Response.Fail; // default value true?
 		}	}
 		audit.out( rc );
 		return new Strings( rc );

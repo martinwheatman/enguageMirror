@@ -1,10 +1,10 @@
 package org.enguage.sign.object.list;
 
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Transitive {
 	
@@ -33,9 +33,9 @@ public class Transitive {
 
 	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
-		String rc = Shell.IGNORE;
+		String rc = Response.IGNORE;
 		if (args.size() > 1) {
-			rc = Shell.FAIL;
+			rc = Response.FAIL;
 			String cmd = args.remove( 0 );
 			if (cmd.equals( "add" )) {
 				int sz = args.size();
@@ -46,7 +46,7 @@ public class Transitive {
 				}
 				if (sz == 1)
 					addConcepts( args );
-				rc = Shell.SUCCESS;
+				rc = Response.SUCCESS;
 		}	}
 		return audit.out( new Strings( rc ));
 	}

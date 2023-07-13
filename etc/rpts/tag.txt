@@ -1,5 +1,5 @@
-On "tag filter TAGNAME PHRASE-FNAME":
-	perform "tag filter TAGNAME FNAME";
-	if not, reply "sorry, usage message here";
+On "tag filter TAGNAME TAGTYPE QUOTE-FNAME":
+	perform "tag filter TAGNAME TAGTYPE  FNAME";
+	if not, say so;
 	reply "ok, ...".
 	

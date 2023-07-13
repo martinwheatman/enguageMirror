@@ -14,6 +14,7 @@ import org.enguage.sign.object.list.Transitive;
 import org.enguage.sign.symbol.config.Colloquial;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.pronoun.Pronoun;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
@@ -21,7 +22,6 @@ import org.enguage.util.audit.Audit;
 import org.enguage.util.http.SapGraph;
 import org.enguage.util.http.Wikipedia;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 import org.enguage.util.tag.Tag;
 
 public class Perform {
@@ -67,7 +67,7 @@ public class Perform {
 				case Repertoires.ID: return Repertoires.interpret(                     a  );
 				default :
 					audit.error( "Perform:Strings.hash(): "+ type +".id should be: "+ Strings.hash( type ));
-					return Shell.Fail;
+					return Response.Fail;
 		}	}
-		return Shell.Fail;
+		return Response.Fail;
 }	}

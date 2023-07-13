@@ -5,7 +5,6 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Shell;
 
 public class Link {
 	static public  final String NAME = "link";
@@ -58,10 +57,10 @@ public class Link {
 	}
 	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", "["+ args.toString( Strings.CSV ) +"]" ); 
-		String rc = Shell.FAIL;
+		String rc = Response.FAIL;
 		int argc = args.size();
 		if (argc >= 3 || argc <= 5) {
-			rc = Shell.SUCCESS;
+			rc = Response.SUCCESS;
 			String	cmd    = args.remove( 0 ),
 					entity = args.remove( 0 ),
 					attr   = args.remove( 0 ),
@@ -74,7 +73,7 @@ public class Link {
 			if (Attribute.isAttribute( target )) target = new Attribute( target ).value();
 					
 			if (cmd.equals("set") || cmd.equals( "create" ))
-				rc = new Value( entity, attr+EXT ).set( target ) ? Shell.SUCCESS : Shell.FAIL;
+				rc = new Value( entity, attr+EXT ).set( target ) ? Response.SUCCESS : Response.FAIL;
 				
 			else if (cmd.equals("get"))
 				rc = new Value( entity, attr+EXT ).getAsString();
@@ -90,10 +89,10 @@ public class Link {
 				else if (exists( entity, attr+EXT, target ))
 					new Value( entity, attr+EXT ).ignore();
 				else
-					rc =  Shell.FAIL;
+					rc =  Response.FAIL;
 				
 			else if (cmd.equals("attribute"))
-				rc = attribute( entity, attr, target, value ) ? Shell.SUCCESS : Shell.FAIL;
+				rc = attribute( entity, attr, target, value ) ? Response.SUCCESS : Response.FAIL;
 			
 			else
 				usage( "cmd="+ cmd +", ent="+ entity +", attr="+ attr +", [ "+ args +" ]" );
@@ -115,22 +114,22 @@ public class Link {
 		
 		Overlay.attach( "Link" );
 		
-		test( "create martin loves ruth",          Shell.SUCCESS );
-		test( "create martin hates name=\"ruth\"", Shell.SUCCESS );
-		test( "delete martin hates ruth",          Shell.SUCCESS );
+		test( "create martin loves ruth",          Response.SUCCESS );
+		test( "create martin hates name=\"ruth\"", Response.SUCCESS );
+		test( "delete martin hates ruth",          Response.SUCCESS );
 		test( "exists martin hates",        "no" );
 		test( "exists martin hates ruth",   "no" );
 		test( "exists martin loves",        "yes" );
 		test( "exists martin loves ruth",   "yes" );
-		test( "create engineer isa person", Shell.SUCCESS );
-		test( "create martin isa engineer", Shell.SUCCESS );
+		test( "create engineer isa person", Response.SUCCESS );
+		test( "create martin isa engineer", Response.SUCCESS );
 		test( "exists martin isa",          "yes" );
 		test( "exists martin isa person",   "yes" );
 		test( "exists person isa martin",   "no" );
 		
 		new Value( "person", "age" ).set( "42" );
-		test( "attribute martin isa age 42",     Shell.SUCCESS );
-		test( "attribute martin isa age 55",     Shell.FAIL );
+		test( "attribute martin isa age 42",     Response.SUCCESS );
+		test( "attribute martin isa age 55",     Response.FAIL );
 			
 		Audit.PASSED();
 }	}

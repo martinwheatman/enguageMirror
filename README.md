@@ -1,7 +1,9 @@
 # Enguage - Unifying Speech and Computation
 
-Enguage is a Turing Complete speech interpreter: you *can* do things with words.
-Speech is functional, it is not heuristic, it can be deterministic.
+Enguage is a Turing Complete speech interpreter;
+you *can* do things with words.
+Speech is not just functional, it can be deterministic.
+This is the approach taken by the [Ordinary Language Philosophers](https://en.wikipedia.org/wiki/Ordinary_language_philosophy) of the mid- to late-20th Century.
 
 The [basic principle](doc/principle.md) is that it uses speech utterances to create speech utterances.
 Utterances are used to elevate speech as thoughts; in this sense, it is autopoietic, such as, "to the phrase hello reply hello to you too".
