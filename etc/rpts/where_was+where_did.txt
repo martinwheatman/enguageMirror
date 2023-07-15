@@ -7,7 +7,7 @@ On "where was PHRASE-PERSON born":
 	if not, reply "sorry, I don't know PERSON";
 	perform "tag filter born place ...";
 	if not, say so;
-	reply "PERSON was born in ...".
+	reply "According to Wikipedia, PERSON was born in ...".
 	
 On "where did she die", where did PERSON die.
 On "where did  he die", where did PERSON die.
@@ -16,5 +16,5 @@ On "where did PHRASE-PERSON die":
 	if not, reply "sorry, I don't know PERSON";
 	perform "tag filter died place ...";
 	if not, say so;
-	reply "PERSON died in ...".
+	reply "According to Wikipedia, PERSON died in ...".
 
