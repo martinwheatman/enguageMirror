@@ -5,6 +5,7 @@ import java.util.ListIterator;
 
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.when.Date;
+import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
@@ -234,8 +235,12 @@ public class Tag {
 		Strings rc = new Strings( "sorry" ); // Shell.Fail;
 		String cmd = args.remove( 0 );
 		String name = args.remove( 0 );
+		String type = args.remove( 0 );
 		
-		if (cmd.equals( "filter" ) && !args.isEmpty()) {
+		if (!type.equals( "date" ) && !type.equals( "place" ) && !type.equals( "name" ))
+			rc.addAll( new Strings( ", third parameter should be 'date', 'place' or 'name'" ));
+			
+		else if (cmd.equals( "filter" ) && !args.isEmpty()) {
 			
 			// Wikipedia returns double quoted "answer" (fname)
 			String fName = Strings.trim( args.remove(0), '"' );
@@ -258,15 +263,33 @@ public class Tag {
 						{
 							cell = ri.next();
 							if (cell.name().equals( "td" )) {
-								String date = Date.getDate( cell.children().toStrings( "br" ) );
-								rc = new Strings(
-										date.equals( "Unknown" ) ?
-											"sorry, i don't know"
-											: date
-								);
-								break;
-							}
-						}
+								
+								if (type.equals( "date" )) {
+									rc = new Strings(
+											Date.getDate(
+													cell.children().toStrings( "br" ),
+													"Sorry, I don't know"
+									)		);
+									break;
+									
+								} else if (type.equals( "place" )) {
+									rc = new Strings(
+											Address.getAddress(
+													cell.children().toStrings( "br" ),
+													"Sorry, I don't know"
+									)		);
+									break;
+									
+								} else if (type.equals( "name" )) {
+									for (String s : cell.children().toStrings( "br" ))
+										if (!Date.isDate( s ) &&
+										    !Address.isAddress( s )) {
+											rc = new Strings( s );
+											break;
+										}
+									rc = new Strings( "Sorry, I don't know" );
+									break;
+						}	}	}
 			}	}	}
 		} else 
 			audit.error( "usage: filter ..." );

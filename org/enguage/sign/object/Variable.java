@@ -10,10 +10,10 @@ import java.util.TreeMap;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Variable {
 	/* As part of the Sofa library, variable manages persistent values:
@@ -179,7 +179,7 @@ public class Variable {
 	
 	static public Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString() );
-		String  rc = Shell.SUCCESS,
+		String  rc = Response.SUCCESS,
 		       cmd = args.remove( 0 );
 		int sz = args.size();
 		if (sz > 0) {
@@ -189,7 +189,7 @@ public class Variable {
 					rc = set( name, args.toString() );
 
 				else if (cmd.equals( "equals" ))
-					rc = isSet( name, args.toString()) ? Shell.SUCCESS : Shell.FAIL;
+					rc = isSet( name, args.toString()) ? Response.SUCCESS : Response.FAIL;
 			
 				else if (cmd.equals( "exception" )) {
 					
@@ -199,26 +199,26 @@ public class Variable {
 					else if (direction.equals( "remove" ))
 						exceptionRemove( args );
 					else
-						rc = Shell.FAIL;
+						rc = Response.FAIL;
 				} else
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 				
 			else { // sz == 1, name and no params
 				if (cmd.equals( "exists" ))
-					rc = isSet( name, null ) ? Shell.SUCCESS : Shell.FAIL;
+					rc = isSet( name, null ) ? Response.SUCCESS : Response.FAIL;
 				else if (cmd.equals( "unset" ))
 					unset( name );
 				else if (cmd.equals( "get" ))
 					rc = get( name.toUpperCase( Locale.getDefault() ));
 				else
-					rc = Shell.FAIL;
+					rc = Response.FAIL;
 			}
 		} else if (cmd.equals( "show" )) {
 			audit.debug( "printing cache" );
 			printCache();
 			audit.debug( "printed" );
 		} else
-			rc = Shell.FAIL;
+			rc = Response.FAIL;
 		audit.out( rc = rc==null?"":rc );
 		return new Strings( rc );
 	}
@@ -227,7 +227,7 @@ public class Variable {
 	public static void test( String cmd, String expected ) {
 		Strings actual = interpret( new Strings( cmd ));
 		if (actual.equals( new Strings( expected )))
-			if ( actual.equals( Shell.Ignore ))
+			if ( actual.equals( Response.Ignore ))
 				audit.debug(   "PASS: "+ cmd );
 			else
 				audit.debug(   "PASS: "+ cmd +" = '"+ actual +"'" );
@@ -257,9 +257,9 @@ public class Variable {
 		//*		Static test, backwards compat...
 		test( "set hello there", "there" );
 		test( "get HELLO", "there" );
-		test( "equals HELLO there", Shell.SUCCESS );
+		test( "equals HELLO there", Response.SUCCESS );
 		audit.debug( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
-		test( "unset HELLO", Shell.SUCCESS );
+		test( "unset HELLO", Response.SUCCESS );
 		test( "get HELLO", "" );
 		{	// derefOrPop test...
 			Variable.unset( "LOCATOR" );

@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Colloquial {
 	static public  final String NAME = "colloquial";
@@ -88,7 +88,7 @@ public class Colloquial {
 	}
 	static public Strings interpret( String  a ) { return interpret( new Strings( a )); }
 	static public Strings interpret( Strings a ) {
-		if (null == a) return Shell.Fail;
+		if (null == a) return Response.Fail;
 		//audit.in( "interpret", a.toString( Strings.CSV ));
 		
 		// expand 2nd and 3rd attribute parameters
@@ -134,7 +134,7 @@ public class Colloquial {
 		} else
 			audit.error( "Colloquial.interpret(): wrong number of params: "+ a.toString( Strings.CSV ));
 		//return audit.out( Shell.Success );
-		return Shell.Success;
+		return Response.Success;
 	}
 	public static void main( String args[] ) {
 		Audit.on();

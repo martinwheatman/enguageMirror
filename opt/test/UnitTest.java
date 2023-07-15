@@ -57,7 +57,7 @@ public class UnitTest {
 			else if (unexpected == null)                // no second chance
 				//Repertoire.signs.show()
 				audit.FATAL(
-					"reply: '"+    reply    +"',\n             "+
+					"reply: '"+    reply    +"',\n              "+
 					"expected: '"+ expected +"' "
 				);
 		
@@ -67,8 +67,8 @@ public class UnitTest {
 			else                                        // second chance failed too!
 				//Repertoire.signs.show()
 				audit.FATAL(            "reply: '"+ reply      +"'\n"+
-					"             expected: '"+ expected   +"'\n"+
-					"          alternately: '"+ unexpected
+				       "              expected: '"+ expected   +"'\n"+
+				       "           alternately: '"+ unexpected
 				);
 	}
 	
@@ -141,10 +141,10 @@ public class UnitTest {
 			Audit.title( "TEST: "+ test );
 			
 			// true=code before comment, false=
-			if (runTestFile( TEST_DIR, test +TEST_EXT ) ||
+			if (runTestFile( TEST_DIR, test +WIKI_EXT ) || // find wiki over normal tests
+			    runTestFile( TEST_DIR, test +TEST_EXT ) ||
 			    runTestFile( DICT_DIR, test +DICT_EXT ) ||
-			    runTestFile(  REP_DIR, test +REP_EXT  ) ||
-			    runTestFile( TEST_DIR, test +WIKI_EXT )   )
+			    runTestFile(  REP_DIR, test +REP_EXT  )    )
 				testGrp++;
 		}
 		Audit.log( "\n"+ testGrp +" test group(s) found" );

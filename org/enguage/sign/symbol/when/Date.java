@@ -10,7 +10,7 @@ public class Date {
 	
 	private static Pattern digits = Pattern.compile("\\d+");
 
-	private static boolean isDate( String str ) {
+	public static boolean isDate( String str ) {
 		return isDate( new Strings( str ));
 	}
 	private static boolean isDate( Strings strs ) {
@@ -34,9 +34,9 @@ public class Date {
 					digits.matcher( sa.get( sa.size()-1 )).matches(); // c. 878-879
 		}
 	}
-	public static String getDate( Strings strs ) {
+	public static String getDate( Strings strs, String onUnknown ) {
 		for (String s : strs)
 			if (isDate( s ))
 				return s;
-		return "Unknown";
+		return onUnknown;
 }	}

@@ -9,7 +9,6 @@ import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Function {
 	
@@ -47,7 +46,7 @@ public class Function {
 		);
 		
 		audit.out();
-		return Shell.Success;
+		return Response.Success;
 	}
 	public String toString() {return name + (lambda==null ? "<noLambda/>" : lambda.toString());}
 	
@@ -98,7 +97,7 @@ public class Function {
 	public static Strings interpret( String arg ) { return interpret( new Strings( arg ));}
 	public static Strings interpret( Strings argv ) {
 		//audit.in( "interpret", argv.toString( Strings.DQCSV ));
-		Strings rc = Shell.Fail;
+		Strings rc = Response.Fail;
 		if (argv.size() >= 2) {
 			String      cmd = argv.remove( 0 ),
 			       function = argv.remove( 0 );

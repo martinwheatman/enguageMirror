@@ -3,10 +3,10 @@ package org.enguage.util.http;
 import java.io.File;
 import java.io.IOException;
 
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Shell;
 
 public class Wikipedia {
 	
@@ -19,7 +19,7 @@ public class Wikipedia {
 
 	public static Strings interpret( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );
-		Strings rc = Shell.Fail;
+		Strings rc = Response.Fail;
 		String cmd = cmds.remove(0);
 		
 		if (cmd.equals( "query" )) {

@@ -18,14 +18,6 @@ public class Shell {
 
 	static  Audit audit = new Audit( "Shell" );
 	
-	public  static final String SUCCESS = "TRUE";	
-	public  static final String FAIL    = "FALSE";
-	public  static final String IGNORE  = "";
-		
-	public  static final Strings Success = new Strings( SUCCESS );	
-	public  static final Strings Fail    = new Strings( FAIL );
-	public  static final Strings Ignore  = new Strings( IGNORE );
-		
 	private String  prompt;
 	public  String  prompt() { return prompt; }
 	public  Shell   prompt( String p ) { prompt = p; return this; }

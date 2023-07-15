@@ -1,0 +1,6 @@
+On "how old is PHRASE-PERSON":
+	when did PERSON die;
+	if not, when was PERSON born.
+	
+On "how old was PHRASE-PERSON", when did PERSON die.
+	

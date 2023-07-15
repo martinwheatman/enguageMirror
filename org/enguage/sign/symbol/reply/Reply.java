@@ -9,7 +9,6 @@ import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
-import org.enguage.util.sys.Shell;
 
 public class Reply {
 	// a reply is basically a formatted answer...
@@ -134,7 +133,7 @@ public class Reply {
 	public  Answer answer() {return answer;}
 	public  Reply  answer( String ans ) {
 		// ans = "FALSE" OR "[ok, ]this is an answer"
-		if (ans != null && !ans.equals( Shell.IGNORE )) {
+		if (ans != null && !ans.equals( Response.IGNORE )) {
 			if (!answer.isAppending())
 				answer = new Answer(); // a.nswer = new Strings()
 			answer.setType( ans );

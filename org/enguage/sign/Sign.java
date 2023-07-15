@@ -11,12 +11,12 @@ import org.enguage.sign.object.Temporal;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.pattern.Frag;
 import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Shell;
 
 public class Sign {
 	public  static final String   NAME = "sign";
@@ -207,7 +207,7 @@ public class Sign {
 	 */
 	public static Strings interpret( Strings args ) {
 		audit.in( "interpret", args.toString());
-		String rc = Shell.FAIL;
+		String rc = Response.FAIL;
 		
 		if (!args.isEmpty()) {
 			
@@ -322,7 +322,7 @@ public class Sign {
 				//voiced = null; -- maybe more finallys
 			
 			} else {
-				rc = Shell.FAIL;
+				rc = Response.FAIL;
 				audit.error( "Unknown Sign.interpret() command: "+ cmd );
 		}	}
 		audit.out( new Strings( rc ));

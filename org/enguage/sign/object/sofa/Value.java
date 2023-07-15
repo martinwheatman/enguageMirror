@@ -2,11 +2,11 @@ package org.enguage.sign.object.sofa;
 
 import java.io.File;
 
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Shell;
 
 public class Value {
 	static private Audit audit = new Audit( "Value" );
@@ -78,13 +78,13 @@ public class Value {
 	static private String usage( String a ) {
 		audit.debug( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
 				   "given: "+ a );
-		return Shell.FAIL;
+		return Response.FAIL;
 	}
 	static public Strings interpret( Strings a ) {
 		// sa might be: [ "add", "_user", "need", "some", "beer", "+", "some crisps" ]
 		audit.in( "interpret", a.toString( Strings.CSV ));
 		a = a.normalise();
-		String rc = Shell.SUCCESS;
+		String rc = Response.SUCCESS;
 		if (null != a && a.size() > 2) {
 			String cmd = a.remove( 0 ), 
 			    entity = a.remove( 0 ),
@@ -106,10 +106,10 @@ public class Value {
 					v.set( value );
 				
 				else if (cmd.equals( "equals" )) 
-					rc = v.equals( value ) ? Shell.SUCCESS : Shell.FAIL;
+					rc = v.equals( value ) ? Response.SUCCESS : Response.FAIL;
 				
 				else if (cmd.equals( "contains" ))
-					rc = v.contains( value ) ? Shell.SUCCESS : Shell.FAIL;
+					rc = v.contains( value ) ? Response.SUCCESS : Response.FAIL;
 				
 				else
 					usage( cmd, entity, attribute, a );
@@ -122,7 +122,7 @@ public class Value {
 					v.unset();
 				
 				else if (cmd.equals( "isSet" ))
-					rc = v.isSet() ? Shell.SUCCESS : Shell.FAIL;
+					rc = v.isSet() ? Response.SUCCESS : Response.FAIL;
 				
 				else if (cmd.equals( "delete" ))
 					v.ignore();
@@ -132,7 +132,7 @@ public class Value {
 				
 				else if (cmd.equals( "exists" ))
 					// could check to see if it contains <attribute>?
-					rc = v.exists() ? Shell.SUCCESS : Shell.FAIL ;
+					rc = v.exists() ? Response.SUCCESS : Response.FAIL ;
 				
 				else 
 					rc = usage( cmd, entity, attribute, a );

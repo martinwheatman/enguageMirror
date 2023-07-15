@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeMap;
 
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Shell;
 
 public class Plural {
 	static public  final String NAME = "plural";
@@ -144,12 +144,12 @@ public class Plural {
 	}
 	public static Strings interpret( Strings a ) {
 		if (null == a)
-			return Shell.Fail;
+			return Response.Fail;
 		else if (a.get( 0 ).equals("exception") && a.size() == 3)
 			addException( a.get( 1 ), a.get( 2 ));
 		else if (a.get( 0 ).equals("rule") && a.size() == 3)
 			addRule( a.get( 1 ), a.get( 2 ));
-		return Shell.Success;
+		return Response.Success;
 	/* Plurals:
 	 * colloquial <=> colloquia  : because it is an exception
 	 * princess   <=> princesses : *ss adds 'es'

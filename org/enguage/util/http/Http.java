@@ -75,8 +75,4 @@ public class Http implements AutoCloseable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-}
-
-
-
+}	}
