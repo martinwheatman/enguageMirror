@@ -1,6 +1,7 @@
 bin/
 lib/
 tmp/
+sbin/connected.sh
 selftest
 variable
 var/
