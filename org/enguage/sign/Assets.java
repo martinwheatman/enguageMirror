@@ -23,6 +23,7 @@ public class Assets {
 		}
 		return is;
 	}
+	public static String path() {return ".";}
 	public static String[] list( String path ) {
 		//if (path.endsWith("/.")) only needed in android -- to fix!
 		String[] names = null;

@@ -1,22 +1,22 @@
 On "the ENAME is PHRASE-EVAL":
-	run "value the/ENAME EVAL";
+	run "sbin/value the/ENAME EVAL";
 	reply "ok, the ENAME is EVAL".
 	
 On "the ENT ATTR is PHRASE-EVAL":
-	run "value the/ENT/ATTR EVAL";
+	run "sbin/value the/ENT/ATTR EVAL";
 	reply "ok, the ENT ATTR is EVAL".
 	
 On "the ENT ATTR is wrong":
-	run "value -d the/ENT/ATTR";
+	run "sbin/value -d the/ENT/ATTR";
 	if not, reply "ok, we don't know the ENT ATTR";
 	reply "ok, we don't know the ENT ATTR".
 	
 On "what is the ENAME":
-	run "value the/ENAME";
+	run "sbin/value the/ENAME";
 	if not, reply "sorry, I do not know";
 	reply "ok, the ENAME is ...".
 	
 On "what is the ENT ATTR":
-	run "value the/ENT/ATTR";
+	run "sbin/value the/ENT/ATTR";
 	if not, reply "sorry, I do not know";
 	reply "ok, the ENT ATTR is ...".
