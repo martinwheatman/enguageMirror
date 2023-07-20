@@ -288,8 +288,10 @@ public class Intention {
 		return reply;
 	}
 	private Reply run( Reply r ) {
-		return new Commands( formulate( r.answer().toString(), false ).toString())
-				.run( r.answer().toString() );
+		return new Commands()
+				.command( formulate( r.answer().toString(), false ).toString())
+				.injectParameter( r.answer().toString() )
+				.run();
 	}
 	private boolean skip( Reply r ) {return type != N_FINALLY && r.isDone();}
 	
