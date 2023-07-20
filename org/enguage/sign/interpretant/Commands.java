@@ -3,6 +3,7 @@ package org.enguage.sign.interpretant;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.enguage.sign.Assets;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.reply.Response;
@@ -40,9 +41,11 @@ public class Commands {
 		//audit.in( "runresult", "rc="+ rc +", result=["+ results +"]");
 		Reply r = new Reply();
 		
-		r.answer().appendingIs( true );
+		boolean appending = r.answer().isAppending();
+		r.answer().appendingIs( false );
 	 	for (String result : results)
 	 		r.answer( result );
+	 	r.answer().appendingIs( appending ); 
 	 	/*
 	 	 * We have no control over what text the command sends back.
 	 	 * A zero result is success.
@@ -70,6 +73,9 @@ public class Commands {
 
 		// somehow '/' seem to get separated!!! 
 		command = new Strings( command ).contract( "/" ).toString();	
+		if (Assets.context() != null && command.startsWith( "sbin/" ))
+			command = Assets.path() + command;
+		
 		audit.debug( "running: "+ command );
 		ProcessBuilder pb = new ProcessBuilder( "bash", "-c", command );
 		

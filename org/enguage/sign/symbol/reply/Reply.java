@@ -196,7 +196,6 @@ public class Reply {
 	public String toString() {return replyToString().toString();}
 	
 	public Reply conclude( String thought ) {
-		audit.in("conclude", "");
 		strangeThought("");
 
 		if (Response.N_DNU == response.type()) {
@@ -210,7 +209,6 @@ public class Reply {
 			
 			response.type( Response.N_FAIL );
 		}
-		audit.out();
 		return this;
 	}
 	public static void main( String[] args ) {
