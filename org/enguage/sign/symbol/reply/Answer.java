@@ -27,16 +27,20 @@ public class Answer {
 	
 	public Strings injectAnswer( Strings sa ) {
 		if (sa.isEmpty()) {
-			sa = new Strings( answers ); // use the raw answer
+			sa = new Strings( toString() ); // use the raw answer
 			if (sa.isEmpty()) // so a was equal to ""
 				sa = Response.dnu();
 		} else if (sa.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
-			sa.replace( Strings.ellipsis, answers );
+			sa.replace( Strings.ellipsis, toString() );
 		else if (sa.contains( Answer.placeholder() ))
-			sa.replace( Answer.placeholderAsStrings(), answers );
+			sa.replace( Answer.placeholderAsStrings(), toString() );
 		return sa;
 	}
 	
+	/*
+	 * N.B. Should the answer be judged for felicity?
+	 *      Should an answer have a type, at all?
+	 */
 	private int    type = Response.N_DNK;
 	public  int    type() { return type; }
 	public  String setType( String s ) {
