@@ -42,11 +42,11 @@ public class Commands {
 		Reply r = new Reply();
 		
 		boolean appending = r.answer().isAppending();
-		r.answer().appendingIs( false );
+		r.answer().appendingIs( true );
 	 	for (String result : results)
 	 		r.answer( result );
 	 	r.answer().appendingIs( appending ); 
-	 	/*
+		/*
 	 	 * We have no control over what text the command sends back.
 	 	 * A zero result is success.
 	 	 * Passing back a non-zero result is a failure.
@@ -73,9 +73,10 @@ public class Commands {
 
 		// somehow '/' seem to get separated!!! 
 		command = new Strings( command ).contract( "/" ).toString();	
+		// benign for non-Android...
 		if (Assets.context() != null && command.startsWith( "sbin/" ))
 			command = Assets.path() + command;
-		
+				
 		audit.debug( "running: "+ command );
 		ProcessBuilder pb = new ProcessBuilder( "bash", "-c", command );
 		
@@ -122,6 +123,10 @@ public class Commands {
 		Response.failure( "sorry" );
 		Response.success( "ok" );
 
+		Audit.resume();
+		audit.tracing( true );
+		audit.debugging( true );
+		
 		Reply r = new Reply();
 		Audit.log( ">>>"+ r.answer().toString());
 		
