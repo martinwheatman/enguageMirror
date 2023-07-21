@@ -35,7 +35,7 @@ if [ "${cmd}" = "list" ]; then
     
     candidate=$(uniqueFile $candidate 2>/dev/null)
     if [ -z "$candidate" ]; then
-        echo "Error in $(basename $0): $names doesn't exist" >&2
+        echo "$names doesn't exist" >&2
         exit 1
     fi
     
@@ -67,33 +67,36 @@ elif [ "$cmd" = "query" ]; then
         if [ $i = "+" ]; then
             foundPlus=1
         elif [ ${foundPlus} -eq 0 ]; then
-            candidate1="${candidate1} $i"
+            name1="${name1} $i"
         else
-            candidate2="${candidate2} $i"
+            name2="${name2} $i"
         fi
     done
     
-    candidate1=$(echo ${candidate1} | sed -r 's/(^| )(\w)/\U\2/g')
+    candidate1=$(echo ${name1} | sed -r 's/(^| )(\w)/\U\2/g')
     file1=$(uniqueFile $candidate1 2>/dev/null)
     if [ -z "$file1" ]; then
-        echo "Error in $(basename $0), ${file1} does not exist" >&2
+        echo "${name1} does not exist" >&2
         exit 1
     fi
 
-    candidate2=$(echo ${candidate2} | sed -r 's/(^| )(\w)/\U\2/g')
+    candidate2=$(echo ${name2} | sed -r 's/(^| )(\w)/\U\2/g')
     file2=$(uniqueFile $candidate2 2>/dev/null)
     if [ -z "$file2" ]; then
-        echo "Error in $(basename $0), ${file2} does not exist" >&2
+        echo "${name2} does not exist" >&2
         exit 2
     fi
-
+    
+    # remove file extension (not in json files)
+    file2=$(echo $file2 | sed -e 's/.json//g')
+    
     cat ${file1} | \
         sed -e 's/}/\n}/g' | # some rought and ready \
         sed -e 's/{/{\n/g' | # ...JSON formatting    \
         grep '"$ref"'      | # Find ALL references   \
         grep https         | # ...the external ones  \
         grep -v "create"   | # ignore create actions \
-        grep ${file2}
+        grep ${file2} >/dev/null # ignore output
 
     if [ $? -eq 0 ]; then  
         echo "YES"

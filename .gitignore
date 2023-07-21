@@ -3,7 +3,7 @@ lib/
 tmp/
 sbin/connected.sh
 etc/test/connected.txt
-etc/rpts/what_is-connected_to.txt
+etc/rpts/connected_to.txt
 etc/data
 selftest
 variable

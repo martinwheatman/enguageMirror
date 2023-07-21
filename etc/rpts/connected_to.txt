@@ -1,0 +1,14 @@
+On "what is PHRASE-NODE connected to":
+	run "sbin/connected.sh list NODE";
+	if not, reply "sorry, ...";
+	if so, NODE is connected to ... .
+	
+On "PHRASE-NODE is connected to PHRASE-CONNECTIONS", reply "ok, NODE is connected to CONNECTIONS".
+On "PHRASE-NODE is connected to", reply "sorry, NODE is not connected to anything".
+
+On "is it connected to PHRASE-OTHER", is NODE connected to OTHER. 
+On "is PHRASE-NODE connected to PHRASE-OTHER":
+	run "sbin/connected.sh query NODE + OTHER";
+	if not, reply "no, NODE is not connected to OTHER";
+	if so, reply "yes, NODE is connected to OTHER".
+	

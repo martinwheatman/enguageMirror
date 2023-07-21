@@ -4,4 +4,6 @@ what is direction connected to.
 
 what is sales route connected to.
 
-what is task activity connected to.
+is it connected to sales organization.
+
+is task activity connected to direction.
