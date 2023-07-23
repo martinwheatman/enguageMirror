@@ -118,7 +118,8 @@ public class WebRequest extends Thread {
 						+ "Content-type: text/html\n"
 						+ "Set-cookie: sessionID='"+ sID() +"'\n"
 						+ "\n"
-						+ reply + "\n"
+						+ reply 
+						+ "\n"
 				);
 			}
 			connection.close();
