@@ -2,25 +2,40 @@
 # Connected.sh - does the donkey work for simple sap graph queries
 
 DATA_LOCATION=etc/data
-cd ${DATA_LOCATION}
+ORIENTATION="remote"
+if [ "$1" = "local" -o "$1" = "remote" ]; then
+    ORIENTATION="$1"; shift
+fi
+
+if [ "${ORIENTATION}" = "remote" ]; then
+    COOKIES=cookies.txt
+    csrfmwtoken=$(grep csrftoken $COOKIES | sed 's/^.*csrftoken\s*//')    
+    LS_FILES=$(curl \
+        -c $COOKIES \
+        -b $COOKIES \
+        -d "X-CSRFToken: ${csrfmwtoken}" \
+        localhost:8000/landing/list_files/ 2>/dev/null)
+else
+    LS_FILES=$(ls -1 ${DATA_LOCATION})
+fi
 
 uniqueFile() {
     candidate="$1"
-    nfiles=$(ls -1 *.*.${candidate}.json 2>/dev/null | wc -l)
+    nfiles=$(echo "$LS_FILES" | grep \\.${candidate}.json 2>/dev/null | wc -l)
     if [ $nfiles -eq 1 ]; then
-       echo *.*.${candidate}.json
+       echo "$LS_FILES" | grep \\.${candidate}.json
     else
         # validate that candidates aren't zero nor multiple files
-        nfiles=$(ls -1 *${candidate}* 2>/dev/null | wc -l)
+        nfiles=$(echo "$LS_FILES" | grep ${candidate} 2>/dev/null | wc -l)
         if [ $nfiles -lt 1 ]; then
             echo "Error: ${candidate}: does not exist" >&2
             exit 1
         elif [ $nfiles -gt 1 ]; then
             echo "$candidate refers to ${nfiles} files" >&2
-            echo "$(ls -1 *${candidate}*)" | sed -e 's/^/   /g' >&2
+            echo "$LS_FILES" | grep ${candidate} | sed -e 's/^/   /g' >&2
             exit 2
         else
-            echo "*${candidate}*"
+            echo "$LS_FILES" | grep ${candidate}
         fi
     fi
 }
@@ -31,8 +46,6 @@ if [ "${cmd}" = "list" ]; then
 
     names="$*"
     candidate=$(echo ${names} | sed -r 's/(^| )(\w)/\U\2/g')
-    #candidate="*${candidate}*"
-    
     candidate=$(uniqueFile $candidate 2>/dev/null)
     if [ -z "$candidate" ]; then
         echo "$names doesn't exist" >&2
@@ -47,7 +60,19 @@ if [ "${cmd}" = "list" ]; then
     secondPrefix=$(echo $candidate | cut -f2 -d.)
     rem2ndPrefix="s/^${secondPrefix}\.//g"
 
-    cat ${candidate} | \
+    if [ "${ORIENTATION}" = "remote" ]; then
+        COOKIES=cookies.txt
+        csrfmwtoken=$(grep csrftoken $COOKIES | sed 's/^.*csrftoken\s*//')    
+        CONTENTS=$(curl \
+            -c $COOKIES \
+            -b $COOKIES \
+            -d "X-CSRFToken: ${csrfmwtoken}" \
+            localhost:8000/landing/data/${candidate} 2>/dev/null)
+    else
+        CONTENTS=$(cat ${DATA_LOCATION}/${candidate})
+    fi
+ 
+    echo "${CONTENTS}"     | \
         sed -e 's/}/\n}/g' | # some rought and ready \
         sed -e 's/{/{\n/g' | # ...JSON formatting    \
         grep '"$ref"'      | # Find ALL references   \
@@ -57,7 +82,7 @@ if [ "${cmd}" = "list" ]; then
         uniq               | # remove duplicates     \
         sed -e 's/"$//g'   | # remove trailing dquote\
         sed ${rem1stPrefix}| # remove prefix         \
-        sed ${rem2ndPrefix} | # remove prefix \
+        sed ${rem2ndPrefix}| # remove prefix \
         sed -e 's/\([A-Z]\)/ \L\1/g' | sed -e 's/^ //g' | sed -e 's/\.//g'
 
 
@@ -90,7 +115,19 @@ elif [ "$cmd" = "query" ]; then
     # remove file extension (not in json files)
     file2=$(echo $file2 | sed -e 's/.json//g')
     
-    cat ${file1} | \
+    if [ "${ORIENTATION}" = "remote" ]; then
+        COOKIES=cookies.txt
+        csrfmwtoken=$(grep csrftoken $COOKIES | sed 's/^.*csrftoken\s*//')
+        CONTENTS=$(curl \
+            -c $COOKIES \
+            -b $COOKIES \
+            -d "X-CSRFToken: ${csrfmwtoken}" \
+            localhost:8000/landing/data/${file1} 2>/dev/null)
+    else
+        CONTENTS=$(cat ${DATA_LOCATION}/${file1})
+    fi
+ 
+    echo "${CONTENTS}"     | \
         sed -e 's/}/\n}/g' | # some rought and ready \
         sed -e 's/{/{\n/g' | # ...JSON formatting    \
         grep '"$ref"'      | # Find ALL references   \

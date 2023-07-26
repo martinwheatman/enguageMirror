@@ -1,0 +1,6 @@
+On "how many PHRASE-NAMES nodes are there":
+	run "sbin/count.sh remote NAMES";
+	there are ... NAMES nodes.
+	
+On "there are 1 PHRASE-NAMES nodes", reply "there is one NAMES node".
+On "there are NUMERIC-QUANTITY PHRASE-NAMES nodes", reply "there are QUANTITY PLURAL-NAMES nodes".

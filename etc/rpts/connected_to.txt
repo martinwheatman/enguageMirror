@@ -1,14 +1,30 @@
-On "what is PHRASE-NODE connected to":
-	run "sbin/connected.sh list NODE";
+On "what is PHRASE-NODE connected to",         what is NODE connected to locally.
+On "is it connected to PHRASE-OTHER",          is NODE connected to OTHER locally. 
+On "is PHRASE-NODE connected to PHRASE-OTHER", is NODE connected to OTHER locally.
+
+On "what is PHRASE-NODE connected to remotely":
+	run "sbin/connected.sh remote list NODE";
 	if not, reply "sorry, ...";
 	if so, NODE is connected to ... .
+	
+On "what is PHRASE-NODE connected to locally":
+	run "sbin/connected.sh local list NODE";
+	if not, reply "sorry, ...";
+	if so, NODE is connected to ... .
+	
+On "is it connected to PHRASE-OTHER remotely", is NODE connected to OTHER remotely. 
+On "is PHRASE-NODE connected to PHRASE-OTHER remotely":
+	run "sbin/connected.sh remote query NODE + OTHER";
+	if not, reply "no, NODE is not connected to OTHER";
+	if so, reply "yes, NODE is connected to OTHER".
+	
+On "is it connected to PHRASE-OTHER locally", is NODE connected to OTHER locally. 
+On "is PHRASE-NODE connected to PHRASE-OTHER locally":
+	run "sbin/connected.sh local query NODE + OTHER";
+	if not, reply "no, NODE is not connected to OTHER";
+	if so, reply "yes, NODE is connected to OTHER".
 	
 On "PHRASE-NODE is connected to PHRASE-CONNECTIONS", reply "ok, NODE is connected to CONNECTIONS".
 On "PHRASE-NODE is connected to", reply "sorry, NODE is not connected to anything".
 
-On "is it connected to PHRASE-OTHER", is NODE connected to OTHER. 
-On "is PHRASE-NODE connected to PHRASE-OTHER":
-	run "sbin/connected.sh query NODE + OTHER";
-	if not, reply "no, NODE is not connected to OTHER";
-	if so, reply "yes, NODE is connected to OTHER".
 	

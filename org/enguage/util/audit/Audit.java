@@ -45,7 +45,7 @@ public class Audit {
 	}
 	
 	// === debug and detail - "auditing"
-	private static  int     suspended = 1; // to audit we need to resume
+	private static  int     suspended = 0;
 	public  static  void    suspend() {suspended++;}
 	public  static  void    resume() {if (suspended > 0) suspended--;}
 	public  static  boolean suspended() {return suspended>0;}
