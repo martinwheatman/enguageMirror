@@ -1,7 +1,0 @@
-On "what is PHRASE-NAMES connected to":
-	run "sbin/connected.sh list NAMES";
-	if not, reply "sorry, ...";
-	if so, NAMES is connected to ... .
-	
-On "PHRASE-NAMES is connected to PHRASE-CONNECTIONS", reply "ok, NAMES is connected to CONNECTIONS".
-On "PHRASE-NAMES is connected to", reply "sorry, NAMES is not connected to anything".

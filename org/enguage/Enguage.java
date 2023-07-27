@@ -42,6 +42,7 @@ public class Enguage {
 		
 	public  Enguage() {this( RW_SPACE );}
 	public  Enguage( String root ) {
+		Audit.suspend();
 		Fs.root( root );
 		Concept.addNames( Concept.list());
 		Config.load( "config.xml" );
@@ -156,20 +157,19 @@ public class Enguage {
 
 		enguage = new Enguage( fsys );
 				
-		cmd = cmds.isEmpty() ? "":cmds.remove( 0 );
-		
+		cmd = cmds.isEmpty() ? "" : cmds.remove( 0 );
 		if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
 			shell.aloudIs( true ).run();
 		
 		} else {
-			// Command line parameters exists...
+			// Command line parameters exists, so...
+			
 			// reconstruct original commands
 			cmds.prepend( cmd );
-			audit.in( "CLI:", ""+cmds );
-
-			Terminator.stripTerminator( cmds );
+			cmds = Terminator.stripTerminator( cmds );
+			cmds = cmds.toLowerCase();
 			
 			// ...and interpret
-			audit.out( Enguage.get().mediate( cmds.toString() ));
+			Audit.log( enguage.mediate( cmds.toString() ));
 }	}	}
