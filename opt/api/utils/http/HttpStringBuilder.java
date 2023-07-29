@@ -32,9 +32,10 @@ public class HttpStringBuilder {
         // Function to extract the Content-Length from the request headers
         private static int getBodyContentLength(String request) {
             String[] headerLines = request.split("\r\n");
-            for (String line : headerLines) {
-                if (line.contains("Content-Length: ")) {
-                    int contentLength = Integer.parseInt(line.split("Content-Length: ")[1]);
+            for (String lineMixedCase : headerLines) {
+                String line = lineMixedCase.toLowerCase();
+                if (line.toLowerCase().contains("content-length: ")) {
+                    int contentLength = Integer.parseInt(line.split("content-length: ")[1]);
                     return contentLength;
                 }
             }

@@ -47,7 +47,7 @@ public class HttpParser {
         if (bodySection.trim().length() == 0) return parsedData;
 
         Map<String, String> meta = parseHeaders(httpRequestString);
-        String contentType = meta.get("Content-Type");
+        String contentType = meta.get("content-type");
 
         if ("application/json".equalsIgnoreCase(contentType)) {
             // Assuming the body contains JSON data
@@ -93,7 +93,7 @@ public class HttpParser {
 
             // Add the key-value pair to the map
             bodyMap.put(
-                key.toString().replace("\"", "").trim(), 
+                key.toString().toLowerCase().replace("\"", "").trim(), 
                 value.toString().replace("\"", "").trim()
             );
 
