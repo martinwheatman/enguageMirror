@@ -115,10 +115,11 @@ public class WebRequest extends Thread {
 				
 				out.writeBytes(
 						"HTTP/2.0 "+ response() +"\n"
-						+ "Content-type: text/html\n"
-						+ "Set-cookie: sessionID='"+ sID() +"'\n"
+						+ "Content-Type: text/html\n"
+						+ "Set-Cookie: sessionID='"+ sID() +"'\n"
 						+ "\n"
-						+ reply + "\n"
+						+ reply 
+						+ "\n"
 				);
 			}
 			connection.close();

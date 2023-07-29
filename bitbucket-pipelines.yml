@@ -1,0 +1,20 @@
+image: ubuntu
+
+definitions:
+  steps:
+    - step: &deploy-to-fly
+        name: Deploy to Fly IO
+        script:
+          - apt-get update && apt-get install -y curl
+          - curl -L https://fly.io/install.sh | sh
+          - export FLYCTL_INSTALL="/root/.fly"
+          - export PATH="$FLYCTL_INSTALL/bin:$PATH"
+          - export FLY_API_TOKEN=$FLY_API_TOKEN
+          - flyctl deploy --remote-only --dockerfile ./opt/api/Dockerfile --config ./opt/api/fly.toml
+
+pipelines:
+  branches:
+    master:
+      - step: *deploy-to-fly
+    develop:
+      - step: *deploy-to-fly
