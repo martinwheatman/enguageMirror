@@ -23,10 +23,12 @@ you don't need anything
 
 ## Deploy with Fly.io
 
+From the root directory of the repo.
+
 Use the `flyctl` CLI (see [docs](https://fly.io/docs/speedrun/)).
 
 Create an account on fly.io and sign in with the CLI: `fly auth login`.
 
-To create a new app: `fly launch`.
+To create a new app: `fly launch --dockerfile ./opt/api/Dockerfile --config ./opt/api/fly.toml`.
 
-To deploy to an existing app: `fly deploy`.
+To deploy to an existing app: `fly deploy --dockerfile ./opt/api/Dockerfile --config ./opt/api/fly.toml`.
