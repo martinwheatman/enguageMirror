@@ -168,6 +168,7 @@ public class Enguage {
 			// reconstruct original commands
 			cmds.prepend( cmd );
 			cmds = Terminator.stripTerminator( cmds );
+			cmds = cmds.toLowerCase();
 			
 			// ...and interpret
 			Audit.log( enguage.mediate( cmds.toString() ));

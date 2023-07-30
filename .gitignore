@@ -9,5 +9,6 @@ selftest
 variable
 var/
 **.class
+cookies.txt
 .settings/
 .metadata/
