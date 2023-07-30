@@ -3,8 +3,6 @@ package opt.api.utils.http;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.enguage.util.audit.Audit;
-
 public class HttpParser {
 
     public static Map<String, String> parseHeaders(String httpRequestString) {
