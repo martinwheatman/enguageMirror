@@ -3,7 +3,7 @@
 On "where was she born": where was PERSON born.
 On "where was  he born": where was PERSON born.
 On "where was PHRASE-PERSON born":
-	wikipedia PERSON;
+	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
 	perform "tag filter born place ...";
 	if not, say so;
@@ -12,7 +12,7 @@ On "where was PHRASE-PERSON born":
 On "where did she die", where did PERSON die.
 On "where did  he die", where did PERSON die.
 On "where did PHRASE-PERSON die":
-	wikipedia PERSON;
+	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
 	perform "tag filter died place ...";
 	if not, say so;

@@ -19,8 +19,9 @@ import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
+import org.enguage.util.http.Html;
+import org.enguage.util.http.Http;
 import org.enguage.util.http.SapGraph;
-import org.enguage.util.http.Wikipedia;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.tag.Tag;
 
@@ -45,6 +46,8 @@ public class Perform {
 				case Item       .id: return        Item.interpret( Attribute.expand23( a ));
 				case Link       .id: return        Link.interpret(                     a  );
 				case Sign       .ID: return        Sign.interpret( Attribute.expand(   a ));
+				case Html       .ID: return        Html.interpret( Attribute.expand(   a ));
+				case Http       .ID: return        Http.interpret( Attribute.expand(   a ));
 				case Audit      .ID: return       Audit.interpret( Attribute.expand(   a ));
 				case Items      .id: return       Items.interpret(                     a  );
 				case Value      .id: return       Value.interpret( Attribute.expand23( a ));
@@ -60,7 +63,6 @@ public class Perform {
 				case Function   .id: return    Function.interpret( Attribute.expand23( a ));
 				case Variable   .id: return    Variable.interpret( Attribute.expand23( a ));
 				case SapGraph   .ID: return    SapGraph.interpret( Attribute.expand23( a ));
-				case Wikipedia  .ID: return   Wikipedia.interpret( Attribute.expand23( a ));
 				case Similarity .ID: return  Similarity.interpret( Attribute.expand23( a ));
 				case Colloquial .id: return  Colloquial.interpret(                     a  );
 				case Transitive .id: return  Transitive.interpret( Attribute.expand23( a ));

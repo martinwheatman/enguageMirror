@@ -6,7 +6,7 @@
 #
 #
 # First, what we can't say yet...
-my name is martin:                 Ok, you're martin/I don't understand, my name is martin.
+my name is martin:                 Ok, you're martin|I don't understand, my name is martin.
 if not  reply i already know this: I don't understand, if not reply i already know this.
 unset the value of name:           ok.
 

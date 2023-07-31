@@ -26,7 +26,7 @@ public class UnitTest {
 	private static final String    TEST_START = "]";
 	private static final String     LINE_TERM = ".";
 	private static final String     IN_UR_SEP = ":";
-	private static final String  IN_REPLY_SEP = "/"; // doesn't like '|'
+	private static final String  IN_REPLY_SEP = "\\|"; // doesn't like '|'
 	
 	private static final String      LOCATION = "etc";
 	private static final String      DICT_DIR = LOCATION+File.separator+ Concept.DICT +File.separator;

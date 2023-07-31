@@ -1,1 +1,2 @@
-wikipedia queen elizabeth the second.
+get the queen elizabeth the second page from wikipedia:
+		"./selftest/wiki/Queen_Elizabeth_The_Second".
