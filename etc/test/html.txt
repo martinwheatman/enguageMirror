@@ -1,0 +1,2 @@
+set person to queen elizabeth the second.
+html find PERSON table header containing born.

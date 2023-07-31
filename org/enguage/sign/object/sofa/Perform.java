@@ -19,6 +19,7 @@ import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
+import org.enguage.util.http.Html;
 import org.enguage.util.http.SapGraph;
 import org.enguage.util.http.Wikipedia;
 import org.enguage.util.strings.Strings;
@@ -45,6 +46,7 @@ public class Perform {
 				case Item       .id: return        Item.interpret( Attribute.expand23( a ));
 				case Link       .id: return        Link.interpret(                     a  );
 				case Sign       .ID: return        Sign.interpret( Attribute.expand(   a ));
+				case Html       .ID: return        Html.interpret( Attribute.expand(   a ));
 				case Audit      .ID: return       Audit.interpret( Attribute.expand(   a ));
 				case Items      .id: return       Items.interpret(                     a  );
 				case Value      .id: return       Value.interpret( Attribute.expand23( a ));
