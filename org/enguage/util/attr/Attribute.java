@@ -100,12 +100,12 @@ public class Attribute {
 					if (token.string().equals( "-" )) {
 						sb.append( token.string() );
 					} else { // '=' ???
-						ts.putNext( token );
+						ts.putBack();
 						break;
 				}	}
 				
 			} else { // '/' OR '>' ???
-				ts.putNext( token );
+				ts.putBack();
 				break;
 		}	}
 		return sb.toString();
@@ -160,7 +160,7 @@ public class Attribute {
 			if (ts.hasNext()) {
 				Token token = ts.getNext();
 				if (!token.string().equals( "=" ))
-					ts.putNext( token );   // put back '/' or '>'
+					ts.putBack();
 				
 				else if (ts.hasNext())
 					a = new Attribute(

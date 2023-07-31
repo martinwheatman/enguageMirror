@@ -36,16 +36,18 @@ public class TokenStream implements AutoCloseable {
 	public  void   type( String t ) {type = t;}
 	
 	private int  readAhead = 0;
-	public  int  readAhead() {return readAhead;}
-	public  void readAhead(int n) {readAhead = n==160?32:n;}
+	private void readAhead(int n) {readAhead = n==160?32:n;}
+//	private int  gotch = 0;
+//	public  int  gotch(){return gotch;}
 	
-	public  int  getChar() throws IOException {
+	private int  getChar() throws IOException {
 		int ch;
+		//gotch = 0;
 		// Non-breaking spaces...
 		if (readAhead == 0) { // check 195-130 sequence... desktop?
-			ch = is.read();
+			ch = is.read(); //gotch++;
 			if (ch == 195) {
-				ch = is.read();
+				ch = is.read(); //gotch++;
 				if (ch == 130) {
 					ch = ' ';
 				} else {
@@ -53,7 +55,7 @@ public class TokenStream implements AutoCloseable {
 					ch = 195;
 				}
 			} else if (ch == 194) { // check 194-160 sequence... mobile?
-				ch = is.read();
+				ch = is.read(); //gotch++;
 				if (ch == 160) {
 					ch = ' ';
 				} else {
@@ -64,10 +66,10 @@ public class TokenStream implements AutoCloseable {
 		} else { // check "&#160;" sequence...
 			ch = readAhead;
 			if (ch == (int)'&') {
-				ch = is.read(); // read another
+				ch = is.read();  //gotch++;// read another
 				if (ch == (int)'#') {
 					while (ch != (int)';')
-						ch = is.read();
+						ch = is.read(); //gotch++;
 					readAhead = 0; // remove '&'
 					ch = (int)' '; // replace &#nnn; with space
 				} else {
@@ -81,6 +83,7 @@ public class TokenStream implements AutoCloseable {
 	}
 	
 	private Token getToken() {
+		int row = 0, col = 0;
 		StringBuilder wspbuf = new StringBuilder();
 		StringBuilder strbuf = new StringBuilder();
 		
@@ -89,9 +92,14 @@ public class TokenStream implements AutoCloseable {
 			
 			//process whitespace
 			while (-1 != (ch = getChar())) 
-				if (Character.isWhitespace( ch ))
+				if (Character.isWhitespace( ch )) {
+					if (ch=='\n') {
+						row++;
+						col = 0;
+					} else
+						col++;
 					wspbuf.append( (char)ch );
-				else {
+				} else {
 					strbuf.append( (char)ch ); // 1st non-whitespace
 					break;
 				}
@@ -147,31 +155,120 @@ public class TokenStream implements AutoCloseable {
 		} catch(IOException ignore) {
 			audit.error( "doPrefix(): error reading chars" );
 		}
-		return new Token( wspbuf.toString(), strbuf.toString() );
+		return new Token( wspbuf.toString(), strbuf.toString(), row, col );
 	}
+	
+	// *** Location
+	private int  row = 1;
+	private int  col = 1;
+	public  int  row() {return row;}
+	public  int  col() {return col;}
+
+	private int  prevRow = 1;
+	private int  prevCol = 1;
 	
 	// ************************************************************************
 	// a 'modern' interface...
 	//
 	private Token   next = null;
+	private Token   prev = null;
 	public  boolean hasNext() { // sets up 'next' and quantifies it
 		if (next == null) next = getToken();
 		return !next.isEmpty();
 	}
 	public  Token   getNext() {
-		Token rc = next;
-		if (next == null)    // if not been set up
-			rc = getToken(); // just take one blind
-		else
-			next = null;     // no going back
-		return rc; 
+		Token rc = next == null ? getToken() // just take one blind
+				                  : next;    // if not been set up
+		// locate
+		prevCol = col;
+		prevRow = row;
+		row += rc.row();
+		col = rc.row() != 0 ? 
+				rc.col() + 1 // rc.col() may be 0, but first col is 1
+				: col // current position, plus...
+				+ (prev==null?0:prev.string().length()) // previous string
+			    + rc.col(); // this whitespace
+		
+		next = null;
+		prev = rc;
+		return rc;
 	}
-	public  boolean putNext( Token t ) {
-		if (next != null) return false; // don't overwrite next!
-		next = t;
-		return true;
+	public  void putBack() {
+		// relocate
+		col = prevCol;
+		row = prevRow;
+		// retrieve previous
+		next = prev;
+		prev = null;
 	}
+	// ************************************************************************
 	
+	public  boolean expectLiteral( String expected ) {
+		audit.in( "expectLiteral", "expected="+ expected );
+		boolean rc = false;
+		if (hasNext()) {
+			Token t = getNext();
+			rc = t.equals( expected );
+			if (!rc)
+				audit.error(
+					"got '"+ t.string() + "',"
+					+ " not '"+ expected
+					+ "' at line:"+ row()
+					+ ", col:"+ col()
+				);
+		}
+		return audit.out( rc );
+	}
+	public  boolean expectEither( String sep, String term ) {
+		boolean rc = false;
+		if (hasNext()) {
+			Token t = getNext();
+			rc = t.equals( sep );
+			if (!rc)
+				if (t.equals( term ))
+					putBack();
+				else
+					audit.error(
+						"got '"+ t.string() +
+						"' was expecting '"+ sep +
+						"' at line: "+ row() +
+						", col="+ col()
+					);
+		}
+		return rc;
+	}
+	public boolean parseLiteral( String target ) {
+		boolean rc = false;
+		if (hasNext()) {
+			if (getNext().equals( target )) // we've finished
+				rc = true;
+			putBack();
+		}
+		return rc;
+	}
+	public boolean doLiteral( String target ) {
+		boolean rc = false;
+		if (hasNext()) {
+			if (getNext().equals( target )) // we've finished
+				rc = true;
+			else
+				putBack();
+		}
+		return rc;
+	}
+	public boolean parseDqString() {
+		boolean rc = 
+			hasNext() && '"' == getNext().string().charAt( 0 );
+		putBack();
+		return rc;
+	}
+	public boolean expectDqString() {
+		if (parseDqString()) return true;
+		
+		Audit.log("expecting '\"' string at line: "+ row() + ", column: "+ col());
+		return false;
+	}
+
 	// ************************************************************************
 	// Test code
 	//
