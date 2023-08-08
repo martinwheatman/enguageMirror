@@ -17,11 +17,11 @@ public abstract class ActionHandler {
             case POST:
                 return post(head, body);
             case PUT:
-                return post(head, body);
+                return put(head, body);
             case DELETE:
-                return post(head, body);
+                return delete(head, body);
             case PATCH:
-                return post(head, body);
+                return patch(head, body);
             default:
                 throw new HttpException("500", "API only supports " + Action.values());
         }
