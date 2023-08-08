@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.enguage.repertoires.Repertoires;
-import org.enguage.sign.symbol.Utterance;
-import org.enguage.sign.symbol.reply.Reply;
+import org.enguage.Enguage;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
@@ -52,47 +50,44 @@ public class Shell {
 		name( name ).prompt( "> " ).copyright( "Martin Wheatman", "2001-4, 2011-20" );
 	}
 	public Shell( String name, Strings args ) {this( name );}
+	
+	private void doLine( String line, String from, String to ) {
+		//remove Byte order mark...
+		if (line.startsWith("\uFEFF")) { line = line.substring(1); }
+
+		if (!line.equals("\n")) {
+			Strings stream = new Strings();
+			// truncate comment -- only in real files
+			int i = line.indexOf( '#' );
+			if (-1 != i) line = line.substring( 0, i );
+			
+			// if we're converting on the fly, e.g. want -> need
+			if (from != null) line = line.replace( from, to );
+			
+			// will return "cd .." as ["cd", ".", "."], not ["cd" ".."] -- "cd.." is meaningless!
+			// need new stage of non-sentence sign processing
+			stream.addAll( new Strings( line ));
+			ArrayList<Strings> sentences = stream.divide( Terminator.terminators() );
+			if ( sentences.size() > 1 ) {
+				Strings sentence = sentences.remove( 0 );
+				stream = Strings.combine( sentences );
+				if (!sentence.isEmpty()) {
+					// strip sentence of its terminator, if "."
+					// Expand sentence here...
+					for (Strings s : expandSemicolonList( sentence ))
+						Audit.log(
+							Enguage.get().mediate( ""+s )
+						);
+		}	}	}
+	}
 	public void interpret( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
 		if (fp==System.in) System.err.print( prompt() );
 		
 		try (BufferedReader br = new BufferedReader( new InputStreamReader( fp ))) {
 			String line;
-			Strings stream = new Strings();
-			boolean was = aloud; // so we can reset volume between utterances.
 			while ((line = br.readLine()) != null) {
-
-				//remove Byte order mark...
-				if (line.startsWith("\uFEFF")) { line = line.substring(1); }
-
-				if (!line.equals("\n")) {
-					// truncate comment -- only in real files
-					int i = line.indexOf( '#' );
-					if (-1 != i) line = line.substring( 0, i );
-					
-					// if we're converting on the fly, e.g. want -> need
-					if (from != null) line = line.replace( from, to );
-					
-					// will return "cd .." as ["cd", ".", "."], not ["cd" ".."] -- "cd.." is meaningless!
-					// need new stage of non-sentence sign processing
-					stream.addAll( new Strings( line ));
-					ArrayList<Strings> sentences = stream.divide( Terminator.terminators() );
-					if ( sentences.size() > 1 ) {
-						Strings sentence = sentences.remove( 0 );
-						stream = Strings.combine( sentences );
-						if (!sentence.isEmpty()) {
-							// strip sentence of its terminator, if "."
-							// Expand sentence here...
-							for (Strings s : expandSemicolonList( sentence )) {
-								//Audit.LOG( "one" )
-								Reply r = Repertoires.mediate( new Utterance( new Strings( s )));
-								if (aloud) System.out.println( r.toString());
-								//Audit.LOG( "two" )
-							}
-							// ...expand sentence here.
-					}	}
-					if (fp==System.in) System.err.print( prompt() );
-				}
-				aloud = was;	
+				doLine( line, from, to );
+				if (fp==System.in) System.err.print( prompt() );
 			}
 		} catch (java.io.IOException e ) {
 			audit.error( "IO error in Shell::interpret(stdin);" );
