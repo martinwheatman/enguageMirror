@@ -1,2 +1,8 @@
-set person to queen elizabeth the second.
-html find PERSON table header containing born.
+get the queen elizabeth the second page from wikipedia:
+		Ok, that page is cached.
+
+find the table header containing born:
+		Ok, found at offset 113701.
+
+return the date from the next table cell:
+		ok, the date is 21 April 1926.

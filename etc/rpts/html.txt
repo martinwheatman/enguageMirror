@@ -1,4 +1,0 @@
-On "html find PHRASE-FILE table header containing PHRASE-TEXT":
-	wikipedia FILE;
-	perform "html find FILE th TEXT";
-	reply "ok, ...".

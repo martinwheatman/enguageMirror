@@ -1,2 +1,0 @@
-On "get the PHRASE-QUERY page from LOCATION",
-	perform "http get QUERY from LOCATION".

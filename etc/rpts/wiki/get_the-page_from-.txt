@@ -1,0 +1,5 @@
+On "get the PHRASE-QUERY page from LOCATION",
+	perform "http get QUERY from LOCATION";
+	if not, reply "sorry, this page at LOCATION was not found";
+	set cached_page to ... ;
+	reply "ok, that page is cached".

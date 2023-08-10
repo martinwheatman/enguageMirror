@@ -5,7 +5,9 @@ On "when was  he born": when was PERSON born.
 On "when was PHRASE-PERSON born":
 	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
-	perform "tag filter born date ...";
+	find the table header containing born;
+	if not, say so;
+	return the date from the next table cell;
 	if not, say so;
 	reply "According to Wikipedia, PERSON was born on ...".
 	
@@ -14,7 +16,9 @@ On "when did  he die", when did PERSON die.
 On "when did PHRASE-PERSON die":
 	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
-	perform "tag filter died date ...";
+	find the table header containing died;
+	if not, say so;
+	return the date from the next table cell;
 	if not, say so;
 	reply "According to Wikipedia, PERSON died on ...".
 
