@@ -26,6 +26,11 @@ public class TokenStream implements AutoCloseable {
 	public TokenStream( byte[] bs ) {
 		is = new ByteArrayInputStream( bs );
 	}
+	public void seek( int offset ) {
+		try {
+			is.skip( offset );
+		} catch (IOException ignore) {}
+	}
 	public void close() {
 		try {is.close();} catch (IOException ignore) {};
 	}
@@ -35,27 +40,34 @@ public class TokenStream implements AutoCloseable {
 	public  String type() {return type;}
 	public  void   type( String t ) {type = t;}
 	
+	private int size = 0;
+	public  int size() {return size;}
+	
 	private int  readAhead = 0;
-	private void readAhead(int n) {readAhead = n==160?32:n;}
-//	private int  gotch = 0;
-//	public  int  gotch(){return gotch;}
+	private void readAhead(int n) {
+		readAhead = n==160?32:n;
+		gotch--;
+	}
+	
+	private int  gotch = 0;
+	public  int  gotch(){return gotch;}
 	
 	private int  getChar() throws IOException {
 		int ch;
-		//gotch = 0;
-		// Non-breaking spaces...
-		if (readAhead == 0) { // check 195-130 sequence... desktop?
-			ch = is.read(); //gotch++;
-			if (ch == 195) {
-				ch = is.read(); //gotch++;
+		// &nbsp; == Non-breaking spaces... Â or &#160; ...
+		if (readAhead == 0) {
+			ch = is.read(); gotch++;
+			if (ch == 195) { // ... check 195-130 sequence... found in desktop page
+				ch = is.read(); gotch++;
 				if (ch == 130) {
+					Audit.log( "READ 130" );
 					ch = ' ';
 				} else {
 					readAhead( ch );
 					ch = 195;
 				}
-			} else if (ch == 194) { // check 194-160 sequence... mobile?
-				ch = is.read(); //gotch++;
+			} else if (ch == 194) { // ...check 194-160 sequence... found on mobile page
+				ch = is.read(); gotch++;
 				if (ch == 160) {
 					ch = ' ';
 				} else {
@@ -64,17 +76,19 @@ public class TokenStream implements AutoCloseable {
 				}
 			}
 		} else { // check "&#160;" sequence...
-			ch = readAhead;
-			if (ch == (int)'&') {
-				ch = is.read();  //gotch++;// read another
-				if (ch == (int)'#') {
-					while (ch != (int)';')
-						ch = is.read(); //gotch++;
+			ch = readAhead; gotch++;
+			if (ch == '&') {
+				ch = is.read();  gotch++;// read another
+				if (ch == '#') {
+					while (ch != ';') {
+						ch = is.read();
+						gotch++;
+					}
 					readAhead = 0; // remove '&'
-					ch = (int)' '; // replace &#nnn; with space
+					ch = ' '; // replace &#nnn; with space
 				} else {
 					readAhead( ch );
-					ch = (int)'&';
+					ch = '&';
 				}
 			} else
 				readAhead = 0;
@@ -86,6 +100,8 @@ public class TokenStream implements AutoCloseable {
 		int row = 0, col = 0;
 		StringBuilder wspbuf = new StringBuilder();
 		StringBuilder strbuf = new StringBuilder();
+		
+		gotch = 0; // manipulated within getChar()
 		
 		try {
 			int ch;
@@ -132,8 +148,9 @@ public class TokenStream implements AutoCloseable {
 						strbuf.append( (char)ch );
 					} else {
 						strbuf.append( (char)ch );
-						{	/* a bug in wikipedia places a double quote at the end
-							 * the mobile 'search' input widget.
+						{	/* a bug in wikipedia places a double quote at
+							 * the end of the mobile 'search' input widget.
+							 * e.g.:  <input .... name="value"">
 							 */
 							ch = getChar();
 							if ('"' != ch )
@@ -155,14 +172,16 @@ public class TokenStream implements AutoCloseable {
 		} catch(IOException ignore) {
 			audit.error( "doPrefix(): error reading chars" );
 		}
-		return new Token( wspbuf.toString(), strbuf.toString(), row, col );
+		String str = strbuf.toString();
+		col += str.length();
+		return new Token( wspbuf.toString(), str, row, col, gotch );
 	}
 	
 	// *** Location
 	private int  row = 1;
 	private int  col = 1;
 	public  int  row() {return row;}
-	public  int  col() {return col;}
+	public  int  col(int strlen) {return col - strlen;}
 
 	private int  prevRow = 1;
 	private int  prevCol = 1;
@@ -182,42 +201,52 @@ public class TokenStream implements AutoCloseable {
 		// locate
 		prevCol = col;
 		prevRow = row;
+	
 		row += rc.row();
-		col = rc.row() != 0 ? 
-				rc.col() + 1 // rc.col() may be 0, but first col is 1
-				: col // current position, plus...
-				+ (prev==null?0:prev.string().length()) // previous string
-			    + rc.col(); // this whitespace
+		col = (rc.row() == 0 ? col : 1) + rc.col();
+		//audit.debug("row is: "+ row +", col="+ col );
 		
 		next = null;
 		prev = rc;
+		
+		// adjust the size of this TokenStream
+		size += rc.size();
+		
 		return rc;
 	}
 	public  void putBack() {
+		//audit.debug("putback!");
 		// relocate
 		col = prevCol;
 		row = prevRow;
 		// retrieve previous
 		next = prev;
 		prev = null;
+		
+		// adjust the size of this TokenStream
+		size -= next.size();
 	}
 	// ************************************************************************
+	// Helper functions
+	
+	public String getString() {return getNext().string();}
 	
 	public  boolean expectLiteral( String expected ) {
-		audit.in( "expectLiteral", "expected="+ expected );
+		//audit.in( "expectLiteral", "expected="+ expected );
 		boolean rc = false;
 		if (hasNext()) {
 			Token t = getNext();
 			rc = t.equals( expected );
 			if (!rc)
 				audit.error(
-					"got '"+ t.string() + "',"
-					+ " not '"+ expected
+					"expecting '"+ expected
+					+ "', got '"+ t.string() + "',"
 					+ "' at line:"+ row()
-					+ ", col:"+ col()
+					+ ", col:"+ col(t.string().length())
 				);
 		}
-		return audit.out( rc );
+		//audit.out( rc );
+		return rc; 
 	}
 	public  boolean expectEither( String sep, String term ) {
 		boolean rc = false;
@@ -232,7 +261,8 @@ public class TokenStream implements AutoCloseable {
 						"got '"+ t.string() +
 						"' was expecting '"+ sep +
 						"' at line: "+ row() +
-						", col="+ col()
+						", col="+ col(t.string().length())
+
 					);
 		}
 		return rc;
@@ -247,14 +277,11 @@ public class TokenStream implements AutoCloseable {
 		return rc;
 	}
 	public boolean doLiteral( String target ) {
-		boolean rc = false;
-		if (hasNext()) {
-			if (getNext().equals( target )) // we've finished
-				rc = true;
-			else
-				putBack();
+		if (parseLiteral( target )) {
+			getNext();
+			return true;
 		}
-		return rc;
+		return false;
 	}
 	public boolean parseDqString() {
 		boolean rc = 
@@ -264,8 +291,13 @@ public class TokenStream implements AutoCloseable {
 	}
 	public boolean expectDqString() {
 		if (parseDqString()) return true;
-		
-		Audit.log("expecting '\"' string at line: "+ row() + ", column: "+ col());
+		String got = getString();
+		audit.error(
+				"expecting '\"',"
+				+ " got '"+ got
+				+ "' at line: "+ row()
+				+ ", col="+ col(got.length())
+		);
 		return false;
 	}
 
@@ -276,18 +308,31 @@ public class TokenStream implements AutoCloseable {
 		int i = 0;
 		Audit.resume();
 		String[] testStrings =
-			{ "<td> Martin&#160;Wheatman</td>",
-			  "<td> MartinÂWheatman</td>",
-			  "</span> (aged 95)<br>" };
-		
-		for (String testStringa : new Strings( testStrings )) {
-			try (TokenStream ms = new TokenStream(
-						testStringa.getBytes( "UTF-8" )
-				)	)
-			{
+			{	// non-breaking space is 1 char
+				"<td> Martin&#160;Wheatman</td>",
 				
-				while (ms.hasNext() && i++ < 45)
-					Audit.log("===>"+ ms.getNext());
-	
+				// non-breaking space, here, is 2 chars
+				"<td> MartinÂWheatman</td>",
+				
+				// there's an Â between 'aged' and '95' (10 chs)
+				"(aged 95)",
+				
+				// here there isn't (9 chars)
+				"(aged 95)"
+			};
+		
+		for (String s : new Strings( testStrings )) {
+			Audit.log( s +" (sz=" +s.length() +")" );
+			try (TokenStream ts = new TokenStream(s.getBytes( "UTF-8" ))) {
+				int size = 0;
+				while (ts.hasNext() && i++ < 45) {
+					Token t = ts.getNext();
+					size += t.size();
+					
+					//Audit.log((ts.readAhead==0?"==":ts.readAhead)+"=>'"+ t.toString() +"'\t"+ t.size());
+				}
+				
+				Audit.log( "Size = "+ size );
+				
 			} catch (Exception ex) {}
 }	}	}

@@ -1,0 +1,5 @@
+On "find the table header containing PHRASE-TEXT":
+	perform "html find CACHED_PAGE th TEXT";
+	if not, reply "sorry, this table header was not found";
+	set cached_offset to ...;
+	reply "ok, found at offset CACHED_OFFSET".

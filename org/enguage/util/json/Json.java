@@ -13,31 +13,64 @@ public class Json {
 	private static final Audit audit = new Audit( NAME );
 	
 	public Json() {}
-	public Json( String j ){
+	public Json( String json ){
 		try {
-			load( j.getBytes( Token.byteEncoding ));
+			load( json.getBytes( Token.byteEncoding ));
 		} catch( UnsupportedEncodingException x ) {
 			// object will be 'empty' only if UTF-8 is deprecated!
 	}	}
 	
+	private static enum Type {String,Number,Object,Array,True,False,Null};
+	
 	class Value {
+		public Value( String s ) {
+			values.add( s );
+			char t = s.charAt( 0 );
+			switch (t) {
+			case '"' : type = Type.String; break; 
+			case '[' : type = Type.Array ; break; 
+			case '{' : type = Type.Object; break; 
+			case 't' : type = Type.True  ; break; 
+			case 'f' : type = Type.False ; break; 
+			case '-' : type = Type.Number; break; 
+			default : 
+				type = Character.isDigit( t ) 
+						? Type.Number : Type.Null;
+		}	}
+		
+		private final Type   type;
+		public  final Type   type() {return type;}
+		ArrayList<String> values = new ArrayList<String>();;
+		Json object;
+		
+		public String toString() {
+			switch (type) {
+			case String : return ""+values.get( 0 );
+			case Array  : return ""+values;
+			case Object : return object.toString();
+			case True   : return "true";
+			case False  : return "false";
+			default : return "null";
+	}	}	}
+
+	class NameValue {
+		public NameValue( String n, Value v) {
+			name = n; value = v;
+		}
 		private final String name;
 		public  final String name() {return name;}
 		
-		private final String value;
-		public  final String value() {return value;}
+		private final Value value;
+		public  final Value value() {return value;}
 		
-		public Value( String n, String v) {
-			name = n; value = v;
-		}
 		public String toString() {return name +":"+ value;}
 		public String toString(int n) {
 			return (n==0?"":", ") + toString();
 	}	}
 	
-	class Values extends ArrayList<Value> {
+	class Values extends ArrayList<NameValue> {
 		static final long serialVersionUID = 0;
-		public  boolean append( Value v ) {
+		public  boolean append( NameValue v ) {
 			if (v == null) return false;
 			audit.debug( "Adding: "+ v );
 			values.add( v );
@@ -46,7 +79,7 @@ public class Json {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			int n = 0;
-			for (Value v : values)
+			for (NameValue v : values)
 				sb.append( v.toString( n++ ));
 			return sb.toString();
 	}	}
@@ -62,49 +95,44 @@ public class Json {
 	public  int  col() {return col;}
 	
 	// -- LOAD...
-	private String doName( TokenStream ts ) {
-		return ts.expectDqString() ? ts.getNext().string() : null;
+	private String getName( TokenStream ts ) {
+		return ts.expectDqString() ? ts.getString() : null;
 	}
-	private String doValue( TokenStream ts ) {
-		return ts.hasNext() ? ts.getNext().string() : null;
+	private Value getValue( TokenStream ts ) {
+		Value rc = null;
+		if (ts.hasNext())
+				rc = new Value( ts.getString());
+		return rc;
+
 	}
-	private Value doKvPair( TokenStream ts ) {
-		audit.in( "doKvPair", "<value> [{ ',' <value> } | '}' ]" );
-		String name, value;
-		Value v = null != (name = doName( ts ))
+	private NameValue getNameValue( TokenStream ts ) {
+		audit.in( "getNameValPair", "<value> [{ ',' <value> } | '}' ]" );
+		String name;
+		Value value;
+		NameValue v = null != (name = getName( ts ))
 					&& ts.expectLiteral( ":" )
-					&& null != (value = doValue( ts ))
-						? new Value( name, value )
+					&& null != (value = getValue( ts ))
+						? new NameValue( name, value )
 						: null;
 		audit.out( v );
 		return v;
 	}
-	private boolean doValues( TokenStream ts ) {
-		audit.in( "doValues", "<value> [{ ',' <value> } | '}' ]" );
-		boolean rc = true;
-		if (!ts.parseLiteral( "}" )) { // starts '}' & we're done!
-			while (values.append( doKvPair( ts ))
-					&& ts.doLiteral( "," ));
-			rc = ts.parseLiteral( "}" );
-		}
-		return audit.out( rc );
-	}
 	private boolean doObject( TokenStream ts ){
-		audit.in("doObject", "{ <values> }" );
-		boolean rc =   ts.expectLiteral( "{" )
-					&& doValues( ts )
-					&& ts.expectLiteral( "}" );
+		audit.in("doObject", "'{' [ \"<str>\" ':' <value> | ',' ] '}'" );
+		boolean rc = ts.expectLiteral( "{" );
+		if (!ts.doLiteral( "}" )) { // starts '}' & we're done!
+			while (values.append( getNameValue( ts ))
+					&& ts.doLiteral( "," ));
+			rc = ts.expectLiteral( "}" );
+		}
 		return audit.out( rc );
 	}
 	private void load( byte[] s ) {
 		TokenStream ts = new TokenStream(s);
 		if (!doObject(ts))
-			audit.error(
-					"Load failed at: line="+ ts.row()
-					+", col="+ ts.col()
-			);
+			audit.error( "Load failed." );
 		else if (ts.hasNext())
-			audit.error( "extra data found at end of JSON object" );
+			audit.error( "Extra data "+ ts.getString() +" found at end of JSON object." );
 	}
 	// --- LOAD.
 	
@@ -135,36 +163,27 @@ public class Json {
 	}
 	
 	// test code
-	private static void test( String s) {test(s,0,0);}
 
-	private static void test( String s, int row, int col) {
+	private static void test( String s) {
 		Audit.title( s );
 		Json j = new Json( s );
-		if (j.values.size() > 0 && row == 0 & col == 0)
-			Audit.log( "JSON is "+ j );
-		else
-			audit.error( "error at "+ j.col() +"/"+ j.row() );
+		Audit.log( "JSON is "+ j );
 	}
 	public static void main( String[] args ){
+//		Audit.on();
 		test( "{}" ); // ok!
-		test( "X}", 1, 1 );
-		test( "{X", 1, 2 );
-		test( "{}X", 1, 3 );
-//		audit.debugging( true );
-//		audit.tracing( true );
+		test( "X}" );
+		test( "{X" );
+		test( "{}X" );
 		test( "{\n"
 			+ "  \"martin\" : \"john\",\n"
 			+ "  \"john\"   x \"wheatman\"\n"
 			+ "}"
 		);
-		//test( "{ martin : 'wheatman' }" );
-		
-//		audit.debugging( false );
 		test( "{\n"
 			+ "  \"martin\" : \"john\",\n"
 			+ "  \"john\"   : \"wheatman\"\n"
 			+ "}"
 		);
-//		test( "{\n\n \"X\"\n}\n", 3, 2 );
 //		interpret( new Strings( "add fred blogs" ));
 }	}

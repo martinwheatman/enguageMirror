@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.enguage.sign.symbol.config.Plural;
+import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.when.Date;
 import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.attr.Attribute;
@@ -232,7 +233,7 @@ public class Tag {
 
 	public static Strings interpret( Strings args ) {
 		audit.in( "interpret", "args="+ args );
-		Strings rc = new Strings( "sorry" ); // Shell.Fail;
+		Strings rc = Response.Fail;
 		String cmd = args.remove( 0 );
 		String name = args.remove( 0 );
 		String type = args.remove( 0 );

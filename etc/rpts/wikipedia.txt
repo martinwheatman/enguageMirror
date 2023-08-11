@@ -1,4 +1,0 @@
-## So this is things like "wikipedia queen elizabeth the second"
-##
-
-On "wikipedia PHRASE-QUERY", perform "wikipedia query QUERY".

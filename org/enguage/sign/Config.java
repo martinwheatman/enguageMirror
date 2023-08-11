@@ -14,7 +14,7 @@ import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
-import org.enguage.util.http.Wikipedia;
+import org.enguage.util.http.Http;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 import org.enguage.util.sys.Fs;
@@ -46,7 +46,7 @@ public class Config {
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
 		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
 		else if (name.equals(    "SOFA" )) Commands.java( value );
-		else if (name.equals(     "URL" )) Wikipedia.url( value );
+		else if (name.equals(     "URL" )) Http.url( value );
 		else if (name.equals(     "TTL" )) Autoload.ttl( value );
 		else if (name.equals(     "DNU" )) Response.dnu( value );
 		else if (name.equals(     "DNK" )) Response.dnk( value );
