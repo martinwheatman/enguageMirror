@@ -229,77 +229,6 @@ public class Tag {
 	}
 	
 	// ************************************************************************
-	// ************************************************************************
-
-	public static Strings interpret( Strings args ) {
-		audit.in( "interpret", "args="+ args );
-		Strings rc = Response.Fail;
-		String cmd = args.remove( 0 );
-		String name = args.remove( 0 );
-		String type = args.remove( 0 );
-		
-		if (!type.equals( "date" ) && !type.equals( "place" ) && !type.equals( "name" ))
-			rc.addAll( new Strings( ", third parameter should be 'date', 'place' or 'name'" ));
-			
-		else if (cmd.equals( "filter" ) && !args.isEmpty()) {
-			
-			// Wikipedia returns double quoted "answer" (fname)
-			String fName = Strings.trim( args.remove(0), '"' );
-			audit.debug( "Filtering: "+ fName );
-
-			TokenStream ts = new TokenStream( fName );
-			Tag  doc = new Tag( ts );
-			Tags tags = doc.findAllByName( "tr" );
-			for (Tag t : tags) { // process each row
-				
-				if (!t.children().isEmpty()) {
-					ListIterator<Tag> ri = t.children().listIterator();
-					if (ri.hasNext()) {
-						Tag cell = ri.next();
-
-						if (cell.name().equals( "th" )
-							&& !cell.children().isEmpty()
-							&&  cell.children().get(0)
-									.prefix().trim().equalsIgnoreCase( name ))
-						{
-							cell = ri.next();
-							if (cell.name().equals( "td" )) {
-								
-								if (type.equals( "date" )) {
-									rc = new Strings(
-											Date.getDate(
-													cell.children().toStrings( "br" ),
-													"Sorry, I don't know"
-									)		);
-									break;
-									
-								} else if (type.equals( "place" )) {
-									rc = new Strings(
-											Address.getAddress(
-													cell.children().toStrings( "br" ),
-													"Sorry, I don't know"
-									)		);
-									break;
-									
-								} else if (type.equals( "name" )) {
-									for (String s : cell.children().toStrings( "br" ))
-										if (!Date.isDate( s ) &&
-										    !Address.isAddress( s )) {
-											rc = new Strings( s );
-											break;
-										}
-									rc = new Strings( "Sorry, I don't know" );
-									break;
-						}	}	}
-			}	}	}
-		} else 
-			audit.error( "usage: filter ..." );
-
-		audit.out( rc );
-		return rc;
-	}
-	
-	// ************************************************************************
 	// Test code...
 	//
 	private static void treePrint( Tag t ) {
@@ -326,12 +255,6 @@ public class Tag {
 				new Tag(
 					new TokenStream( argv[ 0 ])
 			)	);
-
-		} else {
-			audit.debugging( true );
-			audit.tracing( true );
-			String[] command = {"filter", "born", "\"selftest/wiki/Queen_Elizabeth_The_Second\""};
-			Audit.log( interpret( new Strings( command )));
 		}
 	}	
 }

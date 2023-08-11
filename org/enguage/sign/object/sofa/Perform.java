@@ -23,7 +23,6 @@ import org.enguage.util.http.Html;
 import org.enguage.util.http.Http;
 import org.enguage.util.http.SapGraph;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.tag.Tag;
 
 public class Perform {
 	private Perform() {}
@@ -42,7 +41,6 @@ public class Perform {
 			 */			
 			String  type = a.remove( 0 );
 			switch (Strings.hash( type )) {
-				case Tag        .ID: return         Tag.interpret( Attribute.expand(   a ));
 				case Item       .id: return        Item.interpret( Attribute.expand23( a ));
 				case Link       .id: return        Link.interpret(                     a  );
 				case Sign       .ID: return        Sign.interpret( Attribute.expand(   a ));
