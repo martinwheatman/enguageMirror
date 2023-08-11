@@ -8,6 +8,7 @@ etc/data
 selftest
 variable
 var/
+**.jar
 **.class
 cookies.txt
 .settings/

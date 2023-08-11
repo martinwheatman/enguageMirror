@@ -17,13 +17,13 @@ public class Answer {
 	public  static void    placeholder( String ph ) {placeholderAsStrings = new Strings( placeholder = ph );}
 
 	private boolean appending = false;
-	public  boolean isAppending() { return appending; }
-	public  void    appendingIs( boolean b ) { appending = b; }
+	public  boolean isAppending() {return appending;}
+	public  void    appendingIs( boolean b ) {appending = b;}
 	
 	// [ "black coffee", "eggs", "Taj Mahal" ]; w/embedded spaces!
 	private Strings answers = new Strings();
 	
-	public  void    add( String s ) { answers.add( s );}
+	public  void    add( String s ) {answers.add( s );}
 	
 	public Strings injectAnswer( Strings sa ) {
 		if (sa.isEmpty()) {

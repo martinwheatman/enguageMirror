@@ -60,14 +60,14 @@ public class TokenStream implements AutoCloseable {
 			if (ch == 195) { // ... check 195-130 sequence... found in desktop page
 				ch = is.read(); gotch++;
 				if (ch == 130) {
-					Audit.log( "READ 130" );
+					Audit.log( "READ 130" ); 
 					ch = ' ';
 				} else {
 					readAhead( ch );
 					ch = 195;
 				}
 			} else if (ch == 194) { // ...check 194-160 sequence... found on mobile page
-				ch = is.read(); gotch++;
+				ch = is.read(); //gotch++; // don't count
 				if (ch == 160) {
 					ch = ' ';
 				} else {
@@ -318,21 +318,35 @@ public class TokenStream implements AutoCloseable {
 				"(aged 95)",
 				
 				// here there isn't (9 chars)
-				"(aged 95)"
+				"(aged 95)",
+				
+				"x°m°N"
 			};
+		
+		audit.tracing( true );
+		audit.debugging( true );
 		
 		for (String s : new Strings( testStrings )) {
 			Audit.log( s +" (sz=" +s.length() +")" );
 			try (TokenStream ts = new TokenStream(s.getBytes( "UTF-8" ))) {
 				int size = 0;
-				while (ts.hasNext() && i++ < 45) {
+				while (ts.hasNext()) {
 					Token t = ts.getNext();
-					size += t.size();
-					
-					//Audit.log((ts.readAhead==0?"==":ts.readAhead)+"=>'"+ t.toString() +"'\t"+ t.size());
+					if (t.isEmpty())
+						Audit.log( "end of tx" );
+					else
+						size += t.size();
 				}
 				
 				Audit.log( "Size = "+ size );
 				
 			} catch (Exception ex) {}
-}	}	}
+		}
+		for (String s : new Strings( testStrings )) {
+			try (TokenStream ts = new TokenStream(s.getBytes( "UTF-8" ))) {
+				ts.seek( 4 );
+				Audit.log( "String = "+ ts.getString());
+				
+			} catch (Exception ex) {}
+		}
+}	}

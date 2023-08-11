@@ -240,6 +240,10 @@ public class Intention {
 						: rc;
 	}
 
+	/*
+	 * Perform works at the code level to obtain/set an answer.
+	 * This was initially the object model, but now includes any code.
+	 */
 	private Reply andFinally( Reply r ) {return perform( r, true );}
 	private Reply perform( Reply r ) {return perform( r, false );}
 	private Reply perform( Reply r, boolean ignore ) {
@@ -274,6 +278,7 @@ public class Intention {
 		//	reply.answerReset(
 		
 		// Accumulate reply - currently "remember this"
+		// TODO: incorporate this into "say" ??
 		if (value.equals( Reply.accumulateCmdStr() )) // say so -- possibly need new intention type?
 			Reply.say( reply.toStrings());
 		

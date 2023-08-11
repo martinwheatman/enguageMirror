@@ -1,0 +1,3 @@
+#what is the capital of france:
+#		according to wikipedia, the capital of france is Paris.
+		

@@ -57,6 +57,7 @@ public class Enguage {
 		Overlay.attach( uid );
 		Where.clearLocation();
 		Item.resetFormat();
+		Reply.source( null );
 		Repertoires.signs().firstMatch( true );
 		
 		if (Reply.isUnderstood()) // from previous interpretation!

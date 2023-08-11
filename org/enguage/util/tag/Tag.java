@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.sign.symbol.reply.Response;
-import org.enguage.sign.symbol.when.Date;
-import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
@@ -17,8 +14,6 @@ import org.enguage.util.token.TokenStream;
 
 public class Tag {
 	public  static final int              ID = 13553; // #tag ;-)
-	private static final String         NAME = "Tag";
-	private static final Audit         audit = new Audit( NAME );
 	public  static final String EMPTY_PREFIX = "";
 	
 	private        final String     name;
@@ -107,15 +102,15 @@ public class Tag {
 				if (nameToken.string().equals( "!" )) {
 					nameToken = ts.getNext(); // DOCTYPE or first '-'
 					if (nameToken.string().equals( "DOCTYPE" )) {
-						ts.type( ts.getNext().string()); // consume type -- e.g. 'html'
-						ts.getNext();                    // consume ">"
+						ts.type( ts.getString()); // consume type -- e.g. 'html'
+						ts.getNext();             // consume ">"
 						
 					} else { // read over <!-- comment -->
 						ts.getNext(); // second '-'
 						while (true) {
-							if (ts.getNext().string().equals( "-" ) &&
-								ts.getNext().string().equals( "-" ) &&
-								ts.getNext().string().equals( ">" ))
+							if (ts.getString().equals( "-" ) &&
+								ts.getString().equals( "-" ) &&
+								ts.getString().equals( ">" ))
 								break;
 					}	}
 					p = doPrefix( ts );

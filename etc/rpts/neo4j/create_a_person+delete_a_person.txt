@@ -1,0 +1,9 @@
+On "create a TYPE with a ATTR of PHRASE-VALUE":
+	run "neo4j.shell create TYPE NAME VALUE";
+	if not, say so;
+	reply "ok, done".
+	
+On "delete any TYPE with a ATTR of PHRASE-VALUE":
+	run "neo4j.shell delete TYPE NAME VALUE";
+	if not, say so;
+	reply "ok, done".

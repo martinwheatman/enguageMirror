@@ -2,6 +2,7 @@ package org.enguage.sign.symbol.reply;
 
 import java.util.Locale;
 
+import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
@@ -73,6 +74,18 @@ public class Reply {
 	private boolean done = false;
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
+	
+	// According to...
+	private static final String SOURCE = "web_source";
+	public  static String source() {
+		return Variable.get( SOURCE );
+	}
+	public  static void   source( String src ) {
+		if (src==null)
+			Variable.unset( SOURCE );
+		else
+			Variable.set( SOURCE, src );
+	}
 	
 	// --- say list
 	private static  Strings say = new Strings();
