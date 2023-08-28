@@ -34,6 +34,7 @@ public class HttpResponseBuilder {
     ) {
         String stringResponse = httpVersion + " " + status +"\n"
         + "Content-Type: text/plain\n"
+        + "Access-Control-Allow-Origin: *\n"
         + "Content-Length: " + content.length() + "\n";
 
         for (String key : responseHeaders.keySet()) {
