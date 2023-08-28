@@ -7,10 +7,12 @@ import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 
 import opt.api.actions.ActionHandler;
+import opt.api.utils.http.HttpResponse;
+
 
 public class Interpret extends ActionHandler {
 
-    protected String post( Map<String, String> head, Map<String, String> body ) {
+    protected HttpResponse post( Map<String, String> head, Map<String, String> body ) {
         String utterance = body.get("utterance");
         String sessionId = body.get("sessionId");
 
@@ -18,7 +20,9 @@ public class Interpret extends ActionHandler {
             new Strings( utterance.split(" ") ).normalise()
         ).toString();
 
-        return Enguage.get().mediate(sessionId, utteranceStrippedOfTerminator);
+        String reply = Enguage.get().mediate(sessionId, utteranceStrippedOfTerminator);
+
+        return new HttpResponse(reply);
     }
     
 }
