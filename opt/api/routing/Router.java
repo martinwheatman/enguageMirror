@@ -4,10 +4,11 @@ import java.util.Map;
 
 import opt.api.actions.handlers.Interpret;
 import opt.api.utils.http.HttpException;
+import opt.api.utils.http.HttpResponse;
 
 public class Router {
 
-    public String handle ( Map<String, String> head, Map<String, String> body ) throws HttpException {
+    public HttpResponse handle ( Map<String, String> head, Map<String, String> body ) throws HttpException {
         Route route = Route.fromString(head.get("route"));
 
         switch (route) {

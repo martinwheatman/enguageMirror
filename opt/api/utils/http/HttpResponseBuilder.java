@@ -6,28 +6,46 @@ import opt.api.routing.Router;
 
 public class HttpResponseBuilder {
 
-    private String response = "200 OK";
-	private String response() {return response;}
-	public  void   response( String s ) {response = s;}
-
 	private Router router = new Router();
 
     public String build (Map<String, String> head, Map<String, String> body) {
-        String reply;
+        String content;
+        Map<String, String> responseHeaders;
+        String status = "200 OK";
+
         try {
-            reply = router.handle(head, body);
+            HttpResponse httpResponse = router.handle(head, body);
+            content = httpResponse.getContent();
+            responseHeaders = httpResponse.getResponseHeaders();
         } catch (HttpException e) {
-            reply = e.getErrorMessage();
-            response(e.getResponse());
+            content = e.getErrorMessage();
+            responseHeaders = e.getExtraResponseHeaders();
+            status = e.getStatus();
         }
         
-        String response = head.get("http") + " " + response() +"\n"
+        return composeHttpString(head.get("http"), status, content, responseHeaders);
+    }
+
+    private String composeHttpString(
+        String httpVersion,
+        String status,
+        String content,
+        Map<String, String> responseHeaders
+    ) {
+        String stringResponse = httpVersion + " " + status +"\n"
         + "Content-Type: text/plain\n"
-        + "Content-Length: " + reply.length() + "\n"
-        + "\n"
-        + reply
+        + "Access-Control-Allow-Origin: *\n"
+        + "Content-Length: " + content.length() + "\n";
+
+        for (String key : responseHeaders.keySet()) {
+            stringResponse += key + ": " + responseHeaders.get(key) + "\n";
+        }
+
+        stringResponse += "\n"
+        + content
         + "\n";
 
-        return response;
+        return stringResponse;
     }
+
 }
