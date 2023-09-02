@@ -66,9 +66,7 @@ public class Html {
 			String type = args.remove( 0 ); // ["date"|"name"|"place"|"value"]
 			
 			
-			try (TokenStream ts =
-					new TokenStream( Strings.trim( name, '"' )) )
-			{
+			try (TokenStream ts = new TokenStream( Strings.trim( name, '"' )) ) {
 				ts.seek( Integer.valueOf( offset ));
 				//read a few tags here ...
 				TagStream tags = new TagStream( ts );

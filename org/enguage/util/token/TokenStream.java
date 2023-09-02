@@ -26,10 +26,12 @@ public class TokenStream implements AutoCloseable {
 	public TokenStream( byte[] bs ) {
 		is = new ByteArrayInputStream( bs );
 	}
-	public void seek( int offset ) {
+	public long seek( int offset ) {
+		long skipped = 0;
 		try {
-			is.skip( offset );
+			skipped = is.skip( offset );
 		} catch (IOException ignore) {}
+		return skipped;
 	}
 	public void close() {
 		try {is.close();} catch (IOException ignore) {};
@@ -45,8 +47,24 @@ public class TokenStream implements AutoCloseable {
 	
 	private int  readAhead = 0;
 	private void readAhead(int n) {
+//		audit.in( "readAhead", "n="+n +" <<<< gotch--" );
 		readAhead = n==160?32:n;
 		gotch--;
+//		audit.out();
+	}
+	
+	private int getCh( InputStream is ) throws IOException {
+		
+		int ch = is.read();
+//		audit.in("getCh", ch==-1?"-1":" >>>> gotch++" );
+		if (ch != -1) gotch++;
+		
+//		if ((ch>='a' && ch<='z') || (ch>='A' && ch<='Z'))
+//			audit.out( (ch) + " >" + ((char)ch) +"<" );
+//		else
+//			audit.out( ch );
+		
+		return ch; 
 	}
 	
 	private int  gotch = 0;
@@ -56,18 +74,18 @@ public class TokenStream implements AutoCloseable {
 		int ch;
 		// &nbsp; == Non-breaking spaces... Â or &#160; ...
 		if (readAhead == 0) {
-			ch = is.read(); gotch++;
+			ch = getCh( is );
 			if (ch == 195) { // ... check 195-130 sequence... found in desktop page
-				ch = is.read(); gotch++;
+				ch = getCh( is );
 				if (ch == 130) {
-					Audit.log( "READ 130" ); 
+//					Audit.log( "READ 130" ); 
 					ch = ' ';
 				} else {
 					readAhead( ch );
 					ch = 195;
 				}
 			} else if (ch == 194) { // ...check 194-160 sequence... found on mobile page
-				ch = is.read(); //gotch++; // don't count
+				ch = getCh( is );
 				if (ch == 160) {
 					ch = ' ';
 				} else {
@@ -77,13 +95,13 @@ public class TokenStream implements AutoCloseable {
 			}
 		} else { // check "&#160;" sequence...
 			ch = readAhead; gotch++;
+//			Audit.log("Directly using readAhead( >>>> gotch++ )");
 			if (ch == '&') {
-				ch = is.read();  gotch++;// read another
+				ch = getCh( is );// read another
 				if (ch == '#') {
-					while (ch != ';') {
-						ch = is.read();
-						gotch++;
-					}
+					while (ch != ';')
+						ch = getCh( is );
+					
 					readAhead = 0; // remove '&'
 					ch = ' '; // replace &#nnn; with space
 				} else {
@@ -107,6 +125,7 @@ public class TokenStream implements AutoCloseable {
 			int ch;
 			
 			//process whitespace
+//			audit.in( "whitespace" );
 			while (-1 != (ch = getChar())) 
 				if (Character.isWhitespace( ch )) {
 					if (ch=='\n') {
@@ -119,9 +138,11 @@ public class TokenStream implements AutoCloseable {
 					strbuf.append( (char)ch ); // 1st non-whitespace
 					break;
 				}
+//			audit.out( "size: "+ size );
 			
 			// now process that non-whitespace char
-			if (Character.isLetter( ch ))
+			if (Character.isLetter( ch )) {
+//				audit.in( "letters" );
 				while (-1 != (ch = getChar())) 
 					if (Character.isLetter( ch ) ||
 						Character.isDigit(  ch ) || // alphanums
@@ -131,8 +152,9 @@ public class TokenStream implements AutoCloseable {
 						readAhead( ch );
 						break;
 					}
+//				audit.out( "size: "+ size );
 				
-			else if (Character.isDigit( ch ))
+			} else if (Character.isDigit( ch )) {
 				while (-1 != (ch = getChar())) 
 					if (Character.isDigit( ch ))
 						strbuf.append( (char)ch );
@@ -141,7 +163,7 @@ public class TokenStream implements AutoCloseable {
 						break;
 					}
 			
-			else if ('"' == ch)
+			} else if ('"' == ch) {
 				while (-1 != (ch = getChar())) 
 					if ('"' != ch ) {
 						if ('\\' == ch ) ch = getChar();
@@ -159,7 +181,7 @@ public class TokenStream implements AutoCloseable {
 						break;
 					}
 			
-			else if ('\'' == ch)
+			} else if ('\'' == ch) {
 				while (-1 != (ch = getChar())) 
 					if ('\'' != ch ) {
 						if ('\\' == ch ) ch = getChar();
@@ -168,6 +190,7 @@ public class TokenStream implements AutoCloseable {
 						strbuf.append( (char)ch );
 						break;
 					}
+			}
 			
 		} catch(IOException ignore) {
 			audit.error( "doPrefix(): error reading chars" );
@@ -192,10 +215,13 @@ public class TokenStream implements AutoCloseable {
 	private Token   next = null;
 	private Token   prev = null;
 	public  boolean hasNext() { // sets up 'next' and quantifies it
+//		audit.in( "hasNext" );
 		if (next == null) next = getToken();
+//		audit.out( !next.isEmpty() );
 		return !next.isEmpty();
 	}
 	public  Token   getNext() {
+//		audit.in( "getNext" );
 		Token rc = next == null ? getToken() // just take one blind
 				                  : next;    // if not been set up
 		// locate
@@ -212,9 +238,11 @@ public class TokenStream implements AutoCloseable {
 		// adjust the size of this TokenStream
 		size += rc.size();
 		
+//		audit.out( size );
 		return rc;
 	}
 	public  void putBack() {
+//		audit.in( "putBack" );
 		//audit.debug("putback!");
 		// relocate
 		col = prevCol;
@@ -225,6 +253,7 @@ public class TokenStream implements AutoCloseable {
 		
 		// adjust the size of this TokenStream
 		size -= next.size();
+//		audit.out();
 	}
 	// ************************************************************************
 	// Helper functions
@@ -305,48 +334,50 @@ public class TokenStream implements AutoCloseable {
 	// Test code
 	//
 	public static void main( String[] args ) {
-		int i = 0;
 		Audit.resume();
+		//Audit.on();
 		String[] testStrings =
 			{	// non-breaking space is 1 char
-				"<td> Martin&#160;Wheatman</td>",
+//				"<td> Martin&#160;Wheatman</td>",
 				
 				// non-breaking space, here, is 2 chars
-				"<td> MartinÂWheatman</td>",
+				"mÂW",
 				
-				// there's an Â between 'aged' and '95' (10 chs)
+//				// there's an Â between 'aged' and '95' (10 chs)
 				"(aged 95)",
-				
-				// here there isn't (9 chars)
+//				
+//				// here there isn't (9 chars)
 				"(aged 95)",
-				
-				"x°m°N"
+//				
+				"m°N"
 			};
 		
 		audit.tracing( true );
 		audit.debugging( true );
 		
 		for (String s : new Strings( testStrings )) {
-			Audit.log( s +" (sz=" +s.length() +")" );
+			int size = 0;
+			Audit.subtl( s +" (strlen=" +s.length() +")" );
 			try (TokenStream ts = new TokenStream(s.getBytes( "UTF-8" ))) {
-				int size = 0;
+				size = 0;
 				while (ts.hasNext()) {
 					Token t = ts.getNext();
 					if (t.isEmpty())
 						Audit.log( "end of tx" );
-					else
+					else {
+//						Audit.log( "" );
 						size += t.size();
+					}
 				}
 				
-				Audit.log( "Size = "+ size );
+				Audit.log( s +": counted = "+ size );
 				
 			} catch (Exception ex) {}
-		}
-		for (String s : new Strings( testStrings )) {
-			try (TokenStream ts = new TokenStream(s.getBytes( "UTF-8" ))) {
-				ts.seek( 4 );
-				Audit.log( "String = "+ ts.getString());
-				
+			
+			try (TokenStream ts = new TokenStream( s.getBytes( "UTF-8" ))) {
+				long i = ts.seek( size - 1 );
+				int ch = ts.getChar();
+				Audit.log( "last char = "+ ch + " >" + ((char)ch) +"< (skipped: "+ i +")");
 			} catch (Exception ex) {}
 		}
 }	}

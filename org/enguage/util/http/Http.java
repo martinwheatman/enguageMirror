@@ -17,14 +17,13 @@ public class Http implements AutoCloseable {
 	public  static final int      ID = 154664;
 	private static final Audit audit = new Audit("Http");
 	
-	private URL u;
 	private HttpURLConnection connection;
 	private HttpURLConnection connection() {return connection;}
 
 	public Http( String url ) {
 		try {
 			// Create a URL object with the target endpoint
-			u = new URL( url );
+			URL u = new URL( url );
 	
 			// Open a connection to the URL
 			connection = (HttpURLConnection) u.openConnection();
