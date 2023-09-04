@@ -58,7 +58,7 @@ public class Html {
 				);
 			} catch (Exception ex) {}
 			
-		} else if (cmd.equals( "return" )) {
+		} else if (cmd.equals( "retrieve" )) {
 			
 			rc = new Strings( "sorry, not found" );
 			String name = args.remove( 0 );
