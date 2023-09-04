@@ -7,7 +7,7 @@ On "where was PHRASE-PERSON born":
 	if not, reply "sorry, I don't know PERSON";
 	find the table header containing born;
 	if not, say so;
-	return the place from the next table cell;
+	retrieve the place from the next table cell;
 	if not, say so;
 	reply "According to Wikipedia, PERSON was born in ...".
 	
@@ -18,7 +18,7 @@ On "where did PHRASE-PERSON die":
 	if not, reply "sorry, I don't know PERSON";
 	find the table header containing died;
 	if not, say so;
-	return the place from the next table cell;
+	retrieve the place from the next table cell;
 	if not, say so;
 	reply "According to Wikipedia, PERSON died in ...".
 
