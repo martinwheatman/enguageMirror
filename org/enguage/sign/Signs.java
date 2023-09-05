@@ -126,7 +126,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			firstMatch( false );
 			
 		} else
-			audit.debug( "REDO: Norminal operation" );
+			audit.debug( "REDO: Nominal operation" );
 	}
 	// SKIP SIGNS End
 	// -----------------------------

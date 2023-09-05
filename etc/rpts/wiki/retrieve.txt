@@ -1,3 +1,4 @@
-On "retrieve the date from the next table cell":
-	perform "html retrieve CACHED_PAGE CACHED_OFFSET date next cell";
-	reply "ok, the date is ...".
+On "retrieve the VALUE from the next table cell":
+	perform "html retrieve CACHED_PAGE CACHED_OFFSET VALUE next cell";
+	if not, say so;
+	reply "ok, the VALUE is ...".

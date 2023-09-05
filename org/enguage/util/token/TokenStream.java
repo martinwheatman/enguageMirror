@@ -26,12 +26,10 @@ public class TokenStream implements AutoCloseable {
 	public TokenStream( byte[] bs ) {
 		is = new ByteArrayInputStream( bs );
 	}
-	public long seek( int offset ) {
-		long skipped = 0;
-		try {
-			skipped = is.skip( offset );
-		} catch (IOException ignore) {}
-		return skipped;
+	public boolean skipToken( int offset ) {
+		while (offset-->0 && hasNext())
+			getNext();
+		return hasNext();
 	}
 	public void close() {
 		try {is.close();} catch (IOException ignore) {};
@@ -44,6 +42,9 @@ public class TokenStream implements AutoCloseable {
 	
 	private int size = 0;
 	public  int size() {return size;}
+	
+	private int offset = 0;
+	public  int offset() {return offset;}
 	
 	private int  readAhead = 0;
 	private void readAhead(int n) {
@@ -78,7 +79,6 @@ public class TokenStream implements AutoCloseable {
 			if (ch == 195) { // ... check 195-130 sequence... found in desktop page
 				ch = getCh( is );
 				if (ch == 130) {
-//					Audit.log( "READ 130" ); 
 					ch = ' ';
 				} else {
 					readAhead( ch );
@@ -95,7 +95,6 @@ public class TokenStream implements AutoCloseable {
 			}
 		} else { // check "&#160;" sequence...
 			ch = readAhead; gotch++;
-//			Audit.log("Directly using readAhead( >>>> gotch++ )");
 			if (ch == '&') {
 				ch = getCh( is );// read another
 				if (ch == '#') {
@@ -125,7 +124,6 @@ public class TokenStream implements AutoCloseable {
 			int ch;
 			
 			//process whitespace
-//			audit.in( "whitespace" );
 			while (-1 != (ch = getChar())) 
 				if (Character.isWhitespace( ch )) {
 					if (ch=='\n') {
@@ -138,11 +136,9 @@ public class TokenStream implements AutoCloseable {
 					strbuf.append( (char)ch ); // 1st non-whitespace
 					break;
 				}
-//			audit.out( "size: "+ size );
 			
 			// now process that non-whitespace char
 			if (Character.isLetter( ch )) {
-//				audit.in( "letters" );
 				while (-1 != (ch = getChar())) 
 					if (Character.isLetter( ch ) ||
 						Character.isDigit(  ch ) || // alphanums
@@ -152,7 +148,6 @@ public class TokenStream implements AutoCloseable {
 						readAhead( ch );
 						break;
 					}
-//				audit.out( "size: "+ size );
 				
 			} else if (Character.isDigit( ch )) {
 				while (-1 != (ch = getChar())) 
@@ -215,13 +210,10 @@ public class TokenStream implements AutoCloseable {
 	private Token   next = null;
 	private Token   prev = null;
 	public  boolean hasNext() { // sets up 'next' and quantifies it
-//		audit.in( "hasNext" );
 		if (next == null) next = getToken();
-//		audit.out( !next.isEmpty() );
 		return !next.isEmpty();
 	}
 	public  Token   getNext() {
-//		audit.in( "getNext" );
 		Token rc = next == null ? getToken() // just take one blind
 				                  : next;    // if not been set up
 		// locate
@@ -238,11 +230,10 @@ public class TokenStream implements AutoCloseable {
 		// adjust the size of this TokenStream
 		size += rc.size();
 		
-//		audit.out( size );
+		offset++;
 		return rc;
 	}
 	public  void putBack() {
-//		audit.in( "putBack" );
 		//audit.debug("putback!");
 		// relocate
 		col = prevCol;
@@ -253,7 +244,7 @@ public class TokenStream implements AutoCloseable {
 		
 		// adjust the size of this TokenStream
 		size -= next.size();
-//		audit.out();
+		offset--;
 	}
 	// ************************************************************************
 	// Helper functions
@@ -364,10 +355,8 @@ public class TokenStream implements AutoCloseable {
 					Token t = ts.getNext();
 					if (t.isEmpty())
 						Audit.log( "end of tx" );
-					else {
-//						Audit.log( "" );
-						size += t.size();
-					}
+					else
+						size += ts.offset();
 				}
 				
 				Audit.log( s +": counted = "+ size );
@@ -375,9 +364,9 @@ public class TokenStream implements AutoCloseable {
 			} catch (Exception ex) {}
 			
 			try (TokenStream ts = new TokenStream( s.getBytes( "UTF-8" ))) {
-				long i = ts.seek( size - 1 );
+				ts.skipToken( size - 1 );
 				int ch = ts.getChar();
-				Audit.log( "last char = "+ ch + " >" + ((char)ch) +"< (skipped: "+ i +")");
+				Audit.log( "last char = "+ ch + " >" + ((char)ch) +"< (skipped: "+ (size-1) +")");
 			} catch (Exception ex) {}
 		}
 }	}

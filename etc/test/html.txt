@@ -2,7 +2,18 @@ get the queen elizabeth the second page from wikipedia:
 		Ok, that page is cached.
 
 find the table header containing born:
-		Ok, found at offset 113701.
+		Ok, found at offset 17741.
 
 retrieve the date from the next table cell:
 		ok, the date is 21 April 1926.
+		
+get the france page from wikipedia:
+		Ok, that page is cached.
+
+find the table header containing capital:
+		Ok, found at offset 27477.
+
+retrieve the name from the next table cell:
+		ok, the name is paris.
+		
+		

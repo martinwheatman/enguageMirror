@@ -1,3 +1,6 @@
-#what is the capital of france:
-#		according to wikipedia, the capital of france is Paris.
+When was Queen Elizabeth the second born :
+		According to Wikipedia, Queen Elizabeth the second was born on 21 April 1926.
+
+what is the capital of france:
+		according to wikipedia, the capital of france is Paris.
 		

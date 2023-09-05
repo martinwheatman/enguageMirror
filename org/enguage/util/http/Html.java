@@ -4,6 +4,7 @@ import org.enguage.sign.symbol.when.Date;
 import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
+import org.enguage.util.sys.Fs;
 import org.enguage.util.tag.Tag;
 import org.enguage.util.tag.TagStream;
 import org.enguage.util.token.TokenStream;
@@ -24,81 +25,60 @@ public class Html {
 			String tag  = args.remove( 0 );
 			String value = args.remove( 0 );
 			
-			audit.debug(
-				"ok, cmd=find"
-				+ ", name="+  name 
-				+ ", tag="+   tag 
-				+ ", value="+ value
-			);
-			
 			try (TokenStream ts =
 					new TokenStream( Strings.trim( name, '"' )) )
 			{
-				int i = 0;
 				int offset = -1;
-				boolean found = false;
 				while (ts.hasNext()) {
-					i++; // get token offset here ???
-					offset = ts.size();
 					if (ts.getString().equalsIgnoreCase( "<" ) && ts.hasNext() &&
 						ts.getString().equalsIgnoreCase( tag ) && ts.hasNext()   ) {
 						
+						offset = ts.offset() - 2; // minus: "<" & "tag" 
+
 						while (!ts.getString().equalsIgnoreCase( ">" ) && ts.hasNext());
 						
 						if (ts.getString().equalsIgnoreCase( value )) {
-							found = true;
 							rc = new Strings( ""+offset );
 							break;
 				}	}	}
 				
-				audit.debug(
-					(found ? "F":"Not f")+"ound: '"+ value +"' "
-					+ "in "+ i +" tokens "
-					+ "(o/s="+ offset + ")"
-				);
 			} catch (Exception ex) {}
 			
 		} else if (cmd.equals( "retrieve" )) {
 			
-			rc = new Strings( "sorry, not found" );
+			rc = new Strings( "sorry, th not found" );
 			String name = args.remove( 0 );
 			String offset = args.remove( 0 );
 			String type = args.remove( 0 ); // ["date"|"name"|"place"|"value"]
 			
-			
 			try (TokenStream ts = new TokenStream( Strings.trim( name, '"' )) ) {
-				ts.seek( Integer.valueOf( offset ));
+				
+				ts.skipToken( Integer.valueOf( offset ));
 				//read a few tags here ...
 				TagStream tags = new TagStream( ts );
 				Tag cell = tags.getNext();
 				cell = tags.getNext();
 				if (cell.name().equals( "td" )) {
 					
+					rc = new Strings( "sorry, "+type+" not found" );
+					
+					Strings values = cell.children().toStrings( "br" );
+					
 					if (type.equals( "date" )) {
-						rc = new Strings(
-								Date.getDate(
-										cell.children().toStrings( "br" ),
-										"Sorry, I don't know"
-						)		);
+						rc = new Strings( Date.getDate( values, "Sorry, I don't know" ));
 						
 					} else if (type.equals( "place" )) {
-						rc = new Strings(
-								Address.getAddress(
-										cell.children().toStrings( "br" ),
-										"Sorry, I don't know"
-						)		);
+						rc = new Strings( Address.getAddress( values, "Sorry, I don't know"	));
 						
 					} else if (type.equals( "name" )) {
-						for (String s : cell.children().toStrings( "br" ))
+						rc = new Strings( "Sorry, I don't know" );
+						for (String s : values)
 							if (!Date.isDate( s ) &&
 							    !Address.isAddress( s )) {
 								rc = new Strings( s );
 								break;
 							}
-						rc = new Strings( "Sorry, I don't know" );
 				}	}
-
-				
 			} catch (Exception ex) {
 				Audit.log( "==>"+ ex );
 		}	}
