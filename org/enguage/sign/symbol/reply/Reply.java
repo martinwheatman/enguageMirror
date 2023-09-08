@@ -2,12 +2,12 @@ package org.enguage.sign.symbol.reply;
 
 import java.util.Locale;
 
-import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
+import org.enguage.util.http.Html;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 
@@ -74,18 +74,6 @@ public class Reply {
 	private boolean done = false;
 	public  Reply   doneIs( boolean b ) { done = b; return this; }
 	public  boolean isDone() { return done; }
-	
-	// According to...
-	private static final String SOURCE = "web_source";
-	public  static String source() {
-		return Variable.get( SOURCE );
-	}
-	public  static void   source( String src ) {
-		if (src==null)
-			Variable.unset( SOURCE );
-		else
-			Variable.set( SOURCE, src );
-	}
 	
 	// --- say list
 	private static  Strings say = new Strings();
@@ -196,6 +184,37 @@ public class Reply {
 		verbatimIs( false );
 		return audit.out( replyToString() );
 	}
+	
+	// Set in Config.java/config.xml
+	private static Strings attributing = attributing( "According to X," );
+	public  static Strings attributing( String a ) {
+		attributing = new Strings( a ).reverse();
+		return attributing;
+	}
+	
+	public static Strings attributeSource( Strings reply ) {
+		audit.in( "attributeSource", "reply=["+ reply.toString( Strings.DQCSV) +"]");
+		if (!Html.source().equals( "" )                &&
+		    !(reply.get(0).equalsIgnoreCase( "sorry" ) &&
+		      reply.get(1).equals( "," )))
+		{
+			if (reply.get(0).equalsIgnoreCase( "ok" ) &&
+				reply.get(1).equals( "," ))
+			{
+				reply.remove(0);
+				reply.remove(0);
+			}
+			
+			for (String s : attributing)
+				reply.add( 0, s.equals( "X" ) ? Html.source() : s );
+		
+			// ...and finally
+			Html.source( "" );
+		}
+		audit.out( reply );
+		return reply;
+	}
+
 	public Strings toStrings() {
 		Strings reply = replyToString();
 		if (understoodIs( Response.N_DNU != response.type() )) {

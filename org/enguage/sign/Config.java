@@ -38,7 +38,8 @@ public class Config {
 		else if (name.equals("LISTFORMATSEP" )) Reply.listSep(       value);
 		else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
 		else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
-		else if (name.equals( "REFERENCERS" )) Reply.referencers(   new Strings( value ));
+		else if (name.equals( "ATTRIBUTING" )) Reply.attributing(  value );
+		else if (name.equals( "REFERENCERS" )) Reply.referencers( new Strings( value ));
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
 		else if (name.equals( "SUCCESS" )) Response.success( value );
 		else if (name.equals( "FAILURE" )) Response.failure( value );

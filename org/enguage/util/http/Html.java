@@ -4,7 +4,6 @@ import org.enguage.sign.symbol.when.Date;
 import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
-import org.enguage.util.sys.Fs;
 import org.enguage.util.tag.Tag;
 import org.enguage.util.tag.TagStream;
 import org.enguage.util.token.TokenStream;
@@ -14,6 +13,10 @@ public class Html {
 	private static final String NAME = "Html";
 	private static final Audit audit = new Audit( NAME );
 
+	public static String source = "";
+	public static String source() {return source;}
+	public static void   source( String s ) {source = s;}
+	
 	public static Strings interpret( Strings args ) {
 		audit.in( "interpret", "args="+ args );
 		Strings rc = new Strings( "sorry, i don't understand" ); // Shell.Fail;
@@ -50,6 +53,10 @@ public class Html {
 			String name = args.remove( 0 );
 			String offset = args.remove( 0 );
 			String type = args.remove( 0 ); // ["date"|"name"|"place"|"value"]
+			
+			// source is now last portion of cached name
+			String[] names = Strings.trim( name, '"').split( "\\." );
+			Html.source( names[ names.length-1 ]);
 			
 			try (TokenStream ts = new TokenStream( Strings.trim( name, '"' )) ) {
 				

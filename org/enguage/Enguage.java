@@ -57,7 +57,6 @@ public class Enguage {
 		Overlay.attach( uid );
 		Where.clearLocation();
 		Item.resetFormat();
-		Reply.source( null );
 		Repertoires.signs().firstMatch( true );
 		
 		if (Reply.isUnderstood()) // from previous interpretation!
@@ -92,6 +91,10 @@ public class Enguage {
 		Reply.say( null );
 		Overlay.detach();
 			
+		// According to Wikipedia, ...  (set in config.xml)
+		// Relationship between Http.get() and Html.retrieve()
+		reply = Reply.attributeSource( reply );
+
 		audit.out();
 		return reply;
 	}

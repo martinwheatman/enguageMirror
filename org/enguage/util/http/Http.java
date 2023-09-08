@@ -61,14 +61,20 @@ public class Http implements AutoCloseable {
 	private static String url = "https://en.wikipedia.org/w/index.php?title=";
 	public  static void   url( String u ) {url=u;}
 
+	public static String source = "";
+	public static String source() {return source;}
+	public static void   source( String s ) {source = s;}
+	
 	public static Strings interpret( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );
 		Strings rc = Response.Fail;
 		String cmd = cmds.remove(0);
 		
-		String location = cmds.remove(cmds.size()-1);
-		if (!location.equals("wikipedia"))
-			Audit.log("wrong location: "+ location );
+		// Tell HTML where it came from...
+		// for the moment this is just wikipedia 8^)
+		source( cmds.remove( cmds.size()-1 ));
+		if (!source().equals("wikipedia"))
+			Audit.log("wrong location: "+ source() );
 		
 		String locator = cmds.remove(cmds.size()-1);
 		if (!locator.equals("from"))
@@ -79,9 +85,10 @@ public class Http implements AutoCloseable {
 			String title = cmds.normalise()      // => ["nelson", "mandela"]
 					.capitalise()                // => ["Nelson", "Mandela"]
 					.toString( Strings.UNDERSC );// => "Nelson_Mandela"
+			String cacheName = cache + title +"."+ source();
 			
-			if (new File( cache+title ).exists()) {
-				rc = new Strings().append( "\""+ cache + title +"\"" );
+			if (new File( cacheName ).exists()) {
+				rc = new Strings().append( "\""+ cacheName +"\"" );
 				audit.debug( "Found: "+ rc );
 
 			} else {
@@ -90,10 +97,10 @@ public class Http implements AutoCloseable {
 					audit.debug( "Downloading: "+ cache+title );
 					if (http.responseCode() == 200) {
 						Fs.stringToFile(
-								cache+title,
+								cacheName,
 								http.response()
 						);
-						rc = new Strings().append( "\""+ cache + title +"\"" );
+						rc = new Strings().append( "\""+ cacheName +"\"" );
 					}
 					
 				} catch (IOException e) {

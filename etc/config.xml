@@ -13,6 +13,7 @@
 			ANDCONJUNCTIONS="and"
 			 ORCONJUNCTIONS="or"
 			REFERENCERS="the any"
+			ATTRIBUTING="According to X,"
 			LISTFORMATSEP=":"
 			ANDLISTFORMAT=", :, and "
 			ORLISTFORMAT=", :, or ">

@@ -1,9 +1,9 @@
 On "what is the capital of COUNTRY":
 	get the COUNTRY page from wikipedia;
-	if not, reply "sorry, I don't know of COUNTRY";
+	if not, reply "sorry, i do not know";
 	find the table header containing capital;
 	if not, find the table header containing capital and largest city;
-	if not, reply "According to Wikipedia, COUNTRY does not have a capital";
+	if not, reply "COUNTRY does not have a capital";
 	retrieve the name from the next table cell;
-	if not, reply "sorry retrieve has failed ...";
-	reply "According to Wikipedia, the capital of COUNTRY is ...".
+	if not, reply "sorry, retrieve has failed ...";
+	reply "the capital of COUNTRY is ...".
