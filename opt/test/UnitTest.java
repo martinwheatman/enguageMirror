@@ -43,6 +43,14 @@ public class UnitTest {
 	public  static void test( String  cmd ) {test( cmd, null );}
 	public  static void test( String  cmd, String expected ) {test( cmd, expected, null );}
 	private static void test( String  cmd, String expected, String unexpected ) {
+		
+
+		// decapitalise the first letter in command...
+		char capital = cmd.charAt( 0 );
+		if (Character.isUpperCase( capital ))
+			cmd = Character.toLowerCase( capital ) + cmd.substring( 1 );
+
+
 		// expected == null => don't check reply, expected == '-' => silent!
 		if (expected == null || !expected.equals( "-" ))
 			Audit.log( TEST_PROMPT+ cmd +".");

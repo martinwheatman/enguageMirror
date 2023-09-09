@@ -3,6 +3,6 @@ On "ENTITY's ATTR is PHRASE-VALUE":
 	reply "ok, ENTITY''s  ATTR is VALUE".
 	
 On "what is ENT's ATTR":
-	perform "value get ENT ATTR";
+	get the ATTR of ENT;
 	reply "..., ENT''s ATTR is ...".
 	

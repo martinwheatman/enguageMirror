@@ -4,6 +4,7 @@ On "attribute set ENT ATTR PHRASE-X":
 	
 On "attribute get ENT ATTR":
 	perform "value get ENT ATTR";
+	if not, reply "sorry, i do not know";
 	reply "ok, the ATTR of ENT is ...".
 
 # attribute unset martin name X

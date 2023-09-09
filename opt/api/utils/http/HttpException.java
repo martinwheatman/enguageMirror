@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpException extends Exception {
-
-    private String status;
+	
+    private static final long serialVersionUID = 7297807951434727398L;
+    
+	private String status;
     private String errorMessage;
     private Map<String, String> extraResponseHeaders = new HashMap<>();
 

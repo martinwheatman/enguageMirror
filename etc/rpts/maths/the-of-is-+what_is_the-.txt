@@ -20,22 +20,35 @@ On "the ATTR of the ENT is PHRASE-VALUE":
 # the sum of x and y is x plus y
 
 
+###############################################################################
+###############################################################################
 # Deduction:
 # what is the height of martin.
+
+## Elaboration:
+## What is the capital of France.
 On "what is the ATTR of ENTITY":
 	get the ATTR of ENTITY;
-	reply "..., the ATTR of ENTITY is ...".
+	if so, reply "..., the ATTR of ENTITY is ...";
+	
+	according to wikipedia, what is the ATTR of ENTITY;
+	if so, reply "ok, the ATTR of ENTITY is ...";
+	
+	reply "sorry, I don't know".
+###############################################################################
+###############################################################################
 
 On "what is the ATTR of the ENTITY":
 	get the ATTR of ENTITY;
+	if not, reply "sorry, i do not know";
 	reply "..., the ATTR of the ENTITY is ...".
 
 On "what is the FUNCTION of PHRASE-PARAMS":
 	perform "function evaluate FUNCTION PARAMS";
-	if not, reply "i do not know";
+	if not, reply "sorry, i do not know";
 	reply "the FUNCTION of PARAMS is ...".
 	
 On "what is the value of VARIABLE":
 	get the value of VARIABLE;
-	if not, reply "i'm sorry, VARIABLE is not set";
+	if not, reply "sorry, VARIABLE is not set";
 	reply "..., the value of VARIABLE is ...".
