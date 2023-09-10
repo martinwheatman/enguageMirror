@@ -63,7 +63,7 @@ public class Http implements AutoCloseable {
 
 	public static String source = "";
 	public static String source() {return source;}
-	public static void   source( String s ) {source = s;}
+	public static void   source( String s ) {source = s.toLowerCase();}
 	
 	public static Strings interpret( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );

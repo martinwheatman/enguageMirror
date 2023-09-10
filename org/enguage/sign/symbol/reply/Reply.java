@@ -7,7 +7,7 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
-import org.enguage.util.http.Html;
+import org.enguage.util.http.InfoBox;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 
@@ -194,7 +194,7 @@ public class Reply {
 	
 	public static Strings attributeSource( Strings reply ) {
 		audit.in( "attributeSource", "reply=["+ reply.toString( Strings.DQCSV) +"]");
-		if (!Html.source().equals( "" )                &&
+		if (!InfoBox.source().equals( "" )                &&
 		    !(reply.get(0).equalsIgnoreCase( "sorry" ) &&
 		      reply.get(1).equals( "," )))
 		{
@@ -206,10 +206,10 @@ public class Reply {
 			}
 			
 			for (String s : attributing)
-				reply.add( 0, s.equals( "X" ) ? Html.source() : s );
+				reply.add( 0, s.equals( "X" ) ? InfoBox.source() : s );
 		
 			// ...and finally
-			Html.source( "" );
+			InfoBox.source( "" );
 		}
 		audit.out( reply );
 		return reply;

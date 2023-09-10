@@ -1,96 +1,38 @@
 package org.enguage.util.http;
 
-import org.enguage.sign.symbol.when.Date;
-import org.enguage.sign.symbol.where.Address;
+import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
-import org.enguage.util.strings.Strings;
-import org.enguage.util.tag.Tag;
-import org.enguage.util.tag.TagStream;
-import org.enguage.util.token.TokenStream;
 
 public class Html {
-	public  static final int      ID = 154478; // "html"
-	private static final String NAME = "Html";
-	private static final Audit audit = new Audit( NAME );
-
-	public static String source = "";
-	public static String source() {return source;}
-	public static void   source( String s ) {source = s;}
 	
-	public static Strings interpret( Strings args ) {
-		audit.in( "interpret", "args="+ args );
-		Strings rc = new Strings( "sorry, i don't understand" ); // Shell.Fail;
-		String cmd = args.remove( 0 );
-
-		if (cmd.equals( "find" )) {
-			rc = new Strings( "sorry, not found" );
-			String name = args.remove( 0 );
-			String tag  = args.remove( 0 );
-			String value = args.remove( 0 );
-			
-			try (TokenStream ts =
-					new TokenStream( Strings.trim( name, '"' )) )
-			{
-				int offset = -1;
-				while (ts.hasNext()) {
-					if (ts.getString().equalsIgnoreCase( "<" ) && ts.hasNext() &&
-						ts.getString().equalsIgnoreCase( tag ) && ts.hasNext()   ) {
-						
-						offset = ts.offset() - 2; // minus: "<" & "tag" 
-
-						while (!ts.getString().equalsIgnoreCase( ">" ) && ts.hasNext());
-						
-						if (ts.getString().equalsIgnoreCase( value )) {
-							rc = new Strings( ""+offset );
-							break;
-				}	}	}
-				
-			} catch (Exception ex) {}
-			
-		} else if (cmd.equals( "retrieve" )) {
-			
-			rc = new Strings( "sorry, th not found" );
-			String name = args.remove( 0 );
-			String offset = args.remove( 0 );
-			String type = args.remove( 0 ); // ["date"|"name"|"place"|"value"]
-			
-			// source is now last portion of cached name
-			String[] names = Strings.trim( name, '"').split( "\\." );
-			Html.source( names[ names.length-1 ]);
-			
-			try (TokenStream ts = new TokenStream( Strings.trim( name, '"' )) ) {
-				
-				ts.skipToken( Integer.valueOf( offset ));
-				//read a few tags here ...
-				TagStream tags = new TagStream( ts );
-				Tag cell = tags.getNext();
-				cell = tags.getNext();
-				if (cell.name().equals( "td" )) {
-					
-					rc = new Strings( "sorry, "+type+" not found" );
-					
-					Strings values = cell.children().toStrings( "br" );
-					
-					if (type.equals( "date" )) {
-						rc = new Strings( Date.getDate( values, "Sorry, I don't know" ));
-						
-					} else if (type.equals( "place" )) {
-						rc = new Strings( Address.getAddress( values, "Sorry, I don't know"	));
-						
-					} else if (type.equals( "name" )) {
-						rc = new Strings( "Sorry, I don't know" );
-						for (String s : values)
-							if (!Date.isDate( s ) &&
-							    !Address.isAddress( s )) {
-								rc = new Strings( s );
-								break;
-							}
-				}	}
-			} catch (Exception ex) {
-				Audit.log( "==>"+ ex );
-		}	}
-		
-		audit.out( rc );
-		return rc;
+	public  static final int      ID = 154478; // "html"
+	
+	private String name = "";
+	public  String name() {return name;}
+	public  Html   name( String nm ) {name = nm; return this;}
+	
+	private Attributes attributes = new Attributes();
+	public  Attributes attributes() {return attributes;}
+	public  Html add( Attribute a ) {attributes.add( a ); return this;}
+	
+	private boolean end = false;
+	public  boolean end() {return end;}
+	public  Html    end( boolean b ) {end = b; return this;}
+	
+	private boolean standAlone = false;
+	public  boolean standAlone() {return standAlone;}
+	public  Html    standAlone( boolean b ) {standAlone = b; return this;}
+	
+	public  boolean isEmpty() {return name.equals("");}
+	
+	public String toString() {
+		return "<"+(end?"/":"")+name+attributes+(standAlone?"/":"")+">";
 	}
-}
+	public static void main( String [] args) {
+		Html html = new Html();
+		html.name( "hello" );
+		html.standAlone( true );
+		html.add( new Attribute( "name", "martin" ));
+		Audit.log( "text="+ html );
+}	}

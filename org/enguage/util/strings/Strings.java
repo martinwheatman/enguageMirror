@@ -745,16 +745,17 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			set( i++, trim( s, ch ));
 		return this;
 	}
-	public static String trim( String a, char ch ) { return triml( a, a.length(), ch ); }
+	public static String trim( String a, char ch ) {return triml( a, a.length(), ch );}
 	public static String triml( String a, int asz, char ch ) {
 		// (a="\"hello\"", ch='"') => "hello"; ( "ohio", 'o' ) => "hi"
-		char ch0 = a.charAt( 0 );
-		if (asz == 2 && ch0 == ch && a.charAt( 1 ) == ch)
-			return "";
-		else if (asz > 2 && ch0 == ch && a.charAt( asz-1 ) == ch)
-			return a.substring( 1, asz-1 );
-		else
-			return a;
+		if (asz > 1) {
+			char ch0 = a.charAt( 0 );
+			if (asz == 2 && ch0 == ch && a.charAt( 1 ) == ch)
+				return "";
+			else if (asz > 2 && ch0 == ch && a.charAt( asz-1 ) == ch)
+				return a.substring( 1, asz-1 );
+		}
+		return a;
 	}
 	public static boolean isQuoted(String s) {
 		if (null==s||s.length()==0) return false;

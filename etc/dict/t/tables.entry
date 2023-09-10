@@ -1,0 +1,7 @@
+On "tables count":
+	get the Queen Elizabeth the Second page from wikipedia;
+	if not, reply "load failed";
+	perform "html table count CACHED_PAGE";
+	reply "table count is ...".
+	
+#] tables count.

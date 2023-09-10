@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -40,8 +41,8 @@ public class TokenStream implements AutoCloseable {
 	public  String type() {return type;}
 	public  void   type( String t ) {type = t;}
 	
-	private int size = 0;
-	public  int size() {return size;}
+//	private int size = 0;
+//	public  int size() {return size;}
 	
 	private int offset = 0;
 	public  int offset() {return offset;}
@@ -201,14 +202,14 @@ public class TokenStream implements AutoCloseable {
 	public  int  row() {return row;}
 	public  int  col(int strlen) {return col - strlen;}
 
-	private int  prevRow = 1;
-	private int  prevCol = 1;
-	
 	// ************************************************************************
 	// a 'modern' interface...
 	//
+	private Token   nn   = null;
 	private Token   next = null;
 	private Token   prev = null;
+	private Token   pp   = null;
+	
 	public  boolean hasNext() { // sets up 'next' and quantifies it
 		if (next == null) next = getToken();
 		return !next.isEmpty();
@@ -216,36 +217,31 @@ public class TokenStream implements AutoCloseable {
 	public  Token   getNext() {
 		Token rc = next == null ? getToken() // just take one blind
 				                  : next;    // if not been set up
-		// locate
-		prevCol = col;
-		prevRow = row;
-	
+		
+		// remember where we are for flagging errors
 		row += rc.row();
 		col = (rc.row() == 0 ? col : 1) + rc.col();
-		//audit.debug("row is: "+ row +", col="+ col );
 		
-		next = null;
+		// shift buffers forwards
+		pp   = prev;
 		prev = rc;
-		
-		// adjust the size of this TokenStream
-		size += rc.size();
+		next = nn;
+		nn   = null;
 		
 		offset++;
 		return rc;
 	}
 	public  void putBack() {
-		//audit.debug("putback!");
-		// relocate
-		col = prevCol;
-		row = prevRow;
-		// retrieve previous
-		next = prev;
-		prev = null;
+		if (nn == null) { // buffers not full !!
+			// shift buffers forwards
+			nn   = next;
+			next = prev;
+			prev = pp;
+			pp = null;
 		
-		// adjust the size of this TokenStream
-		size -= next.size();
-		offset--;
-	}
+			offset--;
+	}	}
+	
 	// ************************************************************************
 	// Helper functions
 	
@@ -319,6 +315,19 @@ public class TokenStream implements AutoCloseable {
 				+ ", col="+ col(got.length())
 		);
 		return false;
+	}
+	
+	public Attribute getAttribute() {
+		Attribute attribute = new Attribute( "", "" );
+		String  name = getString();
+		if (name.matches( "[a-zA-Z_]+")) {
+			if (getString().equals("=")) { // '='
+				String value = Strings.trim( Strings.trim( getString(), '"' ), '\'' );
+				attribute.name( name ). value( value ); 
+			}
+		} else
+			putBack();
+		return attribute;
 	}
 
 	// ************************************************************************
