@@ -108,7 +108,7 @@ public class Attributes extends ArrayList<Attribute> {
 	}
 	public boolean contains( String name, String value ) {
 		for (Attribute a : this)
-			if (a.equals( name, value ))
+			if (a.contains( name, value ))
 				return true;
 		return false;
 	}
@@ -127,6 +127,20 @@ public class Attributes extends ArrayList<Attribute> {
 	public Attributes add( String name, String value ) {
 		add( new Attribute( name, value ));
 		return this;
+	}
+	public String match( Strings name ) {
+		String value = value( name.toString() );
+		if (value.equals( "" )) {
+			name = name.toLowerCase();
+			Iterator<Attribute> ai = iterator();
+			while (ai.hasNext()) {
+				Attribute a = ai.next();
+				Strings aname = new Strings( a.name()).toLowerCase();
+				if (aname.contains( name ))
+					return a.value();
+			}
+		}
+		return value;
 	}
 	public String value( String name ) {
 		Attribute a;

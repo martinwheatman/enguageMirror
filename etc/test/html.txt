@@ -1,17 +1,13 @@
 get the queen elizabeth the second page from wikipedia:
 		Ok, that page is cached.
 
-find the table header containing born. #: Ok, found at offset VARIABLE.
-
-retrieve the date from the next table cell:
-		According to wikipedia , the date is 21 April 1926.
+retrieve the born date from the cached page:
+		According to wikipedia , the born date is 21 April 1926.
 		
 get the france page from wikipedia:
 		Ok, that page is cached.
 
-find the table header containing capital. #Ok, found at offset VAIRABLE.
-
-retrieve the name from the next table cell:
-		According to wikipedia , the name is paris.
+retrieve the capital name from the cached page:
+		According to wikipedia , the capital name is Paris.
 		
 		

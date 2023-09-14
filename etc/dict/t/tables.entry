@@ -1,7 +1,22 @@
-On "tables count":
+On "count tables":
 	get the Queen Elizabeth the Second page from wikipedia;
 	if not, reply "load failed";
-	perform "html table count CACHED_PAGE";
+	perform "html count tables CACHED_PAGE";
 	reply "table count is ...".
+
+On "values list":
+	get the Queen Elizabeth the Second page from wikipedia;
+	if not, reply "load failed";
+	perform "html list values CACHED_PAGE";
+	reply "values include ...".
 	
-#] tables count.
+On "get born date":
+	get the Queen Elizabeth the Second page from wikipedia;
+	if not, reply "load failed";
+	perform "html retrieve born date CACHED_PAGE";
+	if not, reply "sorry, ...";
+	reply "born date is ...".
+	
+#] count tables.
+#] values list.
+#] get born date.

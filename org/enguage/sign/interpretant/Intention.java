@@ -270,7 +270,8 @@ public class Intention {
 				r.answer( formatAnswer( rawAnswer.toString()));
 		}
 
-		return r; //(Reply) audit.out( r )//
+		//audit.out( r )
+		return r; 
 	}
 	private Reply reply( Reply reply ) {
 		audit.in( "reply", "value="+ value +", r="+ (value.equals("")?"SAY SO":reply.toString() ));

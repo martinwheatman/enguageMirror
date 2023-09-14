@@ -1,20 +1,25 @@
-On "according to SOURCE, what is the PHRASE-CAPITAL of PHRASE-COUNTRY":
-	get the COUNTRY page from SOURCE;
+On "according to SOURCE, what is the PHRASE-ATTRIBUTE of PHRASE-ENTITY":
+	get the ENTITY page from SOURCE;
 	if not, reply "sorry, i do not know";
-	find the table header containing CAPITAL;
-	if not, find the table header containing CAPITAL;
-	if not, reply "COUNTRY does not have a CAPITAL";
-	retrieve the name from the next table cell;
-	if not, reply "sorry, retrieve has failed ...";
-	reply "the CAPITAL of COUNTRY is ...".
+	retrieve the ATTRIBUTE name from the cached page;
+	if not, reply "sorry, ENTITY does not have a ATTRIBUTE";
+	reply "the ATTRIBUTE of ENTITY is ...".
 
 ## Elaboration(!):
+
+#]	What is the capital of France:
+#]		According to Wikipedia, the capital of France is Paris.
+
+#]  The capital of France is London:
+#]		Ok, the capital of France is London.
+
+#]	What is the capital of France:
+#]		London, the capital of France is London.
 
 #]	According to Wikipedia, what is the capital of France:
 #]		According to Wikipedia, the capital of France is Paris.
 
-#]	What is the capital of France:
-#]		According to Wikipedia, the capital of France is Paris.
+#]	Unset the capital of France.
 
 #]	According to Wikipedia, what is the largest city of Austrailia:
 #]		According to Wikipedia, the largest city of Austrailia is Sydney ( metropolitan ).

@@ -26,19 +26,31 @@ public class HtmlTable {
 		audit.in( "doCell", "Cell content starts: "+ s );
 		Html html = hs.getHtml();
 		audit.debug( "html="+ html.toString() );
-		while (!html.isEmpty() && !(html.name().equalsIgnoreCase( type ) && html.end())) {
-			
+		while ( !html.isEmpty() &&
+				!(html.name().equalsIgnoreCase( type ) &&
+				html.type()==Html.Type.end))
+		{
 			// don't put the html tag into the text
 			// s.append( html.toString());
 			// however, ...
 			if (html.name().equals( "br" ))
 				s.append( ";" );
+
+			// Consume non-displayable text
+			if (html.attributes().contains( "style", "display:none" )) {
+				int n = 1;
+				while (n>0) {
+					html = hs.getHtml(); // this consumes text :)
+					if (html.type() == Html.Type.end)
+						n--;
+					else if (html.type() == Html.Type.begin)
+						n++;
+			}	}
 			
+			// skip script and style tags
 			if (!html.name().equals(   "script" ) &&
-				!html.name().equals(    "style" ) &&
-				!html.attributes().contains("display","none"))
-			{
-				Strings text = hs.getText();
+				!html.name().equals(    "style" )   )
+			{	Strings text = hs.getText();
 				if (!text.toString().startsWith( "& # " )) {
 					audit.debug( "Cell content continues: "+ text );
 					s.appendAll( text );
@@ -66,11 +78,12 @@ public class HtmlTable {
 			else if (html.name().equalsIgnoreCase( "td" ))
 				value = doCell( hs, "td" );
 			
-			else if (html.name().equalsIgnoreCase( "tr" ) && html.end())
+			else if (html.name().equalsIgnoreCase( "tr" ) 
+					&& html.type() == Html.Type.end)
 				break;
 			
 			html = hs.getHtml();
-			audit.debug( "/tr? = "+ html.toString());
+			//audit.debug( "/tr? = "+ html.toString());
 		}
 		
 		audit.out( name +"=\""+ value +"\"" );
@@ -83,7 +96,7 @@ public class HtmlTable {
 		while (!html.isEmpty()) {
 			
 			if (html.name().equals("tr"))
-				if (html.end())
+				if (html.type() == Html.Type.end)
 					break;
 				else {
 					Attribute attr = doTr( hs );
@@ -92,7 +105,7 @@ public class HtmlTable {
 				}
 			
 			html = hs.getHtml();
-			audit.debug( "/tbody? = "+ html.toString());
+			//audit.debug( "/tbody? = "+ html.toString());
 		}
 		audit.out( attrs.toString());
 		return attrs;
@@ -104,13 +117,12 @@ public class HtmlTable {
 		audit.in( "doHtml", "html="+ html );
 		while (!html.isEmpty()) {
 			if (html.name().equals("table")) {
-				if (html.attributes().contains("class", "infobox") ||
-					html.attributes().contains("class", "infobox vcard"))
+				if (html.attributes().contains("class", "infobox"))
 					attrs = doTBody( hs );
 				tableCount++;
 			}
 			html = hs.getHtml();
-			audit.debug( "html="+ html.toString());
+			//audit.debug( "html="+ html.toString());
 		}
 		//Audit.log( tableCount +" tables found." );
 		audit.out( attrs.toString());

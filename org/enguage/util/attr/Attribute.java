@@ -49,8 +49,8 @@ public class Attribute {
 		return from;
 	}
 	//
-	public boolean equals(String nm, String val) {
-		return name.equals( nm ) && value.equals( val );
+	public boolean contains(String nm, String val) {
+		return name.equals( nm ) && value.contains( val );
 	}
 	
 	// ---

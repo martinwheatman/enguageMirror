@@ -92,7 +92,7 @@ public class Enguage {
 		Overlay.detach();
 			
 		// According to Wikipedia, ...  (set in config.xml)
-		// Relationship between Http.get() and Html.retrieve()
+		// If we've picked up a source, attribute it!
 		reply = Reply.attributeSource( reply );
 
 		audit.out();

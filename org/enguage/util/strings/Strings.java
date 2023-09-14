@@ -281,7 +281,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		for (int i=0; i<sz; i++) {
 			char ch = s.charAt( i ); 
 			if (   Character.getType( ch ) != Character.LOWERCASE_LETTER
-				&& Character.getType( ch ) != Character.UPPERCASE_LETTER )
+				&& Character.getType( ch ) != Character.UPPERCASE_LETTER 
+				&& ch != '_')
 				return false;
 		}
 		return true;

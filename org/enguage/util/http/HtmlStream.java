@@ -2,6 +2,7 @@ package org.enguage.util.http;
 
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
+import org.enguage.util.http.Html.Type;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
 import org.enguage.util.token.Token;
@@ -38,7 +39,7 @@ public class HtmlStream {
 			if (ts.getString().equalsIgnoreCase(  "<" )) {
 				html.name( ts.getString() );
 				if (html.name().equals("/")) {
-					html.end( true );
+					html.type( Html.Type.end );
 					html.name( ts.getString() );
 					ts.expectLiteral( ">" );
 				} else {
@@ -49,7 +50,7 @@ public class HtmlStream {
 					}
 					String word = ts.getString();
 					if (word.equals( "/" )) {
-						html.standAlone( true );
+						html.type( Type.standalone );
 						ts.getString();
 					}
 				}

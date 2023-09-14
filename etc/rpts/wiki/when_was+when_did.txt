@@ -5,9 +5,7 @@ On "when was  he born": when was PERSON born.
 On "when was PHRASE-PERSON born":
 	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
-	find the table header containing born;
-	if not, say so;
-	retrieve the date from the next table cell;
+	retrieve the born date from the cached page;
 	if not, say so;
 	reply "ok, PERSON was born on ...".
 	
@@ -16,9 +14,7 @@ On "when did  he die", when did PERSON die.
 On "when did PHRASE-PERSON die":
 	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
-	find the table header containing died;
-	if not, reply "Sorry, according to Wikipedia, PERSON is not dead";
-	retrieve the date from the next table cell;
-	if not, say so;
+	retrieve the died date from the cached page;
+	if not, reply "ok, PERSON is not dead";
 	reply "ok, PERSON died on ...".
 

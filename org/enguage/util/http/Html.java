@@ -5,8 +5,12 @@ import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 
 public class Html {
-	
 	public  static final int      ID = 154478; // "html"
+	
+	public static enum Type {begin, standalone, end};
+	private Type type = Type.begin;
+	public  Type type() {return type;}
+	public  Html type( Type b ) {type = b; return this;}
 	
 	private String name = "";
 	public  String name() {return name;}
@@ -16,23 +20,20 @@ public class Html {
 	public  Attributes attributes() {return attributes;}
 	public  Html add( Attribute a ) {attributes.add( a ); return this;}
 	
-	private boolean end = false;
-	public  boolean end() {return end;}
-	public  Html    end( boolean b ) {end = b; return this;}
-	
-	private boolean standAlone = false;
-	public  boolean standAlone() {return standAlone;}
-	public  Html    standAlone( boolean b ) {standAlone = b; return this;}
-	
 	public  boolean isEmpty() {return name.equals("");}
 	
 	public String toString() {
-		return "<"+(end?"/":"")+name+attributes+(standAlone?"/":"")+">";
+		return "<"
+				+ (type==Type.end?"/":"")
+				+ name
+				+ attributes
+				+ (type() == Type.standalone?"/":"")
+				+ ">";
 	}
 	public static void main( String [] args) {
 		Html html = new Html();
 		html.name( "hello" );
-		html.standAlone( true );
+		html.type( Type.standalone );
 		html.add( new Attribute( "name", "martin" ));
 		Audit.log( "text="+ html );
 }	}

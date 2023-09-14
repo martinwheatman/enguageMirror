@@ -5,9 +5,7 @@ On "where was  he born": where was PERSON born.
 On "where was PHRASE-PERSON born":
 	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
-	find the table header containing born;
-	if not, say so;
-	retrieve the place from the next table cell;
+	retrieve the born place from the cached page;
 	if not, say so;
 	reply "Ok, PERSON was born in ...".
 	
@@ -16,9 +14,7 @@ On "where did  he die", where did PERSON die.
 On "where did PHRASE-PERSON die":
 	get the PERSON page from wikipedia;
 	if not, reply "sorry, I don't know PERSON";
-	find the table header containing died;
-	if not, say so;
-	retrieve the place from the next table cell;
+	retrieve the died place from the cached page;
 	if not, say so;
 	reply "Ok, PERSON died in ...".
 

@@ -1,5 +1,0 @@
-## should this be http wikipedia queen elizabeth the second?
-
-wikipedia queen elizabeth the second.
-
-tag filter born date "selftest/wiki/Queen_Elizabeth_The_Second".

@@ -46,12 +46,12 @@ public class Answer {
 	public  String setType( String s ) {
 		// This sets type to first non-NK type
 		if (type == Response.N_DNK) {
-			     if (s.startsWith( Response.yesStr()    )) type = Response.N_OK;
-			else if (s.startsWith( Response.successStr())) type = Response.N_OK;
-			else if (s.startsWith( Response.noStr()     )) type = Response.N_NO;
-			else if (s.startsWith( Response.dnuStr()    )) type = Response.N_DNU;
-			else if (s.startsWith( Response.failureStr())) type = Response.N_FAIL;
-			else if (s.startsWith( Response.dnkStr()    )) type = Response.N_DNK;
+			     if (s.toLowerCase().startsWith( Response.yesStr()    )) type = Response.N_OK;
+			else if (s.toLowerCase().startsWith( Response.successStr())) type = Response.N_OK;
+			else if (s.toLowerCase().startsWith( Response.noStr()     )) type = Response.N_NO;
+			else if (s.toLowerCase().startsWith( Response.dnuStr()    )) type = Response.N_DNU;
+			else if (s.toLowerCase().startsWith( Response.failureStr())) type = Response.N_FAIL;
+			else if (s.toLowerCase().startsWith( Response.dnkStr()    )) type = Response.N_DNK;
 			else type = Response.N_CHS;
 		}
 		return s;

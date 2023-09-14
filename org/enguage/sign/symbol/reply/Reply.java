@@ -192,25 +192,29 @@ public class Reply {
 		return attributing;
 	}
 	
+	// this is only called directly from Enguage.java - on replying to the user
 	public static Strings attributeSource( Strings reply ) {
 		audit.in( "attributeSource", "reply=["+ reply.toString( Strings.DQCSV) +"]");
-		if (!InfoBox.source().equals( "" )                &&
-		    !(reply.get(0).equalsIgnoreCase( "sorry" ) &&
-		      reply.get(1).equals( "," )))
-		{
-			if (reply.get(0).equalsIgnoreCase( "ok" ) &&
-				reply.get(1).equals( "," ))
-			{
-				reply.remove(0);
-				reply.remove(0);
-			}
-			
-			for (String s : attributing)
-				reply.add( 0, s.equals( "X" ) ? InfoBox.source() : s );
 		
-			// ...and finally
+		if (!InfoBox.source().equals( "" ) ) {
+			// only attribute successful replies...
+			if (!(reply.get(0).equalsIgnoreCase( "sorry" ) &&
+			      reply.get(1).equals( "," )))
+			{
+				if (reply.get(0).equalsIgnoreCase( "ok" ) &&
+					reply.get(1).equals( "," ))
+				{
+					reply.remove(0);
+					reply.remove(0);
+				}
+				
+				for (String s : attributing)
+					reply.add( 0, s.equals( "X" ) ? InfoBox.source() : s );
+			}
+			// ...and finally, we want to scrub a source whether or not it was used!
 			InfoBox.source( "" );
 		}
+
 		audit.out( reply );
 		return reply;
 	}
