@@ -1,5 +1,0 @@
-On "tag filter TAGNAME TAGTYPE QUOTE-FNAME":
-	perform "tag filter TAGNAME TAGTYPE  FNAME";
-	if not, say so;
-	reply "ok, ...".
-	
