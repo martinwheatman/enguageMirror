@@ -10,4 +10,7 @@ get the france page from wikipedia:
 retrieve the capital name from the cached page:
 		According to wikipedia , the capital name is Paris.
 		
+get the eiffel tower page from wikipedia.
+retrieve the attributes list.
+retrieve the header list height.
 		

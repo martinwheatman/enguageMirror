@@ -5,3 +5,16 @@ On "retrieve the PHRASE-VALUE from CACHED_PAGE":
 	perform "html retrieve VALUE CACHED_PAGE";
 	if not, say so;
 	reply "ok, the VALUE is ...".
+
+On "retrieve the header list PHRASE-ATTR from the cached page",
+	retrieve the header list ATTR from CACHED_PAGE.
+	
+On "retrieve the header list PHRASE-ATTR from CACHED_PAGE",
+	perform "html list header ATTR CACHED_PAGE".
+
+On "retrieve the attributes list":
+	set file to "./selftest/wiki/Eiffel_Tower.wikipedia";
+	perform "html list values FILE";
+	if not, say so;
+	reply "ok, ...".
+

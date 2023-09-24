@@ -9,7 +9,7 @@ import org.enguage.util.sys.Fs;
 public class HtmlTable {
 	
 	public  static final int      ID = 0; // "html"
-	private static final String NAME = "Html";
+	private static final String NAME = "HtmlTable";
 	private static final Audit audit = new Audit( NAME );
 
 	public HtmlTable( String fname) {
@@ -23,9 +23,9 @@ public class HtmlTable {
 		// "<td>Princess Elizabeth<br/>21 April, 1926<br/>Mayfair, London</td>
 		//		=> ["Princess Elizabeth", "", ""]
 		Strings s = hs.getText();
-		audit.in( "doCell", "Cell content starts: "+ s );
+		//audit.in( "doCell", "Cell content starts: "+ s );
 		Html html = hs.getHtml();
-		audit.debug( "html="+ html.toString() );
+		//audit.debug( "html="+ html.toString() );
 		while ( !html.isEmpty() &&
 				!(html.name().equalsIgnoreCase( type ) &&
 				html.type()==Html.Type.end))
@@ -52,14 +52,14 @@ public class HtmlTable {
 				!html.name().equals(    "style" )   )
 			{	Strings text = hs.getText();
 				if (!text.toString().startsWith( "& # " )) {
-					audit.debug( "Cell content continues: "+ text );
+					//audit.debug( "Cell content continues: "+ text );
 					s.appendAll( text );
 			}	}
 			
 			html = hs.getHtml();
-			audit.debug( "html="+ html.toString());
+			//audit.debug( "html="+ html.toString());
 		}
-		audit.out( s );
+		//audit.out( s );
 		return s.toString();
 	}
 	private static Attribute doTr( HtmlStream hs ) {
@@ -67,7 +67,7 @@ public class HtmlTable {
 		String value = "";      // default value if no data
 		
 		Html html = hs.getHtml();
-		audit.in( "doTr", "html="+ html );
+		//audit.in( "doTr", "html="+ html );
 		while (!html.isEmpty()) {
 			if (html.name().equalsIgnoreCase( "th" ))
 				if (html.attributes().contains("colspan","2"))
@@ -86,13 +86,13 @@ public class HtmlTable {
 			//audit.debug( "/tr? = "+ html.toString());
 		}
 		
-		audit.out( name +"=\""+ value +"\"" );
+		//audit.out( name +"=\""+ value +"\"" );
 		return new Attribute( name, value );
 	}
 	private static Attributes doTBody( HtmlStream hs ) {
 		Attributes attrs = new Attributes();
 		Html html = hs.getHtml();
-		audit.in( "doTBody", "html="+ html );
+		//audit.in( "doTBody", "html="+ html );
 		while (!html.isEmpty()) {
 			
 			if (html.name().equals("tr"))
@@ -107,7 +107,7 @@ public class HtmlTable {
 			html = hs.getHtml();
 			//audit.debug( "/tbody? = "+ html.toString());
 		}
-		audit.out( attrs.toString());
+		//audit.out( attrs.toString());
 		return attrs;
 	}
 	public static int tableCount = 0;

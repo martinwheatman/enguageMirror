@@ -3,16 +3,16 @@ times 2 all squared:              times 2 all squared makes 36.
 what is 36 + 4     divided by 2:  36 plus 4     divided by 2 is 38.
 what is 36 + 4 all divided by 2:  36 plus 4 all divided by 2 is 20.
 
-what is 5 divided by 2.
-what is the remainder.
+what is 5 divided by 2:           5 divided by 2 is 2 point 5.
+what is the remainder:            the remainder is 1.
 
 echo Simple Functions:-.
-the sum of x and y is x plus y:  ok, the sum of x and y is x plus y.
-what is the sum of 3 and 2:      the sum of 3 and 2 is 5 .
-set x to 3:                      ok, x is set to 3.
-set y to 4:                      ok, y is set to 4.
-what is the value of x:          3, the value of x is 3.
-what is the sum of x and y:      the sum of x and y is 7.
+the sum of x and y is x plus y:    ok, the sum of x and y is x plus y.
+what is the sum of 3 and 2:        the sum of 3 and 2 is 5 .
+set x to 3:                        ok, x is set to 3.
+set y to 4:                        ok, y is set to 4.
+what is the value of x:            3, the value of x is 3.
+what is the sum of values x and y: the sum of x and y is 7.
 
 echo Factorial Description:-.
 #mediate( what is the factorial of 4:       I don't know )

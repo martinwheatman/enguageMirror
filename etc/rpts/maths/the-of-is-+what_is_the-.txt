@@ -27,7 +27,7 @@ On "the ATTR of the ENT is PHRASE-VALUE":
 
 ## Elaboration:
 ## What is the capital of France.
-On "what is the ATTR of ENTITY":
+On "what is the PHRASE-ATTR of PHRASE-ENTITY":
 	get the ATTR of ENTITY;
 	if so, reply "..., the ATTR of ENTITY is ...";
 	
@@ -43,7 +43,7 @@ On "what is the ATTR of the ENTITY":
 	if not, reply "sorry, i do not know";
 	reply "..., the ATTR of the ENTITY is ...".
 
-On "what is the FUNCTION of PHRASE-PARAMS":
+On "what is the FUNCTION of values PHRASE-PARAMS":
 	perform "function evaluate FUNCTION PARAMS";
 	if not, reply "sorry, i do not know";
 	reply "the FUNCTION of PARAMS is ...".
