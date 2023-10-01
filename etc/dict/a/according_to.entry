@@ -13,6 +13,8 @@ On "according to SOURCE what is the PHRASE-ATTRIBUTE of PHRASE-ENTITY":
 	if not, reply "sorry, ENTITY is not on SOURCE";
 	retrieve the ATTRIBUTE name from the cached page;
 	if so, reply "the ATTRIBUTE of ENTITY is ...";
+	retrieve the header value ATTRIBUTE from the cached page;
+	if so, reply "ok, ...";
 	retrieve the header list ATTRIBUTE from the cached page;
 	if so, reply "sorry, is that ...";
 	reply "sorry, ENTITY does not have a ATTRIBUTE value".
@@ -39,7 +41,22 @@ On "according to SOURCE what is the PHRASE-ATTRIBUTE of PHRASE-ENTITY":
 #]	According to wikipedia what is the height of the Eiffel tower:
 #]		Sorry , is that Architectural height or Tip height or Top floor height.
 
+#]	Say again.
+##		i said , sorry , is that Architectural height or Tip height or Top floor height .
+#]	Top floor height:
+#]       According to wikipedia , the Top floor of The Eiffel Tower is 276 m ( 906 ft ).
+
+# So as to ] Ok.
+# forget   ] Ok.
+# this     ] Ok.
+# sign...! ] Ok.
+#          ] Top floor height: i don't understand , top floor height.
+
 #]	What is the architectural of the Eiffel tower:
 #]		According to wikipedia , the architectural of the Eiffel tower is 300 m ( 984 ft ).
 
-##	What is the tip top of the eiffel tower.
+#]	What is the height of the eiffel tower:
+#]		Sorry , is that Architectural height or Tip height or Top floor height.
+
+#]	According to wikipedia what is the history of leeds minster:
+#]  		According to wikipedia , the Dedication history of Leeds Minster is St Peter.
