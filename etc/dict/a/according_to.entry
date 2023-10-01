@@ -39,6 +39,16 @@ On "according to SOURCE what is the PHRASE-ATTRIBUTE of PHRASE-ENTITY":
 #]	According to wikipedia what is the height of the Eiffel tower:
 #]		Sorry , is that Architectural height or Tip height or Top floor height.
 
+#]	Say again.
+
+#]	Top floor height: According to wikipedia , the Top floor of The Eiffel Tower is 276 m ( 906 ft ).
+
+# So as to ] Ok.
+# forget   ] Ok.
+# this     ] Ok.
+# sign...! ] Ok.
+#          ] Top floor height: i don't understand , top floor height.
+
 #]	What is the architectural of the Eiffel tower:
 #]		According to wikipedia , the architectural of the Eiffel tower is 300 m ( 984 ft ).
 

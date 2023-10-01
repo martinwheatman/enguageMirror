@@ -2,6 +2,9 @@ package org.enguage.util.http;
 
 import java.util.ListIterator;
 
+import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.concepts.Autoload;
+import org.enguage.sign.Sign;
 import org.enguage.sign.symbol.when.Date;
 import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.attr.Attribute;
@@ -14,12 +17,39 @@ public class InfoBox {
 	private static final String NAME = "Infobox";
 	private static final Audit audit = new Audit( NAME );
 
+	private static String INFO_BOX_CONCEPT = "InfoBoxGen";
+	
 	private static String source = "";
 	public  static String source() {return source;}
 	public  static void   source( String s ) {source = s;}
 
-	public  static Strings interpret( Strings args ) {
+	// Create and insert a new sign for this option...
+	private static void insertSign( String[] source, Attribute a, String option) {
+		// source = [ "", "/selftest/wiki/The_Eiffel_Tower", "wikipedia" ]
+		// a      = "Architectural='300m'"
+		// Option = Height
+		String[]  path = source[ source.length - 2 ].split( "/" );
+		String   topic = path[ path.length - 1 ].replace( "_", " " );
 		
+		Sign.Builder sb = new Sign.Builder( 
+				"On \""
+				+ a.name() 
+				+" "
+				+ option
+				+"\", according to wikipedia what is the "
+				+ a.name() 
+				+" of "
+				+ topic
+		);
+		Sign sign = sb.toSign();
+		if (sign==null)
+			Audit.log( "sb is null" );
+		else {
+			sign.concept( INFO_BOX_CONCEPT );
+			Repertoires.signs().insert( sign );
+	}	}
+
+	public  static Strings interpret( Strings args ) {
 		audit.in( "interpret", "args="+ args.toString( Strings.DQCSV ));
 		Strings rc = new Strings( "sorry, i don't understand" ); // Shell.Fail;
 		String cmd = args.remove( 0 );
@@ -59,12 +89,16 @@ public class InfoBox {
 						printMe = a.value().equalsIgnoreCase( option );
 					else if (printMe) {
 						rc.append( a.name() +" "+ option );
-						
+						//set up a new interpration
+						insertSign( source, a, option );
 				}	}
 				if (rc.isEmpty())
 					rc = new Strings( "sorry, there "+ option +" is not a header" );
-				else
+				else {
 					rc = new Strings( rc.toString( "", " or ", "" ));
+					// Let Autoload know we've loaded signs to remove...
+					Autoload.put( INFO_BOX_CONCEPT );
+				}
 			}
 			
 		} else if (cmd.equals( "retrieve" )) {

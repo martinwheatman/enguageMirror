@@ -110,17 +110,14 @@ public class HtmlTable {
 		//audit.out( attrs.toString());
 		return attrs;
 	}
-	public static int tableCount = 0;
 	public static Attributes doHtml( HtmlStream hs ) {
 		Attributes attrs = new Attributes();
 		Html html = hs.getHtml();
 		audit.in( "doHtml", "html="+ html );
 		while (!html.isEmpty()) {
-			if (html.name().equals("table")) {
-				if (html.attributes().contains("class", "infobox"))
-					attrs = doTBody( hs );
-				tableCount++;
-			}
+			if (html.name().equals("table") &&
+				html.attributes().contains("class", "infobox"))
+				attrs = doTBody( hs );
 			html = hs.getHtml();
 			//audit.debug( "html="+ html.toString());
 		}
