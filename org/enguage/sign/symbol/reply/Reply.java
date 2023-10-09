@@ -186,7 +186,8 @@ public class Reply {
 	}
 	
 	// Set in Config.java/config.xml
-	private static Strings attributing = attributing( "According to X," );
+	private static Strings attributing = attributing( "according to X," );
+	public  static Strings attributing() {return attributing;} 
 	public  static Strings attributing( String a ) {
 		attributing = new Strings( a ).reverse();
 		return attributing;
@@ -196,7 +197,7 @@ public class Reply {
 	public static Strings attributeSource( Strings reply ) {
 		audit.in( "attributeSource", "reply=["+ reply.toString( Strings.DQCSV) +"]");
 		
-		if (!InfoBox.source().equals( "" ) ) {
+		if (!InfoBox.wikiSource().equals( "" ) ) {
 			// only attribute successful replies...
 			if (!(reply.get(0).equalsIgnoreCase( "sorry" ) &&
 			      reply.get(1).equals( "," )))
@@ -209,10 +210,10 @@ public class Reply {
 				}
 				
 				for (String s : attributing)
-					reply.add( 0, s.equals( "X" ) ? InfoBox.source() : s );
+					reply.add( 0, s.equals( "X" ) ? InfoBox.wikiSource() : s );
 			}
 			// ...and finally, we want to scrub a source whether or not it was used!
-			InfoBox.source( "" );
+			InfoBox.wikiSource( "" );
 		}
 
 		audit.out( reply );

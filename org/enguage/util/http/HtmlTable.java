@@ -33,6 +33,11 @@ public class HtmlTable {
 			// don't put the html tag into the text
 			// s.append( html.toString());
 			// however, ...
+			
+			// deal with tables within <td/> - collapsible boxes
+			if (html.name().equals( "table" ))
+				doTBody( hs );
+			
 			if (html.name().equals( "br" ))
 				s.append( ";" );
 

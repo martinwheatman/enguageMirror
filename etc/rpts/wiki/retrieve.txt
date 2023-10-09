@@ -2,22 +2,27 @@ On "retrieve the PHRASE-VALUE from the cached page",
 	retrieve the VALUE from CACHED_PAGE.
 
 On "retrieve the PHRASE-VALUE from CACHED_PAGE":
-	perform "html retrieve VALUE CACHED_PAGE";
+	perform "infobox retrieve VALUE CACHED_PAGE";
 	if not, say so;
 	reply "ok, the VALUE is ...".
+
+## Query
+## On "retrieve the attribute ATTRIBUTE PHRASE-VALUE":
+##	perform "infobox exists ATTRIBUTE VALUE CACHED_PAGE";
+##	if not, say so;
+##	reply "ok, ...".
 
 On "retrieve the header list PHRASE-ATTR from the cached page",
 	retrieve the header list ATTR from CACHED_PAGE.
 	
 On "retrieve the header list PHRASE-ATTR from CACHED_PAGE",
-	perform "html list header ATTR CACHED_PAGE".
+	perform "infobox list header ATTR CACHED_PAGE".
 
 On "retrieve the header value PHRASE-ATTR from CACHED_PAGE",
-	perform "html header value ATTR CACHED_PAGE".
+	perform "infobox header value ATTR CACHED_PAGE".
 
 # currently unused...
-On "retrieve the attributes list from CACHED_PAGE":
-	perform "html list values CACHED_PAGE";
+On "retrieve the attribute values":
+	perform "infobox list values CACHED_PAGE";
 	if not, say so;
 	reply "ok, ...".
-

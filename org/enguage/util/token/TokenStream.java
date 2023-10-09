@@ -114,8 +114,17 @@ public class TokenStream implements AutoCloseable {
 		return ch;
 	}
 	
+	/* found 'Rory Stewart' the case where
+	 * <a href=...">fred</a>'s name -- where apostrophe is embedded
+	 * but may also have
+	 * name='s is the 20th letter' -- where it isn't
+	 */
+	private boolean     isEquals = false;
+	private boolean    wasEquals = false;
+	
 	private Token getToken() {
 		int row = 0, col = 0;
+		String wsp;
 		StringBuilder wspbuf = new StringBuilder();
 		StringBuilder strbuf = new StringBuilder();
 		
@@ -135,8 +144,11 @@ public class TokenStream implements AutoCloseable {
 					wspbuf.append( (char)ch );
 				} else {
 					strbuf.append( (char)ch ); // 1st non-whitespace
+					wasEquals = isEquals;
+					isEquals  = ch == '='; 
 					break;
 				}
+			wsp = wspbuf.toString();
 			
 			// now process that non-whitespace char
 			if (Character.isLetter( ch )) {
@@ -177,23 +189,28 @@ public class TokenStream implements AutoCloseable {
 						break;
 					}
 			
-			} else if ('\'' == ch) {
+			} else if ('\'' == ch 
+					 &&	!wsp.isEmpty()  // ...> '...
+					 && !wasEquals    ) // ...= '...
+			{ // read SQ string
+				
 				while (-1 != (ch = getChar())) 
-					if ('\'' != ch ) {
+					if ('\'' == ch ) {
+						strbuf.append( (char)ch ); // load last '
+						break;                     // and finish!
+					} else {
 						if ('\\' == ch ) ch = getChar();
 						strbuf.append( (char)ch );
-					} else {
-						strbuf.append( (char)ch );
-						break;
 					}
 			}
 			
 		} catch(IOException ignore) {
+			wsp = "";
 			audit.error( "doPrefix(): error reading chars" );
 		}
 		String str = strbuf.toString();
 		col += str.length();
-		return new Token( wspbuf.toString(), str, row, col, gotch );
+		return new Token( wsp, str, row, col, gotch );
 	}
 	
 	// *** Location

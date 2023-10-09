@@ -781,6 +781,22 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			str = Strings.trim( str, quoteCh );
 		return str;
 	}
+	public Strings stripBrackets( String open, String close ) {
+		boolean deleting = false;
+		ListIterator<String> ri = this.listIterator();
+		while (ri.hasNext()) {
+			String s = ri.next();
+			if (s.equals( open )) {
+				ri.remove();
+				deleting = true;
+			} else if (s.equals( close )) {
+				ri.remove();
+				deleting = false;
+			} else if (deleting)
+				ri.remove();
+		}
+		return this;
+	}
 	public  void toUpperCase() {
 		ListIterator<String> li = this.listIterator();
 		while (li.hasNext())

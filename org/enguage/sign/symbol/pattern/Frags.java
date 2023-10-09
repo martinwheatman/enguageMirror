@@ -521,7 +521,7 @@ public class Frags extends ArrayList<Frag> {
 		{
 			Where where = null;
 			Strings terms = getNextBoilerplate( t, ti ); // null if this is last tag
-			String term = terms==null ? null : terms.get( 0 );
+			String term = terms==null || terms.isEmpty() ? null : terms.get( 0 );
 			while (said.hasNext()) {
 				// term==null? => read to end
 				if (spatial && null != (where = Where.getWhere( said, term ))) {

@@ -1,11 +1,11 @@
 get the queen elizabeth the second page from wikipedia:
-		Ok, that page is cached.
+		Ok, the queen elizabeth the second page has been cached.
 
 retrieve the born date from the cached page:
 		According to wikipedia , the born date is 21 April 1926.
 		
 get the france page from wikipedia:
-		Ok, that page is cached.
+		Ok, the france page has been cached.
 
 retrieve the capital name from the cached page:
 		According to wikipedia , the capital name is Paris.
