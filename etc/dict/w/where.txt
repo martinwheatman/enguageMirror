@@ -1,0 +1,33 @@
+On "where was she born": where was PERSON born.
+On "where was  he born": where was PERSON born.
+On "where was PHRASE-PERSON born":
+	get the PERSON page from wikipedia;
+	if not, reply "sorry, I don't know PERSON";
+	retrieve the born place from the cached page;
+	if not, say so;
+	reply "Ok, PERSON was born in ...".
+	
+On "where did she die", where did PERSON die.
+On "where did  he die", where did PERSON die.
+On "where did PHRASE-PERSON die":
+	get the PERSON page from wikipedia;
+	if not, reply "sorry, I don't know PERSON";
+	retrieve the died place from the cached page;
+	if not, say so;
+	reply "Ok, PERSON died in ...".
+
+
+
+#]	Where was Queen Elizabeth the second born:
+#]		According to Wikipedia, Queen Elizabeth the second was born in Mayfair , London , England.
+#]	Where did she die:
+#]		According to Wikipedia, Queen Elizabeth the second died in Balmoral Castle , Aberdeenshire , Scotland.
+
+
+#]	Where did Nelson Mandella die:
+#]		According to Wikipedia, Nelson Mandella died in Johannesburg , Gauteng , South Africa.
+#]	Where was he born:
+#]		According to Wikipedia, Nelson Mandella was born in Mvezo , Cape Province , South Africa.
+
+#]	Where was Barack Obama born:
+#]		According to Wikipedia, Barack Obama was born in Honolulu , Hawaii , U . S . .

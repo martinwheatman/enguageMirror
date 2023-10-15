@@ -1,0 +1,24 @@
+On "how old is PHRASE-PERSON":
+	when did PERSON die;
+	if not, when was PERSON born.
+	
+On "how old was PHRASE-PERSON", when did PERSON die.
+
+On "how tall is PHRASE-OBJECT", what is the height of OBJECT. 
+On "how high is PHRASE-OBJECT", what is the height of OBJECT. 
+	
+	
+	
+#]	How old was Nelson Mandella:
+#]		According to Wikipedia, Nelson Mandella died on 5 December 2013 ( aged 95 ).
+
+#]	How old is Queen Elizabeth the second: 
+#]		According to Wikipedia, Queen Elizabeth the second died on 8 September 2022 ( aged 96 ).
+
+#]	How old is Tom Cruise:
+#]		According to Wikipedia, Tom Cruise was born on July 3 , 1962 ( age 61 ).
+	
+#]	How high is the Eiffel Tower :
+#]		Sorry , is that Architectural height or Tip height or Top floor height.
+#]	Top floor height:
+#]		According to wikipedia , the Top floor of The Eiffel Tower is 276 m ( 906 ft ).

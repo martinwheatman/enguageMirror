@@ -1,4 +1,9 @@
+###############################################################################
+###############################################################################
 # Induction:
+# the factorial of n is n times the factorial of n minus 1.
+# the factorial of 1 is 1.
+# the sum of x and y is x plus y
 On "the FUNCTION of AND-LIST-PARAMS is EXPR-BODY":
 	#set the PARAMS of FUNCTION to BODY;
 	perform "function create FUNCTION PARAMS / BODY";
@@ -14,10 +19,8 @@ On "the ATTR of the ENT is PHRASE-VALUE":
 	perform "value set ENT ATTR VALUE";
 	reply "ok, the ATTR of the ENT is VALUE".
 
+
 # the height of an entity is a numeric variable.
-# the factorial of n is n times the factorial of n minus 1.
-# the factorial of 1 is 1.
-# the sum of x and y is x plus y
 
 
 ###############################################################################
@@ -45,6 +48,10 @@ On "what is the ATTR of the ENTITY":
 	according to wikipedia what is the ATTR of ENTITY;
 	if not, say so;
 	reply "ok, the ATTR of ENTITY is ...".
+
+
+###############################################################################
+###############################################################################
 
 On "what is the FUNCTION of values PHRASE-PARAMS":
 	perform "function evaluate FUNCTION PARAMS";
