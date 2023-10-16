@@ -20,6 +20,20 @@ On "according to SOURCE what is the PHRASE-ATTRIBUTE of PHRASE-ENTITY":
 	if so, reply "sorry, is that ...";
 	reply "sorry, ENTITY does not have a ATTRIBUTE value".
 
+## Grouped retrieval...
+On "according to SOURCE what is the PHRASE-ATTRIBUTE of PHRASE-GROUP from PHRASE-ENTITY on the cached page":
+	#echo hello there.
+	get the ENTITY page from SOURCE;
+	if not, reply "sorry, ENTITY is not on SOURCE";
+	retrieve the ATTRIBUTE from the GROUP group on the cached page;
+	if so, reply "the ATTRIBUTE of ENTITY is ...";
+	reply "sorry not done".
+#	retrieve the header value ATTRIBUTE of GROUP from the cached page;
+#	if so, reply "ok, ...";
+#	retrieve the header list ATTRIBUTE from the cached page;
+#	if so, reply "sorry, is that ...";
+#	reply "sorry, ENTITY does not have a ATTRIBUTE value".
+
 ## Query:
 ## On "according to SOURCE, the ATTRIBUTE of ENTITY is VALUE":
 ##	get the ENTITY page from SOURCE;
@@ -75,5 +89,9 @@ On "according to SOURCE what is the PHRASE-ATTRIBUTE of PHRASE-ENTITY":
 #] When was apple inc founded.
 
 #] When was Rory Stewart born.
+
+
+#] what is the population of israel.
+#] 2023 estimate population.
 
 #] retrieve the attribute values.

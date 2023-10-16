@@ -21,7 +21,14 @@ On "retrieve the header list PHRASE-ATTR from CACHED_PAGE",
 On "retrieve the header value PHRASE-ATTR from CACHED_PAGE",
 	perform "infobox header value ATTR CACHED_PAGE".
 
-# currently unused...
+On "retrieve the PHRASE-ATTRIBUTE from the PHRASE-GROUP group on the cached page":
+	perform "infobox group GROUP ATTRIBUTE CACHED_PAGE";
+	if so, reply "ok, ...";
+	reply "sorry not done".
+	
+
+
+# currently used on...
 On "retrieve the attribute values":
 	perform "infobox list values CACHED_PAGE";
 	if not, say so;

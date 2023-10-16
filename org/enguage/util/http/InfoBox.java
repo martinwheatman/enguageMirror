@@ -12,6 +12,7 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
+import org.enguage.util.token.TokenStream;
 
 public class InfoBox {
 	public  static final int      ID = 113445711;
@@ -98,6 +99,24 @@ public class InfoBox {
 		}
 		return rc;
 	}
+	private static String removeJunkBeforeColon( String name ) {
+		String tmp = "";
+		try {
+			TokenStream ts = new TokenStream( name.getBytes("UTF-8") );
+			while (ts.hasNext()) {
+				String str = ts.getString(); 
+				if (str.equals( ";" ))
+					tmp = "";
+				else
+					tmp += (tmp.equals("") ? "" :" ") + str;
+			}
+			//Audit.log( "tmp is "+ tmp );
+			ts.close();
+		} catch (Exception x ) {
+			Audit.log( "ex:"+ x );
+		}
+		return tmp;
+	}
 	public  static Strings interpret( Strings args ) {
 		audit.in( "interpret", "args="+ args.toString( Strings.DQCSV ));
 		Strings rc = new Strings( "sorry, i don't understand" ); // Shell.Fail;
@@ -111,7 +130,27 @@ public class InfoBox {
 
 		Attributes attrs = HtmlTable.doHtml( new HtmlStream( fname ));
 		
-		if (cmd.equals( "list" )) {
+		if (cmd.equals( "group" )) {
+
+			//Audit.log( "IN GROUP: ["+ args.toString( Strings.DQCSV) +"]" );
+			
+			boolean checkMe = false;
+			String group = args.remove(0);
+			String attrName = args.remove(0);
+			rc = new Strings( "sorry, attribute "+ attrName +"not found in "+ group );
+			ListIterator<Attribute> ai = attrs.listIterator();
+			while (ai.hasNext()) {
+				Attribute attr = ai.next();
+				if (attr.name().equals( "header" ))
+					checkMe = attr.value().equalsIgnoreCase(group);
+				else if (checkMe && attr.name().contains( attrName ))
+					rc = new Strings( attr.value());
+
+				//Audit.log( "name="+ attr.name() +", value="+ attr.value());
+			}
+			
+			
+		} else if (cmd.equals( "list" )) {
 			String option = args.remove( 0 ); // "values" or "header"
 
 			if (option.equals( "values" )) {
@@ -136,17 +175,16 @@ public class InfoBox {
 					ListIterator<Attribute> ai = headerAttrs.listIterator();
 					while (ai.hasNext()) {
 						Attribute adjective = ai.next();
-						rc.append( adjective.name() +" "+ header );
+						String name = removeJunkBeforeColon( adjective.name() );
+						
+						rc.append( name +" "+ header );
 						Repertoires.signs().insert(
 								new Sign.Builder( 
-											"On \""
-											+ adjective.name() 
-											+ " "
-											+ header // NAME
-											+ "\", according to wikipedia what is the "
-											+ adjective.name() 
-											+ " of "
-											+ topic()
+											"On \""+ name +" "+ header +"\""
+											+ ", according to wikipedia "
+											+ "what is the "+ name +" of "+ header 
+											+" from "+ topic()
+											+" on the cached page"
 									).toSign().concept( INFO_BOX_CONCEPT )
 						);
 					}

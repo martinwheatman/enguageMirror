@@ -52,11 +52,20 @@ public class HtmlTable {
 						n++;
 			}	}
 			
+			
+//			if (html.name().equals( "sup" )) {
+//				html = hs.getHtml();
+//				while (!html.name().equals("sup") && html.type() != Html.Type.end)
+//					html = hs.getHtml();
+//			}
+			
 			// skip script and style tags
 			if (!html.name().equals(   "script" ) &&
-				!html.name().equals(    "style" )   )
-			{	Strings text = hs.getText();
-				if (!text.toString().startsWith( "& # " )) {
+				!html.name().equals(    "style" )    )
+			{
+				Strings text = hs.getText();
+				// need top get rid of [1] but nothing after "]"
+				if (!text.toString().startsWith( "& # 91" )) { // '['
 					//audit.debug( "Cell content continues: "+ text );
 					s.appendAll( text );
 			}	}
@@ -67,7 +76,7 @@ public class HtmlTable {
 		//audit.out( s );
 		return s.toString();
 	}
-	private static Attribute doTr( HtmlStream hs ) {
+	private static Attribute doTr( HtmlStream hs, boolean mergedTopRow ) {
 		String name = "header"; // default name, if colspan=2
 		String value = "";      // default value if no data
 		
@@ -75,7 +84,7 @@ public class HtmlTable {
 		//audit.in( "doTr", "html="+ html );
 		while (!html.isEmpty()) {
 			if (html.name().equalsIgnoreCase( "th" ))
-				if (html.attributes().contains("colspan","2"))
+				if (html.attributes().contains("colspan","2") || mergedTopRow)
 					value = doCell( hs, "th" );
 				else
 					name = doCell( hs, "th" );
@@ -87,8 +96,8 @@ public class HtmlTable {
 					&& html.type() == Html.Type.end)
 				break;
 			
+			mergedTopRow = false;
 			html = hs.getHtml();
-			//audit.debug( "/tr? = "+ html.toString());
 		}
 		
 		//audit.out( name +"=\""+ value +"\"" );
@@ -104,7 +113,7 @@ public class HtmlTable {
 				if (html.type() == Html.Type.end)
 					break;
 				else {
-					Attribute attr = doTr( hs );
+					Attribute attr = doTr( hs, html.attributes().contains( "class",  "mergedtoprow") );
 					if (!attr.name().equals(""))
 						attrs.add( attr );
 				}

@@ -10,10 +10,10 @@ On "if SAID-CONTEXT then SAID-DEPENDENCY":
 #] whose hand am i holding:        sorry, you're not holding anyone's hand.
 #] we are ruth and i:              ok, we means you and ruth.
 #] if we are holding hands then whose hand am i holding:
-#]                                ok, you're holding ruth's hand.
+#]                                 ok, you're holding ruth's hand.
 #] we are you and i:               ok , we means you and i.
 #] if we are holding hands then whose hand am i holding:
-#]                                ok, you're holding my hand.
+#]                                 ok, you're holding my hand.
 #] whose hand am i holding:        sorry, you're not holding anyone's hand.
 
 #] how many overlays are there.
