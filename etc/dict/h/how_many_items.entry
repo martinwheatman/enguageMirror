@@ -1,0 +1,8 @@
+On "how many items in THIS", evaluate 1.
+
+On "how many items in AND-LIST-THESE":
+	how many items in REST-OF-THESE;
+	evaluate 1 plus ...;
+	reply "the number of items is ...".
+	
+#] how many items in a and b and c.
