@@ -78,7 +78,7 @@ they are from Sainsbury's:  ok, they are from sainsbury's.
 i need a pint of milk:      ok, you need a pint of milk.
 it is from the dairy aisle: ok, it is from the dairy aisle.
 i need cheese and eggs from the dairy aisle:
-					                               ok, you need cheese and eggs.
+					                               ok, you need cheese and eggs from the dairy aisle.
 #mediate( group by:                   i'm sorry, i need to know what to group by )
 group by location:          ok.
 			

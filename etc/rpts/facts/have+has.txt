@@ -1,14 +1,14 @@
 On "i        have to have PHRASE-THIS", _user needs THIS.
 On "SUBJECT  has  to have PHRASE-THIS", SUBJECT needs THIS.
 
-On "i        have to      PHRASE-THIS", _user needs to THIS.
-On "i do not have to      PHRASE-THIS", _user does not need to THIS.
-On "i        have to get  PHRASE-THIS", _user needs THIS.
-On "i do not have to get  PHRASE-THIS", _user does not need THIS.
+On "i        have to      PHRASE-THIS", i        need to THIS.
+On "i do not have to      PHRASE-THIS", i do not need to THIS.
+On "i        have to get  PHRASE-THIS", i        need THIS.
+On "i do not have to get  PHRASE-THIS", i do not need THIS.
 
-On "i        have got     PHRASE-THIS", _user does not need THIS.
-On "i        have         PHRASE-THIS", _user does not need THIS.
-On "i        have the     PHRASE-THIS", _user does not need any THIS.
+On "i        have got     PHRASE-THIS", i do not need THIS.
+On "i        have         PHRASE-THIS", i do not need THIS.
+On "i        have the     PHRASE-THIS", i do not need any THIS.
 
 On "i        have got        everything", _user has everything.
 On "i        have            everything", _user has everything.
