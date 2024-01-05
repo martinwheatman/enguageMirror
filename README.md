@@ -9,7 +9,7 @@ Enguage interprets speech using speech much like a dictionary.
 It is neither a chatbot, nor a generative text algorithm: it presents the arbitrary transformation of utterances, in the same way as computation is the presentation of an arbitrary calculation—a Turning Machine.
 However, it takes inspiration from the 
 [Ordinary Language Philosophers](https://en.wikipedia.org/wiki/Ordinary_language_philosophy)
-of Ogden and Richards, Austin, and Grice who removed the idea of an underlying logic to language: the *recieved wisdon* of a dualistic representation of meaning such as source code.
+of Ogden and Richards, Austin, and Grice who removed the idea of an underlying logic to language: the *received wisdom* of a dualistic representation of meaning such as source code.
 
 Speech, itself, is shown to be **Turing Complete** (i.e. a 
 [computational device](doc/principle.md)).
