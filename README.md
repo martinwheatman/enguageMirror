@@ -1,6 +1,6 @@
 # Enguage - Unifying Speech and Computation
 
-Enguage presents speech as a Turing Complete speech interpreter;
+Enguage is a Turing Complete speech interpreter;
 you can _do_ things with words.
 
 [Installation Instructions](doc/install.md)

@@ -13,8 +13,27 @@ On "is NUMERIC-N divisible by AND-LIST-M":
 	if not, reply "no, N is not divisible by M";
 	reply "yes, N is divisible by M".
 
+On "NUMERIC-N is divisible by NUMERIC-M":
+	what is N divided by M;
+	is remainder set to 0;
+	if so, reply "ok, N is divisible by M";
+	if not, reply "sorry, N is not divisible by M".
+	
+On "NUMERIC-N is divisible by AND-LIST-M":
+	is N divisible by FIRST-OF-M;
+	if not, reply "no";
+	is N divisible by REST-OF-M;
+	if not, reply "sorry, N is not divisible by M";
+	reply "ok, N is divisible by M".
+
 #] is 1 divisible by 3        : no.
 #] is 5 divisible by 3        : no.
 #] is 6 divisible by 3        : yes.
 #] is 12 divisible by 3 and 5 : no,  12 is not divisible by 3 and 5.
 #] is 15 divisible by 3 and 5 : yes, 15 is     divisible by 3 and 5.
+
+#] 1 is divisible by 3        : sorry,  1 is not divisible by 3.
+#] 5 is divisible by 3        : sorry,  5 is not divisible by 3.
+#] 6 is divisible by 3        : ok,     6 is     divisible by 3.
+#] 12 is divisible by 3 and 5 : sorry, 12 is not divisible by 3 and 5.
+#] 15 is divisible by 3 and 5 : ok,    15 is     divisible by 3 and 5.
