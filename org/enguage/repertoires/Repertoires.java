@@ -4,6 +4,7 @@ import java.util.TreeSet;
 
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
+import org.enguage.sign.Config;
 import org.enguage.sign.Signs;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
@@ -24,7 +25,7 @@ public class Repertoires {
 	public  static Signs signs() {return signs;}
 	
 	private static Signs engine = new Signs( Engine.NAME ).add( Engine.commands );
-	private static Signs engine() {return engine;};
+	private static Signs engine() {return engine;}
 	
 	// entry point for Enguage, re-entry point for Intentions
 	public static Reply mediate( Utterance u ) {
@@ -43,21 +44,21 @@ public class Repertoires {
 		u = new Utterance( u.expanded() );
 		
 		Reply r = signs.mediate( u );
-		if (Response.N_DNU == r.response())
+		if (Response.Type.E_DNU == r.response().type())
 			r = engine().mediate( u );
 	
 		audit.out( r );
 		return r;
 	}
 	
-	public static Strings interpret( Strings cmds ) {
-		audit.in( "interpret", "cmds="+ cmds );
-		Strings rc = Response.failure();
+	public static Strings perform( Strings cmds ) {
+		audit.in( "perform", "cmds="+ cmds );
+		Strings rc = Config.failure();
 		if (!cmds.isEmpty()) {
 			String cmd = cmds.remove( 0 );
 			
 			if (cmd.equals("show")) {
-				rc = Response.success();
+				rc = Config.success();
 				
 				String name = cmds.remove( 0 );
 				if (name.equals("signs") ||
@@ -73,10 +74,10 @@ public class Repertoires {
 					signs.show();
 					
 				} else
-					rc = Response.failure();
+					rc = Config.failure();
 				
 			} else if (cmd.equals( "variable" )) {
-				Variable.interpret( new Strings( "show" ));
+				Variable.perform( new Strings( "show" ));
 				
 			} else if (cmd.equals( "list" )) {
 				//Strings reps = Enguage.e.signs.toIdList()
@@ -84,7 +85,7 @@ public class Repertoires {
 				 * Don't want to list all repertoires once the repertoire base begins to grow?
 				 * May want to ask "is there a repertoire for needs" ?
 				 */
-				rc = new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Concept.loaded()).toString( Reply.andListFormat() ));
+				rc = new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Concept.loaded()).toString( Config.andListFormat() ));
 			}
 		}
 		audit.out();

@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.pattern.Frags;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -22,7 +22,7 @@ public class Variable {
 	 * prefix variables with '_'
 	 */
 	static public  final String NAME = "variable";
-	static public  final int      id = 262169728; //Strings.hash( NAME );
+	static public  final int      ID = 262169728; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Variable" );
 	
 	private static TreeMap<String,String> cache = encache();
@@ -177,9 +177,9 @@ public class Variable {
 		return out;
 	}
 	
-	static public Strings interpret( Strings args ) {
+	static public Strings perform( Strings args ) {
 		audit.in( "interpret", args.toString() );
-		String  rc = Response.SUCCESS,
+		String  rc = Perform.S_SUCCESS,
 		       cmd = args.remove( 0 );
 		int sz = args.size();
 		if (sz > 0) {
@@ -189,7 +189,7 @@ public class Variable {
 					rc = set( name, args.toString() );
 
 				else if (cmd.equals( "equals" ))
-					rc = isSet( name, args.toString()) ? Response.SUCCESS : Response.FAIL;
+					rc = isSet( name, args.toString()) ? Perform.S_SUCCESS : Perform.S_FAIL;
 			
 				else if (cmd.equals( "exception" )) {
 					
@@ -199,35 +199,35 @@ public class Variable {
 					else if (direction.equals( "remove" ))
 						exceptionRemove( args );
 					else
-						rc = Response.FAIL;
+						rc = Perform.S_FAIL;
 				} else
-					rc = Response.FAIL;
+					rc = Perform.S_FAIL;
 				
 			else { // sz == 1, name and no params
 				if (cmd.equals( "exists" ))
-					rc = isSet( name, null ) ? Response.SUCCESS : Response.FAIL;
+					rc = isSet( name, null ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 				else if (cmd.equals( "unset" ))
 					unset( name );
 				else if (cmd.equals( "get" ))
 					rc = get( name.toUpperCase( Locale.getDefault() ));
 				else
-					rc = Response.FAIL;
+					rc = Perform.S_FAIL;
 			}
 		} else if (cmd.equals( "show" )) {
 			audit.debug( "printing cache" );
 			printCache();
 			audit.debug( "printed" );
 		} else
-			rc = Response.FAIL;
+			rc = Perform.S_FAIL;
 		audit.out( rc = rc==null?"":rc );
 		return new Strings( rc );
 	}
 	
 	// --
 	public static void test( String cmd, String expected ) {
-		Strings actual = interpret( new Strings( cmd ));
+		Strings actual = perform( new Strings( cmd ));
 		if (actual.equals( new Strings( expected )))
-			if ( actual.equals( Response.Ignore ))
+			if ( actual.equals( Perform.Ignore ))
 				audit.debug(   "PASS: "+ cmd );
 			else
 				audit.debug(   "PASS: "+ cmd +" = '"+ actual +"'" );
@@ -243,7 +243,7 @@ public class Variable {
 		String tmp = spk.get();
 		audit.debug( "was="+ (tmp==null?"<null>":tmp));
 		if ( tmp.equals( "fred" ))
-			interpret( new Strings( "set NAME billy boy" ));
+			perform( new Strings( "set NAME billy boy" ));
 		else
 			spk.set( "fred" );
 		tmp = spk.get();
@@ -257,9 +257,9 @@ public class Variable {
 		//*		Static test, backwards compat...
 		test( "set hello there", "there" );
 		test( "get HELLO", "there" );
-		test( "equals HELLO there", Response.SUCCESS );
+		test( "equals HELLO there", Perform.S_SUCCESS );
 		audit.debug( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
-		test( "unset HELLO", Response.SUCCESS );
+		test( "unset HELLO", Perform.S_SUCCESS );
 		test( "get HELLO", "" );
 		{	// derefOrPop test...
 			Variable.unset( "LOCATOR" );

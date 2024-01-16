@@ -3,9 +3,9 @@ package org.enguage.sign.object.list;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.number.Number;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.when.Moment;
 import org.enguage.sign.symbol.when.When;
 import org.enguage.sign.symbol.where.Where;
@@ -18,7 +18,7 @@ public class Item {
 
 	private static      Audit audit = new Audit("Item" );
 	public static final String NAME = "item";
-	public static final int      id = 171847; //Strings.hash( NAME );
+	public static final int      ID = 171847; //Strings.hash( NAME );
 	
 	/* The format has a default value "QUANTITY,UNIT of,THIS,LOCATOR LOCATION"
 	 * The reasoning is from a Radio4 piece a year or two back, that there is a
@@ -286,23 +286,23 @@ public class Item {
 		return rc.toString( Strings.SPACED );
 	}
 	// ------------------------------------------------------------------------
-	public static Strings interpret( Strings cmds ) {
+	public static Strings perform( Strings cmds ) {
 		audit.in( "interpret", "cmds="+ cmds );
-		String rc = Response.FAIL;
+		String rc = Perform.S_FAIL;
 		if (!cmds.isEmpty()) {
 			
-			rc = Response.SUCCESS;
+			rc = Perform.S_SUCCESS;
 			String one = cmds.remove( 0 );
 			
 			if (one.equals( "ungroup" ))
 				if (cmds.isEmpty())
 					groupOn( "" );
 				else
-					rc = Response.FAIL;
+					rc = Perform.S_FAIL;
 
 			else if (one.equals( "groupby" ))
 				if (cmds.isEmpty())
-					rc = Response.FAIL;
+					rc = Perform.S_FAIL;
 				else
 					groupOn( ""+cmds );
 					
@@ -324,9 +324,9 @@ public class Item {
 					stuffIs( new Strings( Strings.stripQuotes( thr )));
 					
 				else
-					rc = Response.FAIL;
+					rc = Perform.S_FAIL;
 			} else
-				rc = Response.FAIL;
+				rc = Perform.S_FAIL;
 		}
 		audit.out( rc );
 		return new Strings( rc );
@@ -358,7 +358,7 @@ public class Item {
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffees from Tesco in London" );
-		audit.debug( "adding b/c: "+ interpret( new Strings( "stuff includes 'black coffee'" )));
+		audit.debug( "adding b/c: "+ perform( new Strings( "stuff includes 'black coffee'" )));
 		test( "black coffees quantity=1 unit='cup' from='Tesco' locator='in' location='London'",
 				"a cup of black coffee from Tesco in London" );
 		
@@ -370,7 +370,7 @@ public class Item {
 		Item.format( "QUANTITY,UNIT of,,from FROM,WHEN,"+ Where.LOCTR +" "+ Where.LOCTN );
 		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
 				"2 packets of crisp from Tesco in London" );
-		audit.debug( "adding crisps: "+ interpret( new Strings( "things include crisps" )));
+		audit.debug( "adding crisps: "+ perform( new Strings( "things include crisps" )));
 		test( "crisp quantity=2 unit='packet' from='Tesco' locator='in' location='London'",
 				"2 packets of crisps from Tesco in London" );
 		

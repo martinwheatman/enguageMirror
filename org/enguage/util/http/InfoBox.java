@@ -117,7 +117,7 @@ public class InfoBox {
 		}
 		return tmp;
 	}
-	public  static Strings interpret( Strings args ) {
+	public  static Strings perform( Strings args ) {
 		audit.in( "interpret", "args="+ args.toString( Strings.DQCSV ));
 		Strings rc = new Strings( "sorry, i don't understand" ); // Shell.Fail;
 		String cmd = args.remove( 0 );

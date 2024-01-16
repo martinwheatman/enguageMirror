@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.enguage.sign.Assets;
+import org.enguage.sign.Config;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.reply.Response;
@@ -41,18 +42,14 @@ public class Commands {
 		//audit.in( "runresult", "rc="+ rc +", result=["+ results +"]");
 		Reply r = new Reply();
 		
-		boolean appending = r.answer().isAppending();
-		r.answer().appendingIs( true );
-	 	for (String result : results)
+		for (String result : results)
 	 		r.answer( result );
-	 	r.answer().appendingIs( appending ); 
 		/*
 	 	 * We have no control over what text the command sends back.
 	 	 * A zero result is success.
 	 	 * Passing back a non-zero result is a failure.
-	 	 * 
 	 	 */
-	 	r.response( rc == 0 ? Response.N_OK : Response.N_FAIL );
+	 	r.responseType( rc == 0 ? Response.Type.E_OK : Response.Type.E_SOZ );
 	 	r.format( rc == 0 ? "ok, ..." : "sorry, ..." );
 		
 		//audit.out( "run result: "+ r );
@@ -120,8 +117,8 @@ public class Commands {
 
 	// ---
 	public static void main( String[] args) {
-		Response.failure( "sorry" );
-		Response.success( "ok" );
+		Config.failure( "sorry" );
+		Config.success( "ok" );
 
 		Audit.resume();
 		audit.tracing( true );

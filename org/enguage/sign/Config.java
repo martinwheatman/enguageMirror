@@ -9,9 +9,9 @@ import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.interpretant.Commands;
 import org.enguage.sign.object.Variable;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.reply.Answer;
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.http.Http;
@@ -21,6 +21,7 @@ import org.enguage.util.sys.Fs;
 import org.enguage.util.tag.Tag;
 
 public class Config {
+
 	private Config() {}
 	
 	private static final Audit audit = new Audit( "Config" );
@@ -30,29 +31,30 @@ public class Config {
 	public  static boolean complete() {return complete;}
 	
 	private static boolean setValues( String name, String value ) {
-		     if (name.equals("ACCUMULATECOMMAND")) Reply.accumulateCmdStr( value );
-		else if (name.equals("ANDCONJUNCTIONS")) Reply.andConjunction( value );
-		else if (name.equals("ORCONJUNCTIONS")) Reply.orConjunctions(  new Strings( value ));
-		else if (name.equals("PROPAGATEREPLY")) Reply.propagateReplyStr( value );
-		else if (name.equals("ANDLISTFORMAT" )) Reply.andListFormat( value);
-		else if (name.equals("LISTFORMATSEP" )) Reply.listSep(       value);
-		else if (name.equals( "ORLISTFORMAT" )) Reply.orListFormat(  value );
-		else if (name.equals( "REPEATFORMAT" )) Reply.repeatFormat(  value );
+		     if (name.equals("ACCUMULATECOMMAND")) accumulateCmdStr( value );
+		else if (name.equals("ANDCONJUNCTIONS")) andConjunction( value );
+		else if (name.equals("ORCONJUNCTIONS")) orConjunctions(  new Strings( value ));
+		else if (name.equals("PROPAGATEREPLY")) propagateReplyStr( value );
+		else if (name.equals("ANDLISTFORMAT" )) andListFormat( value);
+		else if (name.equals("LISTFORMATSEP" )) listSep(       value);
+		else if (name.equals( "ORLISTFORMAT" )) orListFormat(  value );
+		else if (name.equals( "REPEATFORMAT" )) repeatFormat(  value );
 		else if (name.equals( "ATTRIBUTING" )) Reply.attributing(  value );
-		else if (name.equals( "REFERENCERS" )) Reply.referencers( new Strings( value ));
+		else if (name.equals( "REFERENCERS" )) referencers( new Strings( value ));
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
-		else if (name.equals( "SUCCESS" )) Response.success( value );
-		else if (name.equals( "FAILURE" )) Response.failure( value );
+		else if (name.equals( "SUCCESS" )) success( value );
+		else if (name.equals( "FAILURE" )) failure( value );
 		else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
 		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
 		else if (name.equals(    "SOFA" )) Commands.java( value );
 		else if (name.equals(     "URL" )) Http.url( value );
 		else if (name.equals(     "TTL" )) Autoload.ttl( value );
-		else if (name.equals(     "DNU" )) Response.dnu( value );
-		else if (name.equals(     "DNK" )) Response.dnk( value );
-		else if (name.equals(     "YES" )) Response.yes( value );
-		else if (name.equals(      "NO" )) Response.no(  value );
+		else if (name.equals(     "DNU" )) dnu( value );
+		else if (name.equals(     "DNK" )) dnk( value );
+		else if (name.equals(     "UDU" )) udu( value );
+		else if (name.equals(     "YES" )) yes( value );
+		else if (name.equals(      "NO" )) no(  value );
 		else
 			return false;
 		return true;
@@ -87,4 +89,124 @@ public class Config {
 
 		complete = true;
 		return audit.out( rc );
-}	}
+	}
+
+	private static String  dnuStr = "DNU";
+	private static Strings dnu = new Strings( dnuStr );
+	public  static void    dnu( String s ) { dnu = new Strings( dnuStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings dnu(){ return dnu; }
+	public  static String  dnuStr(){ return dnuStr; }
+
+	private static Strings udu = new Strings( "UDU" );
+	private static String  uduStr = "DNK";
+	public  static void    udu( String s ) { udu = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings udu() { return udu; }
+	public  static String  uduStr() { return uduStr; }
+
+	private static Strings dnk = new Strings( "DNK" );
+	private static String  dnkStr = "DNK";
+	public  static void    dnk( String s ) { dnk = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings dnk() { return dnk; }
+	public  static String  dnkStr() { return dnkStr; }
+
+	private static Strings no = new Strings( "no" );
+	private static String  noStr = "no";
+	public  static void    no(  String s ) { no = new Strings( noStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings no() { return no; }
+	public  static String  noStr() { return noStr; }
+	
+	private static Strings yes    = new Strings( "yes" );
+	private static String  yesStr = "yes";
+	public  static void    yes( String s ) { yes = new Strings( yesStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings yes() { return yes; }
+	public  static String  yesStr() { return yesStr; }
+
+	private static Strings failure   = new Strings( Perform.S_FAIL );
+	private static String  failureStr = Perform.S_FAIL;
+	public  static void    failure(  String s ) { failure = new Strings( failureStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings failure() { return failure; }
+	public  static String  failureStr() { return failureStr; }
+	
+	private static Strings success    = new Strings( Perform.S_SUCCESS );
+	private static String  successStr = Perform.S_SUCCESS;
+	public  static void    success( String s ) { success = new Strings( successStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings success() { return success; }
+	public  static String  successStr() { return successStr; }
+
+	private static  boolean verbatim = false; // set to true in handleDNU()
+	public  static  boolean isVerbatim() { return verbatim; }
+	public  static  void    verbatimIs( boolean val ) { verbatim = val; }
+
+	private static  boolean understood = true;
+	public  static  boolean understoodIs( boolean was ) { return understood = was;}
+	public  static  boolean isUnderstood() { return understood; }
+
+	private static  String  strangeThought = "DNU";
+	public  static  void    strangeThought( String thought ) { strangeThought = thought; }
+	public  static  String  strangeThought(){ return strangeThought; }
+
+	private static  String  repeatFormat = "i said, ... .";
+	public  static  void    repeatFormat( String s ) { repeatFormat = s.toLowerCase( Locale.getDefault() );}
+	public  static  String  repeatFormat() { return repeatFormat; }
+
+	private static  String  andConjunction = "and";
+	public  static  void    andConjunction( String s ) { andConjunction = s.toLowerCase( Locale.getDefault() ); }
+	public  static  String  andConjunction() { return andConjunction; }
+
+	private static  Strings andListFormat = new Strings( ", /, and ", '/' );
+	public  static  void    andListFormat( String s ) { andListFormat = new Strings( s, Config.listSep().charAt( 0 )); }
+	public  static  Strings andListFormat() { return andListFormat; }
+
+	private static  Strings orConjunctions = new Strings( ", or" );
+	public  static  void    orConjunctions( Strings sa ) { orConjunctions = sa; }
+	public  static  Strings orConjunctions() { return orConjunctions; }
+
+	private static  Strings orListFormat = new Strings( ", /, or ", '/' );
+	public  static  void    orListFormat( String s ) { orListFormat = new Strings( s, Config.listSep().charAt( 0 )); }
+	public  static  Strings orListFormat() { return orListFormat; }
+
+	private static  Strings referencers = new Strings( "the" );
+	public  static  void    referencers( Strings sa ) { referencers = sa; }
+	public  static  Strings referencers() { return referencers; }
+
+	private static  String  listSep = "/";
+	public  static  void    listSep( String s ) { listSep = s; }
+	public  static  String  listSep() { return listSep; }
+
+	/* previous() is used to retrieve the reply from the previous thought. It is
+	 * used in implementing imagination.  If the imagination session goes ok,
+	 * we need the reply from that session. Was implemented with the equiv 
+	 * intention in previous C incarnation.
+	 */
+	private static  Strings previous = new Strings( "" );
+	public  static  Strings previous( Strings rep ) { return previous = rep; }
+	public  static  Strings previous() { return previous; }
+	
+	private static String propagateReplyStr = "say so";
+	public  static String propagateReplyStr() {return  propagateReplyStr;}
+	public  static void   propagateReplyStr(String pr) {
+		propagateReplyStr = pr;
+		propagateReplys = new Strings( pr );
+	}
+	private static Strings propagateReplys = new Strings( propagateReplyStr );
+	public  static Strings propagateReplys() {return  propagateReplys;}
+	public  static void    propagateReplys(Strings pr) {
+		propagateReplys = pr;
+		propagateReplyStr = pr.toString();
+	}
+	
+	// to interact with the 'say' list - as String or Strings
+	private static String  accumulateCmdStr = "say this now";
+	private static Strings accumulateCmds = new Strings( accumulateCmdStr );
+	public  static String  accumulateCmdStr() {return accumulateCmdStr;}
+	public  static Strings accumulateCmds() {return accumulateCmds;}
+	public  static void    accumulateCmdStr(String ac) {
+		accumulateCmdStr = ac;
+		accumulateCmds = new Strings( ac );
+	}
+	public  static void    accumulateCmdStr(Strings ac) {
+		accumulateCmds = ac;
+		accumulateCmdStr = ac.toString();
+	}
+
+}

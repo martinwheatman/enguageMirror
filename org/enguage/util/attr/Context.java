@@ -2,7 +2,7 @@ package org.enguage.util.attr;
 
 import java.util.ArrayList;
 
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 /** Context: a list of attributes, so a list of list of attribute
@@ -14,7 +14,7 @@ import org.enguage.util.strings.Strings;
 public class Context {
 	static Audit audit = new Audit( "Context" );
 	
-	public  static final int id = 42758506; // "context"???
+	public  static final int ID = 42758506; // "context"???
 	
 	private static ArrayList<Attributes> contexts = new ArrayList<>();
 	public  static void         push( Attributes ctx ) {contexts.add( 0, ctx );}
@@ -40,15 +40,15 @@ public class Context {
 		}
 		return "";
 	}
-	public  static Strings interpret( Strings a ) {
+	public  static Strings perform( Strings a ) {
 		audit.in( "interpret", "a="+ a );
-		Strings rc = new Strings( Response.FAIL );
+		Strings rc = new Strings( Perform.S_FAIL );
 		if (a.size() > 1) {
 			String cmd = a.remove( 0 );
 			if (cmd.equals( "add" )) {
 				String name = a.remove( 0 );
 				append( new Attribute( name, a.toString() ));
-				rc = new Strings( Response.SUCCESS );
+				rc = new Strings( Perform.S_SUCCESS );
 		}	}
 		return audit.out( rc );
 	}

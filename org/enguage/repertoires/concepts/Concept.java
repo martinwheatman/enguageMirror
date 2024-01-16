@@ -15,12 +15,11 @@ import java.util.TreeSet;
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.Assets;
+import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
-import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
@@ -310,15 +309,15 @@ public class Concept {
 			return ls;
 	}
 	public static List<Strings> conjuntionAlley( Strings s ) {
-		return conjuntionAlley( s, Reply.andConjunction() );
+		return conjuntionAlley( s, Config.andConjunction() );
 	}
 	// --
 	// -- Conjunctions - End
 	// --
 	
-	public static Strings interpret( Strings cmds ) {
+	public static Strings perform( Strings cmds ) {
 		
-		Strings rc = Response.success();
+		Strings rc = Config.success();
 		String cmd = cmds.remove( 0 );
 		
 		if (cmd.equals( "saveAs" )) {
@@ -328,7 +327,7 @@ public class Concept {
 			rc = Repertoires.signs().saveAs(
 								Sign.USER_DEFINED,
 								name
-				 ) ? Response.success() : Response.failure();
+				 ) ? Config.success() : Config.failure();
 
 		} else if (cmd.equals( "delete" )) {
 			String concept = cmds.toString( Strings.UNDERSC );
@@ -354,7 +353,7 @@ public class Concept {
 		 *	for(int i=0; i<files.size(); i++) Concept.load( files.get( i ))
 		 */
 		} else {
-			rc = Response.failure();
+			rc = Config.failure();
 		} 		
 		return rc;
 }	}

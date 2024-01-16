@@ -3,7 +3,6 @@ package org.enguage.sign.object.sofa;
 import java.io.File;
 import java.util.Iterator;
 
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -19,7 +18,7 @@ class OverlayShell extends Shell {
 public class Overlay {
 	public static  final String NAME = "overlay";
 	static               Audit audit = new Audit( "Overlay" ); //.tracing( true ).logging( true );
-	public static  final int      id = 188374473; //Strings.hash( "overlay" );
+	public static  final int      ID = 188374473; //Strings.hash( "overlay" );
 	
 	public static  final String DEFAULT_USERID = "uid"; //"sofa"
 	public static  final String        DEFAULT = "Enguage"; //"sofa"
@@ -362,9 +361,9 @@ public class Overlay {
 	// ------------------------------------------------------------------------
 	// --- perform "overlay [attach|detach|...] <args>"
 	// ---
-	public static Strings interpret( Strings argv ) {
+	public static Strings perform( Strings argv ) {
 		
-		String rc = Response.SUCCESS;
+		String rc = Perform.S_SUCCESS;
 		int argc = argv.size();
 		
 		String  cmd    = argv.remove( 0 );
@@ -374,7 +373,7 @@ public class Overlay {
 			attach( value );
 			if (highest < 0) {
 				audit.debug( "No such series: "+ value );
-				rc = Response.FAIL;
+				rc = Perform.S_FAIL;
 			}
 				
 		} else if (cmd.equals( "detach" ) && (1 == argc)) {
@@ -404,7 +403,7 @@ public class Overlay {
 			else if (value.equals( "full" ))
 				commit();
 			else
-				rc = Response.FAIL;
+				rc = Perform.S_FAIL;
 			
 		}  else if (cmd.equals( "versions" )) {
 			Audit.log( "versions: >"+ value +"<" );
@@ -414,7 +413,7 @@ public class Overlay {
 				showVersions(argv.toString( Strings.CONCAT ));
 	
 		} else {
-			rc = Response.FAIL;
+			rc = Perform.S_FAIL;
 			audit.debug( "Usage: attach <series>\n"
 			                 +"     : detach\n"
 			                 +"     : save\n"

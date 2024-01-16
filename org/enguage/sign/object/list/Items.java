@@ -3,10 +3,10 @@ package org.enguage.sign.object.list;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+import org.enguage.sign.Config;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.number.Number;
-import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
@@ -18,7 +18,7 @@ public class Items extends ArrayList<Item> {
 	static final long serialVersionUID = 0L;
 	static final public  String   NAME = "items";
 	static       private Audit   audit = new Audit( NAME );
-	static final public  int        id = 4468041; //Strings.hash( NAME );
+	static final public  int        ID = 4468041; //Strings.hash( NAME );
 	
 	Value value;
 	public void ignore() {value.ignore();}
@@ -221,7 +221,7 @@ public class Items extends ArrayList<Item> {
 	 * Returns number removed: existing - to be removed.
 	 */
 	private String removeQuantity( Item tbr, boolean exact ) {
-		String rc = Response.FAIL;
+		String rc = Perform.S_FAIL;
 		audit.in("removeQuantity", "item="+ tbr.toXml() +", exact="+ (exact?"T":"F"));
 		
 		int n;
@@ -253,7 +253,7 @@ public class Items extends ArrayList<Item> {
 				rc = tbr.toString(); // prepare return value
 				
 		}
-		if (!rc.equals( Response.FAIL ))
+		if (!rc.equals( Perform.S_FAIL ))
 			value.set( toXml() ); // put list back...
 		return audit.out( rc );
 	}
@@ -267,9 +267,9 @@ public class Items extends ArrayList<Item> {
 		}
 		for (Item itm : reprieve) add( itm );
 		value.set( toXml() );
-		return audit.out( Response.SUCCESS );
+		return audit.out( Perform.S_SUCCESS );
 	}
-	static public Strings interpret( Strings sa ) {
+	static public Strings perform( Strings sa ) {
 		
 		// first dereference 2nd and 3rd parameters
 		sa = Attribute.expand23( sa );
@@ -303,7 +303,7 @@ public class Items extends ArrayList<Item> {
 		 * in it which means the first (or last) param of each component 
 		 * needs to be converted, and the operation called for each.
 		 */
-		Strings rc = Response.Fail;
+		Strings rc = Perform.Fail;
 		audit.in( "interpret", sa.toString());
 		
 		String	cmd = sa.remove( 0 ),
@@ -315,11 +315,11 @@ public class Items extends ArrayList<Item> {
 		
 		if (cmd.equals( "delete" )) {
 			list.ignore();
-			rc = Response.Success;
+			rc = Perform.Success;
 			
 		} else if (cmd.equals( "undelete" )) {
 			list.restore();
-			rc = Response.Success;
+			rc = Perform.Success;
 				
 		} else if (sa.size() == 0) {
 			if (cmd.equals("get"))
@@ -327,7 +327,7 @@ public class Items extends ArrayList<Item> {
 			
 			else if (cmd.equals( "removeAll" )) {
 				list.removeAll( (Item)null );
-				rc = Response.Success;
+				rc = Perform.Success;
 			}
 		
 		} else if (cmd.equals( "isLinked" )) {
@@ -337,12 +337,12 @@ public class Items extends ArrayList<Item> {
 
 			if (Transitive.are( from.name(), to.name() ))
 				rc = list.isLinked( from, to )
-						? Response.Success : Response.Fail;
+						? Perform.Success : Perform.Fail;
 			else {
-				rc = Response.Fail;
+				rc = Perform.Fail;
 				for (Item li : list)
 					if (li.attributes().contains( from, to )) {
-						rc = Response.Success;
+						rc = Perform.Success;
 						break;
 			}		}
 
@@ -356,28 +356,28 @@ public class Items extends ArrayList<Item> {
 				
 				if (cmd.equals( "exists" )) {
 					if (list.exists( item, params )) {
-						if (rca.size() == 0) rca.add( Response.SUCCESS );
+						if (rca.size() == 0) rca.add( Perform.S_SUCCESS );
 					} else {
 						rca = new Strings();
-						rca.add( Response.FAIL );
+						rca.add( Perform.S_FAIL );
 						break;
 					}
 					
 				} else if (cmd.equals( "notExists" )) {
 					if (!list.exists( item, params )) {
-						if (rca.size() == 0) rca.add( Response.SUCCESS );
+						if (rca.size() == 0) rca.add( Perform.S_SUCCESS );
 					} else {
 						rca = new Strings();
-						rca.add( Response.FAIL );
+						rca.add( Perform.S_FAIL );
 						break;
 					}
 					
 				} else if (cmd.equals( "matches" )) {
 						if (list.matches( item ) != -1) {
-							if (rca.size() == 0) rca.add( Response.SUCCESS );
+							if (rca.size() == 0) rca.add( Perform.S_SUCCESS );
 						} else {
 							rca = new Strings();
-							rca.add( Response.FAIL );
+							rca.add( Perform.S_FAIL );
 							break;
 						}
 						
@@ -387,7 +387,7 @@ public class Items extends ArrayList<Item> {
 							item,
 							new Attribute( sa.get( 1 )).value()
 					);
-					rca.add( Response.SUCCESS );
+					rca.add( Perform.S_SUCCESS );
 					
 				} else if (cmd.equals( "getAttrVal" )) {
 					
@@ -395,7 +395,7 @@ public class Items extends ArrayList<Item> {
 					rca.add( list.getAttrVal(
 								item,
 								Attribute.getValue( attrName ) // Expand: n='v' => v
-							).toString( Reply.andListFormat())
+							).toString( Config.andListFormat())
 					);
 
 				} else if (cmd.equals( "quantity" )) {
@@ -429,7 +429,7 @@ public class Items extends ArrayList<Item> {
 			}
 			// some (e.g. get) may have m-values, some (e.g. exists) only one
 			rc = rca.size() == 0 ?
-					Response.Fail : new Strings( rca.toString( Reply.andListFormat()));
+					Perform.Fail : new Strings( rca.toString( Config.andListFormat()));
 		}
 		return audit.out( rc );
 	}
@@ -439,7 +439,7 @@ public class Items extends ArrayList<Item> {
 		return new Strings( s ).contract( "+=" ).contract( "-=" ).contract( "=" );
 	}
 	static public void test( int id, String cmd, String result ) {
-		Strings s = Items.interpret( params( cmd ));
+		Strings s = Items.perform( params( cmd ));
 		if (!result.equals( "" ) && !s.equals( new Strings( result )))
 			audit.FATAL(
 					(id != -1 ? id +": " : "")+
@@ -465,7 +465,7 @@ public class Items extends ArrayList<Item> {
 		
 		Item.format( "QUANTITY,UNIT of,,"+ Where.LOCTR +" "+ Where.LOCTN );
 		Item.groupOn( Where.LOCTN );
-		audit.debug( "get martin needs: "+ interpret( new Strings( "get martin needs" )));
+		audit.debug( "get martin needs: "+ perform( new Strings( "get martin needs" )));
 		
 		Audit.title( "SHOPPING LIST TESTS..." );
 		Item.format( "QUANTITY,UNIT of,THIS,from FROM" );

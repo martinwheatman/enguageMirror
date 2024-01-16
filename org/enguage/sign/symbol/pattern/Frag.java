@@ -3,9 +3,9 @@ package org.enguage.sign.symbol.pattern;
 import java.util.ListIterator;
 import java.util.Locale;
 
+import org.enguage.sign.Config;
 import org.enguage.sign.symbol.config.Englishisms;
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.audit.Indentation;
@@ -167,7 +167,7 @@ public class Frag {
 					(isNumeric()? Frags.numericPrefix : "")
 					+ (isPhrased()? Frags.phrasePrefix : "")
 					+ (isQuoted()? Frags.quotedPrefix : "")
-					+ (isList()? Reply.andConjunction().toUpperCase( Locale.getDefault())
+					+ (isList()? Config.andConjunction().toUpperCase( Locale.getDefault())
 							+"-"+ Frags.list.toUpperCase( Locale.getDefault()) +"-" : "")
 					+ name.toUpperCase( Locale.getDefault()) ) 
 				+ (postfix.equals( "" ) ? "" : " ") + postfix();

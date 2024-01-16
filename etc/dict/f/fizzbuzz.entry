@@ -12,7 +12,7 @@ On "what is the fizzbuzz of N":
 	
 On "do fizzbuzz between N and LIMIT":
 	what is the fizzbuzz of N;
-	remember this;
+	say this now;
 	set next to the	evaluation of N + 1;
 	NEXT is equal to LIMIT;
 	if so, what is the fizzbuzz of LIMIT;

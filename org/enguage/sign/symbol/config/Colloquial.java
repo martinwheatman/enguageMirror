@@ -6,14 +6,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
 public class Colloquial {
 	static public  final String NAME = "colloquial";
-	static public  final int      id = 42718199; // Strings.hash( NAME );
+	static public  final int      ID = 42718199; // Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Colloquial" );
 	
 	private TreeMap<Strings,Strings> intl;
@@ -86,9 +86,9 @@ public class Colloquial {
 		return  user().internalise(       // user phrases expand
 		   symmetric().internalise( s )); // general expansion
 	}
-	static public Strings interpret( String  a ) { return interpret( new Strings( a )); }
-	static public Strings interpret( Strings a ) {
-		if (null == a) return Response.Fail;
+	static public Strings interpret( String  a ) { return perform( new Strings( a )); }
+	static public Strings perform( Strings a ) {
+		if (null == a) return Perform.Fail;
 		//audit.in( "interpret", a.toString( Strings.CSV ));
 		
 		// expand 2nd and 3rd attribute parameters
@@ -134,7 +134,7 @@ public class Colloquial {
 		} else
 			audit.error( "Colloquial.interpret(): wrong number of params: "+ a.toString( Strings.CSV ));
 		//return audit.out( Shell.Success );
-		return Response.Success;
+		return Perform.Success;
 	}
 	public static void main( String args[] ) {
 		Audit.on();

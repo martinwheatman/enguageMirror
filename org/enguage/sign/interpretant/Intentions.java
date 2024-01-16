@@ -3,9 +3,8 @@ package org.enguage.sign.interpretant;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.enguage.repertoires.Engine;
+import org.enguage.sign.Config;
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 
@@ -71,22 +70,6 @@ public class Intentions extends ArrayList<Intention> {
 		Audit.decr();
 		return intentions.toString();
 	}
-	public Reply mediate( Reply r ) {
-		//audit.in( "mediate", "r="+ r )
-
-		// if we've matched we must have understood/recognised
-		r.answer( "ok" ).response( Response.N_OK );
-
-		Iterator<Intention> ai = this.iterator();
-		while (ai.hasNext()) {
-			Intention in = ai.next();
-			r = in.type() == Intention.N_ALLOP
-					? Engine.interp( in, r )
-					: in.mediate( r ); // thenFinally, think, do, say...
-		}
-		//audit.out()
-		return r;
-	}
 	public String toStringIndented() {
 		StringBuilder sb = new StringBuilder();
 		int sz = size();
@@ -101,4 +84,23 @@ public class Intentions extends ArrayList<Intention> {
 				);
 		}
 		return sb.toString();
+	}
+	
+	// ------------------------------------------------------------------------
+	public Reply mediate() {
+		
+		// "ok" -- in case there are no intentions (e.g. i can say X")
+		Reply r = new Reply().answer( Config.successStr() );
+		
+		Iterator<Intention> ai = this.iterator();
+		while (ai.hasNext()) {
+			Intention in = ai.next();
+
+			if (in.type() == Intention.N_FINALLY)
+				in.andFinally( r );
+
+			else if (!r.isDone())
+				r = in.mediate( r ); // thenFinally, think, do, say...
+		}
+		return r;
 }	}

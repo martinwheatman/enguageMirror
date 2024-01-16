@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -65,9 +65,9 @@ public class Http implements AutoCloseable {
 	public static String source() {return source;}
 	public static void   source( String s ) {source = s.toLowerCase();}
 	
-	public static Strings interpret( Strings cmds ) {
+	public static Strings perform( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );
-		Strings rc = Response.Fail;
+		Strings rc = Perform.Fail;
 		String cmd = cmds.remove(0);
 		
 		// Tell HTML where it came from...

@@ -7,7 +7,7 @@ import java.util.ListIterator;
 import org.enguage.sign.Assets;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -18,7 +18,7 @@ public class Where {
 	 */
 
 	public  static final String  NAME = "where";
-	public  static final int       id = 10654909; //Strings.hash( NAME )
+	public  static final int       ID = 10654909; //Strings.hash( NAME )
 	public  static       Audit  audit = new Audit( NAME );
 	
 	public  static final String LOCTR = "LOCATOR";
@@ -111,12 +111,12 @@ public class Where {
 	}
 	public static String list() { return concepts.toString( Strings.CSV );}
 
-	public  static Strings interpret( Strings args ) {
+	public  static Strings perform( Strings args ) {
 		//audit.in( "interpret", args.toString() )
-		String rc = Response.IGNORE;
+		String rc = Perform.S_IGNORE;
 		if (!args.isEmpty()) {
 			String cmd = args.remove( 0 );
-			rc = Response.SUCCESS;
+			rc = Perform.S_SUCCESS;
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
@@ -124,7 +124,7 @@ public class Where {
 			else if (cmd.equals( "locator" ))
 				locatorIs( Attribute.value( args ));
 			else
-				rc = Response.FAIL;
+				rc = Perform.S_FAIL;
 		}
 		//audit.out( rc )
 		return new Strings( rc );

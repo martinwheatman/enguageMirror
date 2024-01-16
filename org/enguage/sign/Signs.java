@@ -98,7 +98,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 	public  void reset( Strings reply ) { // called from Enguage.mediateSingle()
 		audit.in( "reset", "r="+ reply );
-		if (reply.begins( Response.dnu() )) {
+		if (reply.begins( Config.dnu() )) {
 			Repertoires.signs().ignoreNone();
 		}
 		audit.out();
@@ -159,9 +159,9 @@ public class Signs extends TreeMap<Integer,Sign> {
 	// --- Audit end
 	// -----------------------------
 	
-	private Reply contextualMediate( Attributes match, Sign s, Reply r ) {
+	private Reply contextualMediate( Attributes match, Sign s ) {
 		Context.push( match );
-		r = s.intentions().mediate( r ); // may pass back DNU
+		Reply r = s.intentions().mediate(); // may pass back DNU
 		Context.pop();
 		return r;
 	}
@@ -196,18 +196,14 @@ public class Signs extends TreeMap<Integer,Sign> {
 					saveForIgnore( complexity );
 						
 					match.toVariables();
-					r = contextualMediate( match, s, r );
-					r.answer().appendingIs( true );
+					r = contextualMediate( match, s );
 					
 					// if reply is DNU, this meaning is not appropriate!
-					audit.debug( "Signs.interpretation() returned "+ r.response() );
-					if (r.response() != Response.N_DNU) {
+					audit.debug( "Signs.interpretation() returned "+ r.response().type() );
+					if (r.response().type() != Response.Type.E_DNU) {
 						answer = r.answer().toString();
 						done = true;
-					}
-					r.answer().appendingIs( false );
-					
-				} // matched	
+				}	}	
 			}
 		} // while more signs and not done
 		auditOut( answer +" (reply="+ r.toString() +")");

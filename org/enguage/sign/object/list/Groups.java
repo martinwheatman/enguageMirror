@@ -2,7 +2,7 @@ package org.enguage.sign.object.list;
 
 import java.util.ArrayList;
 
-import org.enguage.sign.symbol.reply.Reply;
+import org.enguage.sign.Config;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -26,7 +26,7 @@ public class Groups {
 			return this;
 		}
 		public String toString() {
-			return	items.toString( Reply.andListFormat())
+			return	items.toString( Config.andListFormat())
 					+ (name.equals( "" ) ? "" : " "+ name);
 	}	}
 	// ========================================================================

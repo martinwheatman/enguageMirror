@@ -2,7 +2,7 @@ package org.enguage.util.http;
 
 import java.io.IOException;
 
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -15,9 +15,9 @@ public class SapGraph {
 	private static String defaultUrl   = "http://localhost:3004/sap.graph/";
 	private static String defaultQuery = "SalesQuote?$top=2";
 	
-	public  static Strings interpret( Strings cmds ) {
+	public  static Strings perform( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );
-		Strings rc = Response.Fail;
+		Strings rc = Perform.Fail;
 		String cmd = cmds.remove(0);
 		
 		if (cmd.equals( "query" )) {
@@ -40,5 +40,5 @@ public class SapGraph {
 	}
 	public static void main( String[] args ) {
 		Strings cmds = new Strings( "query nelson mandela" );
-		Audit.log( interpret( cmds ));
+		Audit.log( perform( cmds ));
 }	}

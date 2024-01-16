@@ -3,9 +3,9 @@ package org.enguage.sign.object;
 import java.util.ListIterator;
 
 import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.number.Number;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -13,7 +13,7 @@ import org.enguage.util.sys.Fs;
 
 public class Numeric extends Value {
 	public static  final String NAME = "numeric";
-	static public  final int      id = 176168105; //Strings.hash( NAME );
+	static public  final int      ID = 176168105; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Numeric" );
 	
 	public Numeric( String e, String a ) { super( e, a ); }
@@ -79,18 +79,18 @@ public class Numeric extends Value {
 		System.out.println(
 				"Usage: numeric [set|get|remove|increase|decrease|exists|equals|delete] <ent> <attr>[ / <attr> ...] [<values>...]\n"+
 				"given: "+ a.toString( Strings.CSV ));
-		return Response.FAIL;
+		return Perform.S_FAIL;
 	}
-	static public Strings interpret( Strings a ) {
+	static public Strings perform( Strings a ) {
 		// interpret( ["increase", "device", "textSize", "4"] )
 		audit.in( "interpret", a.toString( Strings.DQCSV ));
-		String rc = Response.SUCCESS;
+		String rc = Perform.S_SUCCESS;
 		if (a.size() > 1) {
 			String cmd = a.get( 0 );
 			
 			if (cmd.equals("isAbs")) { // => Numeric.java?
 				char firstChar = a.get( 1 ).charAt( 0 ); 
-				rc = firstChar == '-' || firstChar == '+' ? Response.FAIL : Response.SUCCESS;
+				rc = firstChar == '-' || firstChar == '+' ? Perform.S_FAIL : Perform.S_SUCCESS;
 				
 			} else if (cmd.equals( "evaluate" )) {
 				// parameters no longer expanded in sofa...!
@@ -106,7 +106,7 @@ public class Numeric extends Value {
 					Number number = new Number( ai );
 					rc = number.valueOf() + a.copyAfter( 1 + number.representamen().size()).toString();
 				} else
-					rc = Response.FAIL;
+					rc = Perform.S_FAIL;
 				
 			} else if (a.size() > 2) {
 				int i = 2;
@@ -126,9 +126,9 @@ public class Numeric extends Value {
 				 */
 				
 				if (cmd.equals( "increase" )) 
-					rc = n.increase( value ) ? Response.SUCCESS : Response.FAIL;
+					rc = n.increase( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 				else if (cmd.equals( "decrease" ))
-					rc = n.decrease( value ) ? Response.SUCCESS : Response.FAIL;
+					rc = n.decrease( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 				else
 					rc = usage( a );
 			}

@@ -36,7 +36,7 @@ public class Representamen extends Strings {
 		cmd.append( "evaluate" )
 		   .append( fn )
 		   .appendAll( params );
-		String token = Function.interpret( cmd ).toString();
+		String token = Function.perform( cmd ).toString();
 		return Strings.isNumeric( token ) ? token : null;
 	}
 

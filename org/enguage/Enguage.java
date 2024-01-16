@@ -19,7 +19,7 @@ import org.enguage.util.sys.Shell;
 
 public class Enguage {
 	
-	private static final String COPYRIGHT = "Martin Wheatman, 2001-4, 2011-23";
+	private static final String COPYRIGHT = "Martin Wheatman, 2001-4, 2011-24";
 	public  static final String RO_SPACE  = "etc"+ File.separator;
 	public  static final String RW_SPACE  = "var"+ File.separator;
 
@@ -59,7 +59,7 @@ public class Enguage {
 		Item.resetFormat();
 		Repertoires.signs().firstMatch( true );
 		
-		if (Reply.isUnderstood()) // from previous interpretation!
+		if (Config.isUnderstood()) // from previous interpretation!
 			Overlay.startTxn(); // all work in this new overlay
 		
 		Reply r = Repertoires.mediate( new Utterance( utterance ));
@@ -71,7 +71,7 @@ public class Enguage {
 			Overlay.undoTxn();
 			Repertoires.signs().reset( r.toStrings() );
 			
-		} else if (Reply.isUnderstood()) {
+		} else if (Config.isUnderstood()) {
 			Overlay.commitTxn();
 			Repertoires.signs().reset( r.toStrings() );
 			

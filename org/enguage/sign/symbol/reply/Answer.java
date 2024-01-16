@@ -1,5 +1,6 @@
 package org.enguage.sign.symbol.reply;
 
+import org.enguage.sign.Config;
 import org.enguage.util.strings.Strings;
 
 public class Answer {
@@ -16,9 +17,6 @@ public class Answer {
 	public  static String  placeholder() {return placeholder;}
 	public  static void    placeholder( String ph ) {placeholderAsStrings = new Strings( placeholder = ph );}
 
-	private boolean appending = false;
-	public  boolean isAppending() {return appending;}
-	public  void    appendingIs( boolean b ) {appending = b;}
 	
 	// [ "black coffee", "eggs", "Taj Mahal" ]; w/embedded spaces!
 	private Strings answers = new Strings();
@@ -29,7 +27,7 @@ public class Answer {
 		if (sa.isEmpty()) {
 			sa = new Strings( toString() ); // use the raw answer
 			if (sa.isEmpty()) // so a was equal to ""
-				sa = Response.dnu();
+				sa = Config.dnu();
 		} else if (sa.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 			sa.replace( Strings.ellipsis, toString() );
 		else if (sa.contains( Answer.placeholder() ))
@@ -41,22 +39,24 @@ public class Answer {
 	 * N.B. Should the answer be judged for felicity?
 	 *      Should an answer have a type, at all?
 	 */
-	private int    type = Response.N_DNK;
-	public  int    type() { return type; }
-	public  String setType( String s ) {
+	private Response.Type type = Response.Type.E_DNK;
+	public  Response.Type type() { return type; }
+	public  Answer        type( Response.Type t) {type = t; return this;}
+	public  Response.Type stringToResponseType( String s ) {
 		// This sets type to first non-NK type
-		if (type == Response.N_DNK) {
-			     if (s.toLowerCase().startsWith( Response.yesStr()    )) type = Response.N_OK;
-			else if (s.toLowerCase().startsWith( Response.successStr())) type = Response.N_OK;
-			else if (s.toLowerCase().startsWith( Response.noStr()     )) type = Response.N_NO;
-			else if (s.toLowerCase().startsWith( Response.dnuStr()    )) type = Response.N_DNU;
-			else if (s.toLowerCase().startsWith( Response.failureStr())) type = Response.N_FAIL;
-			else if (s.toLowerCase().startsWith( Response.dnkStr()    )) type = Response.N_DNK;
-			else type = Response.N_CHS;
+		Response.Type t = Response.Type.E_DNK;
+		if (type == Response.Type.E_DNK) {
+			     if (s.toLowerCase().startsWith( Config.yesStr()    )) t = Response.Type.E_OK;
+			else if (s.toLowerCase().startsWith( Config.successStr())) t = Response.Type.E_OK;
+			else if (s.toLowerCase().startsWith( Config.noStr()     )) t = Response.Type.E_NO;
+			else if (s.toLowerCase().startsWith( Config.dnuStr()    )) t = Response.Type.E_DNU;
+			else if (s.toLowerCase().startsWith( Config.failureStr())) t = Response.Type.E_SOZ;
+			else if (s.toLowerCase().startsWith( Config.dnkStr()    )) t = Response.Type.E_DNK;
+			else t = Response.Type.E_CHS;
 		}
-		return s;
+		return t;
 	}
 
 	@Override
-	public  String toString() {return answers.toString( Reply.andListFormat() );}
+	public  String toString() {return answers.toString( Config.andListFormat() );}
 }

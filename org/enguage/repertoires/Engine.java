@@ -1,6 +1,7 @@
 package org.enguage.repertoires;
 
 import org.enguage.Enguage;
+import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.object.Variable;
@@ -8,7 +9,6 @@ import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.config.Englishisms;
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -95,7 +95,7 @@ public final class Engine {
 		 };
 	
 	public static Reply interp( Intention in, Reply r ) {
-		r.answer( Response.successStr()); // bland default reply to stop debug output look worrying
+		r.answer( Config.successStr()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
@@ -120,14 +120,14 @@ public final class Engine {
 			r.answer( tmp );
 			
 		} else if ( in.value().equals( "repeat" )) {
-			if (Reply.previous() == null) {
+			if (Config.previous() == null) {
 				audit.debug("Allop:repeating dnu");
-				r.format( Response.dnu());
+				r.format( Config.dnu());
 			} else {
-				audit.debug("Allop:repeating: "+ Reply.previous());
+				audit.debug("Allop:repeating: "+ Config.previous());
 				r.repeated( true );
-				r.format( new Strings( Reply.repeatFormat()));
-				r.answer( Reply.previous().toString());
+				r.format( new Strings( Config.repeatFormat()));
+				r.answer( Config.previous().toString());
 			}
 			
 		} else if (cmd.equals( "say" )) {
@@ -141,7 +141,7 @@ public final class Engine {
 				Reply.say( Variable.deref( new Strings( cmds )));
 			
 		} else
-			r.format( Response.dnu() +":"+ cmd +" "+ cmds );
+			r.format( Config.dnu() +":"+ cmd +" "+ cmds );
 		
 		return r;
 }	}

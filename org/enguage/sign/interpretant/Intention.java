@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.enguage.repertoires.Engine;
 import org.enguage.repertoires.Repertoires;
+import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Perform;
@@ -82,7 +83,7 @@ public class Intention {
 	
 	public  static final int N_ALLOP       = 0x10;             // =  16
 	private static final int N_AUTOP       = 0x11;             // =  17
-	private static final int N_FINALLY     = 0xff;             // = 255
+	public  static final int N_FINALLY     = 0xff;             // = 255
 	
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
@@ -154,8 +155,8 @@ public class Intention {
 				two = len>1?sa.get(1):"";
 		}	}
 		
-		if (sa.equals( Reply.propagateReplys()) ||
-			sa.equals( Reply.accumulateCmds()) )
+		if (sa.equals( Config.propagateReplys()) ||
+			sa.equals( Config.accumulateCmds()) )
 		{
 			// don't remove these 'specials', pass on & define in config.xml
 			rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
@@ -216,27 +217,22 @@ public class Intention {
 		Strings thought  = formulate( r.answer().toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
 
 		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		Reply tmpr = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
-		
-		if (r.answer().isAppending())
-			r.answer().add( tmpr.answer().toString() );
-		else
-			r = tmpr;
+		r = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
 		
 		// If we've returned FAIL (DNU), we want to continue
-		return r.response( new Strings( r.toString()) )
+		return r.responseType( Response.stringsToResponseType( new Strings( r.toString()) ))
 		        .conclude( thought.toString() )
 		        .doneIs( Strings.isUCwHyphUs( value ) // critical!
-		                 && r.response() == Response.N_FAIL );
+		                 && r.response().type() == Response.Type.E_SOZ );
 	}
 	
 	private String formatAnswer( String rc ) {
 		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
-				new When( rc ).rep( Response.dnkStr() ).toString()
-				: rc.equals( Response.FAIL ) ?
-					Response.failureStr()
-					: rc.equals( Response.SUCCESS ) ?
-						Response.successStr()
+				new When( rc ).rep( Config.dnkStr() ).toString()
+				: rc.equals( Perform.S_FAIL ) ?
+						Config.failureStr()
+					: rc.equals( Perform.S_SUCCESS ) ?
+							Config.successStr()
 						: rc;
 	}
 
@@ -244,7 +240,7 @@ public class Intention {
 	 * Perform works at the code level to obtain/set an answer.
 	 * This was initially the object model, but now includes any code.
 	 */
-	private Reply andFinally( Reply r ) {return perform( r, true );}
+	public  Reply andFinally( Reply r ) {return perform( r, true );}
 	private Reply perform( Reply r ) {return perform( r, false );}
 	private Reply perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
@@ -261,10 +257,9 @@ public class Intention {
 				(method.equals( "get" ) ||
 				 method.equals( "getAttrVal" )) )
 			{
-				r.format( Response.dnkStr());
-				r.response( Response.N_DNK );
-				if (!r.answer().isAppending())
-					r.answerReset();
+				r.format( Config.dnkStr());
+				r.responseType( Response.Type.E_DNK );
+				r.answerReset();
 				
 			} else
 				r.answer( formatAnswer( rawAnswer.toString()));
@@ -280,16 +275,16 @@ public class Intention {
 		
 		// Accumulate reply - currently "remember this"
 		// TODO: incorporate this into "say" ??
-		if (value.equals( Reply.accumulateCmdStr() )) // say so -- possibly need new intention type?
+		if (value.equals( Config.accumulateCmdStr() )) // say so -- possibly need new intention type?
 			Reply.say( reply.toStrings());
 		
 		// propagate reply and return - currently "say so"
-		else if (value.equals( Reply.propagateReplyStr() ))
+		else if (value.equals( Config.propagateReplyStr() ))
 			reply.doneIs( true ); // just pass out this reply
 		else
 			reply.format( value )
-				.response( values )
-				.doneIs( reply.response() != Response.N_DNU ); // so reply "I don't understand" is like an exception?
+				.responseType( Response.stringsToResponseType( values ))
+				.doneIs( reply.response().type() != Response.Type.E_DNU ); // so reply "I don't understand" is like an exception?
 		audit.out( reply.toString() );
 		return reply;
 	}
@@ -305,32 +300,29 @@ public class Intention {
 		if (Audit.allAreOn())
 			audit.in( "mediate", typeToString( type ) +"='"+ value +"'"+(skip( r )?" >skipping<":"" ));
 		
-		if (type == N_FINALLY)
-			andFinally( r );
-
-		else if (!r.isDone()) {
-			switch (type) {
-	 			case N_THINK:      r = think(   r ); break;
-	 			case N_DO: 	           perform( r ); break;
-	 			case N_RUN:        r = run(     r ); break;
-	 			case N_REPLY:          reply(   r ); break;
-	 			default:
-	 				if (r.felicitous()) {
-			 			switch (type) {
-							case N_THEN_THINK: r = think(   r ); break;
-							case N_THEN_DO:        perform( r ); break;
-							case N_THEN_RUN:   r = run(     r ); break;
-							case N_THEN_REPLY:     reply(   r ); break;
-							default: break;
-			 			}
-		 			} else {
-						switch (type) {
-							case N_ELSE_THINK: r = think(   r ); break;
-							case N_ELSE_DO:	       perform( r ); break;
-							case N_ELSE_RUN:   r = run(     r ); break;
-							case N_ELSE_REPLY:     reply(   r ); break;
-							default: break;
-		}	} 		}	}
+		switch (type) {
+ 			case N_THINK:      r = think(   r ); break;
+ 			case N_DO: 	           perform( r ); break;
+ 			case N_RUN:        r = run(     r ); break;
+ 			case N_REPLY:          reply(   r ); break;
+ 			case N_ALLOP:      r = Engine.interp( this, r ); break;
+ 			default:
+ 				if (Response.felicitous( r.response().type() )) {
+		 			switch (type) {
+						case N_THEN_THINK: r = think(   r ); break;
+						case N_THEN_DO:        perform( r ); break;
+						case N_THEN_RUN:   r = run(     r ); break;
+						case N_THEN_REPLY:     reply(   r ); break;
+						default: break;
+		 			}
+	 			} else {
+					switch (type) {
+						case N_ELSE_THINK: r = think(   r ); break;
+						case N_ELSE_DO:	       perform( r ); break;
+						case N_ELSE_RUN:   r = run(     r ); break;
+						case N_ELSE_REPLY:     reply(   r ); break;
+						default: break;
+		}		}	}
 
 		if (Audit.allAreOn())
 			audit.out( r );
@@ -395,7 +387,7 @@ public class Intention {
 		Sign.latest().insert( Intentions.Insertion.HEADER, new Intention( N_ELSE_REPLY, "two three four" ));
 		
 		Repertoires.signs().insert( Sign.latest() );
-		r.answer( Response.yes().toString() );
+		r.answer( Config.yes().toString() );
 
 		
 		audit.debug( Repertoires.signs().toString() );

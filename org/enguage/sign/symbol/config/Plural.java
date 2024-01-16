@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.TreeMap;
 
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
 public class Plural {
 	static public  final String NAME = "plural";
-	static public  final int      id = 195967030; //Strings.hash( NAME );
+	static public  final int      ID = 195967030; //Strings.hash( NAME );
 	static private       Audit audit = new Audit( "Plural" );
 	
 	// these hold full exceptions, not endings e.g. "colloquial" -> "colloquia"
@@ -142,14 +142,14 @@ public class Plural {
 		}
 		return s;
 	}
-	public static Strings interpret( Strings a ) {
+	public static Strings perform( Strings a ) {
 		if (null == a)
-			return Response.Fail;
+			return Perform.Fail;
 		else if (a.get( 0 ).equals("exception") && a.size() == 3)
 			addException( a.get( 1 ), a.get( 2 ));
 		else if (a.get( 0 ).equals("rule") && a.size() == 3)
 			addRule( a.get( 1 ), a.get( 2 ));
-		return Response.Success;
+		return Perform.Success;
 	/* Plurals:
 	 * colloquial <=> colloquia  : because it is an exception
 	 * princess   <=> princesses : *ss adds 'es'

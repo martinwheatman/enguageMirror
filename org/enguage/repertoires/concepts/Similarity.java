@@ -1,8 +1,8 @@
 package org.enguage.repertoires.concepts;
 
+import org.enguage.sign.Config;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
@@ -41,14 +41,14 @@ public class Similarity {
 			Autoload.unloadConditionally( name+"+"+Plural.plural( name )) ||
 			Autoload.unloadConditionally( Plural.plural( name )+"+"+name )) ;
 	}
-	public  static Strings interpret( Strings cmds ) {
+	public  static Strings perform( Strings cmds ) {
 		// e.g. ["create", "want", "need"]
 		audit.in( "interpret", "cmds="+ cmds );
-		Strings rc = Response.failure();
+		Strings rc = Config.failure();
 		int     sz = cmds.size();
 		if (sz > 0) {
 			String cmd = cmds.remove( 0 );
-			rc = Response.success();
+			rc = Config.success();
 			
 			if (cmd.equals( "between" ) && sz>3) {
 				// e.g. "create want / need"
@@ -69,13 +69,13 @@ public class Similarity {
 			else if (cmd.equals( "recall" ))
 				similarities = new Attributes( Variable.get( NAME ));
 			
-			else rc = Response.failure();				
+			else rc = Config.failure();				
 		}
 		audit.out( rc );
 		return rc;
 	}
 	public  static void test( String cmd ) {
-		interpret( new Strings( cmd ));
+		perform( new Strings( cmd ));
 	}
 	public static void main( String[] args ) {
 		Audit.on();

@@ -2,10 +2,11 @@ package org.enguage.sign.object.expr;
 
 import java.util.ListIterator;
 
+import org.enguage.sign.Config;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Overlay;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.number.Number;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -13,7 +14,7 @@ import org.enguage.util.strings.Strings;
 public class Function {
 	
 	public static  final String NAME = "function";
-	public static  final int      id = 81133373; //Strings.hash( NAME );
+	public static  final int      ID = 81133373; //Strings.hash( NAME );
 	private static       Audit audit = new Audit( "Function" );
 	
 	public Function( String nm ) { name = nm; } // find
@@ -46,7 +47,7 @@ public class Function {
 		);
 		
 		audit.out();
-		return Response.Success;
+		return Perform.Success;
 	}
 	public String toString() {return name + (lambda==null ? "<noLambda/>" : lambda.toString());}
 	
@@ -85,19 +86,19 @@ public class Function {
 	}
 	private static Strings evaluate( String name, Strings argv ) {
 		//audit.in( "evaluate", "name="+ name +", args='"+ argv +"'" );
-		Strings  rc = Response.dnk();
+		Strings  rc = Config.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {
 			rc = new Number( ss.listIterator() ).valueOf();
 			if (rc.equals( Number.NotANumber ))
-				rc = Response.dnk();
+				rc = Config.dnk();
 		}
 		return rc; //audit.out( rc );
 	}
-	public static Strings interpret( String arg ) { return interpret( new Strings( arg ));}
-	public static Strings interpret( Strings argv ) {
+	public static Strings interpret( String arg ) { return perform( new Strings( arg ));}
+	public static Strings perform( Strings argv ) {
 		//audit.in( "interpret", argv.toString( Strings.DQCSV ));
-		Strings rc = Response.Fail;
+		Strings rc = Perform.Fail;
 		if (argv.size() >= 2) {
 			String      cmd = argv.remove( 0 ),
 			       function = argv.remove( 0 );
@@ -119,14 +120,14 @@ public class Function {
 	// === test code below! ===
 	private static void testCreate( String fn, String formals, String body ) {
 		audit.debug( "The "+ fn +" of "+ formals +" is "+ body );
-		interpret(	new Strings( "create "+ fn +" "+ formals +" / "+
+		perform(	new Strings( "create "+ fn +" "+ formals +" / "+
 							     Attribute.asString( "body", body )
 				 )			   );
 	}
 	private static void testQuery( String fn, String actuals ) {
 		audit.debug( "What is the "+ fn +" of "+ actuals );
-		Strings eval = interpret( new Strings("evaluate "+ fn +" "+ actuals ));
-		audit.debug( eval.equals( new Strings( Response.dnk())) ?
+		Strings eval = perform( new Strings("evaluate "+ fn +" "+ actuals ));
+		audit.debug( eval.equals( new Strings( Config.dnk())) ?
 			eval.toString() : "The "+ fn +" of "+ actuals +" is "+ eval.toString() +"\n" );
 	}
 	public static void main( String args[]) {
@@ -134,7 +135,7 @@ public class Function {
 		Overlay.set( Overlay.get());
 		Overlay.attach( NAME );
 		
-		Response.dnk( "I do not know\n" );
+		Config.dnk( "I do not know\n" );
 		testQuery(  "sum", "1 , 1" ); // error!
 		
 		testCreate( "sum", "a and b", "a + b" );

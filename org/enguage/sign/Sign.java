@@ -9,9 +9,9 @@ import org.enguage.sign.interpretant.Intentions;
 import org.enguage.sign.interpretant.Intentions.Insertion;
 import org.enguage.sign.object.Temporal;
 import org.enguage.sign.object.Variable;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.pattern.Frag;
 import org.enguage.sign.symbol.pattern.Frags;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
@@ -205,9 +205,9 @@ public class Sign {
 	 *  			[create|imply|run|perform|finally] <PHRASE-X>"
 	 * as found in interpret.txt
 	 */
-	public static Strings interpret( Strings args ) {
+	public static Strings perform( Strings args ) {
 		audit.in( "interpret", args.toString());
-		String rc = Response.FAIL;
+		String rc = Perform.S_FAIL;
 		
 		if (!args.isEmpty()) {
 			
@@ -322,7 +322,7 @@ public class Sign {
 				//voiced = null; -- maybe more finallys
 			
 			} else {
-				rc = Response.FAIL;
+				rc = Perform.S_FAIL;
 				audit.error( "Unknown Sign.interpret() command: "+ cmd );
 		}	}
 		audit.out( new Strings( rc ));

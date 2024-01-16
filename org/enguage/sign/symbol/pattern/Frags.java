@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 
+import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.config.Englishisms;
@@ -12,7 +13,6 @@ import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.number.Number;
 import org.enguage.sign.symbol.pronoun.Gendered;
 import org.enguage.sign.symbol.pronoun.Pronoun;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.algorithm.Expression;
 import org.enguage.util.attr.Attribute;
@@ -89,7 +89,7 @@ public class Frags extends ArrayList<Frag> {
 					t.signIs();
 					if (wi.hasNext()) sw = wi.next();
 					else audit.error( "ctor: SAID, missing name." );
-				} else if (sw.equals( Reply.andConjunction() )) {
+				} else if (sw.equals( Config.andConjunction() )) {
 					//audit.LOG( "found: "+ Reply.andConjunction() );
 					if (wi.hasNext()) {
 						sw = wi.next();
@@ -517,7 +517,7 @@ public class Frags extends ArrayList<Frag> {
 		Strings vals = new Strings( u );
 		if (t.isPhrased() || t.isSign() ||
 				// BUG: this is u.next is a conjection!
-				(said.hasNext() && Reply.andConjunction().equals( u )))
+				(said.hasNext() && Config.andConjunction().equals( u )))
 		{
 			Where where = null;
 			Strings terms = getNextBoilerplate( t, ti ); // null if this is last tag

@@ -1,8 +1,8 @@
 package org.enguage.sign.symbol.pronoun;
 
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.pattern.Frags;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
@@ -160,10 +160,10 @@ public class Pronoun {
 	static private Strings set( Strings sa ) {
 		// the masculine personal objective pronoun is him =>
 		//    set([ "objective", "singular", "masculine", "him" ]);
-		Strings rc = Response.Fail;
+		Strings rc = Perform.Fail;
 		if (sa.size() == 4) {
 			int so = -1, mfn = -1, sp = -1;
-			rc = Response.Success;
+			rc = Perform.Success;
 			while (sa.size() > 1) {
 				String s = sa.remove( 0 );
 				if (s.equals( singular ))
@@ -185,17 +185,17 @@ public class Pronoun {
 				else if (s.equals( Gendered.neutral ))
 					mfn = Gendered.NEUTRAL;
 				else {
-					rc = Response.Fail;
+					rc = Perform.Fail;
 					break;
 			}	}
-			if (rc.equals( Response.Success ) && so != -1 && sp != -1 && mfn != -1)
+			if (rc.equals( Perform.Success ) && so != -1 && sp != -1 && mfn != -1)
 				set( so, sp, mfn, sa.remove( 0 ));
 		}
 		return rc;
 	}
 	static private Strings name (String name, String value) {
 		// e.g. name subjectives subjects
-		Strings rc = Response.Success;
+		Strings rc = Perform.Success;
 		if (name.equals( subjective ))
 			subjective( value );
 		
@@ -212,19 +212,19 @@ public class Pronoun {
 			possessive( value );
 		
 		else
-			rc = Response.Fail;
+			rc = Perform.Fail;
 
 		return rc;
 	}
-	static public Strings interpret( Strings sa ) {
+	static public Strings perform( Strings sa ) {
 		// e.g. (pronoun) add masculine martin
 		//      (pronoun) set OBJECTIVE PLURAL MASCULINE him
 		//      (pronoun) name subjectives [subjects]
 		audit.in( "interpret", ""+ sa );
-		Strings rc = Response.Fail;
+		Strings rc = Perform.Fail;
 		int sz = sa.size();
 		if (sz > 0) {
-			rc = Response.Success;
+			rc = Perform.Success;
 			String cmd = sa.remove( 0 );
 			if (cmd.equals("set" ))
 				rc = set( sa );
@@ -232,11 +232,11 @@ public class Pronoun {
 				rc = Gendered.add( sa );
 			else if (cmd.equals( "name" ))
 				if (1==sz) // original size!
-					rc = Response.Fail; // just cmd
+					rc = Perform.Fail; // just cmd
 				else
 					name( sa.get( 0 ), sa.get( 1 ));
 			else
-				rc = Response.Fail;
+				rc = Perform.Fail;
 		}
 		return audit.out( rc );
 	}
@@ -291,7 +291,7 @@ public class Pronoun {
 					type( pn ) +"!="+ POSSESSIVE +")" );
 		audit.out( ans );
 	}
-	static private void testInterpret( String u ) { interpret( new Strings( u ));}
+	static private void testInterpret( String u ) { perform( new Strings( u ));}
 	
 	static public void main( String args[]) {
 		

@@ -2,21 +2,20 @@ package org.enguage.sign.object.sofa;
 
 import java.io.File;
 
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
 
 public class Value {
-	static private Audit audit = new Audit( "Value" );
+	private static Audit audit = new Audit( "Value" );
 	
-	static public  final String   NAME = "value";
-	static public  final int        id = 10079711; //Strings.hash( NAME );
-	static private       boolean debug = false; // Enguage.runtimeDebugging;
+	public  static final String   NAME = "value";
+	public  static final int        ID = 10079711; //Strings.hash( NAME )
+	private static       boolean debug = false;   // Enguage.runtimeDebugging
 	
 	protected String ent, attr;
-	public String name() { return attr; }
+	public String name() {return attr;}
 
 	// constructor
 	public Value( String e, String a ) {
@@ -25,7 +24,7 @@ public class Value {
 	}
 
 	// statics
-	static public String name( String entity, String attr, int rw ) {
+	public static  String name( String entity, String attr, int rw ) {
 		return Overlay.fname( entity +(attr==null?"":"/"+ attr), rw );
 	}
 	
@@ -42,7 +41,7 @@ public class Value {
 	private boolean contains( String val ) { return getAsString().contains( val ); }
 	
 	// this works..
-	private static final String marker = "this is a marker file";
+	private static final String MARKER = "this is a marker file";
 	public  boolean  ignore() {
 		boolean rc = false;
 		if (Fs.exists( name( ent, attr, Overlay.MODE_READ ))) {
@@ -50,45 +49,47 @@ public class Value {
 			String writeName = name( ent, attr, Overlay.MODE_WRITE );
 			String deleteName = Overlay.deleteName( writeName );
 			if ( Fs.exists( writeName )) { // rename
-				File oldFile = new File( writeName ),
-				     newFile = new File( deleteName );
-				oldFile.renameTo( newFile );
+				File oldFile = new File(  writeName );
+				File newFile = new File( deleteName );
+				rc = oldFile.renameTo( newFile );
 			} else { // create
-				Fs.stringToFile( deleteName, marker );
+				Fs.stringToFile( deleteName, MARKER );
 		}	}
 		return rc;
 	}
-	public void restore() {
+	public boolean restore() {
 		String writeName = name( ent, attr, Overlay.MODE_WRITE ); // if not overlayed - simply delete!?!
 		String deletedName = Overlay.deleteName( writeName ); //dir/file => dir/!file
 		File deletedFile = new File( deletedName );
 		String content = Fs.stringFromFile( deletedName );
-		if (content.equals( marker )) {
+		if (content.equals( MARKER )) {
 			if (debug) audit.debug( "Value.restore(): Deleting marker file "+ deletedFile.toString());
-			deletedFile.delete();
+			return deletedFile.delete();
 		} else {
 		    File restoredFile = new File( writeName );
 		    if (debug) audit.debug( "Value.restore(): Moving "+ deletedFile.toString() +" to "+ restoredFile.toString());
-			deletedFile.renameTo( restoredFile );
+			return deletedFile.renameTo( restoredFile );
 	}	}
 	
-	static private String usage( String cmd, String entity, String attr, Strings a ) {
+	private static String usage( String cmd, String entity, String attr, Strings a ) {
 		return usage( cmd +" "+ entity +" "+ attr +" "+ a.toString() );
 	}
-	static private String usage( String a ) {
+	private static String usage( String a ) {
 		audit.debug( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
 				   "given: "+ a );
-		return Response.FAIL;
+		return Perform.S_FAIL;
 	}
-	static public Strings interpret( Strings a ) {
+	public static  Strings perform( Strings a ) {
 		// sa might be: [ "add", "_user", "need", "some", "beer", "+", "some crisps" ]
 		audit.in( "interpret", a.toString( Strings.CSV ));
 		a = a.normalise();
-		String rc = Response.SUCCESS;
-		if (null != a && a.size() > 2) {
-			String cmd = a.remove( 0 ), 
-			    entity = a.remove( 0 ),
-			 attribute = a.remove( 0 );
+		String rc = Perform.S_SUCCESS;
+		if (a.size() > 2) {
+			
+			String       cmd = a.remove( 0 ); 
+			String    entity = a.remove( 0 );
+			String attribute = a.remove( 0 );
+			
 			// components? martin car / body / paint / colour red
 			while (a.size()>1 && a.get( 0 ).equals( "/" )) {
 				a.remove( 0 );
@@ -96,7 +97,7 @@ public class Value {
 			}
 			Value v = new Value( entity, attribute ); //attribute needs to be composite: dir dir dir file values
 			
-			if (a.size()>0) {
+			if (!a.isEmpty()) {
 				// [ "some", "beer", "+", "some crisps" ] => "some beer", "some crisps" ]
 				String value = a.contract("=").toString();
 				if (Attribute.isAttribute( value ))
@@ -106,10 +107,10 @@ public class Value {
 					v.set( value );
 				
 				else if (cmd.equals( "equals" )) 
-					rc = v.equals( value ) ? Response.SUCCESS : Response.FAIL;
+					rc = v.equals( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 				
 				else if (cmd.equals( "contains" ))
-					rc = v.contains( value ) ? Response.SUCCESS : Response.FAIL;
+					rc = v.contains( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 				
 				else
 					usage( cmd, entity, attribute, a );
@@ -122,17 +123,17 @@ public class Value {
 					v.unset();
 				
 				else if (cmd.equals( "isSet" ))
-					rc = v.isSet() ? Response.SUCCESS : Response.FAIL;
+					rc = v.isSet() ? Perform.S_SUCCESS : Perform.S_FAIL;
 				
 				else if (cmd.equals( "delete" ))
 					v.ignore();
 				
 				else if (cmd.equals( "undelete" ))
-					v.restore();
+					rc = v.restore() ? Perform.S_SUCCESS : Perform.S_FAIL ;
 				
 				else if (cmd.equals( "exists" ))
 					// could check to see if it contains <attribute>?
-					rc = v.exists() ? Response.SUCCESS : Response.FAIL ;
+					rc = v.exists()  ? Perform.S_SUCCESS : Perform.S_FAIL ;
 				
 				else 
 					rc = usage( cmd, entity, attribute, a );
@@ -142,14 +143,14 @@ public class Value {
 		audit.out( rc );
 		return new Strings( rc );
 	}
-	static private void test( String cmd, String expected ) {
-		Strings answer = interpret( new Strings( cmd ));
+	private static void test( String cmd, String expected ) {
+		Strings answer = perform( new Strings( cmd ));
 		if (!answer.equals( new Strings( expected )))
 			audit.error( "expecting:"+ expected +", but got: "+ answer );
 		else
 			Audit.passed();
 	}
- 	public static void main( String args[] ) {
+ 	public static void main( String[] args ) {
 		Overlay.set( Overlay.get());
 		Overlay.attach( NAME );
 		test( "set martin name martin j wheatman", "TRUE" );

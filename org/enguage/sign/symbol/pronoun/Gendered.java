@@ -3,7 +3,7 @@ package org.enguage.sign.symbol.pronoun;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.strings.Strings;
 
 // ////////////////////////////////////////////////////////////////////////
@@ -38,8 +38,8 @@ public class Gendered {
 	
 	static Strings add (Strings sa) {
 		// e.g. add masculine martin feminine ruth
-		Strings rc = Response.Success;
-		while (rc.equals( Response.Success ) && sa.size() > 1) {
+		Strings rc = Perform.Success;
+		while (rc.equals( Perform.Success ) && sa.size() > 1) {
 			String gender = sa.remove( 0 );
 			if (gender.equals( masculine ))
 				masculineIs( sa.remove( 0 ));
@@ -50,7 +50,7 @@ public class Gendered {
 			else if (gender.equals( neutral ))
 				neutralIs( sa.remove( 0 ));
 			else
-				rc = Response.Fail;
+				rc = Perform.Fail;
 		}
 		return rc;
 	}

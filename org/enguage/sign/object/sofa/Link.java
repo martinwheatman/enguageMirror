@@ -1,6 +1,6 @@
 package org.enguage.sign.object.sofa;
 
-import org.enguage.sign.symbol.reply.Response;
+import org.enguage.sign.Config;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -8,7 +8,7 @@ import org.enguage.util.sys.Fs;
 
 public class Link {
 	static public  final String NAME = "link";
-	static public  final int      id = 217371; //Strings.hash( "link" );
+	static public  final int      ID = 217371; //Strings.hash( "link" );
 	static private       Audit audit = new Audit( "Link" );
 	
 	/* Need to support:
@@ -55,12 +55,12 @@ public class Link {
 				"Usage: link: [set|get|exists|attribute|destroy|delete] <ent> <link> [<value>]\n"+
 				"given: "+ a );
 	}
-	static public Strings interpret( Strings args ) {
+	static public Strings perform( Strings args ) {
 		audit.in( "interpret", "["+ args.toString( Strings.CSV ) +"]" ); 
-		String rc = Response.FAIL;
+		String rc = Perform.S_FAIL;
 		int argc = args.size();
 		if (argc >= 3 || argc <= 5) {
-			rc = Response.SUCCESS;
+			rc = Perform.S_SUCCESS;
 			String	cmd    = args.remove( 0 ),
 					entity = args.remove( 0 ),
 					attr   = args.remove( 0 ),
@@ -73,15 +73,15 @@ public class Link {
 			if (Attribute.isAttribute( target )) target = new Attribute( target ).value();
 					
 			if (cmd.equals("set") || cmd.equals( "create" ))
-				rc = new Value( entity, attr+EXT ).set( target ) ? Response.SUCCESS : Response.FAIL;
+				rc = new Value( entity, attr+EXT ).set( target ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 				
 			else if (cmd.equals("get"))
 				rc = new Value( entity, attr+EXT ).getAsString();
 				
 			else if (cmd.equals("exists"))
 				rc = target.equals( "" ) ?
-						new Value( entity, attr+EXT ).exists() ? Response.yesStr() : Response.noStr()
-						: exists( entity, attr+EXT, target ) ? Response.yesStr() : Response.noStr();
+						new Value( entity, attr+EXT ).exists() ? Config.yesStr() : Config.noStr()
+						: exists( entity, attr+EXT, target ) ? Config.yesStr() : Config.noStr();
 				
 			else if (cmd.equals("delete"))
 				if (target.equals( "" ))
@@ -89,10 +89,10 @@ public class Link {
 				else if (exists( entity, attr+EXT, target ))
 					new Value( entity, attr+EXT ).ignore();
 				else
-					rc =  Response.FAIL;
+					rc =  Perform.S_FAIL;
 				
 			else if (cmd.equals("attribute"))
-				rc = attribute( entity, attr, target, value ) ? Response.SUCCESS : Response.FAIL;
+				rc = attribute( entity, attr, target, value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 			
 			else
 				usage( "cmd="+ cmd +", ent="+ entity +", attr="+ attr +", [ "+ args +" ]" );
@@ -101,7 +101,7 @@ public class Link {
 		return audit.out( new Strings( rc ));
 	}
 	private static Strings test( String cmd, String expected ) {
-		Strings reply = interpret( new Strings( cmd ).contract( "/" ));
+		Strings reply = perform( new Strings( cmd ).contract( "/" ));
 		if (expected != null && !reply.equals( new Strings( expected )))
 			audit.FATAL( cmd + "\nExpecting: "+ expected + "\n  but got: "+ reply );
 		else
@@ -114,22 +114,22 @@ public class Link {
 		
 		Overlay.attach( "Link" );
 		
-		test( "create martin loves ruth",          Response.SUCCESS );
-		test( "create martin hates name=\"ruth\"", Response.SUCCESS );
-		test( "delete martin hates ruth",          Response.SUCCESS );
+		test( "create martin loves ruth",          Perform.S_SUCCESS );
+		test( "create martin hates name=\"ruth\"", Perform.S_SUCCESS );
+		test( "delete martin hates ruth",          Perform.S_SUCCESS );
 		test( "exists martin hates",        "no" );
 		test( "exists martin hates ruth",   "no" );
 		test( "exists martin loves",        "yes" );
 		test( "exists martin loves ruth",   "yes" );
-		test( "create engineer isa person", Response.SUCCESS );
-		test( "create martin isa engineer", Response.SUCCESS );
+		test( "create engineer isa person", Perform.S_SUCCESS );
+		test( "create martin isa engineer", Perform.S_SUCCESS );
 		test( "exists martin isa",          "yes" );
 		test( "exists martin isa person",   "yes" );
 		test( "exists person isa martin",   "no" );
 		
 		new Value( "person", "age" ).set( "42" );
-		test( "attribute martin isa age 42",     Response.SUCCESS );
-		test( "attribute martin isa age 55",     Response.FAIL );
+		test( "attribute martin isa age 42",     Perform.S_SUCCESS );
+		test( "attribute martin isa age 55",     Perform.S_FAIL );
 			
 		Audit.PASSED();
 }	}
