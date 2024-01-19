@@ -88,9 +88,8 @@ public class Intentions extends ArrayList<Intention> {
 	
 	// ------------------------------------------------------------------------
 	public Reply mediate() {
-		
-		// "ok" -- in case there are no intentions (e.g. i can say X")
-		Reply r = new Reply().answer( Config.successStr() );
+		// It's okay where there are no intentions (e.g. "i can say X")
+		Reply r = new Reply().answer( Config.okayStr() );
 		
 		Iterator<Intention> ai = this.iterator();
 		while (ai.hasNext()) {
@@ -100,7 +99,9 @@ public class Intentions extends ArrayList<Intention> {
 				in.andFinally( r );
 
 			else if (!r.isDone())
-				r = in.mediate( r ); // thenFinally, think, do, say...
+				// think, do, say...
+				// ...think (&run) will replace r
+				r = in.mediate( r );
 		}
 		return r;
 }	}

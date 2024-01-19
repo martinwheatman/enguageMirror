@@ -134,7 +134,7 @@ public class Audit {
 	
 	public static Strings perform(Strings cmds) {
 		audit.in( "Interpret", ""+ cmds );
-		Strings rc = Config.success();
+		Strings rc = Config.okay();
 		String cmd = cmds.remove( 0 );
 		
 		if (cmd.equals( "entitle" )) {
@@ -177,7 +177,7 @@ public class Audit {
 					hideSignsOnFatal();				
 				
 			} else
-				rc = Config.failure();
+				rc = Config.notOkay();
 		}			
 
 		return audit.out(rc);

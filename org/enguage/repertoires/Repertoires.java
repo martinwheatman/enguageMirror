@@ -9,7 +9,6 @@ import org.enguage.sign.Signs;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -44,7 +43,7 @@ public class Repertoires {
 		u = new Utterance( u.expanded() );
 		
 		Reply r = signs.mediate( u );
-		if (Response.Type.E_DNU == r.response().type())
+		if (Reply.Type.E_DNU == r.type())
 			r = engine().mediate( u );
 	
 		audit.out( r );
@@ -53,12 +52,12 @@ public class Repertoires {
 	
 	public static Strings perform( Strings cmds ) {
 		audit.in( "perform", "cmds="+ cmds );
-		Strings rc = Config.failure();
+		Strings rc = Config.notOkay();
 		if (!cmds.isEmpty()) {
 			String cmd = cmds.remove( 0 );
 			
 			if (cmd.equals("show")) {
-				rc = Config.success();
+				rc = Config.okay();
 				
 				String name = cmds.remove( 0 );
 				if (name.equals("signs") ||
@@ -74,7 +73,7 @@ public class Repertoires {
 					signs.show();
 					
 				} else
-					rc = Config.failure();
+					rc = Config.notOkay();
 				
 			} else if (cmd.equals( "variable" )) {
 				Variable.perform( new Strings( "show" ));

@@ -95,7 +95,7 @@ public final class Engine {
 		 };
 	
 	public static Reply interp( Intention in, Reply r ) {
-		r.answer( Config.successStr()); // bland default reply to stop debug output look worrying
+		r.answer( Config.okayStr()); // bland default reply to stop debug output look worrying
 		
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );

@@ -15,7 +15,6 @@ import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.pattern.Frag;
 import org.enguage.sign.symbol.pronoun.Pronoun;
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
@@ -199,8 +198,8 @@ public class Signs extends TreeMap<Integer,Sign> {
 					r = contextualMediate( match, s );
 					
 					// if reply is DNU, this meaning is not appropriate!
-					audit.debug( "Signs.interpretation() returned "+ r.response().type() );
-					if (r.response().type() != Response.Type.E_DNU) {
+					audit.debug( "Signs.interpretation() returned "+ r.type() );
+					if (r.type() != Reply.Type.E_DNU) {
 						answer = r.answer().toString();
 						done = true;
 				}	}	

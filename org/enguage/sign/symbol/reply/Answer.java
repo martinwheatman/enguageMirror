@@ -39,20 +39,20 @@ public class Answer {
 	 * N.B. Should the answer be judged for felicity?
 	 *      Should an answer have a type, at all?
 	 */
-	private Response.Type type = Response.Type.E_DNK;
-	public  Response.Type type() { return type; }
-	public  Answer        type( Response.Type t) {type = t; return this;}
-	public  Response.Type stringToResponseType( String s ) {
+	private Reply.Type type = Reply.Type.E_DNK;
+	public  Reply.Type type() { return type; }
+	public  Answer        type( Reply.Type t) {type = t; return this;}
+	public  Reply.Type stringToResponseType( String s ) {
 		// This sets type to first non-NK type
-		Response.Type t = Response.Type.E_DNK;
-		if (type == Response.Type.E_DNK) {
-			     if (s.toLowerCase().startsWith( Config.yesStr()    )) t = Response.Type.E_OK;
-			else if (s.toLowerCase().startsWith( Config.successStr())) t = Response.Type.E_OK;
-			else if (s.toLowerCase().startsWith( Config.noStr()     )) t = Response.Type.E_NO;
-			else if (s.toLowerCase().startsWith( Config.dnuStr()    )) t = Response.Type.E_DNU;
-			else if (s.toLowerCase().startsWith( Config.failureStr())) t = Response.Type.E_SOZ;
-			else if (s.toLowerCase().startsWith( Config.dnkStr()    )) t = Response.Type.E_DNK;
-			else t = Response.Type.E_CHS;
+		Reply.Type t = Reply.Type.E_DNK;
+		if (type == Reply.Type.E_DNK) {
+			     if (s.toLowerCase().startsWith( Config.yesStr()    )) t = Reply.Type.E_OK;
+			else if (s.toLowerCase().startsWith( Config.okayStr())) t = Reply.Type.E_OK;
+			else if (s.toLowerCase().startsWith( Config.noStr()     )) t = Reply.Type.E_NO;
+			else if (s.toLowerCase().startsWith( Config.dnuStr()    )) t = Reply.Type.E_DNU;
+			else if (s.toLowerCase().startsWith( Config.notOkayStr())) t = Reply.Type.E_SOZ;
+			else if (s.toLowerCase().startsWith( Config.dnkStr()    )) t = Reply.Type.E_DNK;
+			else t = Reply.Type.E_CHS;
 		}
 		return t;
 	}

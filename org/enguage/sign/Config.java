@@ -42,8 +42,8 @@ public class Config {
 		else if (name.equals( "ATTRIBUTING" )) Reply.attributing(  value );
 		else if (name.equals( "REFERENCERS" )) referencers( new Strings( value ));
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
-		else if (name.equals( "SUCCESS" )) success( value );
-		else if (name.equals( "FAILURE" )) failure( value );
+		else if (name.equals( "SUCCESS" )) okay( value );
+		else if (name.equals( "FAILURE" )) notOkay( value );
 		else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
 		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
@@ -121,17 +121,17 @@ public class Config {
 	public  static Strings yes() { return yes; }
 	public  static String  yesStr() { return yesStr; }
 
-	private static Strings failure   = new Strings( Perform.S_FAIL );
-	private static String  failureStr = Perform.S_FAIL;
-	public  static void    failure(  String s ) { failure = new Strings( failureStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings failure() { return failure; }
-	public  static String  failureStr() { return failureStr; }
+	private static String  notOkayStr = Perform.S_FAIL;
+	private static Strings notOkay   = new Strings( notOkayStr );
+	public  static void    notOkay(  String s ) { notOkay = new Strings( notOkayStr = s.toLowerCase( Locale.getDefault() )); }
+	public  static Strings notOkay() { return notOkay; }
+	public  static String  notOkayStr() { return notOkayStr; }
 	
-	private static Strings success    = new Strings( Perform.S_SUCCESS );
-	private static String  successStr = Perform.S_SUCCESS;
-	public  static void    success( String s ) { success = new Strings( successStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings success() { return success; }
-	public  static String  successStr() { return successStr; }
+	private static String  okayStr = Perform.S_SUCCESS;
+	private static Strings okay    = new Strings( okayStr );
+	public  static void    okay( String s ) {okay = new Strings( okayStr = s.toLowerCase( Locale.getDefault() ));}
+	public  static Strings okay() {return okay;}
+	public  static String  okayStr() {return okayStr;}
 
 	private static  boolean verbatim = false; // set to true in handleDNU()
 	public  static  boolean isVerbatim() { return verbatim; }

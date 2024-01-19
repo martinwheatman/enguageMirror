@@ -317,7 +317,7 @@ public class Concept {
 	
 	public static Strings perform( Strings cmds ) {
 		
-		Strings rc = Config.success();
+		Strings rc = Config.okay();
 		String cmd = cmds.remove( 0 );
 		
 		if (cmd.equals( "saveAs" )) {
@@ -327,7 +327,7 @@ public class Concept {
 			rc = Repertoires.signs().saveAs(
 								Sign.USER_DEFINED,
 								name
-				 ) ? Config.success() : Config.failure();
+				 ) ? Config.okay() : Config.notOkay();
 
 		} else if (cmd.equals( "delete" )) {
 			String concept = cmds.toString( Strings.UNDERSC );
@@ -353,7 +353,7 @@ public class Concept {
 		 *	for(int i=0; i<files.size(); i++) Concept.load( files.get( i ))
 		 */
 		} else {
-			rc = Config.failure();
+			rc = Config.notOkay();
 		} 		
 		return rc;
 }	}

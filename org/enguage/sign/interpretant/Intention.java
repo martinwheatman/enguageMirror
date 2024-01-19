@@ -13,7 +13,6 @@ import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.pattern.Frags;
 import org.enguage.sign.symbol.reply.Reply;
-import org.enguage.sign.symbol.reply.Response;
 import org.enguage.sign.symbol.when.Moment;
 import org.enguage.sign.symbol.when.When;
 import org.enguage.util.attr.Attribute;
@@ -164,19 +163,19 @@ public class Intention {
 		} else if (Strings.isQuoted( two )) {
 			
 			boolean found = true;
-			if (one.equals(DO_HOOK)) {
+			if (one.equals(DO_HOOK))
 				rc = pos ? N_THEN_DO    : (neg ? N_ELSE_DO    : N_DO);
 			
-			} else  if (one.equals(   RUN_HOOK )) {
+			else  if (one.equals(   RUN_HOOK ))
 				rc = pos ? N_THEN_RUN   : (neg ? N_ELSE_RUN   : N_RUN);
 			
-			} else  if (one.equals( REPLY_HOOK )) {
+			else  if (one.equals( REPLY_HOOK ))
 				rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
 				
-			} else  if (one.equals( FNLLY_HOOK )) {
+			else  if (one.equals( FNLLY_HOOK ))
 				rc = N_FINALLY;
 				
-			} else
+			else
 				found = false;
 			
 			if (found) {
@@ -214,25 +213,27 @@ public class Intention {
 	}
 	private Reply think( Reply r ) {
 		//audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" )
-		Strings thought  = formulate( r.answer().toString(), false ); // dont expand, UNIT => cup NOT unit='cup'
+		
+		// Don't expand, UNIT => cup NOT unit='cup'
+		Strings thought = formulate( r.answer().toString(), false );
 
 		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		r = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
 		
 		// If we've returned FAIL (DNU), we want to continue
-		return r.responseType( Response.stringsToResponseType( new Strings( r.toString()) ))
+		return r.type( Reply.stringsToResponseType( new Strings( r.toString()) ))
 		        .conclude( thought.toString() )
 		        .doneIs( Strings.isUCwHyphUs( value ) // critical!
-		                 && r.response().type() == Response.Type.E_SOZ );
+		                 && r.type() == Reply.Type.E_SOZ );
 	}
 	
 	private String formatAnswer( String rc ) {
 		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
 				new When( rc ).rep( Config.dnkStr() ).toString()
 				: rc.equals( Perform.S_FAIL ) ?
-						Config.failureStr()
+						Config.notOkayStr()
 					: rc.equals( Perform.S_SUCCESS ) ?
-							Config.successStr()
+							Config.okayStr()
 						: rc;
 	}
 
@@ -240,9 +241,9 @@ public class Intention {
 	 * Perform works at the code level to obtain/set an answer.
 	 * This was initially the object model, but now includes any code.
 	 */
-	public  Reply andFinally( Reply r ) {return perform( r, true );}
-	private Reply perform( Reply r ) {return perform( r, false );}
-	private Reply perform( Reply r, boolean ignore ) {
+	public  void andFinally( Reply r ) {perform( r, true );}
+	private void perform( Reply r ) {perform( r, false );}
+	private void perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
 		Strings cmd = formulate( r.answer().toString(), true ); // DO expand, UNIT => unit='non-null value'
 		
@@ -251,42 +252,41 @@ public class Intention {
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
 		
 		Strings rawAnswer = Perform.interpret( new Strings( cmd ));
+		
 		if (!ignore) {
 			String method = cmd.get( 1 );
 			if (rawAnswer.isEmpty() &&
 				(method.equals( "get" ) ||
 				 method.equals( "getAttrVal" )) )
-			{
-				r.format( Config.dnkStr());
-				r.responseType( Response.Type.E_DNK );
-				r.answerReset();
+			
+				r.format( Config.dnkStr())
+				 .type( Reply.Type.E_DNK )
+				 .answerReset();
 				
-			} else
+			else
 				r.answer( formatAnswer( rawAnswer.toString()));
 		}
-
 		//audit.out( r )
-		return r; 
 	}
-	private Reply reply( Reply reply ) {
-		audit.in( "reply", "value="+ value +", r="+ (value.equals("")?"SAY SO":reply.toString() ));
-		//IF (!values.contains( Strings.ELLIPSIS ) && !values.contains( Answer.DEFAULT_PLACEHOL...
-		//	reply.answerReset(
+	private Reply reply( Reply r ) {
+		audit.in( "reply", "value="+ value +", r="+ (value.equals("")?"SAY SO":r.toString() ));
 		
 		// Accumulate reply - currently "remember this"
 		// TODO: incorporate this into "say" ??
 		if (value.equals( Config.accumulateCmdStr() )) // say so -- possibly need new intention type?
-			Reply.say( reply.toStrings());
+			Reply.say( r.toStrings());
 		
 		// propagate reply and return - currently "say so"
 		else if (value.equals( Config.propagateReplyStr() ))
-			reply.doneIs( true ); // just pass out this reply
-		else
-			reply.format( value )
-				.responseType( Response.stringsToResponseType( values ))
-				.doneIs( reply.response().type() != Response.Type.E_DNU ); // so reply "I don't understand" is like an exception?
-		audit.out( reply.toString() );
-		return reply;
+			r.doneIs( true ); // just pass out this reply
+		
+		else // reply "I don't understand" is like an exception?
+			r.format( value )
+				.type( Reply.stringsToResponseType( values ))
+				.doneIs( r.type() != Reply.Type.E_DNU );
+		
+		audit.out( r.toString() );
+		return r;
 	}
 	private Reply run( Reply r ) {
 		return new Commands()
@@ -307,7 +307,7 @@ public class Intention {
  			case N_REPLY:          reply(   r ); break;
  			case N_ALLOP:      r = Engine.interp( this, r ); break;
  			default:
- 				if (Response.felicitous( r.response().type() )) {
+ 				if (r.isFelicitous()) {
 		 			switch (type) {
 						case N_THEN_THINK: r = think(   r ); break;
 						case N_THEN_DO:        perform( r ); break;
@@ -315,7 +315,7 @@ public class Intention {
 						case N_THEN_REPLY:     reply(   r ); break;
 						default: break;
 		 			}
-	 			} else {
+	 			} else { // check for is not meh! ?
 					switch (type) {
 						case N_ELSE_THINK: r = think(   r ); break;
 						case N_ELSE_DO:	       perform( r ); break;

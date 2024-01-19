@@ -44,11 +44,11 @@ public class Similarity {
 	public  static Strings perform( Strings cmds ) {
 		// e.g. ["create", "want", "need"]
 		audit.in( "interpret", "cmds="+ cmds );
-		Strings rc = Config.failure();
+		Strings rc = Config.notOkay();
 		int     sz = cmds.size();
 		if (sz > 0) {
 			String cmd = cmds.remove( 0 );
-			rc = Config.success();
+			rc = Config.okay();
 			
 			if (cmd.equals( "between" ) && sz>3) {
 				// e.g. "create want / need"
@@ -69,7 +69,7 @@ public class Similarity {
 			else if (cmd.equals( "recall" ))
 				similarities = new Attributes( Variable.get( NAME ));
 			
-			else rc = Config.failure();				
+			else rc = Config.notOkay();				
 		}
 		audit.out( rc );
 		return rc;

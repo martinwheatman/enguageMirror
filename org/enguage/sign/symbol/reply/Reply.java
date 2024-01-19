@@ -37,17 +37,39 @@ public class Reply {
 	}
 	
 	/* ------------------------------------------------------------------------
-	 * Response
+	 * Response type
 	 */
-	private Response      response = new Response();
-	public  Response      response() {return response;}
-	public  Reply         responseType( Response.Type t ) {response.type( t ); return this;}
-	public  Reply         xresponse( Strings strs ) {
-		response.type( Response.stringsToResponseType( strs ));
-		return this;
+	public enum Type {
+		E_DNU, // DO NOT UNDERSTAND
+		E_UDU, // user does not understand
+		E_DNK, // NOT KNOWN -- init
+		E_SOZ, // SORRY -- -ve
+		E_NO,  // FALSE -- -ve
+		E_OK,  // TRUE  -- +ve identical to 'yes'
+		E_CHS; // narrative verdict - meh!
 	}
 
-	/* Answer:
+	private Type  type = Type.E_DNU;
+	public  Type  type() {return type;}
+	public  Reply type( Type t ) {type = t; return this;}
+	
+	public  static Reply.Type stringsToResponseType( Strings uttr ) {
+		     if (uttr.begins( Config.yes()     )) return Reply.Type.E_OK;
+		else if (uttr.begins( Config.okay()    )) return Reply.Type.E_OK;
+		else if (uttr.begins( Config.notOkay() )) return Reply.Type.E_SOZ;
+		else if (uttr.begins( Config.dnu()     )) return Reply.Type.E_DNU;
+		else if (uttr.begins( Config.udu()     )) return Reply.Type.E_UDU;
+		else if (uttr.begins( Config.no()      )) return Reply.Type.E_NO;
+		else if (uttr.begins( Config.dnk()     )) return Reply.Type.E_DNK;
+		else return Reply.Type.E_CHS;
+	}
+	public boolean isFelicitous() {
+		return  Type.E_OK  == type ||
+				Type.E_CHS == type;
+	}
+
+	/* ------------------------------------------------------------------------
+	 * Answer:
 	 * Multiple answers should now be implemented in a Replies class!
 	 *                                     or in List class, below.
 	 * e.g. You need tea and biscuits and you are meeting your brother at 7pm.
@@ -61,7 +83,7 @@ public class Reply {
 			answer.type( answer.stringToResponseType( ans ));
 			answer.add( ans );
 			// type is dependent on answer
-			response.type( response.type() == Response.Type.E_UDU ? Response.Type.E_UDU : answer.type());
+			type( type() == Reply.Type.E_UDU ? Reply.Type.E_UDU : answer.type());
 		}
 		return this;
 	}
@@ -72,15 +94,12 @@ public class Reply {
 	 */
 	private Strings format = new Strings();
 	public  String  format() {return format.toString();}
-	public  Reply   format( String  f ) { return format( new Strings( f ));}
+	public  Reply   format( String  f ) {return format( new Strings( f ));}
 	public  Reply   format( Strings f ) {
 		format = Context.deref( f );
 		return this;
 	}
 	
-	/*
-	 * toString() ... 
-	 */
 	private Strings replyToString() {
 		return  Utterance.externalise(
 					answer.injectAnswer( format ),
@@ -142,7 +161,7 @@ public class Reply {
 
 	public Strings toStrings() {
 		Strings reply = replyToString();
-		if (Config.understoodIs( Response.Type.E_DNU != response.type() )) {
+		if (Config.understoodIs( Reply.Type.E_DNU != type() )) {
 			if (!repeated())
 				Config.previous( reply ); // never used
 			
@@ -155,7 +174,7 @@ public class Reply {
 	public Reply conclude( String thought ) {
 		Config.strangeThought("");
 
-		if (Response.Type.E_DNU == response.type()) {
+		if (Reply.Type.E_DNU == type()) {
 			// put this into reply via Reply.strangeThought()
 			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
 			Config.strangeThought( thought );
@@ -164,7 +183,7 @@ public class Reply {
 			format( new Strings( Config.dnu() + ", ..." ));
 			answer( thought );
 			
-			response.type( Response.Type.E_SOZ );
+			type( Reply.Type.E_SOZ );
 		}
 		return this;
 	}
