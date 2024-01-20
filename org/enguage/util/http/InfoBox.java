@@ -5,7 +5,6 @@ import java.util.ListIterator;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.sign.Sign;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.when.Date;
 import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.attr.Attribute;
@@ -25,6 +24,13 @@ public class InfoBox {
 	public  static String wikiSource() {return wsrc;}
 	public  static void   wikiSource( String s ) {wsrc = s;}
 	
+	// Set in Config.java/config.xml
+	private static Strings attributing = InfoBox.attributing( "according to X," );
+	public  static Strings attributing() {return attributing;}
+	public  static Strings attributing( String a ) {
+		attributing = new Strings( a ).reverse();
+		return attributing;
+	}	
 	private static String decodeSource( String fname ) {
 		String[] source = fname.split( "\\." );
 		return source[ source.length-1 ];
@@ -218,7 +224,7 @@ public class InfoBox {
 				for (String s : name )
 					rc.add( 0, s );
 				rc.prepend( "the" );
-				for (String s : Reply.attributing())
+				for (String s : InfoBox.attributing())
 					rc.add( 0, s.equals( "X" ) ? InfoBox.wikiSource() : s );
 
 				rc.prepend( "," );
@@ -252,4 +258,31 @@ public class InfoBox {
 		
 		audit.out( rc );
 		return rc;
+	}
+	// this is only called directly from Enguage.java - on replying to the user
+	public static Strings attributeSource( Strings reply ) {
+		audit.in( "attributeSource", "reply=["+ reply.toString( Strings.DQCSV) +"]");
+		
+		// TODO: de-hardcode these prefixes
+		if (!wikiSource().equals( "" ) ) {
+			// only attribute successful replies...
+			if (!(reply.get(0).equalsIgnoreCase( "sorry" ) &&
+			      reply.get(1).equals( "," )))
+			{
+				if (reply.get(0).equalsIgnoreCase( "ok" ) &&
+					reply.get(1).equals( "," ))
+				{
+					reply.remove(0);
+					reply.remove(0);
+				}
+				
+				for (String s : attributing)
+					reply.add( 0, s.equals( "X" ) ? wikiSource() : s );
+			}
+			// ...and finally, we want to scrub a source whether or not it was used!
+			wikiSource( "" );
+		}
+	
+		audit.out( reply );
+		return reply;
 }	}

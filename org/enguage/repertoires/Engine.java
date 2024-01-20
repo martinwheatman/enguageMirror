@@ -120,14 +120,14 @@ public final class Engine {
 			r.answer( tmp );
 			
 		} else if ( in.value().equals( "repeat" )) {
-			if (Config.previous() == null) {
+			if (Reply.previous() == null) {
 				audit.debug("Allop:repeating dnu");
 				r.format( Config.dnu());
 			} else {
-				audit.debug("Allop:repeating: "+ Config.previous());
+				audit.debug("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
 				r.format( new Strings( Config.repeatFormat()));
-				r.answer( Config.previous().toString());
+				r.answer( Reply.previous().toString());
 			}
 			
 		} else if (cmd.equals( "say" )) {

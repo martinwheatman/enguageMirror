@@ -7,7 +7,6 @@ import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
-import org.enguage.util.http.InfoBox;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 
@@ -22,6 +21,7 @@ public class Reply {
 	public  void    repeated( boolean s ) {repeated = s;}
 	public  boolean repeated()            {return repeated;}
 	
+	// This is used to control Intentions.mediate() loop
 	private boolean done = false;
 	public  Reply   doneIs( boolean b ) {done = b; return this;}
 	public  boolean isDone() {return done;}
@@ -53,15 +53,15 @@ public class Reply {
 	public  Type  type() {return type;}
 	public  Reply type( Type t ) {type = t; return this;}
 	
-	public  static Reply.Type stringsToResponseType( Strings uttr ) {
-		     if (uttr.begins( Config.yes()     )) return Reply.Type.E_OK;
-		else if (uttr.begins( Config.okay()    )) return Reply.Type.E_OK;
-		else if (uttr.begins( Config.notOkay() )) return Reply.Type.E_SOZ;
-		else if (uttr.begins( Config.dnu()     )) return Reply.Type.E_DNU;
-		else if (uttr.begins( Config.udu()     )) return Reply.Type.E_UDU;
-		else if (uttr.begins( Config.no()      )) return Reply.Type.E_NO;
-		else if (uttr.begins( Config.dnk()     )) return Reply.Type.E_DNK;
-		else return Reply.Type.E_CHS;
+	public  static Type stringsToResponseType( Strings uttr ) {
+		     if (uttr.begins( Config.yes()     )) return Type.E_OK;
+		else if (uttr.begins( Config.okay()    )) return Type.E_OK;
+		else if (uttr.begins( Config.notOkay() )) return Type.E_SOZ;
+		else if (uttr.begins( Config.dnu()     )) return Type.E_DNU;
+		else if (uttr.begins( Config.udu()     )) return Type.E_UDU;
+		else if (uttr.begins( Config.no()      )) return Type.E_NO;
+		else if (uttr.begins( Config.dnk()     )) return Type.E_DNK;
+		else return Type.E_CHS;
 	}
 	public boolean isFelicitous() {
 		return  Type.E_OK  == type ||
@@ -83,14 +83,14 @@ public class Reply {
 			answer.type( answer.stringToResponseType( ans ));
 			answer.add( ans );
 			// type is dependent on answer
-			type( type() == Reply.Type.E_UDU ? Reply.Type.E_UDU : answer.type());
+			type( type() == Type.E_UDU ? Type.E_UDU : answer.type());
 		}
 		return this;
 	}
 	public  Reply answerReset() {answer = new Answer(); return this;}
 	
 	/* 
-	 * Format - the value of the reply "x y Z" intention, e.g. x y 24
+	 * Format - the shape of the reply "x y Z" intention, e.g. x y 24
 	 */
 	private Strings format = new Strings();
 	public  String  format() {return format.toString();}
@@ -100,93 +100,49 @@ public class Reply {
 		return this;
 	}
 	
+	private static  boolean verbatim = false; // set to true in handleDNU()
+	private static  boolean isVerbatim() { return verbatim; }
+	private static  void    verbatimIs( boolean val ) { verbatim = val; }
+
 	private Strings replyToString() {
 		return  Utterance.externalise(
 					answer.injectAnswer( format ),
-					Config.isVerbatim()
+					isVerbatim()
 				);
 	}
-	private Strings handleDNU( Strings utterance ) {
-		audit.in( "handleDNU", utterance.toString( Strings.CSV ));
-		Config.verbatimIs( true );
-		utterance = Terminator.stripTerminator( utterance );
-		
+	
+	/* previous() is used to retrieve the reply from the previous thought. It is
+	 * used in implementing imagination.  If the imagination session goes ok,
+	 * we need the reply from that session. Was implemented with the equiv 
+	 * intention in previous C incarnation.
+	 */
+	private static  Strings previous = new Strings( "" );
+	public  static  Strings previous( Strings rep ) { return previous = rep; }
+	public  static  Strings previous() { return previous; }
+	
+	public void dnu( Strings thought ) {
+		verbatimIs( true ); // repeat exactly on DNU
 		// Construct the DNU format
 		format( new Strings( Config.dnu() + ", ..." ));
-		answer( utterance.toString());
-		
-		/* Take this out for the moment... ...needs more thought
-		 * if !strangeThought.equals( "" )
-		 *	fmt.add( " when thinking about "+ strangeThought())
-		 */
-		
-		Config.verbatimIs( false );
-		return audit.out( replyToString() );
+		answer( thought.toString() );
+		// must come after answer()
+		type( Type.E_SOZ );
+		verbatimIs( false );
 	}
-	
-	// Set in Config.java/config.xml
-	private static Strings attributing = attributing( "according to X," );
-	public  static Strings attributing() {return attributing;} 
-	public  static Strings attributing( String a ) {
-		attributing = new Strings( a ).reverse();
-		return attributing;
-	}
-	
-	// this is only called directly from Enguage.java - on replying to the user
-	public static Strings attributeSource( Strings reply ) {
-		audit.in( "attributeSource", "reply=["+ reply.toString( Strings.DQCSV) +"]");
-		
-		if (!InfoBox.wikiSource().equals( "" ) ) {
-			// only attribute successful replies...
-			if (!(reply.get(0).equalsIgnoreCase( "sorry" ) &&
-			      reply.get(1).equals( "," )))
-			{
-				if (reply.get(0).equalsIgnoreCase( "ok" ) &&
-					reply.get(1).equals( "," ))
-				{
-					reply.remove(0);
-					reply.remove(0);
-				}
-				
-				for (String s : attributing)
-					reply.add( 0, s.equals( "X" ) ? InfoBox.wikiSource() : s );
-			}
-			// ...and finally, we want to scrub a source whether or not it was used!
-			InfoBox.wikiSource( "" );
-		}
-
-		audit.out( reply );
-		return reply;
-	}
-
-	public Strings toStrings() {
+	public Strings sayThis() {
 		Strings reply = replyToString();
-		if (Config.understoodIs( Reply.Type.E_DNU != type() )) {
+		if (Config.understoodIs( Type.E_DNU != type() )) {
+			// used in disambiguation ordering :/
 			if (!repeated())
-				Config.previous( reply ); // never used
+				previous( reply ); // never used
 			
 		} else
-			reply = handleDNU( Utterance.previous() );
+			dnu( Utterance.previous() );
+		
 		return reply;
 	}
 	public String toString() {return replyToString().toString();}
 	
-	public Reply conclude( String thought ) {
-		Config.strangeThought("");
-
-		if (Reply.Type.E_DNU == type()) {
-			// put this into reply via Reply.strangeThought()
-			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
-			Config.strangeThought( thought );
-
-			// Construct the DNU format
-			format( new Strings( Config.dnu() + ", ..." ));
-			answer( thought );
-			
-			type( Reply.Type.E_SOZ );
-		}
-		return this;
-	}
 	public static void main( String[] args ) {
 		Audit.on();
 

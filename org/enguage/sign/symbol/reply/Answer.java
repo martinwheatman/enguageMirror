@@ -41,7 +41,7 @@ public class Answer {
 	 */
 	private Reply.Type type = Reply.Type.E_DNK;
 	public  Reply.Type type() { return type; }
-	public  Answer        type( Reply.Type t) {type = t; return this;}
+	public  Answer     type( Reply.Type t) {type = t; return this;}
 	public  Reply.Type stringToResponseType( String s ) {
 		// This sets type to first non-NK type
 		Reply.Type t = Reply.Type.E_DNK;

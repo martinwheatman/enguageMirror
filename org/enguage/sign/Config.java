@@ -11,10 +11,10 @@ import org.enguage.sign.interpretant.Commands;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.reply.Answer;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.http.Http;
+import org.enguage.util.http.InfoBox;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 import org.enguage.util.sys.Fs;
@@ -39,7 +39,7 @@ public class Config {
 		else if (name.equals("LISTFORMATSEP" )) listSep(       value);
 		else if (name.equals( "ORLISTFORMAT" )) orListFormat(  value );
 		else if (name.equals( "REPEATFORMAT" )) repeatFormat(  value );
-		else if (name.equals( "ATTRIBUTING" )) Reply.attributing(  value );
+		else if (name.equals( "ATTRIBUTING" )) InfoBox.attributing(  value );
 		else if (name.equals( "REFERENCERS" )) referencers( new Strings( value ));
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
 		else if (name.equals( "SUCCESS" )) okay( value );
@@ -133,17 +133,9 @@ public class Config {
 	public  static Strings okay() {return okay;}
 	public  static String  okayStr() {return okayStr;}
 
-	private static  boolean verbatim = false; // set to true in handleDNU()
-	public  static  boolean isVerbatim() { return verbatim; }
-	public  static  void    verbatimIs( boolean val ) { verbatim = val; }
-
 	private static  boolean understood = true;
 	public  static  boolean understoodIs( boolean was ) { return understood = was;}
 	public  static  boolean isUnderstood() { return understood; }
-
-	private static  String  strangeThought = "DNU";
-	public  static  void    strangeThought( String thought ) { strangeThought = thought; }
-	public  static  String  strangeThought(){ return strangeThought; }
 
 	private static  String  repeatFormat = "i said, ... .";
 	public  static  void    repeatFormat( String s ) { repeatFormat = s.toLowerCase( Locale.getDefault() );}
@@ -173,15 +165,6 @@ public class Config {
 	public  static  void    listSep( String s ) { listSep = s; }
 	public  static  String  listSep() { return listSep; }
 
-	/* previous() is used to retrieve the reply from the previous thought. It is
-	 * used in implementing imagination.  If the imagination session goes ok,
-	 * we need the reply from that session. Was implemented with the equiv 
-	 * intention in previous C incarnation.
-	 */
-	private static  Strings previous = new Strings( "" );
-	public  static  Strings previous( Strings rep ) { return previous = rep; }
-	public  static  Strings previous() { return previous; }
-	
 	private static String propagateReplyStr = "say so";
 	public  static String propagateReplyStr() {return  propagateReplyStr;}
 	public  static void   propagateReplyStr(String pr) {

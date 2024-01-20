@@ -98,7 +98,7 @@ public class Intentions extends ArrayList<Intention> {
 			if (in.type() == Intention.N_FINALLY)
 				in.andFinally( r );
 
-			else if (!r.isDone())
+			else if (!r.isDone()) // 'done' is maintained within r
 				// think, do, say...
 				// ...think (&run) will replace r
 				r = in.mediate( r );

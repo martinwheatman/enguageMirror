@@ -86,47 +86,21 @@ public class Intention {
 	
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
-	public Intention( int t, int intId, String v ) {id = intId; type=t; value=v; values=new Strings(v);}
 	public Intention( Intention in, boolean temp, boolean spatial ) {
 		this( in.type(), in.value() );
 		temporalIs( temp );
 		spatialIs( spatial );
 	}
 	
-	private int id = UNDEFINED;
-	public  int id() {return id;}
+	private final int    type;
+	public  final int    type() {return type;}
 	
-	private int    type;
-	public  int    type() {return type;}
+	private final String value;
+	public  final String value() {return value;}
 	
-	private String value;
-	public  String value() {return value;}
+	private final Strings values;
+	public  final Strings values() {return values;}
 	
-	private Strings values;
-	public  Strings values() {return values;}
-	
-	public static String typeToString( int type ) {
-		switch (type) {
-			case N_REPLY      : return REPLY;
-			case N_THEN_REPLY : return THEN_REPLY;
-			case N_ELSE_REPLY : return ELSE_REPLY;
-			case N_THINK      : return THINK;
-			case N_THEN_THINK : return THEN_THINK;
-			case N_ELSE_THINK : return ELSE_THINK;
-			case N_DO         : return DO;
-			case N_THEN_DO    : return THEN_DO;
-			case N_ELSE_DO    : return ELSE_DO;
-			case N_RUN        : return RUN;
-			case N_THEN_RUN   : return THEN_RUN;
-			case N_ELSE_RUN   : return ELSE_RUN;
-			case N_ALLOP      : return Engine.NAME;
-			case N_AUTOP      : return AUTOP_STR;
-			case N_FINALLY    : return FINALLY;
-			default:
-				audit.FATAL( "Intention: returning undefined for: "+ type );
-				return UNDEF;
-	}	}
-
 	public static int getType(Strings sa) {
 		// [ "if", "so", ",", "think", "something" ] => 
 		//   N_THEN_THINK + [ "think", "something" ]
@@ -139,6 +113,7 @@ public class Intention {
 		String two = len>1?sa.get(1):"";
 		String thr = len>2?sa.get(2):"";
 		
+		// TODO: de-hardcode these prefixes in Config.xml
 		boolean neg = false;
 		boolean pos = false;
 		if (one.equals( "if" ) && thr.equals( "," )) {
@@ -211,20 +186,35 @@ public class Intention {
 						expand
 				)	);
 	}
-	private Reply think( Reply r ) {
-		//audit.in( "think", "value='"+ value +"', previous='"+ r.a.toString() +"'" )
-		
-		// Don't expand, UNIT => cup NOT unit='cup'
-		Strings thought = formulate( r.answer().toString(), false );
+	private static  Strings strange = new Strings( "" );
+	public  static  void    strange( Strings thought ) { strange = thought; }
+	public  static  Strings strange(){ return strange; }
 
-		if (Audit.allAreOn()) audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		r = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
+	private Reply think( String idea ) {
+		// Don't expand, UNIT => cup NOT unit='cup'
+		Strings thought = formulate( idea, false );
+
+		if (Audit.allAreOn())
+			audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		
+		Reply r = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
+
 		// If we've returned FAIL (DNU), we want to continue
-		return r.type( Reply.stringsToResponseType( new Strings( r.toString()) ))
-		        .conclude( thought.toString() )
-		        .doneIs( Strings.isUCwHyphUs( value ) // critical!
-		                 && r.type() == Reply.Type.E_SOZ );
+		r.type( Reply.stringsToResponseType( new Strings( r.toString()) ));
+		if (Reply.Type.E_DNU == r.type()) {
+			// put this into reply via Reply.strangeThought()
+			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
+			strange( thought );
+
+			// Construct the DNU format
+			r.dnu( thought );
+		}
+		r.doneIs(
+				r.type() == Reply.Type.E_SOZ   &&
+				Strings.isUCwHyphUs( value ) // critical!
+		);
+		
+		return r;
 	}
 	
 	private String formatAnswer( String rc ) {
@@ -271,10 +261,10 @@ public class Intention {
 	private Reply reply( Reply r ) {
 		audit.in( "reply", "value="+ value +", r="+ (value.equals("")?"SAY SO":r.toString() ));
 		
-		// Accumulate reply - currently "remember this"
+		// Accumulate reply - currently "say this"
 		// TODO: incorporate this into "say" ??
 		if (value.equals( Config.accumulateCmdStr() )) // say so -- possibly need new intention type?
-			Reply.say( r.toStrings());
+			Reply.say( r.sayThis());
 		
 		// propagate reply and return - currently "say so"
 		else if (value.equals( Config.propagateReplyStr() ))
@@ -301,7 +291,7 @@ public class Intention {
 			audit.in( "mediate", typeToString( type ) +"='"+ value +"'"+(skip( r )?" >skipping<":"" ));
 		
 		switch (type) {
- 			case N_THINK:      r = think(   r ); break;
+ 			case N_THINK:      r = think(   r.answer().toString() ); break;
  			case N_DO: 	           perform( r ); break;
  			case N_RUN:        r = run(     r ); break;
  			case N_REPLY:          reply(   r ); break;
@@ -309,7 +299,7 @@ public class Intention {
  			default:
  				if (r.isFelicitous()) {
 		 			switch (type) {
-						case N_THEN_THINK: r = think(   r ); break;
+						case N_THEN_THINK: r = think(   r.answer().toString() ); break;
 						case N_THEN_DO:        perform( r ); break;
 						case N_THEN_RUN:   r = run(     r ); break;
 						case N_THEN_REPLY:     reply(   r ); break;
@@ -317,7 +307,7 @@ public class Intention {
 		 			}
 	 			} else { // check for is not meh! ?
 					switch (type) {
-						case N_ELSE_THINK: r = think(   r ); break;
+						case N_ELSE_THINK: r = think(   r.answer().toString() ); break;
 						case N_ELSE_DO:	       perform( r ); break;
 						case N_ELSE_RUN:   r = run(     r ); break;
 						case N_ELSE_REPLY:     reply(   r ); break;
@@ -328,6 +318,30 @@ public class Intention {
 			audit.out( r );
 		return r;
 	}
+	/* ------------------------------------------------------------------------
+	 * Printy bits
+	 */
+	public static String typeToString( int type ) {
+		switch (type) {
+			case N_REPLY      : return REPLY;
+			case N_THEN_REPLY : return THEN_REPLY;
+			case N_ELSE_REPLY : return ELSE_REPLY;
+			case N_THINK      : return THINK;
+			case N_THEN_THINK : return THEN_THINK;
+			case N_ELSE_THINK : return ELSE_THINK;
+			case N_DO         : return DO;
+			case N_THEN_DO    : return THEN_DO;
+			case N_ELSE_DO    : return ELSE_DO;
+			case N_RUN        : return RUN;
+			case N_THEN_RUN   : return THEN_RUN;
+			case N_ELSE_RUN   : return ELSE_RUN;
+			case N_ALLOP      : return Engine.NAME;
+			case N_AUTOP      : return AUTOP_STR;
+			case N_FINALLY    : return FINALLY;
+			default:
+				audit.FATAL( "Intention: returning undefined for: "+ type );
+				return UNDEF;
+	}	}
 	public String toString() {
 		switch (type) {
 			case N_THINK      : return value;

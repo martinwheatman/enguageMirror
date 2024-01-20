@@ -12,6 +12,7 @@ import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.audit.Audit;
+import org.enguage.util.http.InfoBox;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 import org.enguage.util.sys.Fs;
@@ -67,33 +68,34 @@ public class Enguage {
 		// once processed, keep a copy
 		Utterance.previous( utterance );
 
-		if (imagined()) {
-			Overlay.undoTxn();
-			Repertoires.signs().reset( r.toStrings() );
-			
-		} else if (Config.isUnderstood()) {
-			Overlay.commitTxn();
-			Repertoires.signs().reset( r.toStrings() );
-			
-		} else {
-			// really lost track?
-			audit.debug( "utterance is not understood, forgetting to ignore: "
-			             +Repertoires.signs().ignore().toString() );
-			Repertoires.signs().ignoreNone();
-			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
-		}
+		{ // complete transaction
+			if (imagined()) {
+				Overlay.undoTxn();
+				Repertoires.signs().reset( r.sayThis() );
+				
+			} else if (Config.isUnderstood()) {
+				Overlay.commitTxn();
+				Repertoires.signs().reset( r.sayThis() );
+				
+			} else {
+				// really lost track?
+				audit.debug( "utterance is not understood, forgetting to ignore: "
+				             +Repertoires.signs().ignore().toString() );
+				Repertoires.signs().ignoreNone();
+				shell.aloudIs( true ); // sets aloud for whole session if reading from fp
+		}	}
 
 		// auto-unload here - autoloading() in Repertoire.interpret() 
 		// asymmetry: load as we go; tidy-up once finished
 		Autoload.unloadAged();
 
-		reply = Reply.say().appendAll( r.toStrings());
+		reply = Reply.say().appendAll( r.sayThis());
 		Reply.say( null );
 		Overlay.detach();
 			
 		// According to Wikipedia, ...  (set in config.xml)
 		// If we've picked up a source, attribute it!
-		reply = Reply.attributeSource( reply );
+		reply = InfoBox.attributeSource( reply );
 
 		audit.out();
 		return reply;
