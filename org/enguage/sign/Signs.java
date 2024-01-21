@@ -11,6 +11,7 @@ import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.pattern.Frag;
 import org.enguage.sign.symbol.pronoun.Pronoun;
@@ -201,13 +202,16 @@ public class Signs extends TreeMap<Integer,Sign> {
 					// if reply is DNU, this meaning is not appropriate!
 					audit.debug( "Signs.interpretation() returned "+ r.type() );
 					if (r.type() != Reply.Type.E_DNU) {
-						answer = r.answer().toString();
+						answer = r.answer();
 						done = true;
 				}	}	
 			}
 		} // while more signs and not done
 		auditOut( answer +" (reply="+ r.toString() +")");
-		return r.answer( answer ); 
+		r.answer( answer );
+		if (!answer.equals( Perform.S_IGNORE ))
+			r.type( Reply.stringToResponseType( answer ));
+		return r;
 	}
 	
 	// -----------------------------

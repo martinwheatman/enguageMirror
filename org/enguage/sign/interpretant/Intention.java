@@ -235,7 +235,7 @@ public class Intention {
 	private void perform( Reply r ) {perform( r, false );}
 	private void perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
-		Strings cmd = formulate( r.answer().toString(), true ); // DO expand, UNIT => unit='non-null value'
+		Strings cmd = formulate( r.answer(), true ); // DO expand, UNIT => unit='non-null value'
 		
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
@@ -249,12 +249,12 @@ public class Intention {
 				(method.equals( "get" ) ||
 				 method.equals( "getAttrVal" )) )
 			
-				r.format( Config.dnkStr())
-				 .type( Reply.Type.E_DNK )
-				 .answerReset();
+				r.idk();
 				
-			else
+			else {
 				r.answer( formatAnswer( rawAnswer.toString()));
+				r.type( Reply.stringToResponseType( formatAnswer( rawAnswer.toString()) ));
+			}
 		}
 		//audit.out( r )
 	}
@@ -280,8 +280,8 @@ public class Intention {
 	}
 	private Reply run( Reply r ) {
 		return new Commands()
-				.command( formulate( r.answer().toString(), false ).toString())
-				.injectParameter( r.answer().toString() )
+				.command( formulate( r.answer(), false ).toString())
+				.injectParameter( r.answer() )
 				.run();
 	}
 	private boolean skip( Reply r ) {return type != N_FINALLY && r.isDone();}
@@ -291,7 +291,7 @@ public class Intention {
 			audit.in( "mediate", typeToString( type ) +"='"+ value +"'"+(skip( r )?" >skipping<":"" ));
 		
 		switch (type) {
- 			case N_THINK:      r = think(   r.answer().toString() ); break;
+ 			case N_THINK:      r = think(   r.answer() ); break;
  			case N_DO: 	           perform( r ); break;
  			case N_RUN:        r = run(     r ); break;
  			case N_REPLY:          reply(   r ); break;
@@ -299,7 +299,7 @@ public class Intention {
  			default:
  				if (r.isFelicitous()) {
 		 			switch (type) {
-						case N_THEN_THINK: r = think(   r.answer().toString() ); break;
+						case N_THEN_THINK: r = think(   r.answer() ); break;
 						case N_THEN_DO:        perform( r ); break;
 						case N_THEN_RUN:   r = run(     r ); break;
 						case N_THEN_REPLY:     reply(   r ); break;
@@ -307,7 +307,7 @@ public class Intention {
 		 			}
 	 			} else { // check for is not meh! ?
 					switch (type) {
-						case N_ELSE_THINK: r = think(   r.answer().toString() ); break;
+						case N_ELSE_THINK: r = think(   r.answer() ); break;
 						case N_ELSE_DO:	       perform( r ); break;
 						case N_ELSE_RUN:   r = run(     r ); break;
 						case N_ELSE_REPLY:     reply(   r ); break;
@@ -372,6 +372,7 @@ public class Intention {
 	}
 	public static void main( String[] argv ) {
 		Reply r = new Reply().answer( "world" );
+		r.type( Reply.stringToResponseType( "world" ));
 		audit.debug( new Intention( N_THEN_REPLY, "hello ..." ).mediate( r ).toString() );
 		
 		Audit.title( "trad autopoiesis... add to a list and then add that list" );

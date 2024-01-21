@@ -13,8 +13,6 @@ import org.enguage.util.strings.Strings;
 public class Commands {
 	private static Audit audit = new Audit( "Commands" );
 	
-	public Commands () {}
-
 	private String   command = "";
 	public  Commands command( String c ) {
 		command = Variable.deref( Strings.getStrings( c ))
@@ -38,7 +36,7 @@ public class Commands {
 	public  static String shell() { return shell; }
 	
 	private Reply runResult( int rc, Strings results ) {
-		//audit.in( "runresult", "rc="+ rc +", result=["+ results +"]");
+		//audit.in( "runresult", "rc="+ rc +", result=["+ results +"]")
 		Reply r = new Reply();
 		
 		for (String result : results)
@@ -51,7 +49,7 @@ public class Commands {
 	 	r.type( rc == 0 ? Reply.Type.E_OK : Reply.Type.E_SOZ );
 	 	r.format( rc == 0 ? "ok, ..." : "sorry, ..." );
 		
-		//audit.out( "run result: "+ r );
+		//audit.out( "run result: "+ r )
 	 	return r;
 	}
 	
@@ -124,7 +122,7 @@ public class Commands {
 		audit.debugging( true );
 		
 		Reply r = new Reply();
-		Audit.log( ">>>"+ r.answer().toString());
+		Audit.log( ">>>"+ r.answer());
 		
 		r = new Commands().command( "ls" ).injectParameter( "" ).run();
 		Audit.log( ">>" + r.toString());

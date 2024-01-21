@@ -96,7 +96,10 @@ public final class Engine {
 	
 	public static Reply interp( Intention in, Reply r ) {
 		r.answer( Config.okayStr()); // bland default reply to stop debug output look worrying
-		
+		r.type(
+				Reply.stringToResponseType( Config.okayStr() )
+		);
+
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
 
@@ -118,6 +121,9 @@ public final class Engine {
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
+			r.type(
+					Reply.stringToResponseType( tmp )
+			);
 			
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
@@ -128,6 +134,9 @@ public final class Engine {
 				r.repeated( true );
 				r.format( new Strings( Config.repeatFormat()));
 				r.answer( Reply.previous().toString());
+				r.type(
+						Reply.stringToResponseType( Reply.previous().toString() )
+				);
 			}
 			
 		} else if (cmd.equals( "say" )) {

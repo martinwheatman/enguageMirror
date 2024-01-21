@@ -10,7 +10,7 @@ import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.interpretant.Commands;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Perform;
-import org.enguage.sign.symbol.reply.Answer;
+import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.http.Http;
@@ -44,7 +44,7 @@ public class Config {
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
 		else if (name.equals( "SUCCESS" )) okay( value );
 		else if (name.equals( "FAILURE" )) notOkay( value );
-		else if (name.equals(  "ANSWER" )) Answer.placeholder( value );
+		else if (name.equals(  "ANSWER" )) Reply.placeholder( value );
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
 		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
 		else if (name.equals(    "SOFA" )) Commands.java( value );

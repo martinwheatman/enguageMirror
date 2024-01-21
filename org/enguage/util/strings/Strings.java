@@ -24,7 +24,6 @@ import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.config.Colloquial;
 import org.enguage.sign.symbol.config.Englishisms;
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.sign.symbol.reply.Answer;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
@@ -1307,8 +1306,6 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		
 		Variable.set( "ENT",  "martin" );
 		Variable.set( "ATTR", "height" );
-		Answer answer = new Answer();
-		answer.add( "194" );
 		
 		Strings tmp2 = new Strings( "..., ENT''s ATTR is ..." );
 		audit.debug( "tmp2: "+ tmp2.toString( DQCSV ));
