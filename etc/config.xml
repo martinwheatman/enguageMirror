@@ -7,6 +7,8 @@
 			FAILURE="sorry"
 			ANSWER="whatever"
 			IK="i know"
+			CONDPOS="if so  ,"
+			CONDNEG="if not ,"
 			TTL="5"
 			TERMS=". ? !"
 			URL="https://en.wikipedia.org/w/index.php?title="

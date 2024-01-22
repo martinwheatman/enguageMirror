@@ -1,0 +1,42 @@
+package org.enguage.sign.interpretant.intentions;
+
+import org.enguage.repertoires.Repertoires;
+import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.interpretant.Response;
+import org.enguage.sign.symbol.Utterance;
+import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
+
+public class Thought {
+	
+	private Thought() {}
+	
+	private static final String NAME = "Thought";
+	private static final Audit audit = new Audit( NAME );
+
+	public static  Reply think( Strings values, String prevAnswer ) {
+
+		// Don't expand, UNIT => cup NOT unit='cup'
+		Strings thought = Intention.format( values, prevAnswer, false );
+		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
+		
+		// think it...
+		Reply r = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
+
+		// If we've returned FAIL (DNU), we want to continue
+		r.type( Response.typeFromStrings( new Strings( r.toString()) ));
+		if (Response.Type.E_DNU == r.type()) {
+			// put this into reply via Reply.strangeThought()
+			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
+			
+			// Construct the DNU format
+			r.toDnu( thought );
+		}
+		
+		r.doneIs(
+				r.type() == Response.Type.E_SOZ   &&
+				Strings.isUCwHyphUs( values.toString() ) // critical!
+		);
+		
+		return r;
+}	}

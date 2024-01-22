@@ -1,14 +1,15 @@
-package org.enguage.repertoires;
+package org.enguage.sign.interpretant.intentions;
 
 import org.enguage.Enguage;
+import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.config.Englishisms;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -23,7 +24,8 @@ public final class Engine {
 	public  static final String IGNORE_STR = "ignore";
 	public  static final String UNDO_STR   = "undo";
 
-	protected static final Sign[] commands = {
+	public  static final Sign[] commands() {return commands;}
+	private static final Sign[] commands = {
 			/* These could be accompanied in a repertoire, but they have special 
 			 * interpretations and so are built here alongside those interpretations.
 			 */
@@ -97,7 +99,7 @@ public final class Engine {
 	public static Reply interp( Intention in, Reply r ) {
 		r.answer( Config.okayStr()); // bland default reply to stop debug output look worrying
 		r.type(
-				Reply.stringToResponseType( Config.okayStr() )
+				Response.typeFromStrings( Config.okay() )
 		);
 
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
@@ -122,7 +124,7 @@ public final class Engine {
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
 			r.type(
-					Reply.stringToResponseType( tmp )
+					Response.typeFromStrings( new Strings( tmp ))
 			);
 			
 		} else if ( in.value().equals( "repeat" )) {
@@ -135,7 +137,7 @@ public final class Engine {
 				r.format( new Strings( Config.repeatFormat()));
 				r.answer( Reply.previous().toString());
 				r.type(
-						Reply.stringToResponseType( Reply.previous().toString() )
+						Response.typeFromStrings( Reply.previous() )
 				);
 			}
 			

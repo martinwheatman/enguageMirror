@@ -7,10 +7,10 @@ import java.util.Locale;
 import org.enguage.Enguage;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
-import org.enguage.sign.interpretant.Commands;
+import org.enguage.sign.interpretant.intentions.Commands;
+import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Perform;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.http.Http;
@@ -31,10 +31,10 @@ public class Config {
 	public  static boolean complete() {return complete;}
 	
 	private static boolean setValues( String name, String value ) {
-		     if (name.equals("ACCUMULATECOMMAND")) accumulateCmdStr( value );
+		     if (name.equals("ACCUMULATECOMMAND")) accumulateCmds( new Strings( value ));
 		else if (name.equals("ANDCONJUNCTIONS")) andConjunction( value );
 		else if (name.equals("ORCONJUNCTIONS")) orConjunctions(  new Strings( value ));
-		else if (name.equals("PROPAGATEREPLY")) propagateReplyStr( value );
+		else if (name.equals("PROPAGATEREPLY")) propagateReplys( new Strings( value ));
 		else if (name.equals("ANDLISTFORMAT" )) andListFormat( value);
 		else if (name.equals("LISTFORMATSEP" )) listSep(       value);
 		else if (name.equals( "ORLISTFORMAT" )) orListFormat(  value );
@@ -42,9 +42,11 @@ public class Config {
 		else if (name.equals( "ATTRIBUTING" )) InfoBox.attributing(  value );
 		else if (name.equals( "REFERENCERS" )) referencers( new Strings( value ));
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
+		else if (name.equals( "CONDPOS" )) soPrefix( new Strings( value ));
+		else if (name.equals( "CONDNEG" )) noPrefix( new Strings( value ));
 		else if (name.equals( "SUCCESS" )) okay( value );
 		else if (name.equals( "FAILURE" )) notOkay( value );
-		else if (name.equals(  "ANSWER" )) Reply.placeholder( value );
+		else if (name.equals(  "ANSWER" )) placeholder( new Strings( value ));
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
 		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
 		else if (name.equals(    "SOFA" )) Commands.java( value );
@@ -165,31 +167,27 @@ public class Config {
 	public  static  void    listSep( String s ) { listSep = s; }
 	public  static  String  listSep() { return listSep; }
 
-	private static String propagateReplyStr = "say so";
-	public  static String propagateReplyStr() {return  propagateReplyStr;}
-	public  static void   propagateReplyStr(String pr) {
-		propagateReplyStr = pr;
-		propagateReplys = new Strings( pr );
-	}
-	private static Strings propagateReplys = new Strings( propagateReplyStr );
+	private static Strings propagateReplys = new Strings( "say so" );
 	public  static Strings propagateReplys() {return  propagateReplys;}
-	public  static void    propagateReplys(Strings pr) {
-		propagateReplys = pr;
-		propagateReplyStr = pr.toString();
-	}
+	public  static void    propagateReplys(Strings pr) {propagateReplys = pr;}
+
+	private static Strings soPrefix = new Strings("if so  ,");
+	public  static Strings soPrefix() {return soPrefix;}
+	private static void    soPrefix(Strings s) {soPrefix = s;}
+	
+	private static Strings noPrefix = new Strings("if not ,");
+	public  static Strings noPrefix() {return noPrefix;}
+	private static void    noPrefix(Strings s) {noPrefix = s;}
 	
 	// to interact with the 'say' list - as String or Strings
-	private static String  accumulateCmdStr = "say this now";
-	private static Strings accumulateCmds = new Strings( accumulateCmdStr );
-	public  static String  accumulateCmdStr() {return accumulateCmdStr;}
+	private static Strings accumulateCmds = new Strings( "say this now" );
 	public  static Strings accumulateCmds() {return accumulateCmds;}
-	public  static void    accumulateCmdStr(String ac) {
-		accumulateCmdStr = ac;
-		accumulateCmds = new Strings( ac );
-	}
-	public  static void    accumulateCmdStr(Strings ac) {
-		accumulateCmds = ac;
-		accumulateCmdStr = ac.toString();
-	}
+	public  static void    accumulateCmds(Strings ac) {accumulateCmds = ac;}
+	
+	// Format answer placeholder
+	private static Strings placeholder = new Strings( Reply.DEFAULT_PLACEHOLDER );
+	public  static Strings placeholder() {return placeholder;}
+	public  static void    placeholder( Strings ph ) {placeholder = ph;}
+
 
 }

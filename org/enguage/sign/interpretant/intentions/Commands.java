@@ -1,12 +1,12 @@
-package org.enguage.sign.interpretant;
+package org.enguage.sign.interpretant.intentions;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.enguage.sign.Assets;
 import org.enguage.sign.Config;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -46,7 +46,7 @@ public class Commands {
 	 	 * A zero result is success.
 	 	 * Passing back a non-zero result is a failure.
 	 	 */
-	 	r.type( rc == 0 ? Reply.Type.E_OK : Reply.Type.E_SOZ );
+	 	r.type( rc == 0 ? Response.Type.E_OK : Response.Type.E_SOZ );
 	 	r.format( rc == 0 ? "ok, ..." : "sorry, ..." );
 		
 		//audit.out( "run result: "+ r )
@@ -111,6 +111,14 @@ public class Commands {
 		}
 		return r;
 	}
+	
+	public static Reply run( String cmd, String answer ) {
+		return new Commands()
+				.command( cmd )
+				.injectParameter( answer )
+				.run();
+	}
+
 
 	// ---
 	public static void main( String[] args) {

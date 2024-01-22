@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.enguage.repertoires.Engine;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
+import org.enguage.sign.interpretant.intentions.Commands;
+import org.enguage.sign.interpretant.intentions.Engine;
+import org.enguage.sign.interpretant.intentions.Reply;
+import org.enguage.sign.interpretant.intentions.Thought;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Perform;
-import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.pattern.Frags;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.sign.symbol.when.Moment;
 import org.enguage.sign.symbol.when.When;
 import org.enguage.util.attr.Attribute;
@@ -31,7 +32,6 @@ public class Intention {
 	public  static final String    DO_HOOK = "perform";
 	public  static final String REPLY_HOOK = "reply";
 	public  static final String FNLLY_HOOK = "finally";
-	
 
 	public  static final String      UNDEF = "u";
 	public  static final String        NEW = "w";
@@ -40,6 +40,7 @@ public class Intention {
 	
 	private static final String        POS = "+";
 	private static final String        NEG = "-";
+	private static final String        NEU = "";
 	
 	public  static final String      THINK = "t";
 	public  static final String THEN_THINK = THINK + POS;
@@ -81,7 +82,9 @@ public class Intention {
 	public  static final int N_ELSE_REPLY  = N_ELSE | N_REPLY; // =  15
 	
 	public  static final int N_ALLOP       = 0x10;             // =  16
-	private static final int N_AUTOP       = 0x11;             // =  17
+	public  static final int N_THEN_ALLOP  = N_THEN | N_ALLOP; // =  17
+	public  static final int N_ELSE_ALLOP  = N_ELSE | N_ALLOP; // =  19
+	private static final int N_AUTOP       = 0x14;             // =  20
 	public  static final int N_FINALLY     = 0xff;             // = 255
 	
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
@@ -100,72 +103,7 @@ public class Intention {
 	
 	private final Strings values;
 	public  final Strings values() {return values;}
-	
-	public static int getType(Strings sa) {
-		// [ "if", "so", ",", "think", "something" ] => 
-		//   N_THEN_THINK + [ "think", "something" ]
-		// [ "if", "not", ",", "say", "so" ] =>
-		//   N_ELSE_REPLY + []
-		int rc = UNDEFINED;
-		
-		int len = sa.size();
-		String one = len>0?sa.get(0):"";
-		String two = len>1?sa.get(1):"";
-		String thr = len>2?sa.get(2):"";
-		
-		// TODO: de-hardcode these prefixes in Config.xml
-		boolean neg = false;
-		boolean pos = false;
-		if (one.equals( "if" ) && thr.equals( "," )) {
-			// Looking for: 'if' [ 'so' | 'not'] ','
-			neg = two.equals( "not" ); // not/so
-			pos = two.equals(  "so" ); // not/so
-			if (pos || neg) {
-				sa.remove(0); // if
-				sa.remove(0); // not/so
-				sa.remove(0); // ,
-				len = sa.size();
-				one = len>0?sa.get(0):"";
-				two = len>1?sa.get(1):"";
-		}	}
-		
-		if (sa.equals( Config.propagateReplys()) ||
-			sa.equals( Config.accumulateCmds()) )
-		{
-			// don't remove these 'specials', pass on & define in config.xml
-			rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
-			
-		} else if (Strings.isQuoted( two )) {
-			
-			boolean found = true;
-			if (one.equals(DO_HOOK))
-				rc = pos ? N_THEN_DO    : (neg ? N_ELSE_DO    : N_DO);
-			
-			else  if (one.equals(   RUN_HOOK ))
-				rc = pos ? N_THEN_RUN   : (neg ? N_ELSE_RUN   : N_RUN);
-			
-			else  if (one.equals( REPLY_HOOK ))
-				rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
-				
-			else  if (one.equals( FNLLY_HOOK ))
-				rc = N_FINALLY;
-				
-			else
-				found = false;
-			
-			if (found) {
-				sa.remove(0); // ["perform" | "run" | "reply" | "finally" ]
-				sa.set( 0, Strings.trim( sa.get(0), '"' ));
-		}	}
-		
-		if (rc == UNDEFINED) {
-			rc = pos ? N_THEN_THINK : neg ? N_ELSE_THINK : N_THINK;
-		}
-		
-		return rc;
-	}
 
-	
 	private boolean   temporal = false;
 	public  boolean   isTemporal() {return temporal;}
 	public  Intention temporalIs( boolean b ) {temporal = b; return this;}
@@ -178,7 +116,69 @@ public class Intention {
 	public  static void   concept( String name ) { concept = name; }
 	public  static String concept() { return concept; }
 
-	private Strings formulate( String answer, boolean expand ) {
+	private static String getCond( Strings sa ) {
+		if (sa.begins( Config.soPrefix() )) {
+			sa.remove( 0, Config.soPrefix().size()); // e.g. 'if', 'so', ','
+			return POS;
+		} else if (sa.begins( Config.noPrefix() )) {
+			sa.remove( 0, Config.noPrefix().size()); // e.g.'if', 'so', ','
+			return NEG;
+		}
+		return NEU;
+	}
+	public static int getType(Strings sa) {
+		// [ "if", "so", ",", "think", "something" ] => 
+		//   N_THEN_THINK + [ "think", "something" ]
+		// [ "if", "not", ",", "say", "so" ] =>
+		//   N_ELSE_REPLY + []
+		int rc = UNDEFINED;
+		String cond = getCond( sa );
+		boolean neg = cond.equals( NEG );
+		boolean pos = cond.equals( POS );
+		
+		
+		if (sa.equals( Config.propagateReplys()) ||
+			sa.equals( Config.accumulateCmds()) )
+		{
+			// don't remove these 'specials', pass on & define in config.xml
+			rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
+			
+		} else {
+			int len = sa.size();
+			String one = len>0?sa.get(0):"";
+			String two = len>1?sa.get(1):"";
+			
+			if (Strings.isQuoted( two )) {
+				boolean found = true;
+				if (one.equals(DO_HOOK))
+					rc = pos ? N_THEN_DO    : (neg ? N_ELSE_DO    : N_DO);
+				
+				else  if (one.equals(   RUN_HOOK ))
+					rc = pos ? N_THEN_RUN   : (neg ? N_ELSE_RUN   : N_RUN);
+				
+				else  if (one.equals( REPLY_HOOK ))
+					rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
+					
+				else  if (one.equals( FNLLY_HOOK ))
+					rc = N_FINALLY;
+					
+				else
+					found = false;
+				
+				if (found) {
+					sa.remove(0); // ["perform" | "run" | "reply" | "finally" ]
+					sa.set( 0, Strings.trim( sa.get(0), '"' ));
+		}	}	}
+		
+		if (rc == UNDEFINED) {
+			rc = pos ? N_THEN_THINK : neg ? N_ELSE_THINK : N_THINK;
+		}
+		
+		return rc;
+	}
+
+	// "ok, PERSON needs ..." => "ok martin needs a coffee"
+	public  static Strings format( Strings values, String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
 					Context.deref( // X => "coffee", singular-x="80s" -> "80"
 						new Strings( values )
@@ -186,47 +186,7 @@ public class Intention {
 						expand
 				)	);
 	}
-	private static  Strings strange = new Strings( "" );
-	public  static  void    strange( Strings thought ) { strange = thought; }
-	public  static  Strings strange(){ return strange; }
-
-	private Reply think( String idea ) {
-		// Don't expand, UNIT => cup NOT unit='cup'
-		Strings thought = formulate( idea, false );
-
-		if (Audit.allAreOn())
-			audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
-		
-		Reply r = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
-
-		// If we've returned FAIL (DNU), we want to continue
-		r.type( Reply.stringsToResponseType( new Strings( r.toString()) ));
-		if (Reply.Type.E_DNU == r.type()) {
-			// put this into reply via Reply.strangeThought()
-			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
-			strange( thought );
-
-			// Construct the DNU format
-			r.dnu( thought );
-		}
-		r.doneIs(
-				r.type() == Reply.Type.E_SOZ   &&
-				Strings.isUCwHyphUs( value ) // critical!
-		);
-		
-		return r;
-	}
 	
-	private String formatAnswer( String rc ) {
-		return Moment.valid( rc ) ? // 88888888198888 -> 7pm
-				new When( rc ).rep( Config.dnkStr() ).toString()
-				: rc.equals( Perform.S_FAIL ) ?
-						Config.notOkayStr()
-					: rc.equals( Perform.S_SUCCESS ) ?
-							Config.okayStr()
-						: rc;
-	}
-
 	/*
 	 * Perform works at the code level to obtain/set an answer.
 	 * This was initially the object model, but now includes any code.
@@ -235,7 +195,7 @@ public class Intention {
 	private void perform( Reply r ) {perform( r, false );}
 	private void perform( Reply r, boolean ignore ) {
 		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
-		Strings cmd = formulate( r.answer(), true ); // DO expand, UNIT => unit='non-null value'
+		Strings cmd = format( values, r.answer(), true ); // DO expand, UNIT => unit='non-null value'
 		
 		// In the case of vocal perform, value="args='<commands>'" - expand!
 		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
@@ -249,40 +209,22 @@ public class Intention {
 				(method.equals( "get" ) ||
 				 method.equals( "getAttrVal" )) )
 			
-				r.idk();
+				r.toIdk();
 				
 			else {
-				r.answer( formatAnswer( rawAnswer.toString()));
-				r.type( Reply.stringToResponseType( formatAnswer( rawAnswer.toString()) ));
+				String answer = rawAnswer.toString();
+				answer = Moment.valid( answer ) ? // 88888888198888 -> 7pm
+							new When( answer ).rep( Config.dnkStr() ).toString()
+							: answer.equals( Perform.S_FAIL ) ?
+									Config.notOkayStr()
+								: answer.equals( Perform.S_SUCCESS ) ?
+										Config.okayStr()
+									: answer;
+				r.answer( answer );
+				r.type( Response.typeFromStrings( new Strings( answer )));
 			}
 		}
 		//audit.out( r )
-	}
-	private Reply reply( Reply r ) {
-		audit.in( "reply", "value="+ value +", r="+ (value.equals("")?"SAY SO":r.toString() ));
-		
-		// Accumulate reply - currently "say this"
-		// TODO: incorporate this into "say" ??
-		if (value.equals( Config.accumulateCmdStr() )) // say so -- possibly need new intention type?
-			Reply.say( r.sayThis());
-		
-		// propagate reply and return - currently "say so"
-		else if (value.equals( Config.propagateReplyStr() ))
-			r.doneIs( true ); // just pass out this reply
-		
-		else // reply "I don't understand" is like an exception?
-			r.format( value )
-				.type( Reply.stringsToResponseType( values ))
-				.doneIs( r.type() != Reply.Type.E_DNU );
-		
-		audit.out( r.toString() );
-		return r;
-	}
-	private Reply run( Reply r ) {
-		return new Commands()
-				.command( formulate( r.answer(), false ).toString())
-				.injectParameter( r.answer() )
-				.run();
 	}
 	private boolean skip( Reply r ) {return type != N_FINALLY && r.isDone();}
 	
@@ -291,27 +233,38 @@ public class Intention {
 			audit.in( "mediate", typeToString( type ) +"='"+ value +"'"+(skip( r )?" >skipping<":"" ));
 		
 		switch (type) {
- 			case N_THINK:      r = think(   r.answer() ); break;
- 			case N_DO: 	           perform( r ); break;
- 			case N_RUN:        r = run(     r ); break;
- 			case N_REPLY:          reply(   r ); break;
- 			case N_ALLOP:      r = Engine.interp( this, r ); break;
+ 			case N_THINK: r = Thought.think( values,  r.answer() ); break;
+ 			case N_DO: 	  perform( r );                     break;
+ 			case N_RUN:   r = Commands.run(
+ 			                       format( values, r.answer(), false ).toString(),
+ 			                       r.answer()
+ 			              );                                break;
+ 			case N_REPLY: r.reply( value, values, r.answer() );                break;
+ 			case N_ALLOP: r = Engine.interp( this, r );     break;
  			default:
  				if (r.isFelicitous()) {
 		 			switch (type) {
-						case N_THEN_THINK: r = think(   r.answer() ); break;
-						case N_THEN_DO:        perform( r ); break;
-						case N_THEN_RUN:   r = run(     r ); break;
-						case N_THEN_REPLY:     reply(   r ); break;
-						default: break;
+						case N_THEN_THINK: r = Thought.think( values, r.answer() ); break;
+						case N_THEN_DO:        perform( r );                break;
+						case N_THEN_RUN:   r = Commands.run(
+								                  format( values, r.answer(), false ).toString(),
+								                  r.answer()
+								           );                               break;
+						case N_THEN_REPLY: r.reply( value, values, r.answer() );               break;
+						case N_THEN_ALLOP: r = Engine.interp( this, r );     break;
+			 			default: break;
 		 			}
 	 			} else { // check for is not meh! ?
 					switch (type) {
-						case N_ELSE_THINK: r = think(   r.answer() ); break;
-						case N_ELSE_DO:	       perform( r ); break;
-						case N_ELSE_RUN:   r = run(     r ); break;
-						case N_ELSE_REPLY:     reply(   r ); break;
-						default: break;
+						case N_ELSE_THINK: r = Thought.think( values, r.answer() ); break;
+						case N_ELSE_DO:	       perform( r );                break;
+						case N_ELSE_RUN:   r = Commands.run(
+								                   format( values, r.answer(), false ).toString(),
+								                   r.answer()
+								           );                               break;
+						case N_ELSE_REPLY: r.reply( value, values, r.answer() );               break;
+						case N_ELSE_ALLOP: r = Engine.interp( this, r );     break;
+			 			default:                                            break;
 		}		}	}
 
 		if (Audit.allAreOn())
@@ -372,7 +325,7 @@ public class Intention {
 	}
 	public static void main( String[] argv ) {
 		Reply r = new Reply().answer( "world" );
-		r.type( Reply.stringToResponseType( "world" ));
+		r.type( Response.typeFromStrings( new Strings( "world" )));
 		audit.debug( new Intention( N_THEN_REPLY, "hello ..." ).mediate( r ).toString() );
 		
 		Audit.title( "trad autopoiesis... add to a list and then add that list" );

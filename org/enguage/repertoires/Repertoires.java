@@ -6,9 +6,11 @@ import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
 import org.enguage.sign.Signs;
+import org.enguage.sign.interpretant.Response;
+import org.enguage.sign.interpretant.intentions.Engine;
+import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -23,7 +25,7 @@ public class Repertoires {
 	private static Signs signs = new Signs( "user" );
 	public  static Signs signs() {return signs;}
 	
-	private static Signs engine = new Signs( Engine.NAME ).add( Engine.commands );
+	private static Signs engine = new Signs( Engine.NAME ).add( Engine.commands() );
 	private static Signs engine() {return engine;}
 	
 	// entry point for Enguage, re-entry point for Intentions
@@ -43,7 +45,7 @@ public class Repertoires {
 		u = new Utterance( u.expanded() );
 		
 		Reply r = signs.mediate( u );
-		if (Reply.Type.E_DNU == r.type())
+		if (Response.Type.E_DNU == r.type())
 			r = engine().mediate( u );
 	
 		audit.out( r );

@@ -11,18 +11,18 @@ import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.interpretant.Intention;
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
+import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.sign.symbol.pattern.Frag;
 import org.enguage.sign.symbol.pronoun.Pronoun;
-import org.enguage.sign.symbol.reply.Reply;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
 public class Signs extends TreeMap<Integer,Sign> {
-	        static final long serialVersionUID = 0l;
+	public  static final long serialVersionUID = 0l;
 	private static       Audit           audit = new Audit( "Signs" );
 	
 	private final String name;
@@ -40,7 +40,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public  Signs insert( Sign insertMe ) {
 		int i = 0;
 		int c = insertMe.cplex();
-		// crikey - decending order to put newset first! From old C coding!!
+		// crikey - descending order to put newest first! From old C coding!!
 		while (i > -99 && containsKey( c + i )) {clashes++; i--;}
 		if (i < 99) { // Arbitrary limit...
 			total++;
@@ -168,16 +168,14 @@ public class Signs extends TreeMap<Integer,Sign> {
 	}
 
 	public Reply mediate( Utterance u ) {
-
 		auditIn( u );
-		
-		Reply       r = new Reply();
-		String answer = "";
-		
+		Reply      r = new Reply();
 		boolean done = false;
 		Set<Map.Entry<Integer,Sign>> entries = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> ei = entries.iterator();
+		
 		while( ei.hasNext() && !done) {
+			
 			Map.Entry<Integer,Sign> e = ei.next();
 			int complexity = e.getKey();
 
@@ -188,10 +186,11 @@ public class Signs extends TreeMap<Integer,Sign> {
 				Sign s = e.getValue(); // s knows if it is temporal!	
 				// do we need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
-				if (null == match) {
-					//audit.debug( "NO match: "+ s.pattern() +"("+ s.pattern().notMatched()+")" );
-				} else { // we have found a meaning! So I do understand...!
+				if (null == match) 
+					//audit.debug( "NO match: "+ s.pattern() +"("+ s.pattern().notMatched()+")" )
+					;
 					
+				else {
 					Pronoun.update( match );
 					auditMatch( complexity, s, match );
 					saveForIgnore( complexity );
@@ -201,16 +200,11 @@ public class Signs extends TreeMap<Integer,Sign> {
 					
 					// if reply is DNU, this meaning is not appropriate!
 					audit.debug( "Signs.interpretation() returned "+ r.type() );
-					if (r.type() != Reply.Type.E_DNU) {
-						answer = r.answer();
+					if (r.type() != Response.Type.E_DNU)
 						done = true;
-				}	}	
-			}
-		} // while more signs and not done
-		auditOut( answer +" (reply="+ r.toString() +")");
-		r.answer( answer );
-		if (!answer.equals( Perform.S_IGNORE ))
-			r.type( Reply.stringToResponseType( answer ));
+			}	}
+		}
+		auditOut( "reply="+ r.toString() );
 		return r;
 	}
 	

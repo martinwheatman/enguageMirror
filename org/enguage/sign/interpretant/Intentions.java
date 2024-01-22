@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.enguage.sign.Config;
-import org.enguage.sign.symbol.reply.Reply;
+import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 
@@ -90,7 +90,7 @@ public class Intentions extends ArrayList<Intention> {
 	public Reply mediate() {
 		// It's okay where there are no intentions (e.g. "i can say X")
 		Reply r = new Reply().answer( Config.okayStr() );
-		r.type( Reply.stringToResponseType( Config.okayStr() ));
+		r.type( Response.typeFromStrings( Config.okay() ));
 		
 		Iterator<Intention> ai = this.iterator();
 		while (ai.hasNext()) {
