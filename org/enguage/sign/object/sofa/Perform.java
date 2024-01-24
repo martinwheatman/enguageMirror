@@ -3,6 +3,7 @@ package org.enguage.sign.object.sofa;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.repertoires.concepts.Similarity;
+import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.object.Numeric;
 import org.enguage.sign.object.Temporal;
@@ -26,8 +27,8 @@ import org.enguage.util.strings.Strings;
 public class Perform {
 	
 	public  static final String  S_IGNORE  = "";
-	public  static final String  S_FAIL    = "FALSE";
-	public  static final String  S_SUCCESS = "TRUE";
+	public  static final String  S_FAIL    = Config.S_NOT_OK;
+	public  static final String  S_SUCCESS = Config.S_OKAY;
 	public  static final Strings Ignore  = new Strings( S_IGNORE );
 	public  static final Strings Fail    = new Strings( S_FAIL );
 	public  static final Strings Success = new Strings( S_SUCCESS );

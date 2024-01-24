@@ -97,7 +97,7 @@ public final class Engine {
 		 };
 	
 	public static Reply interp( Intention in, Reply r ) {
-		r.answer( Config.okayStr()); // bland default reply to stop debug output look worrying
+		r.answer( Config.S_OKAY ); // bland default reply to stop debug output look worrying
 		r.type(
 				Response.typeFromStrings( Config.okay() )
 		);

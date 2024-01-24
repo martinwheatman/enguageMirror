@@ -89,7 +89,7 @@ public class Intentions extends ArrayList<Intention> {
 	// ------------------------------------------------------------------------
 	public Reply mediate() {
 		// It's okay where there are no intentions (e.g. "i can say X")
-		Reply r = new Reply().answer( Config.okayStr() );
+		Reply r = new Reply().answer( Config.S_OKAY );
 		r.type( Response.typeFromStrings( Config.okay() ));
 		
 		Iterator<Intention> ai = this.iterator();

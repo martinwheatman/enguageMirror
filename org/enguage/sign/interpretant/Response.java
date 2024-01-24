@@ -5,9 +5,6 @@ import org.enguage.util.strings.Strings;
 
 public class Response {
 
-	/* ------------------------------------------------------------------------
-	 * Response type
-	 */
 	public enum Type {
 		E_DNU, // DO NOT UNDERSTAND
 		E_UDU, // user does not understand
@@ -27,5 +24,4 @@ public class Response {
 		else if (uttr.begins( Config.no()      )) return Type.E_NO;
 		else if (uttr.begins( Config.dnk()     )) return Type.E_DNK;
 		else return Type.E_CHS;
-	}
-}
+}	}

@@ -10,7 +10,6 @@ import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.interpretant.intentions.Commands;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.object.Variable;
-import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.http.Http;
@@ -30,6 +29,9 @@ public class Config {
 	private static boolean complete = false;
 	public  static boolean complete() {return complete;}
 	
+	public static final String S_OKAY   = "ok";
+	public static final String S_NOT_OK = "sorry";
+
 	private static boolean setValues( String name, String value ) {
 		     if (name.equals("ACCUMULATECOMMAND")) accumulateCmds( new Strings( value ));
 		else if (name.equals("ANDCONJUNCTIONS")) andConjunction( value );
@@ -95,99 +97,93 @@ public class Config {
 
 	private static String  dnuStr = "DNU";
 	private static Strings dnu = new Strings( dnuStr );
-	public  static void    dnu( String s ) { dnu = new Strings( dnuStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings dnu(){ return dnu; }
-	public  static String  dnuStr(){ return dnuStr; }
+	public  static void    dnu( String s ) {dnu = new Strings( dnuStr = s.toLowerCase( Locale.getDefault() ));}
+	public  static Strings dnu(){return dnu;}
+	public  static String  dnuStr(){return dnuStr;}
 
 	private static Strings udu = new Strings( "UDU" );
 	private static String  uduStr = "DNK";
-	public  static void    udu( String s ) { udu = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings udu() { return udu; }
-	public  static String  uduStr() { return uduStr; }
+	public  static void    udu( String s ) {udu = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() ));}
+	public  static Strings udu() {return udu;}
+	public  static String  uduStr() {return uduStr;}
 
 	private static Strings dnk = new Strings( "DNK" );
 	private static String  dnkStr = "DNK";
-	public  static void    dnk( String s ) { dnk = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings dnk() { return dnk; }
-	public  static String  dnkStr() { return dnkStr; }
+	public  static void    dnk( String s ) {dnk = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() ));}
+	public  static Strings dnk() {return dnk;}
+	public  static String  dnkStr() {return dnkStr;}
 
 	private static Strings no = new Strings( "no" );
 	private static String  noStr = "no";
-	public  static void    no(  String s ) { no = new Strings( noStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings no() { return no; }
-	public  static String  noStr() { return noStr; }
+	public  static void    no(  String s ) {no = new Strings( noStr = s.toLowerCase( Locale.getDefault() ));}
+	public  static Strings no() {return no;}
+	public  static String  noStr() {return noStr;}
 	
 	private static Strings yes    = new Strings( "yes" );
 	private static String  yesStr = "yes";
-	public  static void    yes( String s ) { yes = new Strings( yesStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings yes() { return yes; }
-	public  static String  yesStr() { return yesStr; }
+	public  static void    yes( String s ) {yes = new Strings( yesStr = s.toLowerCase( Locale.getDefault() ));}
+	public  static Strings yes() {return yes;}
+	public  static String  yesStr() {return yesStr;}
 
-	private static String  notOkayStr = Perform.S_FAIL;
-	private static Strings notOkay   = new Strings( notOkayStr );
-	public  static void    notOkay(  String s ) { notOkay = new Strings( notOkayStr = s.toLowerCase( Locale.getDefault() )); }
-	public  static Strings notOkay() { return notOkay; }
-	public  static String  notOkayStr() { return notOkayStr; }
+	private static Strings notOkay = new Strings( S_NOT_OK );
+	public  static void    notOkay( String s ) {notOkay = new Strings( s.toLowerCase( Locale.getDefault() ));}
+	public  static Strings notOkay() {return notOkay;}
 	
-	private static String  okayStr = Perform.S_SUCCESS;
-	private static Strings okay    = new Strings( okayStr );
-	public  static void    okay( String s ) {okay = new Strings( okayStr = s.toLowerCase( Locale.getDefault() ));}
+	private static Strings okay    = new Strings( S_OKAY );
+	public  static void    okay( String s ) {okay = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings okay() {return okay;}
-	public  static String  okayStr() {return okayStr;}
 
-	private static  boolean understood = true;
-	public  static  boolean understoodIs( boolean was ) { return understood = was;}
-	public  static  boolean isUnderstood() { return understood; }
+	private static boolean understood = true;
+	public  static boolean understoodIs( boolean was ) {return understood = was;}
+	public  static boolean isUnderstood() {return understood;}
 
-	private static  String  repeatFormat = "i said, ... .";
-	public  static  void    repeatFormat( String s ) { repeatFormat = s.toLowerCase( Locale.getDefault() );}
-	public  static  String  repeatFormat() { return repeatFormat; }
+	private static String  repeatFormat = "i said, ... .";
+	public  static void    repeatFormat( String s ) {repeatFormat = s.toLowerCase( Locale.getDefault() );}
+	public  static String  repeatFormat() {return repeatFormat;}
 
-	private static  String  andConjunction = "and";
-	public  static  void    andConjunction( String s ) { andConjunction = s.toLowerCase( Locale.getDefault() ); }
-	public  static  String  andConjunction() { return andConjunction; }
+	private static String  andConjunction = "and";
+	public  static void    andConjunction( String s ) {andConjunction = s.toLowerCase( Locale.getDefault() );}
+	public  static String  andConjunction() {return andConjunction;}
 
-	private static  Strings andListFormat = new Strings( ", /, and ", '/' );
-	public  static  void    andListFormat( String s ) { andListFormat = new Strings( s, Config.listSep().charAt( 0 )); }
-	public  static  Strings andListFormat() { return andListFormat; }
+	private static Strings andListFormat = new Strings( ", /, and ", '/' );
+	public  static void    andListFormat( String s ) {andListFormat = new Strings( s, Config.listSep().charAt( 0 ));}
+	public  static Strings andListFormat() {return andListFormat;}
 
-	private static  Strings orConjunctions = new Strings( ", or" );
-	public  static  void    orConjunctions( Strings sa ) { orConjunctions = sa; }
-	public  static  Strings orConjunctions() { return orConjunctions; }
+	private static Strings orConjunctions = new Strings( ", or" );
+	public  static void    orConjunctions( Strings sa ) {orConjunctions = sa;}
+	public  static Strings orConjunctions() {return orConjunctions;}
 
-	private static  Strings orListFormat = new Strings( ", /, or ", '/' );
-	public  static  void    orListFormat( String s ) { orListFormat = new Strings( s, Config.listSep().charAt( 0 )); }
-	public  static  Strings orListFormat() { return orListFormat; }
+	private static Strings orListFormat = new Strings( ", /, or ", '/' );
+	public  static void    orListFormat( String s ) {orListFormat = new Strings( s, Config.listSep().charAt( 0 ));}
+	public  static Strings orListFormat() {return orListFormat;}
 
-	private static  Strings referencers = new Strings( "the" );
-	public  static  void    referencers( Strings sa ) { referencers = sa; }
-	public  static  Strings referencers() { return referencers; }
+	private static Strings referencers = new Strings( "the" );
+	public  static void    referencers( Strings sa ) {referencers = sa;}
+	public  static Strings referencers() {return referencers;}
 
-	private static  String  listSep = "/";
-	public  static  void    listSep( String s ) { listSep = s; }
-	public  static  String  listSep() { return listSep; }
+	private static String  listSep = "/";
+	public  static void    listSep( String s ) {listSep = s;}
+	public  static String  listSep() {return listSep;}
 
 	private static Strings propagateReplys = new Strings( "say so" );
-	public  static Strings propagateReplys() {return  propagateReplys;}
-	public  static void    propagateReplys(Strings pr) {propagateReplys = pr;}
+	public  static Strings propagateReplys() {return propagateReplys;}
+	public  static void    propagateReplys( Strings pr ) {propagateReplys = pr;}
 
 	private static Strings soPrefix = new Strings("if so  ,");
 	public  static Strings soPrefix() {return soPrefix;}
-	private static void    soPrefix(Strings s) {soPrefix = s;}
+	private static void    soPrefix( Strings s ) {soPrefix = s;}
 	
 	private static Strings noPrefix = new Strings("if not ,");
 	public  static Strings noPrefix() {return noPrefix;}
-	private static void    noPrefix(Strings s) {noPrefix = s;}
+	private static void    noPrefix( Strings s ) {noPrefix = s;}
 	
 	// to interact with the 'say' list - as String or Strings
 	private static Strings accumulateCmds = new Strings( "say this now" );
 	public  static Strings accumulateCmds() {return accumulateCmds;}
-	public  static void    accumulateCmds(Strings ac) {accumulateCmds = ac;}
+	public  static void    accumulateCmds( Strings ac ) {accumulateCmds = ac;}
 	
 	// Format answer placeholder
 	private static Strings placeholder = new Strings( Reply.DEFAULT_PLACEHOLDER );
 	public  static Strings placeholder() {return placeholder;}
 	public  static void    placeholder( Strings ph ) {placeholder = ph;}
-
-
 }

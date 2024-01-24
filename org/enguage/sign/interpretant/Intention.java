@@ -9,13 +9,11 @@ import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.intentions.Commands;
 import org.enguage.sign.interpretant.intentions.Engine;
+import org.enguage.sign.interpretant.intentions.SofaPerform;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.interpretant.intentions.Thought;
 import org.enguage.sign.object.Variable;
-import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.pattern.Frags;
-import org.enguage.sign.symbol.when.Moment;
-import org.enguage.sign.symbol.when.When;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
@@ -130,43 +128,8 @@ public class Intention {
 	 * Perform works at the code level to obtain/set an answer.
 	 * This was initially the object model, but now includes any code.
 	 */
-	public  void andFinally( Reply r ) {perform( r, true );}
-	private void perform( Reply r ) {perform( r, false );}
-	private void perform( Reply r, boolean ignore ) {
-		//audit.in( "perform", "value='"+ value +"', ignore="+ (ignore?"yes":"no"))
-		Strings cmd = format( values, r.answer(), true ); // DO expand, UNIT => unit='non-null value'
-		
-		// In the case of vocal perform, value="args='<commands>'" - expand!
-		if (cmd.size()==1 &&
-			cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
-		{
-			cmd=new Strings( new Attribute( cmd.get(0) ).value());
-		}
-		
-		Strings rawAnswer = Perform.interpret( new Strings( cmd ));
-		
-		if (!ignore) {
-			String method = cmd.get( 1 );
-			if (rawAnswer.isEmpty() &&
-				(method.equals( "get" ) ||
-				 method.equals( "getAttrVal" )) )
-			
-				r.toIdk();
-				
-			else {
-				String answer = rawAnswer.toString();
-				answer = Moment.valid( answer ) ? // 88888888198888 -> 7pm
-							new When( answer ).rep( Config.dnkStr() ).toString()
-							: answer.equals( Perform.S_FAIL ) ?
-									Config.notOkayStr()
-								: answer.equals( Perform.S_SUCCESS ) ?
-										Config.okayStr()
-									: answer;
-				r.answer( answer );
-				r.type( Response.typeFromStrings( new Strings( answer )));
-		}	}
-		//audit.out( r )
-	}
+	public  void andFinally( Reply r ) {SofaPerform.perform( r, values );}
+	
 	private boolean skip( Reply r ) {return type != N_FINALLY && r.isDone();}
 	
 	public Reply mediate( Reply r ) {
@@ -175,7 +138,7 @@ public class Intention {
 		
 		switch (type) {
  			case N_THINK: r = Thought.think( values,  r.answer() ); break;
- 			case N_DO: 	  perform( r );                             break;
+ 			case N_DO: 	  SofaPerform.perform( r, values );                             break;
  			case N_RUN:   r = Commands.run(
  			                       format( values, r.answer(), false ).toString(),
  			                       r.answer()
@@ -186,7 +149,7 @@ public class Intention {
  				if (r.isFelicitous()) {
 		 			switch (type) {
 						case N_THEN_THINK: r = Thought.think( values, r.answer() ); break;
-						case N_THEN_DO:        perform( r );                        break;
+						case N_THEN_DO:    SofaPerform.perform( r, values ); break;//    perform( r );                        break;
 						case N_THEN_RUN:   r = Commands.run(
 								                  format( values, r.answer(), false ).toString(),
 								                  r.answer()
@@ -198,7 +161,7 @@ public class Intention {
 	 			} else { // check for is not meh! ?
 					switch (type) {
 						case N_ELSE_THINK: r = Thought.think( values, r.answer() ); break;
-						case N_ELSE_DO:	       perform( r );                        break;
+						case N_ELSE_DO:	   SofaPerform.perform( r, values ); break; //    perform( r );                        break;
 						case N_ELSE_RUN:   r = Commands.run(
 								                   format( values, r.answer(), false ).toString(),
 								                   r.answer()
