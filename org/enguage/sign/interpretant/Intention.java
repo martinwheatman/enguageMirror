@@ -38,9 +38,9 @@ public class Intention {
 	public  static final String     APPEND = "a";
 	public  static final String    PREPEND = "p";
 	
-	private static final String        POS = "+";
-	private static final String        NEG = "-";
-	private static final String        NEU = "";
+	public  static final String        POS = "+";
+	public  static final String        NEG = "-";
+	public  static final String        NEU = "";
 	
 	public  static final String      THINK = "t";
 	public  static final String THEN_THINK = THINK + POS;
@@ -70,7 +70,7 @@ public class Intention {
 	public  static final int N_REPLY      = 0x0c; // 0000 11xx
 	
 	// written types
-	private static final int UNDEFINED     = -1;
+	public  static final int UNDEFINED     = -1;
 
 	public  static final int N_THEN_THINK  = N_THEN | N_THINK; // =   1
 	public  static final int N_ELSE_THINK  = N_ELSE | N_THINK; // =   3
@@ -116,67 +116,6 @@ public class Intention {
 	public  static void   concept( String name ) { concept = name; }
 	public  static String concept() { return concept; }
 
-	private static String getCond( Strings sa ) {
-		if (sa.begins( Config.soPrefix() )) {
-			sa.remove( 0, Config.soPrefix().size()); // e.g. 'if', 'so', ','
-			return POS;
-		} else if (sa.begins( Config.noPrefix() )) {
-			sa.remove( 0, Config.noPrefix().size()); // e.g.'if', 'so', ','
-			return NEG;
-		}
-		return NEU;
-	}
-	public static int getType(Strings sa) {
-		// [ "if", "so", ",", "think", "something" ] => 
-		//   N_THEN_THINK + [ "think", "something" ]
-		// [ "if", "not", ",", "say", "so" ] =>
-		//   N_ELSE_REPLY + []
-		int rc = UNDEFINED;
-		String cond = getCond( sa );
-		boolean neg = cond.equals( NEG );
-		boolean pos = cond.equals( POS );
-		
-		
-		if (sa.equals( Config.propagateReplys()) ||
-			sa.equals( Config.accumulateCmds()) )
-		{
-			// don't remove these 'specials', pass on & define in config.xml
-			rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
-			
-		} else {
-			int len = sa.size();
-			String one = len>0?sa.get(0):"";
-			String two = len>1?sa.get(1):"";
-			
-			if (Strings.isQuoted( two )) {
-				boolean found = true;
-				if (one.equals(DO_HOOK))
-					rc = pos ? N_THEN_DO    : (neg ? N_ELSE_DO    : N_DO);
-				
-				else  if (one.equals(   RUN_HOOK ))
-					rc = pos ? N_THEN_RUN   : (neg ? N_ELSE_RUN   : N_RUN);
-				
-				else  if (one.equals( REPLY_HOOK ))
-					rc = pos ? N_THEN_REPLY : (neg ? N_ELSE_REPLY : N_REPLY);
-					
-				else  if (one.equals( FNLLY_HOOK ))
-					rc = N_FINALLY;
-					
-				else
-					found = false;
-				
-				if (found) {
-					sa.remove(0); // ["perform" | "run" | "reply" | "finally" ]
-					sa.set( 0, Strings.trim( sa.get(0), '"' ));
-		}	}	}
-		
-		if (rc == UNDEFINED) {
-			rc = pos ? N_THEN_THINK : neg ? N_ELSE_THINK : N_THINK;
-		}
-		
-		return rc;
-	}
-
 	// "ok, PERSON needs ..." => "ok martin needs a coffee"
 	public  static Strings format( Strings values, String answer, boolean expand ) {
 		return 	Variable.deref( // $BEVERAGE + _BEVERAGE -> ../coffee => coffee
@@ -198,8 +137,11 @@ public class Intention {
 		Strings cmd = format( values, r.answer(), true ); // DO expand, UNIT => unit='non-null value'
 		
 		// In the case of vocal perform, value="args='<commands>'" - expand!
-		if (cmd.size()==1 && cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
+		if (cmd.size()==1 &&
+			cmd.get(0).length() > 5 && cmd.get(0).substring(0,5).equals( "args=" ))
+		{
 			cmd=new Strings( new Attribute( cmd.get(0) ).value());
+		}
 		
 		Strings rawAnswer = Perform.interpret( new Strings( cmd ));
 		
@@ -222,8 +164,7 @@ public class Intention {
 									: answer;
 				r.answer( answer );
 				r.type( Response.typeFromStrings( new Strings( answer )));
-			}
-		}
+		}	}
 		//audit.out( r )
 	}
 	private boolean skip( Reply r ) {return type != N_FINALLY && r.isDone();}
@@ -234,37 +175,37 @@ public class Intention {
 		
 		switch (type) {
  			case N_THINK: r = Thought.think( values,  r.answer() ); break;
- 			case N_DO: 	  perform( r );                     break;
+ 			case N_DO: 	  perform( r );                             break;
  			case N_RUN:   r = Commands.run(
  			                       format( values, r.answer(), false ).toString(),
  			                       r.answer()
- 			              );                                break;
- 			case N_REPLY: r.reply( value, values, r.answer() );                break;
- 			case N_ALLOP: r = Engine.interp( this, r );     break;
+ 			              );                                        break;
+ 			case N_REPLY: r.reply( values );                        break;
+ 			case N_ALLOP: r = Engine.interp( this, r );             break;
  			default:
  				if (r.isFelicitous()) {
 		 			switch (type) {
 						case N_THEN_THINK: r = Thought.think( values, r.answer() ); break;
-						case N_THEN_DO:        perform( r );                break;
+						case N_THEN_DO:        perform( r );                        break;
 						case N_THEN_RUN:   r = Commands.run(
 								                  format( values, r.answer(), false ).toString(),
 								                  r.answer()
-								           );                               break;
-						case N_THEN_REPLY: r.reply( value, values, r.answer() );               break;
-						case N_THEN_ALLOP: r = Engine.interp( this, r );     break;
+								           );                                       break;
+						case N_THEN_REPLY: r.reply( values );                       break;
+						case N_THEN_ALLOP: r = Engine.interp( this, r );            break;
 			 			default: break;
 		 			}
 	 			} else { // check for is not meh! ?
 					switch (type) {
 						case N_ELSE_THINK: r = Thought.think( values, r.answer() ); break;
-						case N_ELSE_DO:	       perform( r );                break;
+						case N_ELSE_DO:	       perform( r );                        break;
 						case N_ELSE_RUN:   r = Commands.run(
 								                   format( values, r.answer(), false ).toString(),
 								                   r.answer()
-								           );                               break;
-						case N_ELSE_REPLY: r.reply( value, values, r.answer() );               break;
-						case N_ELSE_ALLOP: r = Engine.interp( this, r );     break;
-			 			default:                                            break;
+								           );                                       break;
+						case N_ELSE_REPLY: r.reply( values );                       break;
+						case N_ELSE_ALLOP: r = Engine.interp( this, r );            break;
+			 			default:                                                    break;
 		}		}	}
 
 		if (Audit.allAreOn())

@@ -21,10 +21,8 @@ public class Thought {
 		audit.debug( "Thinking: "+ thought.toString( Strings.CSV ));
 		
 		// think it...
-		Reply r = Repertoires.mediate( new Utterance( thought )); // just recycle existing reply
+		Reply r = Repertoires.mediate( new Utterance( thought ));
 
-		// If we've returned FAIL (DNU), we want to continue
-		r.type( Response.typeFromStrings( new Strings( r.toString()) ));
 		if (Response.Type.E_DNU == r.type()) {
 			// put this into reply via Reply.strangeThought()
 			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );

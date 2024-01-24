@@ -68,28 +68,13 @@ public class Enguage {
 		// once processed, keep a copy
 		Utterance.previous( utterance );
 
-		{ // complete transaction
-			if (imagined()) {
-				Overlay.undoTxn();
-				Repertoires.signs().reset( r.sayThis() );
-				
-			} else if (Config.isUnderstood()) {
-				Overlay.commitTxn();
-				Repertoires.signs().reset( r.sayThis() );
-				
-			} else {
-				// really lost track?
-				audit.debug( "utterance is not understood, forgetting to ignore: "
-				             +Repertoires.signs().ignore().toString() );
-				Repertoires.signs().ignoreNone();
-				shell.aloudIs( true ); // sets aloud for whole session if reading from fp
-		}	}
-
+		completeTransaction( r.sayThis() );
+		
 		// auto-unload here - autoloading() in Repertoire.interpret() 
 		// asymmetry: load as we go; tidy-up once finished
 		Autoload.unloadAged();
 
-		reply = Reply.say().appendAll( r.sayThis());
+		reply = Reply.say().appendAll( r.sayThis() );
 		Reply.say( null );
 		Overlay.detach();
 			
@@ -112,6 +97,26 @@ public class Enguage {
 		audit.out( reply );
 		return reply.toString();
 	}
+	
+	// helper methods...
+	private void completeTransaction( Strings sayThis ) { // 
+		if (imagined()) {
+			Overlay.undoTxn();
+			Repertoires.signs().reset( sayThis );
+			
+		} else if (Config.isUnderstood()) {
+			Overlay.commitTxn();
+			Repertoires.signs().reset( sayThis );
+			
+		} else {
+			// really lost track?
+			audit.debug( "utterance is not understood, forgetting to ignore: "
+			             +Repertoires.signs().ignore().toString() );
+			Repertoires.signs().ignoreNone();
+			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
+	}	}
+
+
 	
 	/*
 	 *  test code....

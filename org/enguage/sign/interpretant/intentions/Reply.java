@@ -134,24 +134,24 @@ public class Reply {
 	/* ------------------------------------------------------------------------
 	 *  Intention
 	 */
-	public Reply reply( String value, Strings vs, String answer ) {
-		audit.in( "reply", "value="+ value +"/"+ vs +", r="+ (value.equals("")?"SAY SO":toString() ));
-		
-		Strings values = new Strings( value );
-		// Following is required? But causes errors on either t/f
-		//Strings values = Intention.format( vs, answer, true|false );
+	public Reply reply( Strings values ) {
+		audit.in( "reply", "value="+ values +", r="+ (values.isEmpty()?"SAY SO":toString() ));
+
+		//Strings v = Intention.format( values, answer, false ...
+		// 'formatting'subs '...' occurs on toString()
+		Strings v = new Strings( values );
 		
 		// Accumulate reply - currently "say this"
-		if (values.equals( Config.accumulateCmds() )) // say so -- possibly need new intention type?
+		if (v.equals( Config.accumulateCmds() )) // say so -- possibly need new intention type?
 			Reply.say( sayThis());
 		
 		// propagate reply and return - currently "say so"
-		else if (values.equals( Config.propagateReplys() ))
+		else if (v.equals( Config.propagateReplys() ))
 			doneIs( true ); // just pass out this reply
 		
 		else {// reply "I don't understand" is like an exception?
-			format( values );
-			type( Response.typeFromStrings( values ));
+			format( v );
+			type( Response.typeFromStrings( v ));
 			doneIs( type() != Response.Type.E_DNU );
 		}
 		

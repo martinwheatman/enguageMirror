@@ -61,8 +61,10 @@ public class Englishisms {  // English-ism!
 	// replace [ x, ', "y" ] with "x'y" -- or /dont/ or /martins/ if vocalised
 	public  static void apostropheContraction( Strings a, String letter ) {
 		if (null != a)
-			for (int i=0, sz=a.size(); i<sz-2; i++)
-				if ( a.get( i+1 ).equals( APOSTROPHE ) && a.get( i+2 ).equalsIgnoreCase(letter)) {
+			for (int i=0, sz=a.size(); i<sz-3; i++)
+				if ( a.get( i+1 ).equals( APOSTROPHE ) && 
+					 a.get( i+2 ).equalsIgnoreCase(letter))
+				{
 					a.set( i, a.get( i ) +APOSTROPHE+ letter);
 					a.remove( i+1 ); // remove apostrophe
 					a.remove( i+1 ); // remove lettter

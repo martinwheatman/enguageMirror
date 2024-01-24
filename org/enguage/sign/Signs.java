@@ -35,15 +35,13 @@ public class Signs extends TreeMap<Integer,Sign> {
 		return this;
 	}
 	
-	private int   total = 0;
-	private int clashes = 0;
 	public  Signs insert( Sign insertMe ) {
 		int i = 0;
 		int c = insertMe.cplex();
-		// crikey - descending order to put newest first! From old C coding!!
-		while (i > -99 && containsKey( c + i )) {clashes++; i--;}
+		// Crikey! Descending order to put newest first! From old C coding!!
+		while (i > -99 && containsKey( c + i )) i--;
 		if (i < 99) { // Arbitrary limit...
-			total++;
+			//total++;
 			put( c + i, insertMe );
 		} else
 			audit.error( "failed to find place for sign:" );// not tested
@@ -222,9 +220,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 			if (i.hasNext()) str.append( "\n" );
 		}
 		return str.toString();
-	}
-	public String stats() {
-		return clashes +" clashes in a total of "+ total +" signs";
 	}
 	public void show() {show( null );}
 	public void show( String simpleFilter ) {

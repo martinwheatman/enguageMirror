@@ -47,12 +47,73 @@ public class Sign {
 		
 		private final Strings utterance; // already stripped of '.'
 
+		private static String getCond( Strings sa ) {
+			if (sa.begins( Config.soPrefix() )) {
+				sa.remove( 0, Config.soPrefix().size()); // e.g. 'if', 'so', ','
+				return Intention.POS;
+			} else if (sa.begins( Config.noPrefix() )) {
+				sa.remove( 0, Config.noPrefix().size()); // e.g.'if', 'so', ','
+				return Intention.NEG;
+			}
+			return Intention.NEU;
+		}
+		private static int getType(Strings sa) {
+			// [ "if", "so", ",", "think", "something" ] => 
+			//   N_THEN_THINK + [ "think", "something" ]
+			// [ "if", "not", ",", "say", "so" ] =>
+			//   N_ELSE_REPLY + []
+			int rc = Intention.UNDEFINED;
+			String cond = getCond( sa );
+			boolean neg = cond.equals( Intention.NEG );
+			boolean pos = cond.equals( Intention.POS );
+			
+			
+			if (sa.equals( Config.propagateReplys()) ||
+				sa.equals( Config.accumulateCmds()) )
+			{
+				// don't remove these 'specials', pass on & define in config.xml
+				rc = pos ? Intention.N_THEN_REPLY : (neg ? Intention.N_ELSE_REPLY : Intention.N_REPLY);
+				
+			} else {
+				int len = sa.size();
+				String one = len>0?sa.get(0):"";
+				String two = len>1?sa.get(1):"";
+				
+				if (Strings.isQuoted( two )) {
+					boolean found = true;
+					if (one.equals(Intention.DO_HOOK))
+						rc = pos ? Intention.N_THEN_DO    : (neg ? Intention.N_ELSE_DO    : Intention.N_DO);
+					
+					else  if (one.equals(   Intention.RUN_HOOK ))
+						rc = pos ? Intention.N_THEN_RUN   : (neg ? Intention.N_ELSE_RUN   : Intention.N_RUN);
+					
+					else  if (one.equals( Intention.REPLY_HOOK ))
+						rc = pos ? Intention.N_THEN_REPLY : (neg ? Intention.N_ELSE_REPLY : Intention.N_REPLY);
+						
+					else  if (one.equals( Intention.FNLLY_HOOK ))
+						rc = Intention.N_FINALLY;
+						
+					else
+						found = false;
+					
+					if (found) {
+						sa.remove(0); // ["perform" | "run" | "reply" | "finally" ]
+						sa.set( 0, Strings.trim( sa.get(0), '"' ));
+			}	}	}
+			
+			if (rc == Intention.UNDEFINED) {
+				rc = pos ? Intention.N_THEN_THINK : neg ? Intention.N_ELSE_THINK : Intention.N_THINK;
+			}
+			
+			return rc;
+		}
+
 		private Sign doIntentions(Iterator<String> utti, Sign sign) {
 			Strings sa = new Strings();
 			while (utti.hasNext()) {
 				String s = utti.next();
 				if (s.equals( INTENTION_SEPARATOR )) {
-					int type = Intention.getType( sa );
+					int type = getType( sa );
 					sign.append( new Intention( type, sa ));
 					sa = new Strings();
 				} else
@@ -62,7 +123,7 @@ public class Sign {
 			// backwards compatibility:
 			if (!sa.isEmpty()) {
 				// getType affects sa!!! be explicit in ordering
-				int type = Intention.getType( sa );
+				int type = getType( sa );
 				sign.append( new Intention( type, sa ));
 			}
 			return sign;
