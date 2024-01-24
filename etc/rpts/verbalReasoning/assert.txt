@@ -2,5 +2,5 @@ On "assert X is PHRASE-Y", is X Y.
 
 On "assert that PHRASE-ASSERTION":
 	ASSERTION;
-	if not, reply "i'm sorry, the assertion, ASSERTION, failed";
+	if not, reply "sorry, the assertion, ASSERTION, failed";
 	reply "ok".

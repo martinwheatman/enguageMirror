@@ -12,11 +12,18 @@ public class Response {
 		E_SOZ, // SORRY -- -ve
 		E_NO,  // FALSE -- -ve
 		E_OK,  // TRUE  -- +ve identical to 'yes'
+		E_YES,  // TRUE  -- +ve identical to 'yes'
 		E_CHS; // narrative verdict - meh!
 	}
+	
+	public static final boolean isFelicitous( Response.Type type ) {
+		return  Response.Type.E_YES == type ||
+				Response.Type.E_OK  == type ||
+				Response.Type.E_CHS == type;
+	}
 
-	public static Type typeFromStrings( Strings uttr ) {
-		     if (uttr.begins( Config.yes()     )) return Type.E_OK;
+	public static final Type typeFromStrings( Strings uttr ) {
+		     if (uttr.begins( Config.yes()     )) return Type.E_YES;
 		else if (uttr.begins( Config.okay()    )) return Type.E_OK;
 		else if (uttr.begins( Config.notOkay() )) return Type.E_SOZ;
 		else if (uttr.begins( Config.dnu()     )) return Type.E_DNU;

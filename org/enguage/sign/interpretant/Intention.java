@@ -59,8 +59,8 @@ public class Intention {
 	// 'finally' intentions are run irrespective of outcome
 	public  static final String   FINALLY = "f";
 	
-	private static final int N_THEN       = 0x01; // 0000 0001
-	private static final int N_ELSE       = 0x03; // 0000 0011
+	public  static final int N_THEN       = 0x01; // 0000 0001
+	public  static final int N_ELSE       = 0x03; // 0000 0011
 	
 	public  static final int N_THINK      = 0x00; // 0000 00xx
 	public  static final int N_DO         = 0x04; // 0000 01xx

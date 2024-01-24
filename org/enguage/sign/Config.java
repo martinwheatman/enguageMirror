@@ -183,7 +183,7 @@ public class Config {
 	public  static void    accumulateCmds( Strings ac ) {accumulateCmds = ac;}
 	
 	// Format answer placeholder
-	private static Strings placeholder = new Strings( Reply.DEFAULT_PLACEHOLDER );
+	private static Strings placeholder = new Strings( Reply.DEFAULT_PH );
 	public  static Strings placeholder() {return placeholder;}
 	public  static void    placeholder( Strings ph ) {placeholder = ph;}
 }

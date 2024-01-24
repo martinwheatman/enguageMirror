@@ -14,7 +14,7 @@ unset the value of name:           ok.
 interpret my name is variable name thus: ok.
 first set the name of me to variable name:                ok.
 then get the name of me:                     ok. # not strictly necessary!
-then reply hello whatever:                      ok.
+then reply hello whatever:                      ok, reply hello whatever.
 
 my name is ruth:   hello   ruth.
 my name is martin: hello martin.
@@ -22,10 +22,10 @@ my name is martin: hello martin.
 
 #...or to put it another way
 interpret i am called variable name like this: ok.
-first reply hi whatever:                              ok.
+first reply hi whatever:                              ok, reply hi whatever.
 this implies that you set the name of me to variable name:      ok.
-this implies that you reply i already knew this:      ok.
-this implies name is set to variable name:            ok.
+this implies that you reply i already knew this:      ok, i already knew this.
+this implies name is set to variable name:            ok, name is set to variable name.
 
 i am called martin: i already knew this.
 

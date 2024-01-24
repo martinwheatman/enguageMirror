@@ -25,15 +25,18 @@ public class Intentions extends ArrayList<Intention> {
 	private void lastInsertion( int i ) {lastInsertion = i;}
 	
 	public Intentions insert( Insertion ins, Intention intn ) {
-		switch (ins) {
-			case TAILER:  // default!
-			case UNKNOWN: lastInsertion( size()-1 ); break;
-			case PREPEND: lastInsertion(        0 ); break;
-			case HEADER:  lastInsertion(        1 ); break;
-			case APPEND:  lastInsertion( size()   ); break;
-			case NEXT:    lastInsertion( lastInsertion() + 1 ); break;
-			case PREV:    lastInsertion( lastInsertion()     ); break;
-		}
+		if (size() == 0)
+			lastInsertion( 0 );
+		else
+			switch (ins) {
+				case TAILER:  // default!
+				case UNKNOWN: lastInsertion( size()-1 ); break;
+				case PREPEND: lastInsertion(        0 ); break;
+				case HEADER:  lastInsertion(        1 ); break;
+				case APPEND:  lastInsertion( size()   ); break;
+				case NEXT:    lastInsertion( lastInsertion() + 1 ); break;
+				case PREV:    lastInsertion( lastInsertion()     ); break;
+			}
 		insert( lastInsertion(), intn ); 
 		return this;
 	}
@@ -70,7 +73,7 @@ public class Intentions extends ArrayList<Intention> {
 		Audit.decr();
 		return intentions.toString();
 	}
-	public String toStringIndented() {
+	public String toStringIndented( boolean auditIntents ) {
 		StringBuilder sb = new StringBuilder();
 		int sz = size();
 		if (sz == 1)
@@ -80,7 +83,7 @@ public class Intentions extends ArrayList<Intention> {
 			for (Intention in : this)
 				sb.append(
 						(line++ == 0 ? ":" : ";") + "\n"
-						+ Audit.indent() +"    "+ in
+						+ (auditIntents ? Audit.indent():"") +"    "+ in
 				);
 		}
 		return sb.toString();

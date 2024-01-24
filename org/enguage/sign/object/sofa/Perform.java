@@ -74,7 +74,7 @@ public class Perform {
 				case Transitive .ID: return  Transitive.perform( Attribute.expand23( a ));
 				case Repertoires.ID: return Repertoires.perform(                     a  );
 				default :
-					audit.error( "Perform:Strings.hash(): "+ type +".id should be: "+ Strings.hash( type ));
+					audit.error( "Perform: "+ type +".ID should be set to "+ Strings.hash( type ));
 					return Perform.Fail;
 		}	}
 		return Perform.Fail;

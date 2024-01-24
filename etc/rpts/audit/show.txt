@@ -1,4 +1,5 @@
 On "show signs", perform "repertoires show signs".
+On "show this sign", perform "sign show".
 	
 On "show engine", perform "repertoires show engine".
 

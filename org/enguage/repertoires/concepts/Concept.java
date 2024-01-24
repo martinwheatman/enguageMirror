@@ -32,7 +32,7 @@ public class Concept {
 	private Concept() {}
 	
 	public  static final String     NAME = "concept";
-	public  static final int          ID = 4186513; // Strings.hash( "Ideas" )
+	public  static final int          ID = 42747006; // Strings.hash( "Concept" )
 	private static final Audit     audit = new Audit( NAME ).tracing( true );
 	
 	public  static final String     RPTS = "rpts";
@@ -329,12 +329,15 @@ public class Concept {
 								name
 				 ) ? Config.okay() : Config.notOkay();
 
+			
 		} else if (cmd.equals( "delete" )) {
 			String concept = cmds.toString( Strings.UNDERSC );
 			audit.debug( "Deleting "+ concept +" concept");
-			remove( concept );
-			delete( concept );
-			Repertoires.signs().remove( concept );
+			remove( concept ); // remove the concept name
+			delete( concept ); // delete the concept file
+			Repertoires.signs().remove( concept ); // remove the loaded concept
+			Sign.reset(); // remove sign under construction
+			
 			
 		} else if (cmd.equals( "load" )) {
 			/* load is used by create, delete, ignore and restore to

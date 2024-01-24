@@ -147,26 +147,44 @@ public class Frags extends ArrayList<Frag> {
 			
 			if (type.equals(phrase)) {
 				add( new Frag( frag.prefix().copyBefore( word ), word ).phrasedIs());
-				add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+				//add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )))
+				Strings nextPrefix = frag.prefix().copyAfter( word );
+				if (!nextPrefix.isEmpty())
+					add( new Frag( frag ).prefix( nextPrefix ));
 			} else if (type.equals(numeric)) {
 				add( new Frag( frag.prefix().copyBefore( word ), word ).numericIs());
-				add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+				//add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+				Strings nextPrefix = frag.prefix().copyAfter( word );
+				if (!nextPrefix.isEmpty())
+					add( new Frag( frag ).prefix( nextPrefix ));
 			} else { // not type - a singlton?
 				add( new Frag( frag.prefix().copyBefore( word ), word ));
-				add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+				//add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
+				Strings nextPrefix = frag.prefix().copyAfter( word );
+				if (!nextPrefix.isEmpty())
+					add( new Frag( frag ).prefix( nextPrefix ));
 			}
 			
 		} else if (frag.postfix().contains( word )) {
 			
 			if (type.equals(phrase)) {
 				add( new Frag( frag ).postfix( frag.postfix().copyBefore( word )));
-				add( new Frag( frag.postfix().copyAfter( word ), word ).phrasedIs());
+				//add( new Frag( frag.postfix().copyAfter( word ), word ).phrasedIs());
+				Strings nextPrefix = frag.prefix().copyAfter( word );
+				if (!nextPrefix.isEmpty())
+					add( new Frag( frag ).prefix( nextPrefix ));
 			} else if (type.equals(numeric)) {
 				add( new Frag( frag ).postfix( frag.postfix().copyBefore( word )));
-				add( new Frag( frag.postfix().copyAfter( word ), word ).numericIs());
+//				add( new Frag( frag.postfix().copyAfter( word ), word ).numericIs());
+				Strings nextPrefix = frag.prefix().copyAfter( word );
+				if (!nextPrefix.isEmpty())
+					add( new Frag( frag ).prefix( nextPrefix ));
 			} else {
 				add( new Frag( frag ).postfix( frag.postfix().copyBefore( word )));
-				add( new Frag( frag.postfix().copyAfter( word ), word ));
+//				add( new Frag( frag.postfix().copyAfter( word ), word ));
+				Strings nextPrefix = frag.prefix().copyAfter( word );
+				if (!nextPrefix.isEmpty())
+					add( new Frag( frag ).prefix( nextPrefix ));
 			}
 			
 		} else // 
@@ -199,6 +217,12 @@ public class Frags extends ArrayList<Frag> {
 		return ff;
 	}
 	
+	public Strings names() {
+		Strings sa = new Strings();
+		for (Frag f : this)
+			sa.append( f.name() );
+		return sa;
+	}
 	
 	// TODO: not quite right, what about "l'eau" - the water
 	// want to move to u.c. but preserve l.c. apostrophe...

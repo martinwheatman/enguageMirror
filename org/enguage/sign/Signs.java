@@ -40,16 +40,23 @@ public class Signs extends TreeMap<Integer,Sign> {
 		int c = insertMe.cplex();
 		// Crikey! Descending order to put newest first! From old C coding!!
 		while (i > -99 && containsKey( c + i )) i--;
-		if (i < 99) { // Arbitrary limit...
-			//total++;
+		if (i < 99) // Arbitrary limit...
 			put( c + i, insertMe );
-		} else
+		else
 			audit.error( "failed to find place for sign:" );// not tested
 		return this;
 	}
-	
+	public Signs rename( String from, String to ) {
+		Set<Map.Entry<Integer,Sign>> set = entrySet();
+		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
+		while (i.hasNext()) {
+			Map.Entry<Integer,Sign> me = i.next();
+			if (from.equals( me.getValue().concept()))
+				me.getValue().concept( to );
+		}
+		return this;
+	}
 	public void remove( String id ) {
-		// to prevent co-mod errors, load a list with the keys of those to be removed...
 		Set<Map.Entry<Integer,Sign>> set = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> i = set.iterator();
 		while (i.hasNext()) {
@@ -144,7 +151,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	private void auditMatch( int complexity, Sign s, Attributes match ) {
 		if (Audit.allAreOn()) {
 			// here: match=[ x="a", y="b+c+d", z="e+f" ]
-			audit.debug( "matched: "+ complexity +"\n"+ s.toStringIndented() );
+			audit.debug( "matched: "+ complexity +"\n"+ s.toStringIndented( true ));
 			audit.debug( "Concept: "+s.concept() +"," );
 			if (match.isEmpty())
 				audit.debug( "   with: "+ match.toString() +"," );
@@ -184,11 +191,10 @@ public class Signs extends TreeMap<Integer,Sign> {
 				Sign s = e.getValue(); // s knows if it is temporal!	
 				// do we need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
-				if (null == match) 
+				if (null == match) {
 					//audit.debug( "NO match: "+ s.pattern() +"("+ s.pattern().notMatched()+")" )
-					;
-					
-				else {
+					// ; // java doesn't have a 'null' operator!
+				} else {
 					Pronoun.update( match );
 					auditMatch( complexity, s, match );
 					saveForIgnore( complexity );

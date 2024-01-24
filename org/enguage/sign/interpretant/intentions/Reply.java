@@ -9,14 +9,16 @@ import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 
 public class Reply {
-	// a reply is basically a 'formatted' 'answer', with a 'say' prefix
-	// [ prefix= "according to Douglas Adams"
-	//   answer='42',
-	//   format="the answer to life, the universe and everything is ..."
-	// ] 
 	
-	private static final Audit                audit = new Audit( "Reply" );
-	public  static final String DEFAULT_PLACEHOLDER = "whatever";
+	/** a Reply is a 'formatted' 'answer', with possibly a 'say' prefix
+	 * [ prefix = "according to Douglas Adams"
+	 *   answer = '42',
+	 *   format = "the answer to life, the universe and everything is ..."
+	 * ]
+	 */
+	
+	private static final Audit       audit = new Audit( "Reply" );
+	public  static final String DEFAULT_PH = "whatever"; // Placeholder
 
 	private boolean repeated = false;
 	public  void    repeated( boolean s ) {repeated = s;}
@@ -29,12 +31,9 @@ public class Reply {
 	
 	private Response.Type  type = Response.Type.E_DNU;
 	public  Response.Type  type() {return type;}
-	public  Reply type( Response.Type t ) {type = t; return this;}
+	public  Reply          type( Response.Type t ) {type = t; return this;}
 	
-	public boolean isFelicitous() {
-		return  Response.Type.E_OK  == type ||
-				Response.Type.E_CHS == type;
-	}
+	public  boolean isFelicitous() {return Response.isFelicitous( type );}
 
 	/* ------------------------------------------------------------------------
 	 * Say list

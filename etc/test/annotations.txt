@@ -16,50 +16,50 @@ delete martin willNotBe list: ok.
 interpret i am variable state thus:         ok.
 first add    variable state to   i am list: ok.
 then  remove variable state from i amNot list: ok.
-then  reply ok: ok.
+then  reply ok: ok, reply ok.
 			
 # e.g. i am not alive - 5.1
 interpret i am not variable state thus:        ok.
 first add    variable state to   i amNot list: ok.
 then  remove variable state from i am    list: ok.
-then  reply ok: ok.
+then  reply ok: ok, reply ok.
 			
 # e.g. am i alive? - 5.1
 interpret am i variable state thus:           ok.
 first variable state exists in i am list:     ok.
-then  if so reply yes i am variable state:    ok.
+then  if so reply yes i am variable state:    ok, reply yes i'm variable state.
 then  variable state exists in i amNot list:  ok.
-then  if so reply no i am not variable state: ok.
-then  reply i do not know:                    ok.
+then  if so reply no i am not variable state: ok, reply no i'm not variable state.
+then  reply i do not know:                    ok, reply i don't know.
 			
 #  e.g. martin is alive - 5.1
 interpret variable entity is variable state thus:            ok.
 first add    variable state to   variable entity is    list: ok.
 then  remove variable state from variable entity isNot list: ok.
-then  reply ok: ok.
+then  reply ok: ok, reply ok.
 			
 # e.g. martin is not alive - 5.1
 interpret variable entity is not variable state thus:        ok.
 first add   variable state to   variable entity isNot list:  ok.
 then  remove variable state from variable entity is    list: ok.
-then  reply ok: ok.
+then  reply ok: ok, reply ok.
 			
 # e.g. is martin alive - 5.1
 interpret is variable entity variable state thus:           ok.
 first variable state  exists in variable entity is list:    ok.
-then  if so reply yes variable entity is variable state:    ok.
+then  if so reply yes variable entity is variable state:    ok, reply yes variable entity is variable state.
 then  variable state exists in variable entity isNot list:  ok.
-then  if so reply no variable entity is not variable state: ok.
-then  reply i do not know:                                  ok.
+then  if so reply no variable entity is not variable state: ok, reply no variable entity is not variable state.
+then  reply i do not know:                                  ok, reply i don't know.
 
 
 # e.g. is martin not alive - 5.1
 interpret is variable entity not variable state thus:        ok.
 first variable state  exists in variable entity isNot list:  ok.
-then  if so reply yes variable entity is not variable state: ok.
+then  if so reply yes variable entity is not variable state: ok, reply yes variable entity is not variable state.
 then  variable state exists in variable entity is list:      ok.
-then  if so reply no variable entity is variable state:      ok.
-then  reply i do not know:                                   ok.
+then  if so reply no variable entity is variable state:      ok, reply no variable entity is variable state.
+then  reply i do not know:                                   ok, reply i don't know.
 
 echo test 5.1:-.
 am i alive:     i don't know.
@@ -83,29 +83,29 @@ echo  Test 5.2 was/was not:-.
 interpret variable entity was variable state thus:            ok.
 first add    variable state to   variable entity was    list: ok.
 then  remove variable state from variable entity wasNot list: ok.
-then reply ok: ok.
+then reply ok: ok, reply ok.
 			
 # e.g. martin was not alive - 5.2
 interpret variable entity was not variable state thus:       ok.
 first add   variable state to   variable entity wasNot list: ok.
 then remove variable state from variable entity was    list: ok.
-then reply ok: ok.
+then reply ok: ok, reply ok.
 			
 # e.g. was martin alive - 5.2
 interpret was variable entity variable state thus:          ok.
 first variable state  exists in variable entity was list:   ok.
-then if so reply yes variable entity was variable state:    ok.
+then if so reply yes variable entity was variable state:    ok, reply yes variable entity was variable state.
 then variable state exists in variable entity wasNot list:  ok.
-then if so reply no variable entity was not variable state: ok.
-then reply i do not know:                                   ok.
+then if so reply no variable entity was not variable state: ok, reply no variable entity was not variable state.
+then reply i do not know:                                   ok, reply i don't know.
 
 # e.g. was martin not alive - 5.2
 interpret was variable entity not variable state thus:        ok.
 first variable state  exists in variable entity wasNot list:  ok.
-then  if so reply yes variable entity was not variable state: ok.
+then  if so reply yes variable entity was not variable state: ok, reply yes variable entity was not variable state.
 then  variable state exists in variable entity was list:      ok.
-then  if so reply no variable entity was variable state:      ok.
-then  reply i do not know:                                    ok.
+then  if so reply no variable entity was variable state:      ok, reply no variable entity was variable state.
+then  reply i do not know:                                    ok, reply i don't know.
 
 # test 5.2
 was martin alive:     i don't know.
@@ -122,29 +122,29 @@ echo  Test 5.3 will be/will not be:-.
 interpret variable entity will be variable state thus:           ok.
 first add    variable state to   variable entity willBe    list: ok.
 then  remove variable state from variable entity willNotBe list: ok.
-then reply ok: ok.
+then reply ok: ok, reply ok.
 			
 # e.g. martin will not be alive - 5.3
 interpret variable entity will not be variable state thus:      ok.
 first add   variable state to   variable entity willNotBe list: ok.
 then remove variable state from variable entity willBe    list: ok.
-then reply ok: ok.
+then reply ok: ok, reply ok.
 			
 # e.g. will martin be alive - 5.3
 interpret will variable entity be variable state thus:           ok.
 first variable state exists in variable entity willBe list:      ok.
-then  if so reply yes variable entity will be variable state:    ok.
+then  if so reply yes variable entity will be variable state:    ok, reply yes variable entity will be variable state.
 then  variable state exists in variable entity willNotBe list:   ok.
-then  if so reply no variable entity will not be variable state: ok.
-then  reply i do not know:                                       ok.
+then  if so reply no variable entity will not be variable state: ok, reply no variable entity will not be variable state.
+then  reply i do not know:                                       ok, reply i don't know.
 
 # e.g. will martin not be alive - 5.3
 interpret will variable entity not be variable state thus:        ok.
 first variable state  exists in variable entity willNotBe list:   ok.
-then  if so reply yes variable entity will not be variable state: ok.
+then  if so reply yes variable entity will not be variable state: ok, reply yes variable entity will not be variable state.
 then  variable state exists in variable entity willBe list:       ok.
-then  if so reply no variable entity will be variable state:      ok.
-then  reply i do not know:                                        ok.
+then  if so reply no variable entity will be variable state:      ok, reply no variable entity will be variable state.
+then  reply i do not know:                                        ok, reply i don't know.
 
 # test 5.3
 will i be alive:     i don't know.

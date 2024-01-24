@@ -1,1 +1,3 @@
-On "where that WORD is a TYPE", perform "sign split WORD TYPE".
+On "where that WORD is a TYPE":
+	perform "sign split WORD TYPE";
+	reply "ok, WORD is a TYPE".

@@ -14,8 +14,8 @@ On "is X an entity":
 
 On "X is a class":
 	assert that a instanceof link from X exists;
-	reply "no, X is an entity";
-	if not, create an isa link from X to class;
+	if so, reply "no, X is an entity";
+	create an isa link from X to class;
 	reply "ok, X is a class".
 	
 On "a DERIVED is a BASE":
@@ -32,9 +32,9 @@ On "X is a Y":
 	reply "ok, X is a Y".
 
 On "is THIS a CLASS":
-	perform "an isa link from CLASS exists";
+	an isa link from CLASS exists;
 	if not, reply "sorry, CLASS is not a class";
-	perform "entity THIS exists";
+	entity THIS exists;
 	if not, reply "sorry, THIS does not exist"
 	perform "link exists THIS instanceof CLASS";
 	if so, reply "yes, THIS is an instance of a CLASS";

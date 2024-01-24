@@ -6,6 +6,3 @@ On "interpret PHRASE-X like this", perform "sign create X".
 On "this implies PHRASE-IMPLICATION if not reply PHRASE-REPLY":
 	perform "sign prepend else reply REPLY";
 	perform "sign prepend imply IMPLICATION".
-
-load implies.
-load first+then.

@@ -1,0 +1,4 @@
+On "delete the concept PHRASE-NAME":
+	perform "concept delete NAME";
+	if not, reply "sorry, NAME has not been deleted";
+	reply "ok, NAME has been deleted".

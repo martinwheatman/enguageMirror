@@ -1,0 +1,5 @@
+On "save this concept as PHRASE-NAME":
+	perform "concept saveAs NAME";
+	if not, reply "sorry not saved";
+	reply "ok, this concept is saved as NAME".
+

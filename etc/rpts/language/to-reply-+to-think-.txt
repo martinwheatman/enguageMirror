@@ -8,6 +8,3 @@ On "to            PHRASE-X reply      PHRASE-Y":
 On "to the phrase SAID-X think SAID-Y":
 	perform "sign create X";
 	perform "sign think  Y".
-
-load implies.
-load first+then.
