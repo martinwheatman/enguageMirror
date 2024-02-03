@@ -85,6 +85,74 @@ public class Intention {
 	private static final int N_AUTOP       = 0x14;             // =  20
 	public  static final int N_FINALLY     = 0xff;             // = 255
 	
+	public  static final int condType( int base, boolean isThen, boolean isElse ) {
+		if (isThen) return base | N_THEN;
+		if (isElse) return base | N_ELSE;
+		return base;
+	}
+	public static int condTypeFromHookStr( String hook, boolean pos, boolean neg ) {
+		if (hook.equals(DO_HOOK))
+			return condType( N_DO,    pos, neg );
+		
+		else  if (hook.equals(   RUN_HOOK ))
+			return condType( N_RUN,   pos, neg );
+		
+		else  if (hook.equals( REPLY_HOOK ))
+			return condType( N_REPLY, pos, neg );
+			
+		else  if (hook.equals( FNLLY_HOOK ))
+			return N_FINALLY;
+		
+		return UNDEFINED;
+	}
+	public static String getCond( Strings sa ) {
+		if (sa.begins( Config.soPrefix() )) {
+			sa.remove( 0, Config.soPrefix().size()); // e.g. 'if', 'so', ','
+			return POS;
+		} else if (sa.begins( Config.noPrefix() )) {
+			sa.remove( 0, Config.noPrefix().size()); // e.g.'if', 'so', ','
+			return NEG;
+		}
+		return NEU;
+	}
+	public static int getType(Strings sa) {
+		// [ "if", "so", ",", "think", "something" ] => 
+		//   N_THEN_THINK + [ "think", "something" ]
+		// [ "if", "not", ",", "say", "so" ] =>
+		//   N_ELSE_REPLY + []
+		int rc = UNDEFINED;
+		String cond = getCond( sa );
+		boolean neg = cond.equals( NEG );
+		boolean pos = cond.equals( POS );
+		
+		
+		if (sa.equals( Config.propagateReplys()) ||
+			sa.equals( Config.accumulateCmds()) )
+		{
+			// don't remove these 'specials', pass on & define in config.xml
+			rc = condType( N_REPLY, pos, neg );
+			
+		} else { // reply "xyz"
+			int len = sa.size();
+			String hook  = len>0?sa.get(0):"";
+			String param = len>1?sa.get(1):"";
+			
+			if (Strings.isQuoted( param )) {
+				// one should be "reply", "perform", etc.
+				rc = condTypeFromHookStr( hook, pos, neg );
+				if (rc != UNDEFINED) {
+					sa.remove(0); // ["perform" | "run" | "reply" | "finally" ]
+					sa.set( 0, Strings.trim( sa.get(0), '"' ));
+		}	}	}
+		
+		if (rc == UNDEFINED)
+			rc = condType( N_THINK, pos, neg );
+		
+		return rc;
+	}
+
+
+
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
 	public Intention( Intention in, boolean temp, boolean spatial ) {
@@ -138,7 +206,7 @@ public class Intention {
 		
 		switch (type) {
  			case N_THINK: r = Thought.think( values,  r.answer() ); break;
- 			case N_DO: 	  SofaPerform.perform( r, values );                             break;
+ 			case N_DO: 	  SofaPerform.perform( r, values );         break;
  			case N_RUN:   r = Commands.run(
  			                       format( values, r.answer(), false ).toString(),
  			                       r.answer()
@@ -149,7 +217,7 @@ public class Intention {
  				if (r.isFelicitous()) {
 		 			switch (type) {
 						case N_THEN_THINK: r = Thought.think( values, r.answer() ); break;
-						case N_THEN_DO:    SofaPerform.perform( r, values ); break;//    perform( r );                        break;
+						case N_THEN_DO:    SofaPerform.perform( r, values );        break;
 						case N_THEN_RUN:   r = Commands.run(
 								                  format( values, r.answer(), false ).toString(),
 								                  r.answer()
@@ -161,7 +229,7 @@ public class Intention {
 	 			} else { // check for is not meh! ?
 					switch (type) {
 						case N_ELSE_THINK: r = Thought.think( values, r.answer() ); break;
-						case N_ELSE_DO:	   SofaPerform.perform( r, values ); break; //    perform( r );                        break;
+						case N_ELSE_DO:	   SofaPerform.perform( r, values );        break;
 						case N_ELSE_RUN:   r = Commands.run(
 								                   format( values, r.answer(), false ).toString(),
 								                   r.answer()

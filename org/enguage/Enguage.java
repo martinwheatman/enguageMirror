@@ -115,8 +115,6 @@ public class Enguage {
 			Repertoires.signs().ignoreNone();
 			shell.aloudIs( true ); // sets aloud for whole session if reading from fp
 	}	}
-
-
 	
 	/*
 	 *  test code....

@@ -51,8 +51,8 @@ public class Perform {
 			switch (Strings.hash( type )) {
 				case Item       .ID: return        Item.perform( Attribute.expand23( a ));
 				case Link       .ID: return        Link.perform(                     a  );
-				case Sign       .ID: return        Sign.perform( Attribute.expand(   a ));
 				case Http       .ID: return        Http.perform( Attribute.expand(   a ));
+				case Sign       .ID: return        Sign.perform( Attribute.expand(   a ));
 				case Audit      .ID: return       Audit.perform( Attribute.expand(   a ));
 				case Items      .ID: return       Items.perform(                     a  );
 				case Value      .ID: return       Value.perform( Attribute.expand23( a ));

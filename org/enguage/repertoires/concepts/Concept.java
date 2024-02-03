@@ -15,8 +15,10 @@ import java.util.TreeSet;
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.Assets;
+import org.enguage.sign.WrittenSignFactory;
 import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
+import org.enguage.sign.SpokenSignFactory;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
@@ -223,7 +225,7 @@ public class Concept {
 		Strings content = preprocessFile( fp, from, to );
 		ArrayList<Strings> utterances = content.divide( Terminator.terminators(), false );
 		for (Strings utterance : utterances) {
-			Sign sign = new Sign.Builder( utterance ).toSign();
+			Sign sign = new WrittenSignFactory( utterance ).toSign();
 			if (sign != null)
 				Repertoires.signs().insert( sign );
 			else // if we find, e.g. "this concept is spatial".
@@ -336,7 +338,7 @@ public class Concept {
 			remove( concept ); // remove the concept name
 			delete( concept ); // delete the concept file
 			Repertoires.signs().remove( concept ); // remove the loaded concept
-			Sign.reset(); // remove sign under construction
+			SpokenSignFactory.delete(); // remove sign under construction
 			
 			
 		} else if (cmd.equals( "load" )) {
