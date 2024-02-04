@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
-import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -21,22 +21,22 @@ public class Variable {
 	 * Because $ has special significance in the filesystem/shell
 	 * prefix variables with '_'
 	 */
-	static public  final String NAME = "variable";
-	static public  final int      ID = 262169728; //Strings.hash( NAME );
-	static private       Audit audit = new Audit( "Variable" );
+	public  static  final String NAME = "variable";
+	public  static  final int      ID = 262169728; //Strings.hash( NAME );
+	private static       Audit audit = new Audit( "Variable" );
 	
 	private static TreeMap<String,String> cache = encache();
 	private static TreeMap<String,String> encache() { return encache( Overlay.get() );}
 	private static TreeMap<String,String> encache( Overlay o ) {
-		//audit.in( "encache", Ospace.location());
+		//audit.in( "encache", Ospace.location())
 		cache = new TreeMap<String,String>();
 		for( String name : o.list( NAME ))
 			if (name.equals( name.toUpperCase( Locale.getDefault()) )) // if valid variable name
 				cache.put( name, new Value( NAME, name ).getAsString());
-		//audit.out();
+		//audit.out()
 		return cache;
 	}
-	static private void printCache() {
+	private static void printCache() {
 		Audit.title( "Printing cache" );
 		Set<Map.Entry<String,String>> entries = cache.entrySet();
 		Iterator<Map.Entry<String,String>> ei = entries.iterator();
@@ -78,21 +78,21 @@ public class Variable {
 	// 		 Can't be UPPERCASE, unless TAGs passes through u/c unmatches vars.
 	// 		 May match - then difficult bugs to find!
 	// for backward compatibility, keeping these statics 
-	static public String set( String name, String val ) { new Variable( name ).set( val ); return val;}
-	static public void unset( String name ) { new Variable( name ).unset(); }
-	static public String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
-	static public String get( String name, String def ) {
-		boolean reflect = name.startsWith( Frags.externPrefix );
+	public  static String set( String name, String val ) { new Variable( name ).set( val ); return val;}
+	public  static void unset( String name ) { new Variable( name ).unset(); }
+	public  static String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
+	public  static String get( String name, String def ) {
+		boolean reflect = name.startsWith( Pattern.externPrefix );
 		if (reflect)
-			name = name.substring( Frags.externPrefix.length() );
+			name = name.substring( Pattern.externPrefix.length() );
 		
-		boolean first = name.startsWith( Frags.firstPrefix );
+		boolean first = name.startsWith( Pattern.firstPrefix );
 		if (first)
-			name = name.substring( Frags.firstPrefix.length() );
+			name = name.substring( Pattern.firstPrefix.length() );
 		
-		boolean rest = name.startsWith( Frags.restPrefix );
+		boolean rest = name.startsWith( Pattern.restPrefix );
 		if (rest)
-			name = name.substring( Frags.restPrefix.length() );
+			name = name.substring( Pattern.restPrefix.length() );
 		
 		String value = cache.get( name );
 		if (reflect)
@@ -106,14 +106,15 @@ public class Variable {
 		
 		return value==null || value.equals("") ? def : value;
 	}
-	static public boolean isSet( String name, String value ) {
+	public  static boolean isSet( String name, String value ) {
 		String val = new Variable( name ).get();
 		return  val != null &&
 				((value == null && !val.equals( "" )  ) ||
 				 (value != null && val.equals( value ))   );
 	}
-	public static String derefUc( String in ) {
-		String out = "", word = "";
+	public  static String derefUc( String in ) {
+		String       word = "";
+		StringBuilder out = new StringBuilder();
 		char[] buffer = in.toCharArray();
 		for (char ch : buffer) {
 			if (Character.isUpperCase( ch ))
@@ -122,31 +123,31 @@ public class Variable {
 				if (!word.equals( "" )) {
 					word = Variable.get( word );
 					if (word == null) word = "";
-					out += word;
+					out.append( word );
 					word = "";
 				}
-				out += ch;
+				out.append( ch );
 		}	}
-		return out;
+		return out.toString();
 	}
 	
-	static private Strings exceptions = new Strings();
-	static public  void exceptionAdd( Strings excepts ) {
+	private static Strings exceptions = new Strings();
+	public  static  void exceptionAdd( Strings excepts ) {
 		for (String s : excepts ) if (!exceptions.contains( s )) exceptions.add( s );
 	}
-	static private void exceptionRemove( Strings excepts ) {
+	private static void exceptionRemove( Strings excepts ) {
 		for (String s : excepts ) exceptions.remove( s );
 	}
 	
-	static private Strings deref( String name ) {
+	private static Strings deref( String name ) {
 		// must return strings for case where variable value is 'hello world'
 		// must contract( "=" ) for case where 'name' is "SUBJECT='fred'"
 		return (!exceptions.contains( name ) && Strings.isUCwHyphUs( name )
 				 ?	new Strings( get( name, name )).replace( ",", "and" )
 				 :	new Strings( name )).contract( "=" );
 	}
-	static public Strings derefOrPop( ListIterator<String> ai ) { return derefOrPop( ai, false ); }
-	static public Strings derefOrPop( ListIterator<String> ai, boolean internal ) {
+	public  static Strings derefOrPop( ListIterator<String> ai ) { return derefOrPop( ai, false ); }
+	public  static Strings derefOrPop( ListIterator<String> ai, boolean internal ) {
 		// "QUANTITY='2' UNITS='cup' of" => "2 cups of"
 		// "LOCATION='here' LOCATOR=''"  => ""
 		Strings b = new Strings();
@@ -158,18 +159,19 @@ public class Variable {
 				break;
 			else {
 				Strings c = deref( next ); // deref ...
-				if (internal) for (String d : c)
-					if (!exceptions.contains( d )
-							&& Strings.isUCwHyphUs( d )) { // ... POP!
-						//audit.debug( "popping on "+ d );
-						while (ai.hasNext() && !ai.next().equals( "]" ));
-						return new Strings();  // or null?
-					}
+				if (internal)
+					for (String d : c)
+						if (!exceptions.contains( d )
+								&& Strings.isUCwHyphUs( d )) { // ... POP!
+							//audit.debug( "popping on "+ d )
+							while (ai.hasNext() && !ai.next().equals( "]" ));
+							return new Strings();  // or null?
+						}
 				b.appendAll( c );
 		}	}
 		return b;
 	}
-	static public Strings deref( Strings in ) {
+	public  static Strings deref( Strings in ) {
 		Strings out = new Strings();
 		Iterator<String> it = in.iterator();
 		while (it.hasNext())
@@ -177,7 +179,7 @@ public class Variable {
 		return out;
 	}
 	
-	static public Strings perform( Strings args ) {
+	public  static Strings perform( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String  rc = Perform.S_SUCCESS,
 		       cmd = args.remove( 0 );
@@ -224,17 +226,17 @@ public class Variable {
 	}
 	
 	// --
-	public static void test( String cmd, String expected ) {
+	public  static void test( String cmd, String expected ) {
 		Strings actual = perform( new Strings( cmd ));
-		if (actual.equals( new Strings( expected )))
+		if (actual.equals( new Strings( expected ))) {
 			if ( actual.equals( Perform.Ignore ))
 				audit.debug(   "PASS: "+ cmd );
 			else
 				audit.debug(   "PASS: "+ cmd +" = '"+ actual +"'" );
-		else
+		} else
 			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
-	public static void main( String args[] ) {
+	public  static void main( String args[] ) {
 		Overlay.attach( NAME );
 		Audit.on();
 		

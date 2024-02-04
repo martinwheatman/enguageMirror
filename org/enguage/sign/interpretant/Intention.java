@@ -5,15 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.intentions.Commands;
 import org.enguage.sign.interpretant.intentions.Engine;
-import org.enguage.sign.interpretant.intentions.SofaPerform;
 import org.enguage.sign.interpretant.intentions.Reply;
+import org.enguage.sign.interpretant.intentions.SofaPerform;
 import org.enguage.sign.interpretant.intentions.Thought;
 import org.enguage.sign.object.Variable;
-import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
@@ -21,8 +22,8 @@ import org.enguage.util.strings.Strings;
 
 public class Intention {
 	
-	private static final String NAME = "Intention";
-	private static       Audit audit = new Audit( NAME );
+	private static final String       NAME = "Intention";
+	private static final Audit       audit = new Audit( NAME );
 
 	public  static final String  AUTOP_STR = "autopoiesis";
 	
@@ -57,15 +58,15 @@ public class Intention {
 	public  static final String ELSE_REPLY = REPLY + NEG;
 	
 	// 'finally' intentions are run irrespective of outcome
-	public  static final String   FINALLY = "f";
+	public  static final String    FINALLY = "f";
 	
-	public  static final int N_THEN       = 0x01; // 0000 0001
-	public  static final int N_ELSE       = 0x03; // 0000 0011
+	public  static final int  N_THEN       = 0x01; // 0000 0001
+	public  static final int  N_ELSE       = 0x03; // 0000 0011
 	
-	public  static final int N_THINK      = 0x00; // 0000 00xx
-	public  static final int N_DO         = 0x04; // 0000 01xx
-	public  static final int N_RUN        = 0x08; // 0000 10xx
-	public  static final int N_REPLY      = 0x0c; // 0000 11xx
+	public  static final int  N_THINK      = 0x00; // 0000 00xx
+	public  static final int  N_DO         = 0x04; // 0000 01xx
+	public  static final int  N_RUN        = 0x08; // 0000 10xx
+	public  static final int  N_REPLY      = 0x0c; // 0000 11xx
 	
 	// written types
 	public  static final int UNDEFINED     = -1;
@@ -115,7 +116,8 @@ public class Intention {
 		}
 		return NEU;
 	}
-	public static int getType(Strings sa) {
+	public static int extractType(Strings sa) {
+		// Removes strings from sa!!!  E.g.:
 		// [ "if", "so", ",", "think", "something" ] => 
 		//   N_THEN_THINK + [ "think", "something" ]
 		// [ "if", "not", ",", "say", "so" ] =>
@@ -177,10 +179,6 @@ public class Intention {
 	private boolean   spatial = false;
 	public  boolean   isSpatial() {return spatial;}
 	public  Intention spatialIs( boolean s ) {spatial = s; return this;}
-
-	private static String concept = "";
-	public  static void   concept( String name ) { concept = name; }
-	public  static String concept() { return concept; }
 
 	// "ok, PERSON needs ..." => "ok martin needs a coffee"
 	public  static Strings format( Strings values, String answer, boolean expand ) {
@@ -316,15 +314,15 @@ public class Intention {
 		r = new Reply();
 		Sign.latest(
 				new Sign()
-					.pattern( new Frags( "c variable pattern z" ))
-					.concept( concept() )
+					.pattern( new Pattern( "c variable pattern z" ))
+					.concept( Concept.concept() )
 		);
 		String reply = "three four";
 		Sign.latest().append( Intention.N_THEN_REPLY, reply );
 		// ...This implies COND
-		Sign.latest().insert( Intentions.Insertion.PREPEND, new Intention( N_THEN_THINK, "one two three four" ));
+		Sign.latest().insert(new Intention( N_THEN_THINK, "one two three four" ));
 		// ...if not reply EXECP REPLY
-		Sign.latest().insert( Intentions.Insertion.HEADER, new Intention( N_ELSE_REPLY, "two three four" ));
+		Sign.latest().insert( new Intention( N_ELSE_REPLY, "two three four" ));
 		
 		Repertoires.signs().insert( Sign.latest() );
 		r.answer( Config.yes().toString() );

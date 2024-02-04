@@ -1,24 +1,18 @@
-On "first               SAID-X", perform "sign prepend think X".
-On "first if so         SAID-X", perform "sign prepend then think X".
-On "first if not        SAID-X", perform "sign prepend else think X".
+On "first               SAID-X", perform "sign think   X"; reply "ok, X".
+On "first         reply SAID-X", perform "sign reply   X"; reply "ok, reply X".
+On " just         reply SAID-X", perform "sign reply   X"; reply "ok, reply X".
+On "first       perform SAID-X", perform "sign perform X"; reply "ok, perform X".
 
-On "first         reply SAID-X", perform "sign prepend reply X";      reply "ok, reply X".
-On "first if so   reply SAID-X", perform "sign prepend then reply X"; reply "ok, reply X".
-On "first if not  reply SAID-X", perform "sign prepend else reply X"; reply "ok, reply X".
+On "then                SAID-X", perform "sign      think X".
+On "then if so          SAID-X", perform "sign then think X".
+On "then if not         SAID-X", perform "sign else think X".
 
-On " just         reply SAID-X", perform "sign prepend reply QUOTED-X".
-On "first       perform SAID-X", perform "sign prepend perform QUOTED-X".
+On "then          reply SAID-X": perform "sign      reply X"; reply "ok, reply X".
+On "then if so    reply SAID-X": perform "sign then reply X"; reply "ok, reply X".
+On "then if not   reply SAID-X": perform "sign else reply X"; reply "ok, reply X".
 
-On "then                SAID-X", perform "sign next think X".
-On "then if so          SAID-X", perform "sign next then think X".
-On "then if not         SAID-X", perform "sign next else think X".
-
-On "then          reply SAID-X": perform "sign next      reply X"; reply "ok, reply X".
-On "then if so    reply SAID-X": perform "sign next then reply X"; reply "ok, reply X".
-On "then if not   reply SAID-X": perform "sign next else reply X"; reply "ok, reply X".
-
-On "then        perform SAID-X", perform "sign next perform QUOTED-X".
-On "then if so  perform SAID-X", perform "sign next perform QUOTED-X".
-On "then if not perform SAID-X", perform "sign next perform QUOTED-X".
+On "then        perform SAID-X": perform "sign      perform X"; reply "ok, perform X".
+On "then if so  perform SAID-X": perform "sign then perform X"; reply "ok, perform X".
+On "then if not perform SAID-X": perform "sign else perform X"; reply "ok, perform X".
 
 # probably need to Unix-ify running anything!

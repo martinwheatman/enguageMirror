@@ -1,10 +1,11 @@
-i can say  someone is the something  : ok, one can say someone is the something.
-where that someone is a value        : ok, someone is a value.
-and where that something is a phrase : ok, something is a phrase.
-this implies is that someone a person: ok, is that someone a person.
+i can say  someone is the something   : ok, one can say someone is the something.
+where that someone is a value         : ok, someone is a value.
+and where that something is a phrase  : ok, something is a phrase.
+this implies is that someone a person : ok, is that someone a person.
 then if not reply sorry that someone is not a person:
 		ok, reply sorry that someone is not a person.
-then reply okdokey                   : ok, reply okdokey.
+then perform variable set martin best : ok, perform variable set martin best.
+then reply okdokey                    : ok, reply okdokey.
 
 show this sign.
 
@@ -19,4 +20,4 @@ show this sign.
 
 delete the concept OTF.
 
-show this sign.
+show this sign : sorry, nothing to see here.

@@ -4,7 +4,7 @@ import java.util.ListIterator;
 
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Autoload;
-import org.enguage.sign.WrittenSignFactory;
+import org.enguage.sign.factory.Written;
 import org.enguage.sign.symbol.when.Date;
 import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.attr.Attribute;
@@ -185,7 +185,7 @@ public class InfoBox {
 						
 						rc.append( name +" "+ header );
 						Repertoires.signs().insert(
-								new WrittenSignFactory( 
+								new Written( 
 											"On \""+ name +" "+ header +"\""
 											+ ", according to wikipedia "
 											+ "what is the "+ name +" of "+ header 

@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.token.TokenStream;
@@ -214,12 +214,12 @@ public class Attributes extends ArrayList<Attribute> {
 			String orig = name;
 			// if we have QUOTED-X, retrieve X and leave answer QUOTED
 			// [ x="martin" ].derefChs( "QUOTED-X" ) => '"martin"'
-			boolean first    = name.contains( Frags.firstPrefix ),
-					rest     = name.contains( Frags.restPrefix  ),
-					quoted   = name.contains( Frags.quotedPrefix ),
-					plural   = name.contains( Frags.pluralPrefix ),
-					external = name.contains( Frags.externPrefix ),
-					grouped  = name.contains( Frags.groupedPrefix );
+			boolean first    = name.contains( Pattern.firstPrefix ),
+					rest     = name.contains( Pattern.restPrefix  ),
+					quoted   = name.contains( Pattern.quotedPrefix ),
+					plural   = name.contains( Pattern.pluralPrefix ),
+					external = name.contains( Pattern.externPrefix ),
+					grouped  = name.contains( Pattern.groupedPrefix );
 			
 			// remove all prefixes...
 			name = name.substring( name.lastIndexOf( "-" )+1 );

@@ -1108,7 +1108,25 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		if (tmp.size() > 0) output.add( tmp.toString());
 		return output;
 	}
-	
+	public static Strings markedUppercaser( String marker, Strings vars, Strings implication ) {
+		// takes a marker and replaces that following with upper case...
+		// takes a marker and replaces   FOLLOWING    with upper case...
+		Strings uc = new Strings();
+		
+		for (int i=0; i<implication.size(); i++)
+			if (i<implication.size()-1 &&
+					implication.get( i ).equals( marker ) &&
+					vars.contains( implication.get( i + 1 )))
+				
+				// increment counter to skip marker
+				uc.append( implication.get( ++i ).toUpperCase());
+		
+			else
+				uc.add( implication.get( i ));
+		
+		return uc;
+	}
+
 	public static long lash( String s ) {
 		final char upper = 'z', lower = 'a';
 		long lhsh  = 0;

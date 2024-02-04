@@ -2,7 +2,7 @@ package org.enguage.sign.symbol.pronoun;
 
 import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
@@ -54,19 +54,19 @@ public class Pronoun {
 		if (ps == PLURAL) {
 			if (os == SUBJECTIVE) {
 				if (mf == Gendered.PERSONAL)
-					Frags.subjGroup( val );
+					Pattern.subjGroup( val );
 				else if (mf == Gendered.NEUTRAL)
-					Frags.subjOther( val );
+					Pattern.subjOther( val );
 			} else if (os == OBJECTIVE) {
 				if (mf == Gendered.PERSONAL)
-					Frags.objGroup( val );
+					Pattern.objGroup( val );
 				else if (mf == Gendered.NEUTRAL)
-					Frags.objOther( val );
+					Pattern.objOther( val );
 			} else if (os == POSSESSIVE) {
 				if (mf == Gendered.PERSONAL)
-					Frags.possGroup( val );
+					Pattern.possGroup( val );
 				else if (mf == Gendered.NEUTRAL)
-					Frags.possOther( val );
+					Pattern.possOther( val );
 	}	}	}
 	
 	static private String[][][] values = { // initialise to names!

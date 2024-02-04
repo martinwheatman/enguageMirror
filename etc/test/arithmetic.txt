@@ -28,7 +28,7 @@ to the phrase what is the factorial of 0 reply 1: ok.
 what is the factorial of 0:  1.
 
 interpret multiply numeric variable a by numeric variable b thus: ok.
-first evaluate variable a times variable b:                       ok.
+first evaluate variable a times variable b:                       ok, evaluate variable a times variable b.
 
 the product of x and y is x times y.
 what is the product of 3 and 4:  the product of 3 and 4 is 12.
@@ -38,7 +38,7 @@ what is 2 times the square of 2: 2 times the square of 2 is 8.
 
 # again, in longhand this is...
 interpret subtract numeric variable c from numeric variable d thus: ok.
-first evaluate variable d minus variable c:                         ok.
+first evaluate variable d minus variable c:                         ok, evaluate variable d minus variable c.
 subtract 2 from 3: 1.
 
 the factorial of n is n times the factorial of n minus 1:

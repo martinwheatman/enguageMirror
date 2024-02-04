@@ -164,11 +164,11 @@ public class Frag {
 		String postfix = postfix().toString();
 		return prefix + (prefix.equals( "" ) ? "" : name.equals( "" ) ? "" : " ")
 				+(name.equals( "" ) ? "" :
-					(isNumeric()? Frags.numericPrefix : "")
-					+ (isPhrased()? Frags.phrasePrefix : "")
-					+ (isQuoted()? Frags.quotedPrefix : "")
+					(isNumeric()? Pattern.numericPrefix : "")
+					+ (isPhrased()? Pattern.phrasePrefix : "")
+					+ (isQuoted()? Pattern.quotedPrefix : "")
 					+ (isList()? Config.andConjunction().toUpperCase( Locale.getDefault())
-							+"-"+ Frags.list.toUpperCase( Locale.getDefault()) +"-" : "")
+							+"-"+ Pattern.list.toUpperCase( Locale.getDefault()) +"-" : "")
 					+ name.toUpperCase( Locale.getDefault()) ) 
 				+ (postfix.equals( "" ) ? "" : " ") + postfix();
 	}

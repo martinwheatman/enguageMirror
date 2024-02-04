@@ -16,47 +16,20 @@ public class Intentions extends ArrayList<Intention> {
 	public  Intentions append(        Intention in ){add( in ); return this;}
 	public  Intentions insert( int i, Intention in ){add( i==-1 ? 0 : i, in ); return this;}
 
-	public enum Insertion {
-		UNKNOWN, PREPEND, HEADER, TAILER, APPEND, NEXT, PREV
-	}
-	
-	private int  lastInsertion = 0;
-	public  int  lastInsertion() {return lastInsertion;}
-	private void lastInsertion( int i ) {lastInsertion = i;}
-	
-	public Intentions insert( Insertion ins, Intention intn ) {
-		if (size() == 0)
-			lastInsertion( 0 );
-		else
-			switch (ins) {
-				case TAILER:  // default!
-				case UNKNOWN: lastInsertion( size()-1 ); break;
-				case PREPEND: lastInsertion(        0 ); break;
-				case HEADER:  lastInsertion(        1 ); break;
-				case APPEND:  lastInsertion( size()   ); break;
-				case NEXT:    lastInsertion( lastInsertion() + 1 ); break;
-				case PREV:    lastInsertion( lastInsertion()     ); break;
-			}
-		insert( lastInsertion(), intn ); 
+	public Intentions insert( Intention intn ) {
+		int sz = size();
+		if (sz == 0)
+			insert( 0, intn );
+		else {
+			// reply always goes at the end
+			Intention in = get( sz-1 );
+			if (in.type() == Intention.N_REPLY)
+				insert( sz-1, intn );
+			else // end is not a reply, append list
+				add( intn );
+		}
 		return this;
 	}
-	public static Insertion getInsertionType( String cmd ) {
-		if (cmd.equals(  "header" )) return Insertion.HEADER;
-		if (cmd.equals( "prepend" )) return Insertion.PREPEND;
-		if (cmd.equals(  "tailer" )) return Insertion.TAILER;
-		if (cmd.equals(  "append" )) return Insertion.APPEND;
-		if (cmd.equals(    "next" )) return Insertion.NEXT;
-		if (cmd.equals(    "prev" )) return Insertion.PREV;
-		if (cmd.equals( "finally" )) return Insertion.APPEND;
-		return Insertion.UNKNOWN;
-	}
-
-	// used in autopoiesis:
-	public  Intentions appendIntention( int typ, String val ) {
-		add( new Intention( typ, val ));
-		return this;
-	}
-	public  Intentions tailPrepend( Intention in ){add( size(), in ); return this;}
 
 	public String toXml() {
 		StringBuilder intentions = new StringBuilder();
@@ -67,8 +40,8 @@ public class Intentions extends ArrayList<Intention> {
 			intentions.append(
 					"\n"+ indent +
 					Attribute.asString( 
-							Intention.typeToString( in.type() ), in.value() )
-			);
+							Intention.typeToString( in.type() ), in.value()
+			)		);
 		
 		Audit.decr();
 		return intentions.toString();
@@ -90,6 +63,7 @@ public class Intentions extends ArrayList<Intention> {
 	}
 	
 	// ------------------------------------------------------------------------
+	
 	public Reply mediate() {
 		// It's okay where there are no intentions (e.g. "i can say X")
 		Reply r = new Reply().answer( Config.S_OKAY );

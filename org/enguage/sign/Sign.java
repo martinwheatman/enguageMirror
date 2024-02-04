@@ -1,10 +1,12 @@
 package org.enguage.sign;
 
+import org.enguage.sign.factory.Spoken;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.interpretant.Intentions;
 import org.enguage.sign.object.Temporal;
+import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.pattern.Frag;
-import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
@@ -33,10 +35,10 @@ public class Sign {
 	
 	/* Member - PATTERN
 	 */
-	private Frags pattern = new Frags();
-	public  Frags pattern() {return pattern;}
-	public  Sign  pattern( String s ) {pattern = new Frags(s); return this;}
-	public  Sign  pattern( Frags ta ) {pattern = ta; return this;}
+	private Pattern pattern = new Pattern();
+	public  Pattern pattern() {return pattern;}
+	public  Sign  pattern( String s ) {pattern = new Pattern(s); return this;}
+	public  Sign  pattern( Pattern ta ) {pattern = ta; return this;}
 	public  Sign  pattern( Frag child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
@@ -57,7 +59,7 @@ public class Sign {
 	private Intentions intentions = new Intentions();
 	public  Intentions intentions() {return intentions;}
 	public  Sign       intentions( Intentions is ) {intentions = is; return this;}
-	public  Sign       insert( Intentions.Insertion ins, Intention intent ) {intentions.insert( ins, intent ); return this;}
+	public  Sign       insert( Intention intent ) {intentions.insert( intent ); return this;}
 	public  Sign       append( Intention intent ) {intentions.add( intent ); return this;}
 	public  Sign       append( int type, String pattern ) {intentions.append( new Intention( type, pattern )); return this;}
 	
@@ -115,11 +117,16 @@ public class Sign {
 		return "On \""+ pattern().toString()+ "\""
 				+ intentions.toStringIndented( auditIndents ) +".";
 	}
+	public String toString() {return toString( false );}
 	
 	public String  toLine() {return toString( false ) + "\n";}
 	public boolean toFile( String fname ){return Fs.stringAppendFile( fname, toLine());}
 	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toLine());}
 
 	public static Strings perform( Strings args ) {
-		return SpokenSignFactory.perform( args );
+		
+		if (args.isEmpty())
+			return new Strings( Perform.S_FAIL);
+		
+		return Spoken.perform( args );
 }	}

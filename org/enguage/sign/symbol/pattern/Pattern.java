@@ -21,7 +21,7 @@ import org.enguage.util.audit.Audit;
 import org.enguage.util.audit.Indentation;
 import org.enguage.util.strings.Strings;
 
-public class Frags extends ArrayList<Frag> {
+public class Pattern extends ArrayList<Frag> {
 	static final         long serialVersionUID = 0;
 	private static        Audit          audit = new Audit( "Pattern" );
 
@@ -52,8 +52,8 @@ public class Frags extends ArrayList<Frag> {
 	public  static final String  external      = "ext";
 	public  static final String  externPrefix  = external.toUpperCase( locale ) + "-";
 	
-	public Frags() { super(); }
-	public Frags( Strings words ) {
+	public Pattern() { super(); }
+	public Pattern( Strings words ) {
 		
 		// "if X do Y" -> [ <x prefix=["if"]/>, <y prefix=["do"] postfix="."/> ]
 		Frag t = new Frag();
@@ -137,12 +137,12 @@ public class Frags extends ArrayList<Frag> {
 	// if variable x do phrase variable y => if X do PHRASE-Y
 	// i need numeric variable quantity variable units of phrase variable needs.
 	// => i need NUMERIC-QUANTITY UNIT of PHRASE-NEEDS
-	public Frags( String str ) { this( toPattern( new Strings( str ))); }
+	public Pattern( String str ) { this( toPattern( new Strings( str ))); }
 	
 	/*
 	 * This is a constructor to split a frag into two...
 	 */
-	public Frags( Frag frag, String word, String type ) {
+	public Pattern( Frag frag, String word, String type ) {
 		if (frag.prefix().contains( word )) {
 			
 			if (type.equals(phrase)) {
@@ -190,7 +190,7 @@ public class Frags extends ArrayList<Frag> {
 		} else // 
 			add( frag );
 	}
-	public Frags( Frag frag, String word ) {
+	public Pattern( Frag frag, String word ) {
 		if (frag.prefix().contains( word )) {
 			add( new Frag( frag.prefix().copyBefore( word ), word ));
 			add( new Frag( frag ).prefix( frag.prefix().copyAfter( word )));
@@ -202,17 +202,17 @@ public class Frags extends ArrayList<Frag> {
 		} else
 			add( frag );
 	}
-	public Frags split( String word ) {
-		Frags ff = new Frags();
+	public Pattern split( String word ) {
+		Pattern ff = new Pattern();
 		for (Frag f : this) {
-			ff.addAll( new Frags( f, word ));
+			ff.addAll( new Pattern( f, word ));
 		}
 		return ff;
 	}
-	public Frags split( String word, String type ) {
-		Frags ff = new Frags();
+	public Pattern split( String word, String type ) {
+		Pattern ff = new Pattern();
 		for (Frag f : this) {
-			ff.addAll( new Frags( f, word, type ));
+			ff.addAll( new Pattern( f, word, type ));
 		}
 		return ff;
 	}
@@ -364,8 +364,8 @@ public class Frags extends ArrayList<Frag> {
 	
 	public int cplex( boolean ud ) {
 		boolean infinite = false;
-		int cons = ud?1:0, // we want to keep user defined signs ahead of written ones
-		    vars = 0;      // this might mean when a thought is saved it must get loaded/unloaded
+		int cons = ud?1:0; // we want to keep user defined signs ahead of written ones
+		int vars = 0;      // this might mean when a thought is saved it must get loaded/unloaded
 		                   // like other written repertoires.
 		for (Frag t : this) {
 			cons += t.nconsts();
@@ -731,7 +731,7 @@ public class Frags extends ArrayList<Frag> {
 	}
 	
 	// --- test code...
-	public  static  void printTagsAndValues( Frags interpretant, String phrase, Attributes expected ) {
+	public  static  void printTagsAndValues( Pattern interpretant, String phrase, Attributes expected ) {
 		audit.in( "printTagsAndValues", "ta="+ interpretant.toString() +", phr="+ phrase +", expected="+ 
 				(expected == null ? "":expected.toString()) );
 		Attributes values = interpretant.matchValues( new Strings( phrase ), true );
@@ -777,7 +777,7 @@ public class Frags extends ArrayList<Frag> {
 		audit.out();
 	}
 	private static  void complexityTest( String str ) {
-		Frags patt = new Frags( toPattern( new Strings( str )));
+		Pattern patt = new Pattern( toPattern( new Strings( str )));
 		Audit.log( "pattern: "+ patt );
 		//audit.LOG( "    Xml: "+ patt.toXml() )
 		Audit.log( " cmplxy: "+ patt.cplex( true ) );
@@ -902,7 +902,7 @@ public class Frags extends ArrayList<Frag> {
 		
 		Where.doLocators("at/from/in");
 		Where.addConcept( "need+needs" );
-		Frags p = new Frags( "i need PHRASE-THESE" );
+		Pattern p = new Pattern( "i need PHRASE-THESE" );
 		audit.debug( "pattern is: "+ p.toXml());
 		
 		Audit.on();

@@ -15,11 +15,10 @@ import java.util.TreeSet;
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.Assets;
-import org.enguage.sign.WrittenSignFactory;
 import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
-import org.enguage.sign.SpokenSignFactory;
-import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.factory.Spoken;
+import org.enguage.sign.factory.Written;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.util.audit.Audit;
@@ -51,6 +50,10 @@ public class Concept {
 	public  static final String ENTRY_EXT = DOT + ENTRY;
 	public  static final String  DELT_EXT = DOT + DEL;
 	
+	private static String concept = "";
+	public  static void   concept( String name ) { concept = name; }
+	public  static String concept() { return concept; }
+
 	private static TreeSet<String> names = new TreeSet<>();
 	public  static void  remove( String name ) {names.remove( name );}
 	public  static void     add( String name ) {names.add(    name );}
@@ -225,7 +228,7 @@ public class Concept {
 		Strings content = preprocessFile( fp, from, to );
 		ArrayList<Strings> utterances = content.divide( Terminator.terminators(), false );
 		for (Strings utterance : utterances) {
-			Sign sign = new WrittenSignFactory( utterance ).toSign();
+			Sign sign = new Written( utterance ).toSign();
 			if (sign != null)
 				Repertoires.signs().insert( sign );
 			else // if we find, e.g. "this concept is spatial".
@@ -240,7 +243,7 @@ public class Concept {
 		String  loadedName = to==null ? name : name.replace( from, to );
 		
 		Variable.set( Assets.NAME, name );
-		Intention.concept( loadedName );
+		Concept.concept( loadedName );
 		Audit.suspend();
 		
 		InputStream  is = null;
@@ -338,7 +341,7 @@ public class Concept {
 			remove( concept ); // remove the concept name
 			delete( concept ); // delete the concept file
 			Repertoires.signs().remove( concept ); // remove the loaded concept
-			SpokenSignFactory.delete(); // remove sign under construction
+			Spoken.delete(); // remove sign under construction
 			
 			
 		} else if (cmd.equals( "load" )) {

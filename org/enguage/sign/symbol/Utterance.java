@@ -9,7 +9,7 @@ import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.config.Colloquial;
 import org.enguage.sign.symbol.config.Englishisms;
 import org.enguage.sign.symbol.pattern.Frag;
-import org.enguage.sign.symbol.pattern.Frags;
+import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.sign.symbol.when.When;
 import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attributes;
@@ -118,7 +118,7 @@ public class Utterance {
 		);
 
 		// create a meeting repertoire
-		Frags ts = new Frags();
+		Pattern ts = new Pattern();
 		ts.add( new Frag( "i am meeting", "WHOM" ).phrasedIs() );
 		Sign s = new Sign().concept("meeting").pattern( ts );
 		Where.addConcept("meeting");
@@ -129,7 +129,7 @@ public class Utterance {
 		test( s, "i am meeting my brother at the pub at 7" );
 		test( s, "i am meeting my sister  at the pub" );
 		
-		ts = new Frags();
+		ts = new Pattern();
 		ts.add( new Frag( "what is the factorial of", "N" ).numericIs() );
 		s = new Sign().concept("meeting").pattern( ts );
 
