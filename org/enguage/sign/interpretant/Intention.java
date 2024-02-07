@@ -1,20 +1,12 @@
 package org.enguage.sign.interpretant;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.enguage.repertoires.Repertoires;
-import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
-import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.intentions.Commands;
 import org.enguage.sign.interpretant.intentions.Engine;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.interpretant.intentions.SofaPerform;
 import org.enguage.sign.interpretant.intentions.Thought;
 import org.enguage.sign.object.Variable;
-import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Context;
 import org.enguage.util.audit.Audit;
@@ -153,8 +145,6 @@ public class Intention {
 		return rc;
 	}
 
-
-
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
 	public Intention( Intention in, boolean temp, boolean spatial ) {
@@ -282,52 +272,4 @@ public class Intention {
 			case N_FINALLY    : return "finally \""+ value +"\"";
 			default : return Attribute.asString( typeToString( type ), value() );
 	}	}
-	/*
-	 * Test code...
-	 */
-	public static Reply test(Reply r, List<Intention> intents) {
-		Iterator<Intention> ins = intents.iterator();
-		while (!r.isDone() && ins.hasNext()) {
-			Intention in = ins.next();
-			audit.debug( typeToString( in.type )  +"='"+ in.value +"'" );
-		}
-		return r;
-	}
-	public static void main( String[] argv ) {
-		Reply r = new Reply().answer( "world" );
-		r.type( Response.typeFromStrings( new Strings( "world" )));
-		audit.debug( new Intention( N_THEN_REPLY, "hello ..." ).mediate( r ).toString() );
-		
-		Audit.title( "trad autopoiesis... add to a list and then add that list" );
-		r = new Reply();
-		ArrayList<Intention> a = new ArrayList<>();
-//		a.add( new Intention( N_CREATE, THINK      +" \"a PATTERN z\" \"one two three four\""   ));
-//		a.add( new Intention( N_APPEND, ELSE_REPLY +" \"two three four\""   ));
-//		a.add( new Intention( N_APPEND, REPLY      +" \"three four\"" ));
-		test( r, a );
-		audit.debug( Repertoires.signs().toString() );
-		audit.debug( r.toString());
-		
-		Audit.title( "sign self-build II... add pairs of attributes" );
-		// now built like this...
-		// To PATTERN reply TYPICAL REPLY
-		r = new Reply();
-		Sign.latest(
-				new Sign()
-					.pattern( new Pattern( "c variable pattern z" ))
-					.concept( Concept.concept() )
-		);
-		String reply = "three four";
-		Sign.latest().append( Intention.N_THEN_REPLY, reply );
-		// ...This implies COND
-		Sign.latest().insert(new Intention( N_THEN_THINK, "one two three four" ));
-		// ...if not reply EXECP REPLY
-		Sign.latest().insert( new Intention( N_ELSE_REPLY, "two three four" ));
-		
-		Repertoires.signs().insert( Sign.latest() );
-		r.answer( Config.yes().toString() );
-
-		
-		audit.debug( Repertoires.signs().toString() );
-		audit.debug( r.toString());
-}	}
+}

@@ -1,6 +1,5 @@
 package org.enguage.util.strings;
 
-// todo: remove use of ArrayList??? or use in throughout??? or LinkedList?
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -181,7 +180,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 						}
 						
 					} else if (DOUBLE_QUOTE == buffer[ i ]) {
-						//audit.audit("DQ string");
+						//audit.audit("DQ string")
 						word.append( buffer[ i++ ]);
 						while( i<sz && DOUBLE_QUOTE != buffer[ i ])
 							word.append( buffer[ i++ ]);
@@ -190,7 +189,7 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 						
 					} else {
 						boolean found = false;
-						//audit.audit("TOKEN");
+						//audit.audit("TOKEN")
 						for (int ti=0; ti<tokens.length && !found; ti++)
 							if (tokenMatch( tokens[ ti ],  s,  i,  sz )) {
 								found=true;
@@ -920,14 +919,19 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			
 		return rc;
 	}
-
-	public boolean equals( Strings sa ) {
-		Iterator<String> i = iterator(),
-		               sai = sa.iterator();
-		while (i.hasNext() && sai.hasNext())
-			if (!sai.next().equalsIgnoreCase( i.next() ))
-				return false;
-		return !i.hasNext() && !sai.hasNext();
+	@Override 
+	public boolean equals( Object sa ) {		
+		if (sa instanceof Strings) {
+			Iterator<String>   i = iterator();
+			Iterator<String> sai = ((Strings)sa).iterator();
+			
+			while (i.hasNext() && sai.hasNext())
+				if (!sai.next().equalsIgnoreCase( i.next() ))
+					return false;
+			
+			return !i.hasNext() && !sai.hasNext();
+		}
+		return false;
 	}
 	public boolean begins( Strings sa ) {
 		Iterator<String> i = iterator(),
@@ -1139,12 +1143,12 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		return lhsh;
 	}
 	public static int hash( String s ) {
-		//final int MAXINT = 2147483647;
+		//final int MAXINT = 2147483647
 		final char upper = 'z', lower = 'a';
 		int ihsh  = 0;
 		char ch;
-		int rng = upper - lower + 1,
-		    len = s.length();
+		int rng = upper - lower + 1;
+		int len = s.length();
 		for (int i=0; i<len && i<6; i++)
 			if ((ch = Character.toLowerCase( s.charAt( i )))>=lower &&
 			     ch                                         <=upper    )

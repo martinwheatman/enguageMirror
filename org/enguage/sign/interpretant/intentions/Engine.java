@@ -106,7 +106,10 @@ public final class Engine {
 		String  cmd  = cmds.remove( 0 );
 
 		if (cmd.equals( UNDO_STR )) {
+			// remove top overlay...
 			Overlay.undoTxn();
+			// ...so, reload variables
+			Variable.encache();
 				
 		} else if (cmd.equals( IGNORE_STR )) {
 			Repertoires.signs().ignore( cmds );

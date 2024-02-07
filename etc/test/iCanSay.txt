@@ -4,7 +4,11 @@ and where that something is a phrase  : ok, something is a phrase.
 this implies is that someone a person : ok, is that someone a person.
 then if not reply sorry that someone is not a person:
 		ok, reply sorry that someone is not a person.
-then perform variable set martin best : ok, perform variable set martin best.
+
+# put in and retract "run"		
+then run variable set martin best : ok, run variable set martin best.
+
+no then perform variable set martin best : ok, perform variable set martin best.
 then reply okdokey                    : ok, reply okdokey.
 
 show this sign.

@@ -26,7 +26,10 @@ public class Variable {
 	private static       Audit audit = new Audit( "Variable" );
 	
 	private static TreeMap<String,String> cache = encache();
-	private static TreeMap<String,String> encache() { return encache( Overlay.get() );}
+
+	// If overlays are modified, variables need to be encached...
+	public  static TreeMap<String,String> encache() {return encache( Overlay.get() );}
+
 	private static TreeMap<String,String> encache( Overlay o ) {
 		//audit.in( "encache", Ospace.location())
 		cache = new TreeMap<String,String>();

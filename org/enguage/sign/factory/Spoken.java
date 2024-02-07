@@ -1,6 +1,7 @@
 package org.enguage.sign.factory;
 
 import org.enguage.repertoires.Repertoires;
+import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.object.Variable;
@@ -13,15 +14,31 @@ public class Spoken {
 	
 	private Spoken() {}
 	
-	public  static final String   NAME = "voiced";
+	public  static final String   NAME = "Spoken";
 	private static final Audit   audit = new Audit( NAME );
 	
 	private static final String UNDER_CONSTR = "TBD"; // concept name for signs under construction
 	private static final String         THAT = "that"; // always(?) refers to a variable
+	private static final String     VAR_NAME = "VOICED";
 
 	private static Sign voiced = null;
 	public  static void delete() {voiced = null;}
 
+	private static void saveVoicedAsVariable() {Variable.set( VAR_NAME, voiced.toString() );}
+	private static Sign rereadVoiceFromVariable() {
+		String savedConcept = Concept.concept();
+		Concept.concept( UNDER_CONSTR );
+		Repertoires.signs().remove( UNDER_CONSTR );
+
+		voiced = new Written(
+				Variable.get( VAR_NAME )
+		).toSign();
+		
+		Repertoires.signs().insert( voiced );
+		Concept.concept( savedConcept );
+		return voiced;
+	}
+	
 	/*
 	 * Pattern creation routines
 	 */
@@ -34,9 +51,12 @@ public class Spoken {
 				.pattern( new Pattern( args.toString() ))
 				.concept( UNDER_CONSTR );
 		Repertoires.signs().insert( voiced );
+		
+		saveVoicedAsVariable();
 	}
 	private static void doSplit( Strings args ) {
 		if (voiced != null) {
+			voiced = rereadVoiceFromVariable();
 			if (args.size() == 1)
 				voiced.pattern(
 						voiced.pattern().split(args.get( 0 ))
@@ -54,12 +74,14 @@ public class Spoken {
 			// therefore it needs to be reinserted...
 			Repertoires.signs().remove( UNDER_CONSTR );
 			Repertoires.signs().insert( voiced );
+			saveVoicedAsVariable();
 	}	}
 	/*
 	 * Voiced management routines
 	 */
 	private static void doImply( String intention, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
+			voiced = rereadVoiceFromVariable();
 			voiced.insert(
 				new Intention(
 						Intention.condType( Intention.N_THINK, isThen, isElse ),
@@ -72,10 +94,65 @@ public class Spoken {
 										new Strings( intention ) 
 						)		)
 			)	);
+			saveVoicedAsVariable();
 		}
 	}
+	private static void doPerform( Strings args, boolean isThen, boolean isElse ) {
+		if (voiced != null) {
+			voiced = rereadVoiceFromVariable();
+			voiced.insert(
+				new Intention(
+					Intention.condType( Intention.N_DO, isThen, isElse ),
+					Pattern.toPattern( args )
+			)	);
+			saveVoicedAsVariable();
+		}
+	}
+	private static void doThink( Strings args, boolean isThen, boolean isElse ) {
+		if (voiced != null) { //BUG: sign think called w/o voiced
+			voiced = rereadVoiceFromVariable();
+			voiced.insert(
+				new Intention(
+					Intention.condType( Intention.N_THINK, isThen, isElse ),
+					Pattern.toPattern( new Strings( args.toString() ))
+			)	);
+			saveVoicedAsVariable();
+	}	}
+	private static void doRun( String intention, boolean isThen, boolean isElse ) {
+		if (voiced != null) {
+			voiced = rereadVoiceFromVariable();
+			Strings s = Strings.markedUppercaser(
+					THAT,
+					voiced.pattern().names(), 
+					new Strings( intention ) 
+			);
+			
+			voiced.insert(
+					new Intention(
+							Intention.condType( Intention.N_RUN, isThen, isElse ),
+							Pattern.toPattern( s )
+			)		);
+			saveVoicedAsVariable();
+	}	}
+	private static void doReply( Strings args, boolean isThen, boolean isElse ) {
+		if (voiced != null) {
+			voiced = rereadVoiceFromVariable();
+			// we need to replace "that someone" with "SOMEONE"
+			Intention intent = new Intention(
+					Intention.condType( Intention.N_REPLY, isThen, isElse ),
+					Pattern.toPattern(
+							Strings.markedUppercaser(
+									THAT,
+									voiced.pattern().names(),
+									new Strings( args.toString() )
+					)		)
+			);
+			voiced.insert( intent );
+			saveVoicedAsVariable();
+	}	}
 	private static void doFinally( Strings args, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
+			voiced = rereadVoiceFromVariable();
 			// N.B. this method is not currently exercised!!!
 			String cmd = args.get( 0 ); // don't remove it
 			int base = Intention.N_THINK;
@@ -90,54 +167,14 @@ public class Spoken {
 							Pattern.toPattern( new Strings( args.toString() ))
 					)
 			);
-	}	}
-	private static void doPerform( Strings args, boolean isThen, boolean isElse ) {
-		if (voiced != null) {
-			voiced.insert(
-				new Intention(
-					Intention.condType( Intention.N_DO, isThen, isElse ),
-					Pattern.toPattern( args )
-			)	);
-		}
-	}
-	private static void doThink( Strings args, boolean isThen, boolean isElse ) {
-		//audit.debug( "adding a thought "+ args.toString() )
-		if (voiced != null) { //BUG: sign think called w/o voiced
-			voiced.insert(
-				new Intention(
-					Intention.condType( Intention.N_THINK, isThen, isElse ),
-					Pattern.toPattern( new Strings( args.toString() ))
-			)	);
-	}	}
-	private static void doRun( Strings args, boolean isThen, boolean isElse ) {
-		//audit.debug( "appending a script to run: '"+ args.toString() +"'")
-		if (voiced != null) {
-			voiced.insert(
-				new Intention(
-						Intention.condType( Intention.N_RUN, isThen, isElse ),
-						Pattern.toPattern( new Strings( args.toString() ))
-			)	);
-		}
-	}
-	private static void doReply( Strings args, boolean isThen, boolean isElse ) {
-		if (voiced != null) {
-			// we need to replace "that someone" with "SOMEONE"
-			Intention intent = new Intention(
-					Intention.condType( Intention.N_REPLY, isThen, isElse ),
-					Pattern.toPattern(
-							Strings.markedUppercaser(
-									THAT,
-									voiced.pattern().names(),
-									new Strings( args.toString() )
-					)		)
-			);
-
-			voiced.insert( intent );
+			// write out here
+			saveVoicedAsVariable();
 	}	}
 	private static String doShow() {
 		if (voiced != null) {
+			rereadVoiceFromVariable();
 			// w/o Audit indents!
-			//Audit.log( voiced.toString( false ));
+			Audit.log( voiced.toString( false ));
 		} else
 			return Perform.S_FAIL + ", nothing to see here";
 		return Perform.S_SUCCESS;
@@ -177,9 +214,6 @@ public class Spoken {
 		else if (cmd.equals( "show" ))
 			rc = doShow();
 						
-		else if (cmd.equals( "reply" ))
-			doReply( args, isThen, isElse );
-			
 		else if (cmd.equals( "think" ))
 			doThink( args, isThen, isElse );
 			
@@ -187,10 +221,13 @@ public class Spoken {
 			doImply( args.get( 0 ), isThen, isElse );
 			
 		else if (cmd.equals( "run" ))
-			doRun( args, isThen, isElse );
+			doRun( args.get( 0 ), isThen, isElse );
 			
 		else if (cmd.equals( "temporal"))
 			voiced.temporalIs( true );
+			
+		else if (cmd.equals( "reply" ))
+			doReply( args, isThen, isElse );
 			
 		else if (cmd.equals( "finally" ))
 			doFinally( args, isThen, isElse );

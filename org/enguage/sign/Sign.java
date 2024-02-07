@@ -33,13 +33,14 @@ public class Sign {
 		pattern( variable2.prefix( prefix2 ));
 	}
 	
-	/* Member - PATTERN
+	/** ------------------------------------------------------------------------
+	 *  Member - Pattern - SYMBOL
 	 */
 	private Pattern pattern = new Pattern();
 	public  Pattern pattern() {return pattern;}
-	public  Sign  pattern( String s ) {pattern = new Pattern(s); return this;}
-	public  Sign  pattern( Pattern ta ) {pattern = ta; return this;}
-	public  Sign  pattern( Frag child ) {
+	public  Sign    pattern( String s ) {pattern = new Pattern(s); return this;}
+	public  Sign    pattern( Pattern ta ) {pattern = ta; return this;}
+	public  Sign    pattern( Frag child ) {
 		if (!child.isEmpty())
 			pattern.add( child );
 		return this;
@@ -54,7 +55,17 @@ public class Sign {
 	}
 	public  Sign  split( String word ) {pattern( pattern.split( word )); return this;} 
 
-	/* Member - Intentions - THOUGHTS and REFERENCES
+	/**
+	 * Sign Complexity, used in sign ordering, is the complexity of its pattern.
+	 */
+	public int complexity() {
+		return pattern.cplex(
+					concept().equals( USER_DEFINED )
+			   );
+	}
+	
+	/* ------------------------------------------------------------------------
+	 * Member - Intentions - THOUGHTS and REFERENCES
 	 */
 	private Intentions intentions = new Intentions();
 	public  Intentions intentions() {return intentions;}
@@ -63,16 +74,15 @@ public class Sign {
 	public  Sign       append( Intention intent ) {intentions.add( intent ); return this;}
 	public  Sign       append( int type, String pattern ) {intentions.append( new Intention( type, pattern )); return this;}
 	
-	private static Sign latest = null;
-	public  static Sign latest() {return latest;}
-	public  static Sign latest(Sign s) {latest = s; return latest;}
-	
-	// Set during autopoiesis - replaces 'id' attribute 
+	/* ------------------------------------------------------------------------
+	 *  Member Concept - name of its repertoire
+	 */
 	private String  concept = "";
 	public  String  concept() { return concept; }
 	public  Sign    concept( String name ) { concept = name; return this; }
 	
-	/* Members - spatio-temporal
+	/* ------------------------------------------------------------------------
+	 * Members - spatio-temporal booleans
 	 */
 	private boolean temporalSet = false;
 	private boolean temporal = false;
@@ -93,13 +103,10 @@ public class Sign {
 		}
 		return spatial;
 	}
-	
-	public int cplex() {
-		return pattern().cplex(
-					concept().equals( USER_DEFINED )
-			   );
-	}
-	
+
+	/* ------------------------------------------------------------------------
+	 * Print routines --- in various formats ----------------------------------
+	 */
 	public String toXml( int n, long complexity ) {
 		String ind = Audit.indent();
 		return "<"+ NAME
@@ -123,6 +130,10 @@ public class Sign {
 	public boolean toFile( String fname ){return Fs.stringAppendFile( fname, toLine());}
 	public void    toFile() {Fs.stringToFile( pattern.toFilename(), toLine());}
 
+	/*  -----------------------------------------------------------------------
+	 *  'Sign' commands are fielded by 'spoken' SignBuilder factory, to
+	 *  work upon the sign under construction.
+	 */
 	public static Strings perform( Strings args ) {
 		
 		if (args.isEmpty())

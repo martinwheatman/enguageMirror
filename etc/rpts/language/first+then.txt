@@ -15,4 +15,8 @@ On "then        perform SAID-X": perform "sign      perform X"; reply "ok, perfo
 On "then if so  perform SAID-X": perform "sign then perform X"; reply "ok, perform X".
 On "then if not perform SAID-X": perform "sign else perform X"; reply "ok, perform X".
 
+On "then        run SAID-X": perform "sign      run X"; reply "ok, run X".
+On "then if so  run SAID-X": perform "sign then run X"; reply "ok, run X".
+On "then if not run SAID-X": perform "sign else run X"; reply "ok, run X".
+
 # probably need to Unix-ify running anything!

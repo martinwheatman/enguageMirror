@@ -37,7 +37,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 	
 	public  Signs insert( Sign insertMe ) {
 		int i = 0;
-		int c = insertMe.cplex();
+		int c = insertMe.complexity();
 		// Crikey! Descending order to put newest first! From old C coding!!
 		while (i > -99 && containsKey( c + i )) i--;
 		if (i < 99) // Arbitrary limit...
