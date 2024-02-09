@@ -2,6 +2,7 @@ package org.enguage.sign.factory;
 
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Concept;
+import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.object.Variable;
@@ -134,18 +135,44 @@ public class Spoken {
 			)		);
 			saveVoicedAsVariable();
 	}	}
+	private static void insertACommaOrPauseAfterFelicityEncoding( Strings reply ) {
+		// insert a comma/pause into reply
+		if      (reply.size() > Config.okay().size()
+				&& reply.begins( Config.okay())
+				&& !reply.get( Config.okay().size()).equals(","))
+			reply.add( Config.okay().size(), "," );
+		
+		else if (reply.size() > Config.notOkay().size()
+				&& reply.begins( Config.notOkay())
+				&& !reply.get( Config.notOkay().size()).equals(","))
+			reply.add( Config.notOkay().size(), "," );
+		
+		else if (reply.size() > Config.yes().size()
+				&& reply.begins( Config.yes())
+				&& !reply.get( Config.yes().size()).equals(","))
+			reply.add( Config.yes().size(), "," );
+		
+		else if (reply.size() > Config.no().size()
+				&& reply.begins( Config.no())
+				&& !reply.get( Config.no().size()).equals(","))
+			reply.add( Config.no().size(), "," );
+	}
 	private static void doReply( Strings args, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
 			voiced = rereadVoiceFromVariable();
+			
 			// we need to replace "that someone" with "SOMEONE"
+			Strings reply = Strings.markedUppercaser(
+					THAT,
+					voiced.pattern().names(),
+					new Strings( args.toString() )
+			);
+			
+			insertACommaOrPauseAfterFelicityEncoding( reply );
+			 
 			Intention intent = new Intention(
 					Intention.condType( Intention.N_REPLY, isThen, isElse ),
-					Pattern.toPattern(
-							Strings.markedUppercaser(
-									THAT,
-									voiced.pattern().names(),
-									new Strings( args.toString() )
-					)		)
+					Pattern.toPattern( reply )
 			);
 			voiced.insert( intent );
 			saveVoicedAsVariable();

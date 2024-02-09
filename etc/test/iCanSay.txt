@@ -9,16 +9,16 @@ then if not reply sorry that someone is not a person:
 then run variable set martin best : ok, run variable set martin best.
 
 no then perform variable set martin best : ok, perform variable set martin best.
-then reply okdokey                    : ok, reply okdokey.
+then reply ok dokey                    : ok, reply ok dokey.
 
 show this sign.
 
 # now test this.
-martin is the best : sorry martin is not a person.
+martin is the best : sorry, martin is not a person.
 person is a class  : ok, person is a class.
-martin is the best : sorry martin is not a person.
+martin is the best : sorry, martin is not a person.
 martin is a person : ok, martin is a person.
-martin is the best : okdokey.
+martin is the best : ok, dokey.
 
 show this sign.
 

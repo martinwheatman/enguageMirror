@@ -64,17 +64,17 @@ then  reply i do not know:                                   ok, reply i don't k
 echo test 5.1:-.
 am i alive:     i don't know.
 i am alive:     ok.
-am i alive:     yes i'm alive.
+am i alive:     yes, i'm alive.
 i am not alive: ok.
-am i alive:     no i'm not alive.
+am i alive:     no, i'm not alive.
 			
 # test 5.1
 is martin alive: i don't know.
 martin is alive: ok.
-is martin alive: yes martin is alive.
+is martin alive: yes, martin is alive.
 martin is not alive: ok.
-is martin alive:     no martin is not alive.
-is martin not alive: yes martin is not alive.
+is martin alive:     no, martin is not alive.
+is martin not alive: yes, martin is not alive.
 			
 #
 echo  Test 5.2 was/was not:-.
@@ -110,10 +110,10 @@ then  reply i do not know:                                    ok, reply i don't 
 # test 5.2
 was martin alive:     i don't know.
 martin was alive:     ok.
-was martin alive:     yes martin was alive.
+was martin alive:     yes, martin was alive.
 martin was not alive: ok.
-was martin alive:     no martin was not alive.
-was martin not alive: yes martin was not alive.
+was martin alive:     no, martin was not alive.
+was martin not alive: yes, martin was not alive.
 			
 #
 echo  Test 5.3 will be/will not be:-.
@@ -149,17 +149,17 @@ then  reply i do not know:                                        ok, reply i do
 # test 5.3
 will i be alive:     i don't know.
 i will be alive:     ok.
-will i be alive:     yes you'll be alive.
+will i be alive:     yes, you'll be alive.
 i will not be alive: ok.
-will i be alive:     no you'll not be alive.
-will i not be alive: yes you'll not be alive.
+will i be alive:     no, you'll not be alive.
+will i not be alive: yes, you'll not be alive.
 
 will martin be alive:     i don't know.
 martin will be alive:     ok.
-will martin be alive:     yes martin will be alive.
+will martin be alive:     yes, martin will be alive.
 martin will not be alive: ok.
-will martin be alive:     no martin will not be alive.
-will martin not be alive: yes martin will not be alive.
+will martin be alive:     no, martin will not be alive.
+will martin not be alive: yes, martin will not be alive.
 
 # Test
 # Event: to move is to was (traverse time quanta)
