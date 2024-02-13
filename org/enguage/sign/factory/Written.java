@@ -6,7 +6,7 @@ import java.util.ListIterator;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
-import org.enguage.sign.symbol.pattern.Pattern;
+import org.enguage.sign.pattern.Pattern;
 import org.enguage.util.strings.Strings;
 
 public class Written {

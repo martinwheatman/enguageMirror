@@ -5,9 +5,10 @@ this implies is that someone a person : ok, is that someone a person.
 then if not reply sorry that someone is not a person:
 		ok, reply sorry that someone is not a person.
 
-# put in and retract "run"		
+# put in 'run'...
 then run variable set martin best : ok, run variable set martin best.
 
+# ...now retract, and put in 'perform'.
 no then perform variable set martin best : ok, perform variable set martin best.
 then reply ok dokey                    : ok, reply ok dokey.
 
@@ -15,13 +16,13 @@ show this sign.
 
 # now test this.
 martin is the best : sorry, martin is not a person.
-person is a class  : ok, person is a class.
-martin is the best : sorry, martin is not a person.
 martin is a person : ok, martin is a person.
 martin is the best : ok, dokey.
 
-show this sign.
+## what does martin is a person imply: ok.
+## save this   : ok.
+## forget this : ok.
+## delete this : ok.
 
-delete the concept OTF.
-
-show this sign : sorry, nothing to see here.
+delete the concept OTF.                      # language/delete_the_concept-.txt
+show this sign : sorry, nothing to see here. # audit/show.txt

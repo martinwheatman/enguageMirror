@@ -26,7 +26,7 @@ On "a DERIVED is a BASE":
 
 On "X is a Y":
 	X is an entity;
-	if not, reply "sorry, X is a class"
+	if not, reply "sorry, X is a class";
 	Y is a class;
 	create an instanceof link from X to Y;
 	reply "ok, X is a Y".

@@ -1,4 +1,4 @@
-package org.enguage.sign.symbol.pattern;
+package org.enguage.sign.pattern;
 
 import java.util.ListIterator;
 import java.util.Locale;
@@ -7,7 +7,6 @@ import org.enguage.sign.Config;
 import org.enguage.sign.symbol.config.Englishisms;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.util.attr.Attribute;
-import org.enguage.util.audit.Audit;
 import org.enguage.util.audit.Indentation;
 import org.enguage.util.strings.Strings;
 
@@ -31,7 +30,7 @@ public class Frag {
 	public Frag( Frag orig ) {// copy constructor
 		prefix = new Strings( orig.prefix());
 		postfix = new Strings( orig.postfix());
-		name    = new String( orig.name());
+		name    = orig.name();
 		isNumeric = orig.isNumeric();
 		isExpr    = orig.isExpr();
 		isSign    = orig.isSign();
@@ -128,7 +127,7 @@ public class Frag {
 				));
 	}
 	
-	public boolean isEmpty() {return name.equals("") && prefix().size() == 0;}
+	public boolean isEmpty() {return name.equals("") && prefix().isEmpty();}
 
 	public boolean invalid( ListIterator<String> ui ) {
 		boolean rc = false;
@@ -141,42 +140,53 @@ public class Frag {
 		return rc;
 	}
 	
+	/* ------------------------------------------------------------------------
+	 * Print/toString routines
+	 */
+	// This simply prints something optionally, removing tertiary statements
+	private String opt( boolean cond, String opt ) {return cond ? opt : "";}
+	
+	public String toFilename() { // e.g. "i_need-"
+		return prefix().toString( Strings.UNDERSC ) +
+				opt( !name.equals( "" ), "-" )      +
+				postfix().toString( Strings.UNDERSC );
+	}
+	
+	// Content to strings...
 	public String toXml( Indentation indent ) {
 		indent.incr();
 		String s = prefix().toString( Strings.OUTERSP )
 				+ (name.equals( "" ) ? "" :
 					("<"+ name
-							+ (isPhrased() ? " phrased='true'":"")
-							+ (isNumeric() ? " numeric='true'":"")
+							+ opt( isPhrased(), " phrased='true'" )
+							+ opt( isNumeric(), " numeric='true'" )
 							+ "/>"
 				  ) )
 				+ postfix().toString();
 		indent.decr();
 		return s;
 	}
-	public String toPattern() {
-		return prefix().toString( Strings.UNDERSC )
-				+(name.equals( "" ) ? (postSz == 0?"":"_") : "-")
-				+(postfix().toString( Strings.UNDERSC ));
-	}
 	public String toString() {
-		String prefix = prefix().toString();
-		String postfix = postfix().toString();
-		return prefix + (prefix.equals( "" ) ? "" : name.equals( "" ) ? "" : " ")
-				+(name.equals( "" ) ? "" :
-					(isNumeric()? Pattern.numericPrefix : "")
-					+ (isPhrased()? Pattern.phrasePrefix : "")
-					+ (isQuoted()? Pattern.quotedPrefix : "")
-					+ (isList()? Config.andConjunction().toUpperCase( Locale.getDefault())
-							+"-"+ Pattern.list.toUpperCase( Locale.getDefault()) +"-" : "")
-					+ name.toUpperCase( Locale.getDefault()) ) 
-				+ (postfix.equals( "" ) ? "" : " ") + postfix();
+		String pref  = prefix().toString();
+		String postf = postfix().toString();
+		return pref + (pref.equals( "" ) ? "" : " ")
+				+ (name.equals( "" ) ? "" :
+					opt( isNumeric(), Pattern.NUMERIC_PREFIX ) + // these are mutually exclusive
+					opt( isPhrased(), Pattern.PRHASE_PREFIX ) +
+					opt( isQuoted(),  Pattern.QUOTED_PREFIX ) +
+					opt( isList(),
+							Config.andConjunction().toUpperCase( Locale.getDefault())
+							+ "-"
+							+ Pattern.LIST.toUpperCase( Locale.getDefault())
+							+ "-"
+					) +
+					name.toUpperCase( Locale.getDefault()))
+				+ (opt( !postf.equals( "" ), " " )) + postfix();
 	}
 	public String toText() {
 		return prefix().toString()
 			+ (prefix().toString()==null||prefix().toString().equals("") ? "":" ")
-			+ (name.equals( "" ) ? "" :
-				( name.toUpperCase( Locale.getDefault() ) +" "))
+			+ opt( !name.equals( "" ), name.toUpperCase( Locale.getDefault() ) +" " )
 			+ postfix().toString();
 	}
 	public String toLine() {return prefix().toString() +" "+ name +" "+ postfix().toString();}
@@ -187,9 +197,4 @@ public class Frag {
 			li.previous();
 		}
 		return s;
-	}
-	
-	// -- test code
-	public static void main( String[] argv ) {
-		Audit.on();
 }	}

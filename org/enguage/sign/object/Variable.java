@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
-import org.enguage.sign.symbol.pattern.Pattern;
+import org.enguage.sign.pattern.Pattern;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -85,17 +85,17 @@ public class Variable {
 	public  static void unset( String name ) { new Variable( name ).unset(); }
 	public  static String get( String name ) { return cache.get( name.toUpperCase( Locale.getDefault()) ); } // raw name
 	public  static String get( String name, String def ) {
-		boolean reflect = name.startsWith( Pattern.externPrefix );
+		boolean reflect = name.startsWith( Pattern.EXTERN_PREFIX );
 		if (reflect)
-			name = name.substring( Pattern.externPrefix.length() );
+			name = name.substring( Pattern.EXTERN_PREFIX.length() );
 		
-		boolean first = name.startsWith( Pattern.firstPrefix );
+		boolean first = name.startsWith( Pattern.FIRST_PREFIX );
 		if (first)
-			name = name.substring( Pattern.firstPrefix.length() );
+			name = name.substring( Pattern.FIRST_PREFIX.length() );
 		
-		boolean rest = name.startsWith( Pattern.restPrefix );
+		boolean rest = name.startsWith( Pattern.REST_PREFIX );
 		if (rest)
-			name = name.substring( Pattern.restPrefix.length() );
+			name = name.substring( Pattern.REST_PREFIX.length() );
 		
 		String value = cache.get( name );
 		if (reflect)

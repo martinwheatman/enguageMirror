@@ -7,7 +7,7 @@ import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Perform;
-import org.enguage.sign.symbol.pattern.Pattern;
+import org.enguage.sign.pattern.Pattern;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -218,7 +218,6 @@ public class Spoken {
 	public static Strings perform( Strings args ) {
 		// It simply takes commands to construct a voiced sign, e.g. create, append etc.
 		// N.B. the 'payload' (e.g. the intention) is passed as a string.
-		
 		audit.in( "perform", args.toString() );
 		
 		String      rc = Perform.S_SUCCESS;			

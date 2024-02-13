@@ -1,8 +1,8 @@
 package org.enguage.sign.symbol.pronoun;
 
 import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.symbol.config.Plural;
-import org.enguage.sign.symbol.pattern.Pattern;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
