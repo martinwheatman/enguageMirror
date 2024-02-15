@@ -15,9 +15,8 @@ import org.enguage.util.sys.Fs;
 
 public class Sign {
 	
-	public  static final String   NAME = "sign";
-	public  static final int        ID = 340224; //Strings.hash( NAME )
-
+	public  static final String         NAME = "sign";
+	public  static final int              ID = 340224; //Strings.hash( NAME )
 	public  static final String USER_DEFINED = "OTF"; // concept name for signs created on-the-fly
 
 	public Sign() {super();}
@@ -45,15 +44,15 @@ public class Sign {
 			pattern.add( child );
 		return this;
 	}
-	public  Sign  pattern( String prefix, String name ) {
+	public  Sign   pattern( String prefix, String name ) {
 		pattern( new Frag( prefix, name ));
 		return this;
 	}
-	public  Sign  pattern( String prefix, String name, String postfix ) {
+	public  Sign   pattern( String prefix, String name, String postfix ) {
 		pattern( new Frag( prefix, name, postfix ));
 		return this;
 	}
-	public  Sign  split( String word ) {pattern( pattern.split( word )); return this;} 
+	public  Sign   split( String word ) {pattern( pattern.split( word )); return this;} 
 
 	/**
 	 * Sign Complexity, used in sign ordering, is the complexity of its pattern.

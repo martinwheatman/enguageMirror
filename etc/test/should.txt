@@ -5,11 +5,11 @@ this implies that you get the value of should.
 then if not reply i don't know what we should do.
 			
 # c'tor: you should ...
-to the phrase you should phrase variable action reply ok variable action.
+to the phrase you should phrase variable action reply ok i should variable action.
 this implies that you set the value of should to variable action.
 
-# Null test...
-what should we do: i don't know what we should do.
+# Null test... returns either as test is persistent?
+what should we do: we should wear a mask|i don't know what we should do.
 
 # Construct an argument:
 # wearing a mask prevents (or not?) the spread of covid...

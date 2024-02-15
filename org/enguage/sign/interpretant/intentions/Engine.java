@@ -34,10 +34,6 @@ public final class Engine {
 					.append( Intention.N_ALLOP, "imagined" )
 					.concept( NAME ),
 			new Sign()
-					.pattern( "list repertoires","" )
-					.append( Intention.N_ALLOP, "list" )
-					.concept( NAME ),
-			new Sign()
 					.pattern( "help", "" )
 					.append( Intention.N_ALLOP, "help" )
 			  		.concept( NAME ),
@@ -126,9 +122,7 @@ public final class Engine {
 			if (tmp.charAt( tmp.length() - 1) == '.')
 				tmp = tmp.substring( 0, tmp.length() - 1 );
 			r.answer( tmp );
-			r.type(
-					Response.typeFromStrings( new Strings( tmp ))
-			);
+			r.type( Response.typeFromStrings( new Strings( tmp ) ));
 			
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
@@ -139,9 +133,7 @@ public final class Engine {
 				r.repeated( true );
 				r.format( new Strings( Config.repeatFormat()));
 				r.answer( Reply.previous().toString());
-				r.type(
-						Response.typeFromStrings( Reply.previous() )
-				);
+				r.type( Response.typeFromStrings( Reply.previous() ));
 			}
 			
 		} else if (cmd.equals( "say" )) {

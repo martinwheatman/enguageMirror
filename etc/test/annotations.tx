@@ -69,7 +69,9 @@ i am not alive: ok.
 am i alive:     no, i'm not alive.
 			
 # test 5.1
+debug on.
 is martin alive: i don't know.
+debug off.
 martin is alive: ok.
 is martin alive: yes, martin is alive.
 martin is not alive: ok.

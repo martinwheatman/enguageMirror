@@ -3,11 +3,10 @@ package org.enguage.sign.object.sofa;
 import java.io.File;
 import java.util.Iterator;
 
+import org.enguage.sign.object.sofa.fs.Path;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Path;
-import org.enguage.util.sys.Pent;
 import org.enguage.util.sys.Shell;
 
 class OverlayShell extends Shell {
@@ -72,51 +71,45 @@ public class Overlay {
 	
 	
 	private Path p;
+	private String getPath( String dname ) {
+		String absName = ".";
+		try {
+			if (null == dname || dname.isEmpty())
+				absName =  ".";
+			else if (dname.charAt( 0 ) == '/')
+				absName = new File( dname ).getCanonicalPath();
+			else
+				absName = new File( p.pwd() + File.separator + dname ).getCanonicalPath();
+		} catch( Exception e ) {
+			audit.error( "cannonical file error: "+ e.toString() );
+		}
+		return absName;
+	}
 	public Strings list( String dname ) {
-		/* dname will usually be ".", or "1subDir"
-		 * 
-		 * vpwd is: /home/martin/src/files/
-		 * maps to: /var/overlays/enguage.0/files
-		 * and    : /var/overlays/enguage.0/files/1subDir
-		 * NB. 1subDir doesn't "really" exist
-		 * 
-		 * this needs to read:
-		 * 
-		 * /home/martin/yagadi/enguage.0/pwd/dna/me/
-		 * /home/martin/yagadi/enguage.1/pwd/dna/me/
-		 * ...
-		 * /home/martin/yagadi/enguage.n/pwd/dna/me/
-		 * 
-		 * adding and removing files to build up a state-of-affairs.
-		 */
 		Strings rc = new Strings();
+		audit.in( "list", "dname="+ dname );
+
 		p.pathListDelete();
 		
-		String absName = null;
-		try {
-			if (null == dname) {
-				absName =  ".";
-			} else if (dname.charAt( 0 ) == '/') {
-				absName = new File( dname ).getCanonicalPath();
-			} else {
-				absName = new File( p.pwd() + File.separator + dname ).getCanonicalPath();
-			}
-		} catch( Exception e ) {
-			audit.error( "cannonical file error:"+ e.toString() );
-		}
+		String absName = getPath( dname );
 		
+		// add underlaid-most files
 		p.insertDir( absName, "" );
-		if (p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
+		
+		if (absName != null && p.pwd().length() <= absName.length() && isOverlaid( p.pwd() )) {
 			int     n = -1;
 			int count = highest+1;
 			String suffix = absName.substring( p.pwd().length());
-			while (++n < count)
+			while (++n < count) {
 				p.insertDir( root + n + suffix, "" );
+			}
 		}
-		Iterator<Pent> pi = p.iterator(); 
+		
+		Iterator<Path.Pent> pi = p.iterator(); 
 		while ( pi.hasNext() )
 			rc.add( pi.next().name() );
 		
+		audit.out( rc );
 		return rc;
 	}
  
@@ -171,7 +164,7 @@ public class Overlay {
 	// -- - attach / detach
 	// ---
 	private static boolean attached = false;
-	private static boolean attached() {return attached;}
+	public  static boolean attached() {return attached;}
 	private static void    attached(boolean b) {attached = b;}
 	
 	private static String  nth( int vn ) {return root + vn;}
@@ -184,7 +177,10 @@ public class Overlay {
 			set( get()); // set singleton
 			String cwd = System.getProperty( "user.dir" );
 			series( new File( cwd ).getName() );
+			
+			audit.debug( "attaching to "+ new File( cwd ).getName() );
 			Link.fromString( root + series, cwd );
+			audit.debug( "Linking: "+ root +"=+="+ series +" to"+ cwd );
 			//
 			countOverlays();
 			while (highest < LOWEST)
@@ -421,17 +417,4 @@ public class Overlay {
 			                 +"given: "+ argv.toString( Strings.CSV ));
 		}
 		return new Strings( rc );
-	}
-	
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	// --- Test code...
-	// ---
-	public static void main (String args []) {
-		Audit.on();
-		attach( "Overlay" );
-		audit.debug( "osroot="+ root );
-		audit.debug( "base="+ series+", n=" + (highest+1) );
-		OverlayShell os = new OverlayShell( new Strings( args ));
-		os.run();
 }	}

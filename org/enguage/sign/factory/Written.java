@@ -73,7 +73,7 @@ public class Written {
 			
 				sign = new Sign()
 						.pattern( new Pattern( Strings.trim( string, '"' )))
-						.concept( Concept.concept() ); // propagate current name
+						.concept( Concept.current() ); // propagate current name
 				
 				if (si.hasNext()) {
 					string = si.next();

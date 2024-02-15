@@ -6,6 +6,7 @@ import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
+import org.enguage.sign.factory.Spoken;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.object.list.Item;
 import org.enguage.sign.object.sofa.Overlay;
@@ -48,6 +49,8 @@ public class Enguage {
 		Concept.addNames( Concept.list());
 		Config.load( "config.xml" );
 		Audit.resume();
+		// we should be attached here =b
+		Spoken.loadAll();
 	}
 	
 	private Strings mediateSingle( String uid, Strings utterance ) {

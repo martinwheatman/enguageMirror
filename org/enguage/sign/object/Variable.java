@@ -35,7 +35,7 @@ public class Variable {
 		cache = new TreeMap<String,String>();
 		for( String name : o.list( NAME ))
 			if (name.equals( name.toUpperCase( Locale.getDefault()) )) // if valid variable name
-				cache.put( name, new Value( NAME, name ).getAsString());
+				cache.put( name, new Value( NAME, name ).get());
 		//audit.out()
 		return cache;
 	}
@@ -57,7 +57,7 @@ public class Variable {
 	public Variable( String nm ) {
 		name = nm.toUpperCase( Locale.getDefault());
 		value = new Value( NAME, name );
-		cache.put( name, value.getAsString());
+		cache.put( name, value.get());
 	}
 	public Variable( String nm, String val ) {
 		name = nm.toUpperCase( Locale.getDefault());

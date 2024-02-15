@@ -5,8 +5,9 @@ import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
-import org.enguage.sign.object.Variable;
+import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -15,29 +16,57 @@ public class Spoken {
 	
 	private Spoken() {}
 	
-	public  static final String   NAME = "Spoken";
+	public  static final String   NAME = "spoken";
 	private static final Audit   audit = new Audit( NAME );
 	
 	private static final String UNDER_CONSTR = "TBD"; // concept name for signs under construction
 	private static final String         THAT = "that"; // always(?) refers to a variable
-	private static final String     VAR_NAME = "VOICED";
+	public  static final String     CONCEPTS = "spoken";
 
 	private static Sign voiced = null;
 	public  static void delete() {voiced = null;}
 
-	private static void saveVoicedAsVariable() {Variable.set( VAR_NAME, voiced.toString() );}
-	private static Sign rereadVoiceFromVariable() {
-		String savedConcept = Concept.concept();
-		Concept.concept( UNDER_CONSTR );
+	private static void removeVoicedValue() {
+		// should be removed from a new STATIC_REPERTOIRE
+		new Value( CONCEPTS, voiced.pattern().toFilename() ).ignore();
+	}
+	private static void saveVoicedAsValue() {
+		// should be saved to a new STATIC_REPERTOIRE
+		new Value( CONCEPTS, voiced.pattern().toFilename()  ).set( voiced.toString() );
+	}
+	private static Sign rereadVoiceFromValue() {
+		// should be reread from a new STATIC_REPERTOIRE
 		Repertoires.signs().remove( UNDER_CONSTR );
 
+		// Written uses current concept value...
+		String savedConcept = Concept.current();
+		Concept.current( UNDER_CONSTR );
 		voiced = new Written(
-				Variable.get( VAR_NAME )
+				new Value( CONCEPTS, voiced.pattern().toFilename() ).get()
 		).toSign();
+		Concept.current( savedConcept );
+		
+		saveVoicedAsValue();
 		
 		Repertoires.signs().insert( voiced );
-		Concept.concept( savedConcept );
 		return voiced;
+	}
+	
+	public static Strings list() {
+		audit.in( "list", "");
+		Strings files = Overlay.get().list( CONCEPTS );
+		audit.out( files );
+		return files;
+	}
+	
+	public static void loadAll() {
+		Strings files = Overlay.get().list( CONCEPTS );
+		for (String file : files)
+			Repertoires.signs().insert(
+					new Written(
+							new Value( CONCEPTS, file ).get()
+					).toSign()
+			);
 	}
 	
 	/*
@@ -46,6 +75,8 @@ public class Spoken {
 	private static void doCreate( Strings args ) {
 		// rename previously voiced sign
 		Repertoires.signs().rename( UNDER_CONSTR, Sign.USER_DEFINED );
+		if (voiced != null)
+			removeVoicedValue();
 		
 		// create new WIP sign
 		voiced = new Sign()
@@ -53,11 +84,14 @@ public class Spoken {
 				.concept( UNDER_CONSTR );
 		Repertoires.signs().insert( voiced );
 		
-		saveVoicedAsVariable();
+		saveVoicedAsValue();
 	}
 	private static void doSplit( Strings args ) {
 		if (voiced != null) {
-			voiced = rereadVoiceFromVariable();
+		
+			voiced = rereadVoiceFromValue();
+			removeVoicedValue();
+			
 			if (args.size() == 1)
 				voiced.pattern(
 						voiced.pattern().split(args.get( 0 ))
@@ -75,14 +109,14 @@ public class Spoken {
 			// therefore it needs to be reinserted...
 			Repertoires.signs().remove( UNDER_CONSTR );
 			Repertoires.signs().insert( voiced );
-			saveVoicedAsVariable();
+			saveVoicedAsValue();
 	}	}
 	/*
 	 * Voiced management routines
 	 */
 	private static void doImply( String intention, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
-			voiced = rereadVoiceFromVariable();
+			voiced = rereadVoiceFromValue();
 			voiced.insert(
 				new Intention(
 						Intention.condType( Intention.N_THINK, isThen, isElse ),
@@ -95,45 +129,45 @@ public class Spoken {
 										new Strings( intention ) 
 						)		)
 			)	);
-			saveVoicedAsVariable();
+			saveVoicedAsValue();
 		}
 	}
 	private static void doPerform( Strings args, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
-			voiced = rereadVoiceFromVariable();
+			voiced = rereadVoiceFromValue();
 			voiced.insert(
 				new Intention(
 					Intention.condType( Intention.N_DO, isThen, isElse ),
 					Pattern.toPattern( args )
 			)	);
-			saveVoicedAsVariable();
+			saveVoicedAsValue();
 		}
 	}
 	private static void doThink( Strings args, boolean isThen, boolean isElse ) {
 		if (voiced != null) { //BUG: sign think called w/o voiced
-			voiced = rereadVoiceFromVariable();
+			voiced = rereadVoiceFromValue();
 			voiced.insert(
 				new Intention(
 					Intention.condType( Intention.N_THINK, isThen, isElse ),
 					Pattern.toPattern( new Strings( args.toString() ))
 			)	);
-			saveVoicedAsVariable();
+			saveVoicedAsValue();
 	}	}
 	private static void doRun( String intention, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
-			voiced = rereadVoiceFromVariable();
-			Strings s = Strings.markedUppercaser(
-					THAT,
-					voiced.pattern().names(), 
-					new Strings( intention ) 
-			);
+			voiced = rereadVoiceFromValue();
 			
 			voiced.insert(
 					new Intention(
 							Intention.condType( Intention.N_RUN, isThen, isElse ),
-							Pattern.toPattern( s )
+							Pattern.toPattern(
+									Strings.markedUppercaser(
+											THAT,
+											voiced.pattern().names(), 
+											new Strings( intention ) 
+							)		)
 			)		);
-			saveVoicedAsVariable();
+			saveVoicedAsValue();
 	}	}
 	private static void insertACommaOrPauseAfterFelicityEncoding( Strings reply ) {
 		// insert a comma/pause into reply
@@ -159,7 +193,7 @@ public class Spoken {
 	}
 	private static void doReply( Strings args, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
-			voiced = rereadVoiceFromVariable();
+			voiced = rereadVoiceFromValue();
 			
 			// we need to replace "that someone" with "SOMEONE"
 			Strings reply = Strings.markedUppercaser(
@@ -175,11 +209,12 @@ public class Spoken {
 					Pattern.toPattern( reply )
 			);
 			voiced.insert( intent );
-			saveVoicedAsVariable();
+			saveVoicedAsValue();
 	}	}
 	private static void doFinally( Strings args, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
-			voiced = rereadVoiceFromVariable();
+			voiced = rereadVoiceFromValue();
+			
 			// N.B. this method is not currently exercised!!!
 			String cmd = args.get( 0 ); // don't remove it
 			int base = Intention.N_THINK;
@@ -195,11 +230,11 @@ public class Spoken {
 					)
 			);
 			// write out here
-			saveVoicedAsVariable();
+			saveVoicedAsValue();
 	}	}
 	private static String doShow() {
 		if (voiced != null) {
-			rereadVoiceFromVariable();
+			voiced = rereadVoiceFromValue();
 			// w/o Audit indents!
 			Audit.log( voiced.toString( false ));
 		} else

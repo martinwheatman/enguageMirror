@@ -11,10 +11,10 @@ if not  reply i already know this: I don't understand, if not reply i already kn
 unset the value of name:           ok.
 
 # build-a-program...
-interpret my name is variable name thus: ok.
-first set the name of me to variable name:                ok.
-then get the name of me:                     ok. # not strictly necessary!
-then reply hello whatever:                      ok, reply hello whatever.
+interpret my name is variable name thus:   ok.
+first set the name of me to variable name: ok, set the name of me to variable name.
+then get the name of me:                   ok. # not strictly necessary!
+then reply hello whatever:                 ok, reply hello whatever.
 
 my name is ruth:   hello   ruth.
 my name is martin: hello martin.
@@ -41,5 +41,5 @@ this implies that you perform sign think variable that:   ok.
 this implies that you perform sign create variable this:  ok.
 
 just call me phrase variable name means i am called variable name: ok.
-just call me martin: i already knew this.
+just call me martin: ok|i already knew this.
 

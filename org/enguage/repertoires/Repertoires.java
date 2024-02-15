@@ -35,7 +35,7 @@ public class Repertoires {
 		if ( "".equals( u.toString() )) return new Reply();
 		
 		audit.in( "mediate", "\""+ u.toString() +"\"" );
-			
+		
 		Autoload.autoload( u.representamen() ); // unloaded up in Enguage.interpret()
 		
 		/* At this point we need to rebuild utterance with the (auto)loaded concept,

@@ -1,0 +1,3 @@
+martin is the best: sorry, martin is not a person.
+martin is a person: ok, martin is a person.
+martin is the best: ok, dokey.

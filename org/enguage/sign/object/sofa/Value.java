@@ -34,11 +34,11 @@ public class Value {
 	public boolean exists() {        return Fs.exists(         name( ent, attr, Overlay.MODE_READ ));}
 	public boolean set( String val ){return Fs.stringToFile(   name( ent, attr, Overlay.MODE_WRITE ), val );}
 	public void    unset() {                Fs.destroyEntity(  name( ent, attr, Overlay.MODE_WRITE ));}
-	public String  getAsString(){    return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ ));}
-	public boolean isSet() {return !getAsString().equals("");}
+	public String  get(){            return Fs.stringFromFile( name( ent, attr, Overlay.MODE_READ ));}
+	public boolean isSet() {return !get().equals("");}
 	
-	public  boolean equals( String val ) { return getAsString().equals( val ); }
-	private boolean contains( String val ) { return getAsString().contains( val ); }
+	public  boolean equals( String val ) { return get().equals( val ); }
+	private boolean contains( String val ) { return get().contains( val ); }
 	
 	// this works..
 	private static final String MARKER = "this is a marker file";
@@ -117,7 +117,7 @@ public class Value {
 				
 			} else {
 				if (cmd.equals( "get" ))
-					rc = v.getAsString();
+					rc = v.get();
 				
 				else if (cmd.equals( "unset" ))
 					v.unset();

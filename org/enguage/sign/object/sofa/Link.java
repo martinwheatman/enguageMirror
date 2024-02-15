@@ -39,14 +39,14 @@ public class Link {
 
 	static private boolean exists(String entity, String attr, String value ) {
 		Value  v   = new Value( entity, attr );
-		String val = v.getAsString();
+		String val = v.get();
 		return v.exists() && (val.equals( value ) || exists( val, attr, value ));
 	}
 	static private boolean attribute(String e, String l, String a, String val ) {
 		Value v;
 		return !e.equals( "" ) &&
 				(((v = new Value( e, a     )).exists() && v.equals( val )) ||
-				 ((v = new Value( e, l+EXT )).exists() && attribute( v.getAsString(), l, a, val )));
+				 ((v = new Value( e, l+EXT )).exists() && attribute( v.get(), l, a, val )));
 	}
 	//---
 	static private void usage( Strings a ) { usage( a.toString());}
@@ -76,7 +76,7 @@ public class Link {
 				rc = new Value( entity, attr+EXT ).set( target ) ? Perform.S_SUCCESS : Perform.S_FAIL;
 				
 			else if (cmd.equals("get"))
-				rc = new Value( entity, attr+EXT ).getAsString();
+				rc = new Value( entity, attr+EXT ).get();
 				
 			else if (cmd.equals("exists"))
 				rc = target.equals( "" ) ?

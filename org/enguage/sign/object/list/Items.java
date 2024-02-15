@@ -29,7 +29,7 @@ public class Items extends ArrayList<Item> {
 	public Items( String ent, String attr ) {
 		value = new Value( ent, attr );
 		fromXml(
-			new Strings( value.getAsString() ).listIterator()	
+			new Strings( value.get() ).listIterator()	
 		);
 	}
 	
@@ -304,7 +304,7 @@ public class Items extends ArrayList<Item> {
 		 * needs to be converted, and the operation called for each.
 		 */
 		Strings rc = Perform.Fail;
-		audit.in( "interpret", sa.toString());
+		audit.in( "perform", sa.toString());
 		
 		String	cmd = sa.remove( 0 ),
 				ent = sa.remove( 0 ), 

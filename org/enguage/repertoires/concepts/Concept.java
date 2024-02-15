@@ -30,6 +30,8 @@ import org.enguage.util.sys.Fs;
  *               a name-to-concept 'match' function.
  */
 public class Concept {
+	
+	// this is a static class - a 'module'
 	private Concept() {}
 	
 	public  static final String     NAME = "concept";
@@ -50,9 +52,9 @@ public class Concept {
 	public  static final String ENTRY_EXT = DOT + ENTRY;
 	public  static final String  DELT_EXT = DOT + DEL;
 	
-	private static String concept = "";
-	public  static void   concept( String name ) { concept = name; }
-	public  static String concept() { return concept; }
+	private static String current = "";
+	public  static void   current( String name ) {current = name;}
+	public  static String current() {return current;}
 
 	private static TreeSet<String> names = new TreeSet<>();
 	public  static void  remove( String name ) {names.remove( name );}
@@ -102,9 +104,13 @@ public class Concept {
 		for (String name : names) { // e.g. name="rpt/hello.txt"
 			// e.g.: w/we.entry, config/arithmetic.txt, object/set+get+unset.txt
 			String[] components = name.split( "\\." );
-			if (components.length==2 && !name.startsWith( "config/" )) {
+			if (components.length==2 && !name.startsWith( "config/" ))
 				add( components[ 0 ]);
-			}
+	}	}
+	public static void addNames( Strings names ) {
+		for (String name : names) { // e.g. name="-is_the-.txt"
+			audit.debug( "Adding name: "+ name );
+			add( name );
 	}	}
 	
 	private static boolean matchAnyBoilerplate( Strings utt, Strings bplt, char sep ) {
@@ -133,12 +139,12 @@ public class Concept {
 				if (!pw.equals(ut)) return false;
 				
 				// hyphen represents at least 1 utterance string, just read over it
-				if (bi.hasNext())
+				if (bi.hasNext()) {
 					if (ui.hasNext())
 						ui.next();
 					else
 						return false; // hyphen but no text...
-				else
+				} else
 					return !ui.hasNext();
 				first = false;
 		}	}
@@ -243,7 +249,7 @@ public class Concept {
 		String  loadedName = to==null ? name : name.replace( from, to );
 		
 		Variable.set( Assets.NAME, name );
-		Concept.concept( loadedName );
+		Concept.current( loadedName );
 		Audit.suspend();
 		
 		InputStream  is = null;
@@ -255,7 +261,7 @@ public class Concept {
 		    (null != (is = Assets.getStream( writtenRepName( name ))))   )
 		{	
 			loadFileContent( is, from, to );
-			try{is.close();} catch(IOException e2) {}
+			try{is.close();} catch(IOException ignore) {/*ignore me!*/}
 			
 		} else
 			wasLoaded = false;
@@ -285,11 +291,11 @@ public class Concept {
 	// --
 	
 	// There are three types (levels) of conjunction...
-	//   i) "I need fish and chips"
-	//  ii) "I need coffee and biscuits"
+	//   i) "I need fish and chips"                << fish and chips
+	//  ii) "I need coffee and biscuits"           << and-list
 	// iii) "I need some gas and I want a Ferrari" << concept conjunction
 	
-	static List<Strings> conjuntionAlley( Strings s, String conj ) {
+	private static List<Strings> conjuntionAlley( Strings s, String conj ) {
 			ArrayList<Strings> ls = new ArrayList<>();
 			boolean found = false;
 			Strings ss = new Strings();
@@ -344,24 +350,19 @@ public class Concept {
 			Spoken.delete(); // remove sign under construction
 			
 			
-		} else if (cmd.equals( "load" )) {
+		} else if (cmd.equals( "load" ))
 			/* load is used by create, delete, ignore and restore to
 			 * support their interpretation
 			 */
 			for (String file : cmds)
 				load( file );
 			 
-		} else if (cmd.equals( "unload" )) {
+		else if (cmd.equals( "unload" ))
 			for (String file : cmds)
 				Autoload.unloadNamed( file );
-		/*
-		 *else if (cmd.equals( "reload" )) 
-		 *	Strings files = cmds.copyAfter( 0 )
-		 *	for(int i=0; i<files.size(); i++) Concept.unload( files.get( i ))
-		 *	for(int i=0; i<files.size(); i++) Concept.load( files.get( i ))
-		 */
-		} else {
+			
+		else
 			rc = Config.notOkay();
-		} 		
+		
 		return rc;
 }	}

@@ -46,7 +46,7 @@ public class Lambda {
 		Strings onames = Overlay.get().list( "." );
 		if (null != onames) for (String formals : onames) 
 			if (match( (signature = new Strings( formals, ',' )), values )
-				&& !(body = new Value( formals, fn.name() ).getAsString()).equals(""))
+				&& !(body = new Value( formals, fn.name() ).get()).equals(""))
 				break; // bingo! (can we revisit if this ain't right?)
 		if (body.equals(""))
 			audit.debug( "Lambda: "+ fn +"/'"+ values.toString( Strings.CSV ) +"': not found" );
