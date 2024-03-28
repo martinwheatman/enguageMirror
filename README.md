@@ -5,25 +5,24 @@ you can _do_ things with words.
 
 [Installation Instructions](doc/install.md)
 
-Enguage interprets speech using speech much like a dictionary.
-It is neither a chatbot, nor a generative text algorithm: it presents the arbitrary transformation of utterances, in the same way as computation is the presentation of an arbitrary calculation—a Turning Machine.
-However, it takes inspiration from the 
+Enguage interprets speech much like functional programming language.
+It is neither a chatbot, nor a generative text algorithm: it expresses the arbitrary transformation of utterances,
+in the same way as computation is the description of an arbitrary calculation in Turing's Universal Machine.
+In doing this, it takes inspiration from the 
 [Ordinary Language Philosophers](https://en.wikipedia.org/wiki/Ordinary_language_philosophy)
-of Ogden and Richards, Austin, and Grice who removed the idea of an underlying logic to language: the *received wisdom* of a dualistic representation of meaning such as source code.
+who removed the underlying representation in logic:
+the *received wisdom* of a dualistic representation of meaning 
+such as how the meaning of source code being found in machine code.
 
-Speech, itself, is shown to be **Turing Complete** (i.e. a 
-[computational device](doc/principle.md)).
-Think of Turing’s Universal Machine but one which works on large (Gödel) numbers rather than Turing’s High German characters onto binary digits.
-This maps a spoken utterance onto the utterances this **implies** (c/f Grice).
-Each of these thoughts (or ‘internally spoken utterances’) provides a functional approach to language (c/f Ogden and Richards).
-The **felicity** of what is said (c/f Austin) is maintained, encoded into each reply, to providing conditional processing of subsequent thoughts (c/f Turing).
-This functional approach is **recursive**, allowing loops to be formed and speech to be Turing Complete.
+[Applying this Philosophy](doc/philosophy.md)
+
+[The Prinicples of Enguage](doc/principles.md)
 
 As an example, the
 [factorial function](etc/rpts/maths/the-of-is-%2Bwhat_is_the-.txt)
 is created , thus:
-+ the factorial of 1 is 1.
-+ the factorial of n is n times the factorial of n minus 1.
+* the factorial of 1 is 1.
+* the factorial of n is n times the factorial of n minus 1.
 
 ## Contributing
 

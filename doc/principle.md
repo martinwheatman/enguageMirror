@@ -1,7 +1,8 @@
 # Enguage - Basic Principles
 
 Enguage attempts to reflect the conventional mapping of words uttered to those replied.
-This convention, described in "The Meaning of Meaning", bu is based on the idea that we think in utterances,
+This convention described in "The Meaning of Meaning",
+but is based on the idea that we also think in utterances,
 and it is directed by our reaction to those thoughts.
 
 <center>
@@ -16,7 +17,7 @@ utterance --> {thoughts|references} --> {replies} </br>
 
 </center>
 
-##Terminology:
+## Terminology:
 **Utterance** -- 
 Symbols, thoughts and referent objects (replies) are all merely utterances.
 An utterance is just any string of words, there is no need for it to conform to any syntax.
@@ -45,10 +46,10 @@ felicitous replies can be, but are not necessarily, prefixed by "if so, ...".
 ## Acknowledgements:
 + U-T-R: is essentially the Triadic Sign model, of Sign, Object and Interpretant
 by Charles Sanders Peirce (1839-1914), as illustrated by C. K. Ogden and 
-I. A. Richards in their 1923 publication, "The Meaning of Meaning".
+I. A. Richards in their 1923 book, "The Meaning of Meaning".
 
 + Felicity - was introduced by John Langshaw Austin, in his 1955 
-William James Lectures at Harvard University, Boston, MA. 
+William James Lectures at Harvard. 
 This was taken up and advances as Speech Act Theory by John Searle.
 
 ## Papers
