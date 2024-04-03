@@ -1000,15 +1000,18 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 			li.previous();
 	}	}
 	public static boolean getWord( ListIterator<String> si, String word, Strings rep ) {
-		audit.in( "getWord", peek( si )+", word="+word );
-		if (si.hasNext())
+		//audit.in( "getWord", peek( si )+", word="+word )
+		if (si.hasNext()) {
 			if (si.next().equals( word )) {
 				audit.debug( "found: + word ");
 				rep.add( word );
-				return audit.out( true );
-			} else
+				// audit.out( true )
+				return true;
+			} else {
 				si.previous();
-		return audit.out( false );
+		}	}
+		//audit.out( false )
+		return false;
 	}
 	public static String getName( ListIterator<String> si, Strings rep ) {
 		String s = si.hasNext() ? si.next() : null;

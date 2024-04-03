@@ -344,8 +344,8 @@ public class Pattern extends ArrayList<Frag> {
 		String toString = new Number( ui ).toString();
 		return toString.equals( Number.NOT_A_NUMBER ) ? null : toString;
 	}
-	private String doExpr( ListIterator<String> ui ) {
-		Strings rep = Expression.getExpr( ui, new Strings() );
+	private String doFunc( ListIterator<String> ui ) {
+		Strings rep = Expression.getExprList( ui, new Strings() );
 		return rep == null ? "" : rep.toString();
 
 	}
@@ -493,7 +493,7 @@ public class Pattern extends ArrayList<Frag> {
 			
 		} else if (t.isExpr()) {
 			
-			if (null == (val = doExpr( utti )))
+			if (null == (val = doFunc( utti )))
 				notMatched = 13;
 			
 		} else if (t.invalid( utti )) {

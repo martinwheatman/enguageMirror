@@ -261,8 +261,6 @@ public class InfoBox {
 	}
 	// this is only called directly from Enguage.java - on replying to the user
 	public static Strings attributeSource( Strings reply ) {
-		audit.in( "attributeSource", "reply=["+ reply.toString( Strings.DQCSV) +"]");
-		
 		// TODO: de-hardcode these prefixes
 		if (!wikiSource().equals( "" ) ) {
 			// only attribute successful replies...
@@ -282,7 +280,5 @@ public class InfoBox {
 			// ...and finally, we want to scrub a source whether or not it was used!
 			wikiSource( "" );
 		}
-	
-		audit.out( reply );
 		return reply;
 }	}

@@ -38,10 +38,10 @@ public class Algorithm {
 	static  private int algFail = 0;
 	private boolean getAlgorithm( ListIterator<String> li ) {
 		audit.in( "getAlgorithm", Strings.peek( li ));
-		return audit.out(     Strings.getWord(     li, "the", representamen ) && 0 != (algFail = 1) &&
+		return audit.out(     Strings.getWord(     li, "the",     representamen ) && 0 != (algFail = 1) &&
 			null != (fnName = Strings.getWords(    li,  "of", representamen ))&& 0 != (algFail = 2) &&
 			null != (params = Parameters.getFormal(li,  "is", representamen ))&& 0 != (algFail = 3) &&
-			null != (body   = Expression.getExpr(  li,        representamen ))&& 0 != (algFail = 4) &&
+			null != (body   = Expression.getExprList(  li,    representamen ))&& 0 != (algFail = 4) &&
 			!li.hasNext());
 	}
 	// ---- test code ----

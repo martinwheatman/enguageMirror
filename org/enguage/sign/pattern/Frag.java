@@ -81,7 +81,6 @@ public class Frag {
 
 	private boolean isExpr = false;
 	public  boolean isExpr() {return isExpr;}
-	public  Frag    exprIs( boolean ex ) {isExpr = ex; return this;}
 	public  Frag    exprIs() {isExpr = true; return this;}
 
 	private boolean isQuoted = false;

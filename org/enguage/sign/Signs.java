@@ -102,12 +102,10 @@ public class Signs extends TreeMap<Integer,Sign> {
 	public  boolean firstMatch() {return firstMatch;}
 
 	public  void reset( Strings reply ) { // called from Enguage.mediateSingle()
-		audit.in( "reset", "r="+ reply );
-		
+	
 		if (reply.begins( Config.dnu() ))
 			ignoreNone();
-		
-		audit.out();
+	
 	}
 
 	public  void    ignore( Strings cmd ) { // called from Engine.mediate("disamb")!

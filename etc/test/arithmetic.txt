@@ -14,32 +14,30 @@ set y to 4:                        ok, y is set to 4.
 what is the value of x:            3, the value of x is 3.
 what is the sum of values x and y: the sum of x and y is 7.
 
-echo Factorial Description:-.
-#mediate( what is the factorial of 4:       I don't know )
-#/* Ideally, we want:
-# * the factorial of 1 is 1;
-# * the factorial of n is n times the factorial of n - 1;
-# * what is the factorial of 3.
-# */
-the factorial of 1 is 1:          ok, the factorial of 1 is 1.
-
-# in longhand this is...
-to the phrase what is the factorial of 0 reply 1: ok.
-what is the factorial of 0:  1.
-
 interpret multiply numeric variable a by numeric variable b thus: ok.
 first evaluate variable a times variable b:                       ok, evaluate variable a times variable b.
 
-the product of x and y is x times y.
-what is the product of 3 and 4:  the product of 3 and 4 is 12.
-
-the square of x is x times x:    Ok, the square of x is x times x.
+the square of x is x times x:    ok, the square of x is x times x.
 what is 2 times the square of 2: 2 times the square of 2 is 8.
 
 # again, in longhand this is...
 interpret subtract numeric variable c from numeric variable d thus: ok.
 first evaluate variable d minus variable c:                         ok, evaluate variable d minus variable c.
 subtract 2 from 3: 1.
+
+echo Product by repeated addition:-.
+the product of x and 1 is x : ok, the product of x and 1 is x.
+the product of x and y is x plus the product of x and y - 1:
+		ok , the product of x and y is x plus the product of x and y minus 1.
+what is the product of 3 and 4:  the product of 3 and 4 is 12.
+
+echo Factorial Description:-.
+
+the factorial of 1 is 1:          ok, the factorial of 1 is 1.
+
+# in longhand this is...
+to the phrase what is the factorial of 0 reply 1: ok.
+what is the factorial of 0:  1.
 
 the factorial of n is n times the factorial of n minus 1:
 					ok, the factorial of n is n times the factorial of n minus 1.
