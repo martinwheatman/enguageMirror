@@ -12,16 +12,18 @@ want is like need:     ok, want is like need.
 what do i want:        you don't want anything.
 
 # this needs to be on the 'can' list???
-interpret something can be variable quality thus.
-first add variable quality to my quality list.
-then reply ok variable quality is a quality.
+interpret something can be value thus.
+where that value is a value.
+first add that value to my quality list.
+then reply ok that value is a quality.
+
 
 something can be cool: ok, cool is a quality.
 
 # need to check that quality is in my quality list???
 interpret variable things are variable quality thus.
-first add variable things to my variable quality list.
-and then reply ok variable things are variable quality.	
+first add that things to my that quality list.
+and then reply ok things are quality.	
 
 ferraris are cool:     ok, ferraris are cool.
 

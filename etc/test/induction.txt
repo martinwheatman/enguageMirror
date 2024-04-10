@@ -5,22 +5,9 @@
 #   Conceept.load() => can this outlive Enguage overlay???
 #
 #
-# First, what we can't say yet...
-my name is martin:                 Ok, you're martin|I don't understand, my name is martin.
-if not  reply i already know this: I don't understand, if not reply i already know this.
-unset the value of name:           ok.
-
-# build-a-program...
-interpret my name is variable name thus:   ok.
-first set the name of me to variable name: ok, set the name of me to variable name.
-then get the name of me:                   ok. # not strictly necessary!
-then reply hello whatever:                 ok, reply hello whatever.
-
-my name is ruth:   hello   ruth.
-my name is martin: hello martin.
-
-
-#...or to put it another way
+# The first portion of induction was interfering with
+# name.entry in /etc/dictn/name.entry
+##...or to put it another way
 interpret i am called variable name like this: ok.
 first reply hi whatever:                              ok, reply hi whatever.
 this implies that you set the name of me to variable name:      ok.
@@ -36,10 +23,18 @@ to the phrase phrase variable x the means to phrase variable y reply i really do
 do we have the means to become rich: I really don't understand.
 
 # 2. could this be built thus?
-to phrase variable this means phrase variable that reply ok: ok.
-this implies that you perform sign think variable that:   ok.
-this implies that you perform sign create variable this:  ok.
+to the phrase phrase variable this means phrase variable someth reply ok: ok.
+this implies that you perform sign create that this:  ok.
+this implies that you perform sign think that someth:   ok.
 
-just call me phrase variable name means i am called variable name: ok.
+#
+# Investigate!!!
+#
+just call me phrase variable name means i am called name:
+   ok | ok , you're called phrase variable name means i'm called name.
+#
+#
+#
+
 just call me martin: ok|i already knew this.
 

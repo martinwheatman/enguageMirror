@@ -3,10 +3,15 @@
 to the phrase what should we do reply we should whatever.
 this implies that you get the value of should.
 then if not reply i don't know what we should do.
-			
+
+show this sign.
+
 # c'tor: you should ...
-to the phrase you should phrase variable action reply ok i should variable action.
-this implies that you set the value of should to variable action.
+to the phrase you should action reply ok i should that action.
+where that action is a phrase.
+this implies that you set the value of should to that action.
+
+show this sign.
 
 # Null test... returns either as test is persistent?
 what should we do: we should wear a mask|i don't know what we should do.

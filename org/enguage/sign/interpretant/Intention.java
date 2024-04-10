@@ -156,11 +156,26 @@ public class Intention {
 	private final int    type;
 	public  final int    type() {return type;}
 	
-	private final String value;
-	public  final String value() {return value;}
+	// ***********************************************
+	// **** TODO: Should use only one of these!!! ****
 	
-	private final Strings values;
-	public  final Strings values() {return values;}
+	private       String    value;
+	public        String    value() {return value;}
+	public        Intention value(String v) {
+		value  = v;
+		values = new Strings( v );
+		return this;
+	}
+	
+	private       Strings   values;
+	public        Strings   values() {return values;}
+	public        Intention values(Strings vs) {
+		values = vs;
+		value  = vs.toString();
+		return this;
+	}
+	// ***********************************************
+	// ***********************************************
 
 	private boolean   temporal = false;
 	public  boolean   isTemporal() {return temporal;}

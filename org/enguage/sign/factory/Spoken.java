@@ -1,5 +1,8 @@
 package org.enguage.sign.factory;
 
+import java.util.ListIterator;
+import java.util.Locale;
+
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
@@ -105,6 +108,17 @@ public class Spoken {
 			else
 				audit.error( "split: missing parameter(s)" );
 			
+			// convert existing intentions: "to the phrase ..." already has a reply! 
+			if (!voiced.intentions().isEmpty()) {
+				for (Intention i : voiced.intentions()) {
+					Strings intentions = Strings.markedUppercaser(
+							THAT,
+							voiced.pattern().names(), 
+							i.values()
+						);
+					i.values( intentions );
+			}	}
+			
 			// splitting will change the pattern complexity
 			// therefore it needs to be reinserted...
 			Repertoires.signs().remove( UNDER_CONSTR );
@@ -114,61 +128,6 @@ public class Spoken {
 	/*
 	 * Voiced management routines
 	 */
-	private static void doImply( String intention, boolean isThen, boolean isElse ) {
-		if (voiced != null) {
-			voiced = rereadVoiceFromValue();
-			voiced.insert(
-				new Intention(
-						Intention.condType( Intention.N_THINK, isThen, isElse ),
-						Pattern.toPattern(
-								// replace "that someone"...
-								// ...with "SOMEONE"
-								Strings.markedUppercaser(
-										THAT,
-										voiced.pattern().names(), 
-										new Strings( intention ) 
-						)		)
-			)	);
-			saveVoicedAsValue();
-		}
-	}
-	private static void doPerform( Strings args, boolean isThen, boolean isElse ) {
-		if (voiced != null) {
-			voiced = rereadVoiceFromValue();
-			voiced.insert(
-				new Intention(
-					Intention.condType( Intention.N_DO, isThen, isElse ),
-					Pattern.toPattern( args )
-			)	);
-			saveVoicedAsValue();
-		}
-	}
-	private static void doThink( Strings args, boolean isThen, boolean isElse ) {
-		if (voiced != null) { //BUG: sign think called w/o voiced
-			voiced = rereadVoiceFromValue();
-			voiced.insert(
-				new Intention(
-					Intention.condType( Intention.N_THINK, isThen, isElse ),
-					Pattern.toPattern( new Strings( args.toString() ))
-			)	);
-			saveVoicedAsValue();
-	}	}
-	private static void doRun( String intention, boolean isThen, boolean isElse ) {
-		if (voiced != null) {
-			voiced = rereadVoiceFromValue();
-			
-			voiced.insert(
-					new Intention(
-							Intention.condType( Intention.N_RUN, isThen, isElse ),
-							Pattern.toPattern(
-									Strings.markedUppercaser(
-											THAT,
-											voiced.pattern().names(), 
-											new Strings( intention ) 
-							)		)
-			)		);
-			saveVoicedAsValue();
-	}	}
 	private static void insertACommaOrPauseAfterFelicityEncoding( Strings reply ) {
 		// insert a comma/pause into reply
 		if      (reply.size() > Config.okay().size()
@@ -191,24 +150,44 @@ public class Spoken {
 				&& !reply.get( Config.no().size()).equals(","))
 			reply.add( Config.no().size(), "," );
 	}
-	private static void doReply( Strings args, boolean isThen, boolean isElse ) {
+	private static Strings derefEmbeddedVars(Strings strs, Strings vars) {
+		audit.in( "derefEmbeddedVars", "str="+ strs +", vars=" + vars );
+		// "i am phrase variable name" -> "i am NAME"
+		// "that is variable" -> "that is variable"
+		// "the variable nature of it" -> "the variable nature of it"  
+		Strings output = new Strings();
+		ListIterator<String> si = strs.listIterator();
+		while (si.hasNext()) {
+			String tmp = si.next();
+			if (vars.contains( tmp ))
+				output.add( tmp.toUpperCase( Locale.getDefault() ));
+			else
+				output.add( tmp );
+		}
+		audit.out( output );
+		return output;
+	}
+	private static void doIntention( int intent, Strings intents, boolean isThen, boolean isElse ) {
 		if (voiced != null) {
 			voiced = rereadVoiceFromValue();
 			
-			// we need to replace "that someone" with "SOMEONE"
-			Strings reply = Strings.markedUppercaser(
-					THAT,
-					voiced.pattern().names(),
-					new Strings( args.toString() )
-			);
+			// takes a marker and replaces that following with upper case...
+			// takes a marker and replaces   FOLLOWING    with upper case...
+			Strings intentions = Strings.markedUppercaser(
+									THAT,
+									voiced.pattern().names(), 
+									intents
+								);
+			intentions = derefEmbeddedVars( intentions, voiced.pattern().names());
 			
-			insertACommaOrPauseAfterFelicityEncoding( reply );
-			 
-			Intention intent = new Intention(
-					Intention.condType( Intention.N_REPLY, isThen, isElse ),
-					Pattern.toPattern( reply )
-			);
-			voiced.insert( intent );
+			if (intent == Intention.N_REPLY)
+				insertACommaOrPauseAfterFelicityEncoding( intentions );
+				
+			voiced.insert(
+					new Intention(
+							Intention.condType( intent, isThen, isElse ),
+							intentions
+			)		);
 			saveVoicedAsValue();
 	}	}
 	private static void doFinally( Strings args, boolean isThen, boolean isElse ) {
@@ -253,7 +232,10 @@ public class Spoken {
 	public static Strings perform( Strings args ) {
 		// It simply takes commands to construct a voiced sign, e.g. create, append etc.
 		// N.B. the 'payload' (e.g. the intention) is passed as a string.
-		audit.in( "perform", args.toString() );
+
+		args=new Strings( args.toString() );
+		
+		audit.in( "perform", args.toString( Strings.DQCSV ));
 		
 		String      rc = Perform.S_SUCCESS;			
 		String     cmd = args.remove( 0 );
@@ -269,26 +251,26 @@ public class Spoken {
 		else if (cmd.equals( "split" ))
 			doSplit( args );
 			
-		else if (cmd.equals( "perform" ))
-			doPerform( args, isThen, isElse );
-			
 		else if (cmd.equals( "show" ))
 			rc = doShow();
-						
+		
+		else if (cmd.equals( "perform" ))
+			doIntention(  Intention.N_DO,   args, isThen, isElse );
+			
 		else if (cmd.equals( "think" ))
-			doThink( args, isThen, isElse );
+			doIntention( Intention.N_THINK, args, isThen, isElse );
 			
 		else if (cmd.equals( "imply" ))
-			doImply( args.get( 0 ), isThen, isElse );
+			doIntention( Intention.N_THINK, args, isThen, isElse );
 			
 		else if (cmd.equals( "run" ))
-			doRun( args.get( 0 ), isThen, isElse );
+			doIntention( Intention.N_RUN,   args, isThen, isElse );
+			
+		else if (cmd.equals( "reply" ))
+			doIntention( Intention.N_REPLY, args, isThen, isElse );
 			
 		else if (cmd.equals( "temporal"))
 			voiced.temporalIs( true );
-			
-		else if (cmd.equals( "reply" ))
-			doReply( args, isThen, isElse );
 			
 		else if (cmd.equals( "finally" ))
 			doFinally( args, isThen, isElse );

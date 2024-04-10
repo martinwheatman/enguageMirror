@@ -21,8 +21,9 @@ the square of x is x times x:    ok, the square of x is x times x.
 what is 2 times the square of 2: 2 times the square of 2 is 8.
 
 # again, in longhand this is...
-interpret subtract numeric variable c from numeric variable d thus: ok.
-first evaluate variable d minus variable c:                         ok, evaluate variable d minus variable c.
+interpret subtract numeric variable c from numeric variable d thus:
+                                                  ok.
+first evaluate d minus c:                         ok, evaluate  d minus  c.
 subtract 2 from 3: 1.
 
 echo Product by repeated addition:-.

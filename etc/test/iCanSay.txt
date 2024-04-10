@@ -1,15 +1,19 @@
-i can say  someone is the something   : ok, one can say someone is the something.
+i can say  someone is the something:
+	ok, one can say someone is the something.
+	
 where that someone is a value         : ok, someone is a value.
 and where that something is a phrase  : ok, something is a phrase.
+
 this implies is that someone a person : ok, is that someone a person.
 then if not reply sorry that someone is not a person:
-		ok, reply sorry that someone is not a person.
+	ok, reply sorry that someone is not a person.
 
 # put in 'run'...
-then run variable set martin best : ok, run variable set martin best.
+then run variable set that someone that something : ok, run variable set that someone that something.
 
-# ...now retract, and put in 'perform'.
-no then perform variable set martin best : ok, perform variable set martin best.
+# ...now retract 'run', and put in 'perform'.
+no then perform variable set that someone that something:
+	ok, perform variable set that someone that something.
 then reply ok dokey                    : ok, reply ok dokey.
 
 show this sign.
