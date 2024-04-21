@@ -1,0 +1,8 @@
+On "i just need PHRASE-THINGS":
+	i need nothing;
+	i need THINGS.
+	
+#]i need a beer and some crisps: ok , you need a beer and some crisps.
+#]what do i need               : you need a beer , and some crisps.
+#]i just need a coffee         : ok , you need a coffee.
+#]what do i need               : you need a coffee.

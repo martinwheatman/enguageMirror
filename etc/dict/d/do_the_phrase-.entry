@@ -1,0 +1,4 @@
+On "do the phrase PHRASE-X", to the phrase X.
+
+#] do the phrase hello reply hello to you too : ok.
+#] hello                                      : hello to you too.
