@@ -1,4 +1,11 @@
 # Build a simple approach to 'should':
+
+#we need: forget that i can say ...
+
+# This should silently reset the test...
+unset the value of should:-.
+what should we do: i don't know what we should do.
+
 # ctor: what should we do
 to the phrase what should we do reply we should whatever.
 this implies that you get the value of should.
@@ -14,25 +21,25 @@ this implies that you set the value of should to that action.
 show this sign.
 
 # Null test... returns either as test is persistent?
-what should we do: we should wear a mask|i don't know what we should do.
+what should we do: i don't know what we should do.
 
-# Construct an argument:
-# wearing a mask prevents (or not?) the spread of covid...
-you can say wearing a mask prevents the spread of covid.
-you can say wearing a mask does not prevent the spread of covid.
 
-# masks soak up (or not?) moisture from your breath
+# The premise is...
 you can say a mask soaks up moisture from your breath.
-you can say a mask does not soak up moisture from your breath.
 
-## the problem is here:
-## does a mask soak moisture from your breath (to any great extent?)
+# another null test...
+you should wear a mask because wearing a mask prevents the spread of covid:
+		i don't understand , wearing a mask prevents the spread of covid.
+
+
+# Ok, now construct an argument:
+i can say wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath:
+		ok , you can say wearing a mask prevents the spread of covid because a mask soaks up moisture from my breath.
+
 
 # Use these to test the argument...
-wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath:
-			     ok , wearing a mask prevents the spread of covid because a mask soaks up moisture from my breath.
 you should wear a mask because wearing a mask prevents the spread of covid:
-				 ok , i should wear a mask because wearing a mask prevents the spread of covid.
+		ok , i should wear a mask because wearing a mask prevents the spread of covid.
 
 # We can now conclude...
 what should we do: we should wear a mask.
