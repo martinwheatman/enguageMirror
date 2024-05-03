@@ -25,8 +25,8 @@ Type the following commands:
 <pre>
     C:\>git clone https://github.com/martinwheatman/enguage.git
     C:\>cd enguage
-    C:\>javac org\enguage\Engauge.java
-    C:\>java org.enguage.Enguage
+    C:\>javac opt\test\UnitTest.java
+    C:\>java opt.test.UnitTest
     > i need a coffee.
     Ok , you need a coffee.
     > <Crt-Z>
@@ -34,10 +34,10 @@ Type the following commands:
 </pre>
 
 You can also run the java command with the '-t' option which self-tests Enguage,
-with around 350 examples:
+with around 500 examples:
 
 <pre>
-    C:\>java org.enguage.Enguage -t
+    C:\>java opt.test.UnitTest -t
 </pre>
 
 ## c) From a Linux or Cygwin shell
@@ -48,8 +48,8 @@ create and run a jar file:
 <pre>
     $ git clone https://github.com/martinwheatman/enguage.git
     $ cd enguage
-    $ make jar
-    $ java -jar lib/enguage.jar
+    $ javac opt/test/UnitTest.java
+    $ java  opt.test.UnitTest
     > i need a coffee.
     Ok , you need a coffee.
     > ^D
@@ -60,7 +60,8 @@ You can also run the jarfile as a shell to type in utterances like a
 command line interface.
 
 <pre>
-    $ java -jar lib/enguage.jar -t
+    $ java  opt.test.UnitTest -t
+    $ java  opt.test.UnitTest -T should
 </pre>
 
 This should give you many example utterances supported by the repertoires
