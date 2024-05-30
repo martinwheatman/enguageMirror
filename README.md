@@ -3,26 +3,22 @@
 Enguage is a Turing Complete speech interpreter;
 you can _do_ things with words.
 
-[Installation Instructions](doc/install.md)
+It is a machine understanding system which is programmed through spoken language. Unlike traditional programming languages, Enguage allows users to define and execute instructions purely via speech, making it unique in its approach to natural language understanding and computation.
 
-Enguage interprets speech much like functional programming language.
-It is neither a chatbot, nor a generative text algorithm: it expresses the arbitrary transformation of utterances,
-in the same way as computation is the description of an arbitrary calculation in Turing's Universal Machine.
-In doing this, it takes inspiration from the 
-[Ordinary Language Philosophers](https://en.wikipedia.org/wiki/Ordinary_language_philosophy)
-who removed the underlying representation in logic:
-the *received wisdom* of a dualistic representation of meaning 
-such as how the meaning of source code being found in machine code.
+The core concept of Enguage is to interpret speech in a way similar to functional programming languages. It is not designed as a chatbot or a generative text algorithm but as a Turing-complete speech interpreter that facilitates the arbitrary transformation of utterances. This methodology aligns with the principles of [Ordinary Language Philosophers](https://en.wikipedia.org/wiki/Ordinary_language_philosophy), which emphasizes the importance of understanding meaning directly, without relying on a dualistic representation, such as source code translating into machine code.
+
+Enguage's implementation demonstrates how natural language statements can be transformed into precise computational instructions. For example, defining a [factorial function](etc/rpts/maths/the-of-is-%2Bwhat_is_the-.txt) can be done through speech by specifying:
+- "The factorial of 1 is 1."
+- "The factorial of N is N times the factorial of N minus 1."
+Enguage will choose the most appropriate interpretation.
+
+These spoken instructions eliminate the need for traditional programming syntax and can be processed directly by Enguage. In this way, Enguage represents utteranes as a user-defined machine code. This innovative approach aims to make programming more accessible by leveraging natural language, reducing the reliance on written code and complex syntax.
+
+[Installation Instructions](doc/install.md)
 
 [Applying this Philosophy](doc/philosophy.md)
 
 [The Prinicples of Enguage](doc/principles.md)
-
-As an example, the
-[factorial function](etc/rpts/maths/the-of-is-%2Bwhat_is_the-.txt)
-is created , thus:
-* the factorial of 1 is 1.
-* the factorial of n is n times the factorial of n minus 1.
 
 ## Contributing
 
