@@ -721,12 +721,21 @@ public class Pattern extends ArrayList<Frag> {
 	@Override
 	public String toString() {
 		String tmp;
+
+		boolean first = true;
 		StringBuilder str = new StringBuilder();
 		Iterator<Frag> ti = iterator();
+		
 		while (ti.hasNext()) {
+		
+			if (first)
+				first = false;
+			else
+				str.append( " " );
+			
 			tmp = ti.next().toString();
 			if (!tmp.equals(""))
-				str.append( tmp +(ti.hasNext() ? " " : ""));
+				str.append( tmp );
 		}
 		return str.toString();
 	}

@@ -18,3 +18,20 @@ On "what should we do":
 On "you should PHRASE-ACTION":
 	set the value of should to ACTION;
 	reply "ok, ACTION".
+
+	
+# 'should' repertoire...
+
+#we need to forget that i can say ...
+#that wearing a mask prevents the spread of covid.
+
+#]unset the value of should:-.
+
+#]i can say a mask soaks up moisture from your breath.
+
+#]i can say wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath:
+#]		ok , you can say wearing a mask prevents the spread of covid because a mask soaks up moisture from my breath.
+#]you should wear a mask because wearing a mask prevents the spread of covid:
+#]		ok , i should wear a mask because wearing a mask prevents the spread of covid.
+
+#]what should we do: we should wear a mask.

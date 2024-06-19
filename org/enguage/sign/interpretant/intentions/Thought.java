@@ -25,7 +25,7 @@ public class Thought {
 
 		if (Response.Type.E_DNU == r.type()) {
 			// put this into reply via Reply.strangeThought()
-			audit.error( "Strange thought: I don't understand: '"+ thought +"'" );
+			audit.debug( "Strange thought: I don't understand: '"+ thought +"'" );
 			
 			// Construct the DNU format
 			r.toDnu( thought );
