@@ -15,15 +15,15 @@
 
 
 
-# 'should' repertoire...
+# A list of things we 'should' do...
 
 On "what should we do":
-	get the value of should;
+	get our should list;
 	if not, reply "i don't know what we should do";
 	reply we should ... .
 
 On "you should PHRASE-ACTION":
-	set the value of should to ACTION;
+	add ACTION to our should list;
 	reply "ok, ACTION".
 
 
