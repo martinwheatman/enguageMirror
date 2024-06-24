@@ -185,13 +185,11 @@ public class Audit {
 	
 	// === title/underline
 	private static boolean firstTitle = true;
-	private static void title( String title, char ch ) {
+	private static void bracket( String title, String chs ) {
 		if (!firstTitle) log( "\n" );
-		underline( title, ch );
+		log( chs +" "+ title +" "+ chs );
 		firstTitle = false;
 	}
-	public  static void title( String title ) {title( title, '=' );}
-	public  static void subtl( String title ) {title( title, '+' );}
 	public  static void underline( String title ) {underline( title, '-' );}
 	public  static void underline( String title, char ch ) {
 		log( title );
@@ -199,6 +197,13 @@ public class Audit {
 		for (int i = 0; i < title.length(); i++) underline.append( ch );
 		log( underline.toString() );
 	}
+	private static void title( String title, char ch ) {
+		if (!firstTitle) log( "\n" );
+		underline( title, ch );
+		firstTitle = false;
+	}
+	public  static void title( String title ) {title( title, '=' );}
+	public  static void subtl( String title ) {bracket( title, "**" );}
 
 	public static void main( String[] args ) {
 		Audit audit = new Audit( "Audit" ); // <= needs setting as $DEBUG to test

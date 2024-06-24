@@ -1,0 +1,93 @@
+cause and effect are transitive.
+
+On "SAID-EFFECT because SAID-CAUSE":
+	is CAUSE because EFFECT;
+	if so, reply "sorry, EXT-CAUSE because EXT-EFFECT";
+	is EFFECT because CAUSE;
+	if so, reply "yes, i know";
+	EFFECT;	if not, say so;
+	CAUSE;	if not, say so;
+	perform "items add _user causal EFFECT CAUSE";
+	reply "ok, EXT-EFFECT because EXT-CAUSE".
+	
+On "is SAID-EFFECT because SAID-CAUSE":
+	perform "items isLinked _user causal CAUSE EFFECT";
+	if not, reply "no, EXT-EFFECT is not because EXT-CAUSE";
+	reply "yes, EXT-EFFECT because EXT-CAUSE".
+
+On "why do SAID-EFFECT":
+	do EFFECT;
+	if not, say so;
+	get the cause of EFFECT from _user causal list;
+	if not, reply "i do not know";
+	set cause to ...;
+	reply "because EXT-CAUSE".
+On "why does SAID-EFFECT", why do EFFECT.
+
+On "why am i PHRASE-EFFECT":
+	am i EFFECT;
+	if not, reply "sorry, i didn't know you are EXT-EFFECT";
+	get the cause of i am EFFECT from _user causal list;
+	set cause to ...;
+	reply "because EXT-CAUSE".
+
+On "why might SAID-EFFECT":
+	get the cause of EFFECT from _user causal list;
+	if not, reply "i don't know";
+	set cause to ...;
+	reply "because EXT-CAUSE".
+On "why does SAID-EFFECT", why do EFFECT.
+
+
+On "do SAID-EFFECT because SAID-CAUSE":
+	does EFFECT exist in _user causal list;
+	if not, reply "sorry, it is not the case that EXT-EFFECT";
+	is EFFECT because CAUSE;
+	if not, reply "sorry, it is not the case EXT-EFFECT because EXT-CAUSE";
+	reply "yes, EXT-EFFECT because EXT-CAUSE".
+On "does SAID-EFFECT because SAID-CAUSE", do EFFECT because CAUSE.
+
+
+## Unit test
+#] subtitle Simple action demo:-.
+#] i am baking a cake:     i know|ok, you're     baking a cake.
+#] am i baking a cake:     yes,               you're     baking a cake.
+#] i am not baking a cake: ok, you're not baking a cake.
+			
+#] subtitle Why/because:-.
+#] i am baking a cake so i need 3 eggs:
+#] 			ok, you need 3 eggs because you're baking a cake.
+#] am i baking a cake     : yes, you're baking a cake.
+#] how many eggs do i need: 3, you need 3 eggs.
+#] why do i need 3 eggs   : because you're baking a cake.
+#] do I need 3 eggs because I am baking a cake:
+#] 			yes, you need 3 eggs because you're baking a cake.
+
+#] subtitle check for infinite loops:-.
+#] i am baking a cake because i need 3 eggs:
+#] 			sorry, you need 3 eggs because you're baking a cake.
+			
+#] subtitle Distinguishing negative responses:-.
+#] sophie needs dr martens because sophie is very fashionable:
+#] 			I don't understand, sophie is very fashionable.
+#] sophie is very fashionable because sophie needs dr martens:
+#] 			I don't understand, sophie is very fashionable.
+#] do i need 250 grams of flour because i am baking a cake:
+#]                        sorry, it is not the case that you need 250 grams of flour.
+#] why am i heating the oven:
+#] 			sorry, i didn't know you're heating the oven.
+			
+#] subtitle Transitivity:-.
+#] i need 3 eggs therefore i need to go to the shops :
+#] 			ok, you need to go to the shops because you need 3 eggs.
+#] do i need to go to the shops because i need 3 eggs:
+#] 			yes, you need to go to the shops because you need 3 eggs.
+#] do i need to go to the shops because i am baking a cake:
+#] 			yes, you need to go to the shops because you're baking a cake.
+			
+#] subtitle  Why might.../abduction:-.
+#] i am not baking a cake:  ok, you're not baking a cake.
+#] am i baking a cake:      no, you're not baking a cake.
+#] i do not need any eggs:  ok, you don't need any eggs.
+#] why do i need 3 eggs:    no, you don't need 3 eggs.
+#] why might i need 3 eggs: because you're baking a cake.
