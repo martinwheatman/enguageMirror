@@ -34,10 +34,6 @@ public class Enguage {
 	private static Shell   shell   = new Shell( "Enguage", COPYRIGHT );
 	public  static Shell   shell() {return shell;}
 	
-	private static boolean verbose = false;
-	public  static boolean isVerbose() {return verbose;}
-	public  static void    verboseIs(boolean b) {verbose = b;}
-	
 	private boolean imagined = false;
 	public  boolean imagined() {return imagined;}
 	public  void    imagined( boolean img ) {imagined = img;}
@@ -139,26 +135,23 @@ public class Enguage {
 		Audit.log( "             terminate utterances." );
 	}
 	
-	public static void main( String[] args ) {
-		
-		Strings    cmds = new Strings( args );
-		String     cmd;
-		String     fsys = RW_SPACE;
-		
-		// traverse args and strip switches: -v -d -h
+	public static String doArgs( Strings cmds, String location ) {
+		// traverse args and strip switches: -v -d -H -p -s
+		String fsys = location;
+		String cmd;
 		int i = 0;
 		while (i < cmds.size()) {
 			
 			cmd = cmds.get( i );
 			
-			if        (cmd.equals( "-h" ) || cmd.equals( "--help" )) {
+			if (       cmd.equals( "-h" ) || cmd.equals( "--help" )) {
 				Enguage.usage();
 				System.exit( 0 );
 			
 			} else if (cmd.equals( "-v" ) || cmd.equals( "--verbose" )) {
 				cmds.remove( i );
-				verbose = true;
-					
+				audit.debugging( true );
+							
 			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
 				cmds.remove( i );
 				fsys = cmds.isEmpty() ? fsys : cmds.remove( i );
@@ -166,10 +159,17 @@ public class Enguage {
 			} else
 				i++;
 		}
+		return fsys;
+	}
+	
+	public static void main( String[] args ) {
+		
+		Strings    cmds = new Strings( args );
+		String     fsys = Enguage.doArgs( cmds, RW_SPACE );
 
 		enguage = new Enguage( fsys );
 				
-		cmd = cmds.isEmpty() ? "" : cmds.remove( 0 );
+		String cmd = cmds.isEmpty() ? "" : cmds.remove( 0 );
 		if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
 			shell.aloudIs( true ).run();

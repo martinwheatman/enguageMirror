@@ -136,7 +136,7 @@ public class UnitTest {
 	/*
 	 * Full self-test...
 	 */	
-	private static void doUnitTests( Strings tests ) {
+	private static void doTheseUnitTests( Strings tests ) {
 
 		// remove old test data
 		String fsys = UT_LOCATION;
@@ -154,8 +154,8 @@ public class UnitTest {
 			
 			// true=code before comment, false=
 			if (runTestFile( TEST_DIR, test +WIKI_EXT ) || // find wiki over normal tests
+			    runTestFile( DICT_DIR, test +DICT_EXT ) || // find dictionary over old tests
 			    runTestFile( TEST_DIR, test +TEST_EXT ) ||
-			    runTestFile( DICT_DIR, test +DICT_EXT ) ||
 			    runTestFile(  REP_DIR, test +REP_EXT  )    )
 				testGrp++;
 		}
@@ -184,47 +184,20 @@ public class UnitTest {
 		return unitTests;
 	}
 
-	public static void unitTests() {
+	private static void doAllUnitTests() {
 		Strings unitTests = new Strings();
 		unitTests.addAll( listUnitTests( TEST_DIR, TEST_EXT ));
 		unitTests.addAll( listUnitTests( DICT_DIR, DICT_EXT ));
 	    unitTests.addAll( listUnitTests(  REP_DIR,  REP_EXT ));
-		doUnitTests( unitTests );
+		doTheseUnitTests( unitTests );
 	}
 		
-	public static void wikiTests() {
+	public static void doAllWikiTests() {
 		Strings unitTests = new Strings();
 		unitTests.addAll( listUnitTests( TEST_DIR, WIKI_EXT ));
-		doUnitTests( unitTests );
+		doTheseUnitTests( unitTests );
 	}
 		
-	private static String doArgs(Strings cmds) {
-		// traverse args and strip switches: -v -d -H -p -s
-		String fsys = UT_LOCATION;
-		String cmd;
-		int i = 0;
-		while (i < cmds.size()) {
-			
-			cmd = cmds.get( i );
-			
-			if (cmd.equals( "-h" ) || cmd.equals( "--help" )) {
-				Enguage.usage();
-				System.exit( 0 );
-			
-			} else if (cmd.equals( "-v" ) || cmd.equals( "--verbose" )) {
-				cmds.remove( i );
-				Enguage.verboseIs( true );
-					
-			} else if (cmd.equals( "-d" ) || cmd.equals( "--data" )) {
-				cmds.remove( i );
-				fsys = cmds.isEmpty() ? fsys : cmds.remove( i );
-				
-			} else
-				break;
-		}
-		return fsys;
-	}
-	
 	private static void createVoicedSign() {
 		// create a sign in overlay space
 		audit.in("createVoicedSign", "");
@@ -248,7 +221,7 @@ public class UnitTest {
 	public static void main( String[] args ) {
 		
 		Strings    cmds = new Strings( args );
-		String     fsys = doArgs( cmds );
+		String     fsys = Enguage.doArgs( cmds, UT_LOCATION );
 
 		// The overlay test shows that predefined signs are 
 		// loaded on startup: a sign is written into a blank
@@ -261,14 +234,14 @@ public class UnitTest {
 		
 		if (     cmd.equals(  "-t"    ) ||
 		         cmd.equals( "--test" )   )
-			unitTests();
+			doAllUnitTests();
 		
 		else if (cmd.equals(  "-w"    ) ||
 		         cmd.equals( "--wiki" )   )
-			wikiTests();
+			doAllWikiTests();
 		
 		else if (cmd.equals(  "-T"    ))
-			doUnitTests( cmds );
+			doTheseUnitTests( cmds );
 
 		else if (cmd.equals( "" )) {
 			Overlay.attach( "uid" );
