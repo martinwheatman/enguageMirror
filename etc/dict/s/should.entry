@@ -1,29 +1,32 @@
 ## Build a simple approach to 'should':
+# A list of things we 'should' do...
 
-## Unit test:	
-#] unset the value of should:-.
+On "you should PHRASE-ACTION":     
+	add ACTION to our should list; 
+	reply "ok, ACTION".            
 
-#] i can say a mask soaks up moisture from your breath.
+On "should we PHRASE-ACTION":             
+	ACTION exists in our should list;     
+	if so, reply "yes, we should ACTION";
+	reply "no, we do not need to ACTION".
 
-#] i can say wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath:
-#]		ok , you can say wearing a mask prevents the spread of covid because a mask soaks up moisture from my breath.
-
-#] you should wear a mask because wearing a mask prevents the spread of covid:
-#]		ok , i should wear a mask because wearing a mask prevents the spread of covid.
-
-#] what should we do: we should wear a mask.
-
-
-
-# 'should' repertoire...
-
-On "what should we do":
-	get the value of should;
+On "what should we do":                   
+	get our should list;
 	if not, reply "i don't know what we should do";
 	reply we should ... .
 
-On "you should PHRASE-ACTION":
-	set the value of should to ACTION;
-	reply "ok, ACTION".
+## Unit test:
+#] what should we do: i don't know what we should do.
 
+#] i can say a mask soaks up moisture from your breath:
+#]		ok, you can say a mask soaks up moisture from my breath.
+#] i can say wearing a mask prevents the spread of covid because a mask soaks up moisture from your breath:
+#]		ok , you can say wearing a mask prevents the spread of covid because a mask soaks up moisture from my breath.
 
+#] you should wear a mask 
+#]		because wearing a mask prevents the spread of covid:
+#]	ok , i should wear a mask because wearing a mask prevents the spread of covid.
+
+#] what should we do: we should wear a mask.
+
+#] why should we wear a mask.

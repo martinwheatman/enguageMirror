@@ -16,9 +16,11 @@ On "how high is PHRASE-OBJECT", what is the height of OBJECT.
 #]		According to Wikipedia, Queen Elizabeth the second died on 8 September 2022 ( aged 96 ).
 
 #]	How old is Tom Cruise:
-#]		According to Wikipedia, Tom Cruise was born on July 3 , 1962 ( age 61 ).
+#]		According to Wikipedia, Tom Cruise was born on July 3 , 1962 ( age 62 ).
 	
 #]	How high is the Eiffel Tower :
 #]		Sorry , is that Architectural height or Tip height or Top floor height.
+
+##  TODO: Need to investigate... extra chars??
 #]	Top floor height:
-#]		According to wikipedia , the Top floor of The Eiffel Tower is 276 m ( 906 ft ).
+#]		According to wikipedia , the Top floor of The Eiffel Tower is 276 m ( 906 ft ) 2 & # 93 ;.

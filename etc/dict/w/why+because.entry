@@ -38,6 +38,13 @@ On "why might SAID-EFFECT":
 	reply "because EXT-CAUSE".
 On "why does SAID-EFFECT", why do EFFECT.
 
+On "why should we PHRASE-ACTION":
+	should we ACTION;
+	if not, say so;
+	get the cause of you should ACTION from _user causal list;
+	if not, reply "i don't know";
+	set cause to ...;
+	reply "because EXT-CAUSE".
 
 On "do SAID-EFFECT because SAID-CAUSE":
 	does EFFECT exist in _user causal list;

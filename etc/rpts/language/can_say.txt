@@ -2,8 +2,13 @@ On "one can say PHRASE-UTTERANCE": # should be a phrase!
 	perform "sign create UTTERANCE";
 	reply "ok, one can say UTTERANCE".
 
-On "i can say PHRASE-UTTERANCE", one can say UTTERANCE.
-On "you can say PHRASE-UTTERANCE", one can say UTTERANCE.
+On "i can say PHRASE-UTTERANCE":
+	one can say UTTERANCE;
+	reply "ok, you can say UTTERANCE".
+	
+On "you can say PHRASE-UTTERANCE":
+	one can say UTTERANCE;
+	reply "ok, i can say UTTERANCE".
 
 On "to this one replies PHRASE-UTTERANCE":
 	perform "sign reply ok UTTERANCE";

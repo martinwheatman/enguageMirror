@@ -1,5 +1,5 @@
 i can say  someone is the something:
-	ok, one can say someone is the something.
+	ok, you can say someone is the something.
 	
 where that someone is a value         : ok, someone is a value.
 and where that something is a phrase  : ok, something is a phrase.
