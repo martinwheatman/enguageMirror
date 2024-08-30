@@ -1,1 +1,0 @@
-# this file is now a dictionary entry in etc/w/why+becuase.entry

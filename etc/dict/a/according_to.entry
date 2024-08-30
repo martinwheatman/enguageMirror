@@ -69,15 +69,16 @@ On "according to SOURCE what is the PHRASE-ATTRIBUTE of PHRASE-GROUP from PHRASE
 #]	Say again.
 ##		i said , sorry , is that Architectural height or Tip height or Top floor height .
 #]	Top floor height:
-#]       According to wikipedia , the Top floor of The Eiffel Tower is 276 m ( 906 ft ).
+#]       According to wikipedia , the Top floor of The Eiffel Tower is 276 m ( 906 ft )  2 & # 93 ;.
 # So we  ] Ok.
 # forget ] Ok.
 # this   ] Ok.
 # sign!  ] Ok.
 #        ] Top floor height: i don't understand , top floor height.
 
+## TODO: need to investigate these extra characters...
 #]	What is the architectural of the Eiffel tower:
-#]		According to wikipedia , the architectural of the Eiffel tower is 300 m ( 984 ft ).
+#]		According to wikipedia , the architectural of the Eiffel tower is 300 m ( 984 ft )  2 & # 93 .
 #]	What is the height of the eiffel tower:
 #]		Sorry , is that Architectural height or Tip height or Top floor height.
 #]	According to wikipedia what is the history of leeds minster:

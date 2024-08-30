@@ -2,8 +2,13 @@ On "one can say PHRASE-UTTERANCE": # should be a phrase!
 	perform "sign create UTTERANCE";
 	reply "ok, one can say UTTERANCE".
 
-On "i can say PHRASE-UTTERANCE", one can say UTTERANCE.
-On "you can say PHRASE-UTTERANCE", one can say UTTERANCE.
+On "i can say PHRASE-UTTERANCE":
+	one can say UTTERANCE;
+	reply "ok, you can say UTTERANCE".
+	
+On "you can say PHRASE-UTTERANCE":
+	one can say UTTERANCE;
+	reply "ok, i can say UTTERANCE".
 
 On "to this one replies PHRASE-UTTERANCE":
 	perform "sign reply ok UTTERANCE";
@@ -18,7 +23,7 @@ On "this is temporal", perform "sign temporal".
 
 
 #]	i can say  someone is the something:
-#]		ok, one can say someone is the something.
+#]		ok, you can say someone is the something.
 
 #]	where that someone is a value         : ok, someone is a value.
 #]	and where that something is a phrase  : ok, something is a phrase.
