@@ -8,13 +8,14 @@
 # The first portion of induction was interfering with
 # name.entry in /etc/dictn/name.entry
 ##...or to put it another way
-interpret i am called variable name like this: ok.
-first reply hi whatever:                              ok, reply hi whatever.
-this implies that you set the name of me to variable name:      ok.
-this implies that you reply i already knew this:      ok, i already knew this.
-this implies name is set to variable name:            ok, name is set to variable name.
+interpret i am called something like this:  ok.
+Where that something is a variable.
+this implies that name is set to something: ok, name is set to something.
+then if so reply i already knew this:       ok, if so , reply i already knew this.
+then set name to something:                 ok, set  name to something.
+then reply hi something:                    ok, reply hi something.
 
-i am called martin: i already knew this.
+i am called martin: hi martin.
 
 # ...means.../...the means to...
 # 1. from the-means-to repertoire
@@ -24,8 +25,8 @@ do we have the means to become rich: I really don't understand.
 
 # 2. could this be built thus?
 to the phrase phrase variable this means phrase variable someth reply ok: ok.
-this implies that you perform sign create that this:  ok.
-this implies that you perform sign think that someth:   ok.
+this implies that you perform sign create that this:  ok, perform sign create that this.
+this implies that you perform sign think that someth:   ok, perform sign think that someth.
 
 #
 # Investigate!!!

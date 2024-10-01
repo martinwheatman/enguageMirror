@@ -3,20 +3,20 @@ On "first         reply SAID-X", perform "sign reply   X"; reply "ok, reply X".
 On " just         reply SAID-X", perform "sign reply   X"; reply "ok, reply X".
 On "first       perform SAID-X", perform "sign perform X"; reply "ok, perform X".
 
-On "then                SAID-X", perform "sign      think X".
-On "then if so          SAID-X", perform "sign then think X".
-On "then if not         SAID-X", perform "sign else think X".
+On "then                SAID-X", perform "sign      think X"; reply "ok, X".
+On "then if so          SAID-X", perform "sign then think X"; reply "ok, if  so, X".
+On "then if not         SAID-X", perform "sign else think X"; reply "ok, if not, X".
 
 On "then          reply SAID-X": perform "sign      reply X"; reply "ok, reply X".
-On "then if so    reply SAID-X": perform "sign then reply X"; reply "ok, reply X".
-On "then if not   reply SAID-X": perform "sign else reply X"; reply "ok, reply X".
+On "then if so    reply SAID-X": perform "sign then reply X"; reply "ok, if  so, reply X".
+On "then if not   reply SAID-X": perform "sign else reply X"; reply "ok, if not, reply X".
 
 On "then        perform SAID-X": perform "sign      perform X"; reply "ok, perform X".
-On "then if so  perform SAID-X": perform "sign then perform X"; reply "ok, perform X".
-On "then if not perform SAID-X": perform "sign else perform X"; reply "ok, perform X".
+On "then if so  perform SAID-X": perform "sign then perform X"; reply "ok, if  so, perform X".
+On "then if not perform SAID-X": perform "sign else perform X"; reply "ok, if not, perform X".
 
 On "then        run SAID-X": perform "sign      run X"; reply "ok, run X".
-On "then if so  run SAID-X": perform "sign then run X"; reply "ok, run X".
-On "then if not run SAID-X": perform "sign else run X"; reply "ok, run X".
+On "then if so  run SAID-X": perform "sign then run X"; reply "ok, if  so, run X".
+On "then if not run SAID-X": perform "sign else run X"; reply "ok, if not, run X".
 
 # probably need to Unix-ify running anything!

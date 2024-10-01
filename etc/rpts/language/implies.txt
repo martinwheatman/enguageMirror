@@ -11,8 +11,13 @@ On "this implies that         SAID-IMPLICATION":
 	perform "sign imply IMPLICATION";
 	reply "ok, IMPLICATION".
 	
-On "this implies that you     SAID-IMPLICATION", perform "sign imply IMPLICATION".
-On "this implies that you run SAID-IMPLICATION", perform "sign run   IMPLICATION".
+On "this implies that you     SAID-IMPLICATION":
+	perform "sign imply IMPLICATION";
+	reply "ok, IMPLICATION".
+	
+On "this implies that you run SAID-IMPLICATION":
+	perform "sign run   IMPLICATION";
+	reply "ok, IMPLICATION".
 
 On "this implies that you reply SAID-IMPLICATION":
 	perform "sign reply IMPLICATION";

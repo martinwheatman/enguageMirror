@@ -30,7 +30,7 @@ On "this is temporal", perform "sign temporal".
 
 #]	this implies is that someone a person : ok, is that someone a person.
 #]	then if not reply sorry that someone is not a person:
-#]		ok, reply sorry that someone is not a person.
+#]		ok, if not, reply sorry that someone is not a person.
 
 ## put in 'run'...
 #]	then run variable set that someone that something : ok, run variable set that someone that something.

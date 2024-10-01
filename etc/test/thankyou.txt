@@ -2,5 +2,5 @@ thank you                    : I don't understand, thank you.
 to the phrase thank you 
 		reply you're welcome : ok.
 thank you                    : you're welcome.
-this implies that you say ok : ok.
+this implies that you say ok : ok, say ok.
 thank you                    : ok . you're welcome.
