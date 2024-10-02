@@ -1,6 +1,6 @@
 TMP=tmp
 MANIFEST=${TMP}/META-INF/MANIFEST.MF
-INSTALL=${HOME}/src/StudioProjects/Enguage/app
+INSTALL=${HOME}/AndroidStudioProjects/Enguage/app
 SHAR=enguage.shar
 ANDLIBS=lib
 
