@@ -1,0 +1,23 @@
+On "X is imperative", perform "imperative add X".
+
+On "this concept is imperative", perform "imperative addCurrent".
+
+On "I must PHRASE-ACTION except when PHRASE-CONDITION":
+	perform "execute ACTION if not CONDITION";
+	reply "ok, I must ACTION except when CONDITION".
+
+On "I must PHRASE-ACTION if PHRASE-CONDITION":
+	perform "execute ACTION if CONDITION";
+	reply "ok, I must ACTION if CONDITION".
+
+On "I must PHRASE-ACTION":
+	reply "ok, you must ACTION".
+
+On "you must PHRASE-ACTION":
+	reply "ok, you must ACTION".
+
+On "must I PHRASE-ACTION":
+	reply "yes, you must ACTION".
+
+On "must you PHRASE-ACTION":
+	reply "yes, you must ACTION".
