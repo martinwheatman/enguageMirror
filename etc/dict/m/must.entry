@@ -1,0 +1,82 @@
+####################################################
+### Concept: I/you must/must not Y
+####################################################
+
+###############################################################################
+# Affirmative statements
+On "I must PHRASE-X":
+	X exists in your mustNot list;
+	if so, reply "no, you must not X";
+	add X to your must list;
+	if not, append X onto your must list;
+	reply "OK, you must X".
+
+On "you must PHRASE-X":
+	X exists in my mustNot list;
+	if so, reply "no, i must not X";
+	add X to my must list;
+	if not, append X onto my must list;
+	reply "OK, I must X".
+
+###############################################################################
+# Negative statements
+On "I must not PHRASE-X":
+	X exists in your must list;
+	if so, reply "no, you must X";
+	add X to your mustNot list;
+	if not, append X onto your mustNot list;
+	reply "OK, you must not X".
+
+On "you must not PHRASE-X":
+	X exists in my must list;
+	if so, reply "no, i must X";
+	add X to my mustNot list;
+	if not, append X onto my mustNot list;
+	reply "OK, i must not X".
+
+###############################################################################
+# Questions
+On "must i PHRASE-X":
+	X exists in your must list;
+	if so, reply "Yes, you must X";
+	X exists in your mustNot list;
+	if so, reply "No, you must not X";
+	reply "I don't know".
+
+On "must you PHRASE-X":
+	X exists in my mustNot list;
+	if so, reply "No, i must not X";
+	X exists in my must list;
+	if so, reply "Yes, i must X";
+	reply "I don't know".
+
+###############################################################################
+# General responses
+On "what must I do":
+	get your must list;
+	reply "You must ...".
+
+On "what must you do":
+	get my must list;
+	reply "You must ...".
+
+
+## Test Driven Development:
+## Affirmative statements
+#] i must go to the store:          OK, you must go to the store.
+#] you must finish your homework:   OK, I must finish my homework.
+#] you must help with the project:  Ok, I must help with the project.
+
+## Negative statements
+#] i must not eat junk food:       OK, you must not eat junk food.
+#] you must not skip breakfast:    OK, i   must not skip breakfast.
+
+## Questions
+#] must I attend the meeting:      I don't know.
+# debug on.
+#] must you help with the project: Yes, i   must help with the project.
+
+## General responses
+#] what must I do:                 You must go to the store.
+#] what must you do:               You must finish my homework, and help with the project.
+
