@@ -59,17 +59,17 @@ On "AND-LIST-SUBJECTS both need PHRASE-THESE":
 # Various singular additions
 On "i need PHRASE-THIS":
 	set subject to _user;
-	THIS exists in _user needs list;
+	THIS exists in SUBJECT needs list;
 	if so, reply "yes, i know";
-	if not, add THIS to _user needs list;
-	if not, append THIS onto _user needs list;
+	if not, add THIS to SUBJECT needs list;
+	if not, append THIS onto SUBJECT needs list;
 	reply "ok, you need ... ".
 
 On "i need NUMERIC-QUANTITY PHRASE-THIS":
 	set subject to _user;
-	QUANTITY THIS exists in _user needs list;
+	QUANTITY THIS exists in SUBJECT needs list;
 	if so, reply "yes, i know";
-	if not, add QUANTITY THIS to _user needs list;
+	if not, add QUANTITY THIS to SUBJECT needs list;
 	reply "ok, you need ... ".
 
 On "SUBJECT needs PHRASE-THESE":
