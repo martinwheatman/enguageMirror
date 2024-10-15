@@ -92,27 +92,28 @@ On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-THIS":
 	reply "ok, SUBJECT needs ...".
 
 ## Elaboration of subsequent utterances
-On "another":
+On "and another":
 	is subject set to _user;
 	if so, i need another THIS;
 	if not, SUBJECT needs another THIS.
 
-On "another THIS":
+On "and another THIS":
 	is subject set to _user;
 	if so, i need another THIS;
 	if not, SUBJECT needs another THIS.
 
-On "another UNITS of PHRASE-THIS":
+On "and another UNITS of PHRASE-THIS":
 	is subject set to _user;
 	if so,  i need another UNITS of THIS;
 	if not, SUBJECT needs another UNITS of THIS.
 
 
-#########################################
-###### Pronoun ancillaries - it is/they are from X #######
-#########################################
+####################################################
+### Pronoun ancillaries - it is/they are from X ###
+### LOCATOR LOCATION are implied anyway! A bug? ###
+####################################################
 
-On "the PHRASE-THIS is": #  LOCATOR LOCATION are implied anyway!
+On "the PHRASE-THIS is": 
 	perform "items update SUBJECT needs THIS";
 	reply "ok, THIS is LOCATOR LOCATION".
 
@@ -129,6 +130,11 @@ On "they are":
 	the THESE are;
 	reply "ok, they are LOCATOR LOCATION".
 	
+#########################################
+### and bananas and apples
+#########################################
+
+On "and AND-LIST-THINGS", we need THINGS.
 	
 #########################################
 ### does not need... removals

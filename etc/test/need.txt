@@ -78,18 +78,18 @@ they are from Sainsbury's:  ok, they are from sainsbury's.
 i need a pint of milk:      ok, you need a pint of milk.
 it is from the dairy aisle: ok, it is from the dairy aisle.
 i need cheese and eggs from the dairy aisle:
-					                               ok, you need cheese and eggs from the dairy aisle.
-#mediate( group by:                   i'm sorry, i need to know what to group by )
+                            ok, you need cheese and eggs from the dairy aisle.
+#mediate( group by:         i'm sorry, i need to know what to group by )
 group by location:          ok.
 			
 #what do i need from sainsbury's:
-#					   you need biscuits, and coffee from sainsbury's.
+#			   you need biscuits, and coffee from sainsbury's.
 			
 #what do i need from the dairy aisle:
-#					   you need a pint of milk, cheese, and eggs from the dairy aisle.
+#			   you need a pint of milk, cheese, and eggs from the dairy aisle.
 			
 i don't need anything from the dairy aisle:
-					   ok, you don't need anything from the dairy aisle.
+			   ok, you don't need anything from the dairy aisle.
 			
 echo Late Binding Floating Qualifiers:-.
 i need nothing.
@@ -106,4 +106,5 @@ echo Numbers ERROR!:-.
 i need nothing.
 i need an apple.
 how many apples do i need:  1, you need 1 apples. # <<<<<<<<< see this!
-
+and oranges and bananas  : ok, you need oranges and bananas.
+what do i need           : you need an apple, oranges, and bananas.

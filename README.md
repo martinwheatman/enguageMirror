@@ -1,7 +1,7 @@
 # Unifying Speech and Computation
 
-Enguage is a _Turing Complete_ speech interpreter; so,
-you can _do_ things with words.
+Enguage is a _Turing Complete_ speech interpreter;
+so, you can _do_ things with words.
 
 It is a machine understanding system which is programmed through spoken language. Unlike traditional programming languages, Enguage allows users to define and execute instructions purely via speech, making it unique in its approach to natural language understanding and computation.
 

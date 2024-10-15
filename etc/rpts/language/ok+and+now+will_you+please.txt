@@ -1,7 +1,7 @@
 # this is part of the engine, really.
-On "and      SAID-X", X.
-On "so       SAID-X", X.
-On "now      SAID-X", X.
-On "will you SAID-X", X.
-On "please   SAID-X", X.
-On "ok       SAID-X", X.
+On "and      PHRASE-X", X.
+On "so       PHRASE-X", X.
+On "now      PHRASE-X", X.
+On "will you PHRASE-X", X.
+On "please   PHRASE-X", X.
+On "ok       PHRASE-X", X.

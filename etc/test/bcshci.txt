@@ -23,7 +23,7 @@ something can be cool: ok, cool is a quality.
 # need to check that quality is in my quality list???
 interpret variable things are variable quality thus.
 first add that things to my that quality list.
-and then reply ok things are quality.	
+then reply ok things are quality.	
 
 ferraris are cool:     ok, ferraris are cool.
 
