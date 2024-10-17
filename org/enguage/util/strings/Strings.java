@@ -2,7 +2,6 @@ package org.enguage.util.strings;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TreeSet;
@@ -1085,34 +1084,17 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		}
 		return rc;
 	}
-	public List<Strings> nonNullSplit( String splitter ) {
-		/* we don't want empty strings in the list.
-		 * Only split if we've collected 'something'.
-		 */
-		ArrayList<Strings> ls = new ArrayList<>();
-		Strings tmp = new Strings();
-		for (String s : this) {
-			if (s.equals( splitter ) && !tmp.isEmpty()) {
-				ls.add( tmp );
-				tmp = new Strings();
-			} else // will add a second splitter in a row
-				tmp.add(s);			
-		}
-		if (!tmp.isEmpty()) ls.add( tmp );
-		return ls;
-	}
 	public Strings divvy( String sep ) {
-		// ["a", "b", "and", "c"].divvy( "and" ) => [ "a", "b", "c" ]
-		// "inner width and greatest height and depth" + "and" => [ "inner width", "greatest height", "depth" ]
+		// ["a", "b", "and", "c"].split( "and" ) => [ ["a", "b"], ["c"] ]
 		Strings output = new Strings(),
 				tmp    = new Strings();
 		for (String s : this)
 			if (s.equals( sep )) {
-				if (tmp.size() > 0) output.add( tmp.toString());
+				if (!tmp.isEmpty()) output.add( tmp.toString());
 				tmp = new Strings();
 			} else 
 				tmp.add( s );
-		if (tmp.size() > 0) output.add( tmp.toString());
+		if (!tmp.isEmpty()) output.add( tmp.toString());
 		return output;
 	}
 	public static Strings markedUppercaser( String marker, Strings vars, Strings implication ) {

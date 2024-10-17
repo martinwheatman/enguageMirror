@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -170,7 +169,7 @@ public class Concept {
 		return matchConceptNames( utterance, tmp[ tmp.length-1 ]);
 	}
 	public static Strings match( Strings utterance ) {
-		/* match([martin is a wally]):
+		/* match(["martin", "is", "a", "hero"]):
 		 *     names=[ "is_a+has_a" ] 
 		 * } => ( is_a+has_a )
 		 */
@@ -286,46 +285,6 @@ public class Concept {
 	// --
 	// -- Load end
 
-	// --
-	// -- Conjunction - Begin
-	// --
-	
-	// There are three types (levels) of conjunction...
-	//   i) "I need fish and chips"                << fish and chips
-	//  ii) "I need coffee and biscuits"           << and-list
-	// iii) "I need some gas and I want a Ferrari" << concept conjunction
-	
-	private static List<Strings> conjuntionAlley( Strings s, String conj ) {
-			ArrayList<Strings> ls = new ArrayList<>();
-			boolean found = false;
-			Strings ss = new Strings();
-			List<Strings> tmps = s.nonNullSplit( conj );
-			for (Strings tmp : tmps) {
-				if (!found) {
-					if (!ss.isEmpty()) ss.add( conj );
-					ss.addAll( tmp );
-					found = !match(tmp).isEmpty();
-				
-				} else if (match(tmp).isEmpty()) {
-					ss.add( conj );
-					ss.addAll( tmp );
-					
-				} else {
-					ls.add( ss );
-					ss = tmp;
-					found = false;
-			}	}
-			if (!ss.isEmpty()) ls.add( ss );
-			
-			return ls;
-	}
-	public static List<Strings> conjuntionAlley( Strings s ) {
-		return conjuntionAlley( s, Config.andConjunction() );
-	}
-	// --
-	// -- Conjunctions - End
-	// --
-	
 	public static Strings perform( Strings cmds ) {
 		
 		Strings rc = Config.okay();

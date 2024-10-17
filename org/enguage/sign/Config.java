@@ -133,10 +133,6 @@ public class Config {
 	public  static void    okay( String s ) {okay = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings okay() {return okay;}
 
-	private static boolean understood = true;
-	public  static boolean understoodIs( boolean was ) {return understood = was;}
-	public  static boolean isUnderstood() {return understood;}
-
 	private static String  repeatFormat = "i said, ... .";
 	public  static void    repeatFormat( String s ) {repeatFormat = s.toLowerCase( Locale.getDefault() );}
 	public  static String  repeatFormat() {return repeatFormat;}

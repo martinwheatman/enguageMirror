@@ -1,30 +1,32 @@
 package org.enguage.sign.symbol;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Sign;
 import org.enguage.sign.object.Numeric;
-import org.enguage.sign.object.Temporal;
 import org.enguage.sign.object.Variable;
-import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.object.sofa.Perform;
-import org.enguage.sign.pattern.Frag;
-import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.symbol.config.Colloquial;
 import org.enguage.sign.symbol.config.Englishisms;
 import org.enguage.sign.symbol.when.When;
-import org.enguage.sign.symbol.where.Where;
 import org.enguage.util.attr.Attributes;
 import org.enguage.util.attr.Context;
-import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
 public class Utterance {
-	private static Audit   audit         = new Audit( "Utterance" );
+	//private static Audit   audit      = new Audit( "Utterance" );
 		
-	private static Strings previous = new Strings();
+	// members
+	private static Strings previous   = new Strings();
 	public  static Strings previous() { return previous; }
 	public  static Strings previous( Strings sa ) { return previous = sa; }
 
-	// members
+	private static boolean understood = true;
+	public  static boolean understoodIs( boolean was ) {return understood = was;}
+	public  static boolean isUnderstood() {return understood;}
+
+	// versions
 	private Strings representamen;
 	public  Strings representamen() { return representamen; }
 	private Strings temporal;
@@ -67,11 +69,6 @@ public class Utterance {
 	public String toString( int layout ) { return expanded.toString( layout );}
 	public String toString() { return toString( Strings.SPACED );}
 	
-	// helpers
-	public  static  boolean sane( Utterance u ) {return u != null && !u.representamen.isEmpty();}
-	public  static  Strings  externalise( String  reply, boolean verbatim ) {
-		return externalise( new Strings( reply ), verbatim );
-	}
 	public  static  Strings  externalise( Strings reply, boolean verbatim ) {
 		
 		reply = Variable.derefOrPop( reply.listIterator());
@@ -94,44 +91,85 @@ public class Utterance {
 		return Englishisms.asStrings( Numeric.deref( reply ))
 				.contract( Englishisms.APOSTROPHE );
 	}
+	
+	// --
+	// -- Conjunction - Begin
+	// --
+	/*
+	 * Leaving this for now. Spent several days allowing an 'and'
+	 * at the beginning of a sentence XD. Leaving the issue of:
+	 *    "i need a coffee and james and ruth need a tea."
+	 * Can solve this by type change - coffee being a 'supermarket 
+	 * commodity', whereas ruth and james are 'known people'?
+	 * There are larger fish to fry!!!
+	 *   
+	 */
+	private static List<Strings> spllit( Strings ths, String sep ) {
+		/* we don't want empty strings in the list.
+		 * Only split if we've collected 'something'.
+		 */
+		ArrayList<Strings> output = new ArrayList<>();
+		Strings sentence = new Strings();
+		for (String str : ths) {
+			if (str.equals( sep ) && !sentence.isEmpty()) {
+				output.add( sentence );
+				sentence = new Strings();
+			} else // will add a second splitter in a row
+				sentence.add( str );			
+		}
+		if (!sentence.isEmpty()) output.add( sentence );
+		return output;
+	}
+	public static List<Strings> conjuntionAlley( Strings s, String conj ) {
+		ArrayList<Strings> rc = new ArrayList<>();
+		boolean found = false;
+		Strings frag = new Strings();
+		List<Strings> listOfStrings = spllit( s, conj );
+		for (Strings strings : listOfStrings) {
+			if (!found) {
+				if (!frag.isEmpty()) frag.add( conj );
+				frag.addAll( strings );
+				found = !Concept.match(strings).isEmpty();
+				
+			} else {
+				Strings matched = Concept.match(strings);
+				if (matched.isEmpty()) {
+					frag.add( conj );
+					frag.addAll( strings );
+					
+				} else {
+					rc.add( frag );
+					frag = strings;
+					found = false;
+				}
+		}	}
+		if (!frag.isEmpty()) rc.add( frag );
+		return rc;
+//	}
+	// --
+	// -- Conjunctions - End
+	// --
 
 	// test code...
-	public static void test( Sign s, String utterance ) { test( s, utterance, null ); }
-	public static void test( Sign s, String utterance, Strings prevAns ) {
-		Utterance u = new Utterance( new Strings( utterance ));
-		Attributes a = u.match(s);
-		audit.debug( "utterance is: "
-				+ u.toString() +"\n"
-				+ (null == a ? "NOT matched." : "matched attrs is: "+ a ));
-	}
-	
-	public static void main( String[] arg) {
-		
-		Overlay.set( Overlay.get());
-		Overlay.attach( "Utternace" );
-
-		Where.doLocators( "to the left of/to the right of/in front of/on top of");
-		Where.doLocators( "behind/in/on/under/underneath/over/at" );
-		
-		audit.debug("Creating a pub:" +
-						Perform.interpret(new Strings("entity create pub"))
-		);
-
-		// create a meeting repertoire
-		Pattern ts = new Pattern();
-		ts.add( new Frag( "i am meeting", "WHOM" ).phrasedIs() );
-		Sign s = new Sign().concept("meeting").pattern( ts );
-		Where.addConcept("meeting");
-		Temporal.addConcept("meeting");
-		s.isSpatial();
-		s.isTemporal();
-		
-		test( s, "i am meeting my brother at the pub at 7" );
-		test( s, "i am meeting my sister  at the pub" );
-		
-		ts = new Pattern();
-		ts.add( new Frag( "what is the factorial of", "N" ).numericIs() );
-		s = new Sign().concept("meeting").pattern( ts );
-
-		test( s, "what is the factorial of whatever", new Strings( "3" ));
+//	private static void test( Enguage e,  String str ) {
+//		Audit.log( "Said: "+ str );
+//		for (Strings single :
+//			Utterance.conjuntionAlley(
+//					new Strings( str ), Config.andConjunction()
+//		)	) {
+//			Audit.log( "  said: "+ single );
+//			Audit.log( "  outp: "+ e.mediate( ""+single ));
+//		}
+//	}
+//	public static void main( String[] arg ) {
+//		Enguage e = new Enguage( Enguage.RW_SPACE );
+//		
+//		// There are three types (levels) of conjunction...
+//		//   i) "I need fish and chips"                << fish and chips
+//		//  ii) "I need coffee and biscuits"           << and-list
+//		// iii) "I need some gas and I want a Ferrari" << concept conjunction
+//		
+//		test( e, "I need a fish   and chips" );
+//		test( e, "I need a coffee and a buscuit" );
+//		test( e, "and I need a porche and i need an open road" );
 }	}

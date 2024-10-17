@@ -59,7 +59,7 @@ public class Enguage {
 		Item.resetFormat();
 		Repertoires.signs().firstMatch( true );
 		
-		if (Config.isUnderstood()) // from previous interpretation!
+		if (Utterance.isUnderstood()) // from previous interpretation!
 			Overlay.startTxn(); // all work in this new overlay
 		
 		Reply r = Repertoires.mediate( new Utterance( utterance ));
@@ -87,14 +87,17 @@ public class Enguage {
 	public String mediate( String said ) {return mediate( Overlay.DEFAULT_USERID, said );}
 	public String mediate( String uid, String said ) {
 		audit.in( "mediate", "uid="+uid+", said="+said );
-		Strings reply = new Strings();
-		for (Strings conj : Concept.conjuntionAlley( new Strings( said ))) {
-			if (!reply.isEmpty()) reply.add( "and" );
-			Strings tmp = mediateSingle( uid, conj );
-			reply.addAll( tmp );
+		Strings rc = new Strings();
+		for (Strings single :
+				Utterance.conjuntionAlley(
+						new Strings( said ), Config.andConjunction()
+			)	)
+		{
+			if (!rc.isEmpty()) rc.add( "and" );
+			rc.addAll( mediateSingle( uid, single ));
 		}
-		audit.out( reply );
-		return reply.toString();
+		audit.out( rc );
+		return rc.toString();
 	}
 	
 	// helper methods...
@@ -103,7 +106,7 @@ public class Enguage {
 			Overlay.undoTxn();
 			Repertoires.signs().reset( sayThis );
 			
-		} else if (Config.isUnderstood()) {
+		} else if (Utterance.isUnderstood()) {
 			Overlay.commitTxn();
 			Repertoires.signs().reset( sayThis );
 			
@@ -121,8 +124,9 @@ public class Enguage {
 	public static void usage() {
 		Audit.log( "Usage: java [-jar enguage.jar|org.enguage.Enguage]" );
 		Audit.log( "            --help |" );
-		Audit.log( "            --verbose --data <path>" ); 
-		Audit.log( "            --test | [<utterance>]" );
+		Audit.log( "            [-d|--data <path>]" ); 
+		Audit.log( "            [-v|--verbose]" ); 
+		Audit.log( "            [<utterance>]" );
 		Audit.log( "Options are:" );
 		Audit.log( "       -h, --help" );
 		Audit.log( "          displays this message\n" );

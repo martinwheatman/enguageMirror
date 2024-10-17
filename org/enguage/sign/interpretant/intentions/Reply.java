@@ -118,7 +118,7 @@ public class Reply {
 	}
 	public Strings sayThis() {
 		Strings reply = replyToStrings();
-		if (Config.understoodIs( Response.Type.E_DNU != type() )) {
+		if (Utterance.understoodIs( type() != Response.Type.E_DNU )) {
 			// used in disambiguation ordering :/
 			if (!repeated())
 				previous( reply ); // never used

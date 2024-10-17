@@ -12,6 +12,18 @@ public class Audit {
 	public  static final int            ID = 829030;
 	private static       Strings funcNames = new Strings( "zeroStack" );
 
+	// === auditing on/off API
+	private static  boolean auditOn = false;
+	public  static  void    off() {auditOn = false; indent.reset();}
+	public  static  void    on() {auditOn = true;}
+	public  static  boolean isOn() {return auditOn;}
+	
+    // === indent
+ 	private static  Indentation indent = new Indentation();
+ 	public  static  void   incr() {indent.incr();}
+ 	public  static  void   decr() {indent.decr();}
+ 	public  static  String indent() {return indent.toString();}
+ 	
 	private static boolean showSignsOnFatal = false; // on fatal
 	private static void    showSignsOnFatal() {showSignsOnFatal=true;}
 	private static void    hideSignsOnFatal() {showSignsOnFatal=false;}
@@ -28,12 +40,6 @@ public class Audit {
 	// === global DEBUG switches...
 	public  static final boolean  numericDebug = false;
 	
-    // === indent
- 	private static  Indentation indent = new Indentation();
- 	public  static  void   incr() {indent.incr();}
- 	public  static  void   decr() {indent.decr();}
- 	public  static  String indent() {return indent.toString();}
- 	
 	// === timestamp
 	private static  long then = new GregorianCalendar().getTimeInMillis();
 	public  static  long interval() {
@@ -55,11 +61,6 @@ public class Audit {
 	public  static void passed() {numberOfTests++;}
 	public  static void passed( String msg ) {log( msg ); passed();}
 	public  static void PASSED() {log( "+++ PASSED "+ numberOfTests +" tests in "+ interval()+"ms +++" );}
-	
-	private static  boolean auditOn = false;
-	public  static  void    off() {auditOn = false; indent.reset();}
-	public  static  void    on() {auditOn = true;}
-	public  static  boolean isOn() {return auditOn;}
 	
 	// === allOn - tracing AND debug
 	// allOn vs. auditOn - turning auditOn when allOn, suppresses for this level

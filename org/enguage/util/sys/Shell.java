@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import org.enguage.Enguage;
 import org.enguage.util.audit.Audit;
@@ -72,12 +71,9 @@ public class Shell {
 				Strings sentence = sentences.remove( 0 );
 				stream = Strings.combine( sentences );
 				if (!sentence.isEmpty()) {
-					// strip sentence of its terminator, if "."
-					// Expand sentence here...
-					for (Strings s : expandSemicolonList( sentence ))
-						Audit.log(
-							Enguage.get().mediate( ""+s )
-						);
+					Audit.log(
+						Enguage.get().mediate( ""+sentence )
+					);
 		}	}	}
 	}
 	public void interpret( InputStream fp, String from, String to ) { // reads file stream and "interpret()"s it
@@ -93,79 +89,4 @@ public class Shell {
 			audit.error( "IO error in Shell::interpret(stdin);" );
 	}	}
 	public void run() { interpret( System.in, null, null ); } // we're not converting on-the-fly!
-	
-	private static void rejig(int rcSz, Strings primary, String connector, ArrayList<Strings>rc) {
-		for (int i=0; i<rcSz; i++) {
-			Strings tmp = new Strings();
-			if (i==0)
-				tmp.addAll( primary );
-			else
-				tmp.add( 0, connector );
-			tmp.add( "," );
-			tmp.addAll( rc.get( i ));
-			rc.set( i, tmp );
-	}	}
-	private static List<Strings> expandSemicolonList( Strings sentence ) {
-		/*  "on one: do two; do three; and, do four." =>
-		 *  [ "on one, do two.", "and on one, do three.", "and on one, do four." ]
-		 *  "and" many be replace by, for example "or", "then", "also"
-		 */
-		ArrayList<Strings> rc = new ArrayList<>();
-		
-		// create a primary and a list of secondaries
-		boolean isPrimary = true;
-		Strings primary = new Strings();    // On "a B c" (:)
-		Strings secondary = new Strings (); // if so, do something[;|.]
-		for (String s : sentence) 
-			if (s.equals(":")) {
-				isPrimary = false;
-			} else if (s.equals(";")) {
-				rc.add( secondary );
-				secondary = new Strings();
-			} else if (isPrimary) {
-				primary.add( s );
-			} else {
-				secondary.add( s );
-			}
-		if (!secondary.isEmpty()) rc.add( secondary );
-		
-		// if we've found no semi-colon separated list...
-		if (rc.isEmpty()) {
-			// ...just pass back the original list
-			rc.add( sentence );
-		} else {
-			// remove connector from last in list
-			int rcSz = rc.size();
-			String connector = "then"; // default: this is the only one used!
-			Strings lastList = rc.get( rcSz-1 );
-			if ( lastList.size() > 2 && lastList.get( 1 ).equals( ",") ) {
-				connector=lastList.remove( 0 ); // remove connector
-				lastList.remove( 0 );           // remove ","
-				rc.set( rcSz-1, lastList );     // replace this last item
-			}
-			// re-jig list, adding-in primary, and the connector on subsequent lists
-			rejig(rcSz, primary, connector, rc);
-		}
-		//audit.OUT( rc )
-		return rc;
-	}
-	private static void test( String string ) {
-		Strings list = new Strings( string );
-		List<Strings> listOfLists = expandSemicolonList( list );
-		audit.debug("expanded list is:");
-		for (Strings s : listOfLists ) {
-			audit.debug( ">>>"+ s.toString( Strings.SPACED ) );
-	}	}
-	public static void main( String[] args) {
-//		test( "I need coffee" )
-		test( "on this, here there and everywhere" );
-		test( "on this: do here; there; and, everywhere" );
-//		test( "On \"X needs PHRASE-Y\":"
-//				+"	if Y exists in X needs list, reply \"I know\";"
-//				+"	if not, add Y to X needs list;"
-//				+"	then, reply \"ok, X needs Y\"." )
-//		test( "On \"X needs PHRASE-Y\":"
-//				+"	if Y exists in X needs list, reply \"I know\";"
-//				+"	if not, add Y to X needs list;"
-//				+"	reply \"ok, X needs Y\"." )
-}	}
+}
