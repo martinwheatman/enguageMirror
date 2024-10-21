@@ -89,6 +89,11 @@ public class Spoken {
 		
 		saveVoicedAsValue();
 	}
+	private static void doDestroy() {
+		// remove last created sign
+		Repertoires.signs().remove( UNDER_CONSTR );
+		voiced = null;
+	}
 	private static void doSplit( Strings args ) {
 		if (voiced != null) {
 		
@@ -220,6 +225,13 @@ public class Spoken {
 			return Perform.S_FAIL + ", nothing to see here";
 		return Perform.S_SUCCESS;
 	}
+	private static String doList() {
+		if (voiced != null) {
+			voiced = rereadVoiceFromValue();
+			return voiced.intentions().toSpokenList();
+		} else
+			return Perform.S_FAIL + ", nothing to see here";
+	}
 	
 	private static boolean isElse( String cmd ) {return cmd.equals( "else" );}
 	private static boolean isThen( String cmd ) {return cmd.equals( "then" );}
@@ -248,12 +260,18 @@ public class Spoken {
 		if (cmd.equals( "create" ))
 			doCreate( args );
 			
+		else if (cmd.equals( "destroy" ))
+			doDestroy();
+		
 		else if (cmd.equals( "split" ))
 			doSplit( args );
 			
 		else if (cmd.equals( "show" ))
 			rc = doShow();
 		
+		else if (cmd.equals( "list" ))
+			rc = doList();
+			
 		else if (cmd.equals( "perform" ))
 			doIntention(  Intention.N_DO,   args, isThen, isElse );
 			

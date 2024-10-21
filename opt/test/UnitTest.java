@@ -66,14 +66,14 @@ public class UnitTest {
 			if (expected == null || new Strings(reply).equals( new Strings( expected )))
 				Audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
 				
-			else if (unexpected == null)                // no second chance
-				//Repertoire.signs.show()
+			else if (unexpected == null) {              // no second chance
+				// Repertoires.signs().show();
 				audit.FATAL(
 					"reply: '"+    reply    +"',\n              "+
 					"expected: '"+ expected +"' "
 				);
 		
-			else if (new Strings(reply).equals( new Strings( unexpected )))
+			} else if (new Strings(reply).equals( new Strings( unexpected )))
 				Audit.passed( REPLY_PROMPT+ reply +".\n" );
 			
 			else                                        // second chance failed too!

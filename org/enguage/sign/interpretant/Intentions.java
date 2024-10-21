@@ -7,6 +7,7 @@ import org.enguage.sign.Config;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
+import org.enguage.util.strings.Strings;
 
 public class Intentions extends ArrayList<Intention> {
 	
@@ -59,6 +60,40 @@ public class Intentions extends ArrayList<Intention> {
 						+ (auditIntents ? Audit.indent():"") +"    "+ in
 				);
 		}
+		return sb.toString();
+	}
+	private static boolean allUpperCase( String s ) {
+		for (char ch : s.toCharArray())
+			if (Character.isLowerCase( ch ))
+				return false;
+		return true;
+	}
+	public String toSpokenList() {
+		StringBuilder sb = new StringBuilder();
+		if (this.isEmpty()) {
+			sb.append( "nothing" );
+		} else {
+			int line = 0;
+			String sep = "";
+			for (Intention in : this) {
+				String str = in.toString();
+				if (str.startsWith( Intention.IF_SEP )
+						&& (sep.equals( Intention.THEN_SEP ) ||
+							sep.equals( Intention.THEN_PLUS_PLUS )))
+				{ // X, and, if so Y
+					sep = Intention.AND_SEP;
+				}
+				sb.append( sep );
+				// "SOMETHING" -> "that something"
+				for (String s : new Strings( str )) // English-isms
+					if (allUpperCase( s ) && !s.equals("A") && !s.equals("I")) // I is ok
+						sb.append( " that "+ s.toLowerCase() );
+					else
+						sb.append( " "+ s.toLowerCase() );
+
+				sep = in.sep( line==0 );
+				line = sep.equals( Intention.ELSE_SEP ) ? 0 : ++line;
+		}	}
 		return sb.toString();
 	}
 	

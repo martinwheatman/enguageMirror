@@ -1,0 +1,28 @@
+On "what does that imply":
+	perform "sign list";
+	reply "ok, that implies ...".
+
+On "what does this imply":
+	what does that imply;
+	reply "ok, this implies ...".
+
+On "forget this", perform "sign destroy".
+
+#] i can say i need something:
+#]                         ok, you can say i need something.
+#] where that something is a phrase:
+#]                         ok, something is a phrase.
+#] this implies that that something exists in my needs list:
+#]                         ok, that something exists in your needs list.
+#] then if so reply i know : ok, if so , reply i know.
+#] then remove that something from my noNeed list:
+#]                         ok, remove that something from your noNeed list.
+#] then add that something to my needs list:
+#]                         ok, add that something to your needs list.
+#] then reply ok i need that something:
+#]                         ok, reply ok i need that something.
+
+#] what does this imply :
+#]          ok , this implies that something exists in your needs list . And , if so that , reply "i know" . Otherwise , remove that something from your noneed list . Then , add that something to your needs list . And then , reply "ok , i need something".
+
+#] forget this.
