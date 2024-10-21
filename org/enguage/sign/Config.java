@@ -35,7 +35,7 @@ public class Config {
 	private static boolean setValues( String name, String value ) {
 		     if (name.equals("ACCUMULATECOMMAND")) accumulateCmds( new Strings( value ));
 		else if (name.equals("ANDCONJUNCTIONS")) andConjunction( value );
-		else if (name.equals("ORCONJUNCTIONS")) orConjunctions(  new Strings( value ));
+		else if (name.equals("ORCONJUNCTIONS"))   orConjunction( value );
 		else if (name.equals("PROPAGATEREPLY")) propagateReplys( new Strings( value ));
 		else if (name.equals("ANDLISTFORMAT" )) andListFormat( value);
 		else if (name.equals("LISTFORMATSEP" )) listSep(       value);
@@ -145,9 +145,9 @@ public class Config {
 	public  static void    andListFormat( String s ) {andListFormat = new Strings( s, Config.listSep().charAt( 0 ));}
 	public  static Strings andListFormat() {return andListFormat;}
 
-	private static Strings orConjunctions = new Strings( ", or" );
-	public  static void    orConjunctions( Strings sa ) {orConjunctions = sa;}
-	public  static Strings orConjunctions() {return orConjunctions;}
+	private static String  orConjunction = "or";
+	public  static void    orConjunction( String sa ) {orConjunction = sa;}
+	public  static String  orConjunction() {return orConjunction;}
 
 	private static Strings orListFormat = new Strings( ", /, or ", '/' );
 	public  static void    orListFormat( String s ) {orListFormat = new Strings( s, Config.listSep().charAt( 0 ));}

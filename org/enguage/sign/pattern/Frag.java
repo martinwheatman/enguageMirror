@@ -34,8 +34,9 @@ public class Frag {
 		isNumeric = orig.isNumeric();
 		isExpr    = orig.isExpr();
 		isSign    = orig.isSign();
-		isList    = orig.isList();
 		isQuoted  = orig.isQuoted();
+		isOrList  = orig.isOrList();
+		isAndList = orig.isAndList();
 		isPlural  = orig.isPlural();
 		isPhrased  = orig.isPhrased();
 		isGrouped   = orig.isGrouped();
@@ -109,9 +110,13 @@ public class Frag {
 	public  boolean isApostrophed() {return isApostrophed != null;}
 	public  Frag    apostrophedIs( String s ) {isApostrophed = s; return this;}
 	
-	private boolean isList = false;
-	public  boolean isList() {return isList;}
-	public  Frag    listIs() {isList = true; return this;}
+	private boolean isAndList = false;
+	public  boolean isAndList() {return isAndList;}
+	public  Frag    andListIs() {isAndList = true; return this;}
+
+	private boolean isOrList = false;
+	public  boolean isOrList() {return isOrList;}
+	public  Frag    orListIs() {isOrList = true; return this;}
 	// --
 	
 	private String conjunction = "";
@@ -173,8 +178,14 @@ public class Frag {
 					opt( isNumeric(), Pattern.NUMERIC_PREFIX ) + // these are mutually exclusive
 					opt( isPhrased(), Pattern.PRHASE_PREFIX ) +
 					opt( isQuoted(),  Pattern.QUOTED_PREFIX ) +
-					opt( isList(),
+					opt( isAndList(),
 							Config.andConjunction().toUpperCase( Locale.getDefault())
+							+ "-"
+							+ Pattern.LIST.toUpperCase( Locale.getDefault())
+							+ "-"
+					) +
+					opt( isOrList(),
+							Config.orConjunction().toUpperCase( Locale.getDefault())
 							+ "-"
 							+ Pattern.LIST.toUpperCase( Locale.getDefault())
 							+ "-"

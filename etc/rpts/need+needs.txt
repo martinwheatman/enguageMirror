@@ -145,9 +145,19 @@ On "SUBJECT does not need AND-LIST-THESE":
 	SUBJECT does not need  REST-OF-THESE;
 	reply "ok, SUBJECT don't need THESE".
 
+On "SUBJECT does not need  OR-LIST-THESE":
+	SUBJECT does not need FIRST-OF-THESE;
+	SUBJECT does not need  REST-OF-THESE;
+	reply "ok, SUBJECT don't need THESE".
+
 On "i do not need AND-LIST-THESE":
 	set subject to _user;
 	_user does not need THESE;
+	reply "ok, you don't need THESE".
+
+On "i do not need OR-LIST-THESE":
+	i do not need FIRST-OF-THESE;
+	i do not need  REST-OF-THESE;
 	reply "ok, you don't need THESE".
 
 On "i do not need anything":

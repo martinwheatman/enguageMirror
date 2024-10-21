@@ -101,11 +101,20 @@ public class Variable {
 		if (reflect)
 			value = Attributes.reflect( new Strings( value )).toString();
 		
-		if (first)
+		if (first) {
+			int old = value.length();
 			value = new Strings( value ).before( "and" ).toString();
+			if (old == value.length())
+				value = new Strings( value ).before( "or" ).toString();
+		}
 		
-		if (rest)
-			value = new Strings( value ).after( "and" ).toString();
+		if (rest) {
+			String newValue = new Strings( value ).after( "and" ).toString();
+			if (newValue.length() > 0)
+				value = newValue;
+			else
+				value = new Strings( value ).after( "or" ).toString();
+		}
 		
 		return value==null || value.equals("") ? def : value;
 	}

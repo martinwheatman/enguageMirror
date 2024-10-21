@@ -232,10 +232,19 @@ public class Attributes extends ArrayList<Attribute> {
 			if (value == null || value.equals( "" ))
 				value = orig;
 			else {
-				if (first)
+				if (first) {
+					int old = value.length();
 					value = new Strings( value ).before( "and" ).toString();
-				if (rest)
-					value = new Strings( value ).after(  "and" ).toString();
+					if (value.length() == old)
+						value = new Strings( value ).before( "or" ).toString();
+				}
+				if (rest) {
+					String newValue = new Strings( value ).after(  "and" ).toString();
+					if (newValue.length() > 0)
+						value = newValue;
+					else
+						value = new Strings( value ).after( "or" ).toString();
+				}
 				if (external)
 					value = reflect( new Strings(
 								Attribute.isAttribute( value ) ? new Attribute( value ).value() : value

@@ -126,13 +126,26 @@ public class Pattern extends ArrayList<Frag> {
 				sw = wi.next();
 				if (sw.equals( LIST )) {
 
-					t.listIs();
+					t.andListIs();
 					sw = nextName( "AND-LIST", wi );
 					
 				} else
 					audit.error( "ctor: AND-LIST? 'LIST' missing" );
 			} else
 				audit.error( "ctor: AND terminates variable" );
+			
+		} else if (sw.equals( Config.orConjunction() )) {
+			if (wi.hasNext()) {
+				sw = wi.next();
+				if (sw.equals( LIST )) {
+
+					t.orListIs();
+					sw = nextName( "OR-LIST", wi );
+					
+				} else
+					audit.error( "ctor: OR-LIST? 'LIST' missing" );
+			} else
+				audit.error( "ctor: OR terminates variable" );
 		}
 		
 		sw = ignoreSubsequentSwitches( sw, wi );
@@ -317,22 +330,22 @@ public class Pattern extends ArrayList<Frag> {
 	
 	private int notMatched = 0;
 	private String term = "";
-	private String word = "";
+	private String wd = "";
 	
 	public  String notMatched() {
 		switch (notMatched) {
 			case  0: return "matched";
 			case  1: return "precheck 1";
 			case  2: return "precheck 2";
-			case 11: return term +" != "+ word;
-			case 12: return "... "+term +" != "+ word +" ...";
+			case 11: return term +" != "+ wd;
+			case 12: return "... "+term +" != "+ wd +" ...";
 			case 13: return "invalid expr";
 			case 14: return "and-list runs into hotspot";
 			case 15: return "not numeric";
 			case 16: return "invalid flags";
 			case 17: return "unterminated and-list";
-			case 18: return "... "+term +" != "+ word +"..";
-			case 19: return "... "+term +" != "+ word +".";
+			case 18: return "... "+term +" != "+ wd +"..";
+			case 19: return "... "+term +" != "+ wd +".";
 			case 20: return "trailing hotspot value missing";
 			case 21: return "more pattern";
 			case 22: return "more utterance";
@@ -349,46 +362,48 @@ public class Pattern extends ArrayList<Frag> {
 		return rep == null ? "" : rep.toString();
 
 	}
-	private String doList( ListIterator<Frag> patti,
-	                       ListIterator<String>      utti  ) 
+	private String doList( ListIterator<Frag>   patti,
+	                       ListIterator<String> utti,
+	                       boolean andList) 
 	{
-		String  wd    = utti.next();
+		String  word    = utti.next();
 		Strings words = new Strings();
 		Strings vals  = new Strings();
 		if (patti.hasNext()) {
 			
-			// peek at terminator
+			// peek at terminator - "... prefix VAR term ..."
 			String terminator = patti.next().prefix().get( 0 );
 			patti.previous();
-			//audit.debug( "Terminator is "+ terminator )
 			
-			words.add( wd );  // add at least one val!
-			if (utti.hasNext()) wd = utti.next();
+			words.add( word );  // add at least one val!
+			if (utti.hasNext()) word = utti.next();
 			
-			while ( !wd.equals( terminator )) {
+			while ( !word.equals( terminator )) {
 				
-				if ( wd.equals( "and" )) {
+				if ( (andList && word.equals( Config.andConjunction() )) || // either
+						word.equals( Config.orConjunction() )) {
 					vals.add( words.toString() );
 					words = new Strings();
 				} else
-					words.add( wd );
+					words.add( word );
 				
 				if (utti.hasNext())
-					wd = utti.next();
+					word = utti.next();
 				else
 					return null;
 			}
 			utti.previous(); // replace terminator!
 			
 		} else { // read to end
-			words.add( wd ); // at least one!
+			words.add( word ); // at least one!
 			while (utti.hasNext()) {
-				wd = utti.next();
-				if ( wd.equals( "and" )) {
+				word = utti.next();
+				if ( (andList && word.equals( Config.andConjunction() )) ||
+						word.equals( Config.orConjunction() )) {
 					vals.add( words.toString() );
 					words = new Strings();
 				} else
-					words.add( wd );
+					words.add( word );
 		}	}
 		
 		if (words.size() > 0) vals.add( words.toString());
@@ -404,7 +419,7 @@ public class Pattern extends ArrayList<Frag> {
 				&& !val.equals(  objOther )
 				&& !val.equals( possOther )) return null;
 		}
-		return vals.toString("", " and ", "");
+		return vals.toString("", " "+ (andList ? "and":"or") +" ", "");
 	}
 	
 	private boolean matchBoilerplate(
@@ -418,7 +433,7 @@ public class Pattern extends ArrayList<Frag> {
 			if (spatial)
 				matched( Where.getWhere( said, term ) );
 			
-			if (!term.equalsIgnoreCase( word = said.next() )) {
+			if (!term.equalsIgnoreCase( wd = said.next() )) {
 				said.previous();
 				notMatched = 11;
 				return false; // string mismatch
@@ -448,7 +463,9 @@ public class Pattern extends ArrayList<Frag> {
 		Strings vals = new Strings( u );
 		if (t.isPhrased() || t.isSign() ||
 				// BUG: this is u.next is a conjection!
-				(said.hasNext() && Config.andConjunction().equals( u )))
+				(said.hasNext() &&
+					(Config.andConjunction().equals( u ) ||
+						Config.orConjunction().equals( u ))))
 		{
 			boolean done = false;
 			Where where = null;
@@ -486,9 +503,9 @@ public class Pattern extends ArrayList<Frag> {
 			if (null == (val = doNumeric( utti )))
 				notMatched = 15;
 			
-		} else if (t.isList()) {
+		} else if (t.isAndList() || t.isOrList()) {
 			
-			if (null == (val = doList( patti, utti )))
+			if (null == (val = doList( patti, utti, t.isAndList() )))
 				notMatched = 17;
 			
 		} else if (t.isExpr()) {
@@ -686,17 +703,29 @@ public class Pattern extends ArrayList<Frag> {
 				} else // quoted.
 					out.append( QUOTED );
 			
-			} else if (word.equals( "and" )) {
+			} else if (word.equals( Config.andConjunction() )) {
 				if (wi.hasNext() && null != (word = wi.next()) && word.equals( "list" )) {
 					if (wi.hasNext() && null != (word = wi.next()) && word.equals( "variable" )) {
 						if (wi.hasNext() && null != (word = wi.next()) && !word.equals( "variable" ))
 							out.append( word.toUpperCase( locale )+"-AND-LIST" );
 						else // and list variable variable
-							out.append( "and" ).append( "list" ).append( "variable" );
+							out.append( Config.andConjunction() ).append( "list" ).append( "variable" );
 					} else // and list blah
-						out.append( "and" ).append( "list" ).append( word );
+						out.append( Config.andConjunction() ).append( "list" ).append( word );
 				} else // so we can't have just VARIABLE, ok...
-					out.append( "and" ).append( word );
+					out.append( Config.andConjunction() ).append( word );
+
+			} else if (word.equals( Config.orConjunction() )) {
+				if (wi.hasNext() && null != (word = wi.next()) && word.equals( "list" )) {
+					if (wi.hasNext() && null != (word = wi.next()) && word.equals( "variable" )) {
+						if (wi.hasNext() && null != (word = wi.next()) && !word.equals( "variable" ))
+							out.append( word.toUpperCase( locale )+"-OR-LIST" );
+						else // and list variable variable
+							out.append( Config.orConjunction() ).append( "list" ).append( "variable" );
+					} else // and list blah
+						out.append( Config.orConjunction() ).append( "list" ).append( word );
+				} else // so we can't have just VARIABLE, ok...
+					out.append( Config.orConjunction() ).append( word );
 
 			// ... "why sentence because reason sentence" ???
 // SAID IS NOT YET articulated!
