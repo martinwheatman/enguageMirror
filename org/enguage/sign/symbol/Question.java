@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 
-import org.enguage.sign.Config;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
@@ -43,7 +43,7 @@ public class Question {
 	public String ask() {
 		Audit.log( question() + prompt());
 		Question.logPrimedAns();
-		return primedAnswer != null ? primedAnswer() : getLine( Config.dnuStr());
+		return primedAnswer != null ? primedAnswer() : getLine( Response.dnuStr());
 	}
 	
 	// helper functions...

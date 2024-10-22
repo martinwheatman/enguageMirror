@@ -5,7 +5,7 @@
 what do i need.
 do i need:                  i don't understand , do i need.
 			
-i need nothing.
+i need nothing:             ok, you don't need anything.
 what do i need:	            you don't need anything.
 i need 2 cups of coffee and a biscuit:
 					        ok , you need 2 cups of coffee and a biscuit.

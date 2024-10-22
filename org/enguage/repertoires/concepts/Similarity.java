@@ -1,6 +1,6 @@
 package org.enguage.repertoires.concepts;
 
-import org.enguage.sign.Config;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.util.attr.Attribute;
@@ -44,11 +44,11 @@ public class Similarity {
 	public  static Strings perform( Strings cmds ) {
 		// e.g. ["create", "want", "need"]
 		audit.in( "interpret", "cmds="+ cmds );
-		Strings rc = Config.notOkay();
+		Strings rc = Response.notOkay();
 		int     sz = cmds.size();
 		if (sz > 0) {
 			String cmd = cmds.remove( 0 );
-			rc = Config.okay();
+			rc = Response.okay();
 			
 			if (cmd.equals( "between" ) && sz>3) {
 				// e.g. "create want / need"
@@ -69,7 +69,7 @@ public class Similarity {
 			else if (cmd.equals( "recall" ))
 				similarities = new Attributes( Variable.get( NAME ));
 			
-			else rc = Config.notOkay();				
+			else rc = Response.notOkay();				
 		}
 		audit.out( rc );
 		return rc;

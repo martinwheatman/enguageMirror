@@ -14,10 +14,10 @@ import java.util.TreeSet;
 import org.enguage.Enguage;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.sign.Assets;
-import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.factory.Spoken;
 import org.enguage.sign.factory.Written;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.util.audit.Audit;
@@ -287,7 +287,7 @@ public class Concept {
 
 	public static Strings perform( Strings cmds ) {
 		
-		Strings rc = Config.okay();
+		Strings rc = Response.okay();
 		String cmd = cmds.remove( 0 );
 		
 		if (cmd.equals( "saveAs" )) {
@@ -297,7 +297,7 @@ public class Concept {
 			rc = Repertoires.signs().saveAs(
 								Sign.USER_DEFINED,
 								name
-				 ) ? Config.okay() : Config.notOkay();
+				 ) ? Response.okay() : Response.notOkay();
 
 			
 		} else if (cmd.equals( "delete" )) {
@@ -321,7 +321,7 @@ public class Concept {
 				Autoload.unloadNamed( file );
 			
 		else
-			rc = Config.notOkay();
+			rc = Response.notOkay();
 		
 		return rc;
 }	}

@@ -86,14 +86,14 @@ public class Reply {
 	public void toDnu( Strings thought ) {
 		verbatimIs( true ); // repeat exactly on DNU
 		// Construct the DNU format
-		format( new Strings( Config.dnu() + ", ..." ));
+		format( new Strings( Response.dnu() + ", ..." ));
 		answer( thought.toString() );
 		// must come after answer()
 		type( Response.Type.E_SOZ );
 		verbatimIs( false );
 	}
 	public void toIdk() {
-		format( Config.dnkStr());
+		format( Response.dnkStr());
 		type( Response.Type.E_DNK );
 		answer( NO_ANSWER ); // reset
 	}
@@ -105,7 +105,7 @@ public class Reply {
 		if (format.isEmpty()) {
 			format = new Strings( answer() ); // use the raw answer
 			if (format.isEmpty()) // so a was equal to ""
-				format = Config.dnu();
+				format = Response.dnu();
 			
 		} else
 			if (format.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)

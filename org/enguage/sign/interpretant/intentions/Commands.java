@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.enguage.sign.Assets;
-import org.enguage.sign.Config;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.util.audit.Audit;
@@ -122,8 +121,8 @@ public class Commands {
 
 	// ---
 	public static void main( String[] args) {
-		Config.notOkay( "sorry" );
-		Config.okay( "ok" );
+		Response.notOkay( "sorry" );
+		Response.okay( "ok" );
 
 		Audit.resume();
 		audit.tracing( true );

@@ -5,9 +5,9 @@ import java.util.Locale;
 
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Concept;
-import org.enguage.sign.Config;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
@@ -135,25 +135,25 @@ public class Spoken {
 	 */
 	private static void insertACommaOrPauseAfterFelicityEncoding( Strings reply ) {
 		// insert a comma/pause into reply
-		if      (reply.size() > Config.okay().size()
-				&& reply.begins( Config.okay())
-				&& !reply.get( Config.okay().size()).equals(","))
-			reply.add( Config.okay().size(), "," );
+		if      (reply.size() > Response.okay().size()
+				&& reply.begins( Response.okay())
+				&& !reply.get( Response.okay().size()).equals(","))
+			reply.add( Response.okay().size(), "," );
 		
-		else if (reply.size() > Config.notOkay().size()
-				&& reply.begins( Config.notOkay())
-				&& !reply.get( Config.notOkay().size()).equals(","))
-			reply.add( Config.notOkay().size(), "," );
+		else if (reply.size() > Response.notOkay().size()
+				&& reply.begins( Response.notOkay())
+				&& !reply.get( Response.notOkay().size()).equals(","))
+			reply.add( Response.notOkay().size(), "," );
 		
-		else if (reply.size() > Config.yes().size()
-				&& reply.begins( Config.yes())
-				&& !reply.get( Config.yes().size()).equals(","))
-			reply.add( Config.yes().size(), "," );
+		else if (reply.size() > Response.yes().size()
+				&& reply.begins( Response.yes())
+				&& !reply.get( Response.yes().size()).equals(","))
+			reply.add( Response.yes().size(), "," );
 		
-		else if (reply.size() > Config.no().size()
-				&& reply.begins( Config.no())
-				&& !reply.get( Config.no().size()).equals(","))
-			reply.add( Config.no().size(), "," );
+		else if (reply.size() > Response.no().size()
+				&& reply.begins( Response.no())
+				&& !reply.get( Response.no().size()).equals(","))
+			reply.add( Response.no().size(), "," );
 	}
 	private static Strings derefEmbeddedVars(Strings strs, Strings vars) {
 		audit.in( "derefEmbeddedVars", "str="+ strs +", vars=" + vars );

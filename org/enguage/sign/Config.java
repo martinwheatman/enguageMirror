@@ -7,6 +7,8 @@ import java.util.Locale;
 import org.enguage.Enguage;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
+import org.enguage.sign.interpretant.Intention;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.interpretant.intentions.Commands;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.object.Variable;
@@ -29,9 +31,6 @@ public class Config {
 	private static boolean complete = false;
 	public  static boolean complete() {return complete;}
 	
-	public static final String S_OKAY   = "ok";
-	public static final String S_NOT_OK = "sorry";
-
 	private static boolean setValues( String name, String value ) {
 		     if (name.equals("ACCUMULATECOMMAND")) accumulateCmds( new Strings( value ));
 		else if (name.equals("ANDCONJUNCTIONS")) andConjunction( value );
@@ -43,22 +42,23 @@ public class Config {
 		else if (name.equals( "REPEATFORMAT" )) repeatFormat(  value );
 		else if (name.equals( "ATTRIBUTING" )) InfoBox.attributing(  value );
 		else if (name.equals( "REFERENCERS" )) referencers( new Strings( value ));
+		else if (name.equals( "CONDFORMAT" )) Intention.conditionalFormat( new Strings( value, ':' ));
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
-		else if (name.equals( "CONDPOS" )) soPrefix( new Strings( value ));
-		else if (name.equals( "CONDNEG" )) noPrefix( new Strings( value ));
-		else if (name.equals( "SUCCESS" )) okay( value );
-		else if (name.equals( "FAILURE" )) notOkay( value );
+		else if (name.equals( "CONDPOS" )) Intention.soPrefix( value );
+		else if (name.equals( "CONDNEG" )) Intention.noPrefix( value );
+		else if (name.equals( "SUCCESS" )) Response.okay( value );
+		else if (name.equals( "FAILURE" )) Response.notOkay( value );
 		else if (name.equals(  "ANSWER" )) placeholder( new Strings( value ));
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
 		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
 		else if (name.equals(    "SOFA" )) Commands.java( value );
 		else if (name.equals(     "URL" )) Http.url( value );
 		else if (name.equals(     "TTL" )) Autoload.ttl( value );
-		else if (name.equals(     "DNU" )) dnu( value );
-		else if (name.equals(     "DNK" )) dnk( value );
-		else if (name.equals(     "UDU" )) udu( value );
-		else if (name.equals(     "YES" )) yes( value );
-		else if (name.equals(      "NO" )) no(  value );
+		else if (name.equals(     "DNU" )) Response.dnu( value );
+		else if (name.equals(     "DNK" )) Response.dnk( value );
+		else if (name.equals(     "UDU" )) Response.udu( value );
+		else if (name.equals(     "YES" )) Response.yes( value );
+		else if (name.equals(      "NO" )) Response.no(  value );
 		else
 			return false;
 		return true;
@@ -95,44 +95,6 @@ public class Config {
 		return audit.out( rc );
 	}
 
-	private static String  dnuStr = "DNU";
-	private static Strings dnu = new Strings( dnuStr );
-	public  static void    dnu( String s ) {dnu = new Strings( dnuStr = s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings dnu(){return dnu;}
-	public  static String  dnuStr(){return dnuStr;}
-
-	private static Strings udu = new Strings( "UDU" );
-	private static String  uduStr = "DNK";
-	public  static void    udu( String s ) {udu = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings udu() {return udu;}
-	public  static String  uduStr() {return uduStr;}
-
-	private static Strings dnk = new Strings( "DNK" );
-	private static String  dnkStr = "DNK";
-	public  static void    dnk( String s ) {dnk = new Strings( dnkStr = s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings dnk() {return dnk;}
-	public  static String  dnkStr() {return dnkStr;}
-
-	private static Strings no = new Strings( "no" );
-	private static String  noStr = "no";
-	public  static void    no(  String s ) {no = new Strings( noStr = s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings no() {return no;}
-	public  static String  noStr() {return noStr;}
-	
-	private static Strings yes    = new Strings( "yes" );
-	private static String  yesStr = "yes";
-	public  static void    yes( String s ) {yes = new Strings( yesStr = s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings yes() {return yes;}
-	public  static String  yesStr() {return yesStr;}
-
-	private static Strings notOkay = new Strings( S_NOT_OK );
-	public  static void    notOkay( String s ) {notOkay = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings notOkay() {return notOkay;}
-	
-	private static Strings okay    = new Strings( S_OKAY );
-	public  static void    okay( String s ) {okay = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings okay() {return okay;}
-
 	private static String  repeatFormat = "i said, ... .";
 	public  static void    repeatFormat( String s ) {repeatFormat = s.toLowerCase( Locale.getDefault() );}
 	public  static String  repeatFormat() {return repeatFormat;}
@@ -165,14 +127,6 @@ public class Config {
 	public  static Strings propagateReplys() {return propagateReplys;}
 	public  static void    propagateReplys( Strings pr ) {propagateReplys = pr;}
 
-	private static Strings soPrefix = new Strings("if so  ,");
-	public  static Strings soPrefix() {return soPrefix;}
-	private static void    soPrefix( Strings s ) {soPrefix = s;}
-	
-	private static Strings noPrefix = new Strings("if not ,");
-	public  static Strings noPrefix() {return noPrefix;}
-	private static void    noPrefix( Strings s ) {noPrefix = s;}
-	
 	// to interact with the 'say' list - as String or Strings
 	private static Strings accumulateCmds = new Strings( "say this now" );
 	public  static Strings accumulateCmds() {return accumulateCmds;}

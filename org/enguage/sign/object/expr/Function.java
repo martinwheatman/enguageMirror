@@ -2,7 +2,7 @@ package org.enguage.sign.object.expr;
 
 import java.util.ListIterator;
 
-import org.enguage.sign.Config;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Perform;
@@ -86,12 +86,12 @@ public class Function {
 	}
 	private static Strings evaluate( String name, Strings argv ) {
 		//audit.in( "evaluate", "name="+ name +", args='"+ argv +"'" );
-		Strings  rc = Config.dnk();
+		Strings  rc = Response.dnk();
 		Strings ss = substitute( name, argv.divvy( "and" ));
 		if (ss != null) {
 			rc = new Number( ss.listIterator() ).valueOf();
 			if (rc.equals( Number.NotANumber ))
-				rc = Config.dnk();
+				rc = Response.dnk();
 		}
 		return rc; //audit.out( rc );
 	}
@@ -127,7 +127,7 @@ public class Function {
 	private static void testQuery( String fn, String actuals ) {
 		audit.debug( "What is the "+ fn +" of "+ actuals );
 		Strings eval = perform( new Strings("evaluate "+ fn +" "+ actuals ));
-		audit.debug( eval.equals( new Strings( Config.dnk())) ?
+		audit.debug( eval.equals( new Strings( Response.dnk())) ?
 			eval.toString() : "The "+ fn +" of "+ actuals +" is "+ eval.toString() +"\n" );
 	}
 	public static void main( String args[]) {
@@ -135,7 +135,7 @@ public class Function {
 		Overlay.set( Overlay.get());
 		Overlay.attach( NAME );
 		
-		Config.dnk( "I do not know\n" );
+		Response.dnk( "I do not know\n" );
 		testQuery(  "sum", "1 , 1" ); // error!
 		
 		testCreate( "sum", "a and b", "a + b" );

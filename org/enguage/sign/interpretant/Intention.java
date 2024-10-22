@@ -24,17 +24,12 @@ public class Intention {
 	public  static final String REPLY_HOOK = "reply";
 	public  static final String FNLLY_HOOK = "finally";
 
-	public  static final String      UNDEF = "u";
-	public  static final String        NEW = "w";
-	public  static final String     APPEND = "a";
-	public  static final String    PREPEND = "p";
-	
-	public  static final String        POS = "+";
-	public  static final String        NEG = "-";
+	public  static final String        POS = "+"; // "ok,    ..." & "yes, ..."
+	public  static final String        NEG = "-"; // "sorry, ..." & "no,  ..."
 	public  static final String        NEU = "";
 	
 	public  static final String      THINK = "t";
-	public  static final String THEN_THINK = THINK + POS;
+	public  static final String THEN_THINK = THINK + POS; // t+="do i need a coffee";
 	public  static final String ELSE_THINK = THINK + NEG;
 	
 	public  static final String         DO = "d";
@@ -46,7 +41,7 @@ public class Intention {
 	public  static final String   ELSE_RUN = RUN   + NEG;
 	
 	public  static final String      REPLY = "r";
-	public  static final String THEN_REPLY = REPLY + POS;
+	public  static final String THEN_REPLY = REPLY + POS; // "r+="ok, this is a positive message"
 	public  static final String ELSE_REPLY = REPLY + NEG;
 	
 	// 'finally' intentions are run irrespective of outcome
@@ -78,6 +73,34 @@ public class Intention {
 	private static final int N_AUTOP       = 0x14;             // =  20
 	public  static final int N_FINALLY     = 0xff;             // = 255
 	
+	/////////////////////////////////////////////////////////////
+	// need to expand these to add yes and no and ok and sorry explicitly.
+	//
+	private static Strings conditionalFormat = new Strings( "if:,", ':' );
+	public  static void    conditionalFormat( Strings s ) {
+		if (s.size() == 2 ) // check it's ok to use!
+			conditionalFormat = s;
+		else
+			audit.FATAL( "trying to set a format not in the format 'x:y' (in config.xml?)" );
+	}
+	private static Strings conditionalFormat( String insert ) {
+		Strings rc = new Strings();
+		rc.add(conditionalFormat.get(0));
+		rc.add( insert );
+		rc.add(conditionalFormat.get(1));
+		return rc;
+	}
+	
+	private static String  soPrefix = "so";
+	private static Strings soPrefix() {return conditionalFormat( soPrefix );}
+	public  static void    soPrefix( String s ) {soPrefix = s;}
+	
+	private static String  noPrefix = "not";
+	private static Strings noPrefix() {return conditionalFormat( noPrefix );}
+	public  static void    noPrefix( String s ) {noPrefix = s;}
+	/////////////////////////////////////////////////////////////
+	
+
 	public  static final int condType( int base, boolean isThen, boolean isElse ) {
 		if (isThen) return base | N_THEN;
 		if (isElse) return base | N_ELSE;
@@ -98,12 +121,12 @@ public class Intention {
 		
 		return UNDEFINED;
 	}
-	public static String getCond( Strings sa ) {
-		if (sa.begins( Config.soPrefix() )) {
-			sa.remove( 0, Config.soPrefix().size()); // e.g. 'if', 'so', ','
+	private static String getCond( Strings sa ) {
+		if (sa.begins( soPrefix() )) {
+			sa.remove( 0, soPrefix().size()); // e.g. 'if', 'so', ','
 			return POS;
-		} else if (sa.begins( Config.noPrefix() )) {
-			sa.remove( 0, Config.noPrefix().size()); // e.g.'if', 'so', ','
+		} else if (sa.begins( noPrefix() )) {
+			sa.remove( 0, noPrefix().size()); // e.g.'if', 'so', ','
 			return NEG;
 		}
 		return NEU;
@@ -268,7 +291,7 @@ public class Intention {
 			case N_FINALLY    : return FINALLY;
 			default:
 				audit.FATAL( "Intention: returning undefined for: "+ type );
-				return UNDEF;
+				return "Aleady Exited on type " + type;
 	}	}
 	public String toString() {
 		switch (type) {
@@ -288,7 +311,8 @@ public class Intention {
 			default : return Attribute.asString( typeToString( type ), value() );
 	}	}
 	
-	// Various separators for sep(), below, and Intentions.toSpokenList()
+	// Various separators for sep(), below, 
+	// and Intentions.toSpokenList()
 	public static String  AND_SEP = ". And, ";
 	public static String THEN_SEP = ". Then, ";
 	public static String ELSE_SEP = ". Otherwise, ";
@@ -299,5 +323,4 @@ public class Intention {
 		return type == N_REPLY ||
 				type == N_THEN_REPLY ||
 				type == N_ELSE_REPLY  ? ELSE_SEP : first ? THEN_SEP : THEN_PLUS_PLUS;
-	}
-}
+}	}

@@ -103,7 +103,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 
 	public  void reset( Strings reply ) { // called from Enguage.mediateSingle()
 	
-		if (reply.begins( Config.dnu() ))
+		if (reply.begins( Response.dnu() ))
 			ignoreNone();
 	
 	}

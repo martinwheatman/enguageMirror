@@ -1,6 +1,5 @@
 package org.enguage.sign.interpretant.intentions;
 
-import org.enguage.sign.Config;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.Perform;
@@ -15,11 +14,11 @@ public class SofaPerform {
 	
 	private static String formatAnswer( String answer ) {
 		if (Moment.valid( answer )) // 88888888198888 -> 7pm
-			return new When( answer ).rep( Config.dnkStr() ).toString();
+			return new When( answer ).rep( Response.dnkStr() ).toString();
 		else if (answer.equals( Perform.S_FAIL ))
-			return Config.S_NOT_OK;
+			return Response.S_NOT_OK;
 		else if (answer.equals( Perform.S_SUCCESS ))
-			return Config.S_OKAY;
+			return Response.S_OKAY;
 		return answer;
 	}
 	

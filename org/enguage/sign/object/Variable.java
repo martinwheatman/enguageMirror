@@ -101,14 +101,13 @@ public class Variable {
 		if (reflect)
 			value = Attributes.reflect( new Strings( value )).toString();
 		
-		if (first) {
+		if (first) { // "martin and ruth" => "martin"
 			int old = value.length();
 			value = new Strings( value ).before( "and" ).toString();
 			if (old == value.length())
 				value = new Strings( value ).before( "or" ).toString();
-		}
-		
-		if (rest) {
+			
+		} else if (rest) { // "martin or ruth" => "ruth"
 			String newValue = new Strings( value ).after( "and" ).toString();
 			if (newValue.length() > 0)
 				value = newValue;

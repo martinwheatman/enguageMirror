@@ -54,12 +54,12 @@ public class Repertoires {
 	
 	public static Strings perform( Strings cmds ) {
 		audit.in( "perform", "cmds="+ cmds );
-		Strings rc = Config.notOkay();
+		Strings rc = Response.notOkay();
 		if (!cmds.isEmpty()) {
 			String cmd = cmds.remove( 0 );
 			
 			if (cmd.equals("show")) {
-				rc = Config.okay();
+				rc = Response.okay();
 				
 				String name = cmds.remove( 0 );
 				if (name.equals("signs") ||
@@ -75,7 +75,7 @@ public class Repertoires {
 					signs.show();
 					
 				} else
-					rc = Config.notOkay();
+					rc = Response.notOkay();
 				
 			} else if (cmd.equals( "variable" )) {
 				Variable.perform( new Strings( "show" ));

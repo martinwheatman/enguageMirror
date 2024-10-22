@@ -3,7 +3,7 @@ package org.enguage.util.audit;
 import java.util.GregorianCalendar;
 
 import org.enguage.repertoires.Repertoires;
-import org.enguage.sign.Config;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.strings.Strings;
 
 public class Audit {
@@ -135,7 +135,7 @@ public class Audit {
 	
 	public static Strings perform(Strings cmds) {
 		audit.in( "Interpret", ""+ cmds );
-		Strings rc = Config.okay();
+		Strings rc = Response.okay();
 		String cmd = cmds.remove( 0 );
 		
 		if (cmd.equals( "entitle" )) {
@@ -178,7 +178,7 @@ public class Audit {
 					hideSignsOnFatal();				
 				
 			} else
-				rc = Config.notOkay();
+				rc = Response.notOkay();
 		}			
 
 		return audit.out(rc);

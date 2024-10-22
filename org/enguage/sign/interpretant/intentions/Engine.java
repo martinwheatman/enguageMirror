@@ -93,9 +93,9 @@ public final class Engine {
 		 };
 	
 	public static Reply interp( Intention in, Reply r ) {
-		r.answer( Config.S_OKAY ); // bland default reply to stop debug output look worrying
+		r.answer( Response.S_OKAY ); // bland default reply to stop debug output look worrying
 		r.type(
-				Response.typeFromStrings( Config.okay() )
+				Response.typeFromStrings( Response.okay() )
 		);
 
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
@@ -127,7 +127,7 @@ public final class Engine {
 		} else if ( in.value().equals( "repeat" )) {
 			if (Reply.previous() == null) {
 				audit.debug("Allop:repeating dnu");
-				r.format( Config.dnu());
+				r.format( Response.dnu());
 			} else {
 				audit.debug("Allop:repeating: "+ Reply.previous());
 				r.repeated( true );
@@ -147,7 +147,7 @@ public final class Engine {
 				Reply.say( Variable.deref( new Strings( cmds )));
 			
 		} else
-			r.format( Config.dnu() +":"+ cmd +" "+ cmds );
+			r.format( Response.dnu() +":"+ cmd +" "+ cmds );
 		
 		return r;
 }	}

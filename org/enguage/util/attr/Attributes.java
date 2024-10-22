@@ -206,6 +206,7 @@ public class Attributes extends ArrayList<Attribute> {
 
 		return values;
 	}
+	
 	// BEVERAGE -> coffee + [ NAME="martins", beverage="tea" ].deref( "SINGULAR-NAME needs a $BEVERAGE" );
 	// => martin needs a coffee.
 	private String derefName( String name, boolean expand ) { // hopefully non-blank string
@@ -232,13 +233,13 @@ public class Attributes extends ArrayList<Attribute> {
 			if (value == null || value.equals( "" ))
 				value = orig;
 			else {
-				if (first) {
+				if (first) { // "martin and ruth" => "martin"
 					int old = value.length();
 					value = new Strings( value ).before( "and" ).toString();
 					if (value.length() == old)
 						value = new Strings( value ).before( "or" ).toString();
-				}
-				if (rest) {
+					
+				} else if (rest) { // "martin or ruth" => "ruth"
 					String newValue = new Strings( value ).after(  "and" ).toString();
 					if (newValue.length() > 0)
 						value = newValue;

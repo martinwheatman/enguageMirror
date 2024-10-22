@@ -1,6 +1,6 @@
 package org.enguage.sign.object.sofa;
 
-import org.enguage.sign.Config;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -80,8 +80,8 @@ public class Link {
 				
 			else if (cmd.equals("exists"))
 				rc = target.equals( "" ) ?
-						new Value( entity, attr+EXT ).exists() ? Config.yesStr() : Config.noStr()
-						: exists( entity, attr+EXT, target ) ? Config.yesStr() : Config.noStr();
+						new Value( entity, attr+EXT ).exists() ? Response.yesStr() : Response.noStr()
+						: exists( entity, attr+EXT, target ) ? Response.yesStr() : Response.noStr();
 				
 			else if (cmd.equals("delete"))
 				if (target.equals( "" ))
